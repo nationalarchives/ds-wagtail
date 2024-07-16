@@ -31,7 +31,9 @@ from ..ciim.constants import (
     OHOS_CHECKBOX_AGGS_NAME_MAP,
     PARENT_AGGS_PREFIX,
     PREFIX_AGGS_PARENT_CHILD_KV,
+    PREFIX_FILTER_AGGS,
     SEE_MORE_VALUE_FMT,
+    TAG_VIEW_AGGREGATIONS,
     Bucket,
     BucketKeys,
     BucketList,
@@ -403,6 +405,7 @@ class BaseFilteredSearchView(BaseSearchView):
 
     dynamic_choice_fields = (
         "collection",
+        "chart_selected",
         # TODO: Keep, not in scope for Ohos-Etna at this time
         # "level",
         # "topic",
@@ -712,11 +715,20 @@ class BaseFilteredSearchView(BaseSearchView):
         Returns a dictionary of selected filters, keyed by form field name.
         Each value is a series of tuples where the first item is the 'value', and
         the second a user-freindly 'label' suitable for display in the template.
+
+        Exclude field names for Tag visualisation view
         """
+        exclude_field_names = (
+            ["chart_selected"]
+            if form.cleaned_data.get("vis_view") == VisViews.TAG
+            else []
+        )
+
         return_value = {
             field_name: form.cleaned_data[field_name]
             for field_name in self.dynamic_choice_fields
             if form.cleaned_data.get(field_name)
+            and field_name not in exclude_field_names
         }
 
         # Replace field 'values' with (value, label) tuples,
@@ -736,18 +748,11 @@ class BaseFilteredSearchView(BaseSearchView):
 
             if form.cleaned_data.get("group") == "community":
                 # trims the filter labels for nested collections
-                prefix_filter_aggs = [
-                    PARENT_AGGS_PREFIX + aggs[0]
-                    for aggs in NESTED_CHECKBOX_VALUES_AGGS_NAMES_MAP.values()
-                ] + [
-                    CHILD_AGGS_PREFIX + aggs[0]
-                    for aggs in NESTED_CHECKBOX_VALUES_AGGS_NAMES_MAP.values()
-                ]
-
                 label_value_list = []
                 for value in return_value[field_name]:
                     label = choice_labels.get(value, value)
-                    if value.startswith(tuple(prefix_filter_aggs)):
+                    if value.startswith(tuple(PREFIX_FILTER_AGGS)):
+                        # remove prefix filter
                         label = value.split(":", 1)[1]
                     label_value_list.append((value, label))
 
@@ -970,7 +975,29 @@ class CatalogueSearchView(BucketsMixin, BaseFilteredSearchView):
             tag_view_url=module.VIS_URLS.get(VisViews.TAG.value) + add_url_params,
         )
 
+        vis_view = self.form.cleaned_data.get("vis_view")
+        if vis_view == VisViews.TAG:
+            for aggs_rec in self.api_result.aggregations:
+                aggs = aggs_rec.get("name")
+                if aggs == Aggregation.ENRICHMENT_LOC:
+                    kwargs.update(enrichment_loc_aggs=aggs_rec.get("entries", []))
+                elif aggs == Aggregation.ENRICHMENT_PER:
+                    kwargs.update(enrichment_per_aggs=aggs_rec.get("entries", []))
+                elif aggs == Aggregation.ENRICHMENT_ORG:
+                    kwargs.update(enrichment_org_aggs=aggs_rec.get("entries", []))
+                elif aggs == Aggregation.ENRICHMENT_MISC:
+                    kwargs.update(enrichment_misc_aggs=aggs_rec.get("entries", []))
+
         return kwargs
+
+    def get_api_aggregations(self) -> List[str]:
+        """
+        Overrides get_api_aggregations() to only request
+        aggregations for the form field that options have been requested for.
+        """
+        if self.form.cleaned_data.get("vis_view") == VisViews.TAG.value:
+            return TAG_VIEW_AGGREGATIONS
+        return super().get_api_aggregations()
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         self.set_session_info()

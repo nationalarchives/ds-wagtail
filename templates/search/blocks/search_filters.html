@@ -214,7 +214,7 @@
         {% if form.vis_view.value == vis_view.TIMELINE %}
             {% render_fields_as_hidden form include='q group sort vis_view timeline_type creation_date_from' %}
         {% elif form.vis_view.value == vis_view.TAG %}
-            {% render_fields_as_hidden form include='q group sort vis_view chart_data_type' %}
+            {% render_fields_as_hidden form include='q group sort vis_view chart_data_type chart_selected' %}
         {% else %}
             {% render_fields_as_hidden form include='q group sort vis_view' %}
         {% endif %}

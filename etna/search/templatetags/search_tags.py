@@ -223,6 +223,7 @@ def tag_type_url(context, tag_type: str | None = None) -> str:
     ):
         # reset the url to previous state - used with x on filter label
         query_dict.pop("chart_data_type", None)
+        query_dict.pop("chart_selected", None)
 
         form_chart_data_type = context.get("form").cleaned_data.get("chart_data_type")
         add_param = (

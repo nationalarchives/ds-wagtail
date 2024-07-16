@@ -20,7 +20,7 @@
                 {% comment %}
                 {% render_fields_as_hidden form exclude='sort opening_start_date opening_end_date filter_keyword' %}
                 {% endcomment %}
-                {% render_fields_as_hidden form exclude='sort chart_data_type' %}
+                {% render_fields_as_hidden form exclude='sort chart_data_type chart_selected' %}
             {% elif form.vis_view.value == vis_view.TAG %}
                 {% render_fields_as_hidden form exclude='sort timeline_type creation_date_from' %}
             {% else %}
@@ -28,14 +28,14 @@
                 {% comment %}
                 {% render_fields_as_hidden form exclude='sort opening_start_date opening_end_date filter_keyword timeline_type creation_date_from' %}
                 {% endcomment %}
-                {% render_fields_as_hidden form exclude='sort timeline_type creation_date_from chart_data_type' %}
+                {% render_fields_as_hidden form exclude='sort timeline_type creation_date_from chart_data_type chart_selected' %}
             {% endif %}
         {% else %}
             {# TODO: Keep, not in scope for Ohos-Etna at this time #}
             {% comment %}
             {% render_fields_as_hidden form exclude='sort vis_view timeline_type creation_date_from' %}
             {% endcomment %}
-            {% render_fields_as_hidden form exclude='sort vis_view timeline_type chart_data_type creation_date_from opening_start_date opening_end_date filter_keyword' %}
+            {% render_fields_as_hidden form exclude='sort vis_view timeline_type chart_data_type chart_selected creation_date_from opening_start_date opening_end_date filter_keyword' %}
         {% endif %}
 
         <input type="submit" value="Sort by" class="search-sort-view__form-submit">

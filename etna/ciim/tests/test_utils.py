@@ -557,6 +557,46 @@ class TestPrepareOhosParam(SimpleTestCase):
                     ],
                 ),
             ),
+            (
+                "TAG view",  # label
+                # params
+                (
+                    "tag",
+                    [
+                        "community",
+                        "enrichmentLoc",
+                        "enrichmentPer",
+                        "enrichmentOrg",
+                        "enrichmentMisc",
+                    ],
+                    [
+                        "collection:parent-collectionSurrey:Surrey History Centre",
+                        "collection:child-collectionSurrey:GYPSY ROMA TRAVELLER HISTORY MONTH: RECORDED INTERVIEWS",
+                        "collection:child-collectionSurrey:LINGFIELD ORAL HISTORY PROJECT: TRANSCRIPTS",
+                        "collection:parent-collectionMorrab:Morrab Photo Archive",
+                        "collection:child-collectionMorrab:Miscellaneous Photos",
+                        "group:community",
+                    ],
+                ),
+                # expected
+                (
+                    [
+                        "community",
+                        "enrichmentLoc",
+                        "enrichmentPer",
+                        "enrichmentOrg",
+                        "enrichmentMisc",
+                        "collectionMorrab",
+                        "collectionSurrey",
+                    ],
+                    [
+                        "collectionOhos:GYPSY ROMA TRAVELLER HISTORY MONTH: RECORDED INTERVIEWS",
+                        "collectionOhos:LINGFIELD ORAL HISTORY PROJECT: TRANSCRIPTS",
+                        "collectionOhos:Miscellaneous Photos",
+                        "group:community",
+                    ],
+                ),
+            ),
         )
 
         for label, params, expected in test_data:

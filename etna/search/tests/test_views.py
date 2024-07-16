@@ -701,23 +701,27 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
         chart_data_type_hidden = """<input type="hidden" name="chart_data_type" value="LOC" id="id_chart_data_type_123">"""
         self.assertContains(response, chart_data_type_hidden, count=0, status_code=200)
 
+        self.assertFalse((response.context.get("enrichment_loc_aggs")))
+        self.assertFalse((response.context.get("enrichment_per_aggs")))
+        self.assertFalse((response.context.get("enrichment_org_aggs")))
+        self.assertFalse((response.context.get("enrichment_misc_aggs")))
+
     @mock.patch(
         "etna.search.templatetags.search_tags.get_random_string", return_value="123"
     )
     @responses.activate
     def test_tag_view(self, mocked_get_random_string):
         self.maxDiff = None
-        self.patch_search_endpoint("community_nested_filters.json")
+        self.patch_search_endpoint("community_enrichment_tags.json")
 
         expected_url = (
             "/search/catalogue/?q=and&group=community"
-            "&collection=parent-collectionMorrab%3AMorrab+Photo+Archive"
-            "&collection=parent-collectionSurrey%3ASurrey+History+Centre"
-            "&collection=child-collectionSurrey%3AJENNIFER+LOUIS+OF+WESTHUMBLE%3A+ORAL+HISTORY+RECORDINGS"
-            "&collection=Biography+of+Women+Who+Made+Milton+Keynes+%28Digital+Document%29"
+            "&collection=SWOP"
             "&covering_date_from_0=01&covering_date_from_1=01&covering_date_from_2=1900"
             "&vis_view=tag&sort=title%3Aasc"
             "&chart_data_type=LOC"
+            "&chart_selected=LOC%3ARye"
+            "&chart_selected=LOC%3AHigh+Wycombe"
         )
 
         response = self.client.get(
@@ -726,10 +730,7 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
                 "q": "and",
                 "group": "community",
                 "collection": [
-                    "parent-collectionMorrab:Morrab Photo Archive",
-                    "parent-collectionSurrey:Surrey History Centre",
-                    "child-collectionSurrey:JENNIFER LOUIS OF WESTHUMBLE: ORAL HISTORY RECORDINGS",
-                    "Biography of Women Who Made Milton Keynes (Digital Document)",
+                    "SWOP",
                 ],
                 "covering_date_from_0": "01",
                 "covering_date_from_1": "01",
@@ -737,10 +738,10 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
                 "vis_view": "tag",
                 "sort": "title:asc",
                 "chart_data_type": "LOC",
+                "chart_selected": ["LOC:Rye", "LOC:High Wycombe"],
             },
         )
         session = self.client.session
-        # content = str(response.content)
 
         self.assertEqual(len(responses.calls), 1)
 
@@ -750,8 +751,21 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
             """<input type="hidden" name="vis_view" value="tag" id="id_vis_view_123">"""
         )
         self.assertContains(response, vis_view_hidden, count=4, status_code=200)
+
         chart_data_type_hidden = """<input type="hidden" name="chart_data_type" value="LOC" id="id_chart_data_type_123">"""
         self.assertContains(response, chart_data_type_hidden, count=4, status_code=200)
+
+        chart_selected_hidden = """<input type="hidden" name="chart_selected" value="LOC:Rye" id="id_chart_selected_123_0">"""
+        self.assertContains(response, chart_selected_hidden, count=4, status_code=200)
+        chart_selected_hidden = """<input type="hidden" name="chart_selected" value="LOC:High Wycombe" id="id_chart_selected_123_1">"""
+        self.assertContains(response, chart_selected_hidden, count=4, status_code=200)
+
+        self.assertEqual(len(response.context.get("selected_filters")), 2)
+
+        self.assertTrue(len(response.context.get("enrichment_loc_aggs")))
+        self.assertTrue(len(response.context.get("enrichment_per_aggs")))
+        self.assertTrue(len(response.context.get("enrichment_org_aggs")))
+        self.assertTrue(len(response.context.get("enrichment_misc_aggs")))
 
 
 class CatalogueSearchLongFilterChooserAPIIntegrationTest(SearchViewTestCase):

@@ -1,0 +1,2041 @@
+{
+    "data": [
+        {
+            "@template": {
+                "details": {
+                    "copiesInformation": [
+                        "1"
+                    ],
+                    "creator": "Goodearl, Ronald",
+                    "description": "Gardens on N side of River Wye, looking E across the paddling pool.",
+                    "level": "item",
+                    "primaryIdentifier": "swop-1789",
+                    "summaryTitle": "Looking E from gardens adjacent to London Rd, a view of trees in blossom, and the River Wye in Springtime. The Rye, High Wycombe. 1960's?",
+                    "title": "Looking E from gardens adjacent to London Rd, a view of trees in blossom, and the River Wye in Springtime. The Rye, High Wycombe. 1960's?",
+                    "descriptionView": "Gardens on N side of River Wye, looking E across the paddling pool.",
+                    "descriptionPlace": "From gardens adjacent to London Rd. at W. end of Rye a view of the River Wye in Springtime with flowering trees on the banks. Bassetsbury Manor seen in background.",
+                    "summary": "Looking E from gardens adjacent to London Rd, a view of trees in blossom, and the River Wye in Springtime. The Rye, High Wycombe. 1960's?",
+                    "uuid": "6c0bdba7-5fd2-357a-9cfc-6d6081aef6ac",
+                    "creationDateTo": "1969",
+                    "creationDateFrom": "1960",
+                    "creationDate": "1960's",
+                    "collection": "SWOP",
+                    "collectionId": "swop-0",
+                    "format": "Photo Print",
+                    "ciimId": "swop-1789",
+                    "group": "community",
+                    "groupArray": {
+                        "value": "community"
+                    },
+                    "status": "publish",
+                    "repository": "Bucks Free Press",
+                    "enrichment": {
+                        "date": [
+                            {
+                                "from": "1960",
+                                "to": "1960",
+                                "value": "1960's"
+                            }
+                        ],
+                        "loc": [
+                            {
+                                "value": "London Rd"
+                            },
+                            {
+                                "value": "River Wye",
+                                "url": "https://www.wikidata.org/wiki/Q19695"
+                            },
+                            {
+                                "value": "The Rye"
+                            },
+                            {
+                                "value": "High Wycombe",
+                                "url": "https://www.wikidata.org/wiki/Q64116"
+                            },
+                            {
+                                "value": "Rye"
+                            },
+                            {
+                                "value": "Bassetsbury"
+                            },
+                            {
+                                "value": "Manor"
+                            }
+                        ]
+                    },
+                    "subjects": [
+                        "Landscape",
+                        "Animal",
+                        "Benches/public seating",
+                        "House/cottage",
+                        "Railings",
+                        "River/stream",
+                        "Street lighting",
+                        "Telegraph pole",
+                        "Tree"
+                    ]
+                }
+            }
+        },
+        {
+            "@template": {
+                "details": {
+                    "copiesInformation": [
+                        "1"
+                    ],
+                    "description": "near Pann Mill, looking SE across the R.Wye and the Rye",
+                    "level": "item",
+                    "primaryIdentifier": "swop-2603",
+                    "summaryTitle": "Looking SE from the R.Wye, a view of three men walking beside the river with the Rye beyond. High Wycombe. 1970's?",
+                    "title": "Looking SE from the R.Wye, a view of three men walking beside the river with the Rye beyond. High Wycombe. 1970's?",
+                    "descriptionView": "near Pann Mill, looking SE across the R.Wye and the Rye",
+                    "descriptionPlace": "Three men walk beside the R. Wye just E. of Pann Mill. Beyond the Rye with the buildings of Holywell Mead Swimming Pool centre, and the housing of Warren Wood behind. Left Bassetsbury Manor and houses in Bassetsbury Lane",
+                    "summary": "Looking SE from the R.Wye, a view of three men walking beside the river with the Rye beyond. High Wycombe. 1970's?",
+                    "uuid": "d4333f81-94b5-3335-9866-f93c59321341",
+                    "creationDateTo": "1979",
+                    "creationDateFrom": "1970",
+                    "creationDate": "1970's",
+                    "collection": "SWOP",
+                    "collectionId": "swop-0",
+                    "format": "Photo Print",
+                    "ciimId": "swop-2603",
+                    "group": "community",
+                    "groupArray": {
+                        "value": "community"
+                    },
+                    "status": "publish",
+                    "repository": "High Wycombe Society",
+                    "enrichment": {
+                        "date": [
+                            {
+                                "from": "1970",
+                                "to": "1970",
+                                "value": "1970"
+                            }
+                        ],
+                        "loc": [
+                            {
+                                "value": "R.Wye"
+                            },
+                            {
+                                "value": "R.Wye,"
+                            },
+                            {
+                                "value": "Rye"
+                            },
+                            {
+                                "value": "High Wycombe",
+                                "url": "https://www.wikidata.org/wiki/Q64116"
+                            },
+                            {
+                                "value": "R. Wye",
+                                "url": "https://www.wikidata.org/wiki/Q19695"
+                            },
+                            {
+                                "value": "Pann Mill"
+                            },
+                            {
+                                "value": "Holywell Mead"
+                            },
+                            {
+                                "value": "Pool",
+                                "url": "https://www.wikidata.org/wiki/Q1501"
+                            },
+                            {
+                                "value": "Bassetsbury Manor"
+                            },
+                            {
+                                "value": "Bassetsbury Lane"
+                            }
+                        ],
+                        "org": [
+                            {
+                                "value": "Warren Wood"
+                            }
+                        ]
+                    },
+                    "subjects": [
+                        "Landscape",
+                        "House/cottage",
+                        "Man",
+                        "River/stream",
+                        "Tree"
+                    ]
+                }
+            }
+        },
+        {
+            "@template": {
+                "details": {
+                    "copiesInformation": [
+                        "1"
+                    ],
+                    "description": "Postcard with seven views of High Wycombe and West Wycombe. Left top, Queen Victoria Rd with the Police Station, Town Hall and Library left and Council Offices facing. Top right, both sides of West Wycombe High St, looking W. Centre left, Recreation ground - the Rye, looking N. Centre, elevated view from church tower at West Wycombe, looking E. Centre right, Frogmoor looking N to railway line with shops and a cinema. Bottom left, the Waterfall at E end of the Dyke on The Rye. Bottom right, the Town Hall in Queen Victoria Rd.",
+                    "level": "item",
+                    "primaryIdentifier": "swop-2826",
+                    "summaryTitle": "Composite postcard showing seven views of High Wycombe and West Wycombe. 1950's?",
+                    "title": "Composite postcard showing seven views of High Wycombe and West Wycombe. 1950's?",
+                    "descriptionPlace": "Postcard with seven views of High Wycombe and West Wycombe. Left top, Queen Victoria Rd with the Police Station, Town Hall and Library left and Council Offices facing. Top right, both sides of West Wycombe High St, looking W. Centre left, Recreation ground - the Rye, looking N. Centre, elevated view from church tower at West Wycombe, looking E. Centre right, Frogmoor looking N to railway line with shops and a cinema. Bottom left, the Waterfall at E end of the Dyke on The Rye. Bottom right, the Town Hall in Queen Victoria Rd.",
+                    "summary": "Composite postcard showing seven views of High Wycombe and West Wycombe. 1950's?",
+                    "uuid": "078c863f-1795-3dd3-9398-2e107d629860",
+                    "creationDateTo": "1959",
+                    "creationDateFrom": "1950",
+                    "creationDate": "1950's",
+                    "collection": "SWOP",
+                    "collectionId": "swop-0",
+                    "format": "Post card",
+                    "location": "Frogmoor",
+                    "ciimId": "swop-2826",
+                    "group": "community",
+                    "groupArray": {
+                        "value": "community"
+                    },
+                    "status": "publish",
+                    "repository": "High Wycombe Society",
+                    "enrichment": {
+                        "date": [
+                            {
+                                "from": "1950",
+                                "to": "1950",
+                                "value": "1950's"
+                            }
+                        ],
+                        "loc": [
+                            {
+                                "value": "High Wycombe",
+                                "url": "https://www.wikidata.org/wiki/Q64116"
+                            },
+                            {
+                                "value": "West Wycombe",
+                                "url": "https://www.wikidata.org/wiki/Q2366839"
+                            },
+                            {
+                                "value": "Queen Victoria Rd"
+                            },
+                            {
+                                "value": "Station"
+                            },
+                            {
+                                "value": "Town Hall"
+                            },
+                            {
+                                "value": "Library"
+                            },
+                            {
+                                "value": "West Wycombe High St"
+                            },
+                            {
+                                "value": "Rye"
+                            },
+                            {
+                                "value": "Frogmoor"
+                            },
+                            {
+                                "value": "Dyke"
+                            },
+                            {
+                                "value": "The Rye"
+                            }
+                        ]
+                    },
+                    "subjects": [
+                        "Civic building",
+                        "Landscape",
+                        "Streetscape",
+                        "Church/chapel",
+                        "Cinema",
+                        "Man",
+                        "Memorial",
+                        "Motor vehicle",
+                        "Railings",
+                        "Railway line",
+                        "River/stream",
+                        "Shop",
+                        "Street lighting",
+                        "Telegraph pole",
+                        "Telephone box",
+                        "Woman"
+                    ]
+                }
+            }
+        },
+        {
+            "@template": {
+                "details": {
+                    "copiesInformation": [
+                        "1"
+                    ],
+                    "description": "The S bank of the Dyke, looking NW across the Rye",
+                    "level": "item",
+                    "primaryIdentifier": "swop-2604",
+                    "summaryTitle": "Looking NW across the Rye, a view of two boys fishing from the S bank of the Dyke, The Rye, High Wycombe. 1980's?",
+                    "title": "Looking NW across the Rye, a view of two boys fishing from the S bank of the Dyke, The Rye, High Wycombe. 1980's?",
+                    "descriptionView": "The S bank of the Dyke, looking NW across the Rye",
+                    "descriptionPlace": "Two boys fishing from the S bank of the Dyke. Beyond, three spectators watch a football game on the Rye. Housing along the London Road runs from the Friends' Meeting House right to the towers of Trinity Church. Next, the former grammar school building in Easton St. and the roof of Wycombe District Council Offices.",
+                    "summary": "Looking NW across the Rye, a view of two boys fishing from the S bank of the Dyke, The Rye, High Wycombe. 1980's?",
+                    "uuid": "a9e4fff0-1f68-3f8f-aa7a-41266e6ea64d",
+                    "creationDateTo": "1989",
+                    "creationDateFrom": "1980",
+                    "creationDate": "1980's",
+                    "collection": "SWOP",
+                    "collectionId": "swop-0",
+                    "format": "Photo Print",
+                    "ciimId": "swop-2604",
+                    "group": "community",
+                    "groupArray": {
+                        "value": "community"
+                    },
+                    "status": "publish",
+                    "repository": "High Wycombe Society",
+                    "enrichment": {
+                        "date": [
+                            {
+                                "from": "1980",
+                                "to": "1980",
+                                "value": "1980"
+                            }
+                        ],
+                        "loc": [
+                            {
+                                "value": "Rye"
+                            },
+                            {
+                                "value": "Dyke"
+                            },
+                            {
+                                "value": "The Rye"
+                            },
+                            {
+                                "value": "High Wycombe",
+                                "url": "https://www.wikidata.org/wiki/Q64116"
+                            },
+                            {
+                                "value": "S"
+                            },
+                            {
+                                "value": "London Road"
+                            },
+                            {
+                                "value": "Trinity Church"
+                            },
+                            {
+                                "value": "Easton St."
+                            }
+                        ],
+                        "org": [
+                            {
+                                "value": "Friends' Meeting House",
+                                "url": "https://www.wikidata.org/wiki/Q5504247"
+                            },
+                            {
+                                "value": "Wycombe District Council Offices"
+                            }
+                        ]
+                    },
+                    "subjects": [
+                        "Fishing",
+                        "Landscape",
+                        "Child",
+                        "House/cottage",
+                        "River/stream"
+                    ]
+                }
+            }
+        },
+        {
+            "@template": {
+                "details": {
+                    "copiesInformation": [
+                        "1"
+                    ],
+                    "creator": "Venn, J. H.",
+                    "description": "S. from Keep Hill Rd looking N. to Bassetsbury Lane",
+                    "level": "item",
+                    "primaryIdentifier": "swop-1242",
+                    "summaryTitle": "Looking N. from junction with Keep Hill Rd, a view along Bassetsbury Lane and entrance to Rye, High Wycombe. July 1990",
+                    "title": "Looking N. from junction with Keep Hill Rd, a view along Bassetsbury Lane and entrance to Rye, High Wycombe. July 1990",
+                    "descriptionView": "S. from Keep Hill Rd looking N. to Bassetsbury Lane",
+                    "descriptionPlace": "Showing junction Keep Hill Rd and Bassetsbury Lane, road leading to Rye, houses on W. and E. side Bassetsbury Lane",
+                    "summary": "Looking N. from junction with Keep Hill Rd, a view along Bassetsbury Lane and entrance to Rye, High Wycombe. July 1990",
+                    "uuid": "7f77cf2e-9fb6-3e08-8af1-e387bb7ad71e",
+                    "creationDateTo": "1990",
+                    "creationDateFrom": "1990",
+                    "creationDate": "13.7.1990",
+                    "collection": "SWOP",
+                    "collectionId": "swop-0",
+                    "format": "Photo Print",
+                    "ciimId": "swop-1242",
+                    "group": "community",
+                    "groupArray": {
+                        "value": "community"
+                    },
+                    "status": "publish",
+                    "repository": "High Wycombe Library",
+                    "enrichment": {
+                        "date": [
+                            {
+                                "from": "1990",
+                                "to": "1990",
+                                "value": "July 1990"
+                            }
+                        ],
+                        "loc": [
+                            {
+                                "value": "Keep Hill Rd"
+                            },
+                            {
+                                "value": "Bassetsbury Lane"
+                            },
+                            {
+                                "value": "Rye"
+                            },
+                            {
+                                "value": "High Wycombe",
+                                "url": "https://www.wikidata.org/wiki/Q64116"
+                            }
+                        ]
+                    },
+                    "subjects": [
+                        "Domestic building",
+                        "Streetscape",
+                        "House/cottage",
+                        "Motor vehicle",
+                        "Street lighting",
+                        "Telegraph pole"
+                    ]
+                }
+            }
+        },
+        {
+            "@template": {
+                "details": {
+                    "copiesInformation": [
+                        "1"
+                    ],
+                    "description": "SE, from Keep Hill over town to hills on N. side",
+                    "level": "item",
+                    "primaryIdentifier": "swop-1695",
+                    "summaryTitle": "Looking NW from Keep Hill, a view over the Rye and the E end of town to the hills on the northern side of High Wycombe. late 1920's?",
+                    "title": "Looking NW from Keep Hill, a view over the Rye and the E end of town to the hills on the northern side of High Wycombe. late 1920's?",
+                    "descriptionView": "SE, from Keep Hill over town to hills on N. side",
+                    "descriptionPlace": "View from Keep Hill showing The Rye with cattle grazing and the white buildings of Pann Mill at the W. end. London Rd. runs from E. to W. with the towers of Trinity United Reformed Church seen. On the left the tower of the Parish Church is seen.",
+                    "summary": "Looking NW from Keep Hill, a view over the Rye and the E end of town to the hills on the northern side of High Wycombe. late 1920's?",
+                    "uuid": "ab3c3af0-7be0-34bc-aee5-888b85da5d81",
+                    "creationDateTo": "1930",
+                    "creationDateFrom": "1920",
+                    "creationDate": "about 1925",
+                    "collection": "SWOP",
+                    "collectionId": "swop-0",
+                    "format": "Photo Print",
+                    "location": "Keep Hill",
+                    "ciimId": "swop-1695",
+                    "group": "community",
+                    "groupArray": {
+                        "value": "community"
+                    },
+                    "status": "publish",
+                    "repository": "Wycombe Museum",
+                    "enrichment": {
+                        "date": [
+                            {
+                                "from": "1920",
+                                "to": "1920",
+                                "value": "late 1920's"
+                            }
+                        ],
+                        "loc": [
+                            {
+                                "value": "Keep Hill"
+                            },
+                            {
+                                "value": "Rye"
+                            },
+                            {
+                                "value": "High Wycombe",
+                                "url": "https://www.wikidata.org/wiki/Q64116"
+                            },
+                            {
+                                "value": "The Rye"
+                            },
+                            {
+                                "value": "Pann Mill"
+                            },
+                            {
+                                "value": "London Rd"
+                            },
+                            {
+                                "value": "Trinity United Reformed Church"
+                            },
+                            {
+                                "value": "Parish Church"
+                            }
+                        ]
+                    },
+                    "subjects": [
+                        "Landscape",
+                        "Church/chapel",
+                        "House/cottage",
+                        "Tree"
+                    ]
+                }
+            }
+        },
+        {
+            "@template": {
+                "details": {
+                    "copiesInformation": [
+                        "1"
+                    ],
+                    "creator": "Mead, Robert",
+                    "description": "looking W",
+                    "level": "item",
+                    "primaryIdentifier": "swop-2576",
+                    "summaryTitle": "Looking W, a view of crowds watching cattle being paraded at Wycombe Show, the Rye, High Wycombe. September 1962",
+                    "title": "Looking W, a view of crowds watching cattle being paraded at Wycombe Show, the Rye, High Wycombe. September 1962",
+                    "descriptionView": "looking W",
+                    "descriptionPlace": "Crowds watch cattle being paraded at the Wycombe Show held on the Rye. A lorry from A.E.J. Dance of Stockbridge seen and Land Rover KMO 988. A covered area seen in background.",
+                    "summary": "Looking W, a view of crowds watching cattle being paraded at Wycombe Show, the Rye, High Wycombe. September 1962",
+                    "uuid": "2704aeb0-3ae3-356b-91b6-1dc173435702",
+                    "creationDateTo": "1962",
+                    "creationDateFrom": "1962",
+                    "creationDate": "1.9.1962",
+                    "collection": "SWOP",
+                    "collectionId": "swop-0",
+                    "format": "Photo Print",
+                    "ciimId": "swop-2576",
+                    "group": "community",
+                    "groupArray": {
+                        "value": "community"
+                    },
+                    "status": "publish",
+                    "repository": "High Wycombe Society",
+                    "enrichment": {
+                        "date": [
+                            {
+                                "from": "1962",
+                                "to": "1962",
+                                "value": "September 1962"
+                            }
+                        ],
+                        "loc": [
+                            {
+                                "value": "Rye"
+                            },
+                            {
+                                "value": "High Wycombe",
+                                "url": "https://www.wikidata.org/wiki/Q64116"
+                            },
+                            {
+                                "value": "Stockbridge"
+                            }
+                        ],
+                        "org": [
+                            {
+                                "value": "A.E.J."
+                            },
+                            {
+                                "value": "A.E.J. Dance"
+                            },
+                            {
+                                "value": "Land Rover KMO"
+                            }
+                        ],
+                        "misc": [
+                            {
+                                "value": "Wycombe Show"
+                            }
+                        ]
+                    },
+                    "subjects": [
+                        "Display",
+                        "Show",
+                        "Animal",
+                        "Crowd",
+                        "Motor vehicle"
+                    ]
+                }
+            }
+        },
+        {
+            "@template": {
+                "details": {
+                    "copiesInformation": [
+                        "1"
+                    ],
+                    "description": "Among others, a display by Wycombe Local History and Chair Museum at Wycombe Show. Three panels have photographs and text. Two tables display artifacts, leaflets and souvenirs to buy.",
+                    "level": "item",
+                    "primaryIdentifier": "swop-2481",
+                    "summaryTitle": "Inside a marquee, a view of a display by Wycombe Local History and Chair Museum at Wycombe Show, the Rye, High Wycombe. Sept 1993",
+                    "title": "Inside a marquee, a view of a display by Wycombe Local History and Chair Museum at Wycombe Show, the Rye, High Wycombe. Sept 1993",
+                    "descriptionPlace": "Among others, a display by Wycombe Local History and Chair Museum at Wycombe Show. Three panels have photographs and text. Two tables display artifacts, leaflets and souvenirs to buy.",
+                    "summary": "Inside a marquee, a view of a display by Wycombe Local History and Chair Museum at Wycombe Show, the Rye, High Wycombe. Sept 1993",
+                    "uuid": "b56c5333-eb8f-3ac5-9cde-a510997fcd2f",
+                    "creationDateTo": "1993",
+                    "creationDateFrom": "1993",
+                    "creationDate": "9.1993",
+                    "collection": "SWOP",
+                    "collectionId": "swop-0",
+                    "format": "Photo Print",
+                    "ciimId": "swop-2481",
+                    "group": "community",
+                    "groupArray": {
+                        "value": "community"
+                    },
+                    "status": "publish",
+                    "repository": "Wycombe Museum",
+                    "enrichment": {
+                        "date": [
+                            {
+                                "from": "1993",
+                                "to": "1993",
+                                "value": "Sept 1993"
+                            }
+                        ],
+                        "loc": [
+                            {
+                                "value": "Rye"
+                            },
+                            {
+                                "value": "High Wycombe",
+                                "url": "https://www.wikidata.org/wiki/Q64116"
+                            }
+                        ],
+                        "org": [
+                            {
+                                "value": "Wycombe Local History and Chair Museum",
+                                "url": "https://www.wikidata.org/wiki/Q8039645"
+                            }
+                        ],
+                        "misc": [
+                            {
+                                "value": "Wycombe Show"
+                            }
+                        ]
+                    },
+                    "subjects": [
+                        "Exhibition",
+                        "Interior",
+                        "Man",
+                        "Woman"
+                    ]
+                }
+            }
+        },
+        {
+            "@template": {
+                "details": {
+                    "copiesInformation": [
+                        "1"
+                    ],
+                    "description": "N side of the Rye, east of Pann Mill, looking N",
+                    "level": "item",
+                    "primaryIdentifier": "swop-2572",
+                    "summaryTitle": "Looking N from the Rye, E of Pann Mill, a view of High Wycombe Society members planting a maple in memory of Jim Cottrell. The Rye, High Wycombe, early 1980",
+                    "title": "Looking N from the Rye, E of Pann Mill, a view of High Wycombe Society members planting a maple in memory of Jim Cottrell. The Rye, High Wycombe, early 1980",
+                    "descriptionView": "N side of the Rye, east of Pann Mill, looking N",
+                    "descriptionPlace": "Members of the High Wycombe Society planting a maple on the Rye in memory of Jim Cottrell, a member of the Rye Protection Group, forerunner of the High Wycombe Society. Jack Scruton with spade. In background nos. 3 - 17 London Rd and Crown House School right. River Wye seen behind the group. See also HWS02573/4",
+                    "summary": "Looking N from the Rye, E of Pann Mill, a view of High Wycombe Society members planting a maple in memory of Jim Cottrell. The Rye, High Wycombe, early 1980",
+                    "uuid": "6cabbe4e-f5ea-3fd3-99c3-07ffb08cd239",
+                    "creationDateTo": "1980",
+                    "creationDateFrom": "1980",
+                    "creationDate": "1980",
+                    "collection": "SWOP",
+                    "collectionId": "swop-0",
+                    "format": "Photo Print",
+                    "ciimId": "swop-2572",
+                    "group": "community",
+                    "groupArray": {
+                        "value": "community"
+                    },
+                    "status": "publish",
+                    "repository": "High Wycombe Society",
+                    "enrichment": {
+                        "date": [
+                            {
+                                "from": "1980",
+                                "to": "1980",
+                                "value": "early 1980"
+                            }
+                        ],
+                        "loc": [
+                            {
+                                "value": "Rye"
+                            },
+                            {
+                                "value": "Pann Mill"
+                            },
+                            {
+                                "value": "High Wycombe",
+                                "url": "https://www.wikidata.org/wiki/Q64116"
+                            },
+                            {
+                                "value": "London Rd"
+                            },
+                            {
+                                "value": "Crown House School"
+                            },
+                            {
+                                "value": "River Wye",
+                                "url": "https://www.wikidata.org/wiki/Q19695"
+                            }
+                        ],
+                        "org": [
+                            {
+                                "value": "High Wycombe Society"
+                            },
+                            {
+                                "value": "Rye Protection Group"
+                            },
+                            {
+                                "value": "High Wycombe Society",
+                                "url": "https://www.wikidata.org/wiki/Q64116"
+                            },
+                            {
+                                "value": "HWS02573/4"
+                            }
+                        ],
+                        "per": [
+                            {
+                                "value": "Jim Cottrell"
+                            },
+                            {
+                                "value": "Jack Scruton"
+                            }
+                        ]
+                    },
+                    "subjects": [
+                        "Ceremony",
+                        "Group",
+                        "Streetscape",
+                        "House/cottage",
+                        "Man",
+                        "Motor vehicle",
+                        "River/stream",
+                        "School/college",
+                        "Telegraph pole",
+                        "Tool",
+                        "Tree",
+                        "Woman"
+                    ]
+                }
+            }
+        },
+        {
+            "@template": {
+                "details": {
+                    "copiesInformation": [
+                        "1"
+                    ],
+                    "description": "NW, looking SE",
+                    "level": "item",
+                    "primaryIdentifier": "swop-1621",
+                    "summaryTitle": "looking SE, a view of Library staff dressed as characters from the Wizard of Oz for a Pram Race on the Rye, High Wycombe. about 1990",
+                    "title": "looking SE, a view of Library staff dressed as characters from the Wizard of Oz for a Pram Race on the Rye, High Wycombe. about 1990",
+                    "descriptionView": "NW, looking SE",
+                    "descriptionPlace": "Six members of the Library staff, including Peter Mussett, Lorna Sharpe and Helen, dressed as characters from the Wizard of Oz. They are preparing to take part in a Pram Race on the Rye, High Wycombe. Same subject on RHW01620",
+                    "summary": "looking SE, a view of Library staff dressed as characters from the Wizard of Oz for a Pram Race on the Rye, High Wycombe. about 1990",
+                    "uuid": "b24f568d-a023-3e9c-b31e-0eb1b71831aa",
+                    "creationDateTo": "1995",
+                    "creationDateFrom": "1985",
+                    "creationDate": "about 1990",
+                    "collection": "SWOP",
+                    "collectionId": "swop-0",
+                    "format": "Photo Print",
+                    "ciimId": "swop-1621",
+                    "group": "community",
+                    "groupArray": {
+                        "value": "community"
+                    },
+                    "status": "publish",
+                    "repository": "High Wycombe Library",
+                    "enrichment": {
+                        "date": [
+                            {
+                                "from": "1990",
+                                "to": "1990",
+                                "value": "1990"
+                            }
+                        ],
+                        "loc": [
+                            {
+                                "value": "High Wycombe",
+                                "url": "https://www.wikidata.org/wiki/Q64116"
+                            },
+                            {
+                                "value": "Rye"
+                            }
+                        ],
+                        "org": [
+                            {
+                                "value": "Library"
+                            }
+                        ],
+                        "per": [
+                            {
+                                "value": "Peter Mussett"
+                            },
+                            {
+                                "value": "Lorna Sharpe"
+                            },
+                            {
+                                "value": "Helen"
+                            }
+                        ],
+                        "misc": [
+                            {
+                                "value": "Wizard of Oz"
+                            },
+                            {
+                                "value": "Pram Race"
+                            },
+                            {
+                                "value": "Rye"
+                            },
+                            {
+                                "value": "Wizard of Oz",
+                                "url": "https://www.wikidata.org/wiki/Q193695"
+                            }
+                        ]
+                    },
+                    "subjects": [
+                        "Entertainment",
+                        "Landscape",
+                        "Man",
+                        "Pram",
+                        "Woman"
+                    ]
+                }
+            }
+        },
+        {
+            "@template": {
+                "details": {
+                    "copiesInformation": [
+                        "1"
+                    ],
+                    "description": "Holywell Mead, looking N",
+                    "level": "item",
+                    "primaryIdentifier": "swop-2712",
+                    "summaryTitle": "Looking N, a view of a group of international athletes at a sports gala organised by Phoenix Harriers on The Rye, High Wycombe. Sept 1975",
+                    "title": "Looking N, a view of a group of international athletes at a sports gala organised by Phoenix Harriers on The Rye, High Wycombe. Sept 1975",
+                    "descriptionView": "Holywell Mead, looking N",
+                    "descriptionPlace": "A group of international athletes at a sports gala on the Rye organised by Phoenix Harriers to raise money for an athletic track at Handy Cross Sports Centre. Left Alan Pascoe, fourth from right Derek Ibbotson, second right Mike Winch.",
+                    "summary": "Looking N, a view of a group of international athletes at a sports gala organised by Phoenix Harriers on The Rye, High Wycombe. Sept 1975",
+                    "uuid": "11f5ee8b-33c2-3db7-ba26-1e6c69c6f169",
+                    "creationDateTo": "1975",
+                    "creationDateFrom": "1975",
+                    "creationDate": "20.9.1975",
+                    "collection": "SWOP",
+                    "collectionId": "swop-0",
+                    "format": "Photo Print",
+                    "ciimId": "swop-2712",
+                    "group": "community",
+                    "groupArray": {
+                        "value": "community"
+                    },
+                    "status": "publish",
+                    "repository": "High Wycombe Society",
+                    "enrichment": {
+                        "date": [
+                            {
+                                "from": "1975",
+                                "to": "1975",
+                                "value": "Sept 1975"
+                            }
+                        ],
+                        "loc": [
+                            {
+                                "value": "The Rye",
+                                "url": "https://www.wikidata.org/wiki/Q7761917"
+                            },
+                            {
+                                "value": "High Wycombe",
+                                "url": "https://www.wikidata.org/wiki/Q64116"
+                            },
+                            {
+                                "value": "Rye"
+                            },
+                            {
+                                "value": "Handy Cross Sports Centre"
+                            }
+                        ],
+                        "org": [
+                            {
+                                "value": "Phoenix Harriers"
+                            }
+                        ],
+                        "per": [
+                            {
+                                "value": "Alan Pascoe",
+                                "url": "https://www.wikidata.org/wiki/Q1388210"
+                            },
+                            {
+                                "value": "Derek Ibbotson",
+                                "url": "https://www.wikidata.org/wiki/Q283388"
+                            },
+                            {
+                                "value": "Mike Winch",
+                                "url": "https://www.wikidata.org/wiki/Q6849306"
+                            }
+                        ],
+                        "misc": [
+                            {
+                                "value": "N"
+                            }
+                        ]
+                    },
+                    "subjects": [
+                        "Group",
+                        "Sport",
+                        "Man",
+                        "Woman"
+                    ]
+                }
+            }
+        },
+        {
+            "@template": {
+                "details": {
+                    "copiesInformation": [
+                        "1"
+                    ],
+                    "description": "W. in foyer of Library",
+                    "level": "item",
+                    "primaryIdentifier": "swop-1620",
+                    "summaryTitle": "In the foyer of the Library, members of the staff dressed as characters from the Wizard of Oz. Queen Victoria Rd, High Wycombe. about 1990",
+                    "title": "In the foyer of the Library, members of the staff dressed as characters from the Wizard of Oz. Queen Victoria Rd, High Wycombe. about 1990",
+                    "descriptionView": "W. in foyer of Library",
+                    "descriptionPlace": "Four members of the Library staff including Peter Mussett, Lorna Sharpe and Helen, dressed up to take part in a pram race on the Rye. They are dressed as characters from the Wizard of Oz. Same subject on RHW01621",
+                    "summary": "In the foyer of the Library, members of the staff dressed as characters from the Wizard of Oz. Queen Victoria Rd, High Wycombe. about 1990",
+                    "uuid": "2cb43b42-1cc7-333e-8eda-668b957913ed",
+                    "creationDateTo": "1995",
+                    "creationDateFrom": "1985",
+                    "creationDate": "about 1990",
+                    "collection": "SWOP",
+                    "collectionId": "swop-0",
+                    "format": "Photo Print",
+                    "location": "Queen Victoria Road",
+                    "ciimId": "swop-1620",
+                    "group": "community",
+                    "groupArray": {
+                        "value": "community"
+                    },
+                    "status": "publish",
+                    "repository": "High Wycombe Library",
+                    "enrichment": {
+                        "date": [
+                            {
+                                "from": "1990",
+                                "to": "1990",
+                                "value": "1990"
+                            }
+                        ],
+                        "loc": [
+                            {
+                                "value": "Library"
+                            },
+                            {
+                                "value": "Queen Victoria Rd"
+                            },
+                            {
+                                "value": "High Wycombe",
+                                "url": "https://www.wikidata.org/wiki/Q64116"
+                            },
+                            {
+                                "value": "Rye"
+                            }
+                        ],
+                        "org": [
+                            {
+                                "value": "Library"
+                            }
+                        ],
+                        "per": [
+                            {
+                                "value": "Peter Mussett"
+                            },
+                            {
+                                "value": "Lorna Sharpe"
+                            },
+                            {
+                                "value": "Helen"
+                            }
+                        ],
+                        "misc": [
+                            {
+                                "value": "Wizard of Oz"
+                            },
+                            {
+                                "value": "Wizard of Oz",
+                                "url": "https://www.wikidata.org/wiki/Q130295"
+                            }
+                        ]
+                    },
+                    "subjects": [
+                        "Entertainment",
+                        "Civic building",
+                        "Interior",
+                        "Animal",
+                        "Man",
+                        "Stairs",
+                        "Woman"
+                    ]
+                }
+            }
+        },
+        {
+            "@template": {
+                "details": {
+                    "copiesInformation": [
+                        "1"
+                    ],
+                    "description": "adjacent to London Rd near Rye Mill, looking W",
+                    "level": "item",
+                    "primaryIdentifier": "swop-2595",
+                    "summaryTitle": "Looking W from near Rye Mill, a view of the Rye and the River Wye flowing adjacent to London Rd. The Rye, High Wycombe. Jan 1984",
+                    "title": "Looking W from near Rye Mill, a view of the Rye and the River Wye flowing adjacent to London Rd. The Rye, High Wycombe. Jan 1984",
+                    "descriptionView": "adjacent to London Rd near Rye Mill, looking W",
+                    "descriptionPlace": "A view of the R. Wye adjacent to London Rd. The children's playground on the Rye is seen S of the river and beyond the Health Centre. In the background centre, Wycombe General Hospital and Tom Burt's Hill behind. Possible photographer Peter Hazzard.",
+                    "summary": "Looking W from near Rye Mill, a view of the Rye and the River Wye flowing adjacent to London Rd. The Rye, High Wycombe. Jan 1984",
+                    "uuid": "c89f46d7-09ac-3309-bf38-ff640727f9dc",
+                    "creationDateTo": "1984",
+                    "creationDateFrom": "1984",
+                    "creationDate": "1.1984",
+                    "collection": "SWOP",
+                    "collectionId": "swop-0",
+                    "format": "Photo Print",
+                    "ciimId": "swop-2595",
+                    "group": "community",
+                    "groupArray": {
+                        "value": "community"
+                    },
+                    "status": "publish",
+                    "repository": "High Wycombe Society",
+                    "enrichment": {
+                        "date": [
+                            {
+                                "from": "1984",
+                                "to": "1984",
+                                "value": "Jan 1984"
+                            }
+                        ],
+                        "loc": [
+                            {
+                                "value": "Rye Mill"
+                            },
+                            {
+                                "value": "Rye"
+                            },
+                            {
+                                "value": "River Wye",
+                                "url": "https://www.wikidata.org/wiki/Q19695"
+                            },
+                            {
+                                "value": "London Rd"
+                            },
+                            {
+                                "value": "The Rye"
+                            },
+                            {
+                                "value": "High Wycombe",
+                                "url": "https://www.wikidata.org/wiki/Q64116"
+                            },
+                            {
+                                "value": "R. Wye"
+                            },
+                            {
+                                "value": "Health Centre"
+                            },
+                            {
+                                "value": "Wycombe General Hospital",
+                                "url": "https://www.wikidata.org/wiki/Q8039641"
+                            },
+                            {
+                                "value": "Hill"
+                            }
+                        ],
+                        "per": [
+                            {
+                                "value": "Tom Burt"
+                            },
+                            {
+                                "value": "Peter Hazzard"
+                            }
+                        ]
+                    },
+                    "subjects": [
+                        "Landscape",
+                        "Child",
+                        "Hospital",
+                        "Man",
+                        "Motor vehicle",
+                        "River/stream",
+                        "Street lighting"
+                    ]
+                }
+            }
+        },
+        {
+            "@template": {
+                "details": {
+                    "copiesInformation": [
+                        "1"
+                    ],
+                    "creator": "Venn, J. H.",
+                    "description": "E. with Dyke on left",
+                    "level": "item",
+                    "primaryIdentifier": "swop-1259",
+                    "summaryTitle": "Looking W, the Dyke along the left of a view of the S. side of the Rye, High Wycombe. July 1990",
+                    "title": "Looking W, the Dyke along the left of a view of the S. side of the Rye, High Wycombe. July 1990",
+                    "descriptionView": "E. with Dyke on left",
+                    "descriptionPlace": "Dyke and path alongside, grass, crane in background",
+                    "summary": "Looking W, the Dyke along the left of a view of the S. side of the Rye, High Wycombe. July 1990",
+                    "uuid": "7a1e8c35-88d1-323c-a9d6-4132a4883a02",
+                    "creationDateTo": "1990",
+                    "creationDateFrom": "1990",
+                    "creationDate": "13.7.1990",
+                    "collection": "SWOP",
+                    "collectionId": "swop-0",
+                    "format": "Photo Print",
+                    "ciimId": "swop-1259",
+                    "group": "community",
+                    "groupArray": {
+                        "value": "community"
+                    },
+                    "status": "publish",
+                    "repository": "High Wycombe Library",
+                    "enrichment": {
+                        "date": [
+                            {
+                                "from": "1990",
+                                "to": "1990",
+                                "value": "July 1990"
+                            }
+                        ],
+                        "loc": [
+                            {
+                                "value": "Dyke"
+                            },
+                            {
+                                "value": "Rye"
+                            },
+                            {
+                                "value": "High Wycombe",
+                                "url": "https://www.wikidata.org/wiki/Q64116"
+                            }
+                        ]
+                    },
+                    "subjects": [
+                        "Landscape",
+                        "Man",
+                        "River/stream",
+                        "Tree"
+                    ]
+                }
+            }
+        },
+        {
+            "@template": {
+                "details": {
+                    "copiesInformation": [
+                        "1"
+                    ],
+                    "description": "above the Grotto at E end of the Dyke, on Wendover Way, looking NW",
+                    "level": "item",
+                    "primaryIdentifier": "swop-2585",
+                    "summaryTitle": "Looking NW, a view of two women and three children walking down steps by the Waterfall at the E end of the Dyke, the Rye, High Wycombe. c 1970",
+                    "title": "Looking NW, a view of two women and three children walking down steps by the Waterfall at the E end of the Dyke, the Rye, High Wycombe. c 1970",
+                    "descriptionView": "above the Grotto at E end of the Dyke, on Wendover Way, looking NW",
+                    "descriptionPlace": "Two women and three children walk down steps next to the Waterfall at the E. end of the Dyke. Another child, top left, is seen on the path S. of the Dyke, Wendover Way. With the Grotto, the Waterfall is said to be part of the landscaping of Wycombe Abbey grounds by Capability Brown in 1762-63.",
+                    "summary": "Looking NW, a view of two women and three children walking down steps by the Waterfall at the E end of the Dyke, the Rye, High Wycombe. c 1970",
+                    "uuid": "1a1d275d-92a4-3d3a-8eb6-6f9696445244",
+                    "creationDateTo": "1975",
+                    "creationDateFrom": "1965",
+                    "creationDate": "about 1970",
+                    "collection": "SWOP",
+                    "collectionId": "swop-0",
+                    "format": "Photo Print",
+                    "ciimId": "swop-2585",
+                    "group": "community",
+                    "groupArray": {
+                        "value": "community"
+                    },
+                    "status": "publish",
+                    "repository": "High Wycombe Society",
+                    "enrichment": {
+                        "date": [
+                            {
+                                "from": "1970",
+                                "to": "1970",
+                                "value": "1970"
+                            },
+                            {
+                                "from": "1762",
+                                "to": "1763",
+                                "value": "1762-63"
+                            }
+                        ],
+                        "loc": [
+                            {
+                                "value": "Waterfall",
+                                "url": "https://www.wikidata.org/wiki/Q34038"
+                            },
+                            {
+                                "value": "Dyke"
+                            },
+                            {
+                                "value": "Rye"
+                            },
+                            {
+                                "value": "High Wycombe",
+                                "url": "https://www.wikidata.org/wiki/Q64116"
+                            },
+                            {
+                                "value": "Wendover",
+                                "url": "https://www.wikidata.org/wiki/Q2569184"
+                            },
+                            {
+                                "value": "Grotto"
+                            }
+                        ],
+                        "org": [
+                            {
+                                "value": "Wycombe",
+                                "url": "https://www.wikidata.org/wiki/Q64116"
+                            }
+                        ],
+                        "per": [
+                            {
+                                "value": "Capability Brown",
+                                "url": "https://www.wikidata.org/wiki/Q454635"
+                            }
+                        ]
+                    },
+                    "subjects": [
+                        "Landscape",
+                        "Child",
+                        "River/stream",
+                        "Tree",
+                        "Woman"
+                    ]
+                }
+            }
+        },
+        {
+            "@template": {
+                "details": {
+                    "copiesInformation": [
+                        "1"
+                    ],
+                    "description": "W, along N side of Rye adjacent to London Rd, at junction with Harlow Rd.",
+                    "level": "item",
+                    "primaryIdentifier": "swop-2588",
+                    "summaryTitle": "Looking E, along N side of Rye with London Rd, near junction with Harlow Rd, a view of the children's paddling pool, The Rye, High Wycombe. January 1984",
+                    "title": "Looking E, along N side of Rye with London Rd, near junction with Harlow Rd, a view of the children's paddling pool, The Rye, High Wycombe. January 1984",
+                    "descriptionView": "W, along N side of Rye adjacent to London Rd, at junction with Harlow Rd.",
+                    "descriptionPlace": "The children's paddling pool on the Rye empty of water with the playground beyond. Behind the bank left is the R.Wye. On N. side of London Rd., left St. Bernards Court and the junction with Harlow Rd. Centre the sign for the Nags Head public house, 63 London Rd. Possible photographer Peter Hazzard.",
+                    "summary": "Looking E, along N side of Rye with London Rd, near junction with Harlow Rd, a view of the children's paddling pool, The Rye, High Wycombe. January 1984",
+                    "uuid": "0e2c515c-e40b-3a8e-8491-2a59fc2f7fd6",
+                    "creationDateTo": "1984",
+                    "creationDateFrom": "1984",
+                    "creationDate": "1.1984",
+                    "collection": "SWOP",
+                    "collectionId": "swop-0",
+                    "format": "Photo Print",
+                    "ciimId": "swop-2588",
+                    "group": "community",
+                    "groupArray": {
+                        "value": "community"
+                    },
+                    "status": "publish",
+                    "repository": "High Wycombe Society",
+                    "enrichment": {
+                        "date": [
+                            {
+                                "from": "1984",
+                                "to": "1984",
+                                "value": "January 1984"
+                            }
+                        ],
+                        "loc": [
+                            {
+                                "value": "Rye"
+                            },
+                            {
+                                "value": "London Rd"
+                            },
+                            {
+                                "value": "Harlow Rd"
+                            },
+                            {
+                                "value": "The Rye"
+                            },
+                            {
+                                "value": "High Wycombe",
+                                "url": "https://www.wikidata.org/wiki/Q64116"
+                            },
+                            {
+                                "value": "St. Bernards Court"
+                            },
+                            {
+                                "value": "Nags"
+                            }
+                        ],
+                        "org": [
+                            {
+                                "value": "R.Wye"
+                            }
+                        ],
+                        "per": [
+                            {
+                                "value": "Peter Hazzard"
+                            }
+                        ]
+                    },
+                    "subjects": [
+                        "Landscape",
+                        "Benches/public seating",
+                        "House/cottage",
+                        "Motor vehicle",
+                        "Pub/hotel/inn",
+                        "River/stream",
+                        "Street lighting",
+                        "Tree"
+                    ]
+                }
+            }
+        },
+        {
+            "@template": {
+                "details": {
+                    "copiesInformation": [
+                        "1"
+                    ],
+                    "creator": "Goodearl, Ronald",
+                    "description": "Wendover Way, looking northwest across The Dyke",
+                    "level": "item",
+                    "primaryIdentifier": "swop-5352",
+                    "summaryTitle": "The buildings along and behind the London Rd form a background to a view across the Dyke and the Rye, High Wycombe. Circa 1960",
+                    "title": "The buildings along and behind the London Rd form a background to a view across the Dyke and the Rye, High Wycombe. Circa 1960",
+                    "descriptionView": "Wendover Way, looking northwest across The Dyke",
+                    "descriptionPlace": "View over The Dyke of The Rye, with buildings along and behind the London Rd in the background",
+                    "summary": "The buildings along and behind the London Rd form a background to a view across the Dyke and the Rye, High Wycombe. Circa 1960",
+                    "uuid": "91dbb8ae-8e1c-3934-9d78-481168eab46e",
+                    "creationDateTo": "1965",
+                    "creationDateFrom": "1955",
+                    "creationDate": "about 1960",
+                    "collection": "SWOP",
+                    "collectionId": "swop-0",
+                    "format": "Photo Print",
+                    "ciimId": "swop-5352",
+                    "group": "community",
+                    "groupArray": {
+                        "value": "community"
+                    },
+                    "status": "publish",
+                    "repository": "Bucks Free Press",
+                    "enrichment": {
+                        "date": [
+                            {
+                                "from": "1960",
+                                "to": "1960",
+                                "value": "1960"
+                            }
+                        ],
+                        "loc": [
+                            {
+                                "value": "London Rd"
+                            },
+                            {
+                                "value": "Dyke"
+                            },
+                            {
+                                "value": "Rye"
+                            },
+                            {
+                                "value": "High Wycombe",
+                                "url": "https://www.wikidata.org/wiki/Q64116"
+                            },
+                            {
+                                "value": "The Dyke of The Rye"
+                            }
+                        ]
+                    },
+                    "subjects": [
+                        "Landscape",
+                        "House/cottage",
+                        "River/stream"
+                    ]
+                }
+            }
+        },
+        {
+            "@template": {
+                "details": {
+                    "copiesInformation": [
+                        "2"
+                    ],
+                    "creator": "Goodearl, Ronald",
+                    "description": "The Rye, by the bridge adjacent to Pann mill, looking NW",
+                    "level": "item",
+                    "primaryIdentifier": "swop-4128",
+                    "summaryTitle": "View of Pann Mill and Mill House from the Rye by the bridge over the river Wye, London Rd, High Wycombe. September 1967",
+                    "title": "View of Pann Mill and Mill House from the Rye by the bridge over the river Wye, London Rd, High Wycombe. September 1967",
+                    "descriptionView": "The Rye, by the bridge adjacent to Pann mill, looking NW",
+                    "descriptionPlace": "View of Pann Mill and Mill House",
+                    "summary": "View of Pann Mill and Mill House from the Rye by the bridge over the river Wye, London Rd, High Wycombe. September 1967",
+                    "uuid": "bdcaea8e-ecd2-3b05-b085-3de1aa7ecc63",
+                    "creationDateTo": "1967",
+                    "creationDateFrom": "1967",
+                    "creationDate": "24.9.1967",
+                    "collection": "SWOP",
+                    "collectionId": "swop-0",
+                    "format": "Photo Print",
+                    "location": "London Road",
+                    "ciimId": "swop-4128",
+                    "group": "community",
+                    "groupArray": {
+                        "value": "community"
+                    },
+                    "status": "publish",
+                    "repository": "Bucks Free Press",
+                    "enrichment": {
+                        "date": [
+                            {
+                                "from": "1967",
+                                "to": "1967",
+                                "value": "September 1967"
+                            }
+                        ],
+                        "loc": [
+                            {
+                                "value": "Pann Mill"
+                            },
+                            {
+                                "value": "Mill House"
+                            },
+                            {
+                                "value": "Rye"
+                            },
+                            {
+                                "value": "Wye",
+                                "url": "https://www.wikidata.org/wiki/Q19695"
+                            },
+                            {
+                                "value": "London Rd"
+                            },
+                            {
+                                "value": "High Wycombe",
+                                "url": "https://www.wikidata.org/wiki/Q64116"
+                            }
+                        ]
+                    },
+                    "subjects": [
+                        "Domestic building",
+                        "Mill",
+                        "Bridge",
+                        "River/stream"
+                    ]
+                }
+            }
+        },
+        {
+            "@template": {
+                "details": {
+                    "copiesInformation": [
+                        "1"
+                    ],
+                    "creator": "Goodearl, Ronald",
+                    "description": "The Rye, looking west",
+                    "level": "item",
+                    "primaryIdentifier": "swop-4119",
+                    "summaryTitle": "View of the Rye, the river Wye, and Pann Mill, looking west along London Rd, High Wycombe. October 1964",
+                    "title": "View of the Rye, the river Wye, and Pann Mill, looking west along London Rd, High Wycombe. October 1964",
+                    "descriptionView": "The Rye, looking west",
+                    "descriptionPlace": "View of the Rye, the river Wye, and Pann Mill",
+                    "summary": "View of the Rye, the river Wye, and Pann Mill, looking west along London Rd, High Wycombe. October 1964",
+                    "uuid": "17eba511-3ad5-3a43-b407-ad5c211fc0a5",
+                    "creationDateTo": "1964",
+                    "creationDateFrom": "1964",
+                    "creationDate": "23.10.1964",
+                    "collection": "SWOP",
+                    "collectionId": "swop-0",
+                    "format": "Photo Print",
+                    "location": "London Road",
+                    "ciimId": "swop-4119",
+                    "group": "community",
+                    "groupArray": {
+                        "value": "community"
+                    },
+                    "status": "publish",
+                    "repository": "Bucks Free Press",
+                    "enrichment": {
+                        "date": [
+                            {
+                                "from": "1964",
+                                "to": "1964",
+                                "value": "October 1964"
+                            }
+                        ],
+                        "loc": [
+                            {
+                                "value": "Rye"
+                            },
+                            {
+                                "value": "Wye",
+                                "url": "https://www.wikidata.org/wiki/Q19695"
+                            },
+                            {
+                                "value": "Pann Mill"
+                            },
+                            {
+                                "value": "London Rd"
+                            },
+                            {
+                                "value": "High Wycombe",
+                                "url": "https://www.wikidata.org/wiki/Q64116"
+                            }
+                        ]
+                    },
+                    "subjects": [
+                        "Mill",
+                        "Landscape",
+                        "Animal",
+                        "Garden",
+                        "Man",
+                        "River/stream",
+                        "Woman"
+                    ]
+                }
+            }
+        },
+        {
+            "@template": {
+                "details": {
+                    "copiesInformation": [
+                        "2"
+                    ],
+                    "creator": "Goodearl, Ronald",
+                    "description": "The Rye, looking west",
+                    "level": "item",
+                    "primaryIdentifier": "swop-4114",
+                    "summaryTitle": "As seen from the Rye looking west, a view of the houses East of Harlow Rd. London Road, High Wycombe. 1905",
+                    "title": "As seen from the Rye looking west, a view of the houses East of Harlow Rd. London Road, High Wycombe. 1905",
+                    "descriptionView": "The Rye, looking west",
+                    "summary": "As seen from the Rye looking west, a view of the houses East of Harlow Rd. London Road, High Wycombe. 1905",
+                    "uuid": "787eabef-2e56-3b10-b807-94e88739632e",
+                    "creationDateTo": "1905",
+                    "creationDateFrom": "1905",
+                    "creationDate": "1905",
+                    "collection": "SWOP",
+                    "collectionId": "swop-0",
+                    "format": "Photo Print",
+                    "location": "London Road",
+                    "ciimId": "swop-4114",
+                    "group": "community",
+                    "groupArray": {
+                        "value": "community"
+                    },
+                    "status": "publish",
+                    "repository": "Bucks Free Press",
+                    "enrichment": {
+                        "date": [
+                            {
+                                "from": "1905",
+                                "to": "1905",
+                                "value": "1905"
+                            }
+                        ],
+                        "loc": [
+                            {
+                                "value": "Rye"
+                            },
+                            {
+                                "value": "Harlow Rd"
+                            },
+                            {
+                                "value": "London Road"
+                            },
+                            {
+                                "value": "High Wycombe",
+                                "url": "https://www.wikidata.org/wiki/Q64116"
+                            },
+                            {
+                                "value": "The Rye"
+                            }
+                        ]
+                    },
+                    "subjects": [
+                        "Streetscape",
+                        "Cart/carriage",
+                        "Man",
+                        "River/stream",
+                        "Street lighting",
+                        "Telegraph pole"
+                    ]
+                }
+            }
+        }
+    ],
+    "errors": [],
+    "aggregations": [
+        {
+            "name": "community",
+            "entries": [
+                {
+                    "value": "SWOP",
+                    "doc_count": 456
+                }
+            ],
+            "total": 0,
+            "other": 0
+        },
+        {
+            "name": "enrichmentLoc",
+            "entries": [
+                {
+                    "value": "Rye",
+                    "doc_count": 456
+                },
+                {
+                    "value": "High Wycombe",
+                    "doc_count": 455
+                },
+                {
+                    "value": "London Rd",
+                    "doc_count": 50
+                },
+                {
+                    "value": "Holywell Mead",
+                    "doc_count": 42
+                },
+                {
+                    "value": "Dyke",
+                    "doc_count": 37
+                },
+                {
+                    "value": "London Road",
+                    "doc_count": 33
+                },
+                {
+                    "value": "Wye",
+                    "doc_count": 33
+                },
+                {
+                    "value": "Health Centre",
+                    "doc_count": 32
+                },
+                {
+                    "value": "Pann Mill",
+                    "doc_count": 27
+                },
+                {
+                    "value": "The Rye",
+                    "doc_count": 27
+                },
+                {
+                    "value": "Bucks",
+                    "doc_count": 17
+                },
+                {
+                    "value": "Trinity Church",
+                    "doc_count": 17
+                },
+                {
+                    "value": "River Wye",
+                    "doc_count": 15
+                },
+                {
+                    "value": "High St",
+                    "doc_count": 14
+                },
+                {
+                    "value": "Berks",
+                    "doc_count": 12
+                },
+                {
+                    "value": "Easton St",
+                    "doc_count": 12
+                },
+                {
+                    "value": "Oxfordshire",
+                    "doc_count": 12
+                },
+                {
+                    "value": "Wendover Way",
+                    "doc_count": 11
+                },
+                {
+                    "value": "Wendover",
+                    "doc_count": 10
+                },
+                {
+                    "value": "Swimming Pool",
+                    "doc_count": 9
+                }
+            ],
+            "total": 0,
+            "other": 0
+        },
+        {
+            "name": "enrichmentMisc",
+            "entries": [
+                {
+                    "value": "Wycombe Show",
+                    "doc_count": 125
+                },
+                {
+                    "value": "Show",
+                    "doc_count": 97
+                },
+                {
+                    "value": "Three Counties Sports for the Deaf and Dumb",
+                    "doc_count": 12
+                },
+                {
+                    "value": "Charter Fair",
+                    "doc_count": 9
+                },
+                {
+                    "value": "Festival of Britain Sports",
+                    "doc_count": 9
+                },
+                {
+                    "value": "Wycombe",
+                    "doc_count": 8
+                },
+                {
+                    "value": "King George Vth Jubilee Celebration Parade",
+                    "doc_count": 7
+                },
+                {
+                    "value": "N",
+                    "doc_count": 7
+                },
+                {
+                    "value": "Spring",
+                    "doc_count": 6
+                },
+                {
+                    "value": "Fair",
+                    "doc_count": 5
+                },
+                {
+                    "value": "Friesian",
+                    "doc_count": 5
+                },
+                {
+                    "value": "Ring at Wycombe Show",
+                    "doc_count": 4
+                },
+                {
+                    "value": "Wendover",
+                    "doc_count": 4
+                },
+                {
+                    "value": "Punch and Judy",
+                    "doc_count": 3
+                },
+                {
+                    "value": "Roman",
+                    "doc_count": 3
+                },
+                {
+                    "value": "Rye",
+                    "doc_count": 3
+                },
+                {
+                    "value": "Sports",
+                    "doc_count": 3
+                },
+                {
+                    "value": "A40",
+                    "doc_count": 2
+                },
+                {
+                    "value": "Guides",
+                    "doc_count": 2
+                },
+                {
+                    "value": "Home Lad",
+                    "doc_count": 2
+                }
+            ],
+            "total": 0,
+            "other": 0
+        },
+        {
+            "name": "enrichmentOrg",
+            "entries": [
+                {
+                    "value": "High Wycombe and District Infantile Paralysis Fellowship",
+                    "doc_count": 17
+                },
+                {
+                    "value": "Infantile Paralysis Fellowship",
+                    "doc_count": 17
+                },
+                {
+                    "value": "Berkshire",
+                    "doc_count": 12
+                },
+                {
+                    "value": "Wycombe",
+                    "doc_count": 11
+                },
+                {
+                    "value": "High Wycombe Cycling Club",
+                    "doc_count": 9
+                },
+                {
+                    "value": "High Wycombe Ladies Athletic Club",
+                    "doc_count": 9
+                },
+                {
+                    "value": "Wycombe Phoenix Harriers",
+                    "doc_count": 9
+                },
+                {
+                    "value": "Bucks St John Ambulance Brigade",
+                    "doc_count": 8
+                },
+                {
+                    "value": "HW",
+                    "doc_count": 7
+                },
+                {
+                    "value": "British Red Cross Society",
+                    "doc_count": 6
+                },
+                {
+                    "value": "High Wycombe Society",
+                    "doc_count": 6
+                },
+                {
+                    "value": "Red Cross",
+                    "doc_count": 6
+                },
+                {
+                    "value": "Army",
+                    "doc_count": 5
+                },
+                {
+                    "value": "Bucks Branch",
+                    "doc_count": 5
+                },
+                {
+                    "value": "High Wycombe Swimming Club",
+                    "doc_count": 5
+                },
+                {
+                    "value": "High Wycombe and District Hard of Hearing Club",
+                    "doc_count": 4
+                },
+                {
+                    "value": "No 24 Missile Regiment",
+                    "doc_count": 4
+                },
+                {
+                    "value": "Royal Artillery",
+                    "doc_count": 4
+                },
+                {
+                    "value": "St John Ambulance Brigade",
+                    "doc_count": 4
+                },
+                {
+                    "value": "Amateur Swimming Association",
+                    "doc_count": 3
+                }
+            ],
+            "total": 0,
+            "other": 0
+        },
+        {
+            "name": "enrichmentPer",
+            "entries": [
+                {
+                    "value": "Curzon",
+                    "doc_count": 8
+                },
+                {
+                    "value": "L.G.Ross",
+                    "doc_count": 4
+                },
+                {
+                    "value": "T.R.P.Warren",
+                    "doc_count": 4
+                },
+                {
+                    "value": "Albert Osborne",
+                    "doc_count": 3
+                },
+                {
+                    "value": "Ernest Turner",
+                    "doc_count": 3
+                },
+                {
+                    "value": "Fry",
+                    "doc_count": 3
+                },
+                {
+                    "value": "Henley",
+                    "doc_count": 3
+                },
+                {
+                    "value": "Marlow",
+                    "doc_count": 3
+                },
+                {
+                    "value": "Christine Tamburri",
+                    "doc_count": 2
+                },
+                {
+                    "value": "D.Rich",
+                    "doc_count": 2
+                },
+                {
+                    "value": "Dancer",
+                    "doc_count": 2
+                },
+                {
+                    "value": "F. Eldridge",
+                    "doc_count": 2
+                },
+                {
+                    "value": "G. Cox",
+                    "doc_count": 2
+                },
+                {
+                    "value": "Hearne",
+                    "doc_count": 2
+                },
+                {
+                    "value": "Helen",
+                    "doc_count": 2
+                },
+                {
+                    "value": "Jim Cottrell",
+                    "doc_count": 2
+                },
+                {
+                    "value": "John Hall",
+                    "doc_count": 2
+                },
+                {
+                    "value": "Lorna Sharpe",
+                    "doc_count": 2
+                },
+                {
+                    "value": "Mealings",
+                    "doc_count": 2
+                },
+                {
+                    "value": "Nancy",
+                    "doc_count": 2
+                }
+            ],
+            "total": 0,
+            "other": 0
+        }
+    ],
+    "stats": {
+        "total": 456,
+        "results": 20,
+        "providers": 2,
+        "latency": 0.0
+    },
+    "found": false,
+    "buckets": [
+        {
+            "name": "group",
+            "entries": [
+                {
+                    "value": "community",
+                    "count": 130296
+                }
+            ],
+            "total": 130296,
+            "other": 0
+        },
+        {
+            "name": "group",
+            "entries": [
+                {
+                    "value": "record",
+                    "count": 28360273
+                },
+                {
+                    "value": "tna",
+                    "count": 21551245
+                },
+                {
+                    "value": "digitised",
+                    "count": 7771319
+                },
+                {
+                    "value": "nonTna",
+                    "count": 7439721
+                },
+                {
+                    "value": "medalCard",
+                    "count": 5481174
+                },
+                {
+                    "value": "will",
+                    "count": 1016324
+                },
+                {
+                    "value": "aggregation",
+                    "count": 498206
+                },
+                {
+                    "value": "britishWarMedal",
+                    "count": 157424
+                },
+                {
+                    "value": "navalReserve",
+                    "count": 137920
+                },
+                {
+                    "value": "creator",
+                    "count": 132487
+                },
+                {
+                    "value": "organisation",
+                    "count": 85280
+                },
+                {
+                    "value": "image",
+                    "count": 72113
+                },
+                {
+                    "value": "business",
+                    "count": 30737
+                },
+                {
+                    "value": "person",
+                    "count": 12303
+                },
+                {
+                    "value": "manor",
+                    "count": 2352
+                },
+                {
+                    "value": "archive",
+                    "count": 2293
+                },
+                {
+                    "value": "family",
+                    "count": 1815
+                },
+                {
+                    "value": "seamenRegister",
+                    "count": 184
+                }
+            ],
+            "total": 72753170,
+            "other": 0
+        }
+    ]
+}
