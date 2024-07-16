@@ -983,8 +983,8 @@ class CatalogueSearchView(BucketsMixin, BaseFilteredSearchView):
                 aggs = aggs_rec.get("name")
                 if aggs in ENRICHMENT_AGGREGATIONS:
                     enrichment_aggs.append(aggs_rec)
-                if enrichment_aggs:
-                    kwargs.update(enrichment_aggs=enrichment_aggs)
+            if enrichment_aggs:
+                kwargs.update(enrichment_aggs=enrichment_aggs)
         return kwargs
 
     def get_api_aggregations(self) -> List[str]:
