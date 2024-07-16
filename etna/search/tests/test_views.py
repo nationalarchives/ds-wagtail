@@ -12,6 +12,7 @@ from wagtail.test.utils import WagtailTestUtils
 
 import responses
 
+from etna.ciim.constants import ENRICHMENT_AGGREGATIONS
 from etna.core.test_utils import prevent_request_warnings
 
 from ..forms import CatalogueSearchForm
@@ -701,10 +702,7 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
         chart_data_type_hidden = """<input type="hidden" name="chart_data_type" value="LOC" id="id_chart_data_type_123">"""
         self.assertContains(response, chart_data_type_hidden, count=0, status_code=200)
 
-        self.assertFalse((response.context.get("enrichment_loc_aggs")))
-        self.assertFalse((response.context.get("enrichment_per_aggs")))
-        self.assertFalse((response.context.get("enrichment_org_aggs")))
-        self.assertFalse((response.context.get("enrichment_misc_aggs")))
+        self.assertFalse((response.context.get("enrichment_aggs")))
 
     @mock.patch(
         "etna.search.templatetags.search_tags.get_random_string", return_value="123"
@@ -762,10 +760,13 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
 
         self.assertEqual(len(response.context.get("selected_filters")), 2)
 
-        self.assertTrue(len(response.context.get("enrichment_loc_aggs")))
-        self.assertTrue(len(response.context.get("enrichment_per_aggs")))
-        self.assertTrue(len(response.context.get("enrichment_org_aggs")))
-        self.assertTrue(len(response.context.get("enrichment_misc_aggs")))
+        self.assertEqual(len(response.context.get("enrichment_aggs")), 4)
+
+        for aggs in response.context.get("enrichment_aggs"):
+            self.assertTrue(
+                aggs.get("name") in ENRICHMENT_AGGREGATIONS,
+                msg="enrichment_aggs name not found",
+            )
 
 
 class CatalogueSearchLongFilterChooserAPIIntegrationTest(SearchViewTestCase):

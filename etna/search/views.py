@@ -25,6 +25,7 @@ from ..ciim.constants import (
     CHILD_AGGS_PREFIX,
     CLOSURE_CLOSED_STATUS,
     COLLECTION_ATTR_FOR_ALL_BUCKETS,
+    ENRICHMENT_AGGREGATIONS,
     LONG_AGGS_PREFIX,
     NESTED_CHECKBOX_VALUES_AGGS_NAMES_MAP,
     NESTED_CHILDREN_KEY,
@@ -977,17 +978,13 @@ class CatalogueSearchView(BucketsMixin, BaseFilteredSearchView):
 
         vis_view = self.form.cleaned_data.get("vis_view")
         if vis_view == VisViews.TAG:
+            enrichment_aggs = []
             for aggs_rec in self.api_result.aggregations:
                 aggs = aggs_rec.get("name")
-                if aggs == Aggregation.ENRICHMENT_LOC:
-                    kwargs.update(enrichment_loc_aggs=aggs_rec.get("entries", []))
-                elif aggs == Aggregation.ENRICHMENT_PER:
-                    kwargs.update(enrichment_per_aggs=aggs_rec.get("entries", []))
-                elif aggs == Aggregation.ENRICHMENT_ORG:
-                    kwargs.update(enrichment_org_aggs=aggs_rec.get("entries", []))
-                elif aggs == Aggregation.ENRICHMENT_MISC:
-                    kwargs.update(enrichment_misc_aggs=aggs_rec.get("entries", []))
-
+                if aggs in ENRICHMENT_AGGREGATIONS:
+                    enrichment_aggs.append(aggs_rec)
+                if enrichment_aggs:
+                    kwargs.update(enrichment_aggs=enrichment_aggs)
         return kwargs
 
     def get_api_aggregations(self) -> List[str]:

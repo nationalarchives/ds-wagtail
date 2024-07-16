@@ -55,13 +55,14 @@ DEFAULT_AGGREGATIONS = [
     # TODO:Rosetta + ":30",  # Fetch more 'groups' so that we receive counts for any bucket/tab options we might be showing.
 ]
 
-TAG_VIEW_AGGREGATIONS = [
-    Aggregation.COMMUNITY.value,
-    Aggregation.ENRICHMENT_LOC.value,
-    Aggregation.ENRICHMENT_PER.value,
-    Aggregation.ENRICHMENT_ORG.value,
-    Aggregation.ENRICHMENT_MISC.value,
+ENRICHMENT_AGGREGATIONS = [
+    Aggregation.ENRICHMENT_LOC,
+    Aggregation.ENRICHMENT_PER,
+    Aggregation.ENRICHMENT_ORG,
+    Aggregation.ENRICHMENT_MISC,
 ]
+
+TAG_VIEW_AGGREGATIONS = [Aggregation.COMMUNITY] + ENRICHMENT_AGGREGATIONS
 
 
 @dataclass
