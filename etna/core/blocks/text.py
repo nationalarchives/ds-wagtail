@@ -14,10 +14,6 @@ class InsetTextBlock(blocks.StructBlock):
 
 
 class WarningTextBlock(blocks.StructBlock):
-    heading = blocks.CharBlock(
-        required=False,
-        help_text="Optional heading for the warning text, for screen readers",
-    )
     body = APIRichTextBlock(features=settings.RESTRICTED_RICH_TEXT_FEATURES)
 
     class Meta:
