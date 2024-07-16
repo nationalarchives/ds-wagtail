@@ -1,9 +1,14 @@
+from django import forms
 from django.conf import settings
 from django.utils.html import format_html
+from django.utils.functional import cached_property
 
 from wagtail import blocks
+from wagtail.admin.staticfiles import versioned_static, static
+from wagtail.contrib.table_block.blocks import TableBlock, TableInput
+from wagtail.contrib.typed_table_block.blocks import TypedTableBlock
 from wagtail.snippets.blocks import SnippetChooserBlock
-from wagtail.contrib.table_block.blocks import TableBlock
+
 
 from etna.core.blocks import (
     AuthorPromotedLinkBlock,
@@ -182,6 +187,7 @@ class SubHeadingBlock(SectionDepthAwareStructBlock):
         label = "Sub-heading"
         template = "articles/blocks/sub_heading.html"
 
+
 class ContentTableBlock(SectionDepthAwareStructBlock):
     title = blocks.CharBlock(
         max_length=100,
@@ -189,11 +195,87 @@ class ContentTableBlock(SectionDepthAwareStructBlock):
         label="Title",
         required=False,
     )
-    table = TableBlock()
+    table = TypedTableBlock()
 
     class Meta:
         icon = "table"
         label = "Table"
+
+opt = {
+    "contextMenu": {
+        "items": {
+            "row_above": "row_above",
+            "row_below": "row_below",
+            "---------": "---------",
+            "col_left": "col_left",
+            "col_right": "col_right",
+            "---------": "---------",
+            "remove_row": "remove_row",
+            "remove_col": "remove_col",
+            "---------": "---------",
+            "undo": "undo",
+            "redo": "redo",
+            "---------": "---------",
+            "alignment": "alignment",
+            "option1": {
+                "name": "Option 1",
+                "disabled": False,
+                "icon": "copy",
+            },
+            "cells": {
+                'className': 'bold',
+            }
+        }
+    }
+}
+
+
+new_table_options = {
+    "contextMenu": [
+        "row_above",
+        "row_below",
+        "---------",
+        "col_left",
+        "col_right",
+        "---------",
+        "remove_row",
+        "remove_col",
+        "---------",
+        "undo",
+        "redo",
+        "---------",
+        "alignment",
+        "test",
+    ]
+}
+
+
+class CustomTableInput(TableInput):
+    @cached_property
+    def media(self):
+        return forms.Media(
+            css={
+                "all": [
+                    versioned_static(
+                        "table_block/css/vendor/handsontable-6.2.2.full.min.css"
+                    ),
+                ]
+            },
+            js=[
+                versioned_static(
+                    "table_block/js/vendor/handsontable-6.2.2.full.min.js"
+                ),
+                static("scripts/custom_table_block.js"),
+            ],
+        )
+
+
+class CustomTableBlock(TableBlock):
+    @cached_property
+    def field(self):
+        return forms.CharField(
+            widget=CustomTableInput(table_options=self.table_options), **self.field_options
+        )
 
 
 class SectionContentBlock(blocks.StreamBlock):
@@ -206,8 +288,13 @@ class SectionContentBlock(blocks.StreamBlock):
     promoted_item = PromotedItemBlock()
     promoted_list = PromotedListBlock()
     record_links = RecordLinksBlock()
-    table = ContentTableBlock()
-
+    # table = TypedTableBlock([
+    #     ('text', blocks.CharBlock(required=False)),
+    #     ('numeric', blocks.FloatBlock(required=False)),
+    #     ('rich_text', blocks.RichTextBlock(required=False)),
+    # ])
+    def_table = CustomTableBlock()
+    
 
 class ContentSectionBlock(SectionDepthAwareStructBlock):
     heading = blocks.CharBlock(max_length=100, label="Heading")
