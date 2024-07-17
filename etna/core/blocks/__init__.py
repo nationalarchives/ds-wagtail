@@ -20,6 +20,7 @@ from .promoted_links import (
 )
 from .quote import QuoteBlock
 from .section import SectionBlock, SubHeadingBlock
+from .tables import ContentTableBlock
 from .text import InsetTextBlock, WarningTextBlock
 from .video import YouTubeBlock
 
@@ -29,6 +30,7 @@ __all__ = [
     "ButtonBlock",
     "CallToActionBlock",
     "ContentImageBlock",
+    "ContentTableBlock",
     "DocumentsBlock",
     "DoDontListBlock",
     "FeaturedRecordArticleBlock",
