@@ -25,7 +25,7 @@ from ..records.blocks import RecordLinksBlock
 
 
 class SectionContentBlock(blocks.StreamBlock):
-    accordion = AccordionsBlock()
+    accordions = AccordionsBlock()
     button = ButtonBlock()
     call_to_action = CallToActionBlock()
     document = DocumentsBlock()

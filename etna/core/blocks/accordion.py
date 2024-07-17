@@ -16,12 +16,12 @@ class AccordionContentBlock(blocks.StreamBlock):
 
     class Meta:
         icon = "list-ul"
-        label = "Accordion Body"
+        label = "Body"
 
 
 class AccordionBlock(blocks.StructBlock):
     title = blocks.CharBlock(required=True)
-    body = AccordionContentBlock(max_num=1)
+    body = AccordionContentBlock()
 
     class Meta:
         icon = "list-ul"
@@ -29,4 +29,4 @@ class AccordionBlock(blocks.StructBlock):
 
 
 class AccordionsBlock(blocks.StructBlock):
-    accordion = blocks.ListBlock(AccordionBlock())
+    items = blocks.ListBlock(AccordionBlock())
