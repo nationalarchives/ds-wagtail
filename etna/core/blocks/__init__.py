@@ -7,7 +7,7 @@ from .featured_content import (
     FeaturedRecordArticleBlock,
     RelatedItemBlock,
 )
-from .image import ContentImageBlock, ImageBlock, NoCaptionImageBlock
+from .image import ContentImageBlock, ImageBlock, ImageGalleryBlock, NoCaptionImageBlock
 from .lists import DoDontListBlock
 from .page_chooser import APIPageChooserBlock
 from .page_list import PageListBlock
@@ -38,6 +38,7 @@ __all__ = [
     "FeaturedRecordArticleBlock",
     "FeaturedCollectionBlock",
     "ImageBlock",
+    "ImageGalleryBlock",
     "InsetTextBlock",
     "NoCaptionImageBlock",
     "PageListBlock",
