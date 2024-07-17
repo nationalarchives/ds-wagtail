@@ -68,6 +68,7 @@ INSTALLED_APPS = [
     "etna.whatson",
     "wagtail.contrib.forms",
     "wagtail.contrib.redirects",
+    "wagtail.contrib.table_block",
     "wagtail.embeds",
     "wagtail.sites",
     "wagtail.users",
@@ -304,6 +305,8 @@ WAGTAILSEARCH_BACKENDS = {
         "BACKEND": "wagtail.search.backends.database",
     }
 }
+
+WAGTAILDOCS_DOCUMENT_MODEL = "core.CustomDocument"
 
 WAGTAILIMAGES_IMAGE_MODEL = "images.CustomImage"
 
