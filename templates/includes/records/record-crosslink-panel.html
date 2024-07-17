@@ -1,8 +1,8 @@
 {% load records_tags %}
 
 <div class="crosslink-panel" id="analytics-record-access">
-    {% if delivery_option.heading  %}
-        <h3 class="tna-heading-m">{{delivery_option.heading | safe }} </h3>
+    {% if delivery_option.heading %}
+        <h3 class="tna-heading-m">{{ delivery_option.heading | safe }} </h3>
     {% endif %}
     
     {% if delivery_option.description %}
@@ -35,12 +35,5 @@
     <p></p>
         {{delivery_option.basketlimit | safe }}
     {% endif %}
-    
-    {% comment 'display the index of the delivery option for debugging' %}
-        <p>{{ delivery_option.debug1 }}</p>
-        <p>{{ delivery_option.debug2 }}</p>
-    {% endcomment %}
-
-    <p>{{ delivery_option.debug1 }}</p>
 
 </div>

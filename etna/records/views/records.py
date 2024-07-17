@@ -11,7 +11,10 @@ from etna.ciim.constants import TNA_URLS
 from etna.ciim.exceptions import DoesNotExist
 from etna.ciim.paginator import APIPaginator
 from etna.records.api import records_client, delivery_options_client
-from etna.records.delivery_options import construct_delivery_options, AvailabiltyCondition
+from etna.records.delivery_options import (
+    construct_delivery_options,
+    AvailabilityCondition,
+)
 
 SEARCH_URL_RETAIN_DELTA = timezone.timedelta(hours=48)
 
@@ -116,7 +119,16 @@ def record_detail_view(request, iaid):
         do_ctx = construct_delivery_options(delivery_options, record)
     except Exception as e:
         # Built in order exception option
-        do_ctx = construct_delivery_options([{"options": AvailabiltyCondition.OrderException, "surrogateLinks":[], "advancedOrderUrlParameters":""}], record)
+        do_ctx = construct_delivery_options(
+            [
+                {
+                    "options": AvailabilityCondition.OrderException,
+                    "surrogateLinks": [],
+                    "advancedOrderUrlParameters": "",
+                }
+            ],
+            record,
+        )
 
     context.update(
         record=record,

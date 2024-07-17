@@ -5,6 +5,7 @@ from etna.search.delivery_options_api import DeliveryOptionsAPI
 
 """ Search records API """
 
+
 def get_records_client():
     return ClientAPI(
         base_url=settings.CLIENT_BASE_URL,
@@ -16,6 +17,7 @@ def get_records_client():
 records_client = get_records_client()
 
 """ Delivery Options records API """
+
 
 def get_delivery_options_client():
     return DeliveryOptionsAPI(
