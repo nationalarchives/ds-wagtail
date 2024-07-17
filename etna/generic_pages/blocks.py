@@ -1,6 +1,7 @@
 from wagtail import blocks
 
 from etna.core.blocks import (
+    AccordionsBlock,
     ButtonBlock,
     CallToActionBlock,
     ContentImageBlock,
@@ -25,6 +26,7 @@ from ..records.blocks import RecordLinksBlock
 
 
 class SectionContentBlock(blocks.StreamBlock):
+    accordions = AccordionsBlock()
     button = ButtonBlock()
     call_to_action = CallToActionBlock()
     document = DocumentsBlock()

@@ -1,3 +1,4 @@
+from .accordion import AccordionsBlock
 from .base import SectionDepthAwareStructBlock
 from .cta import ButtonBlock, CallToActionBlock, LargeCardLinksBlock
 from .document import DocumentsBlock
@@ -25,6 +26,7 @@ from .text import InsetTextBlock, WarningTextBlock
 from .video import YouTubeBlock
 
 __all__ = [
+    "AccordionsBlock",
     "APIPageChooserBlock",
     "AuthorPromotedPagesBlock",
     "ButtonBlock",
