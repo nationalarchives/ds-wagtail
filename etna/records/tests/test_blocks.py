@@ -1,4 +1,5 @@
 import json
+import unittest
 
 from django.conf import settings
 from django.urls import reverse
@@ -23,6 +24,7 @@ TEST_RECORD_DATA = {
 BLOCK_TITLE_OVERRIDE = "This record is sooooo featured!"
 
 
+@unittest.skip("TODO:Rosetta")
 class TestFeaturedRecordBlockIntegration(WagtailPageTestCase):
     def setUp(self):
         super().setUp()

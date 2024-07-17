@@ -50,13 +50,14 @@ class DynamicMultipleChoiceField(forms.MultipleChoiceField):
         return {value: label for value, label in self.configured_choices}
 
     def choice_label_from_api_data(self, data: Dict[str, Union[str, int]]) -> str:
-        count = f"{data['doc_count']:,}"
+        count = f"{data['docCount']:,}"
         try:
             # Use a label from the configured choice values, if available
-            return f"{self.configured_choice_labels[data['key']]} ({count})"
+            return f"{self.configured_choice_labels[data['value']]} ({count})"
         except KeyError:
+            # TODO:Rosetta check if required
             # Fall back to using the key value (which is the same in most cases)
-            return f"{data['key']} ({count})"
+            return f"{data['value']} ({count})"
 
     def update_choices(
         self,
@@ -83,8 +84,8 @@ class DynamicMultipleChoiceField(forms.MultipleChoiceField):
         choice_vals_with_hits = set()
         choices = []
         for item in choice_data:
-            choices.append((item["key"], self.choice_label_from_api_data(item)))
-            choice_vals_with_hits.add(item["key"])
+            choices.append((item["value"], self.choice_label_from_api_data(item)))
+            choice_vals_with_hits.add(item["value"])
 
         for missing_value in [
             v for v in selected_values if v not in choice_vals_with_hits
