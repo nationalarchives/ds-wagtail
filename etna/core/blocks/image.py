@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.forms.utils import ErrorList
 from django.utils.safestring import mark_safe
 
@@ -165,7 +166,9 @@ class ContentImageBlock(blocks.StructBlock):
 
 class ImageGalleryBlock(blocks.StructBlock):
     title = blocks.CharBlock(required=False)
-    description = APIRichTextBlock(required=False)
+    description = APIRichTextBlock(
+        required=False, features=settings.INLINE_RICH_TEXT_FEATURES
+    )
     images = blocks.ListBlock(ContentImageBlock())
 
     def get_api_representation(self, value, context=None):
