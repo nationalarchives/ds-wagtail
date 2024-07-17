@@ -4,6 +4,7 @@ from etna.core.blocks import (
     ButtonBlock,
     CallToActionBlock,
     ContentImageBlock,
+    ContentTableBlock,
     DocumentsBlock,
     DoDontListBlock,
     FeaturedRecordArticleBlock,
@@ -15,6 +16,7 @@ from etna.core.blocks import (
     SectionDepthAwareStructBlock,
     SubHeadingBlock,
     WarningTextBlock,
+    YouTubeBlock,
 )
 
 from ..media.blocks import MediaBlock
@@ -36,7 +38,9 @@ class SectionContentBlock(blocks.StreamBlock):
     quote = QuoteBlock()
     record_links = RecordLinksBlock()
     sub_heading = SubHeadingBlock()
+    table = ContentTableBlock()
     warning_text = WarningTextBlock()
+    youtube_video = YouTubeBlock()
 
 
 class ContentSectionBlock(SectionDepthAwareStructBlock):
