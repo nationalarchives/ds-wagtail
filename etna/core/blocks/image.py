@@ -161,3 +161,18 @@ class ContentImageBlock(blocks.StructBlock):
         icon = "image"
         form_template = "form_templates/default-form-with-safe-label.html"
         value_class = ImageOrientationValue
+
+
+class ImageGalleryBlock(blocks.StructBlock):
+    title = blocks.CharBlock(required=False)
+    description = APIRichTextBlock(required=False)
+    images = blocks.ListBlock(ContentImageBlock())
+
+    def get_api_representation(self, value, context=None):
+        representation = super().get_api_representation(value, context)
+        representation["count"] = len(value["images"])
+        return representation
+
+    class Meta:
+        label = "Image Gallery"
+        icon = "image"
