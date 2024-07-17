@@ -165,7 +165,7 @@ class ContentImageBlock(blocks.StructBlock):
 
 class ImageGalleryBlock(blocks.StructBlock):
     title = blocks.CharBlock(required=False)
-    description = blocks.CharBlock(required=False)
+    description = APIRichTextBlock(required=False)
     images = blocks.ListBlock(ContentImageBlock())
 
     def get_api_representation(self, value, context=None):
