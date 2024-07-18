@@ -135,7 +135,7 @@ class HubPage(HeroImageMixin, BasePageWithNonRequiredIntro):
         + HeroImageMixin.content_panels
         + [
             FieldPanel("body"),
-            InlinePanel("links", label="Link"),
+            InlinePanel("links", label="Links"),
         ]
     )
 
