@@ -10,8 +10,14 @@ from wagtail.fields import RichTextField, StreamField
 from wagtail.images import get_image_model_string
 from wagtail.models import Orderable
 
+from rest_framework import serializers
+
 from etna.core.models import BasePage
-from etna.core.serializers import DefaultPageSerializer, RichTextSerializer
+from etna.core.serializers import (
+    DefaultPageSerializer,
+    ImageSerializer,
+    RichTextSerializer,
+)
 
 from .blocks import GeneralPageStreamBlock
 
@@ -100,8 +106,21 @@ class LinkItem(Orderable):
         APIField("image"),
         APIField("description"),
         APIField("url"),
-        APIField("internal_page", serializer=DefaultPageSerializer()),
+        APIField("internal_page"),
     ]
+
+
+class LinkItemSerializer(serializers.Serializer):
+    def to_representation(self, instance):
+        if instance.internal_page:
+            return DefaultPageSerializer().to_representation(instance.internal_page)
+        else:
+            return {
+                "title": instance.title,
+                "teaser_image": ImageSerializer().to_representation(instance.image),
+                "teaser_text": instance.description,
+                "url": instance.url,
+            }
 
 
 class HubPage(BasePage):
@@ -109,4 +128,6 @@ class HubPage(BasePage):
         InlinePanel("links", label="Link"),
     ]
 
-    api_fields = BasePage.api_fields + [APIField("links")]
+    api_fields = BasePage.api_fields + [
+        APIField("links", serializer=LinkItemSerializer(many=True))
+    ]
