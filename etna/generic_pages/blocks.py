@@ -1,11 +1,15 @@
 from wagtail import blocks
 
 from etna.core.blocks import (
+    AccordionsBlock,
     ButtonBlock,
     CallToActionBlock,
     ContentImageBlock,
+    ContentTableBlock,
+    DocumentsBlock,
     DoDontListBlock,
     FeaturedRecordArticleBlock,
+    ImageGalleryBlock,
     InsetTextBlock,
     ParagraphBlock,
     PromotedItemBlock,
@@ -14,6 +18,7 @@ from etna.core.blocks import (
     SectionDepthAwareStructBlock,
     SubHeadingBlock,
     WarningTextBlock,
+    YouTubeBlock,
 )
 
 from ..media.blocks import MediaBlock
@@ -21,11 +26,14 @@ from ..records.blocks import RecordLinksBlock
 
 
 class SectionContentBlock(blocks.StreamBlock):
+    accordions = AccordionsBlock()
     button = ButtonBlock()
     call_to_action = CallToActionBlock()
+    document = DocumentsBlock()
     do_dont_list = DoDontListBlock()
     featured_record_article = FeaturedRecordArticleBlock()
     image = ContentImageBlock()
+    image_gallery = ImageGalleryBlock()
     inset_text = InsetTextBlock()
     media = MediaBlock()
     paragraph = ParagraphBlock()
@@ -34,7 +42,9 @@ class SectionContentBlock(blocks.StreamBlock):
     quote = QuoteBlock()
     record_links = RecordLinksBlock()
     sub_heading = SubHeadingBlock()
+    table = ContentTableBlock()
     warning_text = WarningTextBlock()
+    youtube_video = YouTubeBlock()
 
 
 class ContentSectionBlock(SectionDepthAwareStructBlock):
