@@ -12,7 +12,7 @@ from wagtail.models import Orderable
 
 from rest_framework import serializers
 
-from etna.core.models import BasePage
+from etna.core.models import BasePageWithNonRequiredIntro, HeroImageMixin
 from etna.core.serializers import (
     DefaultPageSerializer,
     ImageSerializer,
@@ -22,7 +22,7 @@ from etna.core.serializers import (
 from .blocks import GeneralPageStreamBlock
 
 
-class GeneralPage(BasePage):
+class GeneralPage(BasePageWithNonRequiredIntro):
     intro = RichTextField(
         verbose_name=_("introductory text"),
         help_text=_(
@@ -36,14 +36,12 @@ class GeneralPage(BasePage):
 
     body = StreamField(GeneralPageStreamBlock, blank=True, null=True)
 
-    content_panels = BasePage.content_panels + [
-        FieldPanel("intro"),
+    content_panels = BasePageWithNonRequiredIntro.content_panels + [
         FieldPanel("body"),
     ]
 
-    api_fields = BasePage.api_fields + [
+    api_fields = BasePageWithNonRequiredIntro.api_fields + [
         APIField("body"),
-        APIField("intro", serializer=RichTextSerializer()),
     ]
 
 
@@ -123,11 +121,29 @@ class LinkItemSerializer(serializers.Serializer):
             }
 
 
-class HubPage(BasePage):
-    content_panels = BasePage.content_panels + [
-        InlinePanel("links", label="Link"),
-    ]
+class HubPage(HeroImageMixin, BasePageWithNonRequiredIntro):
+    body = RichTextField(
+        verbose_name=_("body"),
+        help_text=_("The main content of the page."),
+        features=settings.INLINE_RICH_TEXT_FEATURES,
+        blank=True,
+        null=True,
+    )
 
-    api_fields = BasePage.api_fields + [
-        APIField("links", serializer=LinkItemSerializer(many=True))
-    ]
+    content_panels = (
+        BasePageWithNonRequiredIntro.content_panels
+        + HeroImageMixin.content_panels
+        + [
+            FieldPanel("body"),
+            InlinePanel("links", label="Link"),
+        ]
+    )
+
+    api_fields = (
+        BasePageWithNonRequiredIntro.api_fields
+        + HeroImageMixin.api_fields
+        + [
+            APIField("body", serializer=RichTextSerializer()),
+            APIField("links", serializer=LinkItemSerializer(many=True)),
+        ]
+    )
