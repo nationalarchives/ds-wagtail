@@ -117,8 +117,9 @@ class LinkItemSerializer(serializers.Serializer):
                 "title": instance.title,
                 "teaser_image": ImageSerializer().to_representation(instance.image),
                 "teaser_text": instance.description,
+                "url": instance.url,
                 "full_url": instance.url,
-                "type_label": "External"
+                "type_label": "External",
             }
 
 
