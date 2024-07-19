@@ -42,15 +42,15 @@
                 <div class="transcription__content {% if not item.image.transcription and not item.image.translation %}transcription__content--full-width{% endif %}">
                     <figure aria-labelledby="item-{{ forloop.counter }}-caption">
                         <picture class="transcription__figure-image">
-                            {% image item.image original format-webp as image_webp %}
+                            {% image item.image max-1024x1024 format-webp as image_webp %}
                             <source srcset="{{ image_webp.url }}"
                                     type="image/webp"
                                     {% if item.alt_text %}alt="{{ item.alt_text }}"{% endif %}/>
-                            {% image item.image original format-png as image_png %}
+                            {% image item.image max-1024x1024 format-png as image_png %}
                             <source srcset="{{ image_png.url }}"
                                     type="image/png"
                                     {% if item.alt_text %}alt="{{ item.alt_text }}"{% endif %}/>
-                            {% image item.image original as base_img %}
+                            {% image item.image max-1024x1024 as base_img %}
                             <img src="{{ base_img.url }}"
                                  class="transcription__image"
                                  loading="lazy"

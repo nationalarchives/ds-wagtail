@@ -8,9 +8,8 @@ from wagtail.admin.panels import FieldPanel, MultiFieldPanel
 from wagtail.api import APIField
 from wagtail.fields import RichTextField
 from wagtail.images import get_image_model_string
-from wagtail.images.api.fields import ImageRenditionField
 
-from etna.core.serializers import RichTextSerializer
+from etna.core.serializers import ImageSerializer, RichTextSerializer
 
 from .forms import RequiredHeroImagePageForm
 
@@ -41,6 +40,7 @@ class ContentWarningMixin(models.Model):
     )
 
     api_fields = [
+        APIField("display_content_warning"),
         APIField("custom_warning_text", serializer=RichTextSerializer()),
     ]
 
@@ -159,31 +159,14 @@ class HeroImageMixin(models.Model):
     ]
 
     api_fields = [
-        # APIField("hero_image"),
         APIField("hero_image_caption", serializer=RichTextSerializer()),
         APIField(
-            "hero_image_jpg",
-            serializer=ImageRenditionField(
-                "fill-1200x480|format-jpeg|jpegquality-60", source="hero_image"
-            ),
+            "hero_image",
+            serializer=ImageSerializer("fill-1200x480"),
         ),
         APIField(
-            "hero_image_webp",
-            serializer=ImageRenditionField(
-                "fill-1200x480|format-webp", source="hero_image"
-            ),
-        ),
-        APIField(
-            "hero_image_jpg_small",
-            serializer=ImageRenditionField(
-                "fill-600x400|format-jpeg|jpegquality-60", source="hero_image"
-            ),
-        ),
-        APIField(
-            "hero_image_webp_small",
-            serializer=ImageRenditionField(
-                "fill-600x400|format-webp", source="hero_image"
-            ),
+            "hero_image_small",
+            serializer=ImageSerializer("fill-600x400", source="hero_image"),
         ),
     ]
 
@@ -195,5 +178,3 @@ class RequiredHeroImageMixin(HeroImageMixin):
         abstract = True
 
     base_form_class = RequiredHeroImagePageForm
-
-    api_fields = HeroImageMixin.api_fields + []

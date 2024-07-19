@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.forms.utils import ErrorList
 from django.utils.safestring import mark_safe
 
@@ -7,6 +8,7 @@ from wagtail.blocks.struct_block import StructBlockValidationError
 from wagtail.images.blocks import ImageChooserBlock
 
 from etna.core.blocks.paragraph import APIRichTextBlock
+from etna.core.serializers.images import DetailedImageSerializer
 
 
 class APIImageChooserBlock(ImageChooserBlock):
@@ -21,8 +23,8 @@ class APIImageChooserBlock(ImageChooserBlock):
     when the block is used, e.g:
     image = APIImageChooserBlock(rendition_size="original")
 
-    quality also defaults to 80, and can be specified in the same way
-    as rendition_size.
+    jpeg_quality and webp_quality default to 60 and 80 respectively,
+    and can be specified in the same way as rendition_size.
     """
 
     def __init__(
@@ -31,7 +33,7 @@ class APIImageChooserBlock(ImageChooserBlock):
         help_text=None,
         rendition_size="fill-600x400",
         jpeg_quality=60,
-        webp_quality=80,
+        webp_quality=60,
         **kwargs,
     ):
         self.jpeg_quality = jpeg_quality
@@ -40,31 +42,10 @@ class APIImageChooserBlock(ImageChooserBlock):
         super().__init__(required=required, help_text=help_text, **kwargs)
 
     def get_api_representation(self, value, context=None):
-        if value:
-            jpeg_image = value.get_rendition(
-                f"{self.rendition_size}|format-jpeg|jpegquality-{self.jpeg_quality}"
-            )
-            webp_image = value.get_rendition(
-                f"{self.rendition_size}|format-webp|webpquality-{self.webp_quality}"
-            )
-
-            return {
-                "id": value.id,
-                "title": value.title,
-                "image_jpeg": {
-                    "url": jpeg_image.url,
-                    "full_url": jpeg_image.full_url,
-                    "width": jpeg_image.width,
-                    "height": jpeg_image.height,
-                },
-                "image_webp": {
-                    "url": webp_image.url,
-                    "full_url": webp_image.full_url,
-                    "width": webp_image.width,
-                    "height": webp_image.height,
-                },
-            }
-        return None
+        serializer = DetailedImageSerializer(
+            self.rendition_size, self.jpeg_quality, self.webp_quality
+        )
+        return serializer.to_representation(value)
 
 
 class ImageBlock(blocks.StructBlock):
@@ -72,7 +53,7 @@ class ImageBlock(blocks.StructBlock):
     An image block which allows editors to ensure accessibility is reflected on the page.
     """
 
-    image = APIImageChooserBlock(required=True)
+    image = APIImageChooserBlock(rendition_size="max-900x900", required=True)
     decorative = blocks.BooleanBlock(
         label=mark_safe(
             "Is this image decorative? <p class='field-title__subheading'>Tick the box if 'yes'</p>"
@@ -154,7 +135,7 @@ class ImageOrientationValue(StructValue):
 
 
 class ContentImageBlock(blocks.StructBlock):
-    image = APIImageChooserBlock(required=True)
+    image = APIImageChooserBlock(rendition_size="max-900x900", required=True)
     alt_text = blocks.CharBlock(
         max_length=100,
         label="Alternative text",
@@ -181,3 +162,20 @@ class ContentImageBlock(blocks.StructBlock):
         icon = "image"
         form_template = "form_templates/default-form-with-safe-label.html"
         value_class = ImageOrientationValue
+
+
+class ImageGalleryBlock(blocks.StructBlock):
+    title = blocks.CharBlock(required=False)
+    description = APIRichTextBlock(
+        required=False, features=settings.INLINE_RICH_TEXT_FEATURES
+    )
+    images = blocks.ListBlock(ContentImageBlock())
+
+    def get_api_representation(self, value, context=None):
+        representation = super().get_api_representation(value, context)
+        representation["count"] = len(value["images"])
+        return representation
+
+    class Meta:
+        label = "Image Gallery"
+        icon = "image"

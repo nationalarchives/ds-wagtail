@@ -10,13 +10,14 @@ from wagtail.admin.panels import FieldPanel, InlinePanel
 from wagtail.api import APIField
 from wagtail.fields import RichTextField
 from wagtail.images import get_image_model_string
-from wagtail.images.api.fields import ImageRenditionField
 from wagtail.models import Page
 
-from rest_framework import serializers
-
 from etna.core.models import BasePage
-from etna.core.serializers import LinkedPageSerializer, RichTextSerializer
+from etna.core.serializers import (
+    DefaultPageSerializer,
+    ImageSerializer,
+    RichTextSerializer,
+)
 
 
 class AuthorIndexPage(BasePage):
@@ -31,20 +32,20 @@ class AuthorIndexPage(BasePage):
 
     parent_page_types = ["home.HomePage"]
 
+    api_fields = BasePage.api_fields + [
+        APIField("author_pages", serializer=DefaultPageSerializer(many=True))
+    ]
+
     @cached_property
     def author_pages(self):
         """Return a sample of child pages for rendering in teaser."""
-        return self.get_children().type(AuthorPage).order_by("title").live().specific()
-
-
-# TODO: Make better
-class AuthorPageSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Page
-        fields = (
-            "id",
-            "title",
-            "url_path",
+        return (
+            self.get_children()
+            .type(AuthorPage)
+            .order_by("title")
+            .live()
+            .public()
+            .specific()
         )
 
 
@@ -77,6 +78,7 @@ class AuthorPage(BasePage):
     class Meta:
         verbose_name = "Author page"
         verbose_name_plural = "Author pages"
+        verbose_name_public = "author"
 
     # DataLayerMixin overrides
     gtm_content_group = "Author page"
@@ -84,24 +86,28 @@ class AuthorPage(BasePage):
     parent_page_types = ["authors.AuthorIndexPage"]
     subpage_types = []
 
+    default_api_fields = BasePage.default_api_fields + [
+        APIField("role"),
+        APIField("image", serializer=ImageSerializer(rendition_size="fill-512x512")),
+        APIField(
+            "image_small",
+            serializer=ImageSerializer(rendition_size="fill-128x128", source="image"),
+        ),
+    ]
+
     api_fields = BasePage.api_fields + [
         APIField("role"),
         APIField("summary", serializer=RichTextSerializer()),
-        APIField("image"),
         APIField(
-            "authored_focused_articles", serializer=AuthorPageSerializer(many=True)
-        ),
-        APIField(
-            "image_jpg",
-            serializer=ImageRenditionField(
-                "fill-512x512|format-jpeg|jpegquality-60", source="image"
+            "authored_focused_articles",
+            serializer=DefaultPageSerializer(
+                required_api_fields=["teaser_image"], many=True
             ),
         ),
+        APIField("image", serializer=ImageSerializer(rendition_size="fill-512x512")),
         APIField(
-            "image_small_jpg",
-            serializer=ImageRenditionField(
-                "fill-128x128|format-jpeg|jpegquality-60", source="image"
-            ),
+            "image_small",
+            serializer=ImageSerializer(rendition_size="fill-128x128", source="image"),
         ),
     ]
 
@@ -153,25 +159,6 @@ class AuthorTag(models.Model):
     )
 
 
-class AuthorSerializer(LinkedPageSerializer):
-    teaser_image_jpeg, teaser_image_webp = LinkedPageSerializer.teaser_images(
-        rendition_size="fill-400x400", jpeg_quality=60, webp_quality=80, source="image"
-    )
-    role = serializers.CharField()
-
-    class Meta:
-        model = AuthorTag
-        fields = (
-            "id",
-            "title",
-            "teaser_image_jpeg",
-            "teaser_image_webp",
-            "url",
-            "full_url",
-            "role",
-        )
-
-
 class AuthorPageMixin:
     """
     A mixin for pages that uses the ``AuthorTag`` model
@@ -204,4 +191,9 @@ class AuthorPageMixin:
         if self.authors:
             return ", ".join([author.title for author in self.authors])
 
-    api_fields = [APIField("authors", serializer=AuthorSerializer(many=True))]
+    api_fields = [
+        APIField(
+            "authors",
+            serializer=DefaultPageSerializer(required_api_fields=["image"], many=True),
+        )
+    ]

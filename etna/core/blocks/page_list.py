@@ -8,6 +8,8 @@ from wagtail.coreutils import resolve_model_string
 from wagtail.models import Page, PageBase
 from wagtail.query import PageQuerySet
 
+from .page_chooser import APIPageChooserBlock
+
 
 class PageListBlock(blocks.ListBlock):
     """
@@ -32,7 +34,10 @@ class PageListBlock(blocks.ListBlock):
         self.prefetch_related = prefetch_related
         self.exclude_drafts = exclude_drafts
         self.exclude_private = exclude_private
-        child_block = blocks.PageChooserBlock(page_type=page_types)
+        child_block = APIPageChooserBlock(
+            page_type=page_types,
+            required_api_fields=["teaser_image"],
+        )
         super().__init__(child_block, **kwargs)
 
     @cached_property

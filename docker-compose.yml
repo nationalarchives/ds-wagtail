@@ -1,5 +1,3 @@
-version: '3'
-
 services:
 
   db:
@@ -25,6 +23,7 @@ services:
       - media:/media
     depends_on:
       - db
+      - redis
     ports:
       - 8000:8080
     command: sh /app/bash/run-dev.sh
@@ -46,6 +45,7 @@ services:
       - FEATURE_BETA_BANNER_ENABLED=False
       - KEEP_ALIVE=30
       - WAGTAILAPI_BASE_URL=http://host.docker.internal:8000
+      - REDIS_URL=redis://:redis@redis:6379
 
   cli:
     platform: linux/amd64
@@ -81,6 +81,13 @@ services:
       - DATABASE_HOST=db
       - DATABASE_NAME=postgres
       - DATABASE_USER=postgres
+
+  redis:
+    container_name: redis
+    image: redis:latest
+    command: /bin/sh -c "redis-server --requirepass redis"
+    ports:
+      - 6379:6379
 
 volumes:
   media:

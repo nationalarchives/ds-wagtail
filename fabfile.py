@@ -134,7 +134,7 @@ def dev(c):
     """
     Run bash in the local development helper container (with access to dependencies)
     """
-    subprocess.run(["docker", "exec", "-it", "dev", "/bin/bash"])
+    subprocess.run(["docker", "compose", "exec", "-it", "dev", "/bin/bash"])
 
 
 @task
@@ -281,6 +281,7 @@ def pull_production_data(c):
 def pull_production_media(c):
     """Pull all media from the production platform.sh env"""
     pull_media_from_platform(c, PRODUCTION_APP_INSTANCE)
+    subprocess.run(["docker-compose", "exec", "cli", "chmod", "-fR", "777", "media"])
 
 
 # -----------------------------------------------------------------------------

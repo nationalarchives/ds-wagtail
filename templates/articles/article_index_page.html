@@ -27,7 +27,7 @@
     </div>
         <ul class="card-group--list-style-none">
 
-            {% for article_page in article_pages %}
+            {% for article_page in page.article_pages %}
 
                 {% with link_page=article_page.specific %}
                     {% comment %} instance id adds a unique id to stories if they're included twice on the page {% endcomment %}

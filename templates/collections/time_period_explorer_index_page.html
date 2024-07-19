@@ -8,7 +8,7 @@
     <div class="tna-container mt-4">
             <h2 class="sr-only">Select a time period</h2>
             <ul class="card-group--list-style-none" data-container-name="select-a-time-period" id="analytics-select-a-time-period">
-                {% for child in page.time_period_explorer_pages %}
+                {% for child in page.explorer_pages %}
                     {% include 'includes/card-group-secondary-nav.html' with link_page=child.specific card_type="Navigation" %}
                 {% endfor %}
             </ul>
