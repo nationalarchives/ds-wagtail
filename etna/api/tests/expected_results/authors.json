@@ -24,7 +24,7 @@
         "url": "/authors/"
     },
     "title": "authors",
-    "alert_check": {
+    "alerts": {
         "title": "BETA",
         "message": "<p>Message</p>",
         "alert_level": "high"

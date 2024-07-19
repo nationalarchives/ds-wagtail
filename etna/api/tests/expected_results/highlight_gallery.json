@@ -24,7 +24,7 @@
         "url": "/arts/highlight_gallery/"
     },
     "title": "highlight_gallery",
-    "alert_check": null,
+    "alerts": null,
     "type_label": "In pictures",
     "teaser_text": "Teaser text",
     "teaser_image": {
