@@ -4,10 +4,11 @@ from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Q
 from django.http import Http404
+from django.shortcuts import redirect
 from django.utils.crypto import constant_time_compare
 
 from wagtail.api.v2.router import WagtailAPIRouter
-from wagtail.api.v2.utils import BadRequestError
+from wagtail.api.v2.utils import BadRequestError, get_object_detail_url
 from wagtail.api.v2.views import PagesAPIViewSet
 from wagtail.contrib.redirects.models import Redirect
 from wagtail.images.api.v2.views import ImagesAPIViewSet
@@ -76,6 +77,31 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
             "message": "Selected privacy mode is not compatible with this API.",
         }
         return Response(data, status=status.HTTP_403_FORBIDDEN)
+
+    def find_view(self, request):
+        queryset = self.get_queryset()
+
+        try:
+            obj = self.find_object(queryset, request)
+            if obj is None:
+                raise self.model.DoesNotExist
+
+        except self.model.DoesNotExist:
+            raise Http404("not found")
+
+        url = get_object_detail_url(
+            self.request.wagtailapi_router, request, self.model, obj.pk
+        )
+        if url is None:
+            raise Exception(
+                "Cannot generate URL to detail view. Is '{}' installed in the API router?".format(
+                    self.__class__.__name__
+                )
+            )
+        if "fields" in request.GET:
+            url = f"{url}?fields={request.GET["fields"]}"
+
+        return redirect(url)
 
     def get_base_queryset(self):
         """
