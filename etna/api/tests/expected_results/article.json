@@ -24,6 +24,7 @@
         "url": "/article_index/article/"
     },
     "title": "article",
+    "global_alert": null,
     "type_label": "The story of",
     "teaser_text": "Teaser text",
     "teaser_image": {

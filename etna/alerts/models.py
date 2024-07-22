@@ -4,7 +4,10 @@ from django.db import models
 from wagtail.admin.panels import FieldPanel
 from wagtail.api import APIField
 from wagtail.fields import RichTextField
+from wagtail.models import Page
 from wagtail.snippets.models import register_snippet
+
+from .serializers import AlertSerializer
 
 
 @register_snippet
@@ -72,11 +75,26 @@ class AlertMixin(models.Model):
         related_name="+",
     )
 
+    @property
+    def global_alert(self):
+        """
+        Retrieve the parent-most alert that is active and has cascade enabled.
+        If there is no parent alert, then return the current alert if it is active.
+        """
+        if parent := self.get_parent():
+            if type(parent.specific) is not Page:
+                if parent_alert := parent.specific.global_alert:
+                    if parent_alert.cascade:
+                        return parent_alert
+        if self.alert and self.alert.active:
+            return self.alert
+        return None
+
     settings_panels = [
         FieldPanel("alert"),
     ]
 
-    api_fields = [APIField("alert")]
+    api_fields = [APIField("global_alert", serializer=AlertSerializer())]
 
     class Meta:
         abstract = True

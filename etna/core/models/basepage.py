@@ -20,6 +20,7 @@ from wagtail.search import index
 from wagtail_headless_preview.models import HeadlessPreviewMixin
 from wagtailmetadata.models import MetadataPageMixin
 
+from etna.alerts.models import AlertMixin
 from etna.analytics.mixins import DataLayerMixin
 from etna.core.cache_control import (
     apply_default_cache_control,
@@ -41,7 +42,9 @@ options.DEFAULT_NAMES = options.DEFAULT_NAMES + ("verbose_name_public",)
 
 @method_decorator(apply_default_vary_headers, name="serve")
 @method_decorator(apply_default_cache_control, name="serve")
-class BasePage(MetadataPageMixin, DataLayerMixin, HeadlessPreviewMixin, Page):
+class BasePage(
+    AlertMixin, MetadataPageMixin, DataLayerMixin, HeadlessPreviewMixin, Page
+):
     """
     An abstract base model that is used for all Page models within
     the project. Any common fields, Wagtail overrides or custom
@@ -109,6 +112,8 @@ class BasePage(MetadataPageMixin, DataLayerMixin, HeadlessPreviewMixin, Page):
         FieldPanel("teaser_text"),
     ]
 
+    settings_panels = Page.settings_panels + AlertMixin.settings_panels
+
     class Meta:
         abstract = True
 
@@ -166,7 +171,7 @@ class BasePage(MetadataPageMixin, DataLayerMixin, HeadlessPreviewMixin, Page):
         ),
     ]
 
-    api_fields = [
+    api_fields = AlertMixin.api_fields + [
         APIField("type_label"),
         APIField("teaser_text"),
         APIField(

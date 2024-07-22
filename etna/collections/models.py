@@ -28,7 +28,6 @@ from etna.core.serializers import (
     ImageSerializer,
 )
 
-from ..alerts.models import AlertMixin
 from ..core.models import (
     BasePage,
     BasePageWithRequiredIntro,
@@ -83,7 +82,7 @@ class Highlight(Orderable):
         return super().clean()
 
 
-class ExplorerIndexPage(AlertMixin, BasePageWithRequiredIntro):
+class ExplorerIndexPage(BasePageWithRequiredIntro):
     """Collection Explorer landing BasePage.
 
     This page is the starting point for a user's journey through the collection
@@ -143,10 +142,6 @@ class ExplorerIndexPage(AlertMixin, BasePageWithRequiredIntro):
         ),
     ]
 
-    settings_panels = (
-        BasePageWithRequiredIntro.settings_panels + AlertMixin.settings_panels
-    )
-
     parent_page_types = ["home.HomePage"]
     subpage_types = [
         "collections.TopicExplorerIndexPage",
@@ -157,20 +152,16 @@ class ExplorerIndexPage(AlertMixin, BasePageWithRequiredIntro):
     # DataLayerMixin overrides
     gtm_content_group = "Explore the collection"
 
-    api_fields = (
-        AlertMixin.api_fields
-        + BasePageWithRequiredIntro.api_fields
-        + [
-            APIField("body"),
-            APIField("articles_title"),
-            APIField("articles_introduction"),
-            APIField(
-                "featured_article",
-                serializer=DefaultPageSerializer(required_api_fields=["teaser_image"]),
-            ),
-            APIField("featured_articles"),
-        ]
-    )
+    api_fields = BasePageWithRequiredIntro.api_fields + [
+        APIField("body"),
+        APIField("articles_title"),
+        APIField("articles_introduction"),
+        APIField(
+            "featured_article",
+            serializer=DefaultPageSerializer(required_api_fields=["teaser_image"]),
+        ),
+        APIField("featured_articles"),
+    ]
 
 
 class TopicExplorerIndexPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
@@ -235,7 +226,7 @@ class TopicExplorerIndexPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
     ]
 
 
-class TopicExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithRequiredIntro):
+class TopicExplorerPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
     """Topic explorer page.
 
     This page represents one of the many categories a user may select in the
@@ -289,9 +280,7 @@ class TopicExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithRequired
         ]
     )
 
-    settings_panels = (
-        BasePage.settings_panels + [FieldPanel("skos_id")] + AlertMixin.settings_panels
-    )
+    settings_panels = BasePage.settings_panels + [FieldPanel("skos_id")]
 
     # DataLayerMixin overrides
     gtm_content_group = "Explore the collection"
@@ -307,7 +296,6 @@ class TopicExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithRequired
 
     api_fields = (
         RequiredHeroImageMixin.api_fields
-        + AlertMixin.api_fields
         + BasePageWithRequiredIntro.api_fields
         + [
             APIField("body"),
@@ -475,9 +463,7 @@ class TimePeriodExplorerIndexPage(RequiredHeroImageMixin, BasePageWithRequiredIn
     )
 
 
-class TimePeriodExplorerPage(
-    RequiredHeroImageMixin, AlertMixin, BasePageWithRequiredIntro
-):
+class TimePeriodExplorerPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
     """Time period BasePage.
 
     This page represents one of the many categories a user may select in the
@@ -527,7 +513,6 @@ class TimePeriodExplorerPage(
 
     api_fields = (
         RequiredHeroImageMixin.api_fields
-        + AlertMixin.api_fields
         + BasePageWithRequiredIntro.api_fields
         + [
             APIField("body"),
@@ -551,8 +536,6 @@ class TimePeriodExplorerPage(
             APIField("end_year"),
         ]
     )
-
-    settings_panels = BasePage.settings_panels + AlertMixin.settings_panels
 
     # DataLayerMixin overrides
     gtm_content_group = "Explore the collection"
