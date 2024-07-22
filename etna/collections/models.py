@@ -31,7 +31,7 @@ from etna.core.serializers import (
 from ..alerts.models import AlertMixin
 from ..core.models import (
     BasePage,
-    BasePageWithIntro,
+    BasePageWithRequiredIntro,
     ContentWarningMixin,
     RequiredHeroImageMixin,
 )
@@ -83,7 +83,7 @@ class Highlight(Orderable):
         return super().clean()
 
 
-class ExplorerIndexPage(AlertMixin, BasePageWithIntro):
+class ExplorerIndexPage(AlertMixin, BasePageWithRequiredIntro):
     """Collection Explorer landing BasePage.
 
     This page is the starting point for a user's journey through the collection
@@ -123,7 +123,7 @@ class ExplorerIndexPage(AlertMixin, BasePageWithIntro):
         null=True,
     )
 
-    content_panels = BasePageWithIntro.content_panels + [
+    content_panels = BasePageWithRequiredIntro.content_panels + [
         FieldPanel("body"),
         MultiFieldPanel(
             [
@@ -143,7 +143,9 @@ class ExplorerIndexPage(AlertMixin, BasePageWithIntro):
         ),
     ]
 
-    settings_panels = BasePageWithIntro.settings_panels + AlertMixin.settings_panels
+    settings_panels = (
+        BasePageWithRequiredIntro.settings_panels + AlertMixin.settings_panels
+    )
 
     parent_page_types = ["home.HomePage"]
     subpage_types = [
@@ -157,7 +159,7 @@ class ExplorerIndexPage(AlertMixin, BasePageWithIntro):
 
     api_fields = (
         AlertMixin.api_fields
-        + BasePageWithIntro.api_fields
+        + BasePageWithRequiredIntro.api_fields
         + [
             APIField("body"),
             APIField("articles_title"),
@@ -171,7 +173,7 @@ class ExplorerIndexPage(AlertMixin, BasePageWithIntro):
     )
 
 
-class TopicExplorerIndexPage(RequiredHeroImageMixin, BasePageWithIntro):
+class TopicExplorerIndexPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
     """Topic explorer BasePage.
 
     This page lists all child TopicExplorerPages
@@ -180,7 +182,7 @@ class TopicExplorerIndexPage(RequiredHeroImageMixin, BasePageWithIntro):
     body = StreamField(TopicIndexPageStreamBlock, blank=True)
 
     content_panels = (
-        BasePageWithIntro.content_panels
+        BasePageWithRequiredIntro.content_panels
         + RequiredHeroImageMixin.content_panels
         + [
             FieldPanel("body"),
@@ -192,7 +194,7 @@ class TopicExplorerIndexPage(RequiredHeroImageMixin, BasePageWithIntro):
 
     api_fields = (
         RequiredHeroImageMixin.api_fields
-        + BasePageWithIntro.api_fields
+        + BasePageWithRequiredIntro.api_fields
         + [
             APIField("body"),
             APIField(
@@ -233,7 +235,7 @@ class TopicExplorerIndexPage(RequiredHeroImageMixin, BasePageWithIntro):
     ]
 
 
-class TopicExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithIntro):
+class TopicExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithRequiredIntro):
     """Topic explorer page.
 
     This page represents one of the many categories a user may select in the
@@ -272,7 +274,7 @@ class TopicExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithIntro):
     )
 
     content_panels = (
-        BasePageWithIntro.content_panels
+        BasePageWithRequiredIntro.content_panels
         + RequiredHeroImageMixin.content_panels
         + [
             PageChooserPanel(
@@ -306,7 +308,7 @@ class TopicExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithIntro):
     api_fields = (
         RequiredHeroImageMixin.api_fields
         + AlertMixin.api_fields
-        + BasePageWithIntro.api_fields
+        + BasePageWithRequiredIntro.api_fields
         + [
             APIField("body"),
             APIField(
@@ -412,7 +414,7 @@ class TopicExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithIntro):
         )
 
 
-class TimePeriodExplorerIndexPage(RequiredHeroImageMixin, BasePageWithIntro):
+class TimePeriodExplorerIndexPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
     """Time period explorer BasePage.
 
     This page lists all child TimePeriodExplorerPage
@@ -421,7 +423,7 @@ class TimePeriodExplorerIndexPage(RequiredHeroImageMixin, BasePageWithIntro):
     body = StreamField(TopicIndexPageStreamBlock, blank=True)
 
     content_panels = (
-        BasePageWithIntro.content_panels
+        BasePageWithRequiredIntro.content_panels
         + RequiredHeroImageMixin.content_panels
         + [
             FieldPanel("body"),
@@ -460,7 +462,7 @@ class TimePeriodExplorerIndexPage(RequiredHeroImageMixin, BasePageWithIntro):
     ]
     api_fields = (
         RequiredHeroImageMixin.api_fields
-        + BasePageWithIntro.api_fields
+        + BasePageWithRequiredIntro.api_fields
         + [
             APIField("body"),
             APIField(
@@ -473,7 +475,9 @@ class TimePeriodExplorerIndexPage(RequiredHeroImageMixin, BasePageWithIntro):
     )
 
 
-class TimePeriodExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithIntro):
+class TimePeriodExplorerPage(
+    RequiredHeroImageMixin, AlertMixin, BasePageWithRequiredIntro
+):
     """Time period BasePage.
 
     This page represents one of the many categories a user may select in the
@@ -504,7 +508,7 @@ class TimePeriodExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithInt
     start_year = models.IntegerField(blank=False)
     end_year = models.IntegerField(blank=False)
     content_panels = (
-        BasePageWithIntro.content_panels
+        BasePageWithRequiredIntro.content_panels
         + RequiredHeroImageMixin.content_panels
         + [
             PageChooserPanel(
@@ -524,7 +528,7 @@ class TimePeriodExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithInt
     api_fields = (
         RequiredHeroImageMixin.api_fields
         + AlertMixin.api_fields
-        + BasePageWithIntro.api_fields
+        + BasePageWithRequiredIntro.api_fields
         + [
             APIField("body"),
             APIField(
@@ -802,7 +806,9 @@ class HighlightCardSerializer(serializers.Serializer):
         }
 
 
-class HighlightGalleryPage(TopicalPageMixin, ContentWarningMixin, BasePageWithIntro):
+class HighlightGalleryPage(
+    TopicalPageMixin, ContentWarningMixin, BasePageWithRequiredIntro
+):
     parent_page_types = [TimePeriodExplorerPage, TopicExplorerPage]
     subpage_types = []
 
@@ -819,7 +825,7 @@ class HighlightGalleryPage(TopicalPageMixin, ContentWarningMixin, BasePageWithIn
     )
 
     api_fields = (
-        BasePageWithIntro.api_fields
+        BasePageWithRequiredIntro.api_fields
         + ContentWarningMixin.api_fields
         + [
             APIField(
@@ -837,7 +843,7 @@ class HighlightGalleryPage(TopicalPageMixin, ContentWarningMixin, BasePageWithIn
         verbose_name_plural = _("highlight gallery pages")
         verbose_name_public = _("in pictures")
 
-    content_panels = BasePageWithIntro.content_panels + [
+    content_panels = BasePageWithRequiredIntro.content_panels + [
         MultiFieldPanel(
             heading="Content Warning Options",
             classname="collapsible",
@@ -862,11 +868,11 @@ class HighlightGalleryPage(TopicalPageMixin, ContentWarningMixin, BasePageWithIn
         ),
     ]
 
-    default_api_fields = BasePageWithIntro.default_api_fields + [
+    default_api_fields = BasePageWithRequiredIntro.default_api_fields + [
         APIField("highlight_image_count"),
     ]
 
-    promote_panels = BasePageWithIntro.promote_panels + [
+    promote_panels = BasePageWithRequiredIntro.promote_panels + [
         TopicalPageMixin.get_topics_inlinepanel(),
         TopicalPageMixin.get_time_periods_inlinepanel(),
     ]
