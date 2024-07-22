@@ -31,6 +31,7 @@ from etna.core.serializers import ImageSerializer, RichTextSerializer
 __all__ = [
     "BasePage",
     "BasePageWithIntro",
+    "BasePageWithRequiredIntro",
 ]
 
 # Tiny hack to allow us to specify a `verbose_name_public` attribute
@@ -205,6 +206,8 @@ class BasePageWithIntro(BasePage):
         ),
         features=settings.INLINE_RICH_TEXT_FEATURES,
         max_length=300,
+        null=True,
+        blank=True,
     )
 
     class Meta:
@@ -219,3 +222,22 @@ class BasePageWithIntro(BasePage):
     api_fields = BasePage.api_fields + [
         APIField("intro", serializer=RichTextSerializer())
     ]
+
+
+class BasePageWithRequiredIntro(BasePageWithIntro):
+    """
+    An abstract base model for more long-form content pages that
+    start with a required 'intro'.
+    """
+
+    intro = RichTextField(
+        verbose_name=_("introductory text"),
+        help_text=_(
+            "1-2 sentences introducing the subject of the page, and explaining why a user should read on."
+        ),
+        features=settings.INLINE_RICH_TEXT_FEATURES,
+        max_length=300,
+    )
+
+    class Meta:
+        abstract = True
