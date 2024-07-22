@@ -12,7 +12,7 @@ from wagtail.models import Orderable
 
 from rest_framework import serializers
 
-from etna.core.models import BasePageWithNonRequiredIntro, HeroImageMixin
+from etna.core.models import BasePageWithIntro, HeroImageMixin
 from etna.core.serializers import (
     DefaultPageSerializer,
     ImageSerializer,
@@ -22,7 +22,7 @@ from etna.core.serializers import (
 from .blocks import GeneralPageStreamBlock
 
 
-class GeneralPage(BasePageWithNonRequiredIntro):
+class GeneralPage(BasePageWithIntro):
     intro = RichTextField(
         verbose_name=_("introductory text"),
         help_text=_(
@@ -36,11 +36,11 @@ class GeneralPage(BasePageWithNonRequiredIntro):
 
     body = StreamField(GeneralPageStreamBlock, blank=True, null=True)
 
-    content_panels = BasePageWithNonRequiredIntro.content_panels + [
+    content_panels = BasePageWithIntro.content_panels + [
         FieldPanel("body"),
     ]
 
-    api_fields = BasePageWithNonRequiredIntro.api_fields + [
+    api_fields = BasePageWithIntro.api_fields + [
         APIField("body"),
     ]
 
@@ -123,7 +123,7 @@ class LinkItemSerializer(serializers.Serializer):
             }
 
 
-class HubPage(HeroImageMixin, BasePageWithNonRequiredIntro):
+class HubPage(HeroImageMixin, BasePageWithIntro):
     body = RichTextField(
         verbose_name=_("body"),
         help_text=_("The main content of the page."),
@@ -133,7 +133,7 @@ class HubPage(HeroImageMixin, BasePageWithNonRequiredIntro):
     )
 
     content_panels = (
-        BasePageWithNonRequiredIntro.content_panels
+        BasePageWithIntro.content_panels
         + HeroImageMixin.content_panels
         + [
             FieldPanel("body"),
@@ -142,7 +142,7 @@ class HubPage(HeroImageMixin, BasePageWithNonRequiredIntro):
     )
 
     api_fields = (
-        BasePageWithNonRequiredIntro.api_fields
+        BasePageWithIntro.api_fields
         + HeroImageMixin.api_fields
         + [
             APIField("body", serializer=RichTextSerializer()),
