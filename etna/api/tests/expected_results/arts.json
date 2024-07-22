@@ -57,7 +57,7 @@
             "height": 68
         }
     },
-    "alerts": null,
+    "global_alert": null,
     "type_label": "Topic",
     "teaser_text": "Teaser text",
     "teaser_image": {
