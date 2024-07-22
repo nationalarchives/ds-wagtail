@@ -24,6 +24,11 @@
         "url": "/authors/author/"
     },
     "title": "author",
+    "global_alert": {
+        "title": "BETA",
+        "message": "<p>Message</p>",
+        "alert_level": "high"
+    },
     "type_label": "Author",
     "teaser_text": "Teaser text",
     "teaser_image": {
