@@ -76,14 +76,14 @@ class AlertMixin(models.Model):
     )
 
     @property
-    def alerts(self):
+    def global_alert(self):
         """
         Retrieve the parent-most alert that is active and has cascade enabled.
         If there is no parent alert, then return the current alert if it is active.
         """
         if parent := self.get_parent():
             if type(parent.specific) is not Page:
-                if parent_alert := parent.specific.alerts:
+                if parent_alert := parent.specific.global_alert:
                     if parent_alert.cascade:
                         return parent_alert
         if self.alert and self.alert.active:
@@ -94,7 +94,7 @@ class AlertMixin(models.Model):
         FieldPanel("alert"),
     ]
 
-    api_fields = [APIField("alerts", serializer=AlertSerializer())]
+    api_fields = [APIField("global_alert", serializer=AlertSerializer())]
 
     class Meta:
         abstract = True
