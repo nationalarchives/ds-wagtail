@@ -1,3 +1,5 @@
+from django.core.exceptions import ValidationError
+
 from wagtail import blocks
 
 from etna.core.blocks import (
@@ -17,6 +19,7 @@ from etna.core.blocks import (
     QuoteBlock,
     SectionDepthAwareStructBlock,
     SubHeadingBlock,
+    SubSubHeadingBlock,
     WarningTextBlock,
     YouTubeBlock,
 )
@@ -42,6 +45,7 @@ class SectionContentBlock(blocks.StreamBlock):
     quote = QuoteBlock()
     record_links = RecordLinksBlock()
     sub_heading = SubHeadingBlock()
+    sub_sub_heading = SubSubHeadingBlock()
     table = ContentTableBlock()
     warning_text = WarningTextBlock()
     youtube_video = YouTubeBlock()
@@ -55,10 +59,27 @@ class ContentSectionBlock(SectionDepthAwareStructBlock):
         label = "Section"
         template = "articles/blocks/section.html"
 
+    def clean(self, value):
+        clean = super().clean(value)
+        has_sub_heading = False
+        content = clean.get("content")
 
-class GeneralPageStreamBlock(blocks.StreamBlock):
+        for block in content:
+            block_type = block.block_type
+            if block_type == "sub_heading":
+                has_sub_heading = True
+            elif block_type == "sub_sub_heading" and not has_sub_heading:
+                raise ValidationError(
+                    "A sub-sub-heading was found before any sub-headings."
+                )
+        return clean
+
+
+class GeneralPageStreamBlock(SectionContentBlock):
     """
     A block for the GeneralPage model.
     """
 
     content_section = ContentSectionBlock()
+    sub_heading = None
+    sub_sub_heading = None
