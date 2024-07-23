@@ -20,7 +20,7 @@ from .promoted_links import (
     PromotedListBlock,
 )
 from .quote import QuoteBlock
-from .section import SectionBlock, SubHeadingBlock
+from .section import SectionBlock, SubHeadingBlock, SubSubHeadingBlock
 from .tables import ContentTableBlock
 from .text import InsetTextBlock, WarningTextBlock
 from .video import YouTubeBlock
@@ -54,6 +54,7 @@ __all__ = [
     "SectionBlock",
     "SectionDepthAwareStructBlock",
     "SubHeadingBlock",
+    "SubSubHeadingBlock",
     "WarningTextBlock",
     "YouTubeBlock",
 ]
