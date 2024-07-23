@@ -597,6 +597,27 @@ class TestPrepareOhosParam(SimpleTestCase):
                     ],
                 ),
             ),
+            (
+                "parent children selection - WMK",  # label
+                # params
+                (
+                    "list",
+                    ["community"],
+                    [
+                        "collection:parent-collectionWMK:Milton Keynes City Discovery Centre",
+                        "collection:child-collectionWMK:Women who made Milton Keynes",
+                        "group:community",
+                    ],
+                ),
+                # expected
+                (
+                    ["community", "collectionWMK"],
+                    [
+                        "collectionOhos:Women who made Milton Keynes",
+                        "group:community",
+                    ],
+                ),
+            ),
         )
 
         for label, params, expected in test_data:

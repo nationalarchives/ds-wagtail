@@ -765,6 +765,7 @@ For the nested filter: <collection-name/ciim-value>:(<ciim-aggs-name:at-pos-1>,<
 NESTED_CHECKBOX_VALUES_AGGS_NAMES_MAP = {
     "Surrey History Centre": ("collectionSurrey", "collectionSurreyAll"),
     "Morrab Photo Archive": ("collectionMorrab", "collectionMorrabAll"),
+    "Milton Keynes City Discovery Centre": ("collectionWMK", ""),
 }
 
 # prefix ends with "-"
