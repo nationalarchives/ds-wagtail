@@ -22,18 +22,23 @@ from etna.core.serializers import (
 from .blocks import GeneralPageStreamBlock
 
 
-class GeneralPage(SidebarMixin, BasePageWithIntro):
+class GeneralPage(SidebarMixin, HeroImageMixin, BasePageWithIntro):
     body = StreamField(GeneralPageStreamBlock, blank=True, null=True)
 
-    content_panels = BasePageWithIntro.content_panels + [
-        FieldPanel("body"),
-    ]
+    content_panels = (
+        BasePageWithIntro.content_panels
+        + HeroImageMixin.content_panels
+        + [
+            FieldPanel("body"),
+        ]
+    )
 
     settings_panels = BasePageWithIntro.settings_panels + SidebarMixin.settings_panels
 
     api_fields = (
         BasePageWithIntro.api_fields
         + SidebarMixin.api_fields
+        + HeroImageMixin.api_fields
         + [
             APIField("body"),
         ]
