@@ -3,6 +3,7 @@ from datetime import timedelta
 from django.db import models
 from django.utils import timezone
 from django.utils.functional import cached_property
+from django.utils.safestring import mark_safe
 
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel
 from wagtail.api import APIField
@@ -18,6 +19,7 @@ __all__ = [
     "NewLabelMixin",
     "HeroImageMixin",
     "RequiredHeroImageMixin",
+    "SidebarMixin",
 ]
 
 
@@ -179,18 +181,30 @@ class RequiredHeroImageMixin(HeroImageMixin):
 
     base_form_class = RequiredHeroImagePageForm
 
+
 class SidebarMixin(models.Model):
     """Mixin to add sidebar options to a Page."""
 
-    sidebar_option = models.CharField()
+    page_sidebar = models.CharField(
+        choices=[
+            ("contents", "Contents"),
+            ("sections", "Sections"),
+            ("pages", "Pages"),
+        ],
+        help_text=mark_safe(
+            "Select the sidebar style for this page. For more information, see the <a href='https://nationalarchives.github.io/design-system/components/sidebar/'>sidebar documentation</a>."
+        ),
+        null=True,
+        blank=True,
+    )
 
     class Meta:
         abstract = True
 
     settings_panels = [
-        FieldPanel("sidebar_option"),
+        FieldPanel("page_sidebar"),
     ]
 
     api_fields = [
-        APIField("sidebar_option"),
+        APIField("page_sidebar"),
     ]
