@@ -178,3 +178,19 @@ class RequiredHeroImageMixin(HeroImageMixin):
         abstract = True
 
     base_form_class = RequiredHeroImagePageForm
+
+class SidebarMixin(models.Model):
+    """Mixin to add sidebar options to a Page."""
+
+    sidebar_option = models.CharField()
+
+    class Meta:
+        abstract = True
+
+    settings_panels = [
+        FieldPanel("sidebar_option"),
+    ]
+
+    api_fields = [
+        APIField("sidebar_option"),
+    ]
