@@ -12,7 +12,7 @@ from wagtail.models import Orderable
 
 from rest_framework import serializers
 
-from etna.core.models import BasePageWithIntro, HeroImageMixin
+from etna.core.models import BasePageWithIntro, HeroImageMixin, SidebarMixin
 from etna.core.serializers import (
     DefaultPageSerializer,
     ImageSerializer,
@@ -22,27 +22,22 @@ from etna.core.serializers import (
 from .blocks import GeneralPageStreamBlock
 
 
-class GeneralPage(BasePageWithIntro):
-    intro = RichTextField(
-        verbose_name=_("introductory text"),
-        help_text=_(
-            "1-2 sentences introducing the subject of the page, and explaining why a user should read on."
-        ),
-        features=settings.INLINE_RICH_TEXT_FEATURES,
-        max_length=300,
-        blank=True,
-        null=True,
-    )
-
+class GeneralPage(SidebarMixin, BasePageWithIntro):
     body = StreamField(GeneralPageStreamBlock, blank=True, null=True)
 
     content_panels = BasePageWithIntro.content_panels + [
         FieldPanel("body"),
     ]
 
-    api_fields = BasePageWithIntro.api_fields + [
-        APIField("body"),
-    ]
+    settings_panels = BasePageWithIntro.settings_panels + SidebarMixin.settings_panels
+
+    api_fields = (
+        BasePageWithIntro.api_fields
+        + SidebarMixin.api_fields
+        + [
+            APIField("body"),
+        ]
+    )
 
 
 class LinkItem(Orderable):
