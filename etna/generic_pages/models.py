@@ -132,11 +132,19 @@ class HubPage(HeroImageMixin, BasePageWithIntro):
         null=True,
     )
 
+    plain_cards_list = models.BooleanField(
+        default=False,
+        help_text=_(
+            "If checked, the links will be displayed as a list of plain cards, without images."
+        ),
+    )
+
     content_panels = (
         BasePageWithIntro.content_panels
         + HeroImageMixin.content_panels
         + [
             FieldPanel("body"),
+            FieldPanel("plain_cards_list"),
             InlinePanel("links", label="Links"),
         ]
     )
@@ -146,6 +154,7 @@ class HubPage(HeroImageMixin, BasePageWithIntro):
         + HeroImageMixin.api_fields
         + [
             APIField("body", serializer=RichTextSerializer()),
+            APIField("plain_cards_list"),
             APIField("links", serializer=LinkItemSerializer(many=True)),
         ]
     )
