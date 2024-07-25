@@ -1,3 +1,5 @@
+import time
+
 from django.conf import settings
 from django.db import models
 
@@ -57,8 +59,14 @@ class Alert(models.Model):
         FieldPanel("alert_level"),
     ]
 
+    uid = models.BigIntegerField(null=False, blank=True, editable=False)
+
     def __str__(self):
         return self.title
+
+    def save(self, *args, **kwargs):
+        self.uid = round(time.time() * 1000)
+        super().save(*args, **kwargs)
 
 
 class AlertMixin(models.Model):
