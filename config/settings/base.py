@@ -460,3 +460,5 @@ if redis_url := os.getenv("REDIS_URL"):
             "KEY_PREFIX": "renditions",
         },
     }
+
+WAGTAILAPI_LIMIT_MAX = int(os.getenv("WAGTAILAPI_LIMIT_MAX", "0")) or None
