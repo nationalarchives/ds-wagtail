@@ -5,8 +5,13 @@ from rest_framework import serializers
 
 class AlertSerializer(serializers.Serializer):
     def to_representation(self, instance):
-        return {
-            "title": instance.title,
-            "message": expand_db_html(instance.message),
-            "alert_level": instance.alert_level,
-        }
+        if instance.active:
+            return {
+                "title": instance.title,
+                "message": expand_db_html(instance.message),
+                "alert_level": instance.alert_level,
+                "cascade": instance.cascade,
+                "uid": instance.uid,
+            }
+        else:
+            return None
