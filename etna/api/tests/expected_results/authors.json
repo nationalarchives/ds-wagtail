@@ -29,7 +29,7 @@
         "message": "<p>Message</p>",
         "alert_level": "high",
         "cascade": true,
-        "uid": 1234
+        "uid": ALERT_UID
     },
     "type_label": "Author index",
     "teaser_text": "Teaser text",
