@@ -335,6 +335,7 @@ class APIResponseTest(WagtailPageTestCase):
             "HOME_PAGE_ID": str(self.root_page.id),
             "ARTICLE_INDEX_ID": str(self.article_index.id),
             "ARTICLE_ID": str(self.article.id),
+            "ALERT_UID": str(self.alert.uid),
             "FOCUSED_ID": str(self.focused_article.id),
             "ARTS_ID": str(self.arts.id),
             "EARLY_MODERN_ID": str(self.early_modern.id),
