@@ -27,7 +27,9 @@
     "global_alert": {
         "title": "BETA",
         "message": "<p>Message</p>",
-        "alert_level": "high"
+        "alert_level": "high",
+        "cascade": true,
+        "uid": 1234
     },
     "type_label": "Author",
     "teaser_text": "Teaser text",

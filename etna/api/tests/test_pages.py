@@ -68,6 +68,7 @@ class APIResponseTest(WagtailPageTestCase):
             active=True,
             cascade=True,
             alert_level="high",
+            uid="1234",
         )
 
         cls.test_media = EtnaMedia.objects.create(
