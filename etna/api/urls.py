@@ -100,7 +100,7 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
             )
 
         if "fields" in request.GET:
-            url = url + "fields=" + request.GET["fields"]
+            url = url + "?fields=" + request.GET["fields"]
 
         return redirect(url)
 
