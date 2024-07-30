@@ -689,7 +689,13 @@ class TestClientFetchReponse(SimpleTestCase):
 
     @responses.activate
     def test_valid_response(self):
-        record_data = create_record(group="community")
+        record_data = create_record(
+            group="community",
+            add_template_details={
+                "descriptionPlace": "desc1",
+                "descriptionView": "desc2",
+            },
+        )
         responses.add(
             responses.GET,
             f"{settings.CLIENT_BASE_URL}/get",
@@ -703,7 +709,9 @@ class TestClientFetchReponse(SimpleTestCase):
         )
         self.assertEqual(
             result.description,
-            record_data["@template"]["details"]["description"],
+            record_data["@template"]["details"]["descriptionPlace"]
+            + " "
+            + record_data["@template"]["details"]["descriptionView"],
         )
 
     @responses.activate

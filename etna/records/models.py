@@ -16,7 +16,15 @@ from django.utils.safestring import mark_safe
 from pyquery import PyQuery as pq
 
 from ..analytics.mixins import DataLayerMixin
-from ..ciim.constants import CATALOGUE_BUCKETS, BucketKeys, TagTypes
+from ..ciim.constants import (
+    CATALOGUE_BUCKETS,
+    COLLECTION_FILTER_LABEL,
+    COMMUNITY_WEBPAGE_MAP,
+    BucketKeys,
+    CommunityCollectionMapping,
+    CommunityLevels,
+    TagTypes,
+)
 from ..ciim.models import APIModel
 from ..ciim.utils import (
     NOT_PROVIDED,
@@ -26,6 +34,7 @@ from ..ciim.utils import (
     strip_html,
 )
 from ..records.classes import FurtherInfo
+from ..records.field_labels import FIELD_LABELS
 from .converters import IDConverter
 
 logger = logging.getLogger(__name__)
@@ -683,17 +692,6 @@ class Record(DataLayerMixin, APIModel):
         return ""
 
     @cached_property
-    def collection_url(self) -> str:
-        try:
-            if self.collection_id:
-                return reverse(
-                    "details-page-machine-readable", kwargs={"id": self.collection_id}
-                )
-        except NoReverseMatch:
-            pass
-        return ""
-
-    @cached_property
     def item_url(self) -> str:
         return self.template.get("itemURL", "")
 
@@ -777,10 +775,118 @@ class Record(DataLayerMixin, APIModel):
 
     def _is_swop(self) -> bool:
         """Returns True if ciim_id identified with SWOP"""
-        return bool(self.ciim_id[:4] == "swop")
+        return self.ciim_id.startswith(
+            CommunityCollectionMapping.SWOP.community_level_ciim_id.removesuffix("0")
+        )
 
     def _description_view(self) -> str:
         return self.template.get("descriptionView", "")
 
     def _description_place(self) -> str:
         return self.template.get("descriptionPlace", "")
+
+    def _is_wmk(self) -> bool:
+        """Returns True if ciim_id identified with <Milton Keynes>"""
+        return self.ciim_id.startswith(
+            CommunityCollectionMapping.WMK.community_level_ciim_id.removesuffix("0")
+        )
+
+    def _is_mpa(self) -> bool:
+        """Returns True if ciim_id identified with <Morrab Photo Archive>"""
+        return self.ciim_id.startswith(
+            CommunityCollectionMapping.MPA.community_level_ciim_id.removesuffix("0")
+        )
+
+    def _is_pcw(self) -> bool:
+        """Returns True if ciim_id identified with <People's Collection Wales>"""
+        return self.ciim_id.startswith(
+            CommunityCollectionMapping.PCW.community_level_ciim_id.removesuffix("0")
+        )
+
+    def _is_shc(self) -> bool:
+        """Returns True if ciim_id identified with <Surrey History Centre>"""
+        return self.ciim_id.startswith(
+            CommunityCollectionMapping.SHC.community_level_ciim_id.removesuffix("0")
+        )
+
+    @cached_property
+    def community_collection(self) -> Dict[str:str]:
+        """
+        - must be called for a community record (usually in template) for collection field
+        - when collection attribute has a value and various criteria are met
+          returns data attr, otherwise empty data
+        """
+        data = {}
+
+        if value := self.collection:
+
+            field_name = "collection"
+            level = self.level
+            label = FIELD_LABELS.get(field_name, "UNRECOGNISED FIELD NAME")
+
+            if (
+                level == CommunityLevels.COLLECTION
+                and (self._is_shc() or self._is_wmk() or self._is_mpa())
+            ) or (
+                level == CommunityLevels.ITEM and (self._is_pcw() or self._is_swop())
+            ):
+                label = COLLECTION_FILTER_LABEL
+
+            url = ""
+            is_ext_url = False
+            if self.collection_id:
+                try:
+                    url = COMMUNITY_WEBPAGE_MAP.get(self.collection_id).get("url")
+                    is_ext_url = True
+                except AttributeError:
+                    try:
+                        url = reverse(
+                            "details-page-machine-readable",
+                            kwargs={"id": self.collection_id},
+                        )
+                    except NoReverseMatch:
+                        logger.debug(
+                            f"collection_id {self.collection_id} no reverse match url"
+                        )
+
+            data.update(label=label, value=value, url=url, is_ext_url=is_ext_url)
+
+        return data
+
+    @cached_property
+    def community_collection_webpage(self) -> Dict[str:str]:
+        """
+        - must be called for a community record (usually in template)
+          to add a row to the details page - label, value, url attrs
+        - when various criteria are met
+          returns data attr, otherwise empty data
+        """
+        data = {}
+        level = self.level
+        label = COLLECTION_FILTER_LABEL
+        if level in (
+            CommunityLevels.ITEM,
+            CommunityLevels.SERIES,
+        ):
+            community_level_ciim_id = ""
+            if self._is_shc():
+                community_level_ciim_id = (
+                    CommunityCollectionMapping.SHC.community_level_ciim_id
+                )
+            elif self._is_mpa():
+                community_level_ciim_id = (
+                    CommunityCollectionMapping.MPA.community_level_ciim_id
+                )
+            elif self._is_wmk():
+                community_level_ciim_id = (
+                    CommunityCollectionMapping.WMK.community_level_ciim_id
+                )
+
+            if community_level_ciim_id:
+                map = COMMUNITY_WEBPAGE_MAP.get(community_level_ciim_id)
+                data.update(
+                    label=label,
+                    value=map.get("value"),
+                    url=map.get("url"),
+                )
+        return data

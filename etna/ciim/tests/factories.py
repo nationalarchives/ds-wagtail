@@ -16,6 +16,7 @@ def create_record(
     hierarchy=None,
     related=None,
     source_values: Optional[Dict[str, Any]] = None,
+    add_template_details: Optional[Dict[str, Any]] = None,
 ):
     """Return a sample response for a record.
 
@@ -62,7 +63,8 @@ def create_record(
 
     details_kv = {}
     if group == "community":
-        details_kv.update(ciimId=ciim_id)
+        iaid = reference_number = ""
+        details_kv.update(ciimId=ciim_id, group=group)
     else:
         details_kv.update(iaid=iaid)
 
@@ -70,6 +72,10 @@ def create_record(
         details_kv.update(referenceNumber=reference_number)
     if description:
         details_kv.update(description=description)
+
+    if add_template_details:
+        for key, value in add_template_details.items():
+            details_kv.update({key: value})
 
     record = {"@template": {"details": details_kv}}
 

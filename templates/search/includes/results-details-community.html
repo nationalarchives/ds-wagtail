@@ -7,7 +7,7 @@
     </dd>
 {% endif %}
 
-{% if record.collection %}
-    <dt>{{ 'collection'|as_label }}</dt>
-    <dd>{{ record.collection }}</dd>
+{% if record.community_collection %}
+    <dt>{{ record.community_collection.label }}</dt>
+    <dd>{{ record.community_collection.value }}</dd>
 {% endif %}

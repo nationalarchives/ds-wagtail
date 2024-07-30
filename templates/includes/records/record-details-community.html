@@ -33,10 +33,19 @@
         <td>{{ record.identifier }}</td>
     </tr>
 {% endif %}
-{% if record.collection %}
+{% if record.community_collection %}
     <tr>
-        <th scope="row">{{ 'collection'|as_label }}</th>
-        <td><a href="{% record_url record use_collection_id=True %}">{{ record.collection }}</a></td>
+        <th scope="row">{{ record.community_collection.label }}</th>
+        <td><a href="{{ record.community_collection.url }}"
+               {% if record.community_collection.is_ext_url %}target="_blank"{% endif %}>{{ record.community_collection.value }}</a></td>
+    </tr>
+{% endif %}
+{% if record.community_collection_webpage %}
+    <tr>
+        <th scope="row">{{ record.community_collection_webpage.label }}</th>
+        <td><a href="{{ record.community_collection_webpage.url }}" 
+            target="_blank">{{ record.community_collection_webpage.value }}</a>
+        </td>
     </tr>
 {% endif %}
 {% if record.rights %}

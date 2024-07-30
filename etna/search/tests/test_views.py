@@ -105,6 +105,8 @@ class SelectedFiltersTest(SimpleTestCase):
                 # ],
             },
         )
+        # test Dynamic collection label
+        self.assertEqual(form.fields.get("collection").label, "Collections")
 
     @unittest.skip("# TODO: Keep, not in scope for Ohos-Etna at this time")
     def test_counts_are_removed_from_updated_choice_labels(self):
@@ -436,6 +438,7 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
         - Filter options to refine the search
         - Search results
         - Buckets rendered
+        - Dynamic collection label
 
         They SHOULD NOT see:
         -  A "No results" message.
@@ -466,6 +469,10 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
         )
         self.assertUnSelectedBucketRendered(
             "nonTna", "6,393", "Results from other archives", content
+        )
+        self.assertEqual(
+            response.context_data.get("form").fields.get("collection").label,
+            "Community archive",
         )
 
         # SHOULD NOT see

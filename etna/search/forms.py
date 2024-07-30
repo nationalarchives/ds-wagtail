@@ -11,6 +11,7 @@ from ..ciim.constants import (  # TODO: Keep, not in scope for Ohos-Etna at this
     AGGS_LOOKUP_KEY,
     CATALOGUE_BUCKETS,
     COLLECTION_CHOICES,
+    COLLECTION_FILTER_LABEL,
     NESTED_CHILDREN_KEY,
     PREFIX_FILTER_AGGS,
     SEPERATOR,
@@ -349,7 +350,7 @@ class BaseCollectionSearchForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         if kwargs and kwargs.get("data").get("group", "") == BucketKeys.COMMUNITY:
-            self.fields["collection"].label = "Community Archive"
+            self.fields["collection"].label = COLLECTION_FILTER_LABEL
 
     def clean(self):
         """
