@@ -61,6 +61,11 @@
     },
     "facebook_og_image": null,
     "twitter_og_image": null,
+    "mourning_notice": {
+        "name": "John Smith",
+        "birth_date": "1 January 1900",
+        "death_date": "1 January 2000"
+    },
     "intro": "<p>This is an article with <a href=\"/\">a link to a page</a><page>",
     "hero_image_caption": "<p>Hero image caption</p>",
     "hero_image": {
