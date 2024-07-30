@@ -26,7 +26,11 @@ from etna.core.cache_control import (
     apply_default_cache_control,
     apply_default_vary_headers,
 )
-from etna.core.serializers import ImageSerializer, RichTextSerializer
+from etna.core.serializers import (
+    ImageSerializer,
+    MourningSerializer,
+    RichTextSerializer,
+)
 
 __all__ = [
     "BasePage",
@@ -158,6 +162,12 @@ class BasePage(
             return privacy[0]
         return "public"
 
+    @property
+    def mourning_notice(self):
+        from etna.home.models import HomePage
+
+        return HomePage.objects.first().mourning.first()
+
     default_api_fields = [
         APIField("id"),
         APIField("title"),
@@ -190,6 +200,7 @@ class BasePage(
             "twitter_og_image",
             serializer=ImageSerializer("fill-1200x600", source="search_image"),
         ),
+        APIField("mourning_notice", serializer=MourningSerializer()),
     ]
 
 
