@@ -42,7 +42,7 @@ class Alert(models.Model):
     ]
 
     name = models.CharField(
-        max_length=50,
+        max_length=100,
         help_text="The name of the alert to display in the CMS, for easier identification.",
     )
     title = models.CharField(

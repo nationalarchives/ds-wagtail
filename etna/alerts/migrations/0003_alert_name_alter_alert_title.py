@@ -16,7 +16,7 @@ class Migration(migrations.Migration):
             field=models.CharField(
                 default="replace",
                 help_text="The name of the alert to display in the CMS, for easier identification.",
-                max_length=50,
+                max_length=100,
             ),
             preserve_default=False,
         ),
