@@ -164,9 +164,9 @@ class BasePage(
 
     @property
     def mourning_notice(self):
-        from etna.home.models import HomePage
+        from etna.home.models import MourningNotice
 
-        return HomePage.objects.first().mourning.first()
+        return MourningNotice.objects.first()
 
     default_api_fields = [
         APIField("id"),
