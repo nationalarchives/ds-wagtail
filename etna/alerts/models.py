@@ -41,7 +41,14 @@ class Alert(models.Model):
         ("high", "High"),
     ]
 
-    title = models.CharField(max_length=100)
+    name = models.CharField(
+        max_length=50,
+        help_text="The name of the alert to display in the CMS, for easier identification.",
+    )
+    title = models.CharField(
+        max_length=50,
+        help_text="The short title of your alert which will show in bold at the top of the notification banner. E.g. 'Please note' or 'Important information'",
+    )
     message = RichTextField(features=settings.INLINE_RICH_TEXT_FEATURES)
     active = models.BooleanField(default=False)
     cascade = models.BooleanField(
@@ -52,6 +59,7 @@ class Alert(models.Model):
     )
 
     panels = [
+        FieldPanel("name"),
         FieldPanel("title"),
         FieldPanel("message"),
         FieldPanel("active"),
@@ -62,7 +70,7 @@ class Alert(models.Model):
     uid = models.BigIntegerField(null=False, blank=True, editable=False)
 
     def __str__(self):
-        return self.title
+        return self.name
 
     def save(self, *args, **kwargs):
         self.uid = round(time.time() * 1000)
