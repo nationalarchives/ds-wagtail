@@ -23,8 +23,8 @@ from etna.collections.factories import (
     TopicPageFactory,
 )
 from etna.collections.models import Highlight, PageTimePeriod, PageTopic
-from etna.media.models import EtnaMedia
 from etna.home.models import MourningNotice
+from etna.media.models import EtnaMedia
 
 API_URL = "/api/v2/pages/"
 
@@ -54,13 +54,15 @@ class APIResponseTest(WagtailPageTestCase):
     @classmethod
     def setUpTestData(cls):
         cls.root_page = Site.objects.get().root_page
-        cls.root_page.mourning = [MourningNotice.objects.create(
-            name="John Smith",
-            birth_date="1 January 1900",
-            death_date="1 January 2000",
-            page=cls.root_page,
-            page_id=cls.root_page.id,
-        )]
+        cls.root_page.mourning = [
+            MourningNotice.objects.create(
+                name="John Smith",
+                birth_date="1 January 1900",
+                death_date="1 January 2000",
+                page=cls.root_page,
+                page_id=cls.root_page.id,
+            )
+        ]
 
         cls.test_image = ImageFactory(
             transcription="<p>Transcript</p>",
