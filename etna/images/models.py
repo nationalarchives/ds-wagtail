@@ -52,7 +52,7 @@ class CustomImage(ClusterableModel, AbstractImage):
         ),
     )
 
-    custom_sensitive_image_warning = models.TextField(
+    custom_sensitive_image_warning = models.CharField(
         verbose_name=_("Why might this image be considered sensitive? (optional)"),
         help_text=_(
             'Replaces the default warning message where the image is displayed. For example: "This image has been marked as potentially sensitive because it contains depictions of violence".'
