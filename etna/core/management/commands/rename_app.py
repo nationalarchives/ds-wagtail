@@ -60,6 +60,7 @@ class Command(BaseCommand):
                 f"WHERE app_label='{new_app_name}'"
             )
             app_content_types = cursor.fetchall()
+            app_content_types.pop(0)
 
             for content_type in app_content_types:
                 old_table_name = truncate_name(
