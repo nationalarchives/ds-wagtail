@@ -15,8 +15,8 @@ from etna.articles.factories import (
     FocusedArticlePageFactory,
 )
 from etna.articles.models import ArticleTag
-from etna.authors.factories import AuthorIndexPageFactory, AuthorPageFactory
-from etna.authors.models import AuthorTag
+from etna.people.factories import PeopleIndexPageFactory, PersonPageFactory
+from etna.people.models import AuthorTag
 from etna.collections.factories import (
     HighlightGalleryPageFactory,
     TimePeriodPageFactory,
@@ -114,14 +114,14 @@ class APIResponseTest(WagtailPageTestCase):
             first_published_at=DATE_1,
         )
 
-        cls.author_index_page = AuthorIndexPageFactory(
+        cls.author_index_page = PeopleIndexPageFactory(
             parent=cls.root_page,
-            title="authors",
+            title="people",
             first_published_at=DATE_1,
             alert=cls.alert,
         )
 
-        cls.author_page = AuthorPageFactory(
+        cls.author_page = PersonPageFactory(
             title="author",
             role="Test Author",
             summary="<p>Summary text</p>",
