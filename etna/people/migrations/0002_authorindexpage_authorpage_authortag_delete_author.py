@@ -13,7 +13,7 @@ class Migration(migrations.Migration):
     dependencies = [
         ("images", "0008_alter_customimagerendition_file"),
         ("wagtailcore", "0089_log_entry_data_json_null_to_object"),
-        ("authors", "0001_initial"),
+        ("people", "0001_initial"),
     ]
 
     operations = [
@@ -175,7 +175,7 @@ class Migration(migrations.Migration):
                     models.ForeignKey(
                         on_delete=django.db.models.deletion.CASCADE,
                         related_name="author_pages",
-                        to="authors.authorpage",
+                        to="people.AuthorPage",
                         verbose_name="author",
                     ),
                 ),
