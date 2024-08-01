@@ -26,7 +26,7 @@ from wagtail.snippets.models import register_snippet
 from rest_framework import serializers
 from taggit.models import ItemBase, TagBase
 
-from etna.authors.models import AuthorPageMixin
+from etna.people.models import AuthorPageMixin
 from etna.collections.models import TopicalPageMixin
 from etna.core.blocks import AuthorPromotedPagesBlock, FeaturedCollectionBlock
 from etna.core.models import (
