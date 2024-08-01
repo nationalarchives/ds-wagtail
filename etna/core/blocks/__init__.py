@@ -1,5 +1,6 @@
 from .accordion import AccordionsBlock
 from .base import SectionDepthAwareStructBlock
+from .contact import ContactBlock
 from .cta import ButtonBlock, CallToActionBlock, LargeCardLinksBlock
 from .document import DocumentsBlock
 from .featured_content import (
@@ -31,6 +32,7 @@ __all__ = [
     "AuthorPromotedPagesBlock",
     "ButtonBlock",
     "CallToActionBlock",
+    "ContactBlock",
     "ContentImageBlock",
     "ContentTableBlock",
     "DocumentsBlock",
