@@ -1,9 +1,10 @@
+from django.conf import settings
 from django.db import models
 
 from modelcluster.fields import ParentalKey
 from wagtail.admin.panels import FieldPanel, InlinePanel
 from wagtail.api import APIField
-from wagtail.fields import StreamField
+from wagtail.fields import RichTextField, StreamField
 from wagtail.models import Page
 
 from etna.core.models import BasePageWithRequiredIntro
@@ -17,14 +18,12 @@ class MourningNotice(models.Model):
     """
 
     page = ParentalKey(Page, on_delete=models.CASCADE, related_name="mourning")
-    name = models.CharField(max_length=255)
-    birth_date = models.CharField()
-    death_date = models.CharField()
+    title = models.CharField(max_length=255)
+    message = RichTextField(features=settings.INLINE_RICH_TEXT_FEATURES)
 
     panels = [
-        FieldPanel("name"),
-        FieldPanel("birth_date"),
-        FieldPanel("death_date"),
+        FieldPanel("title"),
+        FieldPanel("message"),
     ]
 
 
