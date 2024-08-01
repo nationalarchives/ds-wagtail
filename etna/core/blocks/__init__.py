@@ -8,7 +8,7 @@ from .featured_content import (
     RelatedItemBlock,
 )
 from .image import ContentImageBlock, ImageBlock, ImageGalleryBlock, NoCaptionImageBlock
-from .lists import DoDontListBlock
+from .lists import DescriptionListBlock, DoDontListBlock
 from .page_chooser import APIPageChooserBlock
 from .page_list import PageListBlock
 from .paragraph import ParagraphBlock, ParagraphWithHeading
@@ -33,6 +33,7 @@ __all__ = [
     "CallToActionBlock",
     "ContentImageBlock",
     "ContentTableBlock",
+    "DescriptionListBlock",
     "DocumentsBlock",
     "DoDontListBlock",
     "FeaturedRecordArticleBlock",
