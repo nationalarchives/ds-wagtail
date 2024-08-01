@@ -56,9 +56,8 @@ class APIResponseTest(WagtailPageTestCase):
         cls.root_page = Site.objects.get().root_page
         cls.root_page.mourning = [
             MourningNotice.objects.create(
-                name="John Smith",
-                birth_date="1 January 1900",
-                death_date="1 January 2000",
+                title="Test title",
+                message="<p>Test message</p>",
                 page=cls.root_page,
                 page_id=cls.root_page.id,
             )
