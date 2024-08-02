@@ -23,4 +23,5 @@ def register_icons(icons):
         "wagtailfontawesomesvg/solid/table-cells.svg",
         "wagtailfontawesomesvg/solid/arrow-up.svg",
         "wagtailfontawesomesvg/solid/table-cells-large.svg",
+        "wagtailfontawesomesvg/solid/terminal.svg",
     ]
