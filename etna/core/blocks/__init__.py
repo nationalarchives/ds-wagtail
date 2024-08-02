@@ -1,4 +1,4 @@
-from .accordion import AccordionsBlock
+from .accordion import AccordionsBlock, DetailsBlock
 from .base import SectionDepthAwareStructBlock
 from .contact import ContactBlock
 from .cta import ButtonBlock, CallToActionBlock, LargeCardLinksBlock
@@ -36,6 +36,7 @@ __all__ = [
     "ContentImageBlock",
     "ContentTableBlock",
     "DescriptionListBlock",
+    "DetailsBlock",
     "DocumentsBlock",
     "DoDontListBlock",
     "FeaturedRecordArticleBlock",
