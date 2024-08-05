@@ -15,8 +15,6 @@ from etna.articles.factories import (
     FocusedArticlePageFactory,
 )
 from etna.articles.models import ArticleTag
-from etna.people.factories import PeopleIndexPageFactory, PersonPageFactory
-from etna.people.models import AuthorTag
 from etna.collections.factories import (
     HighlightGalleryPageFactory,
     TimePeriodPageFactory,
@@ -25,6 +23,8 @@ from etna.collections.factories import (
 from etna.collections.models import Highlight, PageTimePeriod, PageTopic
 from etna.home.models import MourningNotice
 from etna.media.models import EtnaMedia
+from etna.people.factories import PeopleIndexPageFactory, PersonPageFactory
+from etna.people.models import AuthorTag
 
 API_URL = "/api/v2/pages/"
 

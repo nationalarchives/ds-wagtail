@@ -4,7 +4,7 @@ from wagtail.models import Site
 
 from ...articles.models import FocusedArticlePage
 from ...images.models import CustomImage
-from ..models import PeopleIndexPage, PersonPage, AuthorTag
+from ..models import AuthorTag, PeopleIndexPage, PersonPage
 
 
 class TestAuthorPages(TestCase):
