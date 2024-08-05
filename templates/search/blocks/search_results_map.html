@@ -1,11 +1,11 @@
 {% load search_tags %}
-
-<div class="ohos-search-results-map-container">
-    <div id="ohos-search-results-map" class="ohos-search-results-map" data-test="{{ default_geo_data }}" data-js-default-lat="{{ default_geo_data.lat }}" data-js-default-lon="{{ default_geo_data.lon }}" data-js-default-zoom="{{ default_geo_data.zoom }}"></div>
-    <div class="ohos-search-results-map__info">
-        <i class="ohos-search-results-map__info-icon fa-solid fa-circle-info"></i>
-        <div>
-            <p>Map view shows only records with location data. <a href="?{% query_string_include 'vis_view' vis_view.LIST.value %}">View all search results.</a></p>
-        </div>
+<div class="ohos-search-results-map__info">
+    <span style="position:relative;top:-8px;"><i class="ohos-search-results-map__info-icon fa-solid fa-circle-info" style="font-size:42px;display:contents;"></i></span>
+    <div>
+        <p style="padding-left:10px;">This map shows a sample of community-archive content using location data and related tags. It will not reflect your search term or any applied filters.</p>
     </div>
+</div>
+<div class="ohos-search-results-map-container">
+
+    <div id="ohos-search-results-map" class="ohos-search-results-map" data-test="{{ default_geo_data }}" data-js-default-lat="{{ default_geo_data.lat }}" data-js-default-lon="{{ default_geo_data.lon }}" data-js-default-zoom="{{ default_geo_data.zoom }}"></div>
 </div>
