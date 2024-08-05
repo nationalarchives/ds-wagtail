@@ -12,8 +12,6 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 import os
 
-from sysconfig import get_path
-
 import sentry_sdk
 
 from sentry_sdk.integrations.django import DjangoIntegration
@@ -126,9 +124,6 @@ TEMPLATES = [
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [
             os.path.join(BASE_DIR, "templates"),
-            os.path.join(
-                get_path("platlib"), "nationalarchives-frontend-django/templates"
-            ),
         ],
         "APP_DIRS": True,
         "OPTIONS": {

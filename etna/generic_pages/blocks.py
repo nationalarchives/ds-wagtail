@@ -6,8 +6,11 @@ from etna.core.blocks import (
     AccordionsBlock,
     ButtonBlock,
     CallToActionBlock,
+    ContactBlock,
     ContentImageBlock,
     ContentTableBlock,
+    DescriptionListBlock,
+    DetailsBlock,
     DocumentsBlock,
     DoDontListBlock,
     FeaturedRecordArticleBlock,
@@ -32,6 +35,9 @@ class SectionContentBlock(blocks.StreamBlock):
     accordions = AccordionsBlock()
     button = ButtonBlock()
     call_to_action = CallToActionBlock()
+    contact = ContactBlock()
+    description_list = DescriptionListBlock()
+    details = DetailsBlock()
     document = DocumentsBlock()
     do_dont_list = DoDontListBlock()
     featured_record_article = FeaturedRecordArticleBlock()

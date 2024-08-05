@@ -16,7 +16,6 @@ class TaggableSerializer(serializers.CharField):
 class MourningSerializer(serializers.Serializer):
     def to_representation(self, instance):
         return {
-            "name": instance.name,
-            "birth_date": instance.birth_date,
-            "death_date": instance.death_date,
+            "title": instance.title,
+            "message": instance.message,
         }

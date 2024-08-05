@@ -1,5 +1,6 @@
-from .accordion import AccordionsBlock
+from .accordion import AccordionsBlock, DetailsBlock
 from .base import SectionDepthAwareStructBlock
+from .contact import ContactBlock
 from .cta import ButtonBlock, CallToActionBlock, LargeCardLinksBlock
 from .document import DocumentsBlock
 from .featured_content import (
@@ -8,7 +9,7 @@ from .featured_content import (
     RelatedItemBlock,
 )
 from .image import ContentImageBlock, ImageBlock, ImageGalleryBlock, NoCaptionImageBlock
-from .lists import DoDontListBlock
+from .lists import DescriptionListBlock, DoDontListBlock
 from .page_chooser import APIPageChooserBlock
 from .page_list import PageListBlock
 from .paragraph import ParagraphBlock, ParagraphWithHeading
@@ -31,8 +32,11 @@ __all__ = [
     "AuthorPromotedPagesBlock",
     "ButtonBlock",
     "CallToActionBlock",
+    "ContactBlock",
     "ContentImageBlock",
     "ContentTableBlock",
+    "DescriptionListBlock",
+    "DetailsBlock",
     "DocumentsBlock",
     "DoDontListBlock",
     "FeaturedRecordArticleBlock",
