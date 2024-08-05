@@ -2,11 +2,11 @@
 
 <div class="tag-frequency">
     <div class="tag-frequency__tags">
-        <p class="tag-frequency__title">Filter by:</p>
+        <p class="tag-frequency__title">Refine by category:</p>
         <ul class="tag-frequency__tags-list">
 
           
-                <a href="{% tag_type_url tag_type=tag_type.LOCATION|upper %}#tagTop" class="ohos-tag ohos-tag--location">
+                <a href="{% tag_type_url tag_type=tag_type.LOCATION|upper %}#tagTop" class="ohos-tag ohos-tag--location" aria-label="Category: Location">
 
                     <span class="ohos-tag__inner">
                         Location
@@ -19,7 +19,7 @@
 
             <li>
 
-                <a href="{% tag_type_url tag_type=tag_type.PERSON|upper %}#tagTop" class="ohos-tag ohos-tag--person">
+                <a href="{% tag_type_url tag_type=tag_type.PERSON|upper %}#tagTop" class="ohos-tag ohos-tag--person" aria-label="Category: Person">
 
                     <span class="ohos-tag__inner">
                         Person
@@ -32,7 +32,7 @@
 
             <li>
 
-                <a href="{% tag_type_url tag_type=tag_type.ORGANISATION|upper %}#tagTop" class="ohos-tag ohos-tag--organisation">
+                <a href="{% tag_type_url tag_type=tag_type.ORGANISATION|upper %}#tagTop" class="ohos-tag ohos-tag--organisation" aria-label="Category: Organisation">
 
                     <span class="ohos-tag__inner">
                         Organisation
@@ -45,7 +45,7 @@
 
             <li>
 
-                <a href="{% tag_type_url tag_type=tag_type.MISCELLANEOUS|upper %}#tagTop" class="ohos-tag ohos-tag--misc">
+                <a href="{% tag_type_url tag_type=tag_type.MISCELLANEOUS|upper %}#tagTop" class="ohos-tag ohos-tag--misc" aria-label="Category: Miscellaneous">
 
                     <span class="ohos-tag__inner">
                         Miscellaneous
