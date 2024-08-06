@@ -20,16 +20,22 @@ from wagtail.search import index
 from wagtail_headless_preview.models import HeadlessPreviewMixin
 from wagtailmetadata.models import MetadataPageMixin
 
+from etna.alerts.models import AlertMixin
 from etna.analytics.mixins import DataLayerMixin
 from etna.core.cache_control import (
     apply_default_cache_control,
     apply_default_vary_headers,
 )
-from etna.core.serializers import ImageSerializer, RichTextSerializer
+from etna.core.serializers import (
+    ImageSerializer,
+    MourningSerializer,
+    RichTextSerializer,
+)
 
 __all__ = [
     "BasePage",
     "BasePageWithIntro",
+    "BasePageWithRequiredIntro",
 ]
 
 # Tiny hack to allow us to specify a `verbose_name_public` attribute
@@ -40,7 +46,9 @@ options.DEFAULT_NAMES = options.DEFAULT_NAMES + ("verbose_name_public",)
 
 @method_decorator(apply_default_vary_headers, name="serve")
 @method_decorator(apply_default_cache_control, name="serve")
-class BasePage(MetadataPageMixin, DataLayerMixin, HeadlessPreviewMixin, Page):
+class BasePage(
+    AlertMixin, MetadataPageMixin, DataLayerMixin, HeadlessPreviewMixin, Page
+):
     """
     An abstract base model that is used for all Page models within
     the project. Any common fields, Wagtail overrides or custom
@@ -108,6 +116,8 @@ class BasePage(MetadataPageMixin, DataLayerMixin, HeadlessPreviewMixin, Page):
         FieldPanel("teaser_text"),
     ]
 
+    settings_panels = Page.settings_panels + AlertMixin.settings_panels
+
     class Meta:
         abstract = True
 
@@ -152,6 +162,12 @@ class BasePage(MetadataPageMixin, DataLayerMixin, HeadlessPreviewMixin, Page):
             return privacy[0]
         return "public"
 
+    @property
+    def mourning_notice(self):
+        from etna.home.models import MourningNotice
+
+        return MourningNotice.objects.first()
+
     default_api_fields = [
         APIField("id"),
         APIField("title"),
@@ -165,7 +181,7 @@ class BasePage(MetadataPageMixin, DataLayerMixin, HeadlessPreviewMixin, Page):
         ),
     ]
 
-    api_fields = [
+    api_fields = AlertMixin.api_fields + [
         APIField("type_label"),
         APIField("teaser_text"),
         APIField(
@@ -184,6 +200,7 @@ class BasePage(MetadataPageMixin, DataLayerMixin, HeadlessPreviewMixin, Page):
             "twitter_og_image",
             serializer=ImageSerializer("fill-1200x600", source="search_image"),
         ),
+        APIField("mourning_notice", serializer=MourningSerializer()),
     ]
 
 
@@ -200,6 +217,8 @@ class BasePageWithIntro(BasePage):
         ),
         features=settings.INLINE_RICH_TEXT_FEATURES,
         max_length=300,
+        null=True,
+        blank=True,
     )
 
     class Meta:
@@ -214,3 +233,22 @@ class BasePageWithIntro(BasePage):
     api_fields = BasePage.api_fields + [
         APIField("intro", serializer=RichTextSerializer())
     ]
+
+
+class BasePageWithRequiredIntro(BasePageWithIntro):
+    """
+    An abstract base model for more long-form content pages that
+    start with a required 'intro'.
+    """
+
+    intro = RichTextField(
+        verbose_name=_("introductory text"),
+        help_text=_(
+            "1-2 sentences introducing the subject of the page, and explaining why a user should read on."
+        ),
+        features=settings.INLINE_RICH_TEXT_FEATURES,
+        max_length=300,
+    )
+
+    class Meta:
+        abstract = True

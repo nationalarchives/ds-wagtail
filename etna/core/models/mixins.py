@@ -3,13 +3,14 @@ from datetime import timedelta
 from django.db import models
 from django.utils import timezone
 from django.utils.functional import cached_property
+from django.utils.safestring import mark_safe
 
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel
 from wagtail.api import APIField
 from wagtail.fields import RichTextField
 from wagtail.images import get_image_model_string
 
-from etna.core.serializers import ImageSerializer, RichTextSerializer
+from etna.core.serializers import DetailedImageSerializer, RichTextSerializer
 
 from .forms import RequiredHeroImagePageForm
 
@@ -18,6 +19,7 @@ __all__ = [
     "NewLabelMixin",
     "HeroImageMixin",
     "RequiredHeroImageMixin",
+    "SidebarMixin",
 ]
 
 
@@ -162,11 +164,11 @@ class HeroImageMixin(models.Model):
         APIField("hero_image_caption", serializer=RichTextSerializer()),
         APIField(
             "hero_image",
-            serializer=ImageSerializer("fill-1200x480"),
+            serializer=DetailedImageSerializer("fill-1200x480"),
         ),
         APIField(
             "hero_image_small",
-            serializer=ImageSerializer("fill-600x400", source="hero_image"),
+            serializer=DetailedImageSerializer("fill-600x400", source="hero_image"),
         ),
     ]
 
@@ -178,3 +180,31 @@ class RequiredHeroImageMixin(HeroImageMixin):
         abstract = True
 
     base_form_class = RequiredHeroImagePageForm
+
+
+class SidebarMixin(models.Model):
+    """Mixin to add sidebar options to a Page."""
+
+    page_sidebar = models.CharField(
+        choices=[
+            ("contents", "Contents"),
+            ("sections", "Sections"),
+            ("pages", "Pages"),
+        ],
+        help_text=mark_safe(
+            "Select the sidebar style for this page. For more information, see the <a href='https://nationalarchives.github.io/design-system/components/sidebar/'>sidebar documentation</a>."
+        ),
+        null=True,
+        blank=True,
+    )
+
+    class Meta:
+        abstract = True
+
+    settings_panels = [
+        FieldPanel("page_sidebar"),
+    ]
+
+    api_fields = [
+        APIField("page_sidebar"),
+    ]

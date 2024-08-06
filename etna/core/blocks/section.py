@@ -31,3 +31,12 @@ class SubHeadingBlock(SectionDepthAwareStructBlock):
         icon = "heading"
         label = "Sub-heading"
         template = "articles/blocks/sub_heading.html"
+
+
+class SubSubHeadingBlock(SectionDepthAwareStructBlock):
+    heading = blocks.CharBlock(max_length=100, label="Sub-sub-heading")
+
+    class Meta:
+        icon = "heading"
+        label = "Sub-sub-heading"
+        template = "articles/blocks/sub_heading.html"

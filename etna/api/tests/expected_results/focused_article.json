@@ -24,6 +24,7 @@
         "url": "/article_index/focused_article/"
     },
     "title": "focused_article",
+    "global_alert": null,
     "type_label": "Focus on",
     "teaser_text": "Teaser text",
     "teaser_image": {
@@ -60,6 +61,10 @@
     },
     "facebook_og_image": null,
     "twitter_og_image": null,
+    "mourning_notice": {
+        "title": "Test title",
+        "message": "<p>Test message</p>"
+    },
     "intro": "<p>Intro text</p>",
     "hero_image_caption": "<p>Hero image caption</p>",
     "hero_image": {
@@ -76,7 +81,12 @@
             "full_url": "https://nationalarchives.gov.uk/media/images/examp.2e16d0ba.fill-1200x480.format-webp.webpquality-60_mfg9Hat.webp",
             "width": 100,
             "height": 40
-        }
+        },
+        "transcript": null,
+        "translation": null,
+        "copyright": null,
+        "is_sensitive": false,
+        "custom_sensitive_image": null
     },
     "hero_image_small": {
         "id": 15,
@@ -92,7 +102,12 @@
             "full_url": "https://nationalarchives.gov.uk/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-60_bj9aWVy.webp",
             "width": 100,
             "height": 68
-        }
+        },
+        "transcript": null,
+        "translation": null,
+        "copyright": null,
+        "is_sensitive": false,
+        "custom_sensitive_image": null
     },
     "display_content_warning": false,
     "custom_warning_text": "",

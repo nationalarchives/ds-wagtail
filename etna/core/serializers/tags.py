@@ -11,3 +11,11 @@ class TaggableSerializer(serializers.CharField):
 
     def to_representation(self, instance):
         return [tag.name for tag in instance.all()]
+
+
+class MourningSerializer(serializers.Serializer):
+    def to_representation(self, instance):
+        return {
+            "title": instance.title,
+            "message": instance.message,
+        }

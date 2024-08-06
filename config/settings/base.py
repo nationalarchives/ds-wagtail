@@ -12,8 +12,6 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 import os
 
-from sysconfig import get_path
-
 import sentry_sdk
 
 from sentry_sdk.integrations.django import DjangoIntegration
@@ -68,6 +66,7 @@ INSTALLED_APPS = [
     "etna.whatson",
     "wagtail.contrib.forms",
     "wagtail.contrib.redirects",
+    "wagtail.contrib.table_block",
     "wagtail.embeds",
     "wagtail.sites",
     "wagtail.users",
@@ -125,9 +124,6 @@ TEMPLATES = [
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [
             os.path.join(BASE_DIR, "templates"),
-            os.path.join(
-                get_path("platlib"), "nationalarchives-frontend-django/templates"
-            ),
         ],
         "APP_DIRS": True,
         "OPTIONS": {
@@ -305,6 +301,8 @@ WAGTAILSEARCH_BACKENDS = {
     }
 }
 
+WAGTAILDOCS_DOCUMENT_MODEL = "core.CustomDocument"
+
 WAGTAILIMAGES_IMAGE_MODEL = "images.CustomImage"
 
 # Custom password template for private pages
@@ -457,3 +455,5 @@ if redis_url := os.getenv("REDIS_URL"):
             "KEY_PREFIX": "renditions",
         },
     }
+
+WAGTAILAPI_LIMIT_MAX = int(os.getenv("WAGTAILAPI_LIMIT_MAX", "0")) or None

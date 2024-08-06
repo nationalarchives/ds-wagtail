@@ -8,6 +8,7 @@ from wagtail.test.utils import WagtailPageTestCase
 
 from wagtail_factories import ImageFactory
 
+from etna.alerts.models import Alert
 from etna.articles.factories import (
     ArticleIndexPageFactory,
     ArticlePageFactory,
@@ -22,6 +23,7 @@ from etna.collections.factories import (
     TopicPageFactory,
 )
 from etna.collections.models import Highlight, PageTimePeriod, PageTopic
+from etna.home.models import MourningNotice
 from etna.media.models import EtnaMedia
 
 API_URL = "/api/v2/pages/"
@@ -52,6 +54,14 @@ class APIResponseTest(WagtailPageTestCase):
     @classmethod
     def setUpTestData(cls):
         cls.root_page = Site.objects.get().root_page
+        cls.root_page.mourning = [
+            MourningNotice.objects.create(
+                title="Test title",
+                message="<p>Test message</p>",
+                page=cls.root_page,
+                page_id=cls.root_page.id,
+            )
+        ]
 
         cls.test_image = ImageFactory(
             transcription="<p>Transcript</p>",
@@ -59,6 +69,14 @@ class APIResponseTest(WagtailPageTestCase):
             copyright="Copyrighted by someone",
             description="<p>Description</p>",
             record_dates="1900-2000",
+        )
+
+        cls.alert = Alert.objects.create(
+            title="BETA",
+            message="<p>Message</p>",
+            active=True,
+            cascade=True,
+            alert_level="high",
         )
 
         cls.test_media = EtnaMedia.objects.create(
@@ -99,6 +117,7 @@ class APIResponseTest(WagtailPageTestCase):
             parent=cls.root_page,
             title="authors",
             first_published_at=DATE_1,
+            alert=cls.alert,
         )
 
         cls.author_page = AuthorPageFactory(
@@ -308,6 +327,7 @@ class APIResponseTest(WagtailPageTestCase):
         )
 
     def request_api(self, path: str = ""):
+        self.maxDiff = None
         return self.client.get(
             f"{API_URL}{path}" + ("/" if path else ""), format="json"
         )
@@ -324,6 +344,7 @@ class APIResponseTest(WagtailPageTestCase):
             "HOME_PAGE_ID": str(self.root_page.id),
             "ARTICLE_INDEX_ID": str(self.article_index.id),
             "ARTICLE_ID": str(self.article.id),
+            "ALERT_UID": str(self.alert.uid),
             "FOCUSED_ID": str(self.focused_article.id),
             "ARTS_ID": str(self.arts.id),
             "EARLY_MODERN_ID": str(self.early_modern.id),

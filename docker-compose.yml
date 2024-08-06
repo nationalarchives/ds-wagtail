@@ -1,9 +1,6 @@
-version: '3'
-
 services:
 
   db:
-    container_name: db
     image: postgres:12.0
     ports:
       - 5432:5432
@@ -11,7 +8,6 @@ services:
       - ./database_dumps:/app/database_dumps
 
   web:
-    container_name: web
     build: .
     volumes:
       - ./etna:/app/etna
@@ -52,7 +48,6 @@ services:
       - REDIS_URL=redis://:redis@redis:6379
 
   cli:
-    container_name: cli
     platform: linux/amd64
     build: platformsh-cli
     volumes:
@@ -62,7 +57,6 @@ services:
       - .env
 
   docs:
-    container_name: docs
     image: squidfunk/mkdocs-material
     volumes:
       - .:/docs
@@ -70,7 +64,6 @@ services:
       - 8001:8000
 
   dev:
-    container_name: dev
     build:
       context: .
       dockerfile: dev/Dockerfile

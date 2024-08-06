@@ -13,6 +13,7 @@ def register_icons(icons):
     return icons + [
         "wagtailfontawesomesvg/solid/star.svg",
         "wagtailfontawesomesvg/solid/box-archive.svg",
+        "wagtailfontawesomesvg/solid/indent.svg",
         "wagtailfontawesomesvg/solid/list.svg",
         "wagtailfontawesomesvg/solid/up-right-from-square.svg",
         "wagtailfontawesomesvg/solid/play.svg",
@@ -22,4 +23,5 @@ def register_icons(icons):
         "wagtailfontawesomesvg/solid/table-cells.svg",
         "wagtailfontawesomesvg/solid/arrow-up.svg",
         "wagtailfontawesomesvg/solid/table-cells-large.svg",
+        "wagtailfontawesomesvg/solid/terminal.svg",
     ]

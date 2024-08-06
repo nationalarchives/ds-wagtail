@@ -24,6 +24,7 @@
         "url": "/article_index/"
     },
     "title": "article_index",
+    "global_alert": null,
     "type_label": "Article index",
     "teaser_text": "Teaser text",
     "teaser_image": {
@@ -60,6 +61,10 @@
     },
     "facebook_og_image": null,
     "twitter_og_image": null,
+    "mourning_notice": {
+        "title": "Test title",
+        "message": "<p>Test message</p>"
+    },
     "intro": "<p>Intro text</p>",
     "featured_article": {
         "id": ARTICLE_ID,

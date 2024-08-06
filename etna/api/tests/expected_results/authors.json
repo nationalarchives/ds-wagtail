@@ -24,6 +24,13 @@
         "url": "/authors/"
     },
     "title": "authors",
+    "global_alert": {
+        "title": "BETA",
+        "message": "<p>Message</p>",
+        "alert_level": "high",
+        "cascade": true,
+        "uid": ALERT_UID
+    },
     "type_label": "Author index",
     "teaser_text": "Teaser text",
     "teaser_image": {
@@ -60,6 +67,10 @@
     },
     "facebook_og_image": null,
     "twitter_og_image": null,
+    "mourning_notice": {
+        "title": "Test title",
+        "message": "<p>Test message</p>"
+    },
     "author_pages": [
         {
             "id": AUTHOR_ID,
