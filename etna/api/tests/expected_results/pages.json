@@ -111,10 +111,10 @@
         },
         {
             "id": AUTHOR_INDEX_ID,
-            "title": "authors",
-            "url": "/authors/",
-            "full_url": "http://localhost/authors/",
-            "type_label": "Author index",
+            "title": "people",
+            "url": "/people/",
+            "full_url": "http://localhost/people/",
+            "type_label": "People index",
             "teaser_text": "Teaser text",
             "teaser_image": {
                 "id": 8,
@@ -136,9 +136,9 @@
         {
             "id": AUTHOR_ID,
             "title": "author",
-            "url": "/authors/author/",
-            "full_url": "http://localhost/authors/author/",
-            "type_label": "Author",
+            "url": "/people/author/",
+            "full_url": "http://localhost/people/author/",
+            "type_label": "Person",
             "teaser_text": "Teaser text",
             "teaser_image": {
                 "id": 10,

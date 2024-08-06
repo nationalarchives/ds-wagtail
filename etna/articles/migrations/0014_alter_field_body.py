@@ -29,7 +29,7 @@ class Migration(migrations.Migration):
                                 (
                                     "author",
                                     wagtail.snippets.blocks.SnippetChooserBlock(
-                                        "authors.Author"
+                                        "people.Author"
                                     ),
                                 )
                             ]
