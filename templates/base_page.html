@@ -1,13 +1,33 @@
 {% extends "base.html" %}
-{% load alert_tags datalayer_tags wagtailmetadata_tags %}
+{% load alert_tags datalayer_tags wagtailimages_tags %}
 
 {% comment %}
     Base template for rendering Wagtail page instances
 {% endcomment %}
 
 {% block meta_tag %}
-    {{ block.super }}
-    {% meta_tags %}
+    {% image page.teaser_image fill-500x500 as teaser_img %}
+    {% image page.search_image fill-500x500 as og_img %}
+    {% image page.twitter_og_image fill-500x500 as twitter_img %}
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="{% if not page.twitter_og_title %}{% if not page.seo_title %}{{ page.title }}{% else %}{{ page.seo_title }}{% endif %}{% else %}{{ page.twitter_og_title }}{% endif %}">
+    <meta name="twitter:description" content="{% if not page.twitter_og_description %}{% if not page.search_description %}{{ page.teaser_image }}{% else %}{{ page.search_description }}{% endif %}{% else %}{{ page.twitter_og_description }}{% endif %}">
+    <meta name="twitter:image" content="{% if not twitter_img %}{{ og_img.full_url }}{% else %}{{ twitter_img.full_url }}{% endif %}">
+    <meta property="og:url" content="{{ page.full_url }}">
+    <meta property="og:title" content="{% if not page.seo_title %}{{ page.title }}{% else %}{{ page.seo_title }}{% endif %}">
+    <meta property="og:description" content="{% if not page.search_description %}{{ page.teaser_text }}{% else %}{{ page.search_description }}{% endif %}">
+    {% if not og_img %}
+        <meta property="og:image" content="{{ teaser_img.full_url }}">
+        <meta property="og:image:width" content="{{ teaser_img.width }}">
+        <meta property="og:image:height" content="{{ teaser_img.height }}">
+    {% else %}
+        <meta property="og:image" content="{{ og_img.full_url }}">
+        <meta property="og:image:width" content="{{ og_img.width }}">
+        <meta property="og:image:height" content="{{ og_img.height }}">
+    {% endif %}
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="en_GB">
+    <meta property="og:site_name" content="The National Archives">
 {% endblock %}
 
 {% block extra_gtm_js %}
