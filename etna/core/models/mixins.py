@@ -283,15 +283,6 @@ class SocialMixin(models.Model):
         null=True,
         help_text=_("If left blank, the OpenGraph description will be used."),
     )
-    twitter_og_author = models.CharField(
-        verbose_name=_("Twitter OpenGraph author"),
-        max_length=255,
-        blank=True,
-        null=True,
-        help_text=_(
-            "This will be used if there are no authors of the page. If left blank, the site name will be used."
-        ),
-    )
     twitter_og_image = models.ForeignKey(
         get_image_model_string(),
         null=True,
@@ -343,7 +334,6 @@ class SocialMixin(models.Model):
             [
                 FieldPanel("twitter_og_title"),
                 FieldPanel("twitter_og_description"),
-                FieldPanel("twitter_og_author"),
                 FieldPanel("twitter_og_image"),
             ],
             heading="Twitter OpenGraph data",
@@ -374,7 +364,6 @@ class SocialMixin(models.Model):
         ),
         APIField("twitter_og_title"),
         APIField("twitter_og_description"),
-        APIField("twitter_og_author"),
         APIField(
             "twitter_og_image",
             serializer=ImageSerializer("fill-1200x630"),
