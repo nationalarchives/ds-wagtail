@@ -247,29 +247,6 @@ class SocialMixin(models.Model):
         ),
     )
 
-    facebook_og_title = models.CharField(
-        verbose_name=_("Facebook OpenGraph title"),
-        max_length=255,
-        blank=True,
-        null=True,
-        help_text=_("If left blank, the OpenGraph title will be used."),
-    )
-    facebook_og_description = models.TextField(
-        verbose_name=_("Facebook OpenGraph description"),
-        blank=True,
-        null=True,
-        help_text=_("If left blank, the OpenGraph description will be used."),
-    )
-    facebook_og_image = models.ForeignKey(
-        get_image_model_string(),
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="+",
-        verbose_name=_("Facebook OpenGraph image"),
-        help_text=_("If left blank, the OpenGraph image will be used."),
-    )
-
     twitter_og_title = models.CharField(
         verbose_name=_("Twitter OpenGraph title"),
         max_length=255,
@@ -324,14 +301,6 @@ class SocialMixin(models.Model):
         ),
         MultiFieldPanel(
             [
-                FieldPanel("facebook_og_title"),
-                FieldPanel("facebook_og_description"),
-                FieldPanel("facebook_og_image"),
-            ],
-            heading="Facebook OpenGraph data",
-        ),
-        MultiFieldPanel(
-            [
                 FieldPanel("twitter_og_title"),
                 FieldPanel("twitter_og_description"),
                 FieldPanel("twitter_og_image"),
@@ -354,12 +323,6 @@ class SocialMixin(models.Model):
         APIField("search_description"),
         APIField(
             "search_image",
-            serializer=ImageSerializer("fill-1200x630"),
-        ),
-        APIField("facebook_og_title"),
-        APIField("facebook_og_description"),
-        APIField(
-            "facebook_og_image",
             serializer=ImageSerializer("fill-1200x630"),
         ),
         APIField("twitter_og_title"),

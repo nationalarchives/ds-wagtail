@@ -1,4 +1,4 @@
-{% load static wagtailuserbar wagtailcore_tags wagtailsettings_tags wagtailmetadata_tags robots_meta %}<!DOCTYPE html>
+{% load static wagtailuserbar wagtailcore_tags wagtailsettings_tags robots_meta %}<!DOCTYPE html>
 {% get_settings %}
 <html class="tna-template tna-template--light-theme tna-template--yellow-accent no-js {% block html_class%}{% endblock %}" lang="en-GB">
     <head>
@@ -6,21 +6,23 @@
     <base target="_blank">
     {% endif %}
         <meta charset="utf-8" />
-    {% block meta_tag %}
-        <title>
-            {% block prepend_title %}{% endblock %}
-            {% block title_prefix %}
-                {% if form.errors %}Error: {% endif %}
-            {% endblock %}
-            {% block title %}
-                {% firstof page.seo_title page.title meta_title "Untitled" %}
-            {% endblock %}
-            {% block title_suffix %}
-                {% wagtail_site as current_site %}
-                 – {{ current_site.site_name }}
-            {% endblock %}
-        </title>
-     {% endblock %}
+        {% block meta_tag %}
+        {% wagtail_site as current_site %}
+            <title>
+                {% block prepend_title %}{% endblock %}
+                {% block title_prefix %}
+                    {% if form.errors %}Error: {% endif %}
+                {% endblock %}
+                {% block title %}
+                    {% firstof page.seo_title page.title meta_title "Untitled" %}
+                {% endblock %}
+                {% block title_suffix %}
+                    – {{ current_site.site_name }}
+                {% endblock %}
+            </title>
+        <meta property="og:site_name" content="{{ current_site.site_name }}">
+        <meta property="og:locale" content="en_GB">
+        {% endblock %}
         <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
         <meta name="format-detection" content="telephone=no" />
         <!--hiding from robots/indexing if search pages or detail page.-->

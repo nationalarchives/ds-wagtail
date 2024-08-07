@@ -2245,6 +2245,20 @@ Wagtail = ">=4.1"
 testing = ["coverage[toml] (>=7.0,<8.0)", "django-cors-headers", "tox (>=4)"]
 
 [[package]]
+name = "wagtail-metadata"
+version = "5.0.0"
+description = "A tool to assist with metadata for social media."
+optional = false
+python-versions = ">=3"
+files = [
+    {file = "wagtail-metadata-5.0.0.tar.gz", hash = "sha256:3b9109928bad53306b21b64cf9205d84cbb88fc625bac0a38305bebb9c26e64a"},
+    {file = "wagtail_metadata-5.0.0-py2.py3-none-any.whl", hash = "sha256:fcc2bbb71e83b353ceef05d69a4cde3f2fbe645c9e5035e46f7829fc234a6405"},
+]
+
+[package.dependencies]
+wagtail = ">=5.0"
+
+[[package]]
 name = "wagtailmedia"
 version = "0.15.2"
 description = "A Wagtail module for audio and video files."
@@ -2347,4 +2361,4 @@ wand = ["Wand (>=0.6,<1.0)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "e18a8a9d5266fbb9f2865b8cf1fcc477adaf1df124a0b9fa5d25164294942f48"
+content-hash = "c852edc66fb8e3808a1708af806adb9486695e21736037f4de619664aa08c923"
