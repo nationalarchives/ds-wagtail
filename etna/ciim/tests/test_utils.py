@@ -618,6 +618,27 @@ class TestPrepareOhosParam(SimpleTestCase):
                     ],
                 ),
             ),
+            (
+                "parent children selection - SID",  # label
+                # params
+                (
+                    "list",
+                    ["community"],
+                    [
+                        "collection:parent-collectionCain:CAIN Archive - Conflict and Politics in Northern Ireland",
+                        "collection:child-collectionCain:An index of Deaths from the Conflict in Ireland",
+                        "group:community",
+                    ],
+                ),
+                # expected
+                (
+                    ["community", "collectionCain"],
+                    [
+                        "collectionOhos:An index of Deaths from the Conflict in Ireland",
+                        "group:community",
+                    ],
+                ),
+            ),
         )
 
         for label, params, expected in test_data:

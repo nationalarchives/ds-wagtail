@@ -25,6 +25,7 @@ class TestIDFormats(SimpleTestCase):
             ("ohos-shc-1", "shc-7694-6-1-1-4"),
             ("ohos-shc-2", "shc-CC1174-2-1-1-1"),
             ("ohos-mpa", "mpa-12345"),
+            ("ohos-sid", "sid-12345"),
         ):
             id_regex = re.compile(IDConverter.regex)
             with self.subTest(label):

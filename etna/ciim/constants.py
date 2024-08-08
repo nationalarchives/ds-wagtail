@@ -769,6 +769,7 @@ class CommunityCollectionMapping(StrEnum):
         "wmk-0",
         "https://catalogue.mkcdc.org.uk/",
     )
+    SID = ("CAIN Archive - Conflict and Politics in Northern Ireland", "sid-0", "")
 
     def __new__(cls, value, community_level_ciim_id, webpage_url):
         obj = str.__new__(cls, [value])
@@ -791,6 +792,7 @@ NESTED_CHECKBOX_VALUES_AGGS_NAMES_MAP = {
     CommunityCollectionMapping.SHC.value: ("collectionSurrey", "collectionSurreyAll"),
     CommunityCollectionMapping.MPA.value: ("collectionMorrab", "collectionMorrabAll"),
     CommunityCollectionMapping.WMK.value: ("collectionWMK", ""),
+    CommunityCollectionMapping.SID.value: ("collectionCain", ""),
 }
 
 # prefix ends with "-"
