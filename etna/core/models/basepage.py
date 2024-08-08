@@ -163,7 +163,13 @@ class BasePage(AlertMixin, SocialMixin, DataLayerMixin, HeadlessPreviewMixin, Pa
         APIField("mourning_notice", serializer=MourningSerializer()),
     ]
 
-    api_meta_fields = SocialMixin.api_meta_fields
+    api_meta_fields = [
+        APIField("teaser_text"),
+        APIField(
+            "teaser_image",
+            serializer=ImageSerializer("fill-600x400"),
+        ),
+    ] + SocialMixin.api_meta_fields
 
 
 class BasePageWithIntro(BasePage):

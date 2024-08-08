@@ -294,11 +294,6 @@ class SocialMixin(models.Model):
     ]
 
     api_meta_fields = [
-        APIField("teaser_text"),
-        APIField(
-            "teaser_image",
-            serializer=ImageSerializer("fill-600x400"),
-        ),
         APIField(
             "teaser_image_square",
             serializer=ImageSerializer("fill-512x512", source="teaser_image"),
