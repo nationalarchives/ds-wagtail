@@ -219,22 +219,6 @@ class SidebarMixin(models.Model):
 class SocialMixin(models.Model):
     """Mixin to add social media sharing options to a Page."""
 
-    teaser_text = models.TextField(
-        verbose_name=_("teaser text"),
-        help_text=_(
-            "A short, enticing description of this page. This will appear in promos and under thumbnails around the site."
-        ),
-        max_length=160,
-    )
-    teaser_image = models.ForeignKey(
-        get_image_model_string(),
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="+",
-        help_text=_("Image that will appear on thumbnails and promos around the site."),
-    )
-
     search_image = models.ForeignKey(
         get_image_model_string(),
         null=True,

@@ -13,6 +13,7 @@ from wagtail.admin.panels import FieldPanel, MultiFieldPanel
 from wagtail.admin.widgets.slug import SlugInput
 from wagtail.api import APIField
 from wagtail.fields import RichTextField
+from wagtail.images import get_image_model_string
 from wagtail.models import Page
 from wagtail.search import index
 
@@ -52,6 +53,22 @@ class BasePage(AlertMixin, SocialMixin, DataLayerMixin, HeadlessPreviewMixin, Pa
     the project. Any common fields, Wagtail overrides or custom
     functionality can be added here.
     """
+
+    teaser_text = models.TextField(
+        verbose_name=_("teaser text"),
+        help_text=_(
+            "A short, enticing description of this page. This will appear in promos and under thumbnails around the site."
+        ),
+        max_length=160,
+    )
+    teaser_image = models.ForeignKey(
+        get_image_model_string(),
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        help_text=_("Image that will appear on thumbnails and promos around the site."),
+    )
 
     uuid = models.UUIDField("UUID", unique=True, default=uuid4, editable=False)
 
