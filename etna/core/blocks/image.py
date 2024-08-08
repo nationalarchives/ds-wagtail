@@ -2,13 +2,32 @@ from django.conf import settings
 from django.forms.utils import ErrorList
 from django.utils.safestring import mark_safe
 
-from wagtail import blocks
+from wagtail import blocks, hooks
 from wagtail.blocks import StructValue
 from wagtail.blocks.struct_block import StructBlockValidationError
 from wagtail.images.blocks import ImageChooserBlock
+from wagtail.images.image_operations import FilterOperation
+
+from PIL import ImageFilter
 
 from etna.core.blocks.paragraph import APIRichTextBlock
 from etna.core.serializers.images import DetailedImageSerializer
+
+
+class BlurOperation(FilterOperation):
+    def construct(self, radius):
+        self.radius = int(radius)
+
+    def run(self, willow, image, env):
+        willow.image = willow.image.filter(ImageFilter.GaussianBlur(radius=self.radius))
+        return willow
+
+
+@hooks.register("register_image_operations")
+def register_image_operations():
+    return [
+        ("blur", BlurOperation),
+    ]
 
 
 class APIImageChooserBlock(ImageChooserBlock):
