@@ -8,13 +8,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("generic_pages", "0031_alter_generalpage_body"),
         ("images", "0009_alter_customimage_custom_sensitive_image_warning"),
+        ("people", "0006_alter_authortag_author"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name="generalpage",
+            model_name="peopleindexpage",
             name="twitter_og_description",
             field=models.TextField(
                 blank=True,
@@ -24,7 +24,7 @@ class Migration(migrations.Migration):
             ),
         ),
         migrations.AddField(
-            model_name="generalpage",
+            model_name="peopleindexpage",
             name="twitter_og_image",
             field=models.ForeignKey(
                 blank=True,
@@ -37,7 +37,7 @@ class Migration(migrations.Migration):
             ),
         ),
         migrations.AddField(
-            model_name="generalpage",
+            model_name="peopleindexpage",
             name="twitter_og_title",
             field=models.CharField(
                 blank=True,
@@ -48,7 +48,7 @@ class Migration(migrations.Migration):
             ),
         ),
         migrations.AddField(
-            model_name="hubpage",
+            model_name="personpage",
             name="twitter_og_description",
             field=models.TextField(
                 blank=True,
@@ -58,7 +58,7 @@ class Migration(migrations.Migration):
             ),
         ),
         migrations.AddField(
-            model_name="hubpage",
+            model_name="personpage",
             name="twitter_og_image",
             field=models.ForeignKey(
                 blank=True,
@@ -71,7 +71,7 @@ class Migration(migrations.Migration):
             ),
         ),
         migrations.AddField(
-            model_name="hubpage",
+            model_name="personpage",
             name="twitter_og_title",
             field=models.CharField(
                 blank=True,
@@ -82,7 +82,7 @@ class Migration(migrations.Migration):
             ),
         ),
         migrations.AlterField(
-            model_name="generalpage",
+            model_name="peopleindexpage",
             name="search_image",
             field=models.ForeignKey(
                 blank=True,
@@ -95,7 +95,7 @@ class Migration(migrations.Migration):
             ),
         ),
         migrations.AlterField(
-            model_name="hubpage",
+            model_name="personpage",
             name="search_image",
             field=models.ForeignKey(
                 blank=True,
