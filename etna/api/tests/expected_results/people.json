@@ -1,10 +1,10 @@
 {
     "id": AUTHOR_INDEX_ID,
     "meta": {
-        "type": "authors.AuthorIndexPage",
+        "type": "people.PeopleIndexPage",
         "detail_url": "/api/v2/pages/AUTHOR_INDEX_ID/",
-        "html_url": "http://localhost/authors/",
-        "slug": "authors",
+        "html_url": "http://localhost/people/",
+        "slug": "people",
         "show_in_menus": false,
         "seo_title": "",
         "search_description": "",
@@ -21,7 +21,7 @@
         },
         "privacy": "public",
         "last_published_at": null,
-        "url": "/authors/",
+        "url": "/people/",
         "teaser_text": "Teaser text",
         "teaser_image": {
             "id": 8,
@@ -60,7 +60,7 @@
         "twitter_og_description": null,
         "twitter_og_image": null
     },
-    "title": "authors",
+    "title": "people",
     "global_alert": {
         "title": "BETA",
         "message": "<p>Message</p>",
@@ -68,18 +68,18 @@
         "cascade": true,
         "uid": ALERT_UID
     },
-    "type_label": "Author index",
+    "type_label": "People index",
     "mourning_notice": {
         "title": "Test title",
         "message": "<p>Test message</p>"
     },
-    "author_pages": [
+    "people_pages": [
         {
             "id": AUTHOR_ID,
             "title": "author",
-            "url": "/authors/author/",
-            "full_url": "http://localhost/authors/author/",
-            "type_label": "Author",
+            "url": "/people/author/",
+            "full_url": "http://localhost/people/author/",
+            "type_label": "Person",
             "teaser_text": "Teaser text",
             "teaser_image": {
                 "id": 10,

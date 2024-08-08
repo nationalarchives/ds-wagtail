@@ -20,28 +20,28 @@ from etna.core.serializers import (
 )
 
 
-class AuthorIndexPage(BasePage):
-    """Author index page
+class PeopleIndexPage(BasePage):
+    """People index page
 
-    This is the parent page for all authors. It is used to
-    display a list of authors, and to link to individual
-    author pages from the list.
+    This is the parent page for all people. It is used to
+    display a list of people, and to link to individual
+    people pages from the list.
     """
 
-    subpage_types = ["authors.AuthorPage"]
+    subpage_types = ["people.PersonPage"]
 
     parent_page_types = ["home.HomePage"]
 
     api_fields = BasePage.api_fields + [
-        APIField("author_pages", serializer=DefaultPageSerializer(many=True))
+        APIField("people_pages", serializer=DefaultPageSerializer(many=True))
     ]
 
     @cached_property
-    def author_pages(self):
+    def people_pages(self):
         """Return a sample of child pages for rendering in teaser."""
         return (
             self.get_children()
-            .type(AuthorPage)
+            .type(PersonPage)
             .order_by("title")
             .live()
             .public()
@@ -49,12 +49,12 @@ class AuthorIndexPage(BasePage):
         )
 
 
-class AuthorPage(BasePage):
-    """Author page
+class PersonPage(BasePage):
+    """Person page
 
-    This page is to be used for an author profile page, where
-    we can put info about the author, an image, and then use it
-    to link pages to an author.
+    This page is to be used for a profile page, where
+    we can put info about the person, an image, and then use it
+    to link pages to a person, or as a reference to the person.
     """
 
     role = models.CharField(blank=True, null=True, max_length=100)
@@ -76,14 +76,14 @@ class AuthorPage(BasePage):
     ]
 
     class Meta:
-        verbose_name = "Author page"
-        verbose_name_plural = "Author pages"
-        verbose_name_public = "author"
+        verbose_name = "Person page"
+        verbose_name_plural = "People pages"
+        verbose_name_public = "person"
 
     # DataLayerMixin overrides
-    gtm_content_group = "Author page"
+    gtm_content_group = "Person page"
 
-    parent_page_types = ["authors.AuthorIndexPage"]
+    parent_page_types = ["people.PeopleIndexPage"]
     subpage_types = []
 
     default_api_fields = BasePage.default_api_fields + [
@@ -131,7 +131,7 @@ class AuthorPage(BasePage):
         when the page was first published ('more recently added' pages take presendence)
         """
         return tuple(
-            self.author_pages.values_list("page_id", flat=True).order_by(
+            self.people_pages.values_list("page_id", flat=True).order_by(
                 "-page__first_published_at"
             )
         )
@@ -152,9 +152,9 @@ class AuthorTag(models.Model):
 
     page = ParentalKey(Page, on_delete=models.CASCADE, related_name="author_tags")
     author = models.ForeignKey(
-        AuthorPage,
+        PersonPage,
         verbose_name="author",
-        related_name="author_pages",
+        related_name="people_pages",
         on_delete=models.CASCADE,
     )
 

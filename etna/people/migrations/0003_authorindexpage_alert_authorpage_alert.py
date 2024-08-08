@@ -8,7 +8,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ("alerts", "0001_initial"),
-        ("authors", "0002_authorindexpage_authorpage_authortag_delete_author"),
+        ("people", "0002_authorindexpage_authorpage_authortag_delete_author"),
     ]
 
     operations = [

@@ -1,9 +1,9 @@
 {
     "id": AUTHOR_ID,
     "meta": {
-        "type": "authors.AuthorPage",
+        "type": "people.PersonPage",
         "detail_url": "/api/v2/pages/AUTHOR_ID/",
-        "html_url": "http://localhost/authors/author/",
+        "html_url": "http://localhost/people/author/",
         "slug": "author",
         "show_in_menus": false,
         "seo_title": "",
@@ -13,15 +13,15 @@
         "parent": {
             "id": AUTHOR_INDEX_ID,
             "meta": {
-                "type": "authors.AuthorIndexPage",
+                "type": "people.PeopleIndexPage",
                 "detail_url": "/api/v2/pages/AUTHOR_INDEX_ID/",
-                "html_url": "http://localhost/authors/"
+                "html_url": "http://localhost/people/"
             },
-            "title": "authors"
+            "title": "people"
         },
         "privacy": "public",
         "last_published_at": "2000-01-01T00:00:00Z",
-        "url": "/authors/author/",
+        "url": "/people/author/",
         "teaser_text": "Teaser text",
         "teaser_image": {
             "id": 10,
@@ -68,7 +68,7 @@
         "cascade": true,
         "uid": ALERT_UID
     },
-    "type_label": "Author",
+    "type_label": "Person",
     "mourning_notice": {
         "title": "Test title",
         "message": "<p>Test message</p>"
