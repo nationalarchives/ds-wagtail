@@ -12,7 +12,7 @@
     {% image page.twitter_og_image fill-500x500 as twitter_img %}
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="{% firstof page.twitter_og_title page.seo_title page.title 'Untitled' %}">
-    <meta name="twitter:description" content="{% firstof page.twitter_og_description page.search_description page.teaser_text '' %}">
+    <meta name="twitter:description" content="{% firstof page.twitter_og_description page.search_description page.teaser_text %}">
     <meta name="twitter:image" content="{% firstof twitter_img.full_url og_img.full_url teaser_img.full_url %}">
     <meta property="og:url" content="{{ page.full_url }}">
     <meta property="og:title" content="{% firstof page.seo_title page.title 'Untitled' %}">
