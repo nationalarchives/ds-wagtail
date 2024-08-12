@@ -6,7 +6,7 @@ from django.http import HttpRequest
 from django.utils.functional import cached_property
 
 from modelcluster.fields import ParentalKey
-from wagtail.admin.panels import FieldPanel, InlinePanel
+from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
 from wagtail.api import APIField
 from wagtail.fields import RichTextField
 from wagtail.images import get_image_model_string
@@ -69,11 +69,25 @@ class PersonPage(BasePage):
         related_name="+",
     )
 
+    first_name = models.CharField(
+        max_length=255,
+    )
+    last_name = models.CharField(
+        max_length=255,
+    )
+
     content_panels = BasePage.content_panels + [
         FieldPanel("image"),
         FieldPanel("role"),
         FieldPanel("summary"),
     ]
+
+    promote_panels = [
+        MultiFieldPanel(
+            [FieldPanel("first_name"), FieldPanel("last_name")],
+            heading="Person details",
+        ),
+    ] + BasePage.promote_panels
 
     class Meta:
         verbose_name = "Person page"
