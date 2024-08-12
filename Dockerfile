@@ -23,6 +23,4 @@ COPY --chown=app . .
 RUN mkdir -p /app/templates/static/assets; \
   cp -R /app/node_modules/@nationalarchives/frontend/nationalarchives/assets/* /app/templates/static/assets
 
-RUN poetry run python /app/manage.py collectstatic
-
 CMD ["tna-run", "config.wsgi:application"]
