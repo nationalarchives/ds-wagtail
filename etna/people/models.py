@@ -107,6 +107,8 @@ class PersonPage(BasePage):
             "image_small",
             serializer=ImageSerializer(rendition_size="fill-128x128", source="image"),
         ),
+        APIField("first_name"),
+        APIField("last_name"),
     ]
 
     api_fields = BasePage.api_fields + [
