@@ -60,6 +60,8 @@
 
     <form method="GET" class="tag-frequency__form" data-js-form-tag-frequency>
 
+        {{ enrichment_aggs|json_script:"enrichment_aggs" }}
+
         <div id="tag-frequency-chart" class="tag-frequency__chart"></div>
 
         <div class="tag-frequency__form-controls">

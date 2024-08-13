@@ -1,13 +1,14 @@
-import { aggregations } from "./data/aggregations.js";
-
 export const processAggregationData = (chartContainer) => {
     if (!chartContainer) {
         return;
     }
 
+    const enrichment_aggs = JSON.parse(
+        document.getElementById("enrichment_aggs").textContent,
+    );
     const data =
         JSON.parse(chartContainer.getAttribute("data-js-tag-frequency-data")) ??
-        aggregations;
+        enrichment_aggs;
 
     /**
      * Maximum number of entries to display in chart
@@ -23,7 +24,7 @@ export const processAggregationData = (chartContainer) => {
      * Helper function to get entries by type
      */
     const getEntriesByType = (type) =>
-        data.find((aggregation) => aggregation.name === type)?.entries;
+        data.find((enrichment_aggs) => enrichment_aggs.name === type)?.entries;
 
     /**
      * mapDataByType
