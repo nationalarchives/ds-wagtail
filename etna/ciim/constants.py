@@ -769,6 +769,7 @@ class CommunityCollectionMapping(StrEnum):
         "wmk-0",
         "https://catalogue.mkcdc.org.uk/",
     )
+    # NOTE: CAIN Archive has multiple ciim prefixed ids ex sid-0 (Community level), me-0 (Collection level)
     SID = ("CAIN Archive - Conflict and Politics in Northern Ireland", "sid-0", "")
 
     def __new__(cls, value, community_level_ciim_id, webpage_url):

@@ -707,6 +707,33 @@ class CommunityRecordCollectionAttrTests(SimpleTestCase):
                     "community_collection_webpage": {},
                 },
             ),
+            (
+                # label
+                "me: Collection level for me-0",
+                # value
+                {
+                    "@template": {
+                        "details": {
+                            "ciimId": "me-0",
+                            "level": "Collection",
+                            "collectionId": "sid-0",
+                            "collection": "some value",
+                            "group": "community",
+                            "description": "description",
+                        }
+                    }
+                },
+                # expected
+                {
+                    "community_collection": {
+                        "label": "Collection",
+                        "value": "some value",
+                        "url": "/catalogue/id/sid-0/",
+                        "is_ext_url": False,
+                    },
+                    "community_collection_webpage": {},
+                },
+            ),
         )
         for label, data, expected in test_data:
             with self.subTest(label):
