@@ -49,20 +49,35 @@ class PeopleIndexPage(BasePage):
             .public()
             .specific()
         )
+    
 
-@register_snippet
-class RoleChoices(models.Model):
-    """Model for role choices on a PersonPage"""
+# @register_snippet
+# class RoleChoices(models.Model):
+#     """Model for role choices on a PersonPage"""
 
-    slug = models.SlugField(max_length=255, unique=True)
-    name = models.CharField(max_length=255)
+#     slug = models.SlugField(max_length=255, unique=True)
+#     name = models.CharField(max_length=255)
 
-    def __str__(self):
-        return self.name
+#     panels = [
+#         FieldPanel("slug"),
+#         FieldPanel("name"),
+#     ]
 
-    class Meta:
-        verbose_name = "Role choice"
-        verbose_name_plural = "Role choices"
+#     def __str__(self):
+#         return self.name
+
+#     class Meta:
+#         verbose_name = "Role choice"
+#         verbose_name_plural = "Role choices"
+
+
+# class PersonRoleChoices(models.Model):
+#     """Model for making role choices on a PersonPage"""
+
+#     page = ParentalKey(Page, on_delete=models.CASCADE, related_name="person_roles")
+#     role = models.ForeignKey(
+#         RoleChoices, on_delete=models.CASCADE, related_name="role_choice"
+#     )
 
 
 class PersonPage(BasePage):
@@ -99,8 +114,6 @@ class PersonPage(BasePage):
         max_length=255,
     )
 
-    role_overrides = models.ManyToManyField(RoleChoices)
-
     content_panels = BasePage.content_panels + [
         FieldPanel("image"),
         FieldPanel("role"),
@@ -116,10 +129,11 @@ class PersonPage(BasePage):
             [FieldPanel("first_name"), FieldPanel("last_name")],
             heading="Person details",
         ),
-        FieldPanel(
-            "role_overrides",
-            widget=forms.CheckboxSelectMultiple,
-        ),
+        # InlinePanel(
+        #     "person_roles",
+        #     heading="Role overrides",
+        #     help_text="Override the auto-tagging by tagging with a manual role.",
+        # ),
     ] + BasePage.promote_panels
 
     class Meta:
