@@ -1,6 +1,7 @@
 from typing import Any, Dict
 
 from django.conf import settings
+from django import forms
 from django.db import models
 from django.http import HttpRequest
 from django.utils.functional import cached_property
@@ -11,6 +12,7 @@ from wagtail.api import APIField
 from wagtail.fields import RichTextField
 from wagtail.images import get_image_model_string
 from wagtail.models import Page
+from wagtail.snippets.models import register_snippet
 
 from etna.core.models import BasePage
 from etna.core.serializers import (
@@ -48,6 +50,20 @@ class PeopleIndexPage(BasePage):
             .specific()
         )
 
+@register_snippet
+class RoleChoices(models.Model):
+    """Model for role choices on a PersonPage"""
+
+    slug = models.SlugField(max_length=255, unique=True)
+    name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "Role choice"
+        verbose_name_plural = "Role choices"
+
 
 class PersonPage(BasePage):
     """Person page
@@ -57,16 +73,23 @@ class PersonPage(BasePage):
     to link pages to a person, or as a reference to the person.
     """
 
-    role = models.CharField(blank=True, null=True, max_length=100)
-    summary = RichTextField(
-        blank=True, null=True, features=settings.RESTRICTED_RICH_TEXT_FEATURES
-    )
     image = models.ForeignKey(
         get_image_model_string(),
         blank=True,
         null=True,
         on_delete=models.SET_NULL,
         related_name="+",
+    )
+    role = models.CharField(blank=True, null=True, max_length=100)
+    summary = RichTextField(
+        blank=True, null=True, features=settings.RESTRICTED_RICH_TEXT_FEATURES
+    )
+
+    research_specialism = models.CharField(
+        blank=True, null=True, max_length=255
+    )
+    research_summary = RichTextField(
+        blank=True, null=True, features=settings.RESTRICTED_RICH_TEXT_FEATURES
     )
 
     first_name = models.CharField(
@@ -76,16 +99,26 @@ class PersonPage(BasePage):
         max_length=255,
     )
 
+    role_overrides = models.ManyToManyField(RoleChoices)
+
     content_panels = BasePage.content_panels + [
         FieldPanel("image"),
         FieldPanel("role"),
         FieldPanel("summary"),
+        MultiFieldPanel(
+            [FieldPanel("research_specialism"), FieldPanel("research_summary")],
+            heading="Research info",
+        ),
     ]
 
     promote_panels = [
         MultiFieldPanel(
             [FieldPanel("first_name"), FieldPanel("last_name")],
             heading="Person details",
+        ),
+        FieldPanel(
+            "role_overrides",
+            widget=forms.CheckboxSelectMultiple,
         ),
     ] + BasePage.promote_panels
 
