@@ -1,18 +1,16 @@
 from typing import Any, Dict
 
 from django.conf import settings
-from django import forms
 from django.db import models
 from django.http import HttpRequest
 from django.utils.functional import cached_property
 
-from modelcluster.fields import ParentalKey, ParentalManyToManyField
+from modelcluster.fields import ParentalKey
 from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
 from wagtail.api import APIField
 from wagtail.fields import RichTextField
 from wagtail.images import get_image_model_string
 from wagtail.models import Page
-from wagtail.snippets.models import register_snippet
 
 from etna.core.models import BasePage
 from etna.core.serializers import (
@@ -20,6 +18,11 @@ from etna.core.serializers import (
     ImageSerializer,
     RichTextSerializer,
 )
+
+ROLE_CHOICES = {
+    "author": "Author",
+    "researcher": "Researcher",
+}
 
 
 class PeopleIndexPage(BasePage):
@@ -49,26 +52,6 @@ class PeopleIndexPage(BasePage):
             .public()
             .specific()
         )
-    
-
-@register_snippet
-class RoleChoices(models.Model):
-    """Model for role choices on a PersonPage"""
-
-    slug = models.SlugField(max_length=255, unique=True)
-    name = models.CharField(max_length=255)
-
-    panels = [
-        FieldPanel("slug"),
-        FieldPanel("name"),
-    ]
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        verbose_name = "Role choice"
-        verbose_name_plural = "Role choices"
 
 
 class PersonPage(BasePage):
@@ -91,9 +74,6 @@ class PersonPage(BasePage):
         blank=True, null=True, features=settings.RESTRICTED_RICH_TEXT_FEATURES
     )
 
-    research_specialism = models.CharField(
-        blank=True, null=True, max_length=255
-    )
     research_summary = RichTextField(
         blank=True, null=True, features=settings.RESTRICTED_RICH_TEXT_FEATURES
     )
@@ -104,16 +84,12 @@ class PersonPage(BasePage):
     last_name = models.CharField(
         max_length=255,
     )
-    role_overrides = ParentalManyToManyField(RoleChoices, blank=True)
 
     content_panels = BasePage.content_panels + [
         FieldPanel("image"),
         FieldPanel("role"),
         FieldPanel("summary"),
-        MultiFieldPanel(
-            [FieldPanel("research_specialism"), FieldPanel("research_summary")],
-            heading="Research info",
-        ),
+        FieldPanel("research_summary"),
     ]
 
     promote_panels = [
@@ -121,7 +97,6 @@ class PersonPage(BasePage):
             [FieldPanel("first_name"), FieldPanel("last_name")],
             heading="Person details",
         ),
-        FieldPanel("role_overrides", widget=forms.CheckboxSelectMultiple),
     ] + BasePage.promote_panels
 
     class Meta:
@@ -174,20 +149,9 @@ class PersonPage(BasePage):
             .order_by("-first_published_at")
             .select_related("teaser_image")
         )
-    
-    @cached_property
-    def role_tags(self):
-        role_list = []
-        if self.research_summary:
-            role_list.append("Researcher")
-        if self.authored_focused_articles:
-            role_list.append("Author")
-        if self.role_overrides.all():
-            role_list.extend([role.name for role in self.role_overrides.all() if role.name not in role_list])
-        return role_list
 
     @cached_property
-    def related_page_pks(self):
+    def related_page_pks(self) -> tuple[int]:
         """
         Returns a list of ids of pages that have used the `AuthorTag` inline
         to indicate a relationship with this author. The values are ordered by
@@ -198,6 +162,31 @@ class PersonPage(BasePage):
                 "-page__first_published_at"
             )
         )
+
+    @cached_property
+    def is_author(self) -> bool:
+        """
+        def is_X() is going to be a value to help with
+        the logic behind the role tags - an easier way
+        to check if a person is X role.
+        """
+        if self.authored_focused_articles:
+            return True
+        return False
+
+    @cached_property
+    def is_researcher(self) -> bool:
+        if self.research_summary:
+            return True
+        return False
+
+    @cached_property
+    def role_tags(self) -> list[Dict[str, str]]:
+        roles = []
+        for role, value in ROLE_CHOICES.items():
+            if getattr(self, f"is_{role}"):
+                roles.append({"slug": role, "name": value})
+        return roles
 
     def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
         data = super().get_datalayer_data(request)
