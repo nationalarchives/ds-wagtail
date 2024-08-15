@@ -6,7 +6,7 @@ from django.db import models
 from django.http import HttpRequest
 from django.utils.functional import cached_property
 
-from modelcluster.fields import ParentalKey
+from modelcluster.fields import ParentalKey, ParentalManyToManyField
 from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
 from wagtail.api import APIField
 from wagtail.fields import RichTextField
@@ -51,33 +51,24 @@ class PeopleIndexPage(BasePage):
         )
     
 
-# @register_snippet
-# class RoleChoices(models.Model):
-#     """Model for role choices on a PersonPage"""
+@register_snippet
+class RoleChoices(models.Model):
+    """Model for role choices on a PersonPage"""
 
-#     slug = models.SlugField(max_length=255, unique=True)
-#     name = models.CharField(max_length=255)
+    slug = models.SlugField(max_length=255, unique=True)
+    name = models.CharField(max_length=255)
 
-#     panels = [
-#         FieldPanel("slug"),
-#         FieldPanel("name"),
-#     ]
+    panels = [
+        FieldPanel("slug"),
+        FieldPanel("name"),
+    ]
 
-#     def __str__(self):
-#         return self.name
+    def __str__(self):
+        return self.name
 
-#     class Meta:
-#         verbose_name = "Role choice"
-#         verbose_name_plural = "Role choices"
-
-
-# class PersonRoleChoices(models.Model):
-#     """Model for making role choices on a PersonPage"""
-
-#     page = ParentalKey(Page, on_delete=models.CASCADE, related_name="person_roles")
-#     role = models.ForeignKey(
-#         RoleChoices, on_delete=models.CASCADE, related_name="role_choice"
-#     )
+    class Meta:
+        verbose_name = "Role choice"
+        verbose_name_plural = "Role choices"
 
 
 class PersonPage(BasePage):
@@ -113,6 +104,7 @@ class PersonPage(BasePage):
     last_name = models.CharField(
         max_length=255,
     )
+    role_overrides = ParentalManyToManyField(RoleChoices, blank=True)
 
     content_panels = BasePage.content_panels + [
         FieldPanel("image"),
@@ -129,11 +121,7 @@ class PersonPage(BasePage):
             [FieldPanel("first_name"), FieldPanel("last_name")],
             heading="Person details",
         ),
-        # InlinePanel(
-        #     "person_roles",
-        #     heading="Role overrides",
-        #     help_text="Override the auto-tagging by tagging with a manual role.",
-        # ),
+        FieldPanel("role_overrides", widget=forms.CheckboxSelectMultiple),
     ] + BasePage.promote_panels
 
     class Meta:
