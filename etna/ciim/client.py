@@ -299,11 +299,14 @@ class ClientAPI:
         if group == BucketKeys.COMMUNITY:
             if vis_view != VisViews.MAP.value:
                 # map view does not have date filters, other visual views have date filters
+                # add enrichment date filters with date filter
                 if covering_date_from:
                     params["filter"] += [f"fromDate:(>={covering_date_from})"]
+                    params["filter"] += [f"enrichmentFrom:(>={covering_date_from})"]
 
                 if covering_date_to:
                     params["filter"] += [f"toDate:(<={covering_date_to})"]
+                    params["filter"] += [f"enrichmentTo:(<={covering_date_to})"]
         else:
             if covering_date_from:
                 params["filter"] += [f"coveringFromDate:(>={covering_date_from})"]
