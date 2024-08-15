@@ -160,6 +160,7 @@ class PersonPage(BasePage):
             "image_small",
             serializer=ImageSerializer(rendition_size="fill-128x128", source="image"),
         ),
+        APIField("role_tags"),
     ]
 
     @cached_property
@@ -173,6 +174,17 @@ class PersonPage(BasePage):
             .order_by("-first_published_at")
             .select_related("teaser_image")
         )
+    
+    @cached_property
+    def role_tags(self):
+        role_list = []
+        if self.research_summary:
+            role_list.append("Researcher")
+        if self.authored_focused_articles:
+            role_list.append("Author")
+        if self.role_overrides.all():
+            role_list.extend([role.name for role in self.role_overrides.all() if role.name not in role_list])
+        return role_list
 
     @cached_property
     def related_page_pks(self):
