@@ -8,7 +8,7 @@ from django.utils.functional import cached_property
 from modelcluster.fields import ParentalKey
 from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
 from wagtail.api import APIField
-from wagtail.fields import RichTextField
+from wagtail.fields import RichTextField, StreamField
 from wagtail.images import get_image_model_string
 from wagtail.models import Page
 
@@ -18,6 +18,8 @@ from etna.core.serializers import (
     ImageSerializer,
     RichTextSerializer,
 )
+
+from .blocks import ResearchSummaryStreamBlock
 
 ROLE_CHOICES = {
     "author": "Author",
@@ -74,9 +76,7 @@ class PersonPage(BasePage):
         blank=True, null=True, features=settings.RESTRICTED_RICH_TEXT_FEATURES
     )
 
-    research_summary = RichTextField(
-        blank=True, null=True, features=settings.RESTRICTED_RICH_TEXT_FEATURES
-    )
+    research_summary = StreamField(ResearchSummaryStreamBlock, blank=True, null=True)
 
     first_name = models.CharField(
         max_length=255,
@@ -133,7 +133,7 @@ class PersonPage(BasePage):
             serializer=ImageSerializer(rendition_size="fill-128x128", source="image"),
         ),
         APIField("summary", serializer=RichTextSerializer()),
-        APIField("research_summary", serializer=RichTextSerializer()),
+        APIField("research_summary"),
         APIField(
             "authored_focused_articles",
             serializer=DefaultPageSerializer(
