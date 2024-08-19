@@ -49,7 +49,7 @@ class PeopleIndexPage(BasePage):
         return (
             self.get_children()
             .type(PersonPage)
-            .order_by("title")
+            .order_by("personpage__last_name")
             .live()
             .public()
             .specific()
