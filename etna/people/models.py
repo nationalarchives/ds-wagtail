@@ -122,20 +122,23 @@ class PersonPage(BasePage):
     ]
 
     api_fields = BasePage.api_fields + [
+        APIField("first_name"),
+        APIField("last_name"),
         APIField("role"),
+        APIField("role_tags"),
+        APIField("image", serializer=ImageSerializer(rendition_size="fill-512x512")),
+        APIField(
+            "image_small",
+            serializer=ImageSerializer(rendition_size="fill-128x128", source="image"),
+        ),
         APIField("summary", serializer=RichTextSerializer()),
+        APIField("research_summary", serializer=RichTextSerializer()),
         APIField(
             "authored_focused_articles",
             serializer=DefaultPageSerializer(
                 required_api_fields=["teaser_image"], many=True
             ),
         ),
-        APIField("image", serializer=ImageSerializer(rendition_size="fill-512x512")),
-        APIField(
-            "image_small",
-            serializer=ImageSerializer(rendition_size="fill-128x128", source="image"),
-        ),
-        APIField("role_tags"),
     ]
 
     @cached_property
