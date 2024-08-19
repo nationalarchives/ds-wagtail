@@ -20,7 +20,7 @@ from wagtail.snippets.models import register_snippet
 from etna.articles.models import ArticleTagMixin
 from etna.collections.models import TopicalPageMixin
 from etna.core.blocks import LargeCardLinksBlock
-from etna.core.models import BasePageWithIntro
+from etna.core.models import BasePageWithRequiredIntro
 from etna.core.utils import urlunparse
 
 from .blocks import RelatedArticlesBlock, WhatsOnPromotedLinksBlock
@@ -59,6 +59,7 @@ class EventType(models.Model):
     class Meta:
         verbose_name = _("event type")
         verbose_name_plural = _("event types")
+        verbose_name_public = _("event")
 
     def __str__(self):
         return self.name
@@ -275,7 +276,7 @@ class EventSession(models.Model):
         ordering = ["start"]
 
 
-class WhatsOnPage(BasePageWithIntro):
+class WhatsOnPage(BasePageWithRequiredIntro):
     """WhatsOnPage
 
     A page for listing events.
@@ -445,14 +446,14 @@ class WhatsOnPage(BasePageWithIntro):
 
     max_count = 1
 
-    content_panels = BasePageWithIntro.content_panels + [
+    content_panels = BasePageWithRequiredIntro.content_panels + [
         FieldPanel("featured_event"),
         FieldPanel("promoted_links"),
         FieldPanel("large_card_links"),
     ]
 
 
-class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
+class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithRequiredIntro):
     """EventPage
 
     A page for an event.
@@ -627,7 +628,7 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
     class Meta:
         verbose_name = _("event page")
 
-    content_panels = BasePageWithIntro.content_panels + [
+    content_panels = BasePageWithRequiredIntro.content_panels + [
         FieldPanel("lead_image"),
         MultiFieldPanel(
             [
@@ -835,7 +836,7 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
         super().save(*args, **kwargs)
 
     promote_panels = (
-        BasePageWithIntro.promote_panels
+        BasePageWithRequiredIntro.promote_panels
         + [
             FieldPanel("short_title"),
         ]
@@ -847,7 +848,7 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
     )
 
     search_fields = (
-        BasePageWithIntro.search_fields
+        BasePageWithRequiredIntro.search_fields
         + ArticleTagMixin.search_fields
         + [
             index.SearchField("topic_names", boost=1),
@@ -945,7 +946,7 @@ class HeroColourChoices(models.TextChoices):
     DARK = "dark", _("Dark")
 
 
-class ExhibitionPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
+class ExhibitionPage(ArticleTagMixin, TopicalPageMixin, BasePageWithRequiredIntro):
     """ExhibitionPage
 
     An event where editors can create exhibitions. Exhibitions do not come
@@ -1089,7 +1090,7 @@ class ExhibitionPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
     class Meta:
         verbose_name = _("exhibition page")
 
-    content_panels = BasePageWithIntro.content_panels + [
+    content_panels = BasePageWithRequiredIntro.content_panels + [
         MultiFieldPanel(
             [
                 FieldPanel("subtitle"),
@@ -1145,7 +1146,7 @@ class ExhibitionPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
     ]
 
     promote_panels = (
-        BasePageWithIntro.promote_panels
+        BasePageWithRequiredIntro.promote_panels
         + [
             FieldPanel("short_title"),
             InlinePanel(
@@ -1164,7 +1165,7 @@ class ExhibitionPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
     )
 
     search_fields = (
-        BasePageWithIntro.search_fields
+        BasePageWithRequiredIntro.search_fields
         + ArticleTagMixin.search_fields
         + [
             index.SearchField("topic_names", boost=1),

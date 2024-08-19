@@ -1,0 +1,15 @@
+name: Pull request
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+
+jobs:
+  ci:
+    name: Tests
+    uses: ./.github/workflows/_tests.yml
+    with:
+      python-version: ${{ vars.CI_PYTHON_VERSION }}
+      poetry-version: ${{ vars.CI_POETRY_VERSION }}

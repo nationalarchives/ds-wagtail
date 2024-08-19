@@ -1,56 +1,46 @@
-from wagtail.admin.panels import FieldPanel
-from wagtail.api import APIField
-from wagtail.fields import StreamField
+from django.conf import settings
+from django.db import models
 
-from etna.alerts.models import AlertMixin
-from etna.core.models import BasePageWithIntro
+from modelcluster.fields import ParentalKey
+from wagtail.admin.panels import FieldPanel, InlinePanel
+from wagtail.api import APIField
+from wagtail.fields import RichTextField, StreamField
+from wagtail.models import Page
+
+from etna.core.models import BasePageWithRequiredIntro
 
 from .blocks import HomePageStreamBlock
 
 
-class HomePage(AlertMixin, BasePageWithIntro):
+class MourningNotice(models.Model):
+    """
+    A model to hold mourning notice information.
+    """
+
+    page = ParentalKey(Page, on_delete=models.CASCADE, related_name="mourning")
+    title = models.CharField(max_length=255)
+    message = RichTextField(features=settings.INLINE_RICH_TEXT_FEATURES)
+
+    panels = [
+        FieldPanel("title"),
+        FieldPanel("message"),
+    ]
+
+
+class HomePage(BasePageWithRequiredIntro):
     body = StreamField(HomePageStreamBlock, blank=True, null=True)
 
-    content_panels = BasePageWithIntro.content_panels + [
+    content_panels = BasePageWithRequiredIntro.content_panels + [
         FieldPanel("body"),
     ]
 
-    settings_panels = BasePageWithIntro.settings_panels + AlertMixin.settings_panels
+    settings_panels = BasePageWithRequiredIntro.settings_panels + [
+        InlinePanel("mourning", label="Mourning Notice", max_num=1),
+    ]
 
     # DataLayerMixin overrides
     gtm_content_group = "Homepage"
 
-    def get_context(self, request):
-        context = super().get_context(request)
-        article_pages = self.get_children().live().specific()
-        context["article_pages"] = article_pages
-        context["etna_index_pages"] = [
-            {
-                "title": "Collection Explorer",
-                "introduction": (
-                    "A new way to discover collections at The National Archives, "
-                    "through records hand-picked by our experts."
-                ),
-                "url": "#",
-            },
-            {
-                "title": "Collection Insights",
-                "introduction": (
-                    "Learn about the people, themes and events featured in our records, "
-                    "told through words, pictures and audio - discover the human stories behind the collection."
-                ),
-                "url": "#",
-            },
-            {
-                "title": "Collection Details",
-                "introduction": "View and navigate records from The National Archives catalogue.",
-                "url": "#",
-            },
-        ]
-
-        return context
-
-    api_fields = [
-        APIField("intro"),
+    api_fields = BasePageWithRequiredIntro.api_fields + [
         APIField("body"),
     ]

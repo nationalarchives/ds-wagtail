@@ -9,6 +9,10 @@ name: app
 # to find the supported versions for the 'python' type.
 type: 'python:3.12'
 
+dependencies:
+  python3:
+    poetry: '1.8.1'
+
 variables:
   env:
     DJANGO_SETTINGS_MODULE: 'config.settings.platform'
@@ -36,15 +40,6 @@ hooks:
     
     # Download the latest version of pip
     python3.12 -m pip install --upgrade pip
-
-    # Install and configure Poetry
-    # Set user to false to install Poetry globally
-    export PIP_USER=false
-    curl -sSL https://install.python-poetry.org | python3 - --version $POETRY_VERSION
-    # Update PATH to make Poetry available in this hook
-    export PATH="/app/.local/bin:$PATH"
-    # Set user to true to install dependencies only in the virtual environment
-    export PIP_USER=true
 
     # Install dependencies
     poetry install --only main

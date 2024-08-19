@@ -1,0 +1,135 @@
+{
+    "id": AUTHOR_INDEX_ID,
+    "meta": {
+        "type": "people.PeopleIndexPage",
+        "detail_url": "/api/v2/pages/AUTHOR_INDEX_ID/",
+        "html_url": "http://localhost/people/",
+        "slug": "people",
+        "show_in_menus": false,
+        "seo_title": "",
+        "search_description": "",
+        "first_published_at": "2000-01-01T00:00:00Z",
+        "alias_of": null,
+        "parent": {
+            "id": 3,
+            "meta": {
+                "type": "home.HomePage",
+                "detail_url": "/api/v2/pages/3/",
+                "html_url": "http://localhost/"
+            },
+            "title": "Home"
+        },
+        "privacy": "public",
+        "last_published_at": null,
+        "url": "/people/",
+        "teaser_text": "Teaser text",
+        "teaser_image": {
+            "id": 8,
+            "title": "An image",
+            "jpeg": {
+                "url": "/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60_Qqqrhoo.jpg",
+                "full_url": "https://nationalarchives.gov.uk/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60_Qqqrhoo.jpg",
+                "width": 100,
+                "height": 68
+            },
+            "webp": {
+                "url": "/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-60_EW7Ow5o.webp",
+                "full_url": "https://nationalarchives.gov.uk/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-60_EW7Ow5o.webp",
+                "width": 100,
+                "height": 68
+            }
+        },
+        "teaser_image_square": {
+            "id": 8,
+            "title": "An image",
+            "jpeg": {
+                "url": "/media/images/example.2e16d0ba.fill-512x512.format-jpeg.jpegquality-60_3mqgkw3.jpg",
+                "full_url": "https://nationalarchives.gov.uk/media/images/example.2e16d0ba.fill-512x512.format-jpeg.jpegquality-60_3mqgkw3.jpg",
+                "width": 100,
+                "height": 100
+            },
+            "webp": {
+                "url": "/media/images/exampl.2e16d0ba.fill-512x512.format-webp.webpquality-60_iIlAHIz.webp",
+                "full_url": "https://nationalarchives.gov.uk/media/images/exampl.2e16d0ba.fill-512x512.format-webp.webpquality-60_iIlAHIz.webp",
+                "width": 100,
+                "height": 100
+            }
+        },
+        "search_image": null,
+        "twitter_og_title": null,
+        "twitter_og_description": null,
+        "twitter_og_image": null
+    },
+    "title": "people",
+    "global_alert": {
+        "title": "BETA",
+        "message": "<p>Message</p>",
+        "alert_level": "high",
+        "cascade": true,
+        "uid": ALERT_UID
+    },
+    "type_label": "People index",
+    "mourning_notice": {
+        "title": "Test title",
+        "message": "<p>Test message</p>"
+    },
+    "people_pages": [
+        {
+            "id": AUTHOR_ID,
+            "title": "author",
+            "url": "/people/author/",
+            "full_url": "http://localhost/people/author/",
+            "type_label": "Person",
+            "teaser_text": "Teaser text",
+            "teaser_image": {
+                "id": 10,
+                "title": "An image",
+                "jpeg": {
+                    "url": "/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.jpg",
+                    "full_url": "https://nationalarchives.gov.uk/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.jpg",
+                    "width": 100,
+                    "height": 68
+                },
+                "webp": {
+                    "url": "/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-60.webp",
+                    "full_url": "https://nationalarchives.gov.uk/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-60.webp",
+                    "width": 100,
+                    "height": 68
+                }
+            },
+            "role": "Test Author",
+            "image": {
+                "id": 9,
+                "title": "An image",
+                "jpeg": {
+                    "url": "/media/images/example.2e16d0ba.fill-512x512.format-jpeg.jpegquality-60.jpg",
+                    "full_url": "https://nationalarchives.gov.uk/media/images/example.2e16d0ba.fill-512x512.format-jpeg.jpegquality-60.jpg",
+                    "width": 100,
+                    "height": 100
+                },
+                "webp": {
+                    "url": "/media/images/exampl.2e16d0ba.fill-512x512.format-webp.webpquality-60.webp",
+                    "full_url": "https://nationalarchives.gov.uk/media/images/exampl.2e16d0ba.fill-512x512.format-webp.webpquality-60.webp",
+                    "width": 100,
+                    "height": 100
+                }
+            },
+            "image_small": {
+                "id": 9,
+                "title": "An image",
+                "jpeg": {
+                    "url": "/media/images/example.2e16d0ba.fill-128x128.format-jpeg.jpegquality-60.jpg",
+                    "full_url": "https://nationalarchives.gov.uk/media/images/example.2e16d0ba.fill-128x128.format-jpeg.jpegquality-60.jpg",
+                    "width": 100,
+                    "height": 100
+                },
+                "webp": {
+                    "url": "/media/images/exampl.2e16d0ba.fill-128x128.format-webp.webpquality-60.webp",
+                    "full_url": "https://nationalarchives.gov.uk/media/images/exampl.2e16d0ba.fill-128x128.format-webp.webpquality-60.webp",
+                    "width": 100,
+                    "height": 100
+                }
+            }
+        }
+    ]
+}
