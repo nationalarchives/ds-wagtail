@@ -126,6 +126,8 @@ class APIResponseTest(WagtailPageTestCase):
             summary="<p>Summary text</p>",
             first_published_at=DATE_1,
             parent=cls.author_index_page,
+            first_name="John",
+            last_name="Smith",
         )
 
         cls.article_index = ArticleIndexPageFactory(

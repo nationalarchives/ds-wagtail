@@ -24,6 +24,8 @@ class TestAuthorPages(TestCase):
             summary="Test summary",
             image=self.image,
             teaser_text="Test teaser text",
+            first_name="John",
+            last_name="Doe",
         )
         self.author_index_page.add_child(instance=self.author_page)
 

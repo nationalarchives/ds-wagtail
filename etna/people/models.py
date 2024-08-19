@@ -6,9 +6,9 @@ from django.http import HttpRequest
 from django.utils.functional import cached_property
 
 from modelcluster.fields import ParentalKey
-from wagtail.admin.panels import FieldPanel, InlinePanel
+from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
 from wagtail.api import APIField
-from wagtail.fields import RichTextField
+from wagtail.fields import RichTextField, StreamField
 from wagtail.images import get_image_model_string
 from wagtail.models import Page
 
@@ -18,6 +18,13 @@ from etna.core.serializers import (
     ImageSerializer,
     RichTextSerializer,
 )
+
+from .blocks import ResearchSummaryStreamBlock
+
+ROLE_CHOICES = {
+    "author": "Author",
+    "researcher": "Researcher",
+}
 
 
 class PeopleIndexPage(BasePage):
@@ -42,7 +49,7 @@ class PeopleIndexPage(BasePage):
         return (
             self.get_children()
             .type(PersonPage)
-            .order_by("title")
+            .order_by("personpage__last_name")
             .live()
             .public()
             .specific()
@@ -57,10 +64,6 @@ class PersonPage(BasePage):
     to link pages to a person, or as a reference to the person.
     """
 
-    role = models.CharField(blank=True, null=True, max_length=100)
-    summary = RichTextField(
-        blank=True, null=True, features=settings.RESTRICTED_RICH_TEXT_FEATURES
-    )
     image = models.ForeignKey(
         get_image_model_string(),
         blank=True,
@@ -68,12 +71,31 @@ class PersonPage(BasePage):
         on_delete=models.SET_NULL,
         related_name="+",
     )
+    role = models.CharField(max_length=100)
+    summary = RichTextField(features=settings.RESTRICTED_RICH_TEXT_FEATURES)
+
+    research_summary = StreamField(ResearchSummaryStreamBlock, blank=True, null=True)
+
+    first_name = models.CharField(
+        max_length=255,
+    )
+    last_name = models.CharField(
+        max_length=255,
+    )
 
     content_panels = BasePage.content_panels + [
         FieldPanel("image"),
         FieldPanel("role"),
         FieldPanel("summary"),
+        FieldPanel("research_summary"),
     ]
+
+    promote_panels = [
+        MultiFieldPanel(
+            [FieldPanel("first_name"), FieldPanel("last_name")],
+            heading="Person details",
+        ),
+    ] + BasePage.promote_panels
 
     class Meta:
         verbose_name = "Person page"
@@ -93,21 +115,28 @@ class PersonPage(BasePage):
             "image_small",
             serializer=ImageSerializer(rendition_size="fill-128x128", source="image"),
         ),
+        APIField("first_name"),
+        APIField("last_name"),
+        APIField("role_tags"),
     ]
 
     api_fields = BasePage.api_fields + [
+        APIField("first_name"),
+        APIField("last_name"),
         APIField("role"),
+        APIField("role_tags"),
+        APIField("image", serializer=ImageSerializer(rendition_size="fill-512x512")),
+        APIField(
+            "image_small",
+            serializer=ImageSerializer(rendition_size="fill-128x128", source="image"),
+        ),
         APIField("summary", serializer=RichTextSerializer()),
+        APIField("research_summary"),
         APIField(
             "authored_focused_articles",
             serializer=DefaultPageSerializer(
                 required_api_fields=["teaser_image"], many=True
             ),
-        ),
-        APIField("image", serializer=ImageSerializer(rendition_size="fill-512x512")),
-        APIField(
-            "image_small",
-            serializer=ImageSerializer(rendition_size="fill-128x128", source="image"),
         ),
     ]
 
@@ -124,7 +153,7 @@ class PersonPage(BasePage):
         )
 
     @cached_property
-    def related_page_pks(self):
+    def related_page_pks(self) -> tuple[int]:
         """
         Returns a list of ids of pages that have used the `AuthorTag` inline
         to indicate a relationship with this author. The values are ordered by
@@ -135,6 +164,31 @@ class PersonPage(BasePage):
                 "-page__first_published_at"
             )
         )
+
+    @cached_property
+    def is_author(self) -> bool:
+        """
+        def is_X() is going to be a value to help with
+        the logic behind the role tags - an easier way
+        to check if a person is X role.
+        """
+        if self.authored_focused_articles:
+            return True
+        return False
+
+    @cached_property
+    def is_researcher(self) -> bool:
+        if self.research_summary:
+            return True
+        return False
+
+    @cached_property
+    def role_tags(self) -> list[Dict[str, str]]:
+        roles = []
+        for role, value in ROLE_CHOICES.items():
+            if getattr(self, f"is_{role}"):
+                roles.append({"slug": role, "name": value})
+        return roles
 
     def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
         data = super().get_datalayer_data(request)
