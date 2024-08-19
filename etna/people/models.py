@@ -119,6 +119,7 @@ class PersonPage(BasePage):
         ),
         APIField("first_name"),
         APIField("last_name"),
+        APIField("role_tags"),
     ]
 
     api_fields = BasePage.api_fields + [
