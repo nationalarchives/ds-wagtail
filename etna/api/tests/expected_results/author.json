@@ -118,7 +118,7 @@
     "research_summary": [],
     "authored_focused_articles": [
         {
-            "id": 11,
+            "id": FOCUSED_ID,
             "title": "focused_article",
             "url": "/article_index/focused_article/",
             "full_url": "http://localhost/article_index/focused_article/",
