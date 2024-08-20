@@ -56,6 +56,42 @@ class PeopleIndexPage(BasePage):
         )
 
 
+class ShopItem(models.Model):
+    """Shop item model
+
+    This model is used to represent a shop item.
+    """
+
+    page = ParentalKey(
+        "PersonPage",
+        on_delete=models.CASCADE,
+        related_name="shop_items",
+    )
+    title = models.CharField(max_length=255)
+    url = models.URLField()
+    price = models.DecimalField(max_digits=6, decimal_places=2)
+    image = models.ForeignKey(
+        get_image_model_string(),
+        on_delete=models.SET_NULL,
+        related_name="+",
+        null=True,
+    )
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name = "Shop item"
+        verbose_name_plural = "Shop items"
+
+    api_fields = [
+        APIField("title"),
+        APIField("url"),
+        APIField("price"),
+        APIField("image", serializer=ImageSerializer(rendition_size="fill-600x400")),
+    ]
+
+
 class PersonPage(BasePage):
     """Person page
 
@@ -88,6 +124,7 @@ class PersonPage(BasePage):
         FieldPanel("role"),
         FieldPanel("summary"),
         FieldPanel("research_summary"),
+        InlinePanel("shop_items", label="Shop items"),
     ]
 
     promote_panels = [
@@ -137,6 +174,9 @@ class PersonPage(BasePage):
             serializer=DefaultPageSerializer(
                 required_api_fields=["teaser_image"], many=True
             ),
+        ),
+        APIField(
+            "shop_items",
         ),
     ]
 
