@@ -14,7 +14,7 @@ from etna.ciim.constants import (
     LONG_FILTER_PARAM_VALUES,
     PARENT_PARAM_VALUES,
     PREFIX_AGGS_PARENT_CHILD_KV,
-    SEE_MORE_PREFIX,
+    SEE_ALL_PREFIX,
     SEPERATOR,
     BucketKeys,
     SearchTabs,
@@ -174,15 +174,15 @@ def render_sort_input(form, id_suffix) -> str:
 
 
 @register.filter
-def is_see_more(value) -> bool:
-    """returns True if the checkbox option value is a see more"""
-    if value.startswith(f"{SEE_MORE_PREFIX}{SEPERATOR}"):
+def is_see_all(value) -> bool:
+    """returns True if the checkbox option value is a see all"""
+    if value.startswith(f"{SEE_ALL_PREFIX}{SEPERATOR}"):
         return True
     return False
 
 
 @register.simple_tag()
-def see_more_url(value) -> str:
+def see_all_url(value) -> str:
     """returns the url string from checkbox option value"""
     values = value.split(SEPERATOR)
     url = values[2]  # url at index 2

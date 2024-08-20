@@ -33,7 +33,7 @@ from ..ciim.constants import (
     PARENT_AGGS_PREFIX,
     PREFIX_AGGS_PARENT_CHILD_KV,
     PREFIX_FILTER_AGGS,
-    SEE_MORE_VALUE_FMT,
+    SEE_ALL_VALUE_FMT,
     TAG_VIEW_AGGREGATIONS,
     Bucket,
     BucketKeys,
@@ -511,25 +511,25 @@ class BaseFilteredSearchView(BaseSearchView):
         filter_aggregations.append(f"group:{form.cleaned_data['group']}")
         return filter_aggregations
 
-    def _prepare_see_more_choice(
+    def _prepare_see_all_choice(
         self, aggs_rec: Dict[str, Any], field_name: str
     ) -> Dict:
         """
-        Prepares see more to be extracted as a choice and then url in template.
+        Prepares see all to be extracted as a choice and then url in template.
         aggs_rec:
             aggregations record in the API response ex "collectionMorrab"
         field_name:
             name of the checkbox field
 
         Ex:
-        see_more_value=SEE-MORE::SEP::See more collections::SEP::
+        see_all_value=SEE-ALL::SEP::See all collections::SEP::
         /search/catalogue/long-filter-chooser/collection/
         ?collection=long-collectionMorrabAll%3AMorrab+Photo+Archive
         &collection=parent-collectionMorrab%3AMorrab+Photo+Archive&vis_view=list&group=community
         """
         choice_data = {}
-        see_more_count = aggs_rec.get("other")  # attribute that determines see more
-        if see_more_count > 0:
+        see_all_count = aggs_rec.get("other")  # attribute that determines see all
+        if see_all_count > 0:
             long_filter_aggs = NESTED_CHECKBOX_VALUES_AGGS_NAMES_MAP.get(field_name)[1]
 
             data = f"{LONG_AGGS_PREFIX}{long_filter_aggs}:{field_name}"
@@ -567,11 +567,11 @@ class BaseFilteredSearchView(BaseSearchView):
                 kwargs={"field_name": COLLECTION_ATTR_FOR_ALL_BUCKETS},
             )
             url += add_url_params
-            see_more_value = SEE_MORE_VALUE_FMT.format(url=url)
+            see_all_value = SEE_ALL_VALUE_FMT.format(url=url)
 
             choice_data = {
-                "value": see_more_value,
-                "doc_count": see_more_count,
+                "value": see_all_value,
+                "doc_count": see_all_count,
             }
 
         return choice_data
@@ -582,7 +582,7 @@ class BaseFilteredSearchView(BaseSearchView):
         """
         Transforms the API aggregations for nested checkbox
         when the "other" count is more than 0 it indicates there are more collections
-        see more is added to children - used as a url
+        see all is added to children - used as a url
 
         Ex:
         API aggregations:
@@ -603,7 +603,7 @@ class BaseFilteredSearchView(BaseSearchView):
                                      'doc_count': 12,
                                      'key': 'child-collectionSurrey'},
                                      ...
-                                     {'value': 'See more collections', 'doc_count': 22}]}],
+                                     {'value': 'See all collections', 'doc_count': 22}]}],
                                      'total': 0,
                                      'other': 0}]
         """
@@ -649,10 +649,10 @@ class BaseFilteredSearchView(BaseSearchView):
                                             {AGGS_LOOKUP_KEY: child_aggs_name}
                                         )
 
-                                    if see_more := self._prepare_see_more_choice(
+                                    if see_all := self._prepare_see_all_choice(
                                         aggs_rec, collection_name
                                     ):
-                                        children.append(see_more)
+                                        children.append(see_all)
 
                             # add children KV
                             if children:

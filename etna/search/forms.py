@@ -18,7 +18,7 @@ from ..ciim.constants import (  # TODO: Keep, not in scope for Ohos-Etna at this
     BucketKeys,
     TagTypes,
 )
-from .templatetags.search_tags import is_see_more
+from .templatetags.search_tags import is_see_all
 
 
 class SearchFilterCheckboxList(forms.widgets.CheckboxSelectMultiple):
@@ -59,8 +59,8 @@ class DynamicMultipleChoiceField(forms.MultipleChoiceField):
             # Fall back to using the key value (which is the same in most cases)
             value = data["value"]
             label = f"{value} ({count})"
-            if is_see_more(value):
-                # prepare see more label with count
+            if is_see_all(value):
+                # prepare see all label with count
                 label = value.split(SEPERATOR)[1] + f" ({count})"
             return label
 
@@ -93,7 +93,7 @@ class DynamicMultipleChoiceField(forms.MultipleChoiceField):
                         'doc_count': 5,
                         'key': 'child-collectionMorrab'},
                         ...
-                       {'value': 'See more collections',
+                       {'value': 'See all collections',
                         'doc_count': 879
                       ]
          }
@@ -108,14 +108,14 @@ class DynamicMultipleChoiceField(forms.MultipleChoiceField):
           ('parent-collectionMorrab:Morrab Photo Archive',
                  [('parent-collectionMorrab:Morrab Photo Archive', 'Morrab Photo Archive (10)'),
                   ('child-collectionMorrab:Miscellaneous Photos', 'Miscellaneous Photos (5)'),
-                  ('SEE-MORE::SEP::See more collections::SEP::
+                  ('SEE-ALL::SEP::See all collections::SEP::
                    /search/catalogue/long-filter-chooser/collection/
                    ?collection=long-collectionMorrabAll%3AMorrab+Photo+Archive
                    &collection=parent-collectionMorrab%3AMorrab+Photo+Archive&vis_view=list
                    &group=community',
-                  'See more collections (879)')]
+                  'See all (879)')]
 
-        see more for nested - choice data for checkbox is rendered as url in template
+        see all for nested - choice data for checkbox is rendered as url in template
         """
         # Generate a new list of choices
         choice_vals_with_hits = set()

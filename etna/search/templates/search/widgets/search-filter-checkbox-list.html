@@ -7,8 +7,8 @@
                 {% for option in options %}
                     {% if group %}
                         {# write nested level checkbox of 1 level of hierarchy parent-child #}
-                        {% if not option.value|is_see_more %}
-                            {# skip see more checkbox value #}
+                        {% if not option.value|is_see_all %}
+                            {# skip See all checkbox value #}
                             {% if forloop.first %}
                                 <li class="search-filters__widget-list-item ohos-checkbox-container">
                                     {% include option.template_name with widget=option %}
@@ -23,9 +23,9 @@
                                 </ul>
                             </li>
                         {% endif %}
-                        {% if option.value|is_see_more %}
-                            {# see more checkbox value as link #}
-                            <a href="{% see_more_url option.value %}" aria-label='See more'>{{ option.label }}</a>
+                        {% if option.value|is_see_all %}
+                            {# see all checkbox value as link #}
+                            <a href="{% see_all_url option.value %}" aria-label='See more'>{{ option.label }}</a>
                         {% endif %}
                     {% else %}
                         {# write orphan or no level or no hierarchy checkbox #}
