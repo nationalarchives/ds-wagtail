@@ -859,36 +859,6 @@ class TestDataLayerSearchViews(WagtailTestUtils, TestCase):
         )
 
     @responses.activate
-    def test_datalayer_landing_search(self):
-        self.assertDataLayerEquals(
-            path=reverse("search"),
-            query_data={},
-            api_resonse_path=f"{settings.BASE_DIR}/etna/search/tests/fixtures/landing_search.json",
-            expected={
-                "contentGroup1": "Search",
-                "customDimension1": "offsite",
-                "customDimension2": "",
-                "customDimension3": "SearchLandingView",
-                "customDimension4": "",
-                "customDimension5": "",
-                "customDimension6": "",
-                "customDimension7": "",
-                "customDimension8": "",
-                "customDimension9": "",
-                "customDimension10": "",
-                "customDimension11": "",
-                "customDimension12": "",
-                "customDimension13": "",
-                "customDimension14": "",
-                "customDimension15": "",
-                "customDimension16": "",
-                "customDimension17": "",
-                "customMetric1": 0,
-                "customMetric2": 0,
-            },
-        )
-
-    @responses.activate
     def test_datalayer_catalogue_search_tna(self):
         self.assertDataLayerEquals(
             path=reverse("search-catalogue"),
@@ -1007,3 +977,12 @@ class TestDataLayerSearchViews(WagtailTestUtils, TestCase):
                 "customMetric2": 0,
             },
         )
+
+
+class CatalogueSearchRedirectTest(SearchViewTestCase):
+
+    @responses.activate
+    def test_redirect(self):
+        response = self.client.get(reverse_lazy("search"))
+        expected_redirect_url = reverse_lazy("search-catalogue")
+        self.assertRedirects(response, expected_redirect_url, status_code=302)

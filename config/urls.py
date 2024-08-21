@@ -3,6 +3,7 @@ from django.conf import settings
 from django.contrib import admin
 from django.urls import include, path, register_converter
 from django.views.decorators.cache import never_cache
+from django.views.generic import RedirectView
 
 from wagtail import urls as wagtail_urls
 from wagtail.admin import urls as wagtailadmin_urls
@@ -72,7 +73,8 @@ public_urls = [
     path(
         r"search/",
         setting_controlled_login_required(
-            search_views.SearchLandingView.as_view(), "SEARCH_VIEWS_REQUIRE_LOGIN"
+            RedirectView.as_view(pattern_name="search-catalogue", permanent=False),
+            "SEARCH_VIEWS_REQUIRE_LOGIN",
         ),
         name="search",
     ),

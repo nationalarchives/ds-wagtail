@@ -13,12 +13,12 @@ from django.http import Http404, HttpRequest, HttpResponse, HttpResponseBadReque
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.http import urlencode
-from django.views.generic import FormView, TemplateView
+from django.views.generic import FormView
 
 from wagtail.coreutils import camelcase_to_underscore
 
 from ..analytics.mixins import SearchDataLayerMixin
-from ..ciim.client import Aggregation, Sort
+from ..ciim.client import Sort
 from ..ciim.constants import (
     AGGS_LOOKUP_KEY,
     CATALOGUE_BUCKETS,
@@ -179,48 +179,6 @@ class ClientAPIMixin:
             number=self.page_number, on_each_side=1, on_ends=1
         )
         return paginator, page, page_range
-
-
-class SearchLandingView(SearchDataLayerMixin, BucketsMixin, TemplateView):
-    """
-    A simple view that queries the API to retrieve counts for the various
-    buckets the user can explore, and provides a form to encourage the user
-    to dig deeper. Any interaction should take them to one of the other,
-    more sophisticated, views below.
-
-    Although this view called the Client API, it does not use ClientAPIMixin,
-    as the unique functionality is simple enough to keep in a single method.
-    """
-
-    template_name = "search/search.html"
-    bucket_list = CATALOGUE_BUCKETS
-    page_type = "Search landing page"
-    page_title = "Search landing"
-
-    def get_context_data(self, **kwargs):
-        # Make empty search to get aggregations
-        self.api_result = records_client.search(
-            aggregations=[
-                Aggregation.CATALOGUE_SOURCE,
-                Aggregation.CLOSURE,
-                Aggregation.COLLECTION,
-                Aggregation.LEVEL,
-                Aggregation.TOPIC,
-                # Fetching more groups so that we receive a counts
-                # for any bucket/tab options we might be showing
-                f"{Aggregation.GROUP}:30",
-                Aggregation.HELD_BY,
-                Aggregation.TYPE,
-            ],
-            size=0,
-        )
-        kwargs["page_type"] = self.page_type
-        kwargs["page_title"] = self.page_title
-        return super().get_context_data(
-            meta_title="Search the collection",
-            form=CatalogueSearchForm(),
-            **kwargs,
-        )
 
 
 class GETFormView(FormView):
