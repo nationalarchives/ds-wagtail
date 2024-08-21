@@ -4,24 +4,24 @@ import factory
 
 from wagtail_factories import ImageFactory, PageFactory
 
-from etna.authors.models import AuthorIndexPage, AuthorPage
+from etna.people.models import PeopleIndexPage, PersonPage
 
 
-class AuthorIndexPageFactory(PageFactory):
+class PeopleIndexPageFactory(PageFactory):
     teaser_text = "Teaser text"
     teaser_image = factory.SubFactory(ImageFactory)
 
     class Meta:
-        model = AuthorIndexPage
+        model = PeopleIndexPage
 
 
-class AuthorPageFactory(PageFactory):
+class PersonPageFactory(PageFactory):
     image = factory.SubFactory(ImageFactory)
     teaser_text = "Teaser text"
     teaser_image = factory.SubFactory(ImageFactory)
 
     class Meta:
-        model = AuthorPage
+        model = PersonPage
 
     @factory.post_generation
     def set_publish_dates(obj, create, extracted, **kwargs):

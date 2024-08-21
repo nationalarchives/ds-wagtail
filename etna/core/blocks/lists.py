@@ -19,3 +19,20 @@ class DoDontListBlock(blocks.StructBlock):
         icon = "tasks"
         label = "Do/Don't List"
         template = "blocks/do-dont-list.html"
+
+
+class DescriptionListItemBlock(blocks.StructBlock):
+    term = blocks.CharBlock(required=True)
+    detail = APIRichTextBlock(features=settings.INLINE_RICH_TEXT_FEATURES)
+
+    class Meta:
+        icon = "list-ul"
+        label = "Description List Item"
+
+
+class DescriptionListBlock(blocks.StructBlock):
+    items = blocks.ListBlock(DescriptionListItemBlock())
+
+    class Meta:
+        icon = "list-ul"
+        label = "Description List"

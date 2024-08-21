@@ -4,26 +4,28 @@ from wagtail.models import Site
 
 from ...articles.models import FocusedArticlePage
 from ...images.models import CustomImage
-from ..models import AuthorIndexPage, AuthorPage, AuthorTag
+from ..models import AuthorTag, PeopleIndexPage, PersonPage
 
 
 class TestAuthorPages(TestCase):
     def setUp(self):
         root = Site.objects.get().root_page
 
-        self.author_index_page = AuthorIndexPage(
-            title="Authors", teaser_text="Test teaser text"
+        self.author_index_page = PeopleIndexPage(
+            title="People", teaser_text="Test teaser text"
         )
         root.add_child(instance=self.author_index_page)
 
         self.image = CustomImage.objects.create(width=0, height=0)
 
-        self.author_page = AuthorPage(
+        self.author_page = PersonPage(
             title="John Doe",
             role="Author on Test Site",
             summary="Test summary",
             image=self.image,
             teaser_text="Test teaser text",
+            first_name="John",
+            last_name="Doe",
         )
         self.author_index_page.add_child(instance=self.author_page)
 
@@ -44,7 +46,7 @@ class TestAuthorPages(TestCase):
             root.add_child(instance=self.author_tags[f"author_tag{i}"])
 
     def test_author_index_page(self):
-        self.assertEqual(self.author_index_page.title, "Authors")
+        self.assertEqual(self.author_index_page.title, "People")
         self.assertEqual(self.author_index_page.get_children().count(), 1)
         self.assertEqual(
             self.author_index_page.get_children().first().title, "John Doe"

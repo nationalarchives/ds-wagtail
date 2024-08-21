@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "Etna"
-version = "24.06.25.35"
+version = "24.08.06.37"
 description = ""
 authors = ["James Biggs <james.biggs@nationalarchives.gov.uk>"]
 
@@ -19,12 +19,11 @@ pyquery = "~2.0"
 python = "^3.11"
 python-magic = "~0.4"
 sentry-sdk = "~1.45"
-wagtail = "~6.1"
+wagtail = "~6.2"
 wagtail-font-awesome-svg = "~1.0"
 wagtail-generic-chooser = "~0.6"
 wagtailmedia = "~0.15"
 wagtail-metadata = "~5.0"
-nationalarchives-frontend-django = "^0.1.2a0"
 wagtail-headless-preview = "0.8.0"
 
 [tool.poetry.dev-dependencies]

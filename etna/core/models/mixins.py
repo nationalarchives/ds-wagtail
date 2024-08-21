@@ -3,13 +3,19 @@ from datetime import timedelta
 from django.db import models
 from django.utils import timezone
 from django.utils.functional import cached_property
+from django.utils.safestring import mark_safe
+from django.utils.translation import gettext_lazy as _
 
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel
 from wagtail.api import APIField
 from wagtail.fields import RichTextField
 from wagtail.images import get_image_model_string
 
-from etna.core.serializers import ImageSerializer, RichTextSerializer
+from etna.core.serializers import (
+    DetailedImageSerializer,
+    ImageSerializer,
+    RichTextSerializer,
+)
 
 from .forms import RequiredHeroImagePageForm
 
@@ -18,6 +24,8 @@ __all__ = [
     "NewLabelMixin",
     "HeroImageMixin",
     "RequiredHeroImageMixin",
+    "SidebarMixin",
+    "SocialMixin",
 ]
 
 
@@ -162,11 +170,11 @@ class HeroImageMixin(models.Model):
         APIField("hero_image_caption", serializer=RichTextSerializer()),
         APIField(
             "hero_image",
-            serializer=ImageSerializer("fill-1200x480"),
+            serializer=DetailedImageSerializer("fill-1200x480"),
         ),
         APIField(
             "hero_image_small",
-            serializer=ImageSerializer("fill-600x400", source="hero_image"),
+            serializer=DetailedImageSerializer("fill-600x400", source="hero_image"),
         ),
     ]
 
@@ -178,3 +186,128 @@ class RequiredHeroImageMixin(HeroImageMixin):
         abstract = True
 
     base_form_class = RequiredHeroImagePageForm
+
+
+class SidebarMixin(models.Model):
+    """Mixin to add sidebar options to a Page."""
+
+    page_sidebar = models.CharField(
+        choices=[
+            ("contents", "Contents"),
+            ("sections", "Sections"),
+            ("pages", "Pages"),
+        ],
+        help_text=mark_safe(
+            "Select the sidebar style for this page. For more information, see the <a href='https://nationalarchives.github.io/design-system/components/sidebar/'>sidebar documentation</a>."
+        ),
+        null=True,
+        blank=True,
+    )
+
+    class Meta:
+        abstract = True
+
+    settings_panels = [
+        FieldPanel("page_sidebar"),
+    ]
+
+    api_fields = [
+        APIField("page_sidebar"),
+    ]
+
+
+class SocialMixin(models.Model):
+    """Mixin to add social media sharing options to a Page."""
+
+    search_image = models.ForeignKey(
+        get_image_model_string(),
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        verbose_name=_("OpenGraph image"),
+        help_text=_(
+            "Image that will appear when this page is shared on social media. This will default to the teaser image if left blank."
+        ),
+    )
+
+    twitter_og_title = models.CharField(
+        verbose_name=_("Twitter OpenGraph title"),
+        max_length=255,
+        blank=True,
+        null=True,
+        help_text=_("If left blank, the OpenGraph title will be used."),
+    )
+    twitter_og_description = models.TextField(
+        verbose_name=_("Twitter OpenGraph description"),
+        blank=True,
+        null=True,
+        help_text=_("If left blank, the OpenGraph description will be used."),
+    )
+    twitter_og_image = models.ForeignKey(
+        get_image_model_string(),
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        verbose_name=_("Twitter OpenGraph image"),
+        help_text=_("If left blank, the OpenGraph image will be used."),
+    )
+
+    class Meta:
+        abstract = True
+
+    promote_panels = [
+        MultiFieldPanel(
+            [
+                FieldPanel("teaser_text"),
+                FieldPanel("teaser_image"),
+            ],
+            heading="Internal data",
+        ),
+        MultiFieldPanel(
+            [
+                FieldPanel(
+                    "seo_title",
+                    help_text=_(
+                        "The name of the page displayed on search engine results as the clickable headline and when shared on social media."
+                    ),
+                ),
+                FieldPanel(
+                    "search_description",
+                    help_text=_(
+                        "The descriptive text displayed underneath a headline in search engine results and when shared on social media."
+                    ),
+                ),
+                FieldPanel("search_image"),
+            ],
+            heading="Base OpenGraph data",
+        ),
+        MultiFieldPanel(
+            [
+                FieldPanel("twitter_og_title"),
+                FieldPanel("twitter_og_description"),
+                FieldPanel("twitter_og_image"),
+            ],
+            heading="Twitter OpenGraph data",
+        ),
+    ]
+
+    api_meta_fields = [
+        APIField(
+            "teaser_image_square",
+            serializer=ImageSerializer("fill-512x512", source="teaser_image"),
+        ),
+        APIField("seo_title"),
+        APIField("search_description"),
+        APIField(
+            "search_image",
+            serializer=ImageSerializer("fill-1200x630"),
+        ),
+        APIField("twitter_og_title"),
+        APIField("twitter_og_description"),
+        APIField(
+            "twitter_og_image",
+            serializer=ImageSerializer("fill-1200x630"),
+        ),
+    ]

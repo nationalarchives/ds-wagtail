@@ -26,11 +26,10 @@ from wagtail.snippets.models import register_snippet
 from rest_framework import serializers
 from taggit.models import ItemBase, TagBase
 
-from etna.authors.models import AuthorPageMixin
 from etna.collections.models import TopicalPageMixin
 from etna.core.blocks import AuthorPromotedPagesBlock, FeaturedCollectionBlock
 from etna.core.models import (
-    BasePageWithIntro,
+    BasePageWithRequiredIntro,
     ContentWarningMixin,
     HeroImageMixin,
     NewLabelMixin,
@@ -44,6 +43,7 @@ from etna.core.serializers import (
     TaggableSerializer,
 )
 from etna.core.utils import skos_id_from_text
+from etna.people.models import AuthorPageMixin
 from etna.records.fields import RecordField
 
 from .blocks import ArticlePageStreamBlock
@@ -118,7 +118,7 @@ class ArticleTagMixin(models.Model):
     api_fields = [APIField("tags", serializer=TaggableSerializer())]
 
 
-class ArticleIndexPage(BasePageWithIntro):
+class ArticleIndexPage(BasePageWithRequiredIntro):
     """ArticleIndexPage
 
     This page lists the ArticlePage objects that are children of this page.
@@ -142,7 +142,7 @@ class ArticleIndexPage(BasePageWithIntro):
         null=True,
     )
 
-    api_fields = BasePageWithIntro.api_fields + [
+    api_fields = BasePageWithRequiredIntro.api_fields + [
         APIField(
             "featured_article",
             serializer=DefaultPageSerializer(required_api_fields=["teaser_image"]),
@@ -179,7 +179,7 @@ class ArticleIndexPage(BasePageWithIntro):
             .specific()
         )
 
-    content_panels = BasePageWithIntro.content_panels + [
+    content_panels = BasePageWithRequiredIntro.content_panels + [
         PageChooserPanel(
             "featured_article",
             [
@@ -205,7 +205,7 @@ class ArticlePage(
     ContentWarningMixin,
     NewLabelMixin,
     ArticleTagMixin,
-    BasePageWithIntro,
+    BasePageWithRequiredIntro,
 ):
     """ArticlePage
 
@@ -225,7 +225,7 @@ class ArticlePage(
         verbose_name_public = _("the story of")
 
     content_panels = (
-        BasePageWithIntro.content_panels
+        BasePageWithRequiredIntro.content_panels
         + RequiredHeroImageMixin.content_panels
         + [
             MultiFieldPanel(
@@ -242,7 +242,7 @@ class ArticlePage(
 
     promote_panels = (
         NewLabelMixin.promote_panels
-        + BasePageWithIntro.promote_panels
+        + BasePageWithRequiredIntro.promote_panels
         + ArticleTagMixin.promote_panels
         + [
             TopicalPageMixin.get_topics_inlinepanel(),
@@ -254,7 +254,7 @@ class ArticlePage(
     subpage_types = []
 
     search_fields = (
-        BasePageWithIntro.search_fields
+        BasePageWithRequiredIntro.search_fields
         + ArticleTagMixin.search_fields
         + [
             index.SearchField("body"),
@@ -263,12 +263,12 @@ class ArticlePage(
         ]
     )
 
-    default_api_fields = BasePageWithIntro.default_api_fields + [
+    default_api_fields = BasePageWithRequiredIntro.default_api_fields + [
         APIField("is_newly_published"),
     ]
 
     api_fields = (
-        BasePageWithIntro.api_fields
+        BasePageWithRequiredIntro.api_fields
         + RequiredHeroImageMixin.api_fields
         + ContentWarningMixin.api_fields
         + NewLabelMixin.api_fields
@@ -375,7 +375,7 @@ class FocusedArticlePage(
     ContentWarningMixin,
     NewLabelMixin,
     ArticleTagMixin,
-    BasePageWithIntro,
+    BasePageWithRequiredIntro,
 ):
     """FocusedArticlePage
 
@@ -395,7 +395,7 @@ class FocusedArticlePage(
         verbose_name_public = _("focus on")
 
     content_panels = (
-        BasePageWithIntro.content_panels
+        BasePageWithRequiredIntro.content_panels
         + HeroImageMixin.content_panels
         + [
             MultiFieldPanel(
@@ -412,7 +412,7 @@ class FocusedArticlePage(
 
     promote_panels = (
         NewLabelMixin.promote_panels
-        + BasePageWithIntro.promote_panels
+        + BasePageWithRequiredIntro.promote_panels
         + ArticleTagMixin.promote_panels
         + [
             AuthorPageMixin.get_authors_inlinepanel(),
@@ -425,7 +425,7 @@ class FocusedArticlePage(
     subpage_types = []
 
     search_fields = (
-        BasePageWithIntro.search_fields
+        BasePageWithRequiredIntro.search_fields
         + ArticleTagMixin.search_fields
         + [
             index.SearchField("body"),
@@ -435,12 +435,12 @@ class FocusedArticlePage(
         ]
     )
 
-    default_api_fields = BasePageWithIntro.default_api_fields + [
+    default_api_fields = BasePageWithRequiredIntro.default_api_fields + [
         APIField("is_newly_published"),
     ]
 
     api_fields = (
-        BasePageWithIntro.api_fields
+        BasePageWithRequiredIntro.api_fields
         + HeroImageMixin.api_fields
         + ContentWarningMixin.api_fields
         + NewLabelMixin.api_fields
@@ -589,7 +589,7 @@ class RecordArticlePage(
     ContentWarningMixin,
     NewLabelMixin,
     ArticleTagMixin,
-    BasePageWithIntro,
+    BasePageWithRequiredIntro,
 ):
     template = "articles/record_article_page.html"
     parent_page_types = ["articles.ArticleIndexPage"]
@@ -674,7 +674,7 @@ class RecordArticlePage(
         verbose_name_plural = _("record articles")
         verbose_name_public = _("record revealed")
 
-    content_panels = BasePageWithIntro.content_panels + [
+    content_panels = BasePageWithRequiredIntro.content_panels + [
         FieldPanel("intro_image"),
         MultiFieldPanel(
             heading="Content Warning Options",
@@ -722,7 +722,7 @@ class RecordArticlePage(
 
     promote_panels = (
         NewLabelMixin.promote_panels
-        + BasePageWithIntro.promote_panels
+        + BasePageWithRequiredIntro.promote_panels
         + ArticleTagMixin.promote_panels
         + [
             TopicalPageMixin.get_topics_inlinepanel(),
@@ -731,7 +731,7 @@ class RecordArticlePage(
     )
 
     search_fields = (
-        BasePageWithIntro.search_fields
+        BasePageWithRequiredIntro.search_fields
         + ArticleTagMixin.search_fields
         + [
             index.SearchField("gallery_text"),
@@ -742,12 +742,12 @@ class RecordArticlePage(
         ]
     )
 
-    default_api_fields = BasePageWithIntro.default_api_fields + [
+    default_api_fields = BasePageWithRequiredIntro.default_api_fields + [
         APIField("is_newly_published"),
     ]
 
     api_fields = (
-        BasePageWithIntro.api_fields
+        BasePageWithRequiredIntro.api_fields
         + ContentWarningMixin.api_fields
         + NewLabelMixin.api_fields
         + ArticleTagMixin.api_fields

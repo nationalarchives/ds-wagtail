@@ -1,7 +1,8 @@
 name: Clean up feature branch
 
 on:
-  delete:
+  workflow_dispatch:
+  # delete:
 
 jobs:
   delete:
