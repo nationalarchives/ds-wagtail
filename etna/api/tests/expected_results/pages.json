@@ -188,7 +188,15 @@
                     "width": 100,
                     "height": 100
                 }
-            }
+            },
+            "first_name": "John",
+            "last_name": "Smith",
+            "role_tags": [
+                {
+                    "slug": "author",
+                    "name": "Author"
+                }
+            ]
         },
         {
             "id": ARTICLE_INDEX_ID,
