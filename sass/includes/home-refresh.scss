@@ -38,3 +38,25 @@
 .no-dots {
     border-top: 0;
 }
+
+.graph-banner-icon {
+    margin-top: 75px;
+    padding: 0;
+    margin-left: 1.3em;
+}
+
+.graph-banner {
+    background: #d9d9d9;
+    margin-top: 75px;
+    margin-bottom: 75px;
+    padding-top: 1em;
+    padding-bottom: 1em;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    width: 85%;
+
+    p {
+        margin-top: 1em;
+        padding-bottom: 0.8em;
+    }
+}
