@@ -2,7 +2,7 @@ from wagtail.admin.panels import FieldPanel
 from wagtail.api import APIField
 from wagtail.fields import StreamField
 
-from etna.core.models import BasePage, BasePageWithRequiredIntro
+from etna.core.models import BasePageWithRequiredIntro
 
 from .blocks import CookieDetailsStreamBlock
 
