@@ -195,6 +195,7 @@ class SidebarMixin(models.Model):
         choices=[
             ("contents", "Contents"),
             ("sections", "Sections"),
+            ("section_tabs", "Section tabs"),
             ("pages", "Pages"),
         ],
         help_text=mark_safe(
