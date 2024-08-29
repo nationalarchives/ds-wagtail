@@ -195,7 +195,9 @@ class SidebarMixin(models.Model):
         choices=[
             ("contents", "Contents"),
             ("sections", "Sections"),
+            ("section_tabs", "Section tabs"),
             ("pages", "Pages"),
+            ("pages_tabs", "Pages tabs"),
         ],
         help_text=mark_safe(
             "Select the sidebar style for this page. For more information, see the <a href='https://nationalarchives.github.io/design-system/components/sidebar/'>sidebar documentation</a>."
