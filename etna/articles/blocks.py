@@ -169,6 +169,7 @@ class SubHeadingBlock(SectionDepthAwareStructBlock):
 
 
 class SectionContentBlock(blocks.StreamBlock):
+    code = CodeBlock()
     paragraph = ParagraphBlock()
     quote = QuoteBlock()
     sub_heading = SubHeadingBlock()
