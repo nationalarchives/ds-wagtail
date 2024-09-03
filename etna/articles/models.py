@@ -136,7 +136,7 @@ class ArticlePage(
 
     content_panels = (
         BasePageWithIntro.content_panels
-        + RequiredHeroImageMixin.content_panels
+        + HeroImageMixin.content_panels
         + [
             MultiFieldPanel(
                 [
@@ -168,7 +168,7 @@ class ArticlePage(
 
     api_fields = (
         BasePageWithIntro.api_fields
-        + RequiredHeroImageMixin.api_fields
+        + HeroImageMixin.api_fields
         + ContentWarningMixin.api_fields
         + NewLabelMixin.api_fields
         + ArticleTagMixin.api_fields
