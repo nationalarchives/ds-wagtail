@@ -22,8 +22,8 @@ from taggit.models import ItemBase, TagBase
 from etna.core.models import (
     BasePageWithIntro,
     ContentWarningMixin,
-    NewLabelMixin,
     HeroImageMixin,
+    NewLabelMixin,
 )
 from etna.core.utils import skos_id_from_text
 
