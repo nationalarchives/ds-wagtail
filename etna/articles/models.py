@@ -23,7 +23,7 @@ from etna.core.models import (
     BasePageWithIntro,
     ContentWarningMixin,
     NewLabelMixin,
-    RequiredHeroImageMixin,
+    HeroImageMixin,
 )
 from etna.core.utils import skos_id_from_text
 
@@ -111,7 +111,7 @@ class PageSerializer(serializers.ModelSerializer):
 
 
 class ArticlePage(
-    RequiredHeroImageMixin,
+    HeroImageMixin,
     ContentWarningMixin,
     NewLabelMixin,
     ArticleTagMixin,
