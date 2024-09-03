@@ -30,6 +30,7 @@ class GeneralPage(SidebarMixin, HeroImageMixin, BasePageWithIntro):
         + HeroImageMixin.content_panels
         + [
             FieldPanel("body"),
+            InlinePanel("footnotes", label="Footnotes"),
         ]
     )
 

@@ -78,6 +78,7 @@ INSTALLED_APPS = [
     "wagtail.admin",
     "wagtail",
     "wagtailfontawesomesvg",
+    "wagtail_footnotes",
     "wagtailmedia",
     "wagtail.contrib.settings",
     "generic_chooser",
@@ -332,6 +333,7 @@ INLINE_RICH_TEXT_FEATURES = [
     "bold",
     "italic",
     "link",
+    "footnotes",
 ]
 RESTRICTED_RICH_TEXT_FEATURES = INLINE_RICH_TEXT_FEATURES + [
     "ol",

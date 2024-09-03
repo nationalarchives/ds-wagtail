@@ -25,6 +25,7 @@ wagtail-generic-chooser = "~0.6"
 wagtailmedia = "~0.15"
 wagtail-metadata = "~5.0"
 wagtail-headless-preview = "0.8.0"
+wagtail-footnotes = "~0.12"
 
 [tool.poetry.dev-dependencies]
 black = "~24.4"

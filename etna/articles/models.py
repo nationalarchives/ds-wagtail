@@ -199,6 +199,14 @@ class ArticleIndexPage(BasePageWithRequiredIntro):
     ]
 
 
+class FootnoteSerializer(serializers.Serializer):
+    def to_representation(self, instance):
+        return {
+            "id": instance.id,
+            "uuid": instance.uuid,
+            "text": instance.text,
+        }
+
 class ArticlePage(
     TopicalPageMixin,
     RequiredHeroImageMixin,
@@ -237,6 +245,7 @@ class ArticlePage(
                 classname="collapsible",
             ),
             FieldPanel("body"),
+            InlinePanel("footnotes", label="Footnotes"),
         ]
     )
 
@@ -287,6 +296,7 @@ class ArticlePage(
                     required_api_fields=["teaser_image"], many=True
                 ),
             ),
+            APIField("footnotes", serializer=FootnoteSerializer(many=True)),
         ]
         + TopicalPageMixin.api_fields
     )
