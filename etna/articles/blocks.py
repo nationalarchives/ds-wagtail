@@ -5,6 +5,7 @@ from wagtail import blocks
 from wagtail.snippets.blocks import SnippetChooserBlock
 
 from etna.core.blocks import (
+    CodeBlock,
     ContentImageBlock,
     NoCaptionImageBlock,
     PageListBlock,
