@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     "etna.analytics",
     "etna.articles",
     "etna.people",
+    "etna.cookies",
     "etna.categories",
     "etna.ciim",
     "etna.collections",
