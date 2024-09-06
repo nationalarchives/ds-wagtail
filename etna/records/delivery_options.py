@@ -130,7 +130,7 @@ def get_Dept(reference_number: str, field: str):
 
 
 """
-    Helper functions that provide the logic to return values for {xyz} tags in the DeliveryOptions.json file. 
+    Helper functions that provide the logic to return values for {xyz} tags in the DeliveryOptions.json file.
     Some are simple urls or text strings, others require data from elsewhere in order to calculate them.
 """
 
@@ -212,7 +212,7 @@ def get_DownloadText(record: dict, surrogate: List) -> str:
 
 
 def get_DownloadUrl(record: dict, surrogate: List) -> str:
-    return f"details/download"
+    return "details/download"
 
 
 def get_FAType(record: dict, surrogate: List) -> str:  # Unknown derivation
@@ -430,7 +430,7 @@ def distressing_content_match(reference: str) -> bool:
 def get_record(cache: Dict, record_id: int):
     try:
         return cache["deliveryOptions"]["option"][record_id]
-    except:
+    except Exception:
         return None
 
 
@@ -446,7 +446,7 @@ def html_replacer(string: str, record: dict, surrogate_data: List) -> str:
             # empty string and it won't get displayed
             if f := func(record, surrogate_data):
                 string = string.replace(s, f)
-        except:
+        except Exception:
             raise
     return string
 
@@ -579,6 +579,7 @@ def get_reader_type() -> Reader:
 
 
 """ End of EDEV-115 """
+
 
 # Main routine called from records.py
 def construct_delivery_options(doptions: list, record: dict) -> dict:

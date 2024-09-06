@@ -1,5 +1,4 @@
 import datetime
-import json
 
 from django.core.paginator import Page
 from django.shortcuts import Http404, render
@@ -117,7 +116,7 @@ def record_detail_view(request, iaid):
     try:
         delivery_options = delivery_options_client.fetch(iaid=iaid)
         do_ctx = construct_delivery_options(delivery_options, record)
-    except Exception as e:
+    except Exception:
         # Built in order exception option
         do_ctx = construct_delivery_options(
             [

@@ -4,17 +4,14 @@ from unittest.mock import patch
 import responses
 import json
 from copy import deepcopy
-from etna.records.models import Image, Record
-import pprint
+from etna.records.models import Record
 
 from etna.records.delivery_options import (
     AvailabilityCondition,
     Reader,
-    get_AccessConditionText,
     construct_delivery_options,
     read_delivery_options,
     get_Dept,
-    get_record,
 )
 
 from etna.records.api import get_delivery_options_client, get_records_client
@@ -100,9 +97,7 @@ class DeliveryOptionsApiTest(TestCase):
         )
 
         with self.assertRaises(TypeError):
-            response = self.delivery_options_client.fetch(
-                unknown_parameter=unknown_parameter
-            )
+            self.delivery_options_client.fetch(unknown_parameter=unknown_parameter)
 
     @responses.activate
     def test_delivery_options_api_call_with_extended_payload(self):
@@ -238,7 +233,7 @@ class DeliveryOptionsHelpersTest(TestCase):
         string = string.replace(
             "{AdvanceOrderInformationUrl}", f"{settings.BASE_TNA_URL}/about/visit-us/"
         )
-        string = string.replace("{DownloadUrl}", f"details/download")
+        string = string.replace("{DownloadUrl}", "details/download")
 
         return string
 
@@ -387,7 +382,7 @@ class DeliveryOptionsHelpersTest(TestCase):
                 do,
                 availability_condition=doptions[0]["options"],
                 heading=f"This is available to download from  {doptions[0]['surrogateLinks'][0]['xReferenceURL']}",
-                description=f"<p>Partner websites are free to search but there may be a charge to view full transcriptions and download documents. Other services may also be available.</p>",
+                description="<p>Partner websites are free to search but there may be a charge to view full transcriptions and download documents. Other services may also be available.</p>",
                 orderbuttons=[
                     'href="https://www.ancestry.co.uk/search/collections/7572/"'
                 ],
@@ -411,8 +406,8 @@ class DeliveryOptionsHelpersTest(TestCase):
             self.check_assertions(
                 do,
                 availability_condition=doptions[0]["options"],
-                heading=f"",
-                description=f"<p>Partner websites are free to search but there may be a charge to view full transcriptions and download documents. Other services may also be available.</p>",
+                heading="",
+                description="<p>Partner websites are free to search but there may be a charge to view full transcriptions and download documents. Other services may also be available.</p>",
             )
 
     def test_construct_delivery_options_AV_Media_Offsite(self):
@@ -448,7 +443,7 @@ class DeliveryOptionsHelpersTest(TestCase):
                 do,
                 availability_condition=doptions[0]["options"],
                 heading=f"View this on the {doptions[0]['surrogateLinks'][0]['xReferenceURL']}",
-                description=f"<p>This document may include content that reflects the trauma and distress experienced by those present during or affected by the tragic events of 15 April  1989.</p>",
+                description="<p>This document may include content that reflects the trauma and distress experienced by those present during or affected by the tragic events of 15 April  1989.</p>",
                 orderbuttons=[
                     f"OB: {doptions[0]['surrogateLinks'][0]['xReferenceURL']}"
                 ],
@@ -481,7 +476,7 @@ class DeliveryOptionsHelpersTest(TestCase):
             self.check_assertions(
                 do,
                 availability_condition=doptions[0]["options"],
-                heading=f'This record is closed and retained by the <a href="http://www.fco.gov.uk/en/publications-and-documents/freedom-of-information/" target="_blank">Foreign and Commonwealth Office</a>',
+                heading='This record is closed and retained by the <a href="http://www.fco.gov.uk/en/publications-and-documents/freedom-of-information/" target="_blank">Foreign and Commonwealth Office</a>',
                 description=f"<p>  <strong>{self.record.access_condition}</strong><br />",
                 orderbuttons=[
                     "http://www.fco.gov.uk/en/publications-and-documents/freedom-of-information/"
@@ -512,7 +507,7 @@ class DeliveryOptionsHelpersTest(TestCase):
             self.check_assertions(
                 do,
                 availability_condition=doptions[0]["options"],
-                heading=f"This record is retained by a government department",
+                heading="This record is retained by a government department",
             )
 
     def test_construct_delivery_options_Invalid_DO_Exception(self):
@@ -534,7 +529,7 @@ class DeliveryOptionsHelpersTest(TestCase):
             self.check_assertions(
                 do,
                 availability_condition=doptions[0]["options"],
-                heading=f"Order and viewing options error",
+                heading="Order and viewing options error",
                 description="This service is currently unavailable.  We apologise for any inconvenience caused.",
             )
 
