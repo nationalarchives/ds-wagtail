@@ -9,10 +9,10 @@ from django.utils import timezone
 from etna.ciim.constants import TNA_URLS
 from etna.ciim.exceptions import DoesNotExist
 from etna.ciim.paginator import APIPaginator
-from etna.records.api import records_client, delivery_options_client
+from etna.records.api import delivery_options_client, records_client
 from etna.records.delivery_options import (
-    construct_delivery_options,
     AvailabilityCondition,
+    construct_delivery_options,
 )
 
 SEARCH_URL_RETAIN_DELTA = timezone.timedelta(hours=48)

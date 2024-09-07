@@ -1,11 +1,10 @@
 import json
 
-from typing import (
-    Any,
-    Optional,
-)
+from typing import Any, Optional
 
 """Although this is not a ciim specific class, use the predefined API exceptions for consistency """
+import requests
+
 from etna.ciim.exceptions import (
     ClientAPIBadRequestError,
     ClientAPICommunicationError,
@@ -14,8 +13,6 @@ from etna.ciim.exceptions import (
     DoesNotExist,
     MultipleObjectsReturned,
 )
-
-import requests
 
 
 class DeliveryOptionsAPI:

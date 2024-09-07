@@ -1,9 +1,11 @@
-from enum import IntEnum
 import json
 import re
-from django.conf import settings
-from typing import Any, Dict, List, Union, Tuple
+
+from enum import IntEnum
 from functools import cache
+from typing import Any, Dict, List, Tuple, Union
+
+from django.conf import settings
 
 
 class Reader(IntEnum):

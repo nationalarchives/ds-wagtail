@@ -1,20 +1,22 @@
+import json
+
+from copy import deepcopy
+from unittest.mock import patch
+
 from django.conf import settings
 from django.test import TestCase
-from unittest.mock import patch
-import responses
-import json
-from copy import deepcopy
-from etna.records.models import Record
 
+import responses
+
+from etna.records.api import get_delivery_options_client, get_records_client
 from etna.records.delivery_options import (
     AvailabilityCondition,
     Reader,
     construct_delivery_options,
-    read_delivery_options,
     get_Dept,
+    read_delivery_options,
 )
-
-from etna.records.api import get_delivery_options_client, get_records_client
+from etna.records.models import Record
 
 
 class DeliveryOptionsApiTest(TestCase):
