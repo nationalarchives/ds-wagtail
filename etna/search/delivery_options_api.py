@@ -83,7 +83,6 @@ class DeliveryOptionsAPI:
     def make_request(
         self, url: str, params: Optional[dict[str, Any]] = None
     ) -> requests.Response:
-
         """Make request to Client API."""
         params = self.prepare_request_params(params)
         response = self.session.get(url, params=params, timeout=self.timeout)

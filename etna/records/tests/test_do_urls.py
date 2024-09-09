@@ -431,11 +431,10 @@ class DeliveryOptionsHelpersTest(TestCase):
             }
         ]
 
-        with patch(
-            "etna.records.delivery_options.get_reader_type"
-        ) as mocked_reader, patch(
-            "etna.records.delivery_options.get_dcs_prefixes"
-        ) as mocked_dcs:
+        with (
+            patch("etna.records.delivery_options.get_reader_type") as mocked_reader,
+            patch("etna.records.delivery_options.get_dcs_prefixes") as mocked_dcs,
+        ):
             mocked_reader.return_value = Reader.OFFSITE
             mocked_dcs.return_value = "IR"
 
@@ -462,11 +461,10 @@ class DeliveryOptionsHelpersTest(TestCase):
             }
         ]
 
-        with patch(
-            "etna.records.delivery_options.get_reader_type"
-        ) as mocked_reader, patch(
-            "etna.records.delivery_options.get_dcs_prefixes"
-        ) as mocked_dcs:
+        with (
+            patch("etna.records.delivery_options.get_reader_type") as mocked_reader,
+            patch("etna.records.delivery_options.get_dcs_prefixes") as mocked_dcs,
+        ):
             mocked_reader.return_value = Reader.ONSITEPUBLIC
             mocked_dcs.return_value = "XYZ"
 
