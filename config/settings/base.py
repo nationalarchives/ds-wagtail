@@ -298,7 +298,19 @@ CSRF_TRUSTED_ORIGINS = [
 # For search results within Wagtail itself
 WAGTAILSEARCH_BACKENDS = {
     "default": {
-        "BACKEND": "wagtail.search.backends.database",
+        "BACKEND": "wagtail.search.backends.elasticsearch8",
+        "URLS": ["http://host.docker.internal:9200"],
+        "INDEX": "wagtail",
+        "TIMEOUT": 5,
+        "OPTIONS": {},
+        "INDEX_SETTINGS": {
+            "settings": {
+                "index": {
+                    "number_of_shards": 1,
+                },
+                "analysis": {"analyzer": {"default": {"type": "italian"}}},
+            }
+        },
     }
 }
 

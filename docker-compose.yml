@@ -89,5 +89,15 @@ services:
     ports:
       - 6379:6379
 
+  elasticsearch:
+    container_name: elasticsearch
+    image: elasticsearch:8.15.1
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+    ports:
+      - 9200:9200
+      - 9300:9300
+
 volumes:
   media:

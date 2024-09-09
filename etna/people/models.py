@@ -291,3 +291,9 @@ class AuthorPageMixin:
             serializer=DefaultPageSerializer(required_api_fields=["image"], many=True),
         )
     ]
+
+    class _meta:
+        abstract = True
+        local_managers = []
+        default_manager_name = ""
+        app_label = ""

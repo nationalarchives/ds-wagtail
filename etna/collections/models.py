@@ -675,6 +675,12 @@ class TopicalPageMixin:
         ),
     ]
 
+    class _meta:
+        abstract = True
+        local_managers = []
+        default_manager_name = ""
+        app_label = ""
+
     @classmethod
     def get_time_periods_inlinepanel(cls, max_num: Optional[int] = 4) -> InlinePanel:
         return InlinePanel(
