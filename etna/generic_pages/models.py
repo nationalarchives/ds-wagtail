@@ -12,6 +12,7 @@ from wagtail.models import Orderable
 
 from rest_framework import serializers
 
+from etna.articles.models import FootnoteSerializer
 from etna.core.models import BasePageWithIntro, HeroImageMixin, SidebarMixin
 from etna.core.serializers import (
     DefaultPageSerializer,
@@ -42,6 +43,7 @@ class GeneralPage(SidebarMixin, HeroImageMixin, BasePageWithIntro):
         + HeroImageMixin.api_fields
         + [
             APIField("body"),
+            APIField("footnotes", serializer=FootnoteSerializer(many=True)),
         ]
     )
 
