@@ -22,7 +22,7 @@ variables:
     POETRY_VERSION: 1.8.1
 
 # The size of the persistent disk of the application (in MB).
-disk: 4096
+disk: 5120
 
 # The relationships of the application with services or other applications.
 #
