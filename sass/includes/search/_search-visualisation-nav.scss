@@ -143,3 +143,26 @@
 canvas {
     background: #d9d9d6;
 }
+
+// additional classes for no results messages
+
+.no-results-message {
+    display:block;
+
+    .notice-board {
+        margin: auto;
+        width: 50%;
+        // border: 3px solid green;
+        padding: 2em;
+        margin-bottom: 2em;
+        background: #f9f0ce;
+        -webkit-box-shadow: 20px 20px 0px -10px #a3a3a0;
+        box-shadow: 20px 20px 0px -10px #a3a3a0;
+
+
+        ul {
+            margin-left:2em;
+        }
+    }
+
+}
