@@ -121,6 +121,9 @@ COOKIE_DOMAIN = os.getenv("COOKIE_DOMAIN", "nationalarchives.gov.uk")
 ROOT_URLCONF = "config.urls"
 
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "").split(",")
+USE_X_FORWARDED_HOST = strtobool(
+    os.getenv("USE_X_FORWARDED_HOST", "False")
+)
 
 TEMPLATES = [
     {
