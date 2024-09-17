@@ -6,7 +6,7 @@ except ImportError:
     pass
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "@6gce61jt^(pyj5+l**&*_#zyxfj5v1*71cs5yoetg-!fsz826"
+SECRET_KEY = "abc123"
 
 ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 

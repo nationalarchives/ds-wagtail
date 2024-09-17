@@ -10,6 +10,7 @@ from wagtail.search import index
 
 from etna.core.serializers import RichTextSerializer
 from etna.records.fields import RecordField
+from etna.records.serializers import RecordSerializer
 
 DEFAULT_SENSITIVE_IMAGE_WARNING = (
     "This image contains content which some people may find offensive or distressing."
@@ -144,7 +145,7 @@ class CustomImage(ClusterableModel, AbstractImage):
         APIField("translation_heading"),
         APIField("translation", serializer=RichTextSerializer()),
         APIField("record_dates"),
-        APIField("record"),
+        APIField("record", serializer=RecordSerializer()),
     ]
 
     @property

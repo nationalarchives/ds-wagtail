@@ -18,7 +18,6 @@ from wagtail.models import Page
 from wagtail.search import index
 
 from wagtail_headless_preview.models import HeadlessPreviewMixin
-from wagtailmetadata.models import MetadataPageMixin
 
 from etna.alerts.models import AlertMixin
 from etna.analytics.mixins import DataLayerMixin
@@ -31,6 +30,8 @@ from etna.core.serializers import (
     MourningSerializer,
     RichTextSerializer,
 )
+
+from .mixins import SocialMixin
 
 __all__ = [
     "BasePage",
@@ -46,9 +47,7 @@ options.DEFAULT_NAMES = options.DEFAULT_NAMES + ("verbose_name_public",)
 
 @method_decorator(apply_default_vary_headers, name="serve")
 @method_decorator(apply_default_cache_control, name="serve")
-class BasePage(
-    AlertMixin, MetadataPageMixin, DataLayerMixin, HeadlessPreviewMixin, Page
-):
+class BasePage(AlertMixin, SocialMixin, DataLayerMixin, HeadlessPreviewMixin, Page):
     """
     An abstract base model that is used for all Page models within
     the project. Any common fields, Wagtail overrides or custom
@@ -62,7 +61,6 @@ class BasePage(
         ),
         max_length=160,
     )
-
     teaser_image = models.ForeignKey(
         get_image_model_string(),
         null=True,
@@ -90,31 +88,10 @@ class BasePage(
                     ),
                     widget=SlugInput,
                 ),
-                FieldPanel("seo_title"),
-                FieldPanel(
-                    "search_description",
-                    help_text=_(
-                        "The descriptive text displayed underneath a headline in search engine results and when shared on social media."
-                    ),
-                ),
-                FieldPanel(
-                    "search_image",
-                    help_text=_(
-                        "Image that will appear as a promo when this page is shared on social media."
-                    ),
-                ),
             ],
             _("For search engines"),
         ),
-        MultiFieldPanel(
-            [
-                FieldPanel("show_in_menus"),
-            ],
-            _("For site menus"),
-        ),
-        FieldPanel("teaser_image"),
-        FieldPanel("teaser_text"),
-    ]
+    ] + SocialMixin.promote_panels
 
     settings_panels = Page.settings_panels + AlertMixin.settings_panels
 
@@ -183,25 +160,16 @@ class BasePage(
 
     api_fields = AlertMixin.api_fields + [
         APIField("type_label"),
+        APIField("mourning_notice", serializer=MourningSerializer()),
+    ]
+
+    api_meta_fields = [
         APIField("teaser_text"),
         APIField(
             "teaser_image",
             serializer=ImageSerializer("fill-600x400"),
         ),
-        APIField(
-            "teaser_image_square",
-            serializer=ImageSerializer("fill-512x512", source="teaser_image"),
-        ),
-        APIField(
-            "facebook_og_image",
-            serializer=ImageSerializer("fill-1200x630", source="search_image"),
-        ),
-        APIField(
-            "twitter_og_image",
-            serializer=ImageSerializer("fill-1200x600", source="search_image"),
-        ),
-        APIField("mourning_notice", serializer=MourningSerializer()),
-    ]
+    ] + SocialMixin.api_meta_fields
 
 
 class BasePageWithIntro(BasePage):

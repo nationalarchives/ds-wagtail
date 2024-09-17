@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     "etna.analytics",
     "etna.articles",
     "etna.people",
+    "etna.cookies",
     "etna.categories",
     "etna.ciim",
     "etna.collections",
@@ -80,7 +81,7 @@ INSTALLED_APPS = [
     "wagtailmedia",
     "wagtail.contrib.settings",
     "generic_chooser",
-    "wagtailmetadata",
+    "wagtailmetadata",  # TODO: Remove this package when we reset migrations and remove the dependency from the pyproject.toml
     "modelcluster",
     "taggit",
     "django.contrib.admin",
@@ -118,6 +119,8 @@ MIDDLEWARE = [
 COOKIE_DOMAIN = os.getenv("COOKIE_DOMAIN", "nationalarchives.gov.uk")
 
 ROOT_URLCONF = "config.urls"
+
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "").split(",")
 
 TEMPLATES = [
     {
