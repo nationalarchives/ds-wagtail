@@ -1,0 +1,50 @@
+{
+    "data": [],
+    "errors": [],
+    "aggregations": [
+        {
+            "name": "community",
+            "total": 0,
+            "other": 0
+        },
+        {
+            "name": "enrichmentLoc",
+            "total": 0,
+            "other": 0
+        },
+        {
+            "name": "enrichmentMisc",
+            "total": 0,
+            "other": 0
+        },
+        {
+            "name": "enrichmentOrg",
+            "total": 0,
+            "other": 0
+        },
+        {
+            "name": "enrichmentPer",
+            "total": 0,
+            "other": 0
+        }
+    ],
+    "stats": {
+        "total": 0,
+        "results": 0,
+        "providers": 2,
+        "latency": 0
+    },
+    "found": false,
+    "buckets": [
+        {
+            "name": "group",
+            "total": 0,
+            "other": 0
+        },
+        {
+            "name": "group",
+            "total": 0,
+            "other": 0
+        }
+    ]
+}
