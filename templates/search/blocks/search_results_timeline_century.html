@@ -120,8 +120,12 @@
 </head>
 <body>
 
-<!-- this is an example include to illustrate the no results message for timeline view -->
+{% if form.errors or not paginator.count %}
+<!-- this is an example include to illustrate the no results message for tag view -->
 {% include "search/blocks/search_results_timeline_no_results.html" %}
+<!--end comment-->
+{% endif %}<!-- this is an example include to illustrate the no results message for timeline view -->
+
 <!--end comment-->
 
 
