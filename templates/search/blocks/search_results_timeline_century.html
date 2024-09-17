@@ -120,12 +120,10 @@
 </head>
 <body>
 
-{% if form.errors or not paginator.count %}
+{% if not has_enrichment_aggs_entries %}
 <!-- this is an example include to illustrate the no results message for tag view -->
 {% include "search/blocks/search_results_timeline_no_results.html" %}
-<!--end comment-->
-{% endif %}<!-- this is an example include to illustrate the no results message for timeline view -->
-
+{% endif %}
 <!--end comment-->
 
 

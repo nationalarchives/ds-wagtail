@@ -1,8 +1,8 @@
 {% load search_tags %}
 
-{% if form.errors or not paginator.count %}
+{% if not has_enrichment_aggs_entries %}
 <!-- this is an example include to illustrate the no results message for tag view -->
-{% include "search/blocks/search_results_timeline_no_results.html" %}
+{% include "search/blocks/search_results_tag_no_results.html" %}
 <!--end comment-->
 {% endif %}
 
