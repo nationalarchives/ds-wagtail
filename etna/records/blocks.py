@@ -106,6 +106,13 @@ class RecordChooserBlock(blocks.ChooserBlock):
         Wagtail's reference index from rebuilding this block"""
         return []
 
+    def get_api_representation(self, value, context=None):
+        return {
+            "title": value.summary_title,
+            "iaid": value.iaid,
+            "reference_number": value.reference_number,
+        }
+
     class Meta:
         icon = "archive"
 

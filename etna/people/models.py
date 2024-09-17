@@ -6,9 +6,9 @@ from django.http import HttpRequest
 from django.utils.functional import cached_property
 
 from modelcluster.fields import ParentalKey
-from wagtail.admin.panels import FieldPanel, InlinePanel
+from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
 from wagtail.api import APIField
-from wagtail.fields import RichTextField
+from wagtail.fields import RichTextField, StreamField
 from wagtail.images import get_image_model_string
 from wagtail.models import Page
 
@@ -19,48 +19,87 @@ from etna.core.serializers import (
     RichTextSerializer,
 )
 
+from .blocks import ResearchSummaryStreamBlock
 
-class AuthorIndexPage(BasePage):
-    """Author index page
+ROLE_CHOICES = {
+    "author": "Author",
+    "researcher": "Researcher",
+}
 
-    This is the parent page for all authors. It is used to
-    display a list of authors, and to link to individual
-    author pages from the list.
+
+class PeopleIndexPage(BasePage):
+    """People index page
+
+    This is the parent page for all people. It is used to
+    display a list of people, and to link to individual
+    people pages from the list.
     """
 
-    subpage_types = ["authors.AuthorPage"]
+    subpage_types = ["people.PersonPage"]
 
     parent_page_types = ["home.HomePage"]
 
     api_fields = BasePage.api_fields + [
-        APIField("author_pages", serializer=DefaultPageSerializer(many=True))
+        APIField("people_pages", serializer=DefaultPageSerializer(many=True))
     ]
 
     @cached_property
-    def author_pages(self):
+    def people_pages(self):
         """Return a sample of child pages for rendering in teaser."""
         return (
             self.get_children()
-            .type(AuthorPage)
-            .order_by("title")
+            .type(PersonPage)
+            .order_by("personpage__last_name")
             .live()
             .public()
             .specific()
         )
 
 
-class AuthorPage(BasePage):
-    """Author page
+class ShopItem(models.Model):
+    """Shop item model
 
-    This page is to be used for an author profile page, where
-    we can put info about the author, an image, and then use it
-    to link pages to an author.
+    This model is used to represent a shop item.
     """
 
-    role = models.CharField(blank=True, null=True, max_length=100)
-    summary = RichTextField(
-        blank=True, null=True, features=settings.RESTRICTED_RICH_TEXT_FEATURES
+    page = ParentalKey(
+        "PersonPage",
+        on_delete=models.CASCADE,
+        related_name="shop_items",
     )
+    title = models.CharField(max_length=255)
+    url = models.URLField()
+    price = models.DecimalField(max_digits=6, decimal_places=2)
+    image = models.ForeignKey(
+        get_image_model_string(),
+        on_delete=models.SET_NULL,
+        related_name="+",
+        null=True,
+    )
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name = "Shop item"
+        verbose_name_plural = "Shop items"
+
+    api_fields = [
+        APIField("title"),
+        APIField("url"),
+        APIField("price"),
+        APIField("image", serializer=ImageSerializer(rendition_size="fill-600x400")),
+    ]
+
+
+class PersonPage(BasePage):
+    """Person page
+
+    This page is to be used for a profile page, where
+    we can put info about the person, an image, and then use it
+    to link pages to a person, or as a reference to the person.
+    """
+
     image = models.ForeignKey(
         get_image_model_string(),
         blank=True,
@@ -68,22 +107,42 @@ class AuthorPage(BasePage):
         on_delete=models.SET_NULL,
         related_name="+",
     )
+    role = models.CharField(max_length=100)
+    summary = RichTextField(features=settings.RESTRICTED_RICH_TEXT_FEATURES)
+
+    research_summary = StreamField(ResearchSummaryStreamBlock, blank=True, null=True)
+
+    first_name = models.CharField(
+        max_length=255,
+    )
+    last_name = models.CharField(
+        max_length=255,
+    )
 
     content_panels = BasePage.content_panels + [
         FieldPanel("image"),
         FieldPanel("role"),
         FieldPanel("summary"),
+        FieldPanel("research_summary"),
+        InlinePanel("shop_items", label="Shop items"),
     ]
 
+    promote_panels = [
+        MultiFieldPanel(
+            [FieldPanel("first_name"), FieldPanel("last_name")],
+            heading="Person details",
+        ),
+    ] + BasePage.promote_panels
+
     class Meta:
-        verbose_name = "Author page"
-        verbose_name_plural = "Author pages"
-        verbose_name_public = "author"
+        verbose_name = "Person page"
+        verbose_name_plural = "People pages"
+        verbose_name_public = "person"
 
     # DataLayerMixin overrides
-    gtm_content_group = "Author page"
+    gtm_content_group = "Person page"
 
-    parent_page_types = ["authors.AuthorIndexPage"]
+    parent_page_types = ["people.PeopleIndexPage"]
     subpage_types = []
 
     default_api_fields = BasePage.default_api_fields + [
@@ -93,21 +152,31 @@ class AuthorPage(BasePage):
             "image_small",
             serializer=ImageSerializer(rendition_size="fill-128x128", source="image"),
         ),
+        APIField("first_name"),
+        APIField("last_name"),
+        APIField("role_tags"),
     ]
 
     api_fields = BasePage.api_fields + [
+        APIField("first_name"),
+        APIField("last_name"),
         APIField("role"),
+        APIField("role_tags"),
+        APIField("image", serializer=ImageSerializer(rendition_size="fill-512x512")),
+        APIField(
+            "image_small",
+            serializer=ImageSerializer(rendition_size="fill-128x128", source="image"),
+        ),
         APIField("summary", serializer=RichTextSerializer()),
+        APIField("research_summary"),
         APIField(
             "authored_focused_articles",
             serializer=DefaultPageSerializer(
                 required_api_fields=["teaser_image"], many=True
             ),
         ),
-        APIField("image", serializer=ImageSerializer(rendition_size="fill-512x512")),
         APIField(
-            "image_small",
-            serializer=ImageSerializer(rendition_size="fill-128x128", source="image"),
+            "shop_items",
         ),
     ]
 
@@ -124,17 +193,42 @@ class AuthorPage(BasePage):
         )
 
     @cached_property
-    def related_page_pks(self):
+    def related_page_pks(self) -> tuple[int]:
         """
         Returns a list of ids of pages that have used the `AuthorTag` inline
         to indicate a relationship with this author. The values are ordered by
         when the page was first published ('more recently added' pages take presendence)
         """
         return tuple(
-            self.author_pages.values_list("page_id", flat=True).order_by(
+            self.people_pages.values_list("page_id", flat=True).order_by(
                 "-page__first_published_at"
             )
         )
+
+    @cached_property
+    def is_author(self) -> bool:
+        """
+        def is_X() is going to be a value to help with
+        the logic behind the role tags - an easier way
+        to check if a person is X role.
+        """
+        if self.authored_focused_articles:
+            return True
+        return False
+
+    @cached_property
+    def is_researcher(self) -> bool:
+        if self.research_summary:
+            return True
+        return False
+
+    @cached_property
+    def role_tags(self) -> list[Dict[str, str]]:
+        roles = []
+        for role, value in ROLE_CHOICES.items():
+            if getattr(self, f"is_{role}"):
+                roles.append({"slug": role, "name": value})
+        return roles
 
     def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
         data = super().get_datalayer_data(request)
@@ -152,9 +246,9 @@ class AuthorTag(models.Model):
 
     page = ParentalKey(Page, on_delete=models.CASCADE, related_name="author_tags")
     author = models.ForeignKey(
-        AuthorPage,
+        PersonPage,
         verbose_name="author",
-        related_name="author_pages",
+        related_name="people_pages",
         on_delete=models.CASCADE,
     )
 

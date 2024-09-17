@@ -30,3 +30,14 @@ class AccordionBlock(blocks.StructBlock):
 
 class AccordionsBlock(blocks.StructBlock):
     items = blocks.ListBlock(AccordionBlock())
+
+
+class DetailsBlock(blocks.StructBlock):
+    title = blocks.CharBlock(required=True)
+    body = APIRichTextBlock(
+        required=True, features=settings.RESTRICTED_RICH_TEXT_FEATURES
+    )
+
+    class Meta:
+        icon = "terminal"
+        label = "Details"

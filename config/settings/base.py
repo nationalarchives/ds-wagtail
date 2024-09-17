@@ -12,8 +12,6 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 import os
 
-from sysconfig import get_path
-
 import sentry_sdk
 
 from sentry_sdk.integrations.django import DjangoIntegration
@@ -51,7 +49,8 @@ INSTALLED_APPS = [
     "etna.alerts",
     "etna.analytics",
     "etna.articles",
-    "etna.authors",
+    "etna.people",
+    "etna.cookies",
     "etna.categories",
     "etna.ciim",
     "etna.collections",
@@ -82,7 +81,7 @@ INSTALLED_APPS = [
     "wagtailmedia",
     "wagtail.contrib.settings",
     "generic_chooser",
-    "wagtailmetadata",
+    "wagtailmetadata",  # TODO: Remove this package when we reset migrations and remove the dependency from the pyproject.toml
     "modelcluster",
     "taggit",
     "django.contrib.admin",
@@ -121,14 +120,13 @@ COOKIE_DOMAIN = os.getenv("COOKIE_DOMAIN", "nationalarchives.gov.uk")
 
 ROOT_URLCONF = "config.urls"
 
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "").split(",")
+
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [
             os.path.join(BASE_DIR, "templates"),
-            os.path.join(
-                get_path("platlib"), "nationalarchives-frontend-django/templates"
-            ),
         ],
         "APP_DIRS": True,
         "OPTIONS": {
