@@ -9,4 +9,6 @@ from .base import *  # noqa: F401
 # CLIENT_VERIFY_CERTIFICATES = True
 
 SECRET_KEY = os.getenv("SECRET_KEY", "")
-# Need to get the IP of the load balancer or reverse proxy
+
+# TODO: Remove later
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "*").split(",")
