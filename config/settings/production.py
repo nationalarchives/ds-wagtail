@@ -10,5 +10,7 @@ from .base import *  # noqa: F401
 
 SECRET_KEY = os.getenv("SECRET_KEY", "")
 
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
 # TODO: Remove later
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "*").split(",")
