@@ -776,6 +776,44 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
                 msg="enrichment_aggs name not found",
             )
 
+        self.assertEqual(response.context.get("has_enrichment_aggs_entries"), True)
+
+    @responses.activate
+    def test_tag_view_no_entries_for_search_term(self):
+
+        self.patch_search_endpoint(
+            "community_enrichment_aggs_no_entries_search_term.json"
+        )
+
+        response = self.client.get(
+            self.test_url,
+            data={
+                "q": "qwert",
+                "vis_view": "tag",
+            },
+        )
+
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(response.context.get("has_enrichment_aggs_entries"), False)
+
+    @responses.activate
+    def test_tag_view_no_entries_for_search_filter_collection(self):
+
+        self.patch_search_endpoint(
+            "community_enrichment_aggs_no_entries_search_filter_collection.json"
+        )
+
+        response = self.client.get(
+            self.test_url,
+            data={
+                "collection": ["parent-collectionSurrey:Surrey History Centre"],
+                "vis_view": "tag",
+            },
+        )
+
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(response.context.get("has_enrichment_aggs_entries"), False)
+
 
 class CatalogueSearchLongFilterChooserAPIIntegrationTest(SearchViewTestCase):
     test_url = reverse_lazy(

@@ -129,7 +129,7 @@
             outline: 5px solid $color__focus-outline-light-bg;
         }
 
-        @media only screen and (max-width: $screen__xl) {
+        @media only screen and (max-width: $screen__lg) {
             background: $color__black;
             color: $color__white;
             margin-left: 0.5rem;

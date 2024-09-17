@@ -33,3 +33,16 @@ class ParagraphWithHeading(blocks.StructBlock):
         icon = "paragraph"
         label = "Paragraph with heading"
         template = "blocks/paragraph-with-heading.html"
+
+
+class CodeBlock(blocks.StructBlock):
+    """
+    Code block streamfield component.
+    """
+
+    code = blocks.TextBlock(required=True)
+
+    class Meta:
+        icon = "code"
+        label = "Code block"
+        template = "blocks/code.html"

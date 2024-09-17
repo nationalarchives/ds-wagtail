@@ -1,0 +1,684 @@
+{
+    "data": [
+        {
+            "@template": {
+                "details": {
+                    "level": "Item",
+                    "primaryIdentifier": "shc-6904-1-1-1-3",
+                    "summaryTitle": "Oral history tape interview of Mr Howard Cook (BOHG/HTA/03).  6 tapes",
+                    "title": "Oral history tape interview of Mr Howard Cook (BOHG/HTA/03).  6 tapes",
+                    "summary": "Oral history tape interview of Mr Howard Cook (BOHG/HTA/03).  6 tapes",
+                    "itemURL": "https://www.surreyarchives.org.uk/collections/getrecord/SHCOL_6904_1_1_1_3",
+                    "uuid": "66a2e011-78a6-3cbf-98f8-05098ad9ac4a",
+                    "creationDateTo": "2000",
+                    "creationDateFrom": "2000",
+                    "creationDate": "23 Feb 2000 -24 Feb 2000",
+                    "collection": "BYFLEET ORAL HISTORY GROUP: INTERVIEWS WITH BYFLEET RESIDENTS",
+                    "collectionId": "shc-6904",
+                    "location": "Woking",
+                    "ciimId": "shc-6904-1-1-1-3",
+                    "group": "community",
+                    "groupArray": {
+                        "value": "community"
+                    },
+                    "repository": "Surrey History Centre"
+                }
+            }
+        },
+        {
+            "@template": {
+                "details": {
+                    "level": "Item",
+                    "primaryIdentifier": "shc-7694-6-1-1-4",
+                    "summaryTitle": "Audio cassette recording of Harold Ayres [of Kingston Methodist Cricket Club] discussing his memories with Richard Driver and Bob Wasley",
+                    "title": "Audio cassette recording of Harold Ayres [of Kingston Methodist Cricket Club] discussing his memories with Richard Driver and Bob Wasley",
+                    "summary": "Audio cassette recording of Harold Ayres [of Kingston Methodist Cricket Club] discussing his memories with Richard Driver and Bob Wasley",
+                    "itemURL": "https://www.surreyarchives.org.uk/collections/getrecord/SHCOL_7694_6_1_1_4",
+                    "uuid": "7ecc79ca-9702-30a7-a351-ff5804929b12",
+                    "creationDate": "Mar-99",
+                    "collection": "Surrey History Centre",
+                    "collectionId": "shc-0",
+                    "location": "Woking",
+                    "ciimId": "shc-7694-6-1-1-4",
+                    "group": "community",
+                    "groupArray": {
+                        "value": "community"
+                    },
+                    "repository": "Surrey History Centre"
+                }
+            }
+        },
+        {
+            "@template": {
+                "details": {
+                    "level": "Item",
+                    "primaryIdentifier": "shc-CC1174-2-1-1-22",
+                    "summaryTitle": "Audio cassette tape featuring the reminiscences of Mrs Joy Mason of Chobham",
+                    "title": "Audio cassette tape featuring the reminiscences of Mrs Joy Mason of Chobham",
+                    "summary": "Audio cassette tape featuring the reminiscences of Mrs Joy Mason of Chobham",
+                    "itemURL": "https://www.surreyarchives.org.uk/collections/getrecord/SHCOL_CC1174_2_1_1_22",
+                    "uuid": "2741dc6c-cda7-3b5e-98db-66e3257bbd49",
+                    "creationDateTo": "1997",
+                    "creationDateFrom": "1997",
+                    "creationDate": "10-Oct-97",
+                    "collection": "SURREY HEATHLAND PROJECT: TAPED INTERVIEWS AND SUMMARIES OF REMINISCENCES OF PEOPLE RESIDING ON SURREY HEATHLAND",
+                    "collectionId": "shc-CC1174",
+                    "location": "Woking",
+                    "ciimId": "shc-CC1174-2-1-1-22",
+                    "group": "community",
+                    "groupArray": {
+                        "value": "community"
+                    },
+                    "repository": "Surrey History Centre"
+                }
+            }
+        },
+        {
+            "@template": {
+                "details": {
+                    "level": "Collection",
+                    "primaryIdentifier": "shc-8404",
+                    "summaryTitle": "ORAL HISTORY RECORDINGS RELATING TO AGRICULTURE, OLYMPICS, MENTAL HEALTH, WEY NAVIGATION, AND VILLAGE LIFE IN HINDHEAD AND MICKLEHAM",
+                    "title": "ORAL HISTORY RECORDINGS RELATING TO AGRICULTURE, OLYMPICS, MENTAL HEALTH, WEY NAVIGATION, AND VILLAGE LIFE IN HINDHEAD AND MICKLEHAM",
+                    "summary": "ORAL HISTORY RECORDINGS RELATING TO AGRICULTURE, OLYMPICS, MENTAL HEALTH, WEY NAVIGATION, AND VILLAGE LIFE IN HINDHEAD AND MICKLEHAM",
+                    "itemURL": "https://www.surreyarchives.org.uk/collections/getrecord/SHCOL_8404",
+                    "uuid": "5d0ba7e3-01ca-3b6d-a51e-9b31856f7f70",
+                    "creationDateTo": "2016",
+                    "creationDateFrom": "2007",
+                    "creationDate": "2007-2016",
+                    "collection": "Surrey History Centre",
+                    "collectionId": "shc-0",
+                    "location": "Woking",
+                    "ciimId": "shc-8404",
+                    "group": "community",
+                    "groupArray": {
+                        "value": "community"
+                    },
+                    "repository": "Surrey History Centre",
+                    "provenance": "The collection comprises digital oral history recordings made at various times by Surrey Heritage staff and local history groups."
+                }
+            }
+        },
+        {
+            "@template": {
+                "details": {
+                    "level": "Item",
+                    "primaryIdentifier": "shc-9744-3-2",
+                    "summaryTitle": "DVD of local oral history interviews with Shackleford residents",
+                    "title": "DVD of local oral history interviews with Shackleford residents",
+                    "summary": "DVD of local oral history interviews with Shackleford residents",
+                    "itemURL": "https://www.surreyarchives.org.uk/collections/getrecord/SHCOL_ 9744_3_2",
+                    "uuid": "91a48a18-15a6-3f1a-88e8-318bd648a8c8",
+                    "creationDateTo": "2017",
+                    "creationDateFrom": "1998",
+                    "creationDate": "1998-2017",
+                    "collection": "Surrey History Centre",
+                    "collectionId": "shc-0",
+                    "location": "Woking",
+                    "ciimId": "shc-9744-3-2",
+                    "group": "community",
+                    "groupArray": {
+                        "value": "community"
+                    },
+                    "repository": "Surrey History Centre"
+                }
+            }
+        },
+        {
+            "@template": {
+                "details": {
+                    "level": "Item",
+                    "primaryIdentifier": "shc-CC1174-2-1-1-23",
+                    "summaryTitle": "Audio cassette tape featuring the reminiscences of Mrs Olive Wright of Streets Heath, Woking",
+                    "title": "Audio cassette tape featuring the reminiscences of Mrs Olive Wright of Streets Heath, Woking",
+                    "summary": "Audio cassette tape featuring the reminiscences of Mrs Olive Wright of Streets Heath, Woking",
+                    "itemURL": "https://www.surreyarchives.org.uk/collections/getrecord/SHCOL_CC1174_2_1_1_23",
+                    "uuid": "421a93a0-d13b-3df0-9bd9-497b4d00130e",
+                    "creationDateTo": "1997",
+                    "creationDateFrom": "1997",
+                    "creationDate": "10-Oct-97",
+                    "collection": "SURREY HEATHLAND PROJECT: TAPED INTERVIEWS AND SUMMARIES OF REMINISCENCES OF PEOPLE RESIDING ON SURREY HEATHLAND",
+                    "collectionId": "shc-CC1174",
+                    "location": "Woking",
+                    "ciimId": "shc-CC1174-2-1-1-23",
+                    "group": "community",
+                    "groupArray": {
+                        "value": "community"
+                    },
+                    "repository": "Surrey History Centre"
+                }
+            }
+        },
+        {
+            "@template": {
+                "details": {
+                    "level": "Item",
+                    "primaryIdentifier": "shc-9938-5",
+                    "summaryTitle": "Introduction to the oral history project and clearance form signed by Jennifer Louis.  2 files in Word .doc and .jpg format",
+                    "title": "Introduction to the oral history project and clearance form signed by Jennifer Louis.  2 files in Word .doc and .jpg format",
+                    "summary": "Introduction to the oral history project and clearance form signed by Jennifer Louis.  2 files in Word .doc and .jpg format",
+                    "itemURL": "https://www.surreyarchives.org.uk/collections/getrecord/SHCOL_9938_5",
+                    "uuid": "d12bbac5-d4a5-363b-8ce1-07335e561822",
+                    "creationDateTo": "2018",
+                    "creationDateFrom": "2018",
+                    "creationDate": "2018",
+                    "collection": "JENNIFER LOUIS OF WESTHUMBLE: ORAL HISTORY RECORDINGS",
+                    "collectionId": "shc-9938",
+                    "location": "Woking",
+                    "ciimId": "shc-9938-5",
+                    "group": "community",
+                    "groupArray": {
+                        "value": "community"
+                    },
+                    "repository": "Surrey History Centre"
+                }
+            }
+        },
+        {
+            "@template": {
+                "details": {
+                    "level": "Item",
+                    "primaryIdentifier": "shc-CC1174-2-1-1-1",
+                    "summaryTitle": "Audio cassette tape featuring the reminiscences of Mrs Kitty Tharrett of Beacon Hill",
+                    "title": "Audio cassette tape featuring the reminiscences of Mrs Kitty Tharrett of Beacon Hill",
+                    "summary": "Audio cassette tape featuring the reminiscences of Mrs Kitty Tharrett of Beacon Hill",
+                    "itemURL": "https://www.surreyarchives.org.uk/collections/getrecord/SHCOL_CC1174_2_1_1_1",
+                    "uuid": "4ac313d6-bba3-34e1-ac94-8c8869c0d44f",
+                    "creationDateTo": "1997",
+                    "creationDateFrom": "1997",
+                    "creationDate": "06-Jun-97",
+                    "collection": "SURREY HEATHLAND PROJECT: TAPED INTERVIEWS AND SUMMARIES OF REMINISCENCES OF PEOPLE RESIDING ON SURREY HEATHLAND",
+                    "collectionId": "shc-CC1174",
+                    "location": "Woking",
+                    "ciimId": "shc-CC1174-2-1-1-1",
+                    "group": "community",
+                    "groupArray": {
+                        "value": "community"
+                    },
+                    "repository": "Surrey History Centre"
+                }
+            }
+        },
+        {
+            "@template": {
+                "details": {
+                    "level": "Item",
+                    "primaryIdentifier": "shc-6904-1-1-1-2",
+                    "summaryTitle": "Oral history tape interview of Mrs Kath Bright (BOHG/HTA/03).  1 tape",
+                    "title": "Oral history tape interview of Mrs Kath Bright (BOHG/HTA/03).  1 tape",
+                    "summary": "Oral history tape interview of Mrs Kath Bright (BOHG/HTA/03).  1 tape",
+                    "itemURL": "https://www.surreyarchives.org.uk/collections/getrecord/SHCOL_6904_1_1_1_2",
+                    "uuid": "d9e39973-e86e-30ed-b81d-9d30b353e903",
+                    "creationDateTo": "2000",
+                    "creationDateFrom": "2000",
+                    "creationDate": "18-Feb-00",
+                    "collection": "BYFLEET ORAL HISTORY GROUP: INTERVIEWS WITH BYFLEET RESIDENTS",
+                    "collectionId": "shc-6904",
+                    "location": "Woking",
+                    "ciimId": "shc-6904-1-1-1-2",
+                    "group": "community",
+                    "groupArray": {
+                        "value": "community"
+                    },
+                    "repository": "Surrey History Centre"
+                }
+            }
+        },
+        {
+            "@template": {
+                "details": {
+                    "level": "Item",
+                    "primaryIdentifier": "shc-8216-1-1-1-3",
+                    "summaryTitle": "Transcript of oral history interview with Violet Kinnibrugh of Dormansland",
+                    "title": "Transcript of oral history interview with Violet Kinnibrugh of Dormansland",
+                    "summary": "Transcript of oral history interview with Violet Kinnibrugh of Dormansland",
+                    "itemURL": "https://www.surreyarchives.org.uk/collections/getrecord/SHCOL_8216_1_1_1_3",
+                    "uuid": "92ee1810-3ade-3eb9-b124-bcfc1dc05ece",
+                    "creationDateTo": "2002",
+                    "creationDateFrom": "2002",
+                    "creationDate": "12-Feb-02",
+                    "collection": "LINGFIELD ORAL HISTORY PROJECT: TRANSCRIPTS",
+                    "collectionId": "shc-8216",
+                    "location": "Woking",
+                    "ciimId": "shc-8216-1-1-1-3",
+                    "group": "community",
+                    "groupArray": {
+                        "value": "community"
+                    },
+                    "repository": "Surrey History Centre"
+                }
+            }
+        },
+        {
+            "@template": {
+                "details": {
+                    "level": "Item",
+                    "primaryIdentifier": "shc-9967-1-31",
+                    "summaryTitle": "Oral history recording of Dan Jacobson, with written summary.  Digital files in wav and doc format",
+                    "title": "Oral history recording of Dan Jacobson, with written summary.  Digital files in wav and doc format",
+                    "summary": "Oral history recording of Dan Jacobson, with written summary.  Digital files in wav and doc format",
+                    "itemURL": "https://www.surreyarchives.org.uk/collections/getrecord/SHCOL_ 9967_1_31",
+                    "uuid": "7b743dd7-8969-39dc-a3fd-a8d3494614f4",
+                    "creationDateTo": "2016",
+                    "creationDateFrom": "2016",
+                    "creationDate": "2016",
+                    "collection": "ORAL HISTORY RECORDINGS AND SUMMARIES",
+                    "collectionId": "shc-9967-1",
+                    "location": "Woking",
+                    "ciimId": "shc-9967-1-31",
+                    "group": "community",
+                    "groupArray": {
+                        "value": "community"
+                    },
+                    "repository": "Surrey History Centre"
+                }
+            }
+        },
+        {
+            "@template": {
+                "details": {
+                    "level": "Item",
+                    "primaryIdentifier": "shc-9967-1-18",
+                    "summaryTitle": "Oral history recording of Brian Derbyshire.  Digital files in mp3 and wav format",
+                    "title": "Oral history recording of Brian Derbyshire.  Digital files in mp3 and wav format",
+                    "summary": "Oral history recording of Brian Derbyshire.  Digital files in mp3 and wav format",
+                    "itemURL": "https://www.surreyarchives.org.uk/collections/getrecord/SHCOL_ 9967_1_18",
+                    "uuid": "f588c5cf-369f-3ab6-b83a-34dd5f4daafa",
+                    "creationDateTo": "2017",
+                    "creationDateFrom": "2017",
+                    "creationDate": "2017",
+                    "collection": "ORAL HISTORY RECORDINGS AND SUMMARIES",
+                    "collectionId": "shc-9967-1",
+                    "location": "Woking",
+                    "ciimId": "shc-9967-1-18",
+                    "group": "community",
+                    "groupArray": {
+                        "value": "community"
+                    },
+                    "repository": "Surrey History Centre"
+                }
+            }
+        },
+        {
+            "@template": {
+                "details": {
+                    "level": "Item",
+                    "primaryIdentifier": "shc-6904-1-1-1-27",
+                    "summaryTitle": "Oral history tape interview of Mr K Green (BOHG/HTA/27).  1 tape",
+                    "title": "Oral history tape interview of Mr K Green (BOHG/HTA/27).  1 tape",
+                    "summary": "Oral history tape interview of Mr K Green (BOHG/HTA/27).  1 tape",
+                    "itemURL": "https://www.surreyarchives.org.uk/collections/getrecord/SHCOL_6904_1_1_1_27",
+                    "uuid": "b107962b-58db-3ca3-b180-1513762ff0bb",
+                    "creationDateTo": "2001",
+                    "creationDateFrom": "2001",
+                    "creationDate": "16-Mar-01",
+                    "collection": "BYFLEET ORAL HISTORY GROUP: INTERVIEWS WITH BYFLEET RESIDENTS",
+                    "collectionId": "shc-6904",
+                    "location": "Woking",
+                    "ciimId": "shc-6904-1-1-1-27",
+                    "group": "community",
+                    "groupArray": {
+                        "value": "community"
+                    },
+                    "repository": "Surrey History Centre"
+                }
+            }
+        },
+        {
+            "@template": {
+                "details": {
+                    "level": "Item",
+                    "primaryIdentifier": "shc-9967-1-9",
+                    "summaryTitle": "Oral history recording of Lynda Carless, with written summary.  Digital files in wav and doc format",
+                    "title": "Oral history recording of Lynda Carless, with written summary.  Digital files in wav and doc format",
+                    "summary": "Oral history recording of Lynda Carless, with written summary.  Digital files in wav and doc format",
+                    "itemURL": "https://www.surreyarchives.org.uk/collections/getrecord/SHCOL_ 9967_1_9",
+                    "uuid": "4a587e51-dfa6-3a56-9476-02a62dbd35a5",
+                    "creationDateTo": "2017",
+                    "creationDateFrom": "2017",
+                    "creationDate": "2017",
+                    "collection": "ORAL HISTORY RECORDINGS AND SUMMARIES",
+                    "collectionId": "shc-9967-1",
+                    "location": "Woking",
+                    "ciimId": "shc-9967-1-9",
+                    "group": "community",
+                    "groupArray": {
+                        "value": "community"
+                    },
+                    "repository": "Surrey History Centre"
+                }
+            }
+        },
+        {
+            "@template": {
+                "details": {
+                    "level": "Item",
+                    "primaryIdentifier": "shc-8216-1-1-1-6",
+                    "summaryTitle": "Transcript of oral history interview with Margaret Whiting of Lingfield",
+                    "title": "Transcript of oral history interview with Margaret Whiting of Lingfield",
+                    "summary": "Transcript of oral history interview with Margaret Whiting of Lingfield",
+                    "itemURL": "https://www.surreyarchives.org.uk/collections/getrecord/SHCOL_8216_1_1_1_6",
+                    "uuid": "a48ff38c-782b-3fb9-8c2a-08d747af267d",
+                    "creationDateTo": "2002",
+                    "creationDateFrom": "2002",
+                    "creationDate": "12-Apr-02",
+                    "collection": "LINGFIELD ORAL HISTORY PROJECT: TRANSCRIPTS",
+                    "collectionId": "shc-8216",
+                    "location": "Woking",
+                    "ciimId": "shc-8216-1-1-1-6",
+                    "group": "community",
+                    "groupArray": {
+                        "value": "community"
+                    },
+                    "repository": "Surrey History Centre"
+                }
+            }
+        },
+        {
+            "@template": {
+                "details": {
+                    "level": "Item",
+                    "primaryIdentifier": "shc-9361-6-16",
+                    "summaryTitle": "Flash drive containing the following files relating to Guildford Wives' Fellowship: Photographs, including of events and past and present members, 1982-2013; Correspondence, 2002-2014; Audio interviews with former members, 2011; Scripts of talks, nd; Histories and timelines, nd; Lists of committee members, nd.",
+                    "title": "Flash drive containing the following files relating to Guildford Wives' Fellowship: Photographs, including of events and past and present members, 1982-2013; Correspondence, 2002-2014; Audio interviews with former members, 2011; Scripts of talks, nd; Histories and timelines, nd; Lists of committee members, nd.",
+                    "summary": "Flash drive containing the following files relating to Guildford Wives' Fellowship: Photographs, including of events and past and present members, 1982-2013; Correspondence, 2002-2014; Audio interviews with former members, 2011; Scripts of talks, nd; Histories and timelines, nd; Lists of committee members, nd.",
+                    "itemURL": "https://www.surreyarchives.org.uk/collections/getrecord/SHCOL_ 9361_6_16",
+                    "uuid": "5d731409-b54c-37c3-ab36-5b0892ed85d2",
+                    "creationDateTo": "2014",
+                    "creationDateFrom": "1982",
+                    "creationDate": "1982-2014",
+                    "collection": "Surrey History Centre",
+                    "collectionId": "shc-0",
+                    "location": "Woking",
+                    "ciimId": "shc-9361-6-16",
+                    "group": "community",
+                    "groupArray": {
+                        "value": "community"
+                    },
+                    "repository": "Surrey History Centre"
+                }
+            }
+        },
+        {
+            "@template": {
+                "details": {
+                    "level": "Item",
+                    "primaryIdentifier": "shc-6904-1-1-1-18",
+                    "summaryTitle": "Oral history tape interview of Miss Angela Spencer (BOHG/HTA/18).  1 tape",
+                    "title": "Oral history tape interview of Miss Angela Spencer (BOHG/HTA/18).  1 tape",
+                    "summary": "Oral history tape interview of Miss Angela Spencer (BOHG/HTA/18).  1 tape",
+                    "itemURL": "https://www.surreyarchives.org.uk/collections/getrecord/SHCOL_6904_1_1_1_18",
+                    "uuid": "b3f6ec49-bca3-3eae-9844-3307b90c7faf",
+                    "creationDateTo": "2000",
+                    "creationDateFrom": "2000",
+                    "creationDate": "08-Oct-00",
+                    "collection": "BYFLEET ORAL HISTORY GROUP: INTERVIEWS WITH BYFLEET RESIDENTS",
+                    "collectionId": "shc-6904",
+                    "location": "Woking",
+                    "ciimId": "shc-6904-1-1-1-18",
+                    "group": "community",
+                    "groupArray": {
+                        "value": "community"
+                    },
+                    "repository": "Surrey History Centre"
+                }
+            }
+        },
+        {
+            "@template": {
+                "details": {
+                    "level": "Item",
+                    "primaryIdentifier": "shc-9967-1-47",
+                    "summaryTitle": "Oral history recording of Jeremy Ross.  Digital file in wav format",
+                    "title": "Oral history recording of Jeremy Ross.  Digital file in wav format",
+                    "summary": "Oral history recording of Jeremy Ross.  Digital file in wav format",
+                    "itemURL": "https://www.surreyarchives.org.uk/collections/getrecord/SHCOL_9967_1_47",
+                    "uuid": "55186a9b-522a-390f-bf15-3d8bad9f5d83",
+                    "creationDateTo": "2017",
+                    "creationDateFrom": "2017",
+                    "creationDate": "2017",
+                    "collection": "ORAL HISTORY RECORDINGS AND SUMMARIES",
+                    "collectionId": "shc-9967-1",
+                    "location": "Woking",
+                    "ciimId": "shc-9967-1-47",
+                    "group": "community",
+                    "groupArray": {
+                        "value": "community"
+                    },
+                    "repository": "Surrey History Centre"
+                }
+            }
+        },
+        {
+            "@template": {
+                "details": {
+                    "level": "Item",
+                    "primaryIdentifier": "shc-9938-3",
+                    "summaryTitle": "Summaries of the contents of the oral history recordings of Jennifer Louis of Westhumble.  4 files in Word .doc file format",
+                    "title": "Summaries of the contents of the oral history recordings of Jennifer Louis of Westhumble.  4 files in Word .doc file format",
+                    "summary": "Summaries of the contents of the oral history recordings of Jennifer Louis of Westhumble.  4 files in Word .doc file format",
+                    "itemURL": "https://www.surreyarchives.org.uk/collections/getrecord/SHCOL_9938_3",
+                    "uuid": "16226855-6172-33db-bad7-ec6991f9f941",
+                    "creationDateTo": "2018",
+                    "creationDateFrom": "2017",
+                    "creationDate": "2017-2018",
+                    "collection": "JENNIFER LOUIS OF WESTHUMBLE: ORAL HISTORY RECORDINGS",
+                    "collectionId": "shc-9938",
+                    "location": "Woking",
+                    "ciimId": "shc-9938-3",
+                    "group": "community",
+                    "groupArray": {
+                        "value": "community"
+                    },
+                    "repository": "Surrey History Centre"
+                }
+            }
+        },
+        {
+            "@template": {
+                "details": {
+                    "description": "Contents include Nettlefold Film Studios and Cecil Hepworth, Julie Andrews, Regent Picture House, Regal Cinema, Walton on Thames in the Second World War, air raid on Vickers at Brooklands, cricket in Ashley Park, St Mary's church, Walton on Thames bridges, and the Walton Hop.rnrnDisc 1 running time is 11 minutes 2 seconds, produced 2010, and disc 2 running time is 21 minutes 45 seconds, produced 2016.  Producer Melvyn Mills.",
+                    "level": "Item",
+                    "primaryIdentifier": "shc-10301-1",
+                    "summaryTitle": "Memories of Walton: DVDs of video compilations of Walton on Thames residents' oral history reminiscences",
+                    "title": "Memories of Walton: DVDs of video compilations of Walton on Thames residents' oral history reminiscences",
+                    "summary": "Memories of Walton: DVDs of video compilations of Walton on Thames residents' oral history reminiscences",
+                    "itemURL": "https://www.surreyarchives.org.uk/collections/getrecord/SHCOL_10301_1",
+                    "uuid": "ed70634b-41ab-34e1-9db4-f830fa3fd7c5",
+                    "creationDateTo": "2016",
+                    "creationDateFrom": "2010",
+                    "creationDate": "2010-2016",
+                    "collection": "MEMORIES OF WALTON: DVDS OF ORAL HISTORY REMINISCENCES BY WALTON ON THAMES RESIDENTS",
+                    "collectionId": "shc-10301",
+                    "location": "Woking",
+                    "ciimId": "shc-10301-1",
+                    "group": "community",
+                    "groupArray": {
+                        "value": "community"
+                    },
+                    "repository": "Surrey History Centre"
+                }
+            }
+        }
+    ],
+    "errors": [],
+    "aggregations": [
+        {
+            "name": "collectionSurrey",
+            "entries": [
+                {
+                    "value": "KEEPING US IN MIND ORAL HISTORY PROJECT: DIGITAL RECORDINGS RELATING TO THE EPSOM CLUSTER OF PSYCHIATRIC HOSPITALS",
+                    "doc_count": 53
+                },
+                {
+                    "value": "ORAL HISTORY RECORDINGS AND SUMMARIES",
+                    "doc_count": 53
+                },
+                {
+                    "value": "SURREY HEATHLAND PROJECT: TAPED INTERVIEWS AND SUMMARIES OF REMINISCENCES OF PEOPLE RESIDING ON SURREY HEATHLAND",
+                    "doc_count": 36
+                },
+                {
+                    "value": "BYFLEET ORAL HISTORY GROUP: INTERVIEWS WITH BYFLEET RESIDENTS",
+                    "doc_count": 25
+                },
+                {
+                    "value": "LINGFIELD ORAL HISTORY PROJECT: TRANSCRIPTS",
+                    "doc_count": 16
+                },
+                {
+                    "value": "GYPSY ROMA TRAVELLER HISTORY MONTH: RECORDED INTERVIEWS",
+                    "doc_count": 12
+                },
+                {
+                    "value": "CRANLEIGH ARTS CENTRE: ORAL HISTORY PROJECT 'THE BEST DAYS OF THEIR LIVES - MEMORIES FROM FORMER PUPILS OF CRANLEIGH JUNIOR SCHOOL' (1930-1966)",
+                    "doc_count": 11
+                },
+                {
+                    "value": "JENNIFER LOUIS OF WESTHUMBLE: ORAL HISTORY RECORDINGS",
+                    "doc_count": 4
+                },
+                {
+                    "value": "SURREY IN THE GREAT WAR ORAL HISTORY PROJECT: INTERVIEWS",
+                    "doc_count": 4
+                },
+                {
+                    "value": "KEEPING MEMORIES ALIVE: COMMUNITY ORAL HISTORY PROJECT ON OCKFORD RIDGE AND AARON'S HILL, GODALMING",
+                    "doc_count": 2
+                }
+            ],
+            "total": 238,
+            "other": 22
+        },
+        {
+            "name": "community",
+            "entries": [
+                {
+                    "value": "Surrey History Centre",
+                    "doc_count": 310
+                }
+            ],
+            "total": 0,
+            "other": 0
+        },
+        {
+            "name": "enrichmentLoc",
+            "total": 0,
+            "other": 0
+        },
+        {
+            "name": "enrichmentMisc",
+            "total": 0,
+            "other": 0
+        },
+        {
+            "name": "enrichmentOrg",
+            "total": 0,
+            "other": 0
+        },
+        {
+            "name": "enrichmentPer",
+            "total": 0,
+            "other": 0
+        }
+    ],
+    "stats": {
+        "total": 310,
+        "results": 20,
+        "providers": 2,
+        "latency": 0
+    },
+    "found": false,
+    "buckets": [
+        {
+            "name": "group",
+            "entries": [
+                {
+                    "value": "community",
+                    "count": 228560
+                }
+            ],
+            "total": 228560,
+            "other": 0
+        },
+        {
+            "name": "group",
+            "entries": [
+                {
+                    "value": "record",
+                    "count": 34972443
+                },
+                {
+                    "value": "tna",
+                    "count": 24926034
+                },
+                {
+                    "value": "nonTna",
+                    "count": 11049250
+                },
+                {
+                    "value": "digitised",
+                    "count": 9063756
+                },
+                {
+                    "value": "medalCard",
+                    "count": 5481174
+                },
+                {
+                    "value": "will",
+                    "count": 1016324
+                },
+                {
+                    "value": "aggregation",
+                    "count": 730449
+                },
+                {
+                    "value": "seamenRegister",
+                    "count": 684418
+                },
+                {
+                    "value": "creator",
+                    "count": 272392
+                },
+                {
+                    "value": "britishWarMedal",
+                    "count": 157424
+                },
+                {
+                    "value": "organisation",
+                    "count": 141526
+                },
+                {
+                    "value": "navalReserve",
+                    "count": 137920
+                },
+                {
+                    "value": "image",
+                    "count": 80606
+                },
+                {
+                    "value": "person",
+                    "count": 61869
+                },
+                {
+                    "value": "business",
+                    "count": 36367
+                },
+                {
+                    "value": "manor",
+                    "count": 22076
+                },
+                {
+                    "value": "family",
+                    "count": 10554
+                },
+                {
+                    "value": "archive",
+                    "count": 3525
+                }
+            ],
+            "total": 88848107,
+            "other": 0
+        }
+    ]
+}
