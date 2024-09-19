@@ -37,7 +37,6 @@ const setCurrentSelection = () => {
     );
 
     return currentSelection;
-
 };
 
 const clearFormAndSumbit = () => {
@@ -78,8 +77,6 @@ const populateForm = () => {
         element.value = value;
 
         form.appendChild(element);
-
-
     });
 };
 

@@ -146,35 +146,32 @@ canvas {
 // additional classes for no results messages
 
 .no-results-message {
-    display:block;
+    display: block;
 
     .notice-board {
         margin: auto;
-        margin-top:2em;
+        margin-top: 2em;
         width: 50%;
         // border: 3px solid green;
         padding: 2em;
         margin-bottom: 2em;
         background: #f9f0ce;
-        -webkit-box-shadow: 20px 20px 0px -10px #a3a3a0;
-        box-shadow: 20px 20px 0px -10px #a3a3a0;
+        -webkit-box-shadow: 20px 20px 0 -10px #a3a3a0;
+        box-shadow: 20px 20px 0 -10px #a3a3a0;
 
         h2 {
-            color:#1e1e1e;
+            color: #1e1e1e;
         }
 
-
-        p{
-            margin-left:2.6em;
+        p {
+            margin-left: 2.6em;
         }
 
         .fa-exclamation-circle {
-
         }
 
         ul {
-            margin-left:2.6em;
+            margin-left: 2.6em;
         }
     }
-
 }
