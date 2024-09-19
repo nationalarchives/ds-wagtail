@@ -119,24 +119,13 @@
 
 </head>
 <body>
-<!-- this is an example include to illustrate the no results message for tag view -->
-{% comment "Optional note" %}
-{% if not has_enrichment_aggs_entries %}
-{% include "search/blocks/search_results_timeline_no_results.html" %}
-{% endif %}
-{% endcomment %}
-<!--end comment-->
-
-
 
 <div class="tna-container hist-container">
     <div class="hist-bar"></div>
     <canvas id="decade-counts-chart"></canvas>
     <p class="disclaim"><i class="tag-frequency__info-icon fa-solid fa-circle-info"></i>This view shows the volume of dated items over time. Types of date used may vary.</p>
   </div>
-  
 
-  
   
 </body>
 </html>
