@@ -1,7 +1,7 @@
 {% load search_tags %}
 
 {% if not has_enrichment_aggs_entries %}
-{% include "search/blocks/search_results_tag_no_results.html" %}
+    {% include "search/blocks/search_results_tag_no_results.html" %}
 {% endif %}
 
 <div class="tag-frequency">
