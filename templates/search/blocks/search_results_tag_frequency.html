@@ -1,11 +1,8 @@
 {% load search_tags %}
 
 {% if not has_enrichment_aggs_entries %}
-<!-- this is an example include to illustrate the no results message for tag view -->
 {% include "search/blocks/search_results_tag_no_results.html" %}
-<!--end comment-->
 {% endif %}
-
 
 <div class="tag-frequency">
     <div class="tag-frequency__tags">
