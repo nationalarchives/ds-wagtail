@@ -16,6 +16,7 @@ from .paragraph import ParagraphBlock, ParagraphWithHeading
 from .promoted_links import (
     AuthorPromotedLinkBlock,
     AuthorPromotedPagesBlock,
+    FeaturedPageBlock,
     PromotedItemBlock,
     PromotedLinkBlock,
     PromotedListBlock,
@@ -41,6 +42,7 @@ __all__ = [
     "DoDontListBlock",
     "FeaturedRecordArticleBlock",
     "FeaturedCollectionBlock",
+    "FeaturedPageBlock",
     "ImageBlock",
     "ImageGalleryBlock",
     "InsetTextBlock",

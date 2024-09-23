@@ -5,6 +5,7 @@ from wagtail import blocks
 from wagtail.snippets.blocks import SnippetChooserBlock
 
 from etna.core.blocks.image import APIImageChooserBlock
+from etna.core.blocks.page_chooser import APIPageChooserBlock
 from etna.core.blocks.paragraph import APIRichTextBlock
 
 from .base import SectionDepthAwareStructBlock
@@ -141,3 +142,19 @@ class PromotedListBlock(blocks.StructBlock):
         icon = "link"
         label = "Link list"
         template = "articles/blocks/promoted_list_block.html"
+
+
+class FeaturedPageBlock(blocks.StructBlock):
+    """
+    Block for featuring a page.
+    """
+
+    page = APIPageChooserBlock(
+        label="Page",
+        required=True,
+        page_type="wagtailcore.Page",
+    )
+
+    class Meta:
+        icon = "doc-full"
+        label = "Featured page"
