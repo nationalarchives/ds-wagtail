@@ -13,6 +13,7 @@ from etna.core.blocks import (
     DetailsBlock,
     DocumentsBlock,
     DoDontListBlock,
+    FeaturedPageBlock,
     FeaturedRecordArticleBlock,
     ImageGalleryBlock,
     InsetTextBlock,
@@ -40,6 +41,7 @@ class SectionContentBlock(blocks.StreamBlock):
     details = DetailsBlock()
     document = DocumentsBlock()
     do_dont_list = DoDontListBlock()
+    featured_page = FeaturedPageBlock()
     featured_record_article = FeaturedRecordArticleBlock()
     image = ContentImageBlock()
     image_gallery = ImageGalleryBlock()
