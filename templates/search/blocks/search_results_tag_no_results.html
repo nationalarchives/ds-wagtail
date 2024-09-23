@@ -6,10 +6,24 @@
         z-index:2;
         margin-bottom:-200px;
     }
-    .no-results {
-        display:none;
+    #maincontent {
+        margin-bottom:30px;
+    }
+    .no-results-margin{
+        margin-top:-100px !important;
     }
 
+    @media only screen and (max-width: 992px) {
+        .search-results__filter-button, .search-buckets__toggle-button {
+            background: #000;
+            color: #fff;
+            margin-left: 0.5rem;
+            width: 96%;
+            padding: 0.8rem;
+            position: relative;
+            top: -90px;
+        }
+    }
 </style>
 
 
