@@ -6,10 +6,14 @@ from django.template.response import TemplateResponse
 from django.urls import reverse
 from django.utils import timezone
 
-from ...ciim.constants import TNA_URLS
-from ...ciim.exceptions import DoesNotExist
-from ...ciim.paginator import APIPaginator
-from ..api import records_client
+from etna.ciim.constants import TNA_URLS
+from etna.ciim.exceptions import DoesNotExist
+from etna.ciim.paginator import APIPaginator
+from etna.records.api import delivery_options_client, records_client
+from etna.records.delivery_options import (
+    AvailabilityCondition,
+    construct_delivery_options,
+)
 
 SEARCH_URL_RETAIN_DELTA = timezone.timedelta(hours=48)
 
@@ -106,6 +110,25 @@ def record_detail_view(request, iaid):
         if timezone.now() <= (back_to_search_url_timestamp + SEARCH_URL_RETAIN_DELTA):
             back_to_search_url = request.session.get("back_to_search_url")
 
+    # Get the delivery options for the iaid
+    do_ctx = {}
+
+    try:
+        delivery_options = delivery_options_client.fetch(iaid=iaid)
+        do_ctx = construct_delivery_options(delivery_options, record)
+    except Exception:
+        # Built in order exception option
+        do_ctx = construct_delivery_options(
+            [
+                {
+                    "options": AvailabilityCondition.OrderException,
+                    "surrogateLinks": [],
+                    "advancedOrderUrlParameters": "",
+                }
+            ],
+            record,
+        )
+
     context.update(
         record=record,
         image=image,
@@ -113,6 +136,7 @@ def record_detail_view(request, iaid):
         back_to_search_url=back_to_search_url,
         page_type=page_type,
         page_title=page_title,
+        delivery_option=do_ctx,
     )
 
     # Note: This page uses cookies to render GTM, please ensure to keep TemplateResponse or similar when changed.
