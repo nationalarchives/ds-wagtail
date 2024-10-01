@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "Etna"
-version = "24.08.06.37"
+version = "24.09.17.38"
 description = ""
 authors = ["James Biggs <james.biggs@nationalarchives.gov.uk>"]
 
@@ -25,6 +25,7 @@ wagtail-generic-chooser = "~0.6"
 wagtailmedia = "~0.15"
 wagtail-metadata = "~5.0"
 wagtail-headless-preview = "0.8.0"
+whitenoise = "^6.7.0"
 
 [tool.poetry.dev-dependencies]
 black = "~24.4"

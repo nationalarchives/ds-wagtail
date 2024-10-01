@@ -6,7 +6,6 @@ on:
     # TODO: Remove when we test and build on all branches - at the moment the tests are run as part of pr.yml
     branches:
       - main
-      - develop
   release:
     types:
       - published
