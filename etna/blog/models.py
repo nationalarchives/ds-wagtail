@@ -1,15 +1,8 @@
-from django.conf import settings
-from django.db import models
 from django.utils.functional import cached_property
 
-from wagtail.admin.panels import (
-    FieldPanel,
-    InlinePanel,
-    MultiFieldPanel,
-    PageChooserPanel,
-)
+from wagtail.admin.panels import FieldPanel
 from wagtail.api import APIField
-from wagtail.fields import RichTextField, StreamField
+from wagtail.fields import StreamField
 
 from etna.core.models import (
     BasePageWithRequiredIntro,
@@ -40,7 +33,7 @@ class BlogIndexPage(HeroImageMixin, BasePageWithRequiredIntro):
     promote_panels = BasePageWithRequiredIntro.promote_panels
 
     @cached_property
-    def blogs(self):
+    def blog_pages(self):
         return (
             BlogPage.objects.all()
             .order_by("-first_published_at")
@@ -50,7 +43,7 @@ class BlogIndexPage(HeroImageMixin, BasePageWithRequiredIntro):
         )
 
     api_fields = BasePageWithRequiredIntro.api_fields + [
-        APIField("blogs", serializer=DefaultPageSerializer(many=True))
+        APIField("blog_pages", serializer=DefaultPageSerializer(many=True))
     ]
 
 
@@ -82,10 +75,24 @@ class BlogPage(HeroImageMixin, BasePageWithRequiredIntro):
             .specific()
         )
 
+    @cached_property
+    def blog_pages(self):
+        return (
+            self.get_children()
+            .type(BlogPage)
+            .order_by("-first_published_at")
+            .live()
+            .public()
+            .specific()
+        )
+
     api_fields = (
         BasePageWithRequiredIntro.api_fields
         + HeroImageMixin.api_fields
-        + [APIField("blog_posts", serializer=DefaultPageSerializer(many=True))]
+        + [
+            APIField("blog_posts", serializer=DefaultPageSerializer(many=True)),
+            APIField("blog_pages", serializer=DefaultPageSerializer(many=True)),
+        ]
     )
 
 
