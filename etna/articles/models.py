@@ -228,15 +228,8 @@ class ArticlePage(
     content_panels = (
         BasePageWithRequiredIntro.content_panels
         + RequiredHeroImageMixin.content_panels
+        + ContentWarningMixin.content_panels
         + [
-            MultiFieldPanel(
-                [
-                    FieldPanel("display_content_warning"),
-                    FieldPanel("custom_warning_text"),
-                ],
-                heading="Content Warning Options",
-                classname="collapsible",
-            ),
             FieldPanel("body"),
         ]
     )
@@ -398,15 +391,8 @@ class FocusedArticlePage(
     content_panels = (
         BasePageWithRequiredIntro.content_panels
         + HeroImageMixin.content_panels
+        + ContentWarningMixin.content_panels
         + [
-            MultiFieldPanel(
-                [
-                    FieldPanel("display_content_warning"),
-                    FieldPanel("custom_warning_text"),
-                ],
-                heading="Content Warning Options",
-                classname="collapsible",
-            ),
             FieldPanel("body"),
         ]
     )
@@ -675,51 +661,49 @@ class RecordArticlePage(
         verbose_name_plural = _("record articles")
         verbose_name_public = _("record revealed")
 
-    content_panels = BasePageWithRequiredIntro.content_panels + [
-        FieldPanel("intro_image"),
-        MultiFieldPanel(
-            heading="Content Warning Options",
-            classname="collapsible",
-            children=[
-                FieldPanel("display_content_warning"),
-                FieldPanel("custom_warning_text"),
-            ],
-        ),
-        MultiFieldPanel(
-            heading="Image Gallery",
-            classname="collapsible",
-            children=[
-                FieldPanel("gallery_heading"),
-                InlinePanel(
-                    "gallery_images",
-                    heading="Image Gallery",
-                    label="Item",
-                    min_num=1,
-                    max_num=6,
-                ),
-            ],
-        ),
-        MultiFieldPanel(
-            heading="Body",
-            children=[
-                FieldPanel("record"),
-                FieldPanel("date_text"),
-                FieldPanel("about"),
-                FieldPanel("image_library_link"),
-                FieldPanel("print_on_demand_link"),
-            ],
-        ),
-        FieldPanel("featured_highlight_gallery"),
-        PageChooserPanel(
-            "featured_article",
-            [
-                "articles.ArticlePage",
-                "articles.FocusedArticlePage",
-                "articles.RecordArticlePage",
-            ],
-        ),
-        FieldPanel("promoted_links"),
-    ]
+    content_panels = (
+        BasePageWithRequiredIntro.content_panels
+        + [
+            FieldPanel("intro_image"),
+        ]
+        + ContentWarningMixin.content_panels
+        + [
+            MultiFieldPanel(
+                heading="Image Gallery",
+                classname="collapsible",
+                children=[
+                    FieldPanel("gallery_heading"),
+                    InlinePanel(
+                        "gallery_images",
+                        heading="Image Gallery",
+                        label="Item",
+                        min_num=1,
+                        max_num=6,
+                    ),
+                ],
+            ),
+            MultiFieldPanel(
+                heading="Body",
+                children=[
+                    FieldPanel("record"),
+                    FieldPanel("date_text"),
+                    FieldPanel("about"),
+                    FieldPanel("image_library_link"),
+                    FieldPanel("print_on_demand_link"),
+                ],
+            ),
+            FieldPanel("featured_highlight_gallery"),
+            PageChooserPanel(
+                "featured_article",
+                [
+                    "articles.ArticlePage",
+                    "articles.FocusedArticlePage",
+                    "articles.RecordArticlePage",
+                ],
+            ),
+            FieldPanel("promoted_links"),
+        ]
+    )
 
     promote_panels = (
         NewLabelMixin.promote_panels

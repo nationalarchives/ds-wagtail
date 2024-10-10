@@ -47,6 +47,17 @@ class ContentWarningMixin(models.Model):
         ),
     )
 
+    content_panels = [
+        MultiFieldPanel(
+            [
+                FieldPanel("display_content_warning"),
+                FieldPanel("custom_warning_text"),
+            ],
+            heading="Content Warning Options",
+            classname="collapsible",
+        ),
+    ]
+
     api_fields = [
         APIField("display_content_warning"),
         APIField("custom_warning_text", serializer=RichTextSerializer()),
