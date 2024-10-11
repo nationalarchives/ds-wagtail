@@ -50,7 +50,8 @@ class EtnaMedia(AbstractMedia):
         [
             ("chapter", MediaChapterSectionBlock()),
         ],
-        default=None,
+        blank=True,
+        null=True,
     )
 
     # Added full_url to be sent to the frontend via the Wagtail API
