@@ -34,6 +34,9 @@ class MediaChooserBlock(AbstractMediaChooserBlock):
             "date": value.date,
             "description": expand_db_html(value.description),
             "transcript": expand_db_html(value.transcript),
+            "chapters": value.chapters.stream_block.get_api_representation(
+                value.chapters, context
+            ),
             "width": value.width,
             "height": value.height,
             "duration": value.duration,
