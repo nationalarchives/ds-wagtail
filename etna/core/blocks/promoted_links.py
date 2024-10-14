@@ -143,6 +143,20 @@ class PromotedListBlock(blocks.StructBlock):
         label = "Link list"
         template = "articles/blocks/promoted_list_block.html"
 
+TYPE_LABEL_OVERRIDES = {
+    "GeneralPage": None,
+    "HubPage": None,
+    "HomePage": None,
+    "BlogPage": None,
+    "BlogIndexPage": None,
+    "ExplorerIndexPage": None,
+    "TopicExplorerIndexPage": None,
+    "TopicExplorerPage": "Explore the collection",
+    "TimePeriodExplorerIndexPage": None,
+    "TimePeriodExplorerPage": "Explore the collection",
+    "BlogPostPage": "Blog post",
+    "PersonPage": None,
+}
 
 class FeaturedPageBlock(blocks.StructBlock):
     """
@@ -154,6 +168,15 @@ class FeaturedPageBlock(blocks.StructBlock):
         required=True,
         page_type="wagtailcore.Page",
     )
+
+    def get_api_representation(self, value, context=None):
+        representation = super().get_api_representation(value, context)
+        if value.get("page"):
+            model = value.get("page").specific.__class__.__name__
+            if model in TYPE_LABEL_OVERRIDES:
+                type_label = TYPE_LABEL_OVERRIDES[model]
+                representation["page"]["type_label"] = type_label
+        return representation
 
     class Meta:
         icon = "doc-full"
