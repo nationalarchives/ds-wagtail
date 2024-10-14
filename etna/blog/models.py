@@ -1,3 +1,5 @@
+from django.db import models
+from django.utils import timezone
 from django.utils.functional import cached_property
 
 from wagtail.admin.panels import FieldPanel
@@ -34,13 +36,7 @@ class BlogIndexPage(HeroImageMixin, BasePageWithRequiredIntro):
 
     @cached_property
     def blog_pages(self):
-        return (
-            BlogPage.objects.all()
-            .order_by("-first_published_at")
-            .live()
-            .public()
-            .specific()
-        )
+        return BlogPage.objects.all().live().public().specific().order_by("title")
 
     api_fields = BasePageWithRequiredIntro.api_fields + [
         APIField("blog_pages", serializer=DefaultPageSerializer(many=True))
@@ -69,10 +65,10 @@ class BlogPage(HeroImageMixin, BasePageWithRequiredIntro):
         return (
             self.get_children()
             .type(BlogPostPage)
-            .order_by("-first_published_at")
             .live()
             .public()
             .specific()
+            .order_by("-blogpostpage__published_date")
         )
 
     @cached_property
@@ -80,10 +76,10 @@ class BlogPage(HeroImageMixin, BasePageWithRequiredIntro):
         return (
             self.get_children()
             .type(BlogPage)
-            .order_by("-first_published_at")
             .live()
             .public()
             .specific()
+            .order_by("title")
         )
 
     api_fields = (
@@ -108,16 +104,23 @@ class BlogPostPage(AuthorPageMixin, ContentWarningMixin, BasePageWithRequiredInt
         BlogPostPageStreamBlock(),
     )
 
+    published_date = models.DateTimeField(
+        verbose_name="Published date",
+        help_text="The date the blog post was published.",
+        default=timezone.now,
+    )
+
     content_panels = BasePageWithRequiredIntro.content_panels + [
         FieldPanel("body"),
     ]
 
     promote_panels = BasePageWithRequiredIntro.promote_panels + [
-        AuthorPageMixin.get_authors_inlinepanel()
+        FieldPanel("published_date"),
+        AuthorPageMixin.get_authors_inlinepanel(),
     ]
 
     default_api_fields = BasePageWithRequiredIntro.default_api_fields + [
-        APIField("first_published_at"),
+        APIField("published_date"),
     ]
 
     api_fields = (
@@ -125,6 +128,7 @@ class BlogPostPage(AuthorPageMixin, ContentWarningMixin, BasePageWithRequiredInt
         + ContentWarningMixin.api_fields
         + AuthorPageMixin.api_fields
         + [
+            APIField("published_date"),
             APIField("body"),
         ]
     )

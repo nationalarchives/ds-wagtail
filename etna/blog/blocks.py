@@ -1,5 +1,3 @@
-from django.core.exceptions import ValidationError
-
 from wagtail import blocks
 
 from etna.core.blocks import (
@@ -7,6 +5,7 @@ from etna.core.blocks import (
     ContentImageBlock,
     ContentTableBlock,
     DocumentsBlock,
+    FeaturedPageBlock,
     ImageGalleryBlock,
     ParagraphBlock,
     QuoteBlock,
@@ -21,6 +20,7 @@ from ..media.blocks import MediaBlock
 class SectionContentBlock(blocks.StreamBlock):
     contact = ContactBlock()
     document = DocumentsBlock()
+    featured_page = FeaturedPageBlock()
     image = ContentImageBlock()
     image_gallery = ImageGalleryBlock()
     media = MediaBlock()
