@@ -11,7 +11,7 @@ from etna.core.models import (
     ContentWarningMixin,
     HeroImageMixin,
 )
-from etna.core.serializers import DefaultPageSerializer
+from etna.core.serializers import DateTimeSerializer, DefaultPageSerializer
 from etna.people.models import AuthorPageMixin
 
 from .blocks import BlogPostPageStreamBlock
@@ -128,7 +128,7 @@ class BlogPostPage(AuthorPageMixin, ContentWarningMixin, BasePageWithRequiredInt
         + ContentWarningMixin.api_fields
         + AuthorPageMixin.api_fields
         + [
-            APIField("published_date"),
+            APIField("published_date", serializer=DateTimeSerializer()),
             APIField("body"),
         ]
     )
