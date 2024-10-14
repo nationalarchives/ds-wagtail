@@ -12,7 +12,6 @@ from etna.core.blocks import (
     QuoteBlock,
     SectionDepthAwareStructBlock,
     SubHeadingBlock,
-    SubSubHeadingBlock,
     YouTubeBlock,
 )
 
@@ -28,7 +27,6 @@ class SectionContentBlock(blocks.StreamBlock):
     paragraph = ParagraphBlock()
     quote = QuoteBlock()
     sub_heading = SubHeadingBlock()
-    sub_sub_heading = SubSubHeadingBlock()
     table = ContentTableBlock()
     youtube_video = YouTubeBlock()
 
@@ -57,11 +55,9 @@ class ContentSectionBlock(SectionDepthAwareStructBlock):
         return clean
 
 
-class BlogPostPageStreamBlock(SectionContentBlock):
+class BlogPostPageStreamBlock(blocks.StreamBlock):
     """
     A block for the GeneralPage model.
     """
 
     content_section = ContentSectionBlock()
-    sub_heading = None
-    sub_sub_heading = None

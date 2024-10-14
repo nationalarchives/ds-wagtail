@@ -22,9 +22,9 @@ class BlogIndexPage(HeroImageMixin, BasePageWithRequiredIntro):
     display a list of blog posts, and blog pages.
     """
 
-    subpage_types = ["blog.BlogPostPage", "blog.BlogPage"]  # TBC
+    subpage_types = ["blog.BlogPage"]
 
-    parent_page_types = ["home.HomePage"]  # TBC
+    parent_page_types = ["home.HomePage"]
 
     content_panels = (
         BasePageWithRequiredIntro.content_panels + HeroImageMixin.content_panels
@@ -102,7 +102,7 @@ class BlogPostPage(AuthorPageMixin, ContentWarningMixin, BasePageWithRequiredInt
     This is a blog post page. It is used to display a single blog post.
     """
 
-    parent_page_types = ["blog.BlogPage", "blog.BlogIndexPage"]
+    parent_page_types = ["blog.BlogPage"]
 
     body = StreamField(
         BlogPostPageStreamBlock(),
