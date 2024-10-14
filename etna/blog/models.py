@@ -120,7 +120,7 @@ class BlogPostPage(AuthorPageMixin, ContentWarningMixin, BasePageWithRequiredInt
     ]
 
     default_api_fields = BasePageWithRequiredIntro.default_api_fields + [
-        APIField("published_date"),
+        APIField("published_date", serializer=DateTimeSerializer()),
     ]
 
     api_fields = (
