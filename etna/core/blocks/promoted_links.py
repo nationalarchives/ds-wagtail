@@ -170,12 +170,21 @@ class FeaturedPageBlock(blocks.StructBlock):
         page_type="wagtailcore.Page",
     )
 
+    teaser_text = blocks.CharBlock(
+        label="Teaser text override",
+        required=False,
+        help_text="Optional override for the teaser text",
+    )
+
     def get_api_representation(self, value, context=None):
         representation = super().get_api_representation(value, context)
         if value.get("page"):
             model = value.get("page").specific.__class__.__name__
             if model in TYPE_LABEL_OVERRIDES:
                 representation["page"]["type_label"] = TYPE_LABEL_OVERRIDES[model]
+        if value.get("teaser_text"):
+            representation["page"]["teaser_text"] = value.get("teaser_text")
+        del representation["teaser_text"]
         return representation
 
     class Meta:
