@@ -39,21 +39,6 @@ class ContentSectionBlock(SectionDepthAwareStructBlock):
         label = "Section"
         template = "articles/blocks/section.html"
 
-    def clean(self, value):
-        clean = super().clean(value)
-        has_sub_heading = False
-        content = clean.get("content")
-
-        for block in content:
-            block_type = block.block_type
-            if block_type == "sub_heading":
-                has_sub_heading = True
-            elif block_type == "sub_sub_heading" and not has_sub_heading:
-                raise ValidationError(
-                    "A sub-sub-heading was found before any sub-headings."
-                )
-        return clean
-
 
 class BlogPostPageStreamBlock(blocks.StreamBlock):
     """
