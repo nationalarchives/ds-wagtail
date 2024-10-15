@@ -44,3 +44,5 @@ class HomePage(BasePageWithRequiredIntro):
     api_fields = BasePageWithRequiredIntro.api_fields + [
         APIField("body"),
     ]
+
+    max_count = 1

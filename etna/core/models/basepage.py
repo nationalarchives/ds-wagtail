@@ -105,12 +105,8 @@ class BasePage(AlertMixin, SocialMixin, DataLayerMixin, HeadlessPreviewMixin, Pa
         with the first letter capitalized for display.
         """
         if cls.has_custom_type_label():
-            label = cls._meta.verbose_name_public
-        else:
-            label = cls._meta.verbose_name
-            if label.lower().endswith(" page"):
-                label = label[:-5]
-        return capfirst(label)
+            return capfirst(cls._meta.verbose_name_public)
+        return None
 
     @classmethod
     def has_custom_type_label(cls) -> bool:

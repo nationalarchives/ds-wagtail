@@ -8,7 +8,7 @@
             "title": "Home",
             "url": "/",
             "full_url": "http://localhost/",
-            "type_label": "Home",
+            "type_label": null,
             "teaser_text": "",
             "teaser_image": null
         },
@@ -17,7 +17,7 @@
             "title": "arts",
             "url": "/arts/",
             "full_url": "http://localhost/arts/",
-            "type_label": "Topic",
+            "type_label": "Explore the collection",
             "teaser_text": "Teaser text",
             "teaser_image": {
                 "id": 2,
@@ -66,7 +66,7 @@
             "title": "early_modern",
             "url": "/early_modern/",
             "full_url": "http://localhost/early_modern/",
-            "type_label": "Time period",
+            "type_label": "Explore the collection",
             "teaser_text": "Teaser text",
             "teaser_image": {
                 "id": 4,
@@ -90,7 +90,7 @@
             "title": "postwar",
             "url": "/postwar/",
             "full_url": "http://localhost/postwar/",
-            "type_label": "Time period",
+            "type_label": "Explore the collection",
             "teaser_text": "Teaser text",
             "teaser_image": {
                 "id": 6,
@@ -114,7 +114,7 @@
             "title": "people",
             "url": "/people/",
             "full_url": "http://localhost/people/",
-            "type_label": "People index",
+            "type_label": null,
             "teaser_text": "Teaser text",
             "teaser_image": {
                 "id": 8,
@@ -138,7 +138,7 @@
             "title": "author",
             "url": "/people/author/",
             "full_url": "http://localhost/people/author/",
-            "type_label": "Person",
+            "type_label": null,
             "teaser_text": "Teaser text",
             "teaser_image": {
                 "id": 10,
@@ -203,7 +203,7 @@
             "title": "article_index",
             "url": "/article_index/",
             "full_url": "http://localhost/article_index/",
-            "type_label": "Article index",
+            "type_label": null,
             "teaser_text": "Teaser text",
             "teaser_image": {
                 "id": 11,
