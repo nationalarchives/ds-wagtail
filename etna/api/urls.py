@@ -15,10 +15,12 @@ from wagtail.images.api.v2.views import ImagesAPIViewSet
 from wagtail.models import Page, PageViewRestriction, Site
 
 from rest_framework import status
+from rest_framework.filters import BaseFilterBackend
 from rest_framework.response import Response
 from wagtail_headless_preview.models import PagePreview
 from wagtailmedia.api.views import MediaAPIViewSet
 
+from etna.blog.models import BlogPostPage
 from etna.core.serializers.pages import DefaultPageSerializer
 
 logger = logging.getLogger(__name__)
@@ -248,9 +250,94 @@ class CustomImagesAPIViewSet(ImagesAPIViewSet):
     ]
 
 
+class YearFilter(BaseFilterBackend):
+    """
+    Implements the ?year filter used to filter the results to only contain
+    blog posts that were published in the specified year.
+    """
+
+    def filter_queryset(self, request, queryset, view):
+        if "year" in request.GET:
+            try:
+                year = int(request.GET["year"])
+                if year < 0:
+                    raise ValueError()
+            except ValueError:
+                raise BadRequestError("year must be a positive integer")
+
+            queryset = queryset.filter(**{"published_date__year": year})
+
+        return queryset
+
+
+class MonthFilter(BaseFilterBackend):
+    """
+    Implements the ?month filter used to filter the results to only contain
+    blog posts that were published in the specified month.
+    """
+
+    def filter_queryset(self, request, queryset, view):
+        if "month" in request.GET:
+            if "year" not in request.GET:
+                raise BadRequestError("cannot use month filter without a year filter")
+            try:
+                month = int(request.GET["month"])
+                if month < 0 or month > 12:
+                    raise ValueError()
+            except ValueError:
+                raise BadRequestError("month must be a positive integer between 1-12")
+
+            queryset = queryset.filter(**{"published_date__month": month})
+
+        return queryset
+
+
+class DayFilter(BaseFilterBackend):
+    """
+    Implements the ?day filter used to filter the results to only contain
+    blog posts that were published in the specified day.
+    """
+
+    def filter_queryset(self, request, queryset, view):
+        if "day" in request.GET:
+            if "year" not in request.GET or "month" not in request.GET:
+                raise BadRequestError(
+                    "cannot use day filter without a year and month filter"
+                )
+            try:
+                day = int(request.GET["day"])
+                if day < 0 or day > 31:
+                    raise ValueError()
+            except ValueError:
+                raise BadRequestError("day must be a positive integer between 1-31")
+
+            queryset = queryset.filter(**{"published_date__day": day})
+
+        return queryset
+
+
+class BlogAPIViewSet(CustomPagesAPIViewSet):
+    filter_backends = [
+        YearFilter,
+        MonthFilter,
+        DayFilter,
+        # TODO: Add filter by author
+    ] + CustomPagesAPIViewSet.filter_backends
+    known_query_parameters = CustomPagesAPIViewSet.known_query_parameters.union(
+        [
+            "year",
+            "month",
+            "day",
+            "author",
+        ]
+    )
+    model = BlogPostPage
+
+
 api_router = WagtailAPIRouter("wagtailapi")
 
 api_router.register_endpoint("pages", CustomPagesAPIViewSet)
 api_router.register_endpoint("page_preview", PagePreviewAPIViewSet)
 api_router.register_endpoint("images", CustomImagesAPIViewSet)
 api_router.register_endpoint("media", MediaAPIViewSet)
+api_router.register_endpoint("blog_posts", BlogAPIViewSet)
