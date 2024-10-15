@@ -22,7 +22,6 @@ from wagtailmedia.api.views import MediaAPIViewSet
 
 from etna.blog.models import BlogIndexPage, BlogPage, BlogPostPage
 from etna.core.serializers.pages import DefaultPageSerializer
-from etna.people.models import PersonPage
 
 from .filters import AuthorFilter, PublishedDateFilter
 
