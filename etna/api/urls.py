@@ -274,16 +274,6 @@ class BlogsAPIViewSet(CustomPagesAPIViewSet):
 
         return Response(blogs)
 
-    def authors_view(self, request):
-        # TODO: Get all people who are listed as an author on a blog post
-        pass
-        queryset = self.get_queryset()
-        self.check_query_parameters(queryset)
-        queryset = queryset.type(PersonPage)
-        queryset = self.filter_queryset(queryset)
-        serializer = DefaultPageSerializer(queryset, many=True)
-        return Response(serializer.data)
-
     @classmethod
     def get_urlpatterns(cls):
         """
@@ -291,7 +281,6 @@ class BlogsAPIViewSet(CustomPagesAPIViewSet):
         """
         return [
             path("", cls.as_view({"get": "blogs_list_view"}), name="blogs_list"),
-            path("authors/", cls.as_view({"get": "authors_view"}), name="authors"),
         ]
 
 
