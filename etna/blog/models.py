@@ -42,6 +42,8 @@ class BlogIndexPage(HeroImageMixin, BasePageWithRequiredIntro):
         APIField("blog_pages", serializer=DefaultPageSerializer(many=True))
     ]
 
+    max_count = 1
+
 
 class BlogPage(HeroImageMixin, BasePageWithRequiredIntro):
     """Blog page
@@ -132,3 +134,8 @@ class BlogPostPage(AuthorPageMixin, ContentWarningMixin, BasePageWithRequiredInt
             APIField("body"),
         ]
     )
+
+    class Meta:
+        verbose_name = "Blog post page"
+        verbose_name_plural = "Blog post pages"
+        verbose_name_public = "Blog post"

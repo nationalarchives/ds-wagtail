@@ -105,7 +105,7 @@
         "custom_sensitive_image": null
     },
     "global_alert": null,
-    "type_label": "Time period",
+    "type_label": "Explore the collection",
     "mourning_notice": {
         "title": "Test title",
         "message": "<p>Test message</p>"
