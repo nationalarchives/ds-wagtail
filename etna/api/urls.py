@@ -22,6 +22,7 @@ from wagtailmedia.api.views import MediaAPIViewSet
 
 from etna.blog.models import BlogIndexPage, BlogPage, BlogPostPage
 from etna.core.serializers.pages import DefaultPageSerializer
+from etna.people.models import PersonPage
 
 from .filters import AuthorFilter, PublishedDateFilter
 
@@ -273,6 +274,16 @@ class BlogsAPIViewSet(CustomPagesAPIViewSet):
 
         return Response(blogs)
 
+    def authors_view(self, request):
+        # TODO: Get all people who are listed as an author on a blog post
+        pass
+        queryset = self.get_queryset()
+        self.check_query_parameters(queryset)
+        queryset = queryset.type(PersonPage)
+        queryset = self.filter_queryset(queryset)
+        serializer = DefaultPageSerializer(queryset, many=True)
+        return Response(serializer.data)
+
     @classmethod
     def get_urlpatterns(cls):
         """
@@ -280,6 +291,7 @@ class BlogsAPIViewSet(CustomPagesAPIViewSet):
         """
         return [
             path("", cls.as_view({"get": "blogs_list_view"}), name="blogs_list"),
+            path("authors/", cls.as_view({"get": "authors_view"}), name="authors"),
         ]
 
 
@@ -287,7 +299,7 @@ class BlogPostsAPIViewSet(CustomPagesAPIViewSet):
     filter_backends = [
         PublishedDateFilter,
         AuthorFilter,
-    ] + CustomPagesAPIViewSet.filter_backends
+    ] + CustomPagesAPIViewSet.filter_backends  # Needs to be last as it includes SearchFilter which needs to be last
     known_query_parameters = CustomPagesAPIViewSet.known_query_parameters.union(
         [
             "year",
