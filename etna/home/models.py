@@ -50,4 +50,4 @@ class HomePage(BasePageWithRequiredIntro):
     class Meta:
         verbose_name = "Home page"
         verbose_name_plural = "Home pages"
-        verbose_name_public = None
+        

@@ -166,7 +166,7 @@ class ExplorerIndexPage(BasePageWithRequiredIntro):
     class Meta:
         verbose_name = _("explorer index page")
         verbose_name_plural = _("explorer index pages")
-        verbose_name_public = None
+        
 
 
 class TopicExplorerIndexPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
@@ -233,7 +233,7 @@ class TopicExplorerIndexPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
     class Meta:
         verbose_name = _("topic index page")
         verbose_name_plural = _("topic index pages")
-        verbose_name_public = None
+        
 
 
 class TopicExplorerPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
@@ -475,7 +475,7 @@ class TimePeriodExplorerIndexPage(RequiredHeroImageMixin, BasePageWithRequiredIn
     class Meta:
         verbose_name = _("time period index page")
         verbose_name_plural = _("time period index pages")
-        verbose_name_public = None
+        
 
 
 class TimePeriodExplorerPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):

@@ -47,7 +47,7 @@ class BlogIndexPage(HeroImageMixin, BasePageWithRequiredIntro):
     class Meta:
         verbose_name = "Blog index page"
         verbose_name_plural = "Blog index pages"
-        verbose_name_public = None
+        
 
 
 class BlogPage(HeroImageMixin, BasePageWithRequiredIntro):
@@ -101,7 +101,6 @@ class BlogPage(HeroImageMixin, BasePageWithRequiredIntro):
     class Meta:
         verbose_name = "Blog page"
         verbose_name_plural = "Blog pages"
-        verbose_name_public = None
 
 
 class BlogPostPage(AuthorPageMixin, ContentWarningMixin, BasePageWithRequiredIntro):
