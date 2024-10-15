@@ -68,7 +68,7 @@
         "cascade": true,
         "uid": ALERT_UID
     },
-    "type_label": "People index",
+    "type_label": null,
     "mourning_notice": {
         "title": "Test title",
         "message": "<p>Test message</p>"
@@ -79,7 +79,7 @@
             "title": "author",
             "url": "/people/author/",
             "full_url": "http://localhost/people/author/",
-            "type_label": "Person",
+            "type_label": null,
             "teaser_text": "Teaser text",
             "teaser_image": {
                 "id": 10,

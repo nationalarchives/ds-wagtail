@@ -239,7 +239,7 @@ class TopicExplorerPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
     class Meta:
         verbose_name = _("topic page")
         verbose_name_plural = _("topic pages")
-        verbose_name_public = _("topic")
+        verbose_name_public = _("explore the collection")
 
     featured_article = models.ForeignKey(
         "wagtailcore.Page",
@@ -476,7 +476,7 @@ class TimePeriodExplorerPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
     class Meta:
         verbose_name = _("time period page")
         verbose_name_plural = _("time period pages")
-        verbose_name_public = _("time period")
+        verbose_name_public = _("explore the collection")
 
     featured_article = models.ForeignKey(
         "wagtailcore.Page",
