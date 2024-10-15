@@ -137,7 +137,8 @@
                     "slug": "author",
                     "name": "Author"
                 }
-            ]
+            ],
+            "slug": "author"
         }
     ]
 }
