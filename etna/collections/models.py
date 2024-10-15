@@ -163,6 +163,11 @@ class ExplorerIndexPage(BasePageWithRequiredIntro):
         APIField("featured_articles"),
     ]
 
+    class Meta:
+        verbose_name = _("explorer index page")
+        verbose_name_plural = _("explorer index pages")
+        verbose_name_public = None
+
 
 class TopicExplorerIndexPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
     """Topic explorer BasePage.
@@ -225,6 +230,11 @@ class TopicExplorerIndexPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
         "collections.TopicExplorerPage",
     ]
 
+    class Meta:
+        verbose_name = _("topic index page")
+        verbose_name_plural = _("topic index pages")
+        verbose_name_public = None
+
 
 class TopicExplorerPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
     """Topic explorer page.
@@ -239,7 +249,7 @@ class TopicExplorerPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
     class Meta:
         verbose_name = _("topic page")
         verbose_name_plural = _("topic pages")
-        verbose_name_public = _("topic")
+        verbose_name_public = _("explore the collection")
 
     featured_article = models.ForeignKey(
         "wagtailcore.Page",
@@ -462,6 +472,11 @@ class TimePeriodExplorerIndexPage(RequiredHeroImageMixin, BasePageWithRequiredIn
         ]
     )
 
+    class Meta:
+        verbose_name = _("time period index page")
+        verbose_name_plural = _("time period index pages")
+        verbose_name_public = None
+
 
 class TimePeriodExplorerPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
     """Time period BasePage.
@@ -476,7 +491,7 @@ class TimePeriodExplorerPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
     class Meta:
         verbose_name = _("time period page")
         verbose_name_plural = _("time period pages")
-        verbose_name_public = _("time period")
+        verbose_name_public = _("explore the collection")
 
     featured_article = models.ForeignKey(
         "wagtailcore.Page",

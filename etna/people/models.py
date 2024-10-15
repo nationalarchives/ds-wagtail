@@ -54,6 +54,11 @@ class PeopleIndexPage(BasePage):
             .public()
             .specific()
         )
+    
+    class Meta:
+        verbose_name = ("People index page")
+        verbose_name_plural = ("People index pages")
+        verbose_name_public = None
 
 
 class ShopItem(models.Model):
@@ -137,7 +142,7 @@ class PersonPage(BasePage):
     class Meta:
         verbose_name = "Person page"
         verbose_name_plural = "People pages"
-        verbose_name_public = "person"
+        verbose_name_public = None
 
     # DataLayerMixin overrides
     gtm_content_group = "Person page"

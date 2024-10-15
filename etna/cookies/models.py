@@ -11,6 +11,11 @@ class CookiesPage(BasePageWithRequiredIntro):
     max_count = 1
     subpage_types = ["cookies.CookieDetailsPage"]
 
+    class Meta:
+        verbose_name = "Cookies page"
+        verbose_name_plural = "Cookies pages"
+        verbose_name_public = None
+
 
 class CookieDetailsPage(BasePageWithRequiredIntro):
     max_count = 1
@@ -26,6 +31,6 @@ class CookieDetailsPage(BasePageWithRequiredIntro):
     class Meta:
         verbose_name = "Cookie details page"
         verbose_name_plural = "Cookie details pages"
-        verbose_name_public = "cookies"
+        verbose_name_public = None
 
     api_fields = BasePageWithRequiredIntro.api_fields + [APIField("body")]

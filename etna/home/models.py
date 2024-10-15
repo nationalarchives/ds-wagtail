@@ -44,3 +44,9 @@ class HomePage(BasePageWithRequiredIntro):
     api_fields = BasePageWithRequiredIntro.api_fields + [
         APIField("body"),
     ]
+
+    max_count = 1
+    class Meta:
+        verbose_name = "Home page"
+        verbose_name_plural = "Home pages"
+        verbose_name_public = None

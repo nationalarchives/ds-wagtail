@@ -144,21 +144,6 @@ class PromotedListBlock(blocks.StructBlock):
         template = "articles/blocks/promoted_list_block.html"
 
 
-TYPE_LABEL_OVERRIDES = {
-    "GeneralPage": None,
-    "HubPage": None,
-    "HomePage": None,
-    "BlogPage": None,
-    "BlogIndexPage": None,
-    "ExplorerIndexPage": None,
-    "TopicExplorerIndexPage": None,
-    "TopicExplorerPage": "Explore the collection",
-    "TimePeriodExplorerIndexPage": None,
-    "TimePeriodExplorerPage": "Explore the collection",
-    "PersonPage": None,
-}
-
-
 class FeaturedPageBlock(blocks.StructBlock):
     """
     Block for featuring a page.
@@ -179,12 +164,9 @@ class FeaturedPageBlock(blocks.StructBlock):
     def get_api_representation(self, value, context=None):
         representation = super().get_api_representation(value, context)
         if value.get("page"):
-            model = value.get("page").specific.__class__.__name__
-            if model in TYPE_LABEL_OVERRIDES:
-                representation["page"]["type_label"] = TYPE_LABEL_OVERRIDES[model]
-        if value.get("teaser_text"):
-            representation["page"]["teaser_text"] = value.get("teaser_text")
-        del representation["teaser_text"]
+            if value.get("teaser_text"):
+                representation["page"]["teaser_text"] = value.get("teaser_text")
+            del representation["teaser_text"]
         return representation
 
     class Meta:
