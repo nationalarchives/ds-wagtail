@@ -163,10 +163,6 @@ class ExplorerIndexPage(BasePageWithRequiredIntro):
         APIField("featured_articles"),
     ]
 
-    class Meta:
-        verbose_name = _("explorer index page")
-        verbose_name_plural = _("explorer index pages")
-
 
 class TopicExplorerIndexPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
     """Topic explorer BasePage.
@@ -228,10 +224,6 @@ class TopicExplorerIndexPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
     subpage_types = [
         "collections.TopicExplorerPage",
     ]
-
-    class Meta:
-        verbose_name = _("topic index page")
-        verbose_name_plural = _("topic index pages")
 
 
 class TopicExplorerPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
@@ -469,10 +461,6 @@ class TimePeriodExplorerIndexPage(RequiredHeroImageMixin, BasePageWithRequiredIn
             ),
         ]
     )
-
-    class Meta:
-        verbose_name = _("time period index page")
-        verbose_name_plural = _("time period index pages")
 
 
 class TimePeriodExplorerPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):

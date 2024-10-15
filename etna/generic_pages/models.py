@@ -44,10 +44,6 @@ class GeneralPage(SidebarMixin, HeroImageMixin, BasePageWithIntro):
         ]
     )
 
-    class Meta:
-        verbose_name = _("general page")
-        verbose_name_plural = _("general pages")
-
 
 class LinkItem(Orderable):
     page = ParentalKey("HubPage", related_name="links")
@@ -162,7 +158,3 @@ class HubPage(HeroImageMixin, BasePageWithIntro):
             APIField("links", serializer=LinkItemSerializer(many=True)),
         ]
     )
-
-    class Meta:
-        verbose_name = _("hub page")
-        verbose_name_plural = _("hub pages")

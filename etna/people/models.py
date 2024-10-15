@@ -55,10 +55,6 @@ class PeopleIndexPage(BasePage):
             .specific()
         )
 
-    class Meta:
-        verbose_name = "People index page"
-        verbose_name_plural = "People index pages"
-
 
 class ShopItem(models.Model):
     """Shop item model
