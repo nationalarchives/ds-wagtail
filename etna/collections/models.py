@@ -841,30 +841,26 @@ class HighlightGalleryPage(
         verbose_name_plural = _("highlight gallery pages")
         verbose_name_public = _("in pictures")
 
-    content_panels = BasePageWithRequiredIntro.content_panels + [
-        MultiFieldPanel(
-            heading="Content Warning Options",
-            classname="collapsible",
-            children=[
-                FieldPanel("display_content_warning"),
-                FieldPanel("custom_warning_text"),
-            ],
-        ),
-        InlinePanel(
-            "page_highlights",
-            heading=_("Highlights"),
-            label=_("Item"),
-            max_num=15,
-        ),
-        PageChooserPanel(
-            "featured_article",
-            [
-                "articles.ArticlePage",
-                "articles.FocusedArticlePage",
-                "articles.RecordArticlePage",
-            ],
-        ),
-    ]
+    content_panels = (
+        BasePageWithRequiredIntro.content_panels
+        + ContentWarningMixin.content_panels
+        + [
+            InlinePanel(
+                "page_highlights",
+                heading=_("Highlights"),
+                label=_("Item"),
+                max_num=15,
+            ),
+            PageChooserPanel(
+                "featured_article",
+                [
+                    "articles.ArticlePage",
+                    "articles.FocusedArticlePage",
+                    "articles.RecordArticlePage",
+                ],
+            ),
+        ]
+    )
 
     default_api_fields = BasePageWithRequiredIntro.default_api_fields + [
         APIField("highlight_image_count"),
