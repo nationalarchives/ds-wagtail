@@ -334,9 +334,11 @@ class BlogAPIViewSet(CustomPagesAPIViewSet):
                             }
                         ).count(),
                     }
-                    for month in set(
-                        queryset.filter(**{"published_date__year": year}).values_list(
-                            "published_date__month", flat=True
+                    for month in sorted(
+                        set(
+                            queryset.filter(
+                                **{"published_date__year": year}
+                            ).values_list("published_date__month", flat=True)
                         )
                     )
                 ],
