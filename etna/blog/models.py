@@ -43,6 +43,7 @@ class BlogIndexPage(HeroImageMixin, BasePageWithRequiredIntro):
     ]
 
     max_count = 1
+
     class Meta:
         verbose_name = "Blog index page"
         verbose_name_plural = "Blog index pages"

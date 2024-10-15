@@ -54,10 +54,10 @@ class PeopleIndexPage(BasePage):
             .public()
             .specific()
         )
-    
+
     class Meta:
-        verbose_name = ("People index page")
-        verbose_name_plural = ("People index pages")
+        verbose_name = "People index page"
+        verbose_name_plural = "People index pages"
         verbose_name_public = None
 
 
