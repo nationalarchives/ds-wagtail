@@ -23,7 +23,7 @@ from wagtailmedia.api.views import MediaAPIViewSet
 from etna.blog.models import BlogIndexPage, BlogPage, BlogPostPage
 from etna.core.serializers.pages import DefaultPageSerializer
 
-from .filters import PublishedDateFilter
+from .filters import AuthorFilter, PublishedDateFilter
 
 logger = logging.getLogger(__name__)
 
@@ -286,7 +286,7 @@ class BlogsAPIViewSet(CustomPagesAPIViewSet):
 class BlogPostsAPIViewSet(CustomPagesAPIViewSet):
     filter_backends = [
         PublishedDateFilter,
-        # TODO: Add filter by author
+        AuthorFilter,
     ] + CustomPagesAPIViewSet.filter_backends
     known_query_parameters = CustomPagesAPIViewSet.known_query_parameters.union(
         [

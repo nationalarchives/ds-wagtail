@@ -52,3 +52,16 @@ class PublishedDateFilter(BaseFilterBackend):
                     queryset = queryset.filter(**{"published_date__day": day})
 
         return queryset
+
+
+class AuthorFilter(BaseFilterBackend):
+    def filter_queryset(self, request, queryset, view):
+        if "author" in request.GET:
+            try:
+                author = request.GET["author"]
+                if not author:
+                    raise ValueError()
+            except ValueError:
+                raise BadRequestError("you must provide an author name")
+            queryset = queryset.filter(**{"author_tags__author__slug": author})
+        return queryset
