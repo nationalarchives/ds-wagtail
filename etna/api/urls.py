@@ -5,6 +5,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.db.models import Q
 from django.http import Http404
 from django.shortcuts import redirect
+from django.urls import path
 from django.utils.crypto import constant_time_compare
 
 from wagtail.api.v2.router import WagtailAPIRouter
@@ -332,6 +333,46 @@ class BlogAPIViewSet(CustomPagesAPIViewSet):
         ]
     )
     model = BlogPostPage
+
+    def count_view(self, request):
+        queryset = self.get_queryset()
+        self.check_query_parameters(queryset)
+        queryset = self.filter_queryset(queryset)
+        years = set(queryset.values_list("published_date__year", flat=True))
+        years_count = [
+            {
+                "year": year,
+                "months": [
+                    {
+                        "month": month,
+                        "posts": queryset.filter(
+                            **{
+                                "published_date__year": year,
+                                "published_date__month": month,
+                            }
+                        ).count(),
+                    }
+                    for month in set(
+                        queryset.filter(**{"published_date__year": year}).values_list(
+                            "published_date__month", flat=True
+                        )
+                    )
+                ],
+                "posts": queryset.filter(**{"published_date__year": year}).count(),
+            }
+            for year in sorted(years)
+        ]
+        return Response(years_count)
+
+    @classmethod
+    def get_urlpatterns(cls):
+        """
+        This returns a list of URL patterns for the endpoint
+        """
+        return [
+            path("", cls.as_view({"get": "listing_view"}), name="listing"),
+            path("count/", cls.as_view({"get": "count_view"}), name="count"),
+        ]
 
 
 api_router = WagtailAPIRouter("wagtailapi")
