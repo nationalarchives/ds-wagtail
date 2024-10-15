@@ -196,7 +196,8 @@
                     "slug": "author",
                     "name": "Author"
                 }
-            ]
+            ],
+            "slug": "author"
         },
         {
             "id": ARTICLE_INDEX_ID,
