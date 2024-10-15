@@ -1,3 +1,4 @@
+import datetime
 import logging
 
 from django.conf import settings
@@ -251,13 +252,22 @@ class CustomImagesAPIViewSet(ImagesAPIViewSet):
     ]
 
 
-class YearFilter(BaseFilterBackend):
+class PublishedDateFilter(BaseFilterBackend):
     """
-    Implements the ?year filter used to filter the results to only contain
-    blog posts that were published in the specified year.
+    Implements the ?year, ?month and ?day filters to filter the results to only
+    contain blog posts that were published in the specified year/month/day.
     """
 
     def filter_queryset(self, request, queryset, view):
+        if "day" in request.GET and (
+            "year" not in request.GET or "month" not in request.GET
+        ):
+            raise BadRequestError(
+                "cannot use day filter without a year and month filter"
+            )
+        if "month" in request.GET and ("year" not in request.GET):
+            raise BadRequestError("cannot use month filter without a year filter")
+
         if "year" in request.GET:
             try:
                 year = int(request.GET["year"])
@@ -265,63 +275,35 @@ class YearFilter(BaseFilterBackend):
                     raise ValueError()
             except ValueError:
                 raise BadRequestError("year must be a positive integer")
-
             queryset = queryset.filter(**{"published_date__year": year})
 
-        return queryset
+            if "month" in request.GET:
+                try:
+                    month = int(request.GET["month"])
+                    if month < 0 or month > 12:
+                        raise ValueError()
+                except ValueError:
+                    raise BadRequestError(
+                        "month must be a positive integer between 1-12"
+                    )
+                queryset = queryset.filter(**{"published_date__month": month})
 
-
-class MonthFilter(BaseFilterBackend):
-    """
-    Implements the ?month filter used to filter the results to only contain
-    blog posts that were published in the specified month.
-    """
-
-    def filter_queryset(self, request, queryset, view):
-        if "month" in request.GET:
-            if "year" not in request.GET:
-                raise BadRequestError("cannot use month filter without a year filter")
-            try:
-                month = int(request.GET["month"])
-                if month < 0 or month > 12:
-                    raise ValueError()
-            except ValueError:
-                raise BadRequestError("month must be a positive integer between 1-12")
-
-            queryset = queryset.filter(**{"published_date__month": month})
-
-        return queryset
-
-
-class DayFilter(BaseFilterBackend):
-    """
-    Implements the ?day filter used to filter the results to only contain
-    blog posts that were published in the specified day.
-    """
-
-    def filter_queryset(self, request, queryset, view):
-        if "day" in request.GET:
-            if "year" not in request.GET or "month" not in request.GET:
-                raise BadRequestError(
-                    "cannot use day filter without a year and month filter"
-                )
-            try:
-                day = int(request.GET["day"])
-                if day < 0 or day > 31:
-                    raise ValueError()
-            except ValueError:
-                raise BadRequestError("day must be a positive integer between 1-31")
-
-            queryset = queryset.filter(**{"published_date__day": day})
+                if "day" in request.GET:
+                    try:
+                        day = int(request.GET["day"])
+                        datetime.datetime(year, month, day)
+                    except ValueError:
+                        raise BadRequestError(
+                            f"{year}-{month}-{day} is not a valid date"
+                        )
+                    queryset = queryset.filter(**{"published_date__day": day})
 
         return queryset
 
 
 class BlogAPIViewSet(CustomPagesAPIViewSet):
     filter_backends = [
-        YearFilter,
-        MonthFilter,
-        DayFilter,
+        PublishedDateFilter,
         # TODO: Add filter by author
     ] + CustomPagesAPIViewSet.filter_backends
     known_query_parameters = CustomPagesAPIViewSet.known_query_parameters.union(
