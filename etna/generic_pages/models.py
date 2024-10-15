@@ -47,7 +47,6 @@ class GeneralPage(SidebarMixin, HeroImageMixin, BasePageWithIntro):
     class Meta:
         verbose_name = _("general page")
         verbose_name_plural = _("general pages")
-        
 
 
 class LinkItem(Orderable):
@@ -167,4 +166,3 @@ class HubPage(HeroImageMixin, BasePageWithIntro):
     class Meta:
         verbose_name = _("hub page")
         verbose_name_plural = _("hub pages")
-        

@@ -14,7 +14,6 @@ class CookiesPage(BasePageWithRequiredIntro):
     class Meta:
         verbose_name = "Cookies page"
         verbose_name_plural = "Cookies pages"
-        
 
 
 class CookieDetailsPage(BasePageWithRequiredIntro):
@@ -31,6 +30,5 @@ class CookieDetailsPage(BasePageWithRequiredIntro):
     class Meta:
         verbose_name = "Cookie details page"
         verbose_name_plural = "Cookie details pages"
-        
 
     api_fields = BasePageWithRequiredIntro.api_fields + [APIField("body")]

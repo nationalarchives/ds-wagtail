@@ -47,7 +47,6 @@ class BlogIndexPage(HeroImageMixin, BasePageWithRequiredIntro):
     class Meta:
         verbose_name = "Blog index page"
         verbose_name_plural = "Blog index pages"
-        
 
 
 class BlogPage(HeroImageMixin, BasePageWithRequiredIntro):
