@@ -22,7 +22,7 @@ from rest_framework.response import Response
 from wagtail_headless_preview.models import PagePreview
 from wagtailmedia.api.views import MediaAPIViewSet
 
-from etna.blog.models import BlogPostPage
+from etna.blog.models import BlogIndexPage, BlogPage, BlogPostPage
 from etna.core.serializers.pages import DefaultPageSerializer
 
 logger = logging.getLogger(__name__)
@@ -301,7 +301,38 @@ class PublishedDateFilter(BaseFilterBackend):
         return queryset
 
 
-class BlogAPIViewSet(CustomPagesAPIViewSet):
+class BlogsAPIViewSet(CustomPagesAPIViewSet):
+    filter_backends = []
+    known_query_parameters = []
+
+    def blogs_list_view(self, request):
+        queryset = self.get_queryset()
+        queryset = queryset.not_type(BlogPage)
+        blogs = []
+        for blog in queryset.iterator():
+            blogs_children = blog.get_children().type(BlogPage)
+            blogs_children = DefaultPageSerializer(blogs_children, many=True)
+            if blogs_children.data:
+                blogs += blogs_children.data
+
+        top_level_queryset = self.get_queryset()
+        top_level_queryset = top_level_queryset.type(BlogIndexPage)
+        top_level = DefaultPageSerializer(top_level_queryset, many=True)
+        blogs = top_level.data + sorted(blogs, key=lambda x: x["title"])
+
+        return Response(blogs)
+
+    @classmethod
+    def get_urlpatterns(cls):
+        """
+        This returns a list of URL patterns for the endpoint
+        """
+        return [
+            path("", cls.as_view({"get": "blogs_list_view"}), name="blogs_list"),
+        ]
+
+
+class BlogPostsAPIViewSet(CustomPagesAPIViewSet):
     filter_backends = [
         PublishedDateFilter,
         # TODO: Add filter by author
@@ -365,4 +396,5 @@ api_router.register_endpoint("pages", CustomPagesAPIViewSet)
 api_router.register_endpoint("page_preview", PagePreviewAPIViewSet)
 api_router.register_endpoint("images", CustomImagesAPIViewSet)
 api_router.register_endpoint("media", MediaAPIViewSet)
-api_router.register_endpoint("blog_posts", BlogAPIViewSet)
+api_router.register_endpoint("blogs", BlogsAPIViewSet)
+api_router.register_endpoint("blog_posts", BlogPostsAPIViewSet)
