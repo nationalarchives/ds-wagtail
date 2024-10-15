@@ -42,6 +42,12 @@ class BlogIndexPage(HeroImageMixin, BasePageWithRequiredIntro):
         APIField("blog_pages", serializer=DefaultPageSerializer(many=True))
     ]
 
+    max_count = 1
+    class Meta:
+        verbose_name = "Blog index page"
+        verbose_name_plural = "Blog index pages"
+        verbose_name_public = None
+
 
 class BlogPage(HeroImageMixin, BasePageWithRequiredIntro):
     """Blog page
@@ -91,6 +97,11 @@ class BlogPage(HeroImageMixin, BasePageWithRequiredIntro):
         ]
     )
 
+    class Meta:
+        verbose_name = "Blog page"
+        verbose_name_plural = "Blog pages"
+        verbose_name_public = None
+
 
 class BlogPostPage(AuthorPageMixin, ContentWarningMixin, BasePageWithRequiredIntro):
     """Blog post page
@@ -132,3 +143,8 @@ class BlogPostPage(AuthorPageMixin, ContentWarningMixin, BasePageWithRequiredInt
             APIField("body"),
         ]
     )
+
+    class Meta:
+        verbose_name = "Blog post page"
+        verbose_name_plural = "Blog post pages"
+        verbose_name_public = "Blog post"
