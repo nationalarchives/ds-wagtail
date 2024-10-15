@@ -23,4 +23,8 @@ class CookieDetailsPage(BasePageWithRequiredIntro):
         FieldPanel("body"),
     ]
 
+    class Meta:
+        verbose_name = "Cookie details page"
+        verbose_name_plural = "Cookie details pages"
+
     api_fields = BasePageWithRequiredIntro.api_fields + [APIField("body")]
