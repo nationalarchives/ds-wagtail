@@ -62,7 +62,7 @@
     },
     "title": "article_index",
     "global_alert": null,
-    "type_label": "Article index",
+    "type_label": null,
     "mourning_notice": {
         "title": "Test title",
         "message": "<p>Test message</p>"

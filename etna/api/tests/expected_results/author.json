@@ -68,7 +68,7 @@
         "cascade": true,
         "uid": ALERT_UID
     },
-    "type_label": "Person",
+    "type_label": null,
     "mourning_notice": {
         "title": "Test title",
         "message": "<p>Test message</p>"
