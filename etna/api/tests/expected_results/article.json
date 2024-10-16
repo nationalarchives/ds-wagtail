@@ -221,6 +221,7 @@
                                 "date": null,
                                 "description": "<p>Description</p>",
                                 "transcript": "<p>Transcript</p>",
+                                "chapters": [],
                                 "width": 1920,
                                 "height": 1080,
                                 "duration": 10.0
