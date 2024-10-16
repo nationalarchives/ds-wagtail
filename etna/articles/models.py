@@ -192,6 +192,7 @@ class ArticleIndexPage(BasePageWithRequiredIntro):
         FieldPanel("featured_pages"),
     ]
 
+    max_count = 1
     parent_page_types = ["collections.ExplorerIndexPage"]
     subpage_types = [
         "articles.ArticlePage",

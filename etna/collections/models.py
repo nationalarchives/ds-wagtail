@@ -142,11 +142,13 @@ class ExplorerIndexPage(BasePageWithRequiredIntro):
         ),
     ]
 
+    max_count = 1
     parent_page_types = ["home.HomePage"]
     subpage_types = [
         "collections.TopicExplorerIndexPage",
         "collections.TimePeriodExplorerIndexPage",
         "articles.ArticleIndexPage",
+        "blog.BlogPage",
     ]
 
     # DataLayerMixin overrides
