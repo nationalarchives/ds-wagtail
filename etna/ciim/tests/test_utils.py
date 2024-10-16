@@ -374,7 +374,6 @@ class TestConvertSortKeyToIndex(SimpleTestCase):
 
 
 class TestStripHtml(SimpleTestCase):
-
     def test_ensure_spaces_preserve_marks(self):
 
         test_data = (
