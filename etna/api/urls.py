@@ -352,7 +352,7 @@ class BlogPostsAPIViewSet(CustomPagesAPIViewSet):
                         "posts": queryset.filter(author_tags__author=author).count(),
                     }
                 )
-        return Response(authors_count)
+        return Response(sorted(authors_count, key=lambda x: x["posts"], reverse=True))
 
     @classmethod
     def get_urlpatterns(cls):
