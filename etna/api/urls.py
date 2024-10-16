@@ -329,27 +329,30 @@ class BlogPostsAPIViewSet(CustomPagesAPIViewSet):
             for year in sorted(years)
         ]
         return Response(years_count)
-    
+
     def author_view(self, request):
         queryset = self.get_queryset()
         self.check_query_parameters(queryset)
         queryset = self.filter_queryset(queryset)
         authors = set(queryset.values_list("author_tags__author"))
-        print("AUTHORS", authors)
+        serializer = DefaultPageSerializer()
         authors_count = []
         for author in authors:
             if author[0] is not None:
-                print("AUTHOR", author)
-                author_item = queryset.filter(author_tags__author=author).first().author_tags.filter(author=author).first().author
-                print("AUTHOR ITEM", author_item)
+                author_item = (
+                    queryset.filter(author_tags__author=author)
+                    .first()
+                    .author_tags.filter(author=author)
+                    .first()
+                    .author
+                )
                 authors_count.append(
                     {
-                        "author": author_item.title,
+                        "author": serializer.to_representation(author_item),
                         "posts": queryset.filter(author_tags__author=author).count(),
                     }
                 )
         return Response(authors_count)
-
 
     @classmethod
     def get_urlpatterns(cls):
@@ -359,7 +362,7 @@ class BlogPostsAPIViewSet(CustomPagesAPIViewSet):
         return [
             path("", cls.as_view({"get": "listing_view"}), name="listing"),
             path("count/", cls.as_view({"get": "count_view"}), name="count"),
-            path("author/", cls.as_view({"get": "author_view"}), name="author"),
+            path("authors/", cls.as_view({"get": "author_view"}), name="authors"),
         ]
 
 
