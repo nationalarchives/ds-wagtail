@@ -54,6 +54,13 @@ class BlogPage(HeroImageMixin, BasePageWithRequiredIntro):
     blogs within this blog.
     """
 
+    parent_page_types = [
+        "blog.BlogIndexPage",
+        "blog.BlogPage",
+        "collections.ExplorerIndexPage",
+        "generic_pages.GeneralPage",
+        "generic_pages.HubPage",
+    ]
     subpage_types = ["blog.BlogPostPage", "blog.BlogPage"]
 
     content_panels = (

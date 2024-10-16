@@ -35,6 +35,7 @@ class PeopleIndexPage(BasePage):
     people pages from the list.
     """
 
+    max_count = 1
     subpage_types = ["people.PersonPage"]
 
     parent_page_types = ["home.HomePage"]
