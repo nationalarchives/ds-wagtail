@@ -46,9 +46,10 @@ class ContentSectionBlock(SectionDepthAwareStructBlock):
         template = "articles/blocks/section.html"
 
 
-class BlogPostPageStreamBlock(blocks.StreamBlock):
+class BlogPostPageStreamBlock(SectionContentBlock):
     """
     A block for the GeneralPage model.
     """
 
     content_section = ContentSectionBlock()
+    sub_heading = None
