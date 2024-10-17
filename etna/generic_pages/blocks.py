@@ -20,7 +20,6 @@ from etna.core.blocks import (
     InsetTextBlock,
     ParagraphBlock,
     PromotedItemBlock,
-    PromotedListBlock,
     QuoteBlock,
     SectionDepthAwareStructBlock,
     SubHeadingBlock,
