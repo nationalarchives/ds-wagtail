@@ -172,3 +172,31 @@ class FeaturedPageBlock(blocks.StructBlock):
     class Meta:
         icon = "doc-full"
         label = "Featured page"
+
+
+class FeaturedExternalLinkBlock(blocks.StructBlock):
+    """
+    Block for featuring a link to an external site.
+    """
+
+    title = blocks.CharBlock(
+        label="Title",
+        max_length=100,
+    )
+
+    description = blocks.CharBlock(
+        label="Description",
+    )
+
+    url = blocks.URLBlock(
+        label="URL",
+    )
+
+    image = APIImageChooserBlock(
+        label="Image",
+        required=False,
+    )
+
+    class Meta:
+        icon = "doc-full"
+        label = "Featured external link"

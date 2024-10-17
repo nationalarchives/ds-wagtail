@@ -101,7 +101,9 @@ class BlogPage(HeroImageMixin, BasePageWithRequiredIntro):
     )
 
 
-class BlogPostPage(AuthorPageMixin, ContentWarningMixin, BasePageWithRequiredIntro):
+class BlogPostPage(
+    AuthorPageMixin, ContentWarningMixin, HeroImageMixin, BasePageWithRequiredIntro
+):
     """Blog post page
 
     This is a blog post page. It is used to display a single blog post.
@@ -119,9 +121,13 @@ class BlogPostPage(AuthorPageMixin, ContentWarningMixin, BasePageWithRequiredInt
         default=timezone.now,
     )
 
-    content_panels = BasePageWithRequiredIntro.content_panels + [
-        FieldPanel("body"),
-    ]
+    content_panels = (
+        BasePageWithRequiredIntro.content_panels
+        + HeroImageMixin.content_panels
+        + [
+            FieldPanel("body"),
+        ]
+    )
 
     promote_panels = BasePageWithRequiredIntro.promote_panels + [
         FieldPanel("published_date"),
@@ -134,6 +140,7 @@ class BlogPostPage(AuthorPageMixin, ContentWarningMixin, BasePageWithRequiredInt
 
     api_fields = (
         BasePageWithRequiredIntro.api_fields
+        + HeroImageMixin.api_fields
         + ContentWarningMixin.api_fields
         + AuthorPageMixin.api_fields
         + [

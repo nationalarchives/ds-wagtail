@@ -1,12 +1,15 @@
 from wagtail import blocks
 
 from etna.core.blocks import (
+    CallToActionBlock,
     ContactBlock,
     ContentImageBlock,
     ContentTableBlock,
     DocumentsBlock,
+    FeaturedExternalLinkBlock,
     FeaturedPageBlock,
     ImageGalleryBlock,
+    InsetTextBlock,
     ParagraphBlock,
     QuoteBlock,
     SectionDepthAwareStructBlock,
@@ -18,11 +21,14 @@ from ..media.blocks import MediaBlock
 
 
 class SectionContentBlock(blocks.StreamBlock):
+    call_to_action = CallToActionBlock()
     contact = ContactBlock()
     document = DocumentsBlock()
+    featured_external_link = FeaturedExternalLinkBlock()
     featured_page = FeaturedPageBlock()
     image = ContentImageBlock()
     image_gallery = ImageGalleryBlock()
+    inset_text = InsetTextBlock()
     media = MediaBlock()
     paragraph = ParagraphBlock()
     quote = QuoteBlock()
@@ -40,9 +46,10 @@ class ContentSectionBlock(SectionDepthAwareStructBlock):
         template = "articles/blocks/section.html"
 
 
-class BlogPostPageStreamBlock(blocks.StreamBlock):
+class BlogPostPageStreamBlock(SectionContentBlock):
     """
     A block for the GeneralPage model.
     """
 
     content_section = ContentSectionBlock()
+    sub_heading = None
