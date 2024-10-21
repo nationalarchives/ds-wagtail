@@ -35,6 +35,7 @@ class PeopleIndexPage(BasePage):
     people pages from the list.
     """
 
+    max_count = 1
     subpage_types = ["people.PersonPage"]
 
     parent_page_types = ["home.HomePage"]
@@ -154,6 +155,7 @@ class PersonPage(BasePage):
         APIField("first_name"),
         APIField("last_name"),
         APIField("role_tags"),
+        APIField("slug"),
     ]
 
     api_fields = BasePage.api_fields + [
@@ -271,9 +273,9 @@ class AuthorPageMixin:
     def authors(self):
         return tuple(
             item.author
-            for item in self.author_tags.select_related("author").filter(
-                author__live=True
-            )
+            for item in self.author_tags.select_related("author")
+            .filter(author__live=True)
+            .order_by("author__last_name")
         )
 
     @property
