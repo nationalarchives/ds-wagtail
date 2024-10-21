@@ -273,9 +273,9 @@ class AuthorPageMixin:
     def authors(self):
         return tuple(
             item.author
-            for item in self.author_tags.select_related("author").filter(
-                author__live=True
-            )
+            for item in self.author_tags.select_related("author")
+            .filter(author__live=True)
+            .order_by("author__last_name")
         )
 
     @property
