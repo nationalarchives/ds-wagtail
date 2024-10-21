@@ -15,7 +15,7 @@ from etna.core.serializers import RichTextSerializer
 
 
 class MediaChapterSectionBlock(blocks.StructBlock):
-    time = blocks.DecimalBlock(
+    time = blocks.IntegerBlock(
         blank=True,
         default=0,
         validators=[MinValueValidator(0)],
@@ -23,11 +23,6 @@ class MediaChapterSectionBlock(blocks.StructBlock):
     )
     heading = blocks.CharBlock(max_length=20)
     transcript = APIRichTextBlock(required=False, features=["bold", "italic"])
-
-    def get_api_representation(self, value, context=None):
-        representation = super().get_api_representation(value, context)
-        representation["time"] = int(representation["time"])
-        return representation
 
     class Meta:
         label = "Chapter"
