@@ -72,3 +72,14 @@ class DefaultPageSerializer(serializers.Serializer):
 
     def to_representation(self, instance):
         return get_api_data(instance, required_api_fields=self.required_api_fields)
+
+
+class SimplePageSerializer(serializers.Serializer):
+    def to_representation(self, instance):
+        return {
+            "id": instance.id,
+            "title": instance.title,
+            "teaser_text": instance.teaser_text,
+            "url": instance.url,
+            "full_url": instance.full_url,
+        }
