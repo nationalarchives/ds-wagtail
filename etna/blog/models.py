@@ -134,9 +134,14 @@ class BlogPostPage(
         AuthorPageMixin.get_authors_inlinepanel(),
     ]
 
-    default_api_fields = BasePageWithRequiredIntro.default_api_fields + [
-        APIField("published_date", serializer=DateTimeSerializer()),
-    ]
+    default_api_fields = (
+        BasePageWithRequiredIntro.default_api_fields
+        + AuthorPageMixin.default_api_fields
+        + [
+            APIField("published_date", serializer=DateTimeSerializer()),
+            APIField("last_published_at"),
+        ]
+    )
 
     api_fields = (
         BasePageWithRequiredIntro.api_fields

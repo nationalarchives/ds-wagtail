@@ -17,6 +17,7 @@ from etna.core.serializers import (
     DefaultPageSerializer,
     ImageSerializer,
     RichTextSerializer,
+    SimplePageSerializer,
 )
 
 from .blocks import ResearchSummaryStreamBlock
@@ -285,6 +286,13 @@ class AuthorPageMixin:
         """
         if self.authors:
             return ", ".join([author.title for author in self.authors])
+
+    default_api_fields = [
+        APIField(
+            "authors",
+            serializer=SimplePageSerializer(many=True),
+        )
+    ]
 
     api_fields = [
         APIField(
