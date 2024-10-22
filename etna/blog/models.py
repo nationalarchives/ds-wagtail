@@ -60,6 +60,7 @@ class BlogPage(HeroImageMixin, BasePageWithRequiredIntro):
         "collections.ExplorerIndexPage",
         "generic_pages.GeneralPage",
         "generic_pages.HubPage",
+        "home.HomePage",
     ]
     subpage_types = ["blog.BlogPostPage", "blog.BlogPage"]
 
