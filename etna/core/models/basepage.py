@@ -70,8 +70,6 @@ class BasePage(AlertMixin, SocialMixin, DataLayerMixin, HeadlessPreviewMixin, Pa
         help_text=_("Image that will appear on thumbnails and promos around the site."),
     )
 
-    uuid = models.UUIDField("UUID", unique=True, default=uuid4, editable=False)
-
     # DataLayerMixin overrides
     gtm_content_group = "Page"
 
