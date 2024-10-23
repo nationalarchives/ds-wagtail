@@ -300,3 +300,58 @@ class AuthorPageMixin:
             serializer=DefaultPageSerializer(required_api_fields=["image"], many=True),
         )
     ]
+
+
+class ExternalAuthorTag(models.Model):
+    """
+    This model allows any page type to be associated with an external author.
+    External authors will not be listed on the People pages, but can be 
+    added to pages via their name, a description, and an image.
+    """
+
+    page = ParentalKey(
+        Page, on_delete=models.CASCADE, related_name="external_author_tags"
+    )
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
+    description = models.CharField(max_length=100)
+    image = models.ForeignKey(
+        get_image_model_string(),
+        on_delete=models.SET_NULL,
+        related_name="+",
+        null=True,
+    )
+
+
+class ExternalAuthorMixin:
+    """
+    A mixin for pages that allow us to add external authors
+    to the page.
+    """
+
+    @classmethod
+    def get_authors_inlinepanel(cls, max_num=3):
+        return InlinePanel(
+            "external_author_tags",
+            heading="External author",
+            help_text="Add external authors to this page.",
+            max_num=max_num,
+        )
+
+    @cached_property
+    def external_authors(self):
+        return [
+            {
+                "first_name": item.first_name,
+                "last_name": item.last_name,
+                "name": f"{item.first_name} {item.last_name}",
+                "description": item.description,
+            }
+            for item in self.external_author_tags.order_by("last_name")
+        ]
+
+    api_fields = [
+        APIField(
+            "external_authors",
+        ),
+    ]
