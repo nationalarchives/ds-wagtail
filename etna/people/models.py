@@ -320,6 +320,7 @@ class ExternalAuthorTag(models.Model):
         on_delete=models.SET_NULL,
         related_name="+",
         null=True,
+        blank=True,
     )
 
 
