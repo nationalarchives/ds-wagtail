@@ -36,13 +36,14 @@ class CustomImage(ClusterableModel, AbstractImage):
         ),
     )
 
-    copyright = models.CharField(
+    copyright = RichTextField(
         verbose_name=_("copyright"),
         blank=True,
         max_length=200,
         help_text=_(
             "Credit for images not owned by TNA. Do not include the copyright symbol."
         ),
+        features=settings.INLINE_RICH_TEXT_FEATURES,
     )
 
     is_sensitive = models.BooleanField(
