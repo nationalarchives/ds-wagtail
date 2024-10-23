@@ -305,7 +305,7 @@ class AuthorPageMixin:
 class ExternalAuthorTag(models.Model):
     """
     This model allows any page type to be associated with an external author.
-    External authors will not be listed on the People pages, but can be 
+    External authors will not be listed on the People pages, but can be
     added to pages via their name, a description, and an image.
     """
 
