@@ -12,6 +12,8 @@ from wagtail.fields import RichTextField, StreamField
 from wagtail.images import get_image_model_string
 from wagtail.models import Page
 
+from rest_framework import serializers
+
 from etna.core.models import BasePage
 from etna.core.serializers import (
     DefaultPageSerializer,
@@ -309,6 +311,10 @@ class ExternalAuthorTag(models.Model):
     added to pages via their name, a description, and an image.
     """
 
+    @cached_property
+    def name(self):
+        return f"{self.first_name} {self.last_name}"
+
     page = ParentalKey(
         Page, on_delete=models.CASCADE, related_name="external_author_tags"
     )
@@ -322,6 +328,20 @@ class ExternalAuthorTag(models.Model):
         null=True,
         blank=True,
     )
+
+
+class ExternalAuthorSerializer(serializers.ModelSerializer):
+    image = ImageSerializer(rendition_size="fill-128x128")
+
+    class Meta:
+        model = ExternalAuthorTag
+        fields = (
+            "first_name",
+            "last_name",
+            "name",
+            "description",
+            "image",
+        )
 
 
 class ExternalAuthorMixin:
@@ -341,18 +361,8 @@ class ExternalAuthorMixin:
 
     @cached_property
     def external_authors(self):
-        return [
-            {
-                "first_name": item.first_name,
-                "last_name": item.last_name,
-                "name": f"{item.first_name} {item.last_name}",
-                "description": item.description,
-            }
-            for item in self.external_author_tags.order_by("last_name")
-        ]
+        return self.external_author_tags.order_by("last_name")
 
     api_fields = [
-        APIField(
-            "external_authors",
-        ),
+        APIField("external_authors", serializer=ExternalAuthorSerializer(many=True)),
     ]
