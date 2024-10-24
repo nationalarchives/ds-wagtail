@@ -46,6 +46,10 @@ class MediaChooserBlock(AbstractMediaChooserBlock):
             "width": value.width,
             "height": value.height,
             "duration": value.duration,
+            "subtitles_file": value.subtitles_file_url,
+            "subtitles_file_full_url": value.subtitles_file_full_url,
+            "chapters_file": value.chapters_file_url,
+            "chapters_file_full_url": value.chapters_file_full_url,
         }
 
 
