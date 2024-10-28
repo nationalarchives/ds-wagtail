@@ -14,14 +14,14 @@ class Migration(migrations.Migration):
             model_name="etnamedia",
             name="chapters_file",
             field=models.FileField(
-                blank=True, null=True, upload_to="media", verbose_name="chapters_file"
+                blank=True, null=True, upload_to="media", verbose_name="chapters file"
             ),
         ),
         migrations.AddField(
             model_name="etnamedia",
             name="subtitles_file",
             field=models.FileField(
-                blank=True, null=True, upload_to="media", verbose_name="subtitles_file"
+                blank=True, null=True, upload_to="media", verbose_name="subtitles file"
             ),
         ),
     ]

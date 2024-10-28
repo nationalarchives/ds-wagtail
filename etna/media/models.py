@@ -41,10 +41,10 @@ class EtnaMedia(AbstractMedia):
         blank=True, null=True, features=settings.INLINE_RICH_TEXT_FEATURES
     )
     subtitles_file = models.FileField(
-        blank=True, null=True, upload_to="media", verbose_name="subtitles_file"
+        blank=True, null=True, upload_to="media", verbose_name="subtitles file"
     )
     chapters_file = models.FileField(
-        blank=True, null=True, upload_to="media", verbose_name="chapters_file"
+        blank=True, null=True, upload_to="media", verbose_name="chapters file"
     )
 
     chapters = StreamField(
