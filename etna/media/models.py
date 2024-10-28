@@ -1,7 +1,7 @@
 import mimetypes
 
 from django.conf import settings
-from django.core.validators import MinValueValidator
+from django.core.validators import FileExtensionValidator, MinValueValidator
 from django.db import models
 
 from wagtail import blocks
@@ -40,6 +40,12 @@ class EtnaMedia(AbstractMedia):
     transcript = RichTextField(
         blank=True, null=True, features=settings.INLINE_RICH_TEXT_FEATURES
     )
+    subtitles_file = models.FileField(
+        blank=True, null=True, upload_to="media", verbose_name="subtitles file"
+    )
+    chapters_file = models.FileField(
+        blank=True, null=True, upload_to="media", verbose_name="chapters file"
+    )
 
     chapters = StreamField(
         [
@@ -49,10 +55,39 @@ class EtnaMedia(AbstractMedia):
         null=True,
     )
 
+    def clean(self, *args, **kwargs):
+        super().clean(*args, **kwargs)
+        if self.subtitles_file:
+            validate = FileExtensionValidator(["vtt"])
+            validate(self.subtitles_file)
+        if self.chapters_file:
+            validate = FileExtensionValidator(["vtt"])
+            validate(self.chapters_file)
+
     # Added full_url to be sent to the frontend via the Wagtail API
     @property
     def full_url(self):
         return settings.WAGTAILADMIN_BASE_URL + self.file.url
+
+    @property
+    def subtitles_file_url(self):
+        if self.subtitles_file and hasattr(self.subtitles_file, "url"):
+            return self.subtitles_file.url
+
+    @property
+    def subtitles_file_full_url(self):
+        if self.subtitles_file and hasattr(self.subtitles_file, "url"):
+            return settings.WAGTAILADMIN_BASE_URL + self.subtitles_file.url
+
+    @property
+    def chapters_file_url(self):
+        if self.chapters_file and hasattr(self.chapters_file, "url"):
+            return self.chapters_file.url
+
+    @property
+    def chapters_file_full_url(self):
+        if self.chapters_file and hasattr(self.chapters_file, "url"):
+            return settings.WAGTAILADMIN_BASE_URL + self.chapters_file.url
 
     admin_form_fields = (
         "title",
@@ -66,6 +101,8 @@ class EtnaMedia(AbstractMedia):
         "height",
         "thumbnail",
         "transcript",
+        "subtitles_file",
+        "chapters_file",
         "tags",
     )
 
@@ -79,4 +116,6 @@ class EtnaMedia(AbstractMedia):
         APIField("chapters"),
         APIField("description", serializer=RichTextSerializer()),
         APIField("transcript", serializer=RichTextSerializer()),
+        APIField("subtitles_file"),
+        APIField("chapters_file"),
     ]
