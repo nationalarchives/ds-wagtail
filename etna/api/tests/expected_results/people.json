@@ -58,7 +58,8 @@
         "search_image": null,
         "twitter_og_title": null,
         "twitter_og_description": null,
-        "twitter_og_image": null
+        "twitter_og_image": null,
+        "depth": 3
     },
     "title": "people",
     "global_alert": {
