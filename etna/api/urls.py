@@ -163,6 +163,11 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
         "url",
     ]
 
+    # Add in depth to the list of fields that can be ordered by and filtered to
+    @classmethod
+    def get_meta_fields_names(cls, model):
+        return super().get_meta_fields_names(model) + ["depth"]
+
     def find_object(self, queryset, request):
         site = Site.find_for_request(request)
         if "html_path" in request.GET and site is not None:

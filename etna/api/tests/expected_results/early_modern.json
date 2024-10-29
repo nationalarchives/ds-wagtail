@@ -58,7 +58,8 @@
         "search_image": null,
         "twitter_og_title": null,
         "twitter_og_description": null,
-        "twitter_og_image": null
+        "twitter_og_image": null,
+        "depth": 3
     },
     "title": "early_modern",
     "hero_image_caption": "<p>Hero image caption</p>",
