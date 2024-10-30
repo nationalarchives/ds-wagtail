@@ -12,9 +12,8 @@ from etna.core.blocks import (
     SectionDepthAwareStructBlock,
     SubHeadingBlock,
 )
-
-from ..media.blocks import MediaBlock
-from ..records.blocks import RecordLinksBlock
+from etna.media.blocks import MediaBlock
+from etna.records.blocks import RecordLinksBlock
 
 
 class SectionContentBlock(blocks.StreamBlock):

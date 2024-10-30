@@ -14,14 +14,14 @@ from django.utils.safestring import mark_safe
 
 from pyquery import PyQuery as pq
 
-from ..analytics.mixins import DataLayerMixin
-from ..ciim.constants import (
+from etna.analytics.mixins import DataLayerMixin
+from etna.ciim.constants import (
     ARCHIVE_NRA_RECORDS_COLLECTION,
     ARCHIVE_RECORD_CREATORS_COLLECTION,
     TNA_URLS,
 )
-from ..ciim.models import APIModel
-from ..ciim.utils import (
+from etna.ciim.models import APIModel
+from etna.ciim.utils import (
     NOT_PROVIDED,
     ValueExtractionError,
     extract,
@@ -30,13 +30,14 @@ from ..ciim.utils import (
     format_link,
     strip_html,
 )
-from ..records.classes import (
+from etna.records.classes import (
     AccessionsInfo,
     ArchiveCollections,
     CollectionInfo,
     ContactInfo,
     FurtherInfo,
 )
+
 from .converters import IAIDConverter
 
 logger = logging.getLogger(__name__)

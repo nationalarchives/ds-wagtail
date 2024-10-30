@@ -2,8 +2,9 @@ from django.test import TestCase
 
 from wagtail.models import Site
 
-from ...articles.models import FocusedArticlePage
-from ...images.models import CustomImage
+from etna.articles.models import FocusedArticlePage
+from etna.images.models import CustomImage
+
 from ..models import AuthorTag, PeopleIndexPage, PersonPage
 
 

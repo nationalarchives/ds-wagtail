@@ -6,9 +6,8 @@ from wagtail.test.utils import WagtailPageTestCase
 
 import responses
 
+from etna.ciim.tests.factories import create_record, create_response
 from etna.core.test_utils import prevent_request_warnings
-
-from ...ciim.tests.factories import create_record, create_response
 
 
 class TestRecordChooseView(WagtailPageTestCase):
