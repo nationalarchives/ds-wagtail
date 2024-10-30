@@ -3,8 +3,9 @@ from django.test import SimpleTestCase, override_settings
 
 import responses
 
-from ...records.api import get_records_client
-from ...records.models import Record
+from etna.records.api import get_records_client
+from etna.records.models import Record
+
 from ..exceptions import ClientAPIError, DoesNotExist, MultipleObjectsReturned
 from .factories import create_record, create_search_response
 

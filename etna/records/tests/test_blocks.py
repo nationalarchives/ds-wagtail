@@ -9,10 +9,9 @@ from wagtail.test.utils.form_data import nested_form_data, rich_text, streamfiel
 
 import responses
 
+from etna.articles.models import ArticleIndexPage, ArticlePage
+from etna.ciim.tests.factories import create_record, create_response
 from etna.images.models import CustomImage
-
-from ...articles.models import ArticleIndexPage, ArticlePage
-from ...ciim.tests.factories import create_record, create_response
 
 TEST_RECORD_DATA = {
     "iaid": "C123456",

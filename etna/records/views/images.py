@@ -3,8 +3,9 @@ from django.http import FileResponse
 from django.shortcuts import Http404, render
 from django.views.decorators.cache import cache_control
 
-from ...ciim.exceptions import ClientAPIError, DoesNotExist
-from ...ciim.utils import convert_sort_key_to_index
+from etna.ciim.exceptions import ClientAPIError, DoesNotExist
+from etna.ciim.utils import convert_sort_key_to_index
+
 from ..api import records_client
 from ..models import Image
 
