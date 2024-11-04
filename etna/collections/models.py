@@ -22,19 +22,19 @@ from wagtail.search import index
 
 from rest_framework import serializers
 
-from etna.core.serializers import (
-    DefaultPageSerializer,
-    HighlightImageSerializer,
-    ImageSerializer,
-)
-
-from ..core.models import (
+from etna.core.models import (
     BasePage,
     BasePageWithRequiredIntro,
     ContentWarningMixin,
     RequiredHeroImageMixin,
 )
-from ..core.utils import skos_id_from_text
+from etna.core.serializers import (
+    DefaultPageSerializer,
+    HighlightImageSerializer,
+    ImageSerializer,
+)
+from etna.core.utils import skos_id_from_text
+
 from .blocks import (
     ExplorerIndexPageStreamBlock,
     FeaturedArticlesBlock,

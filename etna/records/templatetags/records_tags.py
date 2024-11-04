@@ -1,7 +1,8 @@
 from django import template
 from django.conf import settings
 
-from ...ciim.constants import TNA_URLS, LevelKeys, NonTNALevelKeys
+from etna.ciim.constants import TNA_URLS, LevelKeys, NonTNALevelKeys
+
 from ..field_labels import FIELD_LABELS
 from ..models import Record
 

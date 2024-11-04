@@ -1,4 +1,4 @@
-from ..ciim.utils import pluck
+from etna.ciim.utils import pluck
 
 
 def transform_image_result(result):

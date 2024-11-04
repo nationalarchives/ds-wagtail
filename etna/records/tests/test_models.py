@@ -10,8 +10,9 @@ from django.utils.safestring import SafeString
 
 import responses
 
-from ...ciim.tests.factories import create_media, create_record, create_response
-from ...ciim.utils import ValueExtractionError
+from etna.ciim.tests.factories import create_media, create_record, create_response
+from etna.ciim.utils import ValueExtractionError
+
 from ..api import get_records_client
 from ..models import Image, Record
 

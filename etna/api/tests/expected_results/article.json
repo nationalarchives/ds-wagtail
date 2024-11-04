@@ -58,7 +58,8 @@
         "search_image": null,
         "twitter_og_title": null,
         "twitter_og_description": null,
-        "twitter_og_image": null
+        "twitter_og_image": null,
+        "depth": 4
     },
     "title": "article",
     "global_alert": null,
@@ -221,9 +222,14 @@
                                 "date": null,
                                 "description": "<p>Description</p>",
                                 "transcript": "<p>Transcript</p>",
+                                "chapters": [],
                                 "width": 1920,
                                 "height": 1080,
-                                "duration": 10.0
+                                "duration": 10.0,
+                                "subtitles_file": null,
+                                "subtitles_file_full_url": null,
+                                "chapters_file": null,
+                                "chapters_file_full_url": null
                             }
                         },
                         "id": "6e6816e0-6634-46cc-bf75-0c7d737a4cb2"

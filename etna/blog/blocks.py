@@ -16,8 +16,7 @@ from etna.core.blocks import (
     SubHeadingBlock,
     YouTubeBlock,
 )
-
-from ..media.blocks import MediaBlock
+from etna.media.blocks import MediaBlock
 
 
 class SectionContentBlock(blocks.StreamBlock):
