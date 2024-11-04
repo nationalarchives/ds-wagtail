@@ -228,9 +228,12 @@ class PagePreviewAPIViewSet(PagesAPIViewSet):
         app_label, model = self.request.GET["content_type"].split(".")
         content_type = ContentType.objects.get(app_label=app_label, model=model)
 
-        page_preview = PagePreview.objects.get(
-            content_type=content_type, token=self.request.GET["token"]
-        )
+        try:
+            page_preview = PagePreview.objects.get(
+                content_type=content_type, token=self.request.GET["token"]
+            )
+        except PagePreview.DoesNotExist:
+            raise BadRequestError("Page preview does not exist")
         page = page_preview.as_page()
         if not page.pk:
             # fake primary key to stop API URL routing from complaining
