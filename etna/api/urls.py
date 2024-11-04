@@ -272,7 +272,9 @@ class BlogsAPIViewSet(CustomPagesAPIViewSet):
         for blog in queryset.iterator():
             blogs_children = blog.get_children().type(BlogPage).live()
             for restricted_page in restricted_pages:
-                blogs_children = blogs_children.not_descendant_of(restricted_page, inclusive=True)
+                blogs_children = blogs_children.not_descendant_of(
+                    restricted_page, inclusive=True
+                )
             blogs_children = DefaultPageSerializer(blogs_children, many=True)
             if blogs_children.data:
                 blogs += blogs_children.data
