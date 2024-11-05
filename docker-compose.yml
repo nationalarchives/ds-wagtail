@@ -1,5 +1,4 @@
 services:
-
   db:
     image: postgres:12.0
     ports:
@@ -7,35 +6,27 @@ services:
     volumes:
       - ./database_dumps:/app/database_dumps
 
-  web:
-    build: .
+  app:
+    build:
+      context: .
+      args:
+        IMAGE: ghcr.io/nationalarchives/tna-python-django-root
+        IMAGE_TAG: preview
     volumes:
-      - ./etna:/app/etna
-      - ./config:/app/config
-      - ./sass:/app/sass
-      - ./scripts:/app/scripts
-      - ./static:/app/static
-      - ./templates:/app/templates
-      - ./poetry.lock:/app/poetry.lock
-      - ./pyproject.toml:/app/pyproject.toml
-      - ./package.json:/app/package.json
-      - ./package-lock.json:/app/package-lock.json
+      - ./:/app
       - media:/media
     depends_on:
       - db
       - redis
+    command: poetry run python /app/manage.py runserver 0.0.0.0:8080
     ports:
       - 8000:8080
-    command: sh /app/bash/run-dev.sh
-    restart: on-failure
-    init: true
-    stdin_open: true
-    tty: true
     env_file:
       - .env
     environment:
       - ENVIRONMENT=develop
       - DJANGO_SETTINGS_MODULE=config.settings.dev
+      - SECRET_KEY=abc123
       - DATABASE_HOST=db
       - DATABASE_NAME=postgres
       - DATABASE_USER=postgres
@@ -64,26 +55,11 @@ services:
       - 8001:8000
 
   dev:
-    build:
-      context: .
-      dockerfile: dev/Dockerfile
-    restart: always
+    image: ghcr.io/nationalarchives/tna-python-dev:preview
     volumes:
-      - .:/app
-      - /var/run/docker.sock:/var/run/docker.sock
-    depends_on:
-      - web
-      - db
-    env_file:
-      - .env
-    environment:
-      - DJANGO_SETTINGS_MODULE=config.settings.dev
-      - DATABASE_HOST=db
-      - DATABASE_NAME=postgres
-      - DATABASE_USER=postgres
+      - ./:/app
 
   redis:
-    container_name: redis
     image: redis:latest
     command: /bin/sh -c "redis-server --requirepass redis"
     ports:

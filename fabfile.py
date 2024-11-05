@@ -29,7 +29,7 @@ LOCAL_DB_DUMP_DIR = "database_dumps"
 # -----------------------------------------------------------------------------
 
 
-def container_exec(cmd, container_name="web", check_returncode=False):
+def container_exec(cmd, container_name="app", check_returncode=False):
     result = subprocess.run(
         ["docker", "compose", "exec", "-T", container_name, "bash", "-c", cmd]
     )
@@ -43,9 +43,9 @@ def db_exec(cmd, check_returncode=False):
     return container_exec(cmd, "db", check_returncode)
 
 
-def web_exec(cmd, check_returncode=False):
-    "Execute something in the 'web' Docker container."
-    return container_exec(cmd, "web", check_returncode)
+def app_exec(cmd, check_returncode=False):
+    "Execute something in the 'app' Docker container."
+    return container_exec(cmd, "app", check_returncode)
 
 
 def dev_exec(cmd, check_returncode=False):
@@ -60,10 +60,10 @@ def cli_exec(cmd, check_returncode=False):
 @task
 def run_management_command(c, cmd, check_returncode=False):
     """
-    Run a Django management command in the 'web' Docker container
+    Run a Django management command in the 'app' Docker container
     with access to Django and other Python dependencies.
     """
-    return web_exec(f"poetry run python manage.py {cmd}", check_returncode)
+    return app_exec(f"poetry run python manage.py {cmd}", check_returncode)
 
 
 # -----------------------------------------------------------------------------
@@ -126,7 +126,7 @@ def sh(c):
     """
     Run bash in a local container (with access to dependencies)
     """
-    subprocess.run(["docker", "compose", "exec", "web", "poetry", "run", "bash"])
+    subprocess.run(["docker", "compose", "exec", "app", "poetry", "run", "bash"])
 
 
 @task
@@ -149,7 +149,7 @@ def format(c):
 @task
 def test(c, lint=False, parallel=False):
     """
-    Run python tests in the web container
+    Run python tests in the app container
     """
     start(c, "dev")
     if lint:
@@ -181,7 +181,7 @@ def create_superuser(c):
             "docker",
             "compose",
             "exec",
-            "web",
+            "app",
             "poetry",
             "run",
             "python",
@@ -244,8 +244,8 @@ def dump_db(c, filename):
 @task
 def restore_db(c, filename, delete_dump_on_success=False, delete_dump_on_error=False):
     """Restore the database from a snapshot in the db container"""
-    print("Stopping 'web' to sever DB connection")
-    stop(c, "web")
+    print("Stopping 'app' to sever DB connection")
+    stop(c, "app")
     if not filename.endswith(".psql"):
         filename += ".psql"
     delete_db(c)
@@ -265,7 +265,7 @@ def restore_db(c, filename, delete_dump_on_success=False, delete_dump_on_error=F
         print(f"Deleting dump file: {filename}")
         db_exec(f"rm {filename}")
 
-    start(c, "web")
+    start(c, "app")
 
 
 # -----------------------------------------------------------------------------
