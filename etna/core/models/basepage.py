@@ -149,6 +149,7 @@ class BasePage(AlertMixin, SocialMixin, DataLayerMixin, HeadlessPreviewMixin, Pa
             "teaser_image",
             serializer=ImageSerializer("fill-600x400"),
         ),
+        APIField("last_published_at"),
     ]
 
     api_fields = AlertMixin.api_fields + [
