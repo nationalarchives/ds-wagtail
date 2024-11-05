@@ -12,11 +12,14 @@ from wagtail.fields import RichTextField, StreamField
 from wagtail.images import get_image_model_string
 from wagtail.models import Page
 
+from rest_framework import serializers
+
 from etna.core.models import BasePage
 from etna.core.serializers import (
     DefaultPageSerializer,
     ImageSerializer,
     RichTextSerializer,
+    SimplePageSerializer,
 )
 
 from .blocks import ResearchSummaryStreamBlock
@@ -286,9 +289,80 @@ class AuthorPageMixin:
         if self.authors:
             return ", ".join([author.title for author in self.authors])
 
+    default_api_fields = [
+        APIField(
+            "authors",
+            serializer=SimplePageSerializer(many=True),
+        )
+    ]
+
     api_fields = [
         APIField(
             "authors",
             serializer=DefaultPageSerializer(required_api_fields=["image"], many=True),
         )
+    ]
+
+
+class ExternalAuthorTag(models.Model):
+    """
+    This model allows any page type to be associated with an external author.
+    External authors will not be listed on the People pages, but can be
+    added to pages via their name, a description, and an image.
+    """
+
+    @cached_property
+    def name(self):
+        return f"{self.first_name} {self.last_name}"
+
+    page = ParentalKey(
+        Page, on_delete=models.CASCADE, related_name="external_author_tags"
+    )
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
+    description = models.CharField(max_length=100)
+    image = models.ForeignKey(
+        get_image_model_string(),
+        on_delete=models.SET_NULL,
+        related_name="+",
+        null=True,
+        blank=True,
+    )
+
+
+class ExternalAuthorSerializer(serializers.ModelSerializer):
+    image = ImageSerializer(rendition_size="fill-128x128")
+
+    class Meta:
+        model = ExternalAuthorTag
+        fields = (
+            "first_name",
+            "last_name",
+            "name",
+            "description",
+            "image",
+        )
+
+
+class ExternalAuthorMixin:
+    """
+    A mixin for pages that allow us to add external authors
+    to the page.
+    """
+
+    @classmethod
+    def get_authors_inlinepanel(cls, max_num=3):
+        return InlinePanel(
+            "external_author_tags",
+            heading="External author",
+            help_text="Add external authors to this page.",
+            max_num=max_num,
+        )
+
+    @cached_property
+    def external_authors(self):
+        return self.external_author_tags.order_by("last_name")
+
+    api_fields = [
+        APIField("external_authors", serializer=ExternalAuthorSerializer(many=True)),
     ]

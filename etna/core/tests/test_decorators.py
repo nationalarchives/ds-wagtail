@@ -6,7 +6,7 @@ from wagtail.test.utils import WagtailTestUtils
 
 import responses
 
-from ...ciim.tests.factories import create_record, create_response
+from etna.ciim.tests.factories import create_record, create_response
 
 CONDITIONALLY_PROTECTED_URLS = (
     reverse_lazy("search-catalogue"),

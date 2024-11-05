@@ -12,7 +12,7 @@ from etna.core.models import (
     HeroImageMixin,
 )
 from etna.core.serializers import DateTimeSerializer, DefaultPageSerializer
-from etna.people.models import AuthorPageMixin
+from etna.people.models import AuthorPageMixin, ExternalAuthorMixin
 
 from .blocks import BlogPostPageStreamBlock
 
@@ -60,6 +60,7 @@ class BlogPage(HeroImageMixin, BasePageWithRequiredIntro):
         "collections.ExplorerIndexPage",
         "generic_pages.GeneralPage",
         "generic_pages.HubPage",
+        "home.HomePage",
     ]
     subpage_types = ["blog.BlogPostPage", "blog.BlogPage"]
 
@@ -102,7 +103,11 @@ class BlogPage(HeroImageMixin, BasePageWithRequiredIntro):
 
 
 class BlogPostPage(
-    AuthorPageMixin, ContentWarningMixin, HeroImageMixin, BasePageWithRequiredIntro
+    AuthorPageMixin,
+    ExternalAuthorMixin,
+    ContentWarningMixin,
+    HeroImageMixin,
+    BasePageWithRequiredIntro,
 ):
     """Blog post page
 
@@ -132,17 +137,24 @@ class BlogPostPage(
     promote_panels = BasePageWithRequiredIntro.promote_panels + [
         FieldPanel("published_date"),
         AuthorPageMixin.get_authors_inlinepanel(),
+        ExternalAuthorMixin.get_authors_inlinepanel(),
     ]
 
-    default_api_fields = BasePageWithRequiredIntro.default_api_fields + [
-        APIField("published_date", serializer=DateTimeSerializer()),
-    ]
+    default_api_fields = (
+        BasePageWithRequiredIntro.default_api_fields
+        + AuthorPageMixin.default_api_fields
+        + [
+            APIField("published_date", serializer=DateTimeSerializer()),
+            APIField("last_published_at"),
+        ]
+    )
 
     api_fields = (
         BasePageWithRequiredIntro.api_fields
         + HeroImageMixin.api_fields
         + ContentWarningMixin.api_fields
         + AuthorPageMixin.api_fields
+        + ExternalAuthorMixin.api_fields
         + [
             APIField("published_date", serializer=DateTimeSerializer()),
             APIField("body"),

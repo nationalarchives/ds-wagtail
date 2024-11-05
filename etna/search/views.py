@@ -20,10 +20,10 @@ from wagtail.models import Page
 from wagtail.query import PageQuerySet
 from wagtail.search.backends.database.postgres.postgres import PostgresSearchResults
 
-from ..analytics.mixins import SearchDataLayerMixin
-from ..articles.models import ArticleIndexPage, ArticlePage
-from ..ciim.client import Aggregation, SortBy, SortOrder, Stream, Template
-from ..ciim.constants import (
+from etna.analytics.mixins import SearchDataLayerMixin
+from etna.articles.models import ArticleIndexPage, ArticlePage
+from etna.ciim.client import Aggregation, SortBy, SortOrder, Stream, Template
+from etna.ciim.constants import (
     CATALOGUE_BUCKETS,
     CLOSURE_CLOSED_STATUS,
     FEATURED_BUCKETS,
@@ -34,9 +34,9 @@ from ..ciim.constants import (
     Display,
     SearchTabs,
 )
-from ..ciim.paginator import APIPaginator
-from ..ciim.utils import underscore_to_camelcase
-from ..collections.models import (
+from etna.ciim.paginator import APIPaginator
+from etna.ciim.utils import underscore_to_camelcase
+from etna.collections.models import (
     ExplorerIndexPage,
     PageTimePeriod,
     PageTopic,
@@ -45,8 +45,9 @@ from ..collections.models import (
     TopicExplorerIndexPage,
     TopicExplorerPage,
 )
-from ..home.models import HomePage
-from ..records.api import records_client
+from etna.home.models import HomePage
+from etna.records.api import records_client
+
 from .forms import (
     CatalogueSearchForm,
     FeaturedSearchForm,

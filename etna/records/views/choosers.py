@@ -4,9 +4,10 @@ from django.urls import re_path
 
 from generic_chooser.views import BaseChosenView, ChooserMixin, ChooserViewSet
 
-from ...ciim.client import Stream
-from ...ciim.exceptions import ClientAPIError
-from ...ciim.paginator import APIPaginator
+from etna.ciim.client import Stream
+from etna.ciim.exceptions import ClientAPIError
+from etna.ciim.paginator import APIPaginator
+
 from ..api import records_client
 from ..models import Record
 

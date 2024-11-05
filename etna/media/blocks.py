@@ -24,6 +24,14 @@ class MediaChooserBlock(AbstractMediaChooserBlock):
         We use expand_db_html to get any rich text fields as useful HTML,
         rather than the raw database representation.
         """
+        chapters = [
+            {
+                "time": int(chapter.value["time"]),
+                "heading": chapter.value["heading"],
+                "transcript": expand_db_html(chapter.value["transcript"].source),
+            }
+            for chapter in value.chapters
+        ]
         return {
             "id": value.id,
             "file": value.url,
@@ -34,9 +42,14 @@ class MediaChooserBlock(AbstractMediaChooserBlock):
             "date": value.date,
             "description": expand_db_html(value.description),
             "transcript": expand_db_html(value.transcript),
+            "chapters": sorted(chapters, key=lambda x: x["time"]),
             "width": value.width,
             "height": value.height,
             "duration": value.duration,
+            "subtitles_file": value.subtitles_file_url,
+            "subtitles_file_full_url": value.subtitles_file_full_url,
+            "chapters_file": value.chapters_file_url,
+            "chapters_file_full_url": value.chapters_file_full_url,
         }
 
 
