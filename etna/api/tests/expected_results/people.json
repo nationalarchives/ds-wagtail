@@ -22,6 +22,7 @@
         "privacy": "public",
         "last_published_at": null,
         "url": "/people/",
+        "depth": 3,
         "teaser_text": "Teaser text",
         "teaser_image": {
             "id": 8,
@@ -58,8 +59,7 @@
         "search_image": null,
         "twitter_og_title": null,
         "twitter_og_description": null,
-        "twitter_og_image": null,
-        "depth": 3
+        "twitter_og_image": null
     },
     "title": "people",
     "global_alert": {
@@ -98,6 +98,7 @@
                     "height": 68
                 }
             },
+            "last_published_at": "2000-01-01T00:00:00Z",
             "role": "Test Author",
             "image": {
                 "id": 9,

@@ -22,6 +22,7 @@
         "privacy": "public",
         "last_published_at": "2000-01-01T00:00:00Z",
         "url": "/early_modern/",
+        "depth": 3,
         "teaser_text": "Teaser text",
         "teaser_image": {
             "id": 4,
@@ -58,8 +59,7 @@
         "search_image": null,
         "twitter_og_title": null,
         "twitter_og_description": null,
-        "twitter_og_image": null,
-        "depth": 3
+        "twitter_og_image": null
     },
     "title": "early_modern",
     "hero_image_caption": "<p>Hero image caption</p>",
@@ -138,6 +138,7 @@
                     "height": 68
                 }
             },
+            "last_published_at": "2000-01-02T00:00:00Z",
             "is_newly_published": true
         },
         {
@@ -163,6 +164,7 @@
                     "height": 68
                 }
             },
+            "last_published_at": "2000-01-02T00:00:00Z",
             "is_newly_published": false
         }
     ],
@@ -190,6 +192,7 @@
                     "height": 68
                 }
             },
+            "last_published_at": "2000-01-02T00:00:00Z",
             "highlight_image_count": 1
         }
     ],
