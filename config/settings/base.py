@@ -308,6 +308,7 @@ WAGTAILSEARCH_BACKENDS = {
 }
 
 WAGTAILDOCS_DOCUMENT_MODEL = "core.CustomDocument"
+WAGTAILDOCS_EXTENSIONS = ["pdf", "xls", "xlsx", "doc", "docx"]
 
 WAGTAILIMAGES_IMAGE_MODEL = "images.CustomImage"
 
