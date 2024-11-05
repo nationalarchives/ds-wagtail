@@ -164,7 +164,7 @@
                     "height": 68
                 }
             },
-            "last_published_at": "2000-01-02T00:00:00Z",
+            "last_published_at": "2000-01-01T00:00:00Z",
             "is_newly_published": false
         }
     ],
@@ -192,7 +192,7 @@
                     "height": 68
                 }
             },
-            "last_published_at": "2000-01-02T00:00:00Z",
+            "last_published_at": "2000-01-03T00:00:00Z",
             "highlight_image_count": 1
         }
     ],
