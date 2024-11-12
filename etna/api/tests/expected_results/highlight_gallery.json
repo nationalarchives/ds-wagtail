@@ -22,6 +22,7 @@
         "privacy": "public",
         "last_published_at": "2000-01-03T00:00:00Z",
         "url": "/arts/highlight_gallery/",
+        "depth": 4,
         "teaser_text": "Teaser text",
         "teaser_image": {
             "id": 16,
@@ -58,8 +59,7 @@
         "search_image": null,
         "twitter_og_title": null,
         "twitter_og_description": null,
-        "twitter_og_image": null,
-        "depth": 4
+        "twitter_og_image": null
     },
     "title": "highlight_gallery",
     "global_alert": null,
@@ -94,6 +94,7 @@
                 "height": 68
             }
         },
+        "last_published_at": "2000-01-01T00:00:00Z",
         "is_newly_published": false
     },
     "highlights": [
@@ -175,7 +176,8 @@
                     "width": 100,
                     "height": 68
                 }
-            }
+            },
+            "last_published_at": "2000-01-01T00:00:00Z"
         }
     ],
     "time_periods": [
@@ -201,7 +203,8 @@
                     "width": 100,
                     "height": 68
                 }
-            }
+            },
+            "last_published_at": "2000-01-01T00:00:00Z"
         }
     ]
 }
