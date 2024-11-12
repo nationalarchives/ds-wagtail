@@ -263,19 +263,25 @@ class BlogsAPIViewSet(CustomPagesAPIViewSet):
 
     def blogs_list_view(self, request):
         queryset = self.get_queryset()
-        queryset = queryset.not_type(BlogPage)
+        restricted_pages = [
+            restriction.page
+            for restriction in PageViewRestriction.objects.all().select_related("page")
+            if not restriction.accept_request(self.request)
+        ]
         blogs = []
         for blog in queryset.iterator():
-            blogs_children = blog.get_children().type(BlogPage)
+            blogs_children = blog.get_children().type(BlogPage).live()
+            for restricted_page in restricted_pages:
+                blogs_children = blogs_children.not_descendant_of(
+                    restricted_page, inclusive=True
+                )
             blogs_children = DefaultPageSerializer(blogs_children, many=True)
             if blogs_children.data:
                 blogs += blogs_children.data
-
         top_level_queryset = self.get_queryset()
-        top_level_queryset = top_level_queryset.type(BlogIndexPage)
+        top_level_queryset = top_level_queryset.type(BlogIndexPage).live()
         top_level = DefaultPageSerializer(top_level_queryset, many=True)
         blogs = top_level.data + sorted(blogs, key=lambda x: x["title"])
-
         return Response(blogs)
 
     @classmethod
