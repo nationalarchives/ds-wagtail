@@ -10,7 +10,7 @@ from django.utils.crypto import constant_time_compare
 
 from wagtail.api.v2.router import WagtailAPIRouter
 from wagtail.api.v2.utils import BadRequestError, get_object_detail_url
-from wagtail.api.v2.views import PagesAPIViewSet
+from wagtail.api.v2.views import BaseAPIViewSet, PagesAPIViewSet
 from wagtail.contrib.redirects.models import Redirect
 from wagtail.images.api.v2.views import ImagesAPIViewSet
 from wagtail.models import Page, PageViewRestriction, Site
@@ -22,10 +22,18 @@ from wagtailmedia.api.views import MediaAPIViewSet
 
 from etna.blog.models import BlogIndexPage, BlogPage, BlogPostPage
 from etna.core.serializers.pages import DefaultPageSerializer
+from etna.people.models import AuthorTag
 
 from .filters import AuthorFilter, PublishedDateFilter
 
 logger = logging.getLogger(__name__)
+
+
+class AuthorTagAPIViewSet(PagesAPIViewSet):
+    model = AuthorTag
+    body_fields = ["page", "author"]
+    meta_fields = []
+    listing_default_fields = ["page", "author"]
 
 
 class CustomPagesAPIViewSet(PagesAPIViewSet):
@@ -384,3 +392,4 @@ api_router.register_endpoint("images", CustomImagesAPIViewSet)
 api_router.register_endpoint("media", MediaAPIViewSet)
 api_router.register_endpoint("blogs", BlogsAPIViewSet)
 api_router.register_endpoint("blog_posts", BlogPostsAPIViewSet)
+api_router.register_endpoint("authors", AuthorTagAPIViewSet)
