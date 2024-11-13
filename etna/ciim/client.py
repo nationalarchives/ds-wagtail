@@ -301,14 +301,11 @@ class ClientAPI:
         # Convert the Python dict to a ResultList
         result_list = self.resultlist_from_response(response_data)
 
-        try:
-            if not result_list:
-                raise DoesNotExist
-            if len(result_list) > 1:
-                raise MultipleObjectsReturned
-            return result_list.hits[0]
-        except (DoesNotExist, MultipleObjectsReturned):
-            return None
+        if not result_list:
+            raise DoesNotExist
+        if len(result_list) > 1:
+            raise MultipleObjectsReturned
+        return result_list.hits[0]
 
     def search(
         self,
