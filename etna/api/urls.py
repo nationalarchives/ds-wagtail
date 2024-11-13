@@ -276,6 +276,11 @@ class BlogsAPIViewSet(CustomPagesAPIViewSet):
         blogs = top_level.data + sorted(serializer.data, key=lambda x: x["title"])
         return Response(blogs)
 
+    def blog_index_view(self, request):
+        queryset = BlogIndexPage.objects.all().live()
+        blog_index = DefaultPageSerializer(queryset, many=True)
+        return Response(blog_index.data[0] if len(blog_index.data) else None)
+
     @classmethod
     def get_urlpatterns(cls):
         """
@@ -283,6 +288,11 @@ class BlogsAPIViewSet(CustomPagesAPIViewSet):
         """
         return [
             path("", cls.as_view({"get": "listing_view"}), name="blogs_list"),
+            path(
+                "index/",
+                cls.as_view({"get": "blog_index_view"}),
+                name="blogs_index",
+            ),
             path(
                 "top/",
                 cls.as_view({"get": "top_level_blogs_list_view"}),
