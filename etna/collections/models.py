@@ -22,19 +22,19 @@ from wagtail.search import index
 
 from rest_framework import serializers
 
-from etna.core.serializers import (
-    DefaultPageSerializer,
-    HighlightImageSerializer,
-    ImageSerializer,
-)
-
-from ..core.models import (
+from etna.core.models import (
     BasePage,
     BasePageWithRequiredIntro,
     ContentWarningMixin,
     RequiredHeroImageMixin,
 )
-from ..core.utils import skos_id_from_text
+from etna.core.serializers import (
+    DefaultPageSerializer,
+    HighlightImageSerializer,
+    ImageSerializer,
+)
+from etna.core.utils import skos_id_from_text
+
 from .blocks import (
     ExplorerIndexPageStreamBlock,
     FeaturedArticlesBlock,
@@ -142,11 +142,13 @@ class ExplorerIndexPage(BasePageWithRequiredIntro):
         ),
     ]
 
+    max_count = 1
     parent_page_types = ["home.HomePage"]
     subpage_types = [
         "collections.TopicExplorerIndexPage",
         "collections.TimePeriodExplorerIndexPage",
         "articles.ArticleIndexPage",
+        "blog.BlogPage",
     ]
 
     # DataLayerMixin overrides
@@ -239,7 +241,7 @@ class TopicExplorerPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
     class Meta:
         verbose_name = _("topic page")
         verbose_name_plural = _("topic pages")
-        verbose_name_public = _("topic")
+        verbose_name_public = _("explore the collection")
 
     featured_article = models.ForeignKey(
         "wagtailcore.Page",
@@ -476,7 +478,7 @@ class TimePeriodExplorerPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
     class Meta:
         verbose_name = _("time period page")
         verbose_name_plural = _("time period pages")
-        verbose_name_public = _("time period")
+        verbose_name_public = _("explore the collection")
 
     featured_article = models.ForeignKey(
         "wagtailcore.Page",
@@ -826,30 +828,26 @@ class HighlightGalleryPage(
         verbose_name_plural = _("highlight gallery pages")
         verbose_name_public = _("in pictures")
 
-    content_panels = BasePageWithRequiredIntro.content_panels + [
-        MultiFieldPanel(
-            heading="Content Warning Options",
-            classname="collapsible",
-            children=[
-                FieldPanel("display_content_warning"),
-                FieldPanel("custom_warning_text"),
-            ],
-        ),
-        InlinePanel(
-            "page_highlights",
-            heading=_("Highlights"),
-            label=_("Item"),
-            max_num=15,
-        ),
-        PageChooserPanel(
-            "featured_article",
-            [
-                "articles.ArticlePage",
-                "articles.FocusedArticlePage",
-                "articles.RecordArticlePage",
-            ],
-        ),
-    ]
+    content_panels = (
+        BasePageWithRequiredIntro.content_panels
+        + ContentWarningMixin.content_panels
+        + [
+            InlinePanel(
+                "page_highlights",
+                heading=_("Highlights"),
+                label=_("Item"),
+                max_num=15,
+            ),
+            PageChooserPanel(
+                "featured_article",
+                [
+                    "articles.ArticlePage",
+                    "articles.FocusedArticlePage",
+                    "articles.RecordArticlePage",
+                ],
+            ),
+        ]
+    )
 
     default_api_fields = BasePageWithRequiredIntro.default_api_fields + [
         APIField("highlight_image_count"),

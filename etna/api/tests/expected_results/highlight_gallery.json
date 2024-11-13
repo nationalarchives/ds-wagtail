@@ -22,6 +22,7 @@
         "privacy": "public",
         "last_published_at": "2000-01-03T00:00:00Z",
         "url": "/arts/highlight_gallery/",
+        "depth": 4,
         "teaser_text": "Teaser text",
         "teaser_image": {
             "id": 16,
@@ -93,6 +94,7 @@
                 "height": 68
             }
         },
+        "last_published_at": "2000-01-01T00:00:00Z",
         "is_newly_published": false
     },
     "highlights": [
@@ -157,7 +159,7 @@
             "title": "arts",
             "url": "/arts/",
             "full_url": "http://localhost/arts/",
-            "type_label": "Topic",
+            "type_label": "Explore the collection",
             "teaser_text": "Teaser text",
             "teaser_image": {
                 "id": 2,
@@ -174,7 +176,8 @@
                     "width": 100,
                     "height": 68
                 }
-            }
+            },
+            "last_published_at": "2000-01-01T00:00:00Z"
         }
     ],
     "time_periods": [
@@ -183,7 +186,7 @@
             "title": "early_modern",
             "url": "/early_modern/",
             "full_url": "http://localhost/early_modern/",
-            "type_label": "Time period",
+            "type_label": "Explore the collection",
             "teaser_text": "Teaser text",
             "teaser_image": {
                 "id": 4,
@@ -200,7 +203,8 @@
                     "width": 100,
                     "height": 68
                 }
-            }
+            },
+            "last_published_at": "2000-01-01T00:00:00Z"
         }
     ]
 }

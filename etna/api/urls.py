@@ -5,6 +5,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.db.models import Q
 from django.http import Http404
 from django.shortcuts import redirect
+from django.urls import path
 from django.utils.crypto import constant_time_compare
 
 from wagtail.api.v2.router import WagtailAPIRouter
@@ -19,7 +20,10 @@ from rest_framework.response import Response
 from wagtail_headless_preview.models import PagePreview
 from wagtailmedia.api.views import MediaAPIViewSet
 
+from etna.blog.models import BlogIndexPage, BlogPage, BlogPostPage
 from etna.core.serializers.pages import DefaultPageSerializer
+
+from .filters import AuthorFilter, PublishedDateFilter
 
 logger = logging.getLogger(__name__)
 
@@ -157,6 +161,7 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
         "privacy",
         "last_published_at",
         "url",
+        "depth",
     ]
 
     def find_object(self, queryset, request):
@@ -219,9 +224,12 @@ class PagePreviewAPIViewSet(PagesAPIViewSet):
         app_label, model = self.request.GET["content_type"].split(".")
         content_type = ContentType.objects.get(app_label=app_label, model=model)
 
-        page_preview = PagePreview.objects.get(
-            content_type=content_type, token=self.request.GET["token"]
-        )
+        try:
+            page_preview = PagePreview.objects.get(
+                content_type=content_type, token=self.request.GET["token"]
+            )
+        except PagePreview.DoesNotExist:
+            raise BadRequestError("Page preview does not exist")
         page = page_preview.as_page()
         if not page.pk:
             # fake primary key to stop API URL routing from complaining
@@ -248,9 +256,131 @@ class CustomImagesAPIViewSet(ImagesAPIViewSet):
     ]
 
 
+class BlogsAPIViewSet(CustomPagesAPIViewSet):
+    filter_backends = []
+    known_query_parameters = []
+
+    def blogs_list_view(self, request):
+        queryset = self.get_queryset()
+        restricted_pages = [
+            restriction.page
+            for restriction in PageViewRestriction.objects.all().select_related("page")
+            if not restriction.accept_request(self.request)
+        ]
+        blogs = []
+        for blog in queryset.iterator():
+            blogs_children = blog.get_children().type(BlogPage).live()
+            for restricted_page in restricted_pages:
+                blogs_children = blogs_children.not_descendant_of(
+                    restricted_page, inclusive=True
+                )
+            blogs_children = DefaultPageSerializer(blogs_children, many=True)
+            if blogs_children.data:
+                blogs += blogs_children.data
+        top_level_queryset = self.get_queryset()
+        top_level_queryset = top_level_queryset.type(BlogIndexPage).live()
+        top_level = DefaultPageSerializer(top_level_queryset, many=True)
+        blogs = top_level.data + sorted(blogs, key=lambda x: x["title"])
+        return Response(blogs)
+
+    @classmethod
+    def get_urlpatterns(cls):
+        """
+        This returns a list of URL patterns for the endpoint
+        """
+        return [
+            path("", cls.as_view({"get": "blogs_list_view"}), name="blogs_list"),
+        ]
+
+
+class BlogPostsAPIViewSet(CustomPagesAPIViewSet):
+    filter_backends = [
+        PublishedDateFilter,
+        AuthorFilter,
+    ] + CustomPagesAPIViewSet.filter_backends  # Needs to be last as it includes SearchFilter which needs to be last
+    known_query_parameters = CustomPagesAPIViewSet.known_query_parameters.union(
+        [
+            "year",
+            "month",
+            "day",
+            "author",
+        ]
+    )
+    model = BlogPostPage
+
+    def count_view(self, request):
+        queryset = self.get_queryset()
+        self.check_query_parameters(queryset)
+        queryset = self.filter_queryset(queryset)
+        years = set(queryset.values_list("published_date__year", flat=True))
+        years_count = [
+            {
+                "year": year,
+                "months": [
+                    {
+                        "month": month,
+                        "posts": queryset.filter(
+                            **{
+                                "published_date__year": year,
+                                "published_date__month": month,
+                            }
+                        ).count(),
+                    }
+                    for month in sorted(
+                        set(
+                            queryset.filter(
+                                **{"published_date__year": year}
+                            ).values_list("published_date__month", flat=True)
+                        )
+                    )
+                ],
+                "posts": queryset.filter(**{"published_date__year": year}).count(),
+            }
+            for year in sorted(years)
+        ]
+        return Response(years_count)
+
+    def author_view(self, request):
+        queryset = self.get_queryset()
+        self.check_query_parameters(queryset)
+        queryset = self.filter_queryset(queryset)
+        authors = set(queryset.values_list("author_tags__author"))
+        serializer = DefaultPageSerializer()
+        authors_count = []
+        for author in authors:
+            if author[0] is not None:
+                author_item = (
+                    queryset.filter(author_tags__author=author)
+                    .first()
+                    .author_tags.filter(author=author)
+                    .first()
+                    .author
+                )
+                authors_count.append(
+                    {
+                        "author": serializer.to_representation(author_item),
+                        "posts": queryset.filter(author_tags__author=author).count(),
+                    }
+                )
+        return Response(sorted(authors_count, key=lambda x: x["posts"], reverse=True))
+
+    @classmethod
+    def get_urlpatterns(cls):
+        """
+        This returns a list of URL patterns for the endpoint
+        """
+        return [
+            path("", cls.as_view({"get": "listing_view"}), name="listing"),
+            path("count/", cls.as_view({"get": "count_view"}), name="count"),
+            path("authors/", cls.as_view({"get": "author_view"}), name="authors"),
+        ]
+
+
 api_router = WagtailAPIRouter("wagtailapi")
 
 api_router.register_endpoint("pages", CustomPagesAPIViewSet)
 api_router.register_endpoint("page_preview", PagePreviewAPIViewSet)
 api_router.register_endpoint("images", CustomImagesAPIViewSet)
 api_router.register_endpoint("media", MediaAPIViewSet)
+api_router.register_endpoint("blogs", BlogsAPIViewSet)
+api_router.register_endpoint("blog_posts", BlogPostsAPIViewSet)

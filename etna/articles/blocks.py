@@ -2,6 +2,8 @@ from wagtail import blocks
 
 from etna.core.blocks import (
     ContentImageBlock,
+    FeaturedExternalLinkBlock,
+    FeaturedPageBlock,
     FeaturedRecordArticleBlock,
     ParagraphBlock,
     PromotedItemBlock,
@@ -10,12 +12,13 @@ from etna.core.blocks import (
     SectionDepthAwareStructBlock,
     SubHeadingBlock,
 )
-
-from ..media.blocks import MediaBlock
-from ..records.blocks import RecordLinksBlock
+from etna.media.blocks import MediaBlock
+from etna.records.blocks import RecordLinksBlock
 
 
 class SectionContentBlock(blocks.StreamBlock):
+    featured_external_link = FeaturedExternalLinkBlock()
+    featured_page = FeaturedPageBlock()
     featured_record_article = FeaturedRecordArticleBlock()
     image = ContentImageBlock()
     media = MediaBlock()

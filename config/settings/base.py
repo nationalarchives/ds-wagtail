@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     "etna.alerts",
     "etna.analytics",
     "etna.articles",
+    "etna.blog",
     "etna.people",
     "etna.cookies",
     "etna.categories",
@@ -307,6 +308,18 @@ WAGTAILSEARCH_BACKENDS = {
 }
 
 WAGTAILDOCS_DOCUMENT_MODEL = "core.CustomDocument"
+WAGTAILDOCS_EXTENSIONS = [
+    "pdf",
+    "xls",
+    "xlsx",
+    "doc",
+    "docx",
+    "xls",
+    "xlsx",
+    "stl",
+    "txt",
+    "csv",
+]
 
 WAGTAILIMAGES_IMAGE_MODEL = "images.CustomImage"
 

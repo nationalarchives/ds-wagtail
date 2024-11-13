@@ -6,18 +6,17 @@ from django.utils.functional import cached_property
 
 from wagtail.models import get_page_models
 
-from etna.core.fields import END_OF_MONTH, DateInputField
-from etna.core.models import BasePage
-
-from ..ciim.client import SortBy, SortOrder
-from ..ciim.constants import (
+from etna.ciim.client import SortBy, SortOrder
+from etna.ciim.constants import (
     CATALOGUE_BUCKETS,
     COLLECTION_CHOICES,
     LEVEL_CHOICES,
     TYPE_CHOICES,
     WEBSITE_BUCKETS,
 )
-from ..collections.models import TimePeriodExplorerPage, TopicExplorerPage
+from etna.collections.models import TimePeriodExplorerPage, TopicExplorerPage
+from etna.core.fields import END_OF_MONTH, DateInputField
+from etna.core.models import BasePage
 
 
 class SearchFilterCheckboxList(forms.widgets.CheckboxSelectMultiple):
@@ -335,7 +334,10 @@ class NativeWebsiteSearchForm(FeaturedSearchForm):
         super().__init__(*args, **kwargs)
 
         self.fields["format"].choices = [
-            (model._meta.label_lower, model.type_label())
+            (
+                model._meta.label_lower,
+                model.type_label() or model._meta.verbose_name.lower()[:-5],
+            )
             for model in get_page_models()
             if issubclass(model, BasePage) and not model._meta.abstract
         ]

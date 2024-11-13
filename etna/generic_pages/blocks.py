@@ -13,12 +13,13 @@ from etna.core.blocks import (
     DetailsBlock,
     DocumentsBlock,
     DoDontListBlock,
+    FeaturedExternalLinkBlock,
+    FeaturedPageBlock,
     FeaturedRecordArticleBlock,
     ImageGalleryBlock,
     InsetTextBlock,
     ParagraphBlock,
     PromotedItemBlock,
-    PromotedListBlock,
     QuoteBlock,
     SectionDepthAwareStructBlock,
     SubHeadingBlock,
@@ -26,9 +27,8 @@ from etna.core.blocks import (
     WarningTextBlock,
     YouTubeBlock,
 )
-
-from ..media.blocks import MediaBlock
-from ..records.blocks import RecordLinksBlock
+from etna.media.blocks import MediaBlock
+from etna.records.blocks import RecordLinksBlock
 
 
 class SectionContentBlock(blocks.StreamBlock):
@@ -40,6 +40,8 @@ class SectionContentBlock(blocks.StreamBlock):
     details = DetailsBlock()
     document = DocumentsBlock()
     do_dont_list = DoDontListBlock()
+    featured_external_link = FeaturedExternalLinkBlock()
+    featured_page = FeaturedPageBlock()
     featured_record_article = FeaturedRecordArticleBlock()
     image = ContentImageBlock()
     image_gallery = ImageGalleryBlock()
@@ -47,7 +49,6 @@ class SectionContentBlock(blocks.StreamBlock):
     media = MediaBlock()
     paragraph = ParagraphBlock()
     promoted_item = PromotedItemBlock()
-    promoted_list = PromotedListBlock()
     quote = QuoteBlock()
     record_links = RecordLinksBlock()
     sub_heading = SubHeadingBlock()

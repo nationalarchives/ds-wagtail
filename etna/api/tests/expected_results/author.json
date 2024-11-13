@@ -22,6 +22,7 @@
         "privacy": "public",
         "last_published_at": "2000-01-01T00:00:00Z",
         "url": "/people/author/",
+        "depth": 4,
         "teaser_text": "Teaser text",
         "teaser_image": {
             "id": 10,
@@ -68,7 +69,7 @@
         "cascade": true,
         "uid": ALERT_UID
     },
-    "type_label": "Person",
+    "type_label": null,
     "mourning_notice": {
         "title": "Test title",
         "message": "<p>Test message</p>"
@@ -140,6 +141,7 @@
                     "height": 68
                 }
             },
+            "last_published_at": "2000-01-02T00:00:00Z",
             "is_newly_published": true
         }
     ],

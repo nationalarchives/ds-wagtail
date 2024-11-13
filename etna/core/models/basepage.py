@@ -1,5 +1,4 @@
 from typing import Any, Dict
-from uuid import uuid4
 
 from django.conf import settings
 from django.db import models
@@ -70,8 +69,6 @@ class BasePage(AlertMixin, SocialMixin, DataLayerMixin, HeadlessPreviewMixin, Pa
         help_text=_("Image that will appear on thumbnails and promos around the site."),
     )
 
-    uuid = models.UUIDField("UUID", unique=True, default=uuid4, editable=False)
-
     # DataLayerMixin overrides
     gtm_content_group = "Page"
 
@@ -105,12 +102,8 @@ class BasePage(AlertMixin, SocialMixin, DataLayerMixin, HeadlessPreviewMixin, Pa
         with the first letter capitalized for display.
         """
         if cls.has_custom_type_label():
-            label = cls._meta.verbose_name_public
-        else:
-            label = cls._meta.verbose_name
-            if label.lower().endswith(" page"):
-                label = label[:-5]
-        return capfirst(label)
+            return capfirst(cls._meta.verbose_name_public)
+        return None
 
     @classmethod
     def has_custom_type_label(cls) -> bool:
@@ -156,6 +149,7 @@ class BasePage(AlertMixin, SocialMixin, DataLayerMixin, HeadlessPreviewMixin, Pa
             "teaser_image",
             serializer=ImageSerializer("fill-600x400"),
         ),
+        APIField("last_published_at"),
     ]
 
     api_fields = AlertMixin.api_fields + [

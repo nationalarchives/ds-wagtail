@@ -13,10 +13,9 @@ from wagtail.test.utils import WagtailTestUtils
 
 import responses
 
+from etna.ciim.tests.factories import create_media, create_record, create_response
 from etna.core.test_utils import prevent_request_warnings
 from etna.records.views.records import SEARCH_URL_RETAIN_DELTA
-
-from ...ciim.tests.factories import create_media, create_record, create_response
 
 User = get_user_model()
 

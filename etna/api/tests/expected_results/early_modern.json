@@ -22,6 +22,7 @@
         "privacy": "public",
         "last_published_at": "2000-01-01T00:00:00Z",
         "url": "/early_modern/",
+        "depth": 3,
         "teaser_text": "Teaser text",
         "teaser_image": {
             "id": 4,
@@ -105,7 +106,7 @@
         "custom_sensitive_image": null
     },
     "global_alert": null,
-    "type_label": "Time period",
+    "type_label": "Explore the collection",
     "mourning_notice": {
         "title": "Test title",
         "message": "<p>Test message</p>"
@@ -137,6 +138,7 @@
                     "height": 68
                 }
             },
+            "last_published_at": "2000-01-02T00:00:00Z",
             "is_newly_published": true
         },
         {
@@ -162,6 +164,7 @@
                     "height": 68
                 }
             },
+            "last_published_at": "2000-01-01T00:00:00Z",
             "is_newly_published": false
         }
     ],
@@ -189,6 +192,7 @@
                     "height": 68
                 }
             },
+            "last_published_at": "2000-01-03T00:00:00Z",
             "highlight_image_count": 1
         }
     ],
