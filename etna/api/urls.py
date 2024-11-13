@@ -257,30 +257,23 @@ class CustomImagesAPIViewSet(ImagesAPIViewSet):
 
 
 class BlogsAPIViewSet(CustomPagesAPIViewSet):
-    filter_backends = []
-    known_query_parameters = []
+    model = BlogPage
 
-    def blogs_list_view(self, request):
+    def top_level_blogs_list_view(self, request):
         queryset = self.get_queryset()
         restricted_pages = [
             restriction.page
             for restriction in PageViewRestriction.objects.all().select_related("page")
             if not restriction.accept_request(self.request)
         ]
-        blogs = []
-        for blog in queryset.iterator():
-            blogs_children = blog.get_children().type(BlogPage).live()
-            for restricted_page in restricted_pages:
-                blogs_children = blogs_children.not_descendant_of(
-                    restricted_page, inclusive=True
-                )
-            blogs_children = DefaultPageSerializer(blogs_children, many=True)
-            if blogs_children.data:
-                blogs += blogs_children.data
-        top_level_queryset = self.get_queryset()
-        top_level_queryset = top_level_queryset.type(BlogIndexPage).live()
+        for restricted_page in restricted_pages:
+            queryset = queryset.not_descendant_of(restricted_page, inclusive=True)
+        for blog in queryset:
+            queryset = queryset.not_descendant_of(blog, inclusive=False)
+        serializer = DefaultPageSerializer(queryset, many=True)
+        top_level_queryset = BlogIndexPage.objects.all().live()
         top_level = DefaultPageSerializer(top_level_queryset, many=True)
-        blogs = top_level.data + sorted(blogs, key=lambda x: x["title"])
+        blogs = top_level.data + sorted(serializer.data, key=lambda x: x["title"])
         return Response(blogs)
 
     @classmethod
@@ -289,7 +282,12 @@ class BlogsAPIViewSet(CustomPagesAPIViewSet):
         This returns a list of URL patterns for the endpoint
         """
         return [
-            path("", cls.as_view({"get": "blogs_list_view"}), name="blogs_list"),
+            path("", cls.as_view({"get": "listing_view"}), name="blogs_list"),
+            path(
+                "top/",
+                cls.as_view({"get": "top_level_blogs_list_view"}),
+                name="top_level_blogs_list",
+            ),
         ]
 
 
