@@ -29,15 +29,8 @@ from .filters import AuthorFilter, PublishedDateFilter
 logger = logging.getLogger(__name__)
 
 
-class AuthorTagAPIViewSet(PagesAPIViewSet):
-    model = AuthorTag
-    body_fields = ["page", "author"]
-    meta_fields = []
-    listing_default_fields = ["page", "author"]
-
-
 class CustomPagesAPIViewSet(PagesAPIViewSet):
-    known_query_parameters = PagesAPIViewSet.known_query_parameters.union(["password"])
+    known_query_parameters = PagesAPIViewSet.known_query_parameters.union(["password", "author"])
 
     def listing_view(self, request):
         queryset = self.get_queryset()
@@ -52,6 +45,9 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
         # Exclude the restricted pages and their descendants from the queryset
         for restricted_page in restricted_pages:
             queryset = queryset.not_descendant_of(restricted_page, inclusive=True)
+
+        if "author" in request.GET:
+            queryset = queryset.filter(author_tags__author=request.GET["author"])
 
         self.check_query_parameters(queryset)
         queryset = self.filter_queryset(queryset)
@@ -392,4 +388,3 @@ api_router.register_endpoint("images", CustomImagesAPIViewSet)
 api_router.register_endpoint("media", MediaAPIViewSet)
 api_router.register_endpoint("blogs", BlogsAPIViewSet)
 api_router.register_endpoint("blog_posts", BlogPostsAPIViewSet)
-api_router.register_endpoint("authors", AuthorTagAPIViewSet)
