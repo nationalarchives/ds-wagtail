@@ -10,7 +10,7 @@ from django.utils.crypto import constant_time_compare
 
 from wagtail.api.v2.router import WagtailAPIRouter
 from wagtail.api.v2.utils import BadRequestError, get_object_detail_url
-from wagtail.api.v2.views import BaseAPIViewSet, PagesAPIViewSet
+from wagtail.api.v2.views import PagesAPIViewSet
 from wagtail.contrib.redirects.models import Redirect
 from wagtail.images.api.v2.views import ImagesAPIViewSet
 from wagtail.models import Page, PageViewRestriction, Site
@@ -22,7 +22,6 @@ from wagtailmedia.api.views import MediaAPIViewSet
 
 from etna.blog.models import BlogIndexPage, BlogPage, BlogPostPage
 from etna.core.serializers.pages import DefaultPageSerializer
-from etna.people.models import AuthorTag
 
 from .filters import AuthorFilter, PublishedDateFilter
 
@@ -30,7 +29,9 @@ logger = logging.getLogger(__name__)
 
 
 class CustomPagesAPIViewSet(PagesAPIViewSet):
-    known_query_parameters = PagesAPIViewSet.known_query_parameters.union(["password", "author"])
+    known_query_parameters = PagesAPIViewSet.known_query_parameters.union(
+        ["password", "author"]
+    )
 
     def listing_view(self, request):
         queryset = self.get_queryset()
