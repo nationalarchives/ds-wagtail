@@ -37,7 +37,7 @@ def record_url(
     """
     if not record:
         return ""
-    
+
     if is_editorial and settings.FEATURE_RECORD_LINKS_GO_TO_DISCOVERY and record.iaid:
         return TNA_URLS.get("discovery_rec_default_fmt").format(iaid=record.iaid)
 
