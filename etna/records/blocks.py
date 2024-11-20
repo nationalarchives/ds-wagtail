@@ -107,11 +107,13 @@ class RecordChooserBlock(blocks.ChooserBlock):
         return []
 
     def get_api_representation(self, value, context=None):
-        return {
-            "title": value.summary_title,
-            "iaid": value.iaid,
-            "reference_number": value.reference_number,
-        }
+        if value:
+            return {
+                "title": value.summary_title,
+                "iaid": value.iaid,
+                "reference_number": value.reference_number,
+            }
+        return None
 
     class Meta:
         icon = "archive"
