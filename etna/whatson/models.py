@@ -35,7 +35,7 @@ from etna.core.models import (
     BasePageWithRequiredIntro,
     HeroImageMixin,
 )
-from etna.core.serializers import DefaultPageSerializer, RichTextSerializer
+from etna.core.serializers import DefaultPageSerializer, RichTextSerializer, OpeningTimesSerializer
 
 from .blocks import WhatsOnPromotedLinksBlock
 from .forms import EventPageForm
@@ -793,6 +793,14 @@ class ExhibitionPage(
         help_text=_("Information about how to book tickets for the exhibition."),
     )
 
+    opening_times = models.ForeignKey(
+        "core.OpeningTimes",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+
     audience_heading = models.CharField(
         max_length=40,
         verbose_name=_("audience heading"),
@@ -909,6 +917,7 @@ class ExhibitionPage(
             ],
             heading=_("Price details"),
         ),
+        FieldPanel("opening_times"),
         MultiFieldPanel(
             [
                 FieldPanel("audience_heading"),
@@ -937,6 +946,7 @@ class ExhibitionPage(
             APIField("end_date"),
             APIField("price"),
             APIField("price_label"),
+            APIField("opening_times", serializer=OpeningTimesSerializer()),
             APIField("booking_details", serializer=RichTextSerializer()),
             APIField("audience_heading"),
             APIField("audience_detail"),

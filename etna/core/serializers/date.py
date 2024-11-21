@@ -39,3 +39,14 @@ class DateTimeSerializer(Serializer):
             "day": value.day,
             **(time_data),
         }
+
+class OpeningTimesSerializer(Serializer):
+    """
+    Serializer used for the opening times of a location.
+    """
+    def to_representation(self, value):
+        return {
+            "area": value.area,
+            "weekly_hours": value.weekly_hours,
+            "short_weekly_opening": value.short_weekly_opening,
+        }
