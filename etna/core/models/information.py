@@ -1,6 +1,8 @@
 from django.db import models
-from wagtail.snippets.models import register_snippet
 from django.utils.functional import cached_property
+
+from wagtail.snippets.models import register_snippet
+
 
 @register_snippet
 class OpeningTimes(models.Model):
@@ -25,37 +27,37 @@ class OpeningTimes(models.Model):
         if self.monday_open and self.monday_close:
             return f"{self.monday_open.strftime('%H:%M')} - {self.monday_close.strftime('%H:%M')}"
         return "Closed"
-    
+
     @cached_property
     def tuesday_hours(self):
         if self.tuesday_open and self.tuesday_close:
             return f"{self.tuesday_open.strftime('%H:%M')} - {self.tuesday_close.strftime('%H:%M')}"
         return "Closed"
-    
+
     @cached_property
     def wednesday_hours(self):
         if self.wednesday_open and self.wednesday_close:
             return f"{self.wednesday_open.strftime('%H:%M')} - {self.wednesday_close.strftime('%H:%M')}"
         return "Closed"
-    
+
     @cached_property
     def thursday_hours(self):
         if self.thursday_open and self.thursday_close:
             return f"{self.thursday_open.strftime('%H:%M')} - {self.thursday_close.strftime('%H:%M')}"
         return "Closed"
-    
+
     @cached_property
     def friday_hours(self):
         if self.friday_open and self.friday_close:
             return f"{self.friday_open.strftime('%H:%M')} - {self.friday_close.strftime('%H:%M')}"
         return "Closed"
-    
+
     @cached_property
     def saturday_hours(self):
         if self.saturday_open and self.saturday_close:
             return f"{self.saturday_open.strftime('%H:%M')} - {self.saturday_close.strftime('%H:%M')}"
         return "Closed"
-    
+
     @cached_property
     def sunday_hours(self):
         if self.sunday_open and self.sunday_close:
@@ -94,7 +96,7 @@ class OpeningTimes(models.Model):
                 "hours": self.sunday_hours,
             },
         ]
-    
+
     @cached_property
     def short_weekly_opening(self):
         open_days = []
@@ -109,7 +111,7 @@ class OpeningTimes(models.Model):
                     else:
                         open_days.append(current_range[0])
                     current_range = []
-        
+
         if current_range:
             if len(current_range) > 1:
                 open_days.append(f"{current_range[0]} - {current_range[-1]}")

@@ -35,7 +35,11 @@ from etna.core.models import (
     BasePageWithRequiredIntro,
     HeroImageMixin,
 )
-from etna.core.serializers import DefaultPageSerializer, RichTextSerializer, OpeningTimesSerializer
+from etna.core.serializers import (
+    DefaultPageSerializer,
+    OpeningTimesSerializer,
+    RichTextSerializer,
+)
 
 from .blocks import WhatsOnPromotedLinksBlock
 from .forms import EventPageForm

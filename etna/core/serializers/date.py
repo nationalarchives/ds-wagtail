@@ -40,10 +40,12 @@ class DateTimeSerializer(Serializer):
             **(time_data),
         }
 
+
 class OpeningTimesSerializer(Serializer):
     """
     Serializer used for the opening times of a location.
     """
+
     def to_representation(self, value):
         return {
             "area": value.area,
