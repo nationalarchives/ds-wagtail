@@ -18,6 +18,7 @@ from .promoted_links import (
     AuthorPromotedPagesBlock,
     FeaturedExternalLinkBlock,
     FeaturedPageBlock,
+    FeaturedPagesBlock,
     PromotedItemBlock,
     PromotedLinkBlock,
     PromotedListBlock,
@@ -26,7 +27,7 @@ from .quote import QuoteBlock, ReviewBlock
 from .section import SectionBlock, SubHeadingBlock, SubSubHeadingBlock
 from .tables import ContentTableBlock
 from .text import InsetTextBlock, WarningTextBlock
-from .video import YouTubeBlock
+from .video import MixedMediaBlock, YouTubeBlock
 
 __all__ = [
     "AccordionsBlock",
@@ -45,6 +46,7 @@ __all__ = [
     "FeaturedRecordArticleBlock",
     "FeaturedCollectionBlock",
     "FeaturedPageBlock",
+    "FeaturedPagesBlock",
     "ImageBlock",
     "ImageGalleryBlock",
     "InsetTextBlock",
@@ -57,6 +59,7 @@ __all__ = [
     "PromotedItemBlock",
     "AuthorPromotedLinkBlock",
     "LargeCardLinksBlock",
+    "MixedMediaBlock",
     "QuoteBlock",
     "RelatedItemBlock",
     "ReviewBlock",
