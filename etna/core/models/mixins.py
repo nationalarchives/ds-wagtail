@@ -1,5 +1,6 @@
 from datetime import timedelta
 
+from django.core.validators import RegexValidator
 from django.db import models
 from django.utils import timezone
 from django.utils.functional import cached_property
@@ -20,6 +21,7 @@ from etna.core.serializers import (
 from .forms import RequiredHeroImagePageForm
 
 __all__ = [
+    "AccentColourMixin",
     "ContentWarningMixin",
     "NewLabelMixin",
     "HeroImageMixin",
@@ -197,6 +199,36 @@ class RequiredHeroImageMixin(HeroImageMixin):
         abstract = True
 
     base_form_class = RequiredHeroImagePageForm
+
+
+class AccentColourMixin(models.Model):
+    """Mixin to add accent_colour attribute to a Page."""
+
+    accent_colour = models.CharField(
+        max_length=7,
+        blank=True,
+        help_text=_(
+            "A hex colour code to be used as the accent colour for this page. "
+            "If left blank, the default colour will be used."
+        ),
+        verbose_name=_("Accent colour"),
+        validators=[
+            RegexValidator(
+                regex=r"^#[0-9a-fA-F]{6}$", message="Enter a valid hex colour code."
+            )
+        ],
+    )
+
+    class Meta:
+        abstract = True
+
+    content_panels = [
+        FieldPanel("accent_colour"),
+    ]
+
+    api_fields = [
+        APIField("accent_colour"),
+    ]
 
 
 class SidebarMixin(models.Model):
