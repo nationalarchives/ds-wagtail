@@ -23,7 +23,13 @@ from wagtail.snippets.models import register_snippet
 
 from etna.articles.models import ArticleTagMixin
 from etna.collections.models import TopicalPageMixin
-from etna.core.blocks import ImageGalleryBlock, LargeCardLinksBlock, ReviewBlock
+from etna.core.blocks import (
+    FeaturedPagesBlock,
+    ImageGalleryBlock,
+    LargeCardLinksBlock,
+    MixedMediaBlock,
+    ReviewBlock,
+)
 from etna.core.models import (
     AccentColourMixin,
     BasePageWithRequiredIntro,
@@ -308,7 +314,6 @@ class WhatsOnPage(BasePageWithRequiredIntro):
         blank=True,
         max_num=1,
     )
-
 
     # DataLayerMixin overrides
     gtm_content_group = "What's On"
@@ -823,7 +828,13 @@ class ExhibitionPage(
         max_num=1,
     )
 
-    # video = ...
+    video = StreamField(
+        MixedMediaBlock(
+            block_counts={"youtube": {"max_num": 1}, "media": {"max_num": 1}}
+        ),
+        blank=True,
+        max_num=1,
+    )
 
     # Related content section
     related_pages_title = models.CharField(
@@ -840,7 +851,7 @@ class ExhibitionPage(
         related_name="+",
     )
 
-    # related_pages = StreamField(RelatedContentBlock(), blank=True, null=True)
+    related_pages = StreamField(FeaturedPagesBlock(), blank=True, null=True)
 
     # shop = ...
 
@@ -868,7 +879,7 @@ class ExhibitionPage(
                 # FieldPanel("email_signup"),
                 FieldPanel("review"),
                 FieldPanel("exhibition_highlights"),
-                # FieldPanel("video"),
+                FieldPanel("video"),
             ],
             heading=_("Content"),
         ),
@@ -876,7 +887,7 @@ class ExhibitionPage(
             [
                 FieldPanel("related_pages_title"),
                 FieldPanel("featured_page"),
-                # FieldPanel("related_pages"),
+                FieldPanel("related_pages"),
                 # FieldPanel("shop"),
             ],
             heading=_("Related content"),
@@ -933,10 +944,10 @@ class ExhibitionPage(
             # APIField("email_signup"),
             APIField("exhibition_highlights"),
             APIField("review"),
-            # APIField("video"),
+            APIField("video"),
             APIField("related_pages_title"),
             APIField("featured_page", serializer=DefaultPageSerializer()),
-            # APIField("related_pages"),
+            APIField("related_pages"),
         ]
     )
 

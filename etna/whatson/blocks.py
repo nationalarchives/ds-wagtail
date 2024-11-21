@@ -1,10 +1,6 @@
 from wagtail import blocks
 
-from etna.core.blocks import PageListBlock, ParagraphBlock
-
-
-class EventPageBlock(blocks.StreamBlock):
-    paragraph = ParagraphBlock()
+from etna.core.blocks import PageListBlock
 
 
 class WhatsOnPromotedLinksBlock(blocks.StructBlock):
@@ -14,19 +10,3 @@ class WhatsOnPromotedLinksBlock(blocks.StructBlock):
     class Meta:
         template = "blocks/whats_on_promoted_links.html"
         icon = "list"
-
-
-class RelatedArticlesBlock(blocks.StreamBlock):
-    pages = PageListBlock(
-        "articles.ArticlePage",
-        "articles.RecordArticlePage",
-        "articles.FocusedArticlePage",
-        exclude_drafts=True,
-        exclude_private=True,
-        select_related=["teaser_image"],
-    )
-
-    class Meta:
-        icon = "list"
-        label = "Related articles"
-        template = "collections/blocks/featured_articles.html"
