@@ -36,7 +36,7 @@ from etna.core.models import (
 from etna.core.serializers import DefaultPageSerializer, RichTextSerializer
 from etna.core.utils import urlunparse
 
-from .blocks import RelatedArticlesBlock, WhatsOnPromotedLinksBlock
+from .blocks import WhatsOnPromotedLinksBlock
 from .forms import EventPageForm
 
 
