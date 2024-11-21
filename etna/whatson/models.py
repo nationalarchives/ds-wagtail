@@ -1,9 +1,6 @@
-import urllib
-
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
-from django.shortcuts import render
 from django.utils import timezone
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
@@ -33,7 +30,6 @@ from etna.core.models import (
     HeroImageMixin,
 )
 from etna.core.serializers import DefaultPageSerializer, RichTextSerializer
-from etna.core.utils import urlunparse
 
 from .blocks import WhatsOnPromotedLinksBlock
 from .forms import EventPageForm
