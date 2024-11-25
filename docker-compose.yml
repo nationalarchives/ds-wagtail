@@ -16,7 +16,6 @@ services:
     depends_on:
       - db
       - redis
-    command: poetry run python /app/manage.py runserver 0.0.0.0:8080
     ports:
       - 8000:8080
     env_file:
