@@ -22,3 +22,7 @@ then
     echo "Installing Platform.sh CLI..."
     curl -fsSL https://raw.githubusercontent.com/platformsh/cli/main/installer.sh | bash
 fi
+
+echo "Logging in to Platform.sh..."
+platform auth:api-token-login || true
+platform ssh-cert:load --no-interaction

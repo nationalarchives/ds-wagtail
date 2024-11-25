@@ -4,23 +4,7 @@ set -e
 
 . platformsh-pull-setup
 
-PGPASSWORD="$POSTGRES_PASSWORD"
-
 echo "Pulling data from $ENVIRONMENT..."
-
-echo "Installing openssh, postgresql and rsync..."
-apt update
-apt install -y --no-install-recommends openssh-client postgresql rsync
-
-if ! command -v platform --version 2>&1 >/dev/null
-then
-    echo "Installing Platform.sh CLI..."
-    curl -fsSL https://raw.githubusercontent.com/platformsh/cli/main/installer.sh | bash
-fi
-
-echo "Logging in to Platform.sh..."
-platform auth:api-token-login || true
-platform ssh-cert:load --no-interaction
 
 echo "Creating a directory for database dumps..."
 mkdir -p "$DB_DUMP_DIR"
@@ -39,13 +23,8 @@ docker compose -p ds-wagtail up db -d
 echo "Stopping the app container..."
 docker compose -p ds-wagtail stop app
 
-echo "Dropping the database..."
-# dropdb --if-exists --host db --username="$POSTGRES_USER" --no-password "$POSTGRES_DB"
+echo "Dropping the old database..."
 psql "postgresql://$POSTGRES_USER:$POSTGRES_PASSWORD@db/$POSTGRES_DB" -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public;"
-
-echo "Creating a new database..."
-# createdb --host db --username="$POSTGRES_USER" "$POSTGRES_DB"
-# createdb --host db --username="$POSTGRES_USER" --no-password "$POSTGRES_DB"
 
 echo "Dumping the database..."
 psql "postgresql://$POSTGRES_USER:$POSTGRES_PASSWORD@db/$POSTGRES_DB" < "$DB_DUMP_DIR/$DB_DUMP"
