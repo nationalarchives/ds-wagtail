@@ -1,0 +1,62 @@
+#!/bin/bash
+
+set -e
+
+. platformsh-pull-setup
+
+echo "Pulling data from $ENVIRONMENT..."
+
+echo "Installing openssh, postgresql and rsync..."
+apt update
+apt install -y --no-install-recommends openssh-client postgresql rsync
+
+if ! command -v platform --version 2>&1 >/dev/null
+then
+    echo "Installing Platform.sh CLI..."
+    curl -fsSL https://raw.githubusercontent.com/platformsh/cli/main/installer.sh | bash
+fi
+
+echo "Logging in to Platform.sh..."
+platform auth:api-token-login || true
+platform ssh-cert:load --no-interaction
+
+echo "Creating a directory for database dumps..."
+mkdir -p "$DB_DUMP_DIR"
+
+echo "Creating a database dump..."
+platform db:dump -e "$ENVIRONMENT" -p "$PLATFORM_PROJECT_ID" -f "$DB_DUMP" -d "$DB_DUMP_DIR"
+
+echo "Replacing values in the database dump..."
+sed -i -e 's/beta.nationalarchives.gov.uk\([[:space:]]\)443/localhost\165535/g' "$DB_DUMP_DIR/$DB_DUMP"
+sed -i -e 's/develop.tna.dblclk.dev\([[:space:]]\)443/localhost\165535/g' "$DB_DUMP_DIR/$DB_DUMP"
+sed -i -e 's/tna.dblclk.dev\([[:space:]]\)443/localhost\165535/g' "$DB_DUMP_DIR/$DB_DUMP"
+
+echo "Starting the db container..."
+docker compose -p ds-wagtail up db -d
+
+echo "Stopping the app container..."
+docker compose -p ds-wagtail stop app
+
+echo "Dropping the database..."
+dropdb --if-exists --host db --username="$DATABASE_USER" "$DATABASE_NAME"
+
+echo "Creating a new database..."
+createdb --host db --username="$DATABASE_USER" "$DATABASE_USER"
+
+echo "Dumping the database..."
+psql --host db -d "$DATABASE_NAME" --username="$DATABASE_USER" < "$DB_DUMP_DIR/$DB_DUMP"
+
+echo "Removing the database dump..."
+rm "$DB_DUMP_DIR/$DB_DUMP"
+
+echo "Starting the app container..."
+docker compose -p ds-wagtail restart app
+
+echo "Running migrations..."
+docker compose -p ds-wagtail exec app poetry run python manage.py migrate
+
+echo "Running birdbath..."
+docker compose -p ds-wagtail exec app poetry run python manage.py run_birdbath
+
+echo "Creating a superuser..."
+docker compose -p ds-wagtail exec app poetry run python manage.py createsuperuser --no-input

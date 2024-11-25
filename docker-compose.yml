@@ -3,8 +3,6 @@ services:
     image: postgres:12.0
     ports:
       - 5432:5432
-    volumes:
-      - ./database_dumps:/app/database_dumps
 
   app:
     build:
@@ -34,18 +32,10 @@ services:
       - DJANGO_SUPERUSER_USERNAME=admin
       - DJANGO_SUPERUSER_EMAIL=admin@tna.dev
       - FEATURE_BETA_BANNER_ENABLED=False
+      - KONG_CLIENT_VERIFY_CERTIFICATES=False
       - KEEP_ALIVE=30
       - WAGTAILAPI_BASE_URL=http://host.docker.internal:8000
       - REDIS_URL=redis://:redis@redis:6379
-
-  cli:
-    platform: linux/amd64
-    build: platformsh-cli
-    volumes:
-      - media:/app/media
-      - ./database_dumps:/app/database_dumps
-    env_file:
-      - .env
 
   docs:
     image: squidfunk/mkdocs-material
@@ -56,8 +46,16 @@ services:
 
   dev:
     image: ghcr.io/nationalarchives/tna-python-dev:preview
+    environment:
+      - PLATFORMSH_CLI_TOKEN=${PLATFORMSH_CLI_TOKEN}
+      - PLATFORM_PROJECT_ID=rasrzs7pi6sd4
+      - DATABASE_NAME=postgres
+      - DATABASE_USER=postgres
     volumes:
       - ./:/app
+      - ./dev:/home/app/.local/bin/tasks:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - media:/media
 
   redis:
     image: redis:latest

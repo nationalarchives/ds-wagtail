@@ -1,0 +1,24 @@
+#!/bin/bash
+
+set -e
+
+if [ -z "$1" ]
+then
+    export ENVIRONMENT=develop
+else
+    export ENVIRONMENT="$1"
+fi
+
+export DB_DUMP_DIR=/home/app/database_dumps
+export TIMESTAMP=$(date +%s)
+export DB_DUMP="$TIMESTAMP.psql"
+
+echo "Installing openssh, postgresql and rsync..."
+apt update
+apt install -y --no-install-recommends openssh-client postgresql rsync
+
+if ! command -v platform --version 2>&1 >/dev/null
+then
+    echo "Installing Platform.sh CLI..."
+    curl -fsSL https://raw.githubusercontent.com/platformsh/cli/main/installer.sh | bash
+fi
