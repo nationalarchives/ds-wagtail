@@ -29,7 +29,9 @@ logger = logging.getLogger(__name__)
 
 
 class CustomPagesAPIViewSet(PagesAPIViewSet):
-    known_query_parameters = PagesAPIViewSet.known_query_parameters.union(["password"])
+    known_query_parameters = PagesAPIViewSet.known_query_parameters.union(
+        ["password", "author"]
+    )
 
     def listing_view(self, request):
         queryset = self.get_queryset()
@@ -44,6 +46,9 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
         # Exclude the restricted pages and their descendants from the queryset
         for restricted_page in restricted_pages:
             queryset = queryset.not_descendant_of(restricted_page, inclusive=True)
+
+        if "author" in request.GET:
+            queryset = queryset.filter(author_tags__author=request.GET["author"])
 
         self.check_query_parameters(queryset)
         queryset = self.filter_queryset(queryset)
@@ -161,12 +166,8 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
         "privacy",
         "last_published_at",
         "url",
+        "depth",
     ]
-
-    # Add in depth to the list of fields that can be ordered by and filtered to
-    @classmethod
-    def get_meta_fields_names(cls, model):
-        return super().get_meta_fields_names(model) + ["depth"]
 
     def find_object(self, queryset, request):
         site = Site.find_for_request(request)
@@ -228,9 +229,12 @@ class PagePreviewAPIViewSet(PagesAPIViewSet):
         app_label, model = self.request.GET["content_type"].split(".")
         content_type = ContentType.objects.get(app_label=app_label, model=model)
 
-        page_preview = PagePreview.objects.get(
-            content_type=content_type, token=self.request.GET["token"]
-        )
+        try:
+            page_preview = PagePreview.objects.get(
+                content_type=content_type, token=self.request.GET["token"]
+            )
+        except PagePreview.DoesNotExist:
+            raise BadRequestError("Page preview does not exist")
         page = page_preview.as_page()
         if not page.pk:
             # fake primary key to stop API URL routing from complaining

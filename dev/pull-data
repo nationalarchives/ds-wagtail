@@ -4,6 +4,8 @@ set -e
 
 . platformsh-pull-setup
 
+PGPASSWORD="$POSTGRES_PASSWORD"
+
 echo "Pulling data from $ENVIRONMENT..."
 
 echo "Installing openssh, postgresql and rsync..."
@@ -38,13 +40,15 @@ echo "Stopping the app container..."
 docker compose -p ds-wagtail stop app
 
 echo "Dropping the database..."
-dropdb --if-exists --host db --username="$DATABASE_USER" "$DATABASE_NAME"
+# dropdb --if-exists --host db --username="$POSTGRES_USER" --no-password "$POSTGRES_DB"
+psql "postgresql://$POSTGRES_USER:$POSTGRES_PASSWORD@db/$POSTGRES_DB" -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public;"
 
 echo "Creating a new database..."
-createdb --host db --username="$DATABASE_USER" "$DATABASE_USER"
+# createdb --host db --username="$POSTGRES_USER" "$POSTGRES_DB"
+# createdb --host db --username="$POSTGRES_USER" --no-password "$POSTGRES_DB"
 
 echo "Dumping the database..."
-psql --host db -d "$DATABASE_NAME" --username="$DATABASE_USER" < "$DB_DUMP_DIR/$DB_DUMP"
+psql "postgresql://$POSTGRES_USER:$POSTGRES_PASSWORD@db/$POSTGRES_DB" < "$DB_DUMP_DIR/$DB_DUMP"
 
 echo "Removing the database dump..."
 rm "$DB_DUMP_DIR/$DB_DUMP"

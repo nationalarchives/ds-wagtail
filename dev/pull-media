@@ -11,4 +11,4 @@ platform mount:download -e "$ENVIRONMENT" -p "$PLATFORM_PROJECT_ID" -m media --t
 docker compose -p ds-wagtail exec app chmod -fR 777 /media
 
 echo "Deleting image renditions..."
-psql --host db -d "$DATABASE_NAME" --username="$DATABASE_USER" -c "TRUNCATE images_customimagerendition;"
+psql "postgresql://$POSTGRES_USER:$POSTGRES_PASSWORD@db/$POSTGRES_DB" -c "TRUNCATE images_customimagerendition;"

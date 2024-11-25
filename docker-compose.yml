@@ -1,8 +1,8 @@
 services:
   db:
-    image: postgres:12.0
-    ports:
-      - 5432:5432
+    image: postgres:16.0
+    environment:
+      - POSTGRES_PASSWORD=postgres
 
   app:
     build:
@@ -28,6 +28,7 @@ services:
       - DATABASE_HOST=db
       - DATABASE_NAME=postgres
       - DATABASE_USER=postgres
+      - DATABASE_PASSWORD=postgres
       - DJANGO_SUPERUSER_PASSWORD=admin
       - DJANGO_SUPERUSER_USERNAME=admin
       - DJANGO_SUPERUSER_EMAIL=admin@tna.dev
@@ -49,8 +50,9 @@ services:
     environment:
       - PLATFORMSH_CLI_TOKEN=${PLATFORMSH_CLI_TOKEN}
       - PLATFORM_PROJECT_ID=rasrzs7pi6sd4
-      - DATABASE_NAME=postgres
-      - DATABASE_USER=postgres
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
     volumes:
       - ./:/app
       - ./dev:/home/app/.local/bin/tasks:ro
@@ -60,8 +62,6 @@ services:
   redis:
     image: redis:latest
     command: /bin/sh -c "redis-server --requirepass redis"
-    ports:
-      - 6379:6379
 
 volumes:
   media:

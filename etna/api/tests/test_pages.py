@@ -377,6 +377,10 @@ class APIResponseTest(WagtailPageTestCase):
                 api_data = re.sub(r"0_[a-zA-Z0-9]{6,7}", "0", api_data)
                 expected_data = re.sub(r"e_[a-zA-Z0-9]{6,7}", "e", expected_data)
                 api_data = re.sub(r"e_[a-zA-Z0-9]{6,7}", "e", api_data)
+                expected_data = re.sub(r"l_[a-zA-Z0-9]{6,7}", "l", expected_data)
+                api_data = re.sub(r"l_[a-zA-Z0-9]{6,7}", "l", api_data)
+                expected_data = re.sub(r"p_[a-zA-Z0-9]{6,7}", "p", expected_data)
+                api_data = re.sub(r"p_[a-zA-Z0-9]{6,7}", "p", api_data)
 
                 self.assertEqual(expected_data, api_data)
 

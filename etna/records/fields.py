@@ -7,6 +7,8 @@ from django.utils.functional import SimpleLazyObject
 
 from requests import HTTPError
 
+from etna.ciim.exceptions import DoesNotExist
+
 from .api import records_client
 from .models import Record
 from .widgets import RecordChooser
@@ -24,7 +26,10 @@ class LazyRecord(SimpleLazyObject):
         self.__dict__["iaid"] = iaid
 
         def _fetch_record():
-            return records_client.fetch(iaid=iaid)
+            try:
+                return records_client.fetch(iaid=iaid)
+            except DoesNotExist:
+                return None
 
         super().__init__(_fetch_record)
 
