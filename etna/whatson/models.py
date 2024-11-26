@@ -37,7 +37,6 @@ from etna.core.models import (
 )
 from etna.core.serializers import (
     DefaultPageSerializer,
-    OpeningTimesSerializer,
     RichTextSerializer,
 )
 
@@ -797,13 +796,7 @@ class ExhibitionPage(
         help_text=_("Information about how to book tickets for the exhibition."),
     )
 
-    opening_times = models.ForeignKey(
-        "core.OpeningTimes",
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="+",
-    )
+    # opening_times = 
 
     audience_heading = models.CharField(
         max_length=40,
@@ -950,7 +943,7 @@ class ExhibitionPage(
             APIField("end_date"),
             APIField("price"),
             APIField("price_label"),
-            APIField("opening_times", serializer=OpeningTimesSerializer()),
+            # APIField("opening_times"),
             APIField("booking_details", serializer=RichTextSerializer()),
             APIField("audience_heading"),
             APIField("audience_detail"),
