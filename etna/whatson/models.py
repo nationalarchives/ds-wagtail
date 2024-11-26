@@ -28,6 +28,7 @@ from etna.core.blocks import (
     ImageGalleryBlock,
     LargeCardLinksBlock,
     MixedMediaBlock,
+    ShopCollectionBlock,
     ReviewBlock,
 )
 from etna.core.models import (
@@ -863,7 +864,11 @@ class ExhibitionPage(
 
     related_pages = StreamField(FeaturedPagesBlock(), blank=True, null=True)
 
-    # shop = ...
+    shop = StreamField(
+        [("shop", ShopCollectionBlock())],
+        blank=True,
+        max_num=1,
+    )
 
     # Plan your visit section
 
@@ -898,7 +903,7 @@ class ExhibitionPage(
                 FieldPanel("related_pages_title"),
                 FieldPanel("featured_page"),
                 FieldPanel("related_pages"),
-                # FieldPanel("shop"),
+                FieldPanel("shop"),
             ],
             heading=_("Related content"),
         ),
@@ -960,6 +965,7 @@ class ExhibitionPage(
             APIField("related_pages_title"),
             APIField("featured_page", serializer=DefaultPageSerializer()),
             APIField("related_pages"),
+            APIField("shop"),
         ]
     )
 
