@@ -796,7 +796,12 @@ class ExhibitionPage(
         help_text=_("Information about how to book tickets for the exhibition."),
     )
 
-    # opening_times = 
+    open_days = models.CharField(
+        max_length=255,
+        verbose_name=_("open days"),
+        blank=True,
+        help_text=_("The days the exhibition is open, e.g. Tuesday - Sunday."),
+    )
 
     audience_heading = models.CharField(
         max_length=40,
@@ -816,7 +821,7 @@ class ExhibitionPage(
     description = RichTextField(
         verbose_name=_("description"),
         help_text=_("A description of the exhibition."),
-        features=settings.EXPANDED_RICH_TEXT_FEATURES,
+        features=settings.RESTRICTED_RICH_TEXT_FEATURES,
     )
 
     # email_signup = ...
@@ -914,7 +919,7 @@ class ExhibitionPage(
             ],
             heading=_("Price details"),
         ),
-        FieldPanel("opening_times"),
+        FieldPanel("open_days"),
         MultiFieldPanel(
             [
                 FieldPanel("audience_heading"),
@@ -943,7 +948,7 @@ class ExhibitionPage(
             APIField("end_date"),
             APIField("price"),
             APIField("price_label"),
-            # APIField("opening_times"),
+            APIField("open_days"),
             APIField("booking_details", serializer=RichTextSerializer()),
             APIField("audience_heading"),
             APIField("audience_detail"),
