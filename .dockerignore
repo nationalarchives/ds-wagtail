@@ -19,7 +19,6 @@ babel.config.json
 dev
 docker-compose.yml
 docs
-fabfile.py
 gunicorn.conf.py
 lint-requirements.txt
 media
