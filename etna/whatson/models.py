@@ -28,18 +28,15 @@ from etna.core.blocks import (
     ImageGalleryBlock,
     LargeCardLinksBlock,
     MixedMediaBlock,
-    ShopCollectionBlock,
     ReviewBlock,
+    ShopCollectionBlock,
 )
 from etna.core.models import (
     AccentColourMixin,
     BasePageWithRequiredIntro,
     HeroImageMixin,
 )
-from etna.core.serializers import (
-    DefaultPageSerializer,
-    RichTextSerializer,
-)
+from etna.core.serializers import DefaultPageSerializer, RichTextSerializer
 
 from .blocks import WhatsOnPromotedLinksBlock
 from .forms import EventPageForm

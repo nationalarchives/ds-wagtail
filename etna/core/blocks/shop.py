@@ -1,4 +1,5 @@
 from wagtail import blocks
+
 from etna.core.blocks.image import APIImageChooserBlock
 
 
@@ -16,7 +17,7 @@ class ShopCollectionBlock(blocks.StructBlock):
         label="Description",
         max_length=255,
     )
-    
+
     cta_text = blocks.CharBlock(
         label="CTA text",
         max_length=50,
@@ -32,8 +33,6 @@ class ShopCollectionBlock(blocks.StructBlock):
         label="Background image",
         required=False,
     )
-
-    
 
     class Meta:
         icon = "shop"
