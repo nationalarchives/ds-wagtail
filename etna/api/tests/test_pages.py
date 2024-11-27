@@ -200,7 +200,7 @@ class APIResponseTest(WagtailPageTestCase):
                             "value": {
                                 "media": cls.test_media.id,
                                 "title": "Media title",
-                                "background_image": cls.test_image.id,
+                                "thumbnail": cls.test_image.id,
                             },
                         },
                         {
