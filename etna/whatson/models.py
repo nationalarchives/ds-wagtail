@@ -6,6 +6,7 @@ from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
 
 from modelcluster.fields import ParentalKey
+from wagtail import blocks
 from wagtail.admin.panels import (
     FieldPanel,
     FieldRowPanel,
@@ -749,9 +750,6 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithRequiredIntro):
     subpage_types = []
 
     base_form_class = EventPageForm
-
-
-from wagtail import blocks
 
 
 class ExhibitionPage(
