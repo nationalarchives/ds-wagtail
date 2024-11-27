@@ -817,6 +817,26 @@ class ExhibitionPage(
         help_text=_("The text for the audience detail section."),
     )
 
+    location_space_name = models.CharField(
+        max_length=40,
+        verbose_name=_("location space name"),
+        blank=True,
+        help_text=_("The location of the exhibition within the venue."),
+    )
+
+    location_link_text = models.CharField(
+        verbose_name=_("location link text"),
+        blank=True,
+        help_text=_("The text for the location section."),
+    )
+
+    location_link_url = models.URLField(
+        max_length=255,
+        verbose_name=_("location link URL"),
+        blank=True,
+        help_text=_("The URL for the location section."),
+    )
+
     # Body section
     description = RichTextField(
         verbose_name=_("description"),
@@ -937,6 +957,14 @@ class ExhibitionPage(
             ],
             heading=_("Audience details"),
         ),
+        MultiFieldPanel(
+            [
+                FieldPanel("location_space_name"),
+                FieldPanel("location_link_text"),
+                FieldPanel("location_link_url"),
+            ],
+            heading=_("Location details"),
+        ),
     ]
 
     promote_panels = (
@@ -962,6 +990,9 @@ class ExhibitionPage(
             APIField("booking_details", serializer=RichTextSerializer()),
             APIField("audience_heading"),
             APIField("audience_detail"),
+            APIField("location_space_name"),
+            APIField("location_link_text"),
+            APIField("location_link_url"),
             APIField("description", serializer=RichTextSerializer()),
             # APIField("email_signup"),
             APIField("exhibition_highlights"),
