@@ -28,6 +28,17 @@ class AccordionBlock(blocks.StructBlock):
         label = "Accordion Item"
 
 
+class SimplifiedAccordionBlock(blocks.StructBlock):
+    title = blocks.CharBlock(required=True)
+    body = APIRichTextBlock(
+        required=True, features=settings.RESTRICTED_RICH_TEXT_FEATURES
+    )
+
+    class Meta:
+        icon = "list-ul"
+        label = "Accordion Item"
+
+
 class AccordionsBlock(blocks.StructBlock):
     items = blocks.ListBlock(AccordionBlock())
 

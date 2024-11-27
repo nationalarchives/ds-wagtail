@@ -30,6 +30,7 @@ from etna.core.blocks import (
     MixedMediaBlock,
     ReviewBlock,
     ShopCollectionBlock,
+    SimplifiedAccordionBlock,
 )
 from etna.core.models import (
     AccentColourMixin,
@@ -750,6 +751,9 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithRequiredIntro):
     base_form_class = EventPageForm
 
 
+from wagtail import blocks
+
+
 class ExhibitionPage(
     ArticleTagMixin,
     AccentColourMixin,
@@ -868,6 +872,11 @@ class ExhibitionPage(
     )
 
     # Plan your visit section
+    plan_your_visit = StreamField(
+        [("plan_your_visit", blocks.ListBlock(SimplifiedAccordionBlock()))],
+        blank=True,
+        max_num=1,
+    )
 
     # DataLayerMixin overrides
     gtm_content_group = "What's On"
@@ -904,6 +913,7 @@ class ExhibitionPage(
             ],
             heading=_("Related content"),
         ),
+        FieldPanel("plan_your_visit"),
     ]
 
     key_details_panels = [
@@ -963,6 +973,7 @@ class ExhibitionPage(
             APIField("featured_page", serializer=DefaultPageSerializer()),
             APIField("related_pages"),
             APIField("shop"),
+            APIField("plan_your_visit"),
         ]
     )
 

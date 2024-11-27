@@ -1,4 +1,4 @@
-from .accordion import AccordionsBlock, DetailsBlock
+from .accordion import AccordionsBlock, DetailsBlock, SimplifiedAccordionBlock
 from .base import SectionDepthAwareStructBlock
 from .contact import ContactBlock
 from .cta import ButtonBlock, CallToActionBlock, LargeCardLinksBlock
@@ -67,6 +67,7 @@ __all__ = [
     "SectionBlock",
     "SectionDepthAwareStructBlock",
     "ShopCollectionBlock",
+    "SimplifiedAccordionBlock",
     "SubHeadingBlock",
     "SubSubHeadingBlock",
     "WarningTextBlock",
