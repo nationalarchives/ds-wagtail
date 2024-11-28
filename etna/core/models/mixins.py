@@ -207,12 +207,12 @@ class AccentColourChoices(models.TextChoices):
     """
 
     NONE = "none", _("None")
-    BLACK = "Black", _("Black")
-    PINK = "Pink", _("Pink")
-    ORANGE = "Orange", _("Orange")
-    YELLOW = "Yellow", _("Yellow")
-    GREEN = "Green", _("Green")
-    BLUE = "Blue", _("Blue")
+    BLACK = "black", _("Black")
+    PINK = "pink", _("Pink")
+    ORANGE = "orange", _("Orange")
+    YELLOW = "yellow", _("Yellow")
+    GREEN = "green", _("Green")
+    BLUE = "blue", _("Blue")
 
 
 class AccentColourMixin(models.Model):

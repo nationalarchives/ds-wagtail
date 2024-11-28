@@ -801,6 +801,7 @@ class ExhibitionPage(
         null=True,
         verbose_name=_("booking details"),
         help_text=_("Information about how to book tickets for the exhibition."),
+        features=["link"],
     )
 
     open_days = models.CharField(
