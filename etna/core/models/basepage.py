@@ -5,6 +5,7 @@ from django.db import models
 from django.db.models import options
 from django.http import HttpRequest
 from django.utils.decorators import method_decorator
+from django.utils.functional import cached_property
 from django.utils.text import capfirst
 from django.utils.translation import gettext_lazy as _
 
@@ -95,7 +96,7 @@ class BasePage(AlertMixin, SocialMixin, DataLayerMixin, HeadlessPreviewMixin, Pa
     class Meta:
         abstract = True
 
-    @classmethod
+    @cached_property
     def type_label(cls) -> str:
         """
         Return the label to use for this page type in the front-end,

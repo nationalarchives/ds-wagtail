@@ -906,6 +906,7 @@ class ExhibitionPage(
     # DataLayerMixin overrides
     gtm_content_group = "What's On"
 
+    @cached_property
     def type_label(cls) -> str:
         """
         Overrides the type_label method from BasePage, to return the correct
