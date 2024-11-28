@@ -1,6 +1,5 @@
 from datetime import timedelta
 
-from django.core.validators import RegexValidator
 from django.db import models
 from django.utils import timezone
 from django.utils.functional import cached_property
@@ -201,22 +200,30 @@ class RequiredHeroImageMixin(HeroImageMixin):
     base_form_class = RequiredHeroImagePageForm
 
 
+class AccentColourChoices(models.TextChoices):
+    """
+    This model is a list of our accent colours, which can be used
+    for various components on the site.
+    """
+
+    NONE = "none", _("None")
+    BLACK = "Black", _("Black")
+    PINK = "Pink", _("Pink")
+    ORANGE = "Orange", _("Orange")
+    YELLOW = "Yellow", _("Yellow")
+    GREEN = "Green", _("Green")
+    BLUE = "Blue", _("Blue")
+
+
 class AccentColourMixin(models.Model):
     """Mixin to add accent_colour attribute to a Page."""
 
     accent_colour = models.CharField(
-        max_length=7,
-        blank=True,
-        help_text=_(
-            "A hex colour code to be used as the accent colour for this page. "
-            "If left blank, the default colour will be used."
-        ),
-        verbose_name=_("Accent colour"),
-        validators=[
-            RegexValidator(
-                regex=r"^#[0-9a-fA-F]{6}$", message="Enter a valid hex colour code."
-            )
-        ],
+        max_length=20,
+        default=AccentColourChoices.NONE,
+        verbose_name=_("hero text colour"),
+        help_text=_("The accent colour of the page where relevant."),
+        choices=AccentColourChoices.choices,
     )
 
     class Meta:

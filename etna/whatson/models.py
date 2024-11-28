@@ -36,7 +36,7 @@ from etna.core.blocks import (
 from etna.core.models import (
     AccentColourMixin,
     BasePageWithRequiredIntro,
-    HeroImageMixin,
+    RequiredHeroImageMixin,
 )
 from etna.core.serializers import DefaultPageSerializer, RichTextSerializer
 
@@ -755,7 +755,7 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithRequiredIntro):
 class ExhibitionPage(
     ArticleTagMixin,
     AccentColourMixin,
-    HeroImageMixin,
+    RequiredHeroImageMixin,
     TopicalPageMixin,
     BasePageWithRequiredIntro,
 ):
@@ -767,32 +767,39 @@ class ExhibitionPage(
 
     # Hero section
     subtitle = models.CharField(
-        max_length=255,
+        max_length=120,
         verbose_name=_("subtitle"),
-        blank=True,
         help_text=_("A subtitle for the event."),
     )
 
     # Key details section
-    start_date = models.DateTimeField(
+    start_date = models.DateField(
         verbose_name=_("start date"),
         null=True,
     )
 
-    end_date = models.DateTimeField(
+    end_date = models.DateField(
         verbose_name=_("end date"),
         null=True,
     )
 
-    price = models.IntegerField(
+    exclude_days = models.BooleanField(
+        verbose_name=_("exclude days"),
+        default=False,
+        help_text=_(
+            "Check this box to show only the month and year on the exhibition."
+        ),
+    )
+
+    price = models.FloatField(
         verbose_name=_("price"),
         default=0,
     )
 
     booking_details = RichTextField(
         max_length=40,
+        null=True,
         verbose_name=_("booking details"),
-        blank=True,
         help_text=_("Information about how to book tickets for the exhibition."),
     )
 
@@ -800,7 +807,7 @@ class ExhibitionPage(
         max_length=255,
         verbose_name=_("open days"),
         blank=True,
-        help_text=_("The days the exhibition is open, e.g. Tuesday - Sunday."),
+        help_text=_("The days the exhibition is open, e.g. Tuesday to Sunday."),
     )
 
     audience_heading = models.CharField(
@@ -820,20 +827,20 @@ class ExhibitionPage(
     location_space_name = models.CharField(
         max_length=40,
         verbose_name=_("location space name"),
-        blank=True,
+        null=True,
         help_text=_("The location of the exhibition within the venue."),
     )
 
     location_link_text = models.CharField(
         verbose_name=_("location link text"),
-        blank=True,
+        null=True,
         help_text=_("The text for the location section."),
     )
 
     location_link_url = models.URLField(
         max_length=255,
         verbose_name=_("location link URL"),
-        blank=True,
+        null=True,
         help_text=_("The URL for the location section."),
     )
 
@@ -899,8 +906,22 @@ class ExhibitionPage(
     # DataLayerMixin overrides
     gtm_content_group = "What's On"
 
+    def type_label(cls) -> str:
+        """
+        Overrides the type_label method from BasePage, to return the correct
+        type label for the exhibition page.
+
+        NOTE: Removed `@classmethod` as that only acts on the class itself rather
+        than an instance of the class.
+        """
+        if cls.end_date < timezone.now().date():
+            return "Past exhibition"
+        return "Exhibition"
+
     class Meta:
         verbose_name = _("exhibition page")
+        verbose_name_plural = _("exhibition pages")
+        verbose_name_public = _("exhibition")
 
     content_panels = BasePageWithRequiredIntro.content_panels + [
         MultiFieldPanel(
@@ -935,12 +956,17 @@ class ExhibitionPage(
     ]
 
     key_details_panels = [
-        FieldRowPanel(
+        MultiFieldPanel(
             [
-                FieldPanel("start_date"),
-                FieldPanel("end_date"),
+                FieldRowPanel(
+                    [
+                        FieldPanel("start_date"),
+                        FieldPanel("end_date"),
+                    ],
+                ),
+                FieldPanel("exclude_days"),
             ],
-            heading=_("Dates"),
+            heading=_("Date details"),
         ),
         MultiFieldPanel(
             [
@@ -978,14 +1004,14 @@ class ExhibitionPage(
 
     api_fields = (
         BasePageWithRequiredIntro.api_fields
-        + HeroImageMixin.api_fields
+        + RequiredHeroImageMixin.api_fields
         + AccentColourMixin.api_fields
         + [
             APIField("subtitle"),
             APIField("start_date"),
             APIField("end_date"),
+            APIField("exclude_days"),
             APIField("price"),
-            APIField("price_label"),
             APIField("open_days"),
             APIField("booking_details", serializer=RichTextSerializer()),
             APIField("audience_heading"),
@@ -1004,6 +1030,8 @@ class ExhibitionPage(
             APIField("shop"),
             APIField("plan_your_visit"),
         ]
+        + TopicalPageMixin.api_fields
+        + ArticleTagMixin.api_fields
     )
 
     edit_handler = TabbedInterface(
@@ -1025,18 +1053,9 @@ class ExhibitionPage(
     )
 
     parent_page_types = [
-        "whatson.WhatsOnPage",
+        "home.HomePage",
     ]
     subpage_types = []
-
-    @cached_property
-    def price_label(self):
-        """
-        Returns a human readable price for the event.
-        """
-        if self.price == 0:
-            return "Free"
-        return f"From {self.price}"
 
     def clean(self):
         """
