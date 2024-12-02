@@ -25,6 +25,7 @@ from wagtail.snippets.models import register_snippet
 from etna.articles.models import ArticleTagMixin
 from etna.collections.models import TopicalPageMixin
 from etna.core.blocks import (
+    FeaturedExternalLinkBlock,
     FeaturedPagesBlock,
     ImageGalleryBlock,
     LargeCardLinksBlock,
@@ -36,6 +37,7 @@ from etna.core.blocks import (
 from etna.core.models import (
     AccentColourMixin,
     BasePageWithRequiredIntro,
+    HeroAccentColourMixin,
     RequiredHeroImageMixin,
 )
 from etna.core.serializers import DefaultPageSerializer, RichTextSerializer
@@ -755,6 +757,7 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithRequiredIntro):
 class ExhibitionPage(
     ArticleTagMixin,
     AccentColourMixin,
+    HeroAccentColourMixin,
     RequiredHeroImageMixin,
     TopicalPageMixin,
     BasePageWithRequiredIntro,
@@ -891,6 +894,19 @@ class ExhibitionPage(
 
     related_pages = StreamField(FeaturedPagesBlock(), blank=True, null=True)
 
+    event_title = models.CharField(
+        max_length=100,
+        verbose_name=_("event title"),
+        help_text=_("The title of the events section."),
+        default="Exhibition events",
+    )
+
+    event_links = StreamField(
+        [("event_links", blocks.ListBlock(FeaturedExternalLinkBlock(), max_num=2))],
+        max_num=1,
+        null=True,
+    )
+
     shop = StreamField(
         [("shop", ShopCollectionBlock())],
         blank=True,
@@ -912,9 +928,6 @@ class ExhibitionPage(
         """
         Overrides the type_label method from BasePage, to return the correct
         type label for the exhibition page.
-
-        NOTE: Removed `@classmethod` as that only acts on the class itself rather
-        than an instance of the class.
         """
         if cls.end_date < timezone.now().date():
             return "Past exhibition"
@@ -930,6 +943,7 @@ class ExhibitionPage(
             [
                 FieldPanel("hero_image"),
                 FieldPanel("hero_image_caption"),
+                FieldPanel("hero_accent_colour"),
                 FieldPanel("subtitle"),
                 FieldPanel("accent_colour"),
             ],
@@ -950,6 +964,8 @@ class ExhibitionPage(
                 FieldPanel("related_pages_title"),
                 FieldPanel("featured_page"),
                 FieldPanel("related_pages"),
+                FieldPanel("event_title"),
+                FieldPanel("event_links"),
                 FieldPanel("shop"),
             ],
             heading=_("Related content"),
@@ -1007,6 +1023,7 @@ class ExhibitionPage(
     api_fields = (
         BasePageWithRequiredIntro.api_fields
         + RequiredHeroImageMixin.api_fields
+        + HeroAccentColourMixin.api_fields
         + AccentColourMixin.api_fields
         + [
             APIField("subtitle"),
@@ -1029,6 +1046,8 @@ class ExhibitionPage(
             APIField("related_pages_title"),
             APIField("featured_page", serializer=DefaultPageSerializer()),
             APIField("related_pages"),
+            APIField("event_title"),
+            APIField("event_links"),
             APIField("shop"),
             APIField("plan_your_visit"),
         ]
