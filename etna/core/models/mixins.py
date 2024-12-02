@@ -11,6 +11,7 @@ from wagtail.api import APIField
 from wagtail.fields import RichTextField
 from wagtail.images import get_image_model_string
 
+from etna.core.colours import BrandColourChoices, HeroColourChoices
 from etna.core.serializers import (
     DetailedImageSerializer,
     ImageSerializer,
@@ -24,6 +25,7 @@ __all__ = [
     "ContentWarningMixin",
     "NewLabelMixin",
     "HeroImageMixin",
+    "HeroAccentColourMixin",
     "RequiredHeroImageMixin",
     "SidebarMixin",
     "SocialMixin",
@@ -200,30 +202,15 @@ class RequiredHeroImageMixin(HeroImageMixin):
     base_form_class = RequiredHeroImagePageForm
 
 
-class AccentColourChoices(models.TextChoices):
-    """
-    This model is a list of our accent colours, which can be used
-    for various components on the site.
-    """
-
-    NONE = "none", _("None")
-    BLACK = "black", _("Black")
-    PINK = "pink", _("Pink")
-    ORANGE = "orange", _("Orange")
-    YELLOW = "yellow", _("Yellow")
-    GREEN = "green", _("Green")
-    BLUE = "blue", _("Blue")
-
-
 class AccentColourMixin(models.Model):
     """Mixin to add accent_colour attribute to a Page."""
 
     accent_colour = models.CharField(
         max_length=20,
-        default=AccentColourChoices.NONE,
-        verbose_name=_("hero text colour"),
+        default=BrandColourChoices.NONE,
+        verbose_name=_("page accent colour"),
         help_text=_("The accent colour of the page where relevant."),
-        choices=AccentColourChoices.choices,
+        choices=BrandColourChoices.choices,
     )
 
     class Meta:
@@ -235,6 +222,29 @@ class AccentColourMixin(models.Model):
 
     api_fields = [
         APIField("accent_colour"),
+    ]
+
+
+class HeroAccentColourMixin(models.Model):
+    """Mixin to choose the accent colour of the hero component"""
+
+    hero_accent_colour = models.CharField(
+        max_length=20,
+        default=HeroColourChoices.NONE,
+        verbose_name=_("hero component colour"),
+        help_text=_("The accent colour of the hero component."),
+        choices=HeroColourChoices.choices,
+    )
+
+    class Meta:
+        abstract = True
+
+    content_panels = [
+        FieldPanel("hero_accent_colour"),
+    ]
+
+    api_fields = [
+        APIField("hero_accent_colour"),
     ]
 
 
