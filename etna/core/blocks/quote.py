@@ -37,6 +37,11 @@ class ReviewBlock(QuoteBlock):
         default=0,
     )
 
+    def get_api_representation(self, value, context=None):
+        representation = super().get_api_representation(value, context)
+        representation["stars"] = int(value.get("stars"))
+        return representation
+
     class Meta:
         icon = "pick"
         label = "Review"

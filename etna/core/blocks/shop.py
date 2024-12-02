@@ -31,7 +31,6 @@ class ShopCollectionBlock(blocks.StructBlock):
 
     background_image = APIImageChooserBlock(
         label="Background image",
-        required=False,
     )
 
     class Meta:
