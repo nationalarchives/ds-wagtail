@@ -241,7 +241,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name="exhibitionpage",
-            name="hero_accent_colour",
+            name="hero_style",
             field=models.CharField(
                 choices=[
                     ("none", "None"),

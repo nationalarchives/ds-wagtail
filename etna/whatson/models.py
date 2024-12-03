@@ -943,7 +943,7 @@ class ExhibitionPage(
             [
                 FieldPanel("hero_image"),
                 FieldPanel("hero_image_caption"),
-                FieldPanel("hero_accent_colour"),
+                FieldPanel("hero_style"),
                 FieldPanel("subtitle"),
                 FieldPanel("accent_colour"),
             ],

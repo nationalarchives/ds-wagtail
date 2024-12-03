@@ -228,7 +228,7 @@ class AccentColourMixin(models.Model):
 class HeroAccentColourMixin(models.Model):
     """Mixin to choose the accent colour of the hero component"""
 
-    hero_accent_colour = models.CharField(
+    hero_style = models.CharField(
         max_length=20,
         default=HeroColourChoices.NONE,
         verbose_name=_("hero component colour"),
@@ -240,11 +240,11 @@ class HeroAccentColourMixin(models.Model):
         abstract = True
 
     content_panels = [
-        FieldPanel("hero_accent_colour"),
+        FieldPanel("hero_style"),
     ]
 
     api_fields = [
-        APIField("hero_accent_colour"),
+        APIField("hero_style"),
     ]
 
 
