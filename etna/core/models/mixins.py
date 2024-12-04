@@ -11,12 +11,12 @@ from wagtail.api import APIField
 from wagtail.fields import RichTextField
 from wagtail.images import get_image_model_string
 
-from etna.core.styling import BrandColourChoices, HeroColourChoices, HeroLayoutChoices
 from etna.core.serializers import (
     DetailedImageSerializer,
     ImageSerializer,
     RichTextSerializer,
 )
+from etna.core.styling import BrandColourChoices, HeroColourChoices, HeroLayoutChoices
 
 from .forms import RequiredHeroImagePageForm
 
