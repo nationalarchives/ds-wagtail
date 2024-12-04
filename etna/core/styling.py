@@ -27,3 +27,13 @@ class HeroColourChoices(models.TextChoices):
     CONTRAST = "contrast", _("Contrast")
     TINT = "tint", _("Tint")
     ACCENT = "accent", _("Accent")
+
+
+class HeroLayoutChoices(models.TextChoices):
+    """
+    This model is a list of our "hero" layouts, which can be used
+    on the hero component.
+    """
+    DEFAULT = "default", _("Default")
+    SHIFT = "shift", _("Shifted")
+    SPLIT = "split", _("Split")

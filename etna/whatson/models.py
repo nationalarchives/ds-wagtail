@@ -38,6 +38,7 @@ from etna.core.models import (
     AccentColourMixin,
     BasePageWithRequiredIntro,
     HeroAccentColourMixin,
+    HeroLayoutMixin,
     RequiredHeroImageMixin,
 )
 from etna.core.serializers import DefaultPageSerializer, RichTextSerializer
@@ -758,6 +759,7 @@ class ExhibitionPage(
     ArticleTagMixin,
     AccentColourMixin,
     HeroAccentColourMixin,
+    HeroLayoutMixin,
     RequiredHeroImageMixin,
     TopicalPageMixin,
     BasePageWithRequiredIntro,
@@ -944,8 +946,8 @@ class ExhibitionPage(
                 FieldPanel("hero_image"),
                 FieldPanel("hero_image_caption"),
                 FieldPanel("hero_style"),
+                FieldPanel("hero_layout"),
                 FieldPanel("subtitle"),
-                FieldPanel("accent_colour"),
             ],
             heading=_("Hero section"),
         ),
@@ -1011,6 +1013,10 @@ class ExhibitionPage(
         ),
     ]
 
+    design_panels = [
+        FieldPanel("accent_colour"),
+    ]
+
     promote_panels = (
         BasePageWithRequiredIntro.promote_panels
         + ArticleTagMixin.promote_panels
@@ -1024,6 +1030,7 @@ class ExhibitionPage(
         BasePageWithRequiredIntro.api_fields
         + RequiredHeroImageMixin.api_fields
         + HeroAccentColourMixin.api_fields
+        + HeroLayoutMixin.api_fields
         + AccentColourMixin.api_fields
         + [
             APIField("subtitle"),
@@ -1059,6 +1066,7 @@ class ExhibitionPage(
         [
             ObjectList(content_panels, heading="Content"),
             ObjectList(key_details_panels, heading="Key details"),
+            ObjectList(design_panels, heading="Design"),
             ObjectList(promote_panels, heading="Promote"),
             ObjectList(BasePageWithRequiredIntro.settings_panels, heading="Settings"),
         ]

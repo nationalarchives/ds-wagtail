@@ -11,7 +11,7 @@ from wagtail.api import APIField
 from wagtail.fields import RichTextField
 from wagtail.images import get_image_model_string
 
-from etna.core.colours import BrandColourChoices, HeroColourChoices
+from etna.core.styling import BrandColourChoices, HeroColourChoices, HeroLayoutChoices
 from etna.core.serializers import (
     DetailedImageSerializer,
     ImageSerializer,
@@ -25,6 +25,7 @@ __all__ = [
     "ContentWarningMixin",
     "NewLabelMixin",
     "HeroImageMixin",
+    "HeroLayoutMixin",
     "HeroAccentColourMixin",
     "RequiredHeroImageMixin",
     "SidebarMixin",
@@ -222,6 +223,29 @@ class AccentColourMixin(models.Model):
 
     api_fields = [
         APIField("accent_colour"),
+    ]
+
+
+class HeroLayoutMixin(models.Model):
+    """Mixin to choose the layout of the hero component"""
+
+    hero_layout = models.CharField(
+        max_length=20,
+        default=HeroLayoutChoices.DEFAULT,
+        verbose_name=_("hero layout"),
+        help_text=_("The layout of the hero component."),
+        choices=HeroLayoutChoices.choices,
+    )
+
+    class Meta:
+        abstract = True
+
+    content_panels = [
+        FieldPanel("hero_layout"),
+    ]
+
+    api_fields = [
+        APIField("hero_layout"),
     ]
 
 
