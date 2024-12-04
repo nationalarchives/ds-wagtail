@@ -955,8 +955,8 @@ class ExhibitionPage(
             [
                 FieldPanel("description"),
                 # FieldPanel("email_signup"),
-                FieldPanel("review"),
                 FieldPanel("exhibition_highlights"),
+                FieldPanel("review"),
                 FieldPanel("video"),
             ],
             heading=_("Content"),
