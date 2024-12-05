@@ -280,7 +280,7 @@ Modified to match the existing site (for now)
 
 .tna-large-paragraph {
     @include colour.colour-font("font-dark");
-    @include typography.relative-font-size(22);
+    @include typography.font-size(22);
 }
 
 .template-focused-article {
@@ -452,8 +452,8 @@ Modified to match the existing site (for now)
     }
 
     &__highlight {
-        @include typography.relative-font-size(14);
-        @include colour.plain;
+        @include typography.font-size(14);
+        // @include colour.plain;
         z-index: 1;
         border-radius: 50%;
         aspect-ratio: 1 / 1;
@@ -518,7 +518,7 @@ Modified to match the existing site (for now)
             margin-top: 0;
 
             @include media.on-larger-than-mobile {
-                @include typography.relative-font-size(30);
+                @include typography.font-size(30);
             }
         }
 
@@ -527,7 +527,7 @@ Modified to match the existing site (for now)
         }
 
         .tna-card__body {
-            @include typography.relative-font-size(16);
+            @include typography.font-size(16);
             line-height: 1.5;
         }
     }
@@ -543,7 +543,7 @@ Modified to match the existing site (for now)
 
 .tna-scene-setter {
     &--small {
-        @include typography.relative-font-size(21);
+        @include typography.font-size(21);
         font-weight: $font-weight-light;
     }
 }

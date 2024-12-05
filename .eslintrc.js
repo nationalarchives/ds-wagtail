@@ -2,8 +2,6 @@ module.exports = {
     env: {
         browser: true,
         es2021: true,
-        jquery: true,
-        jest: true,
     },
     extends: ["eslint:recommended"],
     overrides: [
@@ -11,7 +9,7 @@ module.exports = {
             env: {
                 node: true,
             },
-            files: [".eslintrc.{js}"],
+            files: [".eslintrc.{js,cjs}"],
             parserOptions: {
                 sourceType: "script",
             },
@@ -22,5 +20,10 @@ module.exports = {
         sourceType: "module",
     },
     rules: {},
-    ignorePatterns: ["templates/static/scripts/**/*.js", ".*.js", "*.config.js"],
+    ignorePatterns: [
+        "templates/static/scripts/**/*.js",
+        ".*.js",
+        "*.config.js",
+        "static",
+    ],
 };
