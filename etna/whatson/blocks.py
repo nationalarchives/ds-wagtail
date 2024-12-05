@@ -1,6 +1,6 @@
 from wagtail import blocks
 
-from etna.core.blocks import PageListBlock
+from etna.core.blocks import PageListBlock, ParagraphBlock, QuoteBlock
 
 
 class WhatsOnPromotedLinksBlock(blocks.StructBlock):
@@ -10,3 +10,8 @@ class WhatsOnPromotedLinksBlock(blocks.StructBlock):
     class Meta:
         template = "blocks/whats_on_promoted_links.html"
         icon = "list"
+
+
+class ExhibitionPageStreamBlock(blocks.StreamBlock):
+    paragraph = ParagraphBlock()
+    quote = QuoteBlock()

@@ -14,6 +14,7 @@ from wagtail.admin.panels import (
     MultiFieldPanel,
     ObjectList,
     TabbedInterface,
+    TitleFieldPanel,
 )
 from wagtail.api import APIField
 from wagtail.fields import RichTextField, StreamField
@@ -37,13 +38,13 @@ from etna.core.blocks import (
 from etna.core.models import (
     AccentColourMixin,
     BasePageWithRequiredIntro,
-    HeroStyleMixin,
     HeroLayoutMixin,
+    HeroStyleMixin,
     RequiredHeroImageMixin,
 )
 from etna.core.serializers import DefaultPageSerializer, RichTextSerializer
 
-from .blocks import WhatsOnPromotedLinksBlock
+from .blocks import ExhibitionPageStreamBlock, WhatsOnPromotedLinksBlock
 from .forms import EventPageForm
 
 
@@ -851,11 +852,7 @@ class ExhibitionPage(
     )
 
     # Body section
-    description = RichTextField(
-        verbose_name=_("description"),
-        help_text=_("A description of the exhibition."),
-        features=settings.RESTRICTED_RICH_TEXT_FEATURES,
-    )
+    body = StreamField(ExhibitionPageStreamBlock, blank=True, null=True)
 
     # email_signup = ...
 
@@ -901,12 +898,15 @@ class ExhibitionPage(
         verbose_name=_("event title"),
         help_text=_("The title of the events section."),
         default="Exhibition events",
+        blank=True,
+        null=True,
     )
 
     event_links = StreamField(
         [("event_links", blocks.ListBlock(FeaturedExternalLinkBlock(), max_num=2))],
         max_num=1,
         null=True,
+        blank=True,
     )
 
     shop = StreamField(
@@ -940,20 +940,22 @@ class ExhibitionPage(
         verbose_name_plural = _("exhibition pages")
         verbose_name_public = _("exhibition")
 
-    content_panels = BasePageWithRequiredIntro.content_panels + [
+    content_panels = [
+        TitleFieldPanel("title"),
+        FieldPanel("subtitle"),
         MultiFieldPanel(
             [
                 FieldPanel("hero_image"),
                 FieldPanel("hero_image_caption"),
                 FieldPanel("hero_style"),
                 FieldPanel("hero_layout"),
-                FieldPanel("subtitle"),
             ],
             heading=_("Hero section"),
         ),
         MultiFieldPanel(
             [
-                FieldPanel("description"),
+                FieldPanel("intro"),
+                FieldPanel("body"),
                 # FieldPanel("email_signup"),
                 FieldPanel("exhibition_highlights"),
                 FieldPanel("review"),
@@ -1045,7 +1047,7 @@ class ExhibitionPage(
             APIField("location_space_name"),
             APIField("location_link_text"),
             APIField("location_link_url"),
-            APIField("description", serializer=RichTextSerializer()),
+            APIField("body"),
             # APIField("email_signup"),
             APIField("exhibition_highlights"),
             APIField("review"),

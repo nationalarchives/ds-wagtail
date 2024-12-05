@@ -25,6 +25,7 @@ class ReviewBlock(QuoteBlock):
     a newspaper, that has given us a review. A quote block with stars.
     """
 
+    attribution = blocks.CharBlock(required=True, max_length=100)
     stars = blocks.ChoiceBlock(
         choices=[
             (0, "No stars"),
