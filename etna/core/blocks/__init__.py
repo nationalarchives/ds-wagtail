@@ -1,4 +1,4 @@
-from .accordion import AccordionsBlock, DetailsBlock
+from .accordion import AccordionsBlock, DetailsBlock, SimplifiedAccordionBlock
 from .base import SectionDepthAwareStructBlock
 from .contact import ContactBlock
 from .cta import ButtonBlock, CallToActionBlock, LargeCardLinksBlock
@@ -18,15 +18,17 @@ from .promoted_links import (
     AuthorPromotedPagesBlock,
     FeaturedExternalLinkBlock,
     FeaturedPageBlock,
+    FeaturedPagesBlock,
     PromotedItemBlock,
     PromotedLinkBlock,
     PromotedListBlock,
 )
-from .quote import QuoteBlock
+from .quote import QuoteBlock, ReviewBlock
 from .section import SectionBlock, SubHeadingBlock, SubSubHeadingBlock
+from .shop import ShopCollectionBlock
 from .tables import ContentTableBlock
 from .text import InsetTextBlock, WarningTextBlock
-from .video import YouTubeBlock
+from .video import MixedMediaBlock, YouTubeBlock
 
 __all__ = [
     "AccordionsBlock",
@@ -45,6 +47,7 @@ __all__ = [
     "FeaturedRecordArticleBlock",
     "FeaturedCollectionBlock",
     "FeaturedPageBlock",
+    "FeaturedPagesBlock",
     "ImageBlock",
     "ImageGalleryBlock",
     "InsetTextBlock",
@@ -57,10 +60,14 @@ __all__ = [
     "PromotedItemBlock",
     "AuthorPromotedLinkBlock",
     "LargeCardLinksBlock",
+    "MixedMediaBlock",
     "QuoteBlock",
     "RelatedItemBlock",
+    "ReviewBlock",
     "SectionBlock",
     "SectionDepthAwareStructBlock",
+    "ShopCollectionBlock",
+    "SimplifiedAccordionBlock",
     "SubHeadingBlock",
     "SubSubHeadingBlock",
     "WarningTextBlock",

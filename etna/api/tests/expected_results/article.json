@@ -185,7 +185,7 @@
                         "type": "media",
                         "value": {
                             "title": "Media title",
-                            "background_image": {
+                            "thumbnail": {
                                 "id": 1,
                                 "title": "An image",
                                 "jpeg": {
