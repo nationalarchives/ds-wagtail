@@ -37,7 +37,7 @@ from etna.core.blocks import (
 from etna.core.models import (
     AccentColourMixin,
     BasePageWithRequiredIntro,
-    HeroAccentColourMixin,
+    HeroStyleMixin,
     HeroLayoutMixin,
     RequiredHeroImageMixin,
 )
@@ -758,7 +758,7 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithRequiredIntro):
 class ExhibitionPage(
     ArticleTagMixin,
     AccentColourMixin,
-    HeroAccentColourMixin,
+    HeroStyleMixin,
     HeroLayoutMixin,
     RequiredHeroImageMixin,
     TopicalPageMixin,
@@ -1029,7 +1029,7 @@ class ExhibitionPage(
     api_fields = (
         BasePageWithRequiredIntro.api_fields
         + RequiredHeroImageMixin.api_fields
-        + HeroAccentColourMixin.api_fields
+        + HeroStyleMixin.api_fields
         + HeroLayoutMixin.api_fields
         + AccentColourMixin.api_fields
         + [

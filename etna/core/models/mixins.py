@@ -26,7 +26,7 @@ __all__ = [
     "NewLabelMixin",
     "HeroImageMixin",
     "HeroLayoutMixin",
-    "HeroAccentColourMixin",
+    "HeroStyleMixin",
     "RequiredHeroImageMixin",
     "SidebarMixin",
     "SocialMixin",
@@ -249,7 +249,7 @@ class HeroLayoutMixin(models.Model):
     ]
 
 
-class HeroAccentColourMixin(models.Model):
+class HeroStyleMixin(models.Model):
     """Mixin to choose the accent colour of the hero component"""
 
     hero_style = models.CharField(
