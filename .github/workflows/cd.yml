@@ -38,7 +38,7 @@ jobs:
       - version
     permissions:
       packages: write
-      contents: read
+      contents: write
     steps:
       - uses: actions/checkout@v4
       - name: Build Docker image
@@ -48,6 +48,17 @@ jobs:
           latest: ${{ github.ref == 'refs/heads/main' }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
           docker-image-name: ${{ vars.DOCKER_IMAGE_NAME }}
+      - name: Create tag
+        if: github.ref == 'refs/heads/main'
+        uses: actions/github-script@v5
+        with:
+          script: |
+            github.rest.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: 'refs/tags/v${{ needs.version.outputs.version }}',
+              sha: context.sha
+            })
 
   update-ds-infrastructure-web:
     runs-on: ubuntu-latest
