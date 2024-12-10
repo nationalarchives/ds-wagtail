@@ -15,8 +15,10 @@ if os.path.exists(".env"):
             os.environ.setdefault(var, value)
 
 
-LOCAL_DATABASE_NAME = os.getenv("DATABASE_NAME")
-LOCAL_DATABASE_USERNAME = os.getenv("DATABASE_USER")
+LOCAL_DATABASE_NAME = os.getenv("DATABASE_NAME", "postgres")
+LOCAL_DATABASE_USERNAME = os.getenv("DATABASE_USER", "postgres")
+LOCAL_DATABASE_HOST = os.getenv("DATABASE_HOST", "db")
+LOCAL_DATABASE_PASSWORD = os.getenv("DATABASE_PASSWORD", "postgres")
 
 PLATFORM_PROJECT_ID = "rasrzs7pi6sd4"
 PRODUCTION_APP_INSTANCE = "main"
@@ -223,10 +225,10 @@ def delete_local_renditions(c):
 
 def delete_db(c):
     db_exec(
-        f"dropdb --if-exists --host db --username={LOCAL_DATABASE_USERNAME} {LOCAL_DATABASE_NAME}"
+        f"dropdb --if-exists --host db --username={LOCAL_DATABASE_USERNAME} --password={LOCAL_DATABASE_PASSWORD} {LOCAL_DATABASE_NAME}"
     )
     db_exec(
-        f"createdb --host db --username={LOCAL_DATABASE_USERNAME} {LOCAL_DATABASE_NAME}"
+        f"createdb --host db --username={LOCAL_DATABASE_USERNAME} --password={LOCAL_DATABASE_PASSWORD} {LOCAL_DATABASE_NAME}"
     )
 
 
@@ -253,7 +255,7 @@ def restore_db(c, filename, delete_dump_on_success=False, delete_dump_on_error=F
     try:
         print(f"Restoring datbase from: {filename}")
         db_exec(
-            f"psql -d {LOCAL_DATABASE_NAME} -U {LOCAL_DATABASE_USERNAME} < {filename}",
+            f"psql postgresql://{LOCAL_DATABASE_USERNAME}:{LOCAL_DATABASE_PASSWORD}@{LOCAL_DATABASE_HOST}/{LOCAL_DATABASE_NAME} < {filename}",
             check_returncode=True,
         )
     except subprocess.CalledProcessError:

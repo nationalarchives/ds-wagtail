@@ -336,7 +336,7 @@ class NativeWebsiteSearchForm(FeaturedSearchForm):
         self.fields["format"].choices = [
             (
                 model._meta.label_lower,
-                model.type_label() or model._meta.verbose_name.lower()[:-5],
+                model._meta.verbose_name.lower(),
             )
             for model in get_page_models()
             if issubclass(model, BasePage) and not model._meta.abstract

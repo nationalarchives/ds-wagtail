@@ -16,13 +16,17 @@ from etna.core.serializers import (
     ImageSerializer,
     RichTextSerializer,
 )
+from etna.core.styling import BrandColourChoices, HeroColourChoices, HeroLayoutChoices
 
 from .forms import RequiredHeroImagePageForm
 
 __all__ = [
+    "AccentColourMixin",
     "ContentWarningMixin",
     "NewLabelMixin",
     "HeroImageMixin",
+    "HeroLayoutMixin",
+    "HeroStyleMixin",
     "RequiredHeroImageMixin",
     "SidebarMixin",
     "SocialMixin",
@@ -197,6 +201,75 @@ class RequiredHeroImageMixin(HeroImageMixin):
         abstract = True
 
     base_form_class = RequiredHeroImagePageForm
+
+
+class AccentColourMixin(models.Model):
+    """Mixin to add accent_colour attribute to a Page."""
+
+    accent_colour = models.CharField(
+        max_length=20,
+        default=BrandColourChoices.NONE,
+        verbose_name=_("page accent colour"),
+        help_text=_("The accent colour of the page where relevant."),
+        choices=BrandColourChoices.choices,
+    )
+
+    class Meta:
+        abstract = True
+
+    content_panels = [
+        FieldPanel("accent_colour"),
+    ]
+
+    api_fields = [
+        APIField("accent_colour"),
+    ]
+
+
+class HeroLayoutMixin(models.Model):
+    """Mixin to choose the layout of the hero component"""
+
+    hero_layout = models.CharField(
+        max_length=20,
+        default=HeroLayoutChoices.DEFAULT,
+        verbose_name=_("hero layout"),
+        help_text=_("The layout of the hero component."),
+        choices=HeroLayoutChoices.choices,
+    )
+
+    class Meta:
+        abstract = True
+
+    content_panels = [
+        FieldPanel("hero_layout"),
+    ]
+
+    api_fields = [
+        APIField("hero_layout"),
+    ]
+
+
+class HeroStyleMixin(models.Model):
+    """Mixin to choose the accent colour of the hero component"""
+
+    hero_style = models.CharField(
+        max_length=20,
+        default=HeroColourChoices.NONE,
+        verbose_name=_("hero component colour"),
+        help_text=_("The accent colour of the hero component."),
+        choices=HeroColourChoices.choices,
+    )
+
+    class Meta:
+        abstract = True
+
+    content_panels = [
+        FieldPanel("hero_style"),
+    ]
+
+    api_fields = [
+        APIField("hero_style"),
+    ]
 
 
 class SidebarMixin(models.Model):

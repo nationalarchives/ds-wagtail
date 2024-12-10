@@ -957,7 +957,7 @@ class NativeWebsiteSearchView(SearchDataLayerMixin, MultipleObjectMixin, GETForm
                 page_type_filters.append(
                     (
                         model._meta.label_lower,
-                        f"Format: {model.type_label() or model._meta.verbose_name.lower()[:-5]}",
+                        f"Format: {model._meta.verbose_name.lower()}",
                     )
                 )
             self.selected_filters["format"] = sorted(

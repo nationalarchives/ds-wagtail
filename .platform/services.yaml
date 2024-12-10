@@ -1,5 +1,5 @@
 db:
-    type: postgresql:12
+    type: postgresql:16
     disk: 512
 
 redis:
