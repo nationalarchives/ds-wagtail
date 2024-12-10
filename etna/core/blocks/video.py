@@ -20,7 +20,7 @@ class YouTubeBlock(blocks.StructBlock):
         ],
     )
     preview_image = APIImageChooserBlock(
-        rendition_size="max-640x360", required=False, label="Preview Image"
+        rendition_size="fill-640x360", required=False, label="Preview Image"
     )
     transcript = blocks.RichTextBlock(required=False, label="Transcript")
     captions_available = blocks.BooleanBlock(
