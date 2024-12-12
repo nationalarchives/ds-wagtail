@@ -200,3 +200,12 @@ class FeaturedExternalLinkBlock(blocks.StructBlock):
     class Meta:
         icon = "doc-full"
         label = "Featured external link"
+
+
+class FeaturedPagesBlock(blocks.StreamBlock):
+    featured_page = FeaturedPageBlock()
+    featured_external_link = FeaturedExternalLinkBlock()
+
+    class Meta:
+        icon = "doc-full"
+        label = "Featured pages list"
