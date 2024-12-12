@@ -89,7 +89,7 @@
         "translation": null,
         "copyright": null,
         "is_sensitive": false,
-        "custom_sensitive_image": null
+        "custom_sensitive_image_warning": null
     },
     "hero_image_small": {
         "id": 15,
@@ -110,7 +110,7 @@
         "translation": null,
         "copyright": null,
         "is_sensitive": false,
-        "custom_sensitive_image": null
+        "custom_sensitive_image_warning": null
     },
     "display_content_warning": false,
     "custom_warning_text": "",

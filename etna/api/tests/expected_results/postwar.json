@@ -82,7 +82,7 @@
         "translation": null,
         "copyright": null,
         "is_sensitive": false,
-        "custom_sensitive_image": null
+        "custom_sensitive_image_warning": null
     },
     "hero_image_small": {
         "id": 7,
@@ -103,7 +103,7 @@
         "translation": null,
         "copyright": null,
         "is_sensitive": false,
-        "custom_sensitive_image": null
+        "custom_sensitive_image_warning": null
     },
     "global_alert": null,
     "type_label": "Explore the collection",
