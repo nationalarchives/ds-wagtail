@@ -761,7 +761,9 @@ class TopicalPageMixin:
 
 
 class HighlightSerializer(serializers.ModelSerializer):
-    image = HighlightImageSerializer(rendition_size="max-1024x1024", background_colour=None)
+    image = HighlightImageSerializer(
+        rendition_size="max-1024x1024", background_colour=None
+    )
 
     class Meta:
         model = Highlight
