@@ -373,10 +373,14 @@ class APIResponseTest(WagtailPageTestCase):
                 expected_data = self.replace_placeholders(expected_data)
 
                 # Remove random image rendition IDs
-                regex = r"/media/images/[a-zA-Z0-9_]+\.[a-fA-F0-9]{6,8}"
-                replace = "/media/images/image"
-                expected_data = re.sub(regex, replace, expected_data)
-                api_data = re.sub(regex, replace, api_data)
+                regex_start = r"/media/images/[a-zA-Z0-9_]+\.[a-fA-F0-9]{6,8}\."
+                replace_end = "/media/images/image."
+                expected_data = re.sub(regex_start, replace_end, expected_data)
+                api_data = re.sub(regex_start, replace_end, api_data)
+                regex_end = r"\.format-(jpeg|webp)\.(jpegquality|webpquality)-([0-9])+_[a-zA-Z]*\.(jpg|webp)"
+                regex_replace_end = r"\.format-\g<1>\.\g<2>-\g<3>\.\g<4>"
+                expected_data = re.sub(regex_end, regex_replace_end, expected_data)
+                api_data = re.sub(regex_end, regex_replace_end, api_data)
 
                 self.assertEqual(expected_data, api_data)
 
