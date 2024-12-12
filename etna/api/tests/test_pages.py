@@ -373,14 +373,14 @@ class APIResponseTest(WagtailPageTestCase):
                 expected_data = self.replace_placeholders(expected_data)
 
                 # Remove random image rendition IDs
-                expected_data = re.sub(r"0_[a-zA-Z0-9]{6,7}", "0", expected_data)
-                api_data = re.sub(r"0_[a-zA-Z0-9]{6,7}", "0", api_data)
-                expected_data = re.sub(r"e_[a-zA-Z0-9]{6,7}", "e", expected_data)
-                api_data = re.sub(r"e_[a-zA-Z0-9]{6,7}", "e", api_data)
-                expected_data = re.sub(r"l_[a-zA-Z0-9]{6,7}", "l", expected_data)
-                api_data = re.sub(r"l_[a-zA-Z0-9]{6,7}", "l", api_data)
-                expected_data = re.sub(r"p_[a-zA-Z0-9]{6,7}", "p", expected_data)
-                api_data = re.sub(r"p_[a-zA-Z0-9]{6,7}", "p", api_data)
+                expected_data = re.sub(r"0_[a-fA-F0-9]{6,8}", "0", expected_data)
+                api_data = re.sub(r"0_[a-fA-F0-9]{6,8}", "0", api_data)
+                expected_data = re.sub(r"e_[a-fA-F0-9]{6,8}", "e", expected_data)
+                api_data = re.sub(r"e_[a-fA-F0-9]{6,8}", "e", api_data)
+                expected_data = re.sub(r"l_[a-fA-F0-9]{6,8}", "l", expected_data)
+                api_data = re.sub(r"l_[a-fA-F0-9]{6,8}", "l", api_data)
+                expected_data = re.sub(r"p_[a-fA-F0-9]{6,8}", "p", expected_data)
+                api_data = re.sub(r"p_[a-fA-F0-9]{6,8}", "p", api_data)
 
                 self.assertEqual(expected_data, api_data)
 
