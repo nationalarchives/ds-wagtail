@@ -256,9 +256,9 @@ class NativeWebsiteSearchTestCase(TestCase):
 
         # 'Selected filters' should reflect the values in GET
         self.assertContains(response, '<h2 class="sr-only">Selected filters</h2>')
-        for label in ["The story of", "Record revealed"]:
+        for label in ["article", "record article"]:
             self.assertContains(response, f"Remove Format: {label} from search")
-        for label in ["In pictures", "Explore by time period", "Explore by topic"]:
+        for label in ["highlight gallery page", "time period page", "topic page"]:
             self.assertNotContains(response, f"Remove Format: {label} from search")
 
     def test_filter_by_topic(self):

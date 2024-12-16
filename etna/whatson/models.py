@@ -1,16 +1,22 @@
-import urllib
-
-from django import forms
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
-from django.shortcuts import render
 from django.utils import timezone
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
 
 from modelcluster.fields import ParentalKey
-from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
+from wagtail import blocks
+from wagtail.admin.panels import (
+    FieldPanel,
+    FieldRowPanel,
+    InlinePanel,
+    MultiFieldPanel,
+    ObjectList,
+    TabbedInterface,
+    TitleFieldPanel,
+)
+from wagtail.api import APIField
 from wagtail.fields import RichTextField, StreamField
 from wagtail.images import get_image_model_string
 from wagtail.models import Orderable
@@ -19,11 +25,26 @@ from wagtail.snippets.models import register_snippet
 
 from etna.articles.models import ArticleTagMixin
 from etna.collections.models import TopicalPageMixin
-from etna.core.blocks import LargeCardLinksBlock
-from etna.core.models import BasePageWithRequiredIntro
-from etna.core.utils import urlunparse
+from etna.core.blocks import (
+    FeaturedExternalLinkBlock,
+    FeaturedPagesBlock,
+    ImageGalleryBlock,
+    LargeCardLinksBlock,
+    MixedMediaBlock,
+    ReviewBlock,
+    ShopCollectionBlock,
+    SimplifiedAccordionBlock,
+)
+from etna.core.models import (
+    AccentColourMixin,
+    BasePageWithRequiredIntro,
+    HeroLayoutMixin,
+    HeroStyleMixin,
+    RequiredHeroImageMixin,
+)
+from etna.core.serializers import DefaultPageSerializer, RichTextSerializer
 
-from .blocks import RelatedArticlesBlock, WhatsOnPromotedLinksBlock
+from .blocks import ExhibitionPageStreamBlock, WhatsOnPromotedLinksBlock
 from .forms import EventPageForm
 
 
@@ -300,135 +321,6 @@ class WhatsOnPage(BasePageWithRequiredIntro):
         blank=True,
         max_num=1,
     )
-
-    def serve(self, request):
-        # Check if the request comes from JavaScript
-        # 'JS-Request' is a custom header added by the frontend
-        # If so, return just the event listing, not the full page
-        if request.headers.get("JS-Request"):
-            return render(
-                request, "includes/whats-on-listing.html", self.get_context(request)
-            )
-        else:
-            # Display whats on page as usual
-            return super().serve(request)
-
-    def get_events_queryset(self):
-        """
-        Returns a queryset of events that are children of this page.
-        """
-        return EventPage.objects.child_of(self).live().public().order_by("start_date")
-
-    def filter_events(self, events, filter_dict):
-        """
-        Filter the events queryset by any active filters.
-        """
-        if date_filter := filter_dict.get("date"):
-            events = events.filter(start_date__date=date_filter)
-        if event_type_filter := filter_dict.get("event_type"):
-            events = events.filter(event_type=event_type_filter)
-        if filter_dict.get("is_online_event"):
-            events = events.filter(venue_type=VenueType.ONLINE)
-        if filter_dict.get("family_friendly"):
-            events = events.filter(event_audience_types__audience_type__slug="families")
-
-        return events
-
-    def exclude_featured_event_from_listing(self, filtered_events):
-        """
-        Returns a tuple (events, should show featured event card).
-
-        If the featured event is excluded by the active filters, we shouldn't
-        render the featured event card.
-        """
-        if not self.featured_event:
-            return filtered_events, False
-
-        try:
-            # Is the featured event in the queryset?
-            filtered_events.get(id=self.featured_event_id)
-            # Didn't cause DoesNotExist, so it's not excluded by the filters - take
-            # it out of the main listing, and indicate that we should render the
-            # featured card.
-            return filtered_events.exclude(id=self.featured_event_id), True
-        except EventPage.DoesNotExist:
-            # The featured event is already excluded by the active filters, so don't
-            # render the featured event card.
-            return filtered_events, False
-
-    def get_context(self, request, *args, **kwargs):
-        """
-        Populate the context with the events to list on the page.
-
-        This should include a featured event, if one is selected, and if it
-        is not excluded by the active filters.
-
-        The list of non-featured events should not include the featured event
-        (if one is selected).
-
-        The list of non-featured events should have any active filters applied.
-        """
-        context = super().get_context(request, *args, **kwargs)
-        filter_form = EventFilterForm(request.GET)
-        events = self.get_events_queryset()
-
-        if filter_form.is_valid():
-            events = self.filter_events(events, filter_form.cleaned_data)
-
-        (
-            context["events"],
-            context["show_featured_event"],
-        ) = self.exclude_featured_event_from_listing(events)
-        context["filter_form"] = filter_form
-        context["active_filters"] = self.get_active_filters(request, filter_form)
-        context["total_results_with_featured"] = events.count()
-        return context
-
-    def get_active_filters(self, request, filter_form: "EventFilterForm"):
-        active_filters = []
-        if date := filter_form.cleaned_data.get("date"):
-            active_filters.append(
-                {
-                    "label": date,
-                    "remove_filter_url": self.build_unset_filter_url(request, "date"),
-                },
-            )
-        if event_type := filter_form.cleaned_data.get("event_type"):
-            active_filters.append(
-                {
-                    "label": event_type.name,
-                    "remove_filter_url": self.build_unset_filter_url(
-                        request, "event_type"
-                    ),
-                },
-            )
-        if filter_form.cleaned_data.get("is_online_event"):
-            active_filters.append(
-                {
-                    "label": filter_form.fields["is_online_event"].label,
-                    "remove_filter_url": self.build_unset_filter_url(
-                        request, "is_online_event"
-                    ),
-                },
-            )
-        if filter_form.cleaned_data.get("family_friendly"):
-            active_filters.append(
-                {
-                    "label": filter_form.fields["family_friendly"].label,
-                    "remove_filter_url": self.build_unset_filter_url(
-                        request, "family_friendly"
-                    ),
-                },
-            )
-        return active_filters
-
-    def build_unset_filter_url(self, request, field_name):
-        """
-        Build a URL that will remove the filter indicated by `field_name' from the
-        request.
-        """
-        params_dict = {k: v for k, v in request.GET.dict().items() if k != field_name}
-        return urlunparse(path=request.path, query=urllib.parse.urlencode(params_dict))
 
     # DataLayerMixin overrides
     gtm_content_group = "What's On"
@@ -864,303 +756,321 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithRequiredIntro):
     base_form_class = EventPageForm
 
 
-class EventFilterForm(forms.Form):
-    date = forms.DateField(
-        label="Choose a date",
-        required=False,
-        widget=forms.DateInput(
-            attrs={"type": "date", "class": "filters__date", "data-js-date": ""}
-        ),
-    )
-
-    event_type = forms.ModelChoiceField(
-        widget=forms.RadioSelect(
-            attrs={"class": "filters__radio", "data-js-event-type": ""}
-        ),
-        queryset=EventType.objects.all(),
-        required=False,
-        label="What",
-    )
-
-    is_online_event = forms.BooleanField(
-        label="Online",
-        required=False,
-        widget=forms.CheckboxInput(
-            attrs={"class": "filters__toggle-input", "data-js-online": ""}
-        ),
-    )
-
-    family_friendly = forms.BooleanField(
-        label="Family friendly",
-        required=False,
-        widget=forms.CheckboxInput(
-            attrs={"class": "filters__toggle-input", "data-js-family": ""}
-        ),
-    )
-
-
-class ExhibitionHighlight(Orderable):
-    """
-    This model is used to add highlights to exhibition pages.
-    """
-
-    page = ParentalKey(
-        "whatson.ExhibitionPage",
-        on_delete=models.CASCADE,
-        related_name="highlights",
-    )
-
-    title = models.CharField(
-        max_length=255,
-        verbose_name=_("title"),
-    )
-
-    image = models.ForeignKey(
-        get_image_model_string(),
-        null=True,
-        on_delete=models.SET_NULL,
-        related_name="+",
-    )
-
-    link = models.ForeignKey(
-        "wagtailcore.Page",
-        null=True,
-        on_delete=models.SET_NULL,
-        related_name="+",
-    )
-
-    panels = [
-        FieldPanel("title"),
-        FieldPanel("image"),
-        FieldPanel("link"),
-    ]
-
-
-class HeroColourChoices(models.TextChoices):
-    """
-    This model is used to allow for colour choice on the hero intro
-    for Exhibition pages.
-    """
-
-    LIGHT = "light", _("Light")
-    DARK = "dark", _("Dark")
-
-
-class ExhibitionPage(ArticleTagMixin, TopicalPageMixin, BasePageWithRequiredIntro):
+class ExhibitionPage(
+    ArticleTagMixin,
+    AccentColourMixin,
+    HeroStyleMixin,
+    HeroLayoutMixin,
+    RequiredHeroImageMixin,
+    TopicalPageMixin,
+    BasePageWithRequiredIntro,
+):
     """ExhibitionPage
 
     An event where editors can create exhibitions. Exhibitions do not come
     from Eventbrite - they are internal TNA exhibitions.
     """
 
-    # Hero image section
+    # Hero section
     subtitle = models.CharField(
-        max_length=255,
+        max_length=120,
         verbose_name=_("subtitle"),
-        blank=True,
         help_text=_("A subtitle for the event."),
     )
 
-    hero_image = models.ForeignKey(
-        get_image_model_string(),
-        null=True,
-        on_delete=models.SET_NULL,
-        related_name="+",
-    )
-
-    hero_text_colour = models.CharField(
-        max_length=255,
-        verbose_name=_("hero text colour"),
-        help_text=_("The colour of the text in the hero image."),
-        choices=HeroColourChoices.choices,
-    )
-
-    # Key details
-    start_date = models.DateTimeField(
+    # Key details section
+    start_date = models.DateField(
         verbose_name=_("start date"),
         null=True,
     )
 
-    end_date = models.DateTimeField(
+    end_date = models.DateField(
         verbose_name=_("end date"),
         null=True,
     )
 
-    min_price = models.IntegerField(
-        verbose_name=_("minimum price"),
+    exclude_days = models.BooleanField(
+        verbose_name=_("exclude days"),
+        default=False,
+        help_text=_(
+            "Check this box to show only the month and year on the exhibition."
+        ),
+    )
+
+    price = models.FloatField(
+        verbose_name=_("price"),
         default=0,
     )
 
-    max_price = models.IntegerField(
-        verbose_name=_("maximum price"),
-        default=0,
+    booking_details = RichTextField(
+        max_length=40,
+        null=True,
+        verbose_name=_("booking details"),
+        help_text=_("Information about how to book tickets for the exhibition."),
+        features=["link"],
     )
 
-    dwell_time = models.CharField(
+    open_days = models.CharField(
         max_length=255,
-        verbose_name=_("dwell time"),
+        verbose_name=_("open days"),
         blank=True,
-        help_text=_("The average dwell time for the exhibition."),
+        help_text=_("The days the exhibition is open, e.g. Tuesday to Sunday."),
     )
 
-    target_audience = models.CharField(
+    audience_heading = models.CharField(
+        max_length=40,
+        verbose_name=_("audience heading"),
+        blank=True,
+        help_text=_("The heading for the audience detail section."),
+    )
+
+    audience_detail = models.CharField(
+        max_length=40,
+        verbose_name=_("audience detail"),
+        blank=True,
+        help_text=_("The text for the audience detail section."),
+    )
+
+    location_space_name = models.CharField(
+        max_length=40,
+        verbose_name=_("location space name"),
+        null=True,
+        help_text=_("The location of the exhibition within the venue."),
+    )
+
+    location_link_text = models.CharField(
+        verbose_name=_("location link text"),
+        null=True,
+        help_text=_("The text for the location section."),
+    )
+
+    location_link_url = models.URLField(
         max_length=255,
-        verbose_name=_("target audience"),
-        blank=True,
-        help_text=_("The target audience for the exhibition."),
+        verbose_name=_("location link URL"),
+        null=True,
+        help_text=_("The URL for the location section."),
     )
 
-    # Location details
-    location = models.CharField(
+    # Body section
+    body = StreamField(ExhibitionPageStreamBlock, blank=True, null=True)
+
+    # email_signup = ...
+
+    exhibition_highlights = StreamField(
+        [("exhibition_highlights", ImageGalleryBlock())],
+        blank=True,
+        max_num=1,
+    )
+
+    review = StreamField(
+        [("review", ReviewBlock())],
+        blank=True,
+        max_num=1,
+    )
+
+    video = StreamField(
+        MixedMediaBlock(
+            block_counts={"youtube": {"max_num": 1}, "media": {"max_num": 1}}
+        ),
+        blank=True,
+        max_num=1,
+    )
+
+    # Related content section
+    related_pages_title = models.CharField(
         max_length=255,
-        verbose_name=_("location"),
-        help_text=_("The location of the exhibition venue."),
-    )
-
-    location_url = models.URLField(
-        verbose_name=_("location url"),
         blank=True,
-        help_text=_("The URL of the exhibition venue."),
+        help_text=_("The title to display for the related content section."),
     )
 
-    # Content
-    # TODO: video = . . .
-
-    description = RichTextField(
-        verbose_name=_("description"),
-        help_text=_("A description of the exhibition."),
-        features=settings.EXPANDED_RICH_TEXT_FEATURES,
-    )
-
-    # Need to know
-    need_to_know = RichTextField(
-        verbose_name=_("need to know"),
-        blank=True,
-        help_text=_("Useful information about the exhibition."),
-        features=settings.EXPANDED_RICH_TEXT_FEATURES,
-    )
-
-    need_to_know_cta = models.CharField(
-        max_length=255,
-        verbose_name=_("need to know CTA"),
-        blank=True,
-        help_text=_("The call to action text for the need to know section."),
-    )
-
-    need_to_know_url = models.URLField(
-        verbose_name=_("need to know URL"),
-        blank=True,
-        help_text=_("The URL for the need to know section."),
-    )
-
-    need_to_know_image = models.ForeignKey(
-        get_image_model_string(),
+    featured_page = models.ForeignKey(
+        "wagtailcore.Page",
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
         related_name="+",
     )
 
-    # Related content
-    articles_title = models.CharField(
-        max_length=255,
-        blank=True,
-        help_text=_("The title to display for the articles section."),
-    )
+    related_pages = StreamField(FeaturedPagesBlock(), blank=True, null=True)
 
-    related_articles = StreamField(
-        [("relatedarticles", RelatedArticlesBlock())],
+    event_title = models.CharField(
+        max_length=100,
+        verbose_name=_("event title"),
+        help_text=_("The title of the events section."),
+        default="Exhibition events",
         blank=True,
         null=True,
     )
 
-    # Promote tab
-    short_title = models.CharField(
-        max_length=50,
-        verbose_name=_("short title"),
+    event_links = StreamField(
+        [("event_links", blocks.ListBlock(FeaturedExternalLinkBlock(), max_num=2))],
+        max_num=1,
+        null=True,
         blank=True,
-        help_text=_(
-            "A short title for the event. This will be used in the event listings."
-        ),
+    )
+
+    shop = StreamField(
+        [("shop", ShopCollectionBlock())],
+        blank=True,
+        max_num=1,
+    )
+
+    # Plan your visit section
+    plan_your_visit = StreamField(
+        [("plan_your_visit", blocks.ListBlock(SimplifiedAccordionBlock()))],
+        blank=True,
+        max_num=1,
     )
 
     # DataLayerMixin overrides
     gtm_content_group = "What's On"
 
+    @cached_property
+    def type_label(cls) -> str:
+        """
+        Overrides the type_label method from BasePage, to return the correct
+        type label for the exhibition page.
+        """
+        if cls.end_date < timezone.now().date():
+            return "Past exhibition"
+        return "Exhibition"
+
     class Meta:
         verbose_name = _("exhibition page")
+        verbose_name_plural = _("exhibition pages")
+        verbose_name_public = _("exhibition")
 
-    content_panels = BasePageWithRequiredIntro.content_panels + [
+    content_panels = [
+        TitleFieldPanel("title"),
+        FieldPanel("subtitle"),
         MultiFieldPanel(
             [
-                FieldPanel("subtitle"),
                 FieldPanel("hero_image"),
-                FieldPanel("hero_text_colour"),
+                FieldPanel("hero_image_caption"),
+                FieldPanel("hero_style"),
+                FieldPanel("hero_layout"),
             ],
-            heading=_("Hero image"),
+            heading=_("Hero section"),
         ),
         MultiFieldPanel(
             [
-                FieldPanel("start_date"),
-                FieldPanel("end_date"),
-                FieldPanel("min_price"),
-                FieldPanel("max_price"),
-                FieldPanel("dwell_time"),
-                FieldPanel("target_audience"),
-            ],
-            heading=_("Key details"),
-        ),
-        MultiFieldPanel(
-            [
-                FieldPanel("location"),
-                FieldPanel("location_url", heading=_("Location URL")),
-            ],
-            heading=_("Location details"),
-        ),
-        MultiFieldPanel(
-            [
-                FieldPanel("description"),
-                InlinePanel(
-                    "highlights",
-                    heading=_("Highlights"),
-                ),
+                FieldPanel("intro"),
+                FieldPanel("body"),
+                # FieldPanel("email_signup"),
+                FieldPanel("exhibition_highlights"),
+                FieldPanel("review"),
+                FieldPanel("video"),
             ],
             heading=_("Content"),
         ),
         MultiFieldPanel(
             [
-                FieldPanel("need_to_know"),
-                FieldPanel("need_to_know_cta"),
-                FieldPanel("need_to_know_url"),
-                FieldPanel("need_to_know_image"),
-            ],
-            heading=_("Need to know"),
-        ),
-        MultiFieldPanel(
-            [
-                FieldPanel("articles_title"),
-                FieldPanel("related_articles"),
+                FieldPanel("related_pages_title"),
+                FieldPanel("featured_page"),
+                FieldPanel("related_pages"),
+                FieldPanel("event_title"),
+                FieldPanel("event_links"),
+                FieldPanel("shop"),
             ],
             heading=_("Related content"),
         ),
+        FieldPanel("plan_your_visit"),
+    ]
+
+    key_details_panels = [
+        MultiFieldPanel(
+            [
+                FieldRowPanel(
+                    [
+                        FieldPanel("start_date"),
+                        FieldPanel("end_date"),
+                    ],
+                ),
+                FieldPanel("exclude_days"),
+            ],
+            heading=_("Date details"),
+        ),
+        MultiFieldPanel(
+            [
+                FieldPanel("price"),
+                FieldPanel("booking_details"),
+            ],
+            heading=_("Price details"),
+        ),
+        FieldPanel("open_days"),
+        MultiFieldPanel(
+            [
+                FieldPanel("audience_heading"),
+                FieldPanel("audience_detail"),
+            ],
+            heading=_("Audience details"),
+        ),
+        MultiFieldPanel(
+            [
+                FieldPanel("location_space_name"),
+                FieldPanel("location_link_text"),
+                FieldPanel("location_link_url"),
+            ],
+            heading=_("Location details"),
+        ),
+    ]
+
+    design_panels = [
+        FieldPanel("accent_colour"),
     ]
 
     promote_panels = (
         BasePageWithRequiredIntro.promote_panels
-        + [
-            FieldPanel("short_title"),
-            InlinePanel(
-                "event_audience_types",
-                heading=_("Audience types"),
-                help_text=_(
-                    "If the event has more than one audience type, please add these in order of relevance from most to least."
-                ),
-            ),
-        ]
         + ArticleTagMixin.promote_panels
         + [
             TopicalPageMixin.get_topics_inlinepanel(),
             TopicalPageMixin.get_time_periods_inlinepanel(),
+        ]
+    )
+
+    api_fields = (
+        BasePageWithRequiredIntro.api_fields
+        + RequiredHeroImageMixin.api_fields
+        + HeroStyleMixin.api_fields
+        + HeroLayoutMixin.api_fields
+        + AccentColourMixin.api_fields
+        + [
+            APIField("subtitle"),
+            APIField("start_date"),
+            APIField("end_date"),
+            APIField("exclude_days"),
+            APIField("price"),
+            APIField("open_days"),
+            APIField("booking_details", serializer=RichTextSerializer()),
+            APIField("audience_heading"),
+            APIField("audience_detail"),
+            APIField("location_space_name"),
+            APIField("location_link_text"),
+            APIField("location_link_url"),
+            APIField("body"),
+            # APIField("email_signup"),
+            APIField("exhibition_highlights"),
+            APIField("review"),
+            APIField("video"),
+            APIField("related_pages_title"),
+            APIField("featured_page", serializer=DefaultPageSerializer()),
+            APIField("related_pages"),
+            APIField("event_title"),
+            APIField("event_links"),
+            APIField("shop"),
+            APIField("plan_your_visit"),
+        ]
+        + TopicalPageMixin.api_fields
+        + ArticleTagMixin.api_fields
+    )
+
+    edit_handler = TabbedInterface(
+        [
+            ObjectList(content_panels, heading="Content"),
+            ObjectList(key_details_panels, heading="Key details"),
+            ObjectList(design_panels, heading="Design"),
+            ObjectList(promote_panels, heading="Promote"),
+            ObjectList(BasePageWithRequiredIntro.settings_panels, heading="Settings"),
         ]
     )
 
@@ -1174,23 +1084,9 @@ class ExhibitionPage(ArticleTagMixin, TopicalPageMixin, BasePageWithRequiredIntr
     )
 
     parent_page_types = [
-        "whatson.WhatsOnPage",
+        "home.HomePage",
     ]
     subpage_types = []
-
-    @cached_property
-    def price_range(self):
-        """
-        Returns the price range for the event.
-        """
-        if self.max_price == 0:
-            return "Free"
-        elif self.min_price == self.max_price:
-            return f"{self.min_price}"
-        else:
-            if self.min_price == 0:
-                return f"Free - {self.max_price}"
-            return f"{self.min_price} - {self.max_price}"
 
     def clean(self):
         """

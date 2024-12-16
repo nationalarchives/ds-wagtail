@@ -29,23 +29,28 @@ class ImageSerializer(Serializer):
         rendition_size="fill-600x400",
         jpeg_quality=60,
         webp_quality=60,
+        background_colour="fff",
         additional_formats=[],
         *args,
         **kwargs,
     ):
+        self.rendition_size = rendition_size
         self.jpeg_quality = jpeg_quality
         self.webp_quality = webp_quality
-        self.rendition_size = rendition_size
+        self.background_colour = background_colour
         self.additional_formats = additional_formats
         super().__init__(*args, **kwargs)
 
     def to_representation(self, value):
         if value:
+            background_colour_rendition = (
+                f"|bgcolor-{self.background_colour}" if self.background_colour else ""
+            )
             jpeg_image = value.get_rendition(
-                f"{self.rendition_size}|format-jpeg|jpegquality-{self.jpeg_quality}"
+                f"{self.rendition_size}|format-jpeg|jpegquality-{self.jpeg_quality}{background_colour_rendition}"
             )
             webp_image = value.get_rendition(
-                f"{self.rendition_size}|format-webp|webpquality-{self.webp_quality}"
+                f"{self.rendition_size}|format-webp|webpquality-{self.webp_quality}{background_colour_rendition}"
             )
 
             additional_images = {}

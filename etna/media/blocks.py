@@ -55,15 +55,15 @@ class MediaChooserBlock(AbstractMediaChooserBlock):
 
 class MediaBlock(blocks.StructBlock):
     """
-    Embedded media block with a selectable background image.
+    Embedded media block with a selectable thumbnail image.
     """
 
     title = blocks.CharBlock(
         required=True,
         help_text="A descriptive title for the media block",
     )
-    background_image = APIImageChooserBlock(
-        help_text="A background image for the media block"
+    thumbnail = APIImageChooserBlock(
+        required=False, help_text="A thumbnail image for the media block"
     )
     media = MediaChooserBlock()
 

@@ -200,7 +200,7 @@ class APIResponseTest(WagtailPageTestCase):
                             "value": {
                                 "media": cls.test_media.id,
                                 "title": "Media title",
-                                "background_image": cls.test_image.id,
+                                "thumbnail": cls.test_image.id,
                             },
                         },
                         {
@@ -373,14 +373,14 @@ class APIResponseTest(WagtailPageTestCase):
                 expected_data = self.replace_placeholders(expected_data)
 
                 # Remove random image rendition IDs
-                expected_data = re.sub(r"0_[a-zA-Z0-9]{6,7}", "0", expected_data)
-                api_data = re.sub(r"0_[a-zA-Z0-9]{6,7}", "0", api_data)
-                expected_data = re.sub(r"e_[a-zA-Z0-9]{6,7}", "e", expected_data)
-                api_data = re.sub(r"e_[a-zA-Z0-9]{6,7}", "e", api_data)
-                expected_data = re.sub(r"l_[a-zA-Z0-9]{6,7}", "l", expected_data)
-                api_data = re.sub(r"l_[a-zA-Z0-9]{6,7}", "l", api_data)
-                expected_data = re.sub(r"p_[a-zA-Z0-9]{6,7}", "p", expected_data)
-                api_data = re.sub(r"p_[a-zA-Z0-9]{6,7}", "p", api_data)
+                regex_start = r"/media/images/[a-zA-Z0-9_]+\.([a-fA-F0-9]{6,8}\.)?"
+                replace_end = "/media/images/image."
+                expected_data = re.sub(regex_start, replace_end, expected_data)
+                api_data = re.sub(regex_start, replace_end, api_data)
+                regex_end = r"\.format-(jpeg|webp)\.(jpegquality|webpquality)-([0-9]+)[a-zA-Z0-9_]*\.(jpg|webp)"
+                regex_replace_end = r".format-\g<1>.\g<2>-\g<3>.\g<4>"
+                expected_data = re.sub(regex_end, regex_replace_end, expected_data)
+                api_data = re.sub(regex_end, regex_replace_end, api_data)
 
                 self.assertEqual(expected_data, api_data)
 

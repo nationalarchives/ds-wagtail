@@ -560,7 +560,9 @@ class PageGalleryImage(Orderable):
 
 
 class GallerySerializer(serializers.ModelSerializer):
-    image = HighlightImageSerializer(rendition_size="max-1024x1024")
+    image = HighlightImageSerializer(
+        rendition_size="max-1024x1024", background_colour=None
+    )
     caption = RichTextSerializer()
 
     class Meta:
@@ -759,7 +761,9 @@ class RecordArticlePage(
             APIField("promoted_links"),
             APIField(
                 "intro_image",
-                serializer=ImageSerializer(rendition_size="width-400"),
+                serializer=ImageSerializer(
+                    rendition_size="width-400", background_colour=None
+                ),
             ),
         ]
         + TopicalPageMixin.api_fields
