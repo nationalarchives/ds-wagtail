@@ -50,7 +50,7 @@ class ImageSerializer(Serializer):
                 f"{self.rendition_size}|format-jpeg|jpegquality-{self.jpeg_quality}{background_colour_redition}"
             )
             webp_image = value.get_rendition(
-                f"{self.rendition_size}|format-webp|webpquality-{self.webp_quality}{background_colour_redition}"
+                f"{self.rendition_size}|format-webp|webpquality-{self.webp_quality}{background_colour_rendition}"
             )
 
             additional_images = {}
