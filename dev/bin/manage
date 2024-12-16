@@ -1,8 +1,0 @@
-#!/bin/bash
-
-if [ -z "$1" ]
-then
-  echo -e "Error: manage.py commands not specified\n";
-fi
-
-poetry run python /app/manage.py $@

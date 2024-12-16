@@ -1,45 +1,29 @@
 services:
-
   db:
     image: postgres:16.0
-    ports:
-      - 5432:5432
-    volumes:
-      - ./database_dumps:/app/database_dumps
-    env_file:
-          - .env
     environment:
       - POSTGRES_PASSWORD=postgres
 
-  web:
-    build: .
+  app:
+    build:
+      context: .
+      args:
+        IMAGE: ghcr.io/nationalarchives/tna-python-django-root
+        IMAGE_TAG: preview
     volumes:
-      - ./etna:/app/etna
-      - ./config:/app/config
-      - ./sass:/app/sass
-      - ./scripts:/app/scripts
-      - ./static:/app/static
-      - ./templates:/app/templates
-      - ./poetry.lock:/app/poetry.lock
-      - ./pyproject.toml:/app/pyproject.toml
-      - ./package.json:/app/package.json
-      - ./package-lock.json:/app/package-lock.json
+      - ./:/app
       - media:/media
     depends_on:
       - db
       - redis
     ports:
       - 8000:8080
-    command: sh /app/bash/run-dev.sh
-    restart: on-failure
-    init: true
-    stdin_open: true
-    tty: true
     env_file:
       - .env
     environment:
       - ENVIRONMENT=develop
       - DJANGO_SETTINGS_MODULE=config.settings.dev
+      - SECRET_KEY=abc123
       - DATABASE_HOST=db
       - DATABASE_NAME=postgres
       - DATABASE_USER=postgres
@@ -48,18 +32,10 @@ services:
       - DJANGO_SUPERUSER_USERNAME=admin
       - DJANGO_SUPERUSER_EMAIL=admin@tna.dev
       - FEATURE_BETA_BANNER_ENABLED=False
+      - KONG_CLIENT_VERIFY_CERTIFICATES=False
       - KEEP_ALIVE=30
       - WAGTAILAPI_BASE_URL=http://host.docker.internal:8000
       - REDIS_URL=redis://:redis@redis:6379
-
-  cli:
-    platform: linux/amd64
-    build: platformsh-cli
-    volumes:
-      - media:/app/media
-      - ./database_dumps:/app/database_dumps
-    env_file:
-      - .env
 
   docs:
     image: squidfunk/mkdocs-material
@@ -69,30 +45,22 @@ services:
       - 8001:8000
 
   dev:
-    build:
-      context: .
-      dockerfile: dev/Dockerfile
-    restart: always
-    volumes:
-      - .:/app
-      - /var/run/docker.sock:/var/run/docker.sock
-    depends_on:
-      - web
-      - db
-    env_file:
-      - .env
+    image: ghcr.io/nationalarchives/tna-python-dev:preview
     environment:
-      - DJANGO_SETTINGS_MODULE=config.settings.dev
-      - DATABASE_HOST=db
-      - DATABASE_NAME=postgres
-      - DATABASE_USER=postgres
+      - PLATFORMSH_CLI_TOKEN=${PLATFORMSH_CLI_TOKEN}
+      - PLATFORM_PROJECT_ID=rasrzs7pi6sd4
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - ./:/app
+      - ./dev:/home/app/.local/bin/tasks:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - media:/media
 
   redis:
-    container_name: redis
     image: redis:latest
     command: /bin/sh -c "redis-server --requirepass redis"
-    ports:
-      - 6379:6379
 
 volumes:
   media:

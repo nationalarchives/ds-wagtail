@@ -13,7 +13,7 @@
     margin-bottom: 1rem;
 
     &__tag {
-        @include typography.relative-font-size(14);
+        @include typography.font-size(14);
         @include typography.detail-font;
         text-transform: uppercase;
         padding: 0 0.4rem;
@@ -21,7 +21,7 @@
         align-items: center;
 
         &--event-type {
-            @include colour.plain;
+            // @include colour.plain;
             background-color: colour.brand-colour("pastel-pink");
         }
 
