@@ -45,7 +45,7 @@ services:
       - 8001:8000
 
   dev:
-    image: ghcr.io/nationalarchives/tna-python-dev:latest
+    image: ghcr.io/nationalarchives/tna-python-dev:preview
     environment:
       - PLATFORMSH_CLI_TOKEN=${PLATFORMSH_CLI_TOKEN}
       - PLATFORM_PROJECT_ID=rasrzs7pi6sd4
