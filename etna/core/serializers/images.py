@@ -47,7 +47,7 @@ class ImageSerializer(Serializer):
                 f"|bgcolor-{self.background_colour}" if self.background_colour else ""
             )
             jpeg_image = value.get_rendition(
-                f"{self.rendition_size}|format-jpeg|jpegquality-{self.jpeg_quality}{background_colour_redition}"
+                f"{self.rendition_size}|format-jpeg|jpegquality-{self.jpeg_quality}{background_colour_rendition}"
             )
             webp_image = value.get_rendition(
                 f"{self.rendition_size}|format-webp|webpquality-{self.webp_quality}{background_colour_rendition}"
