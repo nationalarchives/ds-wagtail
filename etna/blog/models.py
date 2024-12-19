@@ -55,35 +55,9 @@ class BlogPage(HeroImageMixin, BasePageWithRequiredIntro):
 
     promote_panels = BasePageWithRequiredIntro.promote_panels
 
-    @cached_property
-    def blog_posts(self):
-        return (
-            self.get_children()
-            .type(BlogPostPage)
-            .live()
-            .public()
-            .specific()
-            .order_by("-blogpostpage__published_date")
-        )
-
-    @cached_property
-    def blog_pages(self):
-        return (
-            self.get_children()
-            .type(BlogPage)
-            .live()
-            .public()
-            .specific()
-            .order_by("title")
-        )
-
     api_fields = (
         BasePageWithRequiredIntro.api_fields
         + HeroImageMixin.api_fields
-        + [
-            APIField("blog_posts", serializer=DefaultPageSerializer(many=True)),
-            APIField("blog_pages", serializer=DefaultPageSerializer(many=True)),
-        ]
     )
 
 
