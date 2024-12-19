@@ -16,17 +16,28 @@ class Migration(migrations.Migration):
         RecordArticle = apps.get_model("articles.RecordArticlePage")
         for page in Article.objects.all():
             if page.newly_published_at:
-                page.published_date = page.newly_published_at or page.first_published_at or django.utils.timezone.now()
+                page.published_date = (
+                    page.newly_published_at
+                    or page.first_published_at
+                    or django.utils.timezone.now()
+                )
             page.save()
         for page in FocusedArticle.objects.all():
             if page.newly_published_at:
-                page.published_date = page.newly_published_at or page.first_published_at or django.utils.timezone.now()
+                page.published_date = (
+                    page.newly_published_at
+                    or page.first_published_at
+                    or django.utils.timezone.now()
+                )
             page.save()
         for page in RecordArticle.objects.all():
             if page.newly_published_at:
-                page.published_date = page.newly_published_at or page.first_published_at or django.utils.timezone.now()
+                page.published_date = (
+                    page.newly_published_at
+                    or page.first_published_at
+                    or django.utils.timezone.now()
+                )
             page.save()
-
 
     operations = [
         migrations.AddField(
