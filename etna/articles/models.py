@@ -32,7 +32,7 @@ from etna.core.models import (
     BasePageWithRequiredIntro,
     ContentWarningMixin,
     HeroImageMixin,
-    NewLabelMixin,
+    PublishedDateMixin,
     RequiredHeroImageMixin,
 )
 from etna.core.serializers import (
@@ -171,9 +171,9 @@ class ArticleIndexPage(BasePageWithRequiredIntro):
             .live()
             .order_by(
                 Coalesce(
-                    "recordarticlepage__newly_published_at",
-                    "focusedarticlepage__newly_published_at",
-                    "articlepage__newly_published_at",
+                    "recordarticlepage__published_date",
+                    "focusedarticlepage__published_date",
+                    "articlepage__published_date",
                 )
             )
             .reverse()
@@ -205,7 +205,7 @@ class ArticlePage(
     TopicalPageMixin,
     RequiredHeroImageMixin,
     ContentWarningMixin,
-    NewLabelMixin,
+    PublishedDateMixin,
     ArticleTagMixin,
     BasePageWithRequiredIntro,
 ):
@@ -236,7 +236,7 @@ class ArticlePage(
     )
 
     promote_panels = (
-        NewLabelMixin.promote_panels
+        PublishedDateMixin.promote_panels
         + BasePageWithRequiredIntro.promote_panels
         + ArticleTagMixin.promote_panels
         + [
@@ -259,16 +259,17 @@ class ArticlePage(
     )
 
     default_api_fields = BasePageWithRequiredIntro.default_api_fields + [
-        APIField("is_newly_published"),
+        PublishedDateMixin.get_is_newly_published_apifield(),
     ]
 
     api_fields = (
         BasePageWithRequiredIntro.api_fields
         + RequiredHeroImageMixin.api_fields
         + ContentWarningMixin.api_fields
-        + NewLabelMixin.api_fields
         + ArticleTagMixin.api_fields
         + [
+            PublishedDateMixin.get_published_date_apifield(),
+            PublishedDateMixin.get_is_newly_published_apifield(),
             APIField("body"),
             APIField(
                 "similar_items",
@@ -358,9 +359,9 @@ class ArticlePage(
                 .prefetch_related("teaser_image__renditions")
             )
 
-        return sorted(
-            latest_query_set, key=lambda x: x.newly_published_at, reverse=True
-        )[:3]
+        return sorted(latest_query_set, key=lambda x: x.published_date, reverse=True)[
+            :3
+        ]
 
 
 class FocusedArticlePage(
@@ -368,7 +369,7 @@ class FocusedArticlePage(
     AuthorPageMixin,
     HeroImageMixin,
     ContentWarningMixin,
-    NewLabelMixin,
+    PublishedDateMixin,
     ArticleTagMixin,
     BasePageWithRequiredIntro,
 ):
@@ -399,7 +400,7 @@ class FocusedArticlePage(
     )
 
     promote_panels = (
-        NewLabelMixin.promote_panels
+        PublishedDateMixin.promote_panels
         + BasePageWithRequiredIntro.promote_panels
         + ArticleTagMixin.promote_panels
         + [
@@ -424,16 +425,17 @@ class FocusedArticlePage(
     )
 
     default_api_fields = BasePageWithRequiredIntro.default_api_fields + [
-        APIField("is_newly_published"),
+        PublishedDateMixin.get_is_newly_published_apifield(),
     ]
 
     api_fields = (
         BasePageWithRequiredIntro.api_fields
         + HeroImageMixin.api_fields
         + ContentWarningMixin.api_fields
-        + NewLabelMixin.api_fields
         + ArticleTagMixin.api_fields
         + [
+            PublishedDateMixin.get_is_newly_published_apifield(),
+            PublishedDateMixin.get_published_date_apifield(),
             APIField("type_label"),
             APIField("body"),
             APIField(
@@ -525,9 +527,9 @@ class FocusedArticlePage(
                 .prefetch_related("teaser_image__renditions")
             )
 
-        return sorted(
-            latest_query_set, key=lambda x: x.newly_published_at, reverse=True
-        )[:3]
+        return sorted(latest_query_set, key=lambda x: x.published_date, reverse=True)[
+            :3
+        ]
 
 
 class PageGalleryImage(Orderable):
@@ -577,7 +579,7 @@ class GallerySerializer(serializers.ModelSerializer):
 class RecordArticlePage(
     TopicalPageMixin,
     ContentWarningMixin,
-    NewLabelMixin,
+    PublishedDateMixin,
     ArticleTagMixin,
     BasePageWithRequiredIntro,
 ):
@@ -709,7 +711,7 @@ class RecordArticlePage(
     )
 
     promote_panels = (
-        NewLabelMixin.promote_panels
+        PublishedDateMixin.promote_panels
         + BasePageWithRequiredIntro.promote_panels
         + ArticleTagMixin.promote_panels
         + [
@@ -731,15 +733,16 @@ class RecordArticlePage(
     )
 
     default_api_fields = BasePageWithRequiredIntro.default_api_fields + [
-        APIField("is_newly_published"),
+        PublishedDateMixin.get_is_newly_published_apifield(),
     ]
 
     api_fields = (
         BasePageWithRequiredIntro.api_fields
         + ContentWarningMixin.api_fields
-        + NewLabelMixin.api_fields
         + ArticleTagMixin.api_fields
         + [
+            PublishedDateMixin.get_is_newly_published_apifield(),
+            PublishedDateMixin.get_published_date_apifield(),
             APIField("type_label"),
             APIField("date_text"),
             APIField("about", serializer=RichTextSerializer()),

@@ -377,7 +377,7 @@ class TopicExplorerPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
                 .prefetch_related("teaser_image__renditions")
             )
 
-        return sorted(page_list, key=lambda x: x.newly_published_at, reverse=True)
+        return sorted(page_list, key=lambda x: x.published_date, reverse=True)
 
     @cached_property
     def related_highlight_gallery_pages(self):
@@ -583,7 +583,7 @@ class TimePeriodExplorerPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
                 .prefetch_related("teaser_image__renditions")
             )
 
-        return sorted(page_list, key=lambda x: x.newly_published_at, reverse=True)
+        return sorted(page_list, key=lambda x: x.published_date, reverse=True)
 
     @cached_property
     def related_highlight_gallery_pages(self):

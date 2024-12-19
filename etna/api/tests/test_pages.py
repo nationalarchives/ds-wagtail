@@ -146,7 +146,7 @@ class APIResponseTest(WagtailPageTestCase):
                 PageTimePeriod(time_period=cls.postwar),
             ],
             first_published_at=DATE_1,
-            newly_published_at=DATE_1,
+            published_date=DATE_1,
             mark_new_on_next_publish=False,
         )
 

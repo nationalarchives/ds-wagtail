@@ -1,7 +1,3 @@
-from django.db import models
-from django.utils import timezone
-from django.utils.functional import cached_property
-
 from wagtail.admin.panels import FieldPanel
 from wagtail.api import APIField
 from wagtail.fields import StreamField
@@ -10,8 +6,8 @@ from etna.core.models import (
     BasePageWithRequiredIntro,
     ContentWarningMixin,
     HeroImageMixin,
+    PublishedDateMixin,
 )
-from etna.core.serializers import DateTimeSerializer, DefaultPageSerializer
 from etna.people.models import AuthorPageMixin, ExternalAuthorMixin
 
 from .blocks import BlogPostPageStreamBlock
@@ -55,16 +51,14 @@ class BlogPage(HeroImageMixin, BasePageWithRequiredIntro):
 
     promote_panels = BasePageWithRequiredIntro.promote_panels
 
-    api_fields = (
-        BasePageWithRequiredIntro.api_fields
-        + HeroImageMixin.api_fields
-    )
+    api_fields = BasePageWithRequiredIntro.api_fields + HeroImageMixin.api_fields
 
 
 class BlogPostPage(
     AuthorPageMixin,
     ExternalAuthorMixin,
     ContentWarningMixin,
+    PublishedDateMixin,
     HeroImageMixin,
     BasePageWithRequiredIntro,
 ):
@@ -79,12 +73,6 @@ class BlogPostPage(
         BlogPostPageStreamBlock(),
     )
 
-    published_date = models.DateTimeField(
-        verbose_name="Published date",
-        help_text="The date the blog post was published.",
-        default=timezone.now,
-    )
-
     content_panels = (
         BasePageWithRequiredIntro.content_panels
         + HeroImageMixin.content_panels
@@ -93,17 +81,21 @@ class BlogPostPage(
         ]
     )
 
-    promote_panels = BasePageWithRequiredIntro.promote_panels + [
-        FieldPanel("published_date"),
-        AuthorPageMixin.get_authors_inlinepanel(),
-        ExternalAuthorMixin.get_authors_inlinepanel(),
-    ]
+    promote_panels = (
+        BasePageWithRequiredIntro.promote_panels
+        + PublishedDateMixin.promote_panels
+        + [
+            AuthorPageMixin.get_authors_inlinepanel(),
+            ExternalAuthorMixin.get_authors_inlinepanel(),
+        ]
+    )
 
     default_api_fields = (
         BasePageWithRequiredIntro.default_api_fields
         + AuthorPageMixin.default_api_fields
         + [
-            APIField("published_date", serializer=DateTimeSerializer()),
+            PublishedDateMixin.get_published_date_apifield(),
+            PublishedDateMixin.get_is_newly_published_apifield(),
             APIField("last_published_at"),
         ]
     )
@@ -115,7 +107,8 @@ class BlogPostPage(
         + AuthorPageMixin.api_fields
         + ExternalAuthorMixin.api_fields
         + [
-            APIField("published_date", serializer=DateTimeSerializer()),
+            PublishedDateMixin.get_published_date_apifield(),
+            PublishedDateMixin.get_is_newly_published_apifield(),
             APIField("body"),
         ]
     )
