@@ -1,8 +1,16 @@
+from datetime import datetime, timezone
+
 from django.test import TestCase
 
 from wagtail.models import Site
 
 from ..models import ArticleIndexPage, ArticlePage, ArticleTag
+
+DATE_1 = datetime(2000, 1, 1, tzinfo=timezone.utc)
+
+DATE_2 = datetime(2000, 1, 2, tzinfo=timezone.utc)
+
+DATE_3 = datetime(2000, 1, 3, tzinfo=timezone.utc)
 
 
 class TestArticleTagClean(TestCase):
@@ -45,6 +53,7 @@ class TestArticleIndexPage(TestCase):
             title="Article page 1",
             intro="test",
             teaser_text="test",
+            published_date=DATE_3,
         )
         self.article_index_page.add_child(instance=self.article_page1)
 
@@ -52,6 +61,7 @@ class TestArticleIndexPage(TestCase):
             title="Article page 2",
             intro="test",
             teaser_text="test",
+            published_date=DATE_2,
         )
         self.article_index_page.add_child(instance=self.article_page2)
 
@@ -59,6 +69,7 @@ class TestArticleIndexPage(TestCase):
             title="Article page 3",
             intro="test",
             teaser_text="test",
+            published_date=DATE_1,
         )
         self.article_index_page.add_child(instance=self.article_page3)
 

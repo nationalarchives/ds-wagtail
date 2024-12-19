@@ -114,10 +114,16 @@
     },
     "display_content_warning": false,
     "custom_warning_text": "",
-    "is_newly_published": false,
     "tags": [
         "Witchcraft"
     ],
+    "published_date": {
+        "value": "2000-01-01T00:00:00Z",
+        "year": 2000,
+        "month": 1,
+        "day": 1
+    },
+    "is_newly_published": false,
     "body": [
         {
             "type": "content_section",
@@ -332,7 +338,7 @@
                 }
             },
             "last_published_at": "2000-01-02T00:00:00Z",
-            "is_newly_published": true
+            "is_newly_published": false
         }
     ],
     "latest_items": [],

@@ -114,11 +114,17 @@
     },
     "display_content_warning": false,
     "custom_warning_text": "",
-    "is_newly_published": true,
     "tags": [
         "Medicine",
         "Witchcraft"
     ],
+    "is_newly_published": false,
+    "published_date": {
+        "value": "2000-01-02T00:00:00Z",
+        "year": 2000,
+        "month": 1,
+        "day": 2
+    },
     "body": [],
     "similar_items": [
         {
