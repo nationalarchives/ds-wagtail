@@ -89,7 +89,7 @@ class PublishedDateMixin(models.Model):
             days=self.new_label_display_for_days
         )
         if self.published_date:
-            if self.published_date > expiry_date:
+            if self.published_date.date() > expiry_date:
                 return True
         return False
 
