@@ -102,7 +102,7 @@ mounts:
     source_path: logs
 
 crons:
-  # Publish scheduled pages once an hour
+  # Publish scheduled pages once every half an hour
   # https://docs.wagtail.org/en/stable/reference/management_commands.html#publish-scheduled
   publish_scheduled:
     spec: */30 * * * *
