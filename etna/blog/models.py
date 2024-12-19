@@ -17,7 +17,7 @@ from etna.people.models import AuthorPageMixin, ExternalAuthorMixin
 from .blocks import BlogPostPageStreamBlock
 
 
-class BlogIndexPage(HeroImageMixin, BasePageWithRequiredIntro):
+class BlogIndexPage(BasePageWithRequiredIntro):
     """Blog index page
 
     This is the parent page for all blog posts. It is used to
@@ -25,22 +25,7 @@ class BlogIndexPage(HeroImageMixin, BasePageWithRequiredIntro):
     """
 
     subpage_types = ["blog.BlogPage"]
-
     parent_page_types = ["home.HomePage"]
-
-    content_panels = (
-        BasePageWithRequiredIntro.content_panels + HeroImageMixin.content_panels
-    )
-
-    promote_panels = BasePageWithRequiredIntro.promote_panels
-
-    @cached_property
-    def blog_pages(self):
-        return BlogPage.objects.all().live().public().specific().order_by("title")
-
-    api_fields = BasePageWithRequiredIntro.api_fields + [
-        APIField("blog_pages", serializer=DefaultPageSerializer(many=True))
-    ]
 
     max_count = 1
 
