@@ -6,12 +6,12 @@ from wagtail.models import Site
 
 from ..models import ArticleIndexPage, ArticlePage, ArticleTag
 
-
 DATE_1 = datetime(2000, 1, 1, tzinfo=timezone.utc)
 
 DATE_2 = datetime(2000, 1, 2, tzinfo=timezone.utc)
 
 DATE_3 = datetime(2000, 1, 3, tzinfo=timezone.utc)
+
 
 class TestArticleTagClean(TestCase):
     def test_clean_preserves_existing_skos_ids(self):
