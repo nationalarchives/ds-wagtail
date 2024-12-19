@@ -152,7 +152,7 @@
                             }
                         },
                         "last_published_at": "2000-01-02T00:00:00Z",
-                        "is_newly_published": true
+                        "is_newly_published": false
                     }
                 ]
             },

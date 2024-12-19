@@ -147,7 +147,6 @@ class APIResponseTest(WagtailPageTestCase):
             ],
             first_published_at=DATE_1,
             published_date=DATE_1,
-            mark_new_on_next_publish=False,
         )
 
         cls.focused_article = FocusedArticlePageFactory(
@@ -157,6 +156,7 @@ class APIResponseTest(WagtailPageTestCase):
             page_time_periods=[PageTimePeriod(time_period=cls.early_modern)],
             author_tags=[AuthorTag(author=cls.author_page)],
             first_published_at=DATE_2,
+            published_date=DATE_2,
         )
 
         cls.BODY_JSON = [
