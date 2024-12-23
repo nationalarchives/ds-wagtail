@@ -1,5 +1,7 @@
 import json
 
+from datetime import datetime, timezone
+
 from django.conf import settings
 from django.urls import reverse
 
@@ -8,7 +10,6 @@ from wagtail.test.utils import WagtailPageTestCase
 from wagtail.test.utils.form_data import nested_form_data, rich_text, streamfield
 
 import responses
-from datetime import datetime, timezone
 
 from etna.articles.models import ArticleIndexPage, ArticlePage
 from etna.ciim.tests.factories import create_record, create_response
