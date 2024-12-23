@@ -105,7 +105,7 @@ crons:
   # Publish scheduled pages once every half an hour
   # https://docs.wagtail.org/en/stable/reference/management_commands.html#publish-scheduled
   publish_scheduled:
-    spec: */30 * * * *
+    spec: '*/30 * * * *'
     cmd: poetry run python manage.py publish_scheduled
 
   # Take snapshot at 5am every morning
