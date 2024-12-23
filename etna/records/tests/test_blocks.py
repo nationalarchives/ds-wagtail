@@ -8,6 +8,7 @@ from wagtail.test.utils import WagtailPageTestCase
 from wagtail.test.utils.form_data import nested_form_data, rich_text, streamfield
 
 import responses
+from datetime import datetime, timezone
 
 from etna.articles.models import ArticleIndexPage, ArticlePage
 from etna.ciim.tests.factories import create_record, create_response
@@ -20,6 +21,8 @@ TEST_RECORD_DATA = {
 }
 
 BLOCK_TITLE_OVERRIDE = "This record is sooooo featured!"
+
+DATE_1 = datetime(2000, 1, 1, tzinfo=timezone.utc)
 
 
 class TestFeaturedRecordBlockIntegration(WagtailPageTestCase):
@@ -64,6 +67,7 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTestCase):
                 "intro": rich_text("test"),
                 "hero_image": test_image.id,
                 "teaser_text": "test",
+                "published_date": DATE_1,
                 "body": streamfield(
                     [
                         (
