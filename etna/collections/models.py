@@ -377,7 +377,7 @@ class TopicExplorerPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
                 .prefetch_related("teaser_image__renditions")
             )
 
-        return sorted(page_list, key=lambda x: x.newly_published_at, reverse=True)
+        return sorted(page_list, key=lambda x: x.published_date, reverse=True)
 
     @cached_property
     def related_highlight_gallery_pages(self):
@@ -583,7 +583,7 @@ class TimePeriodExplorerPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
                 .prefetch_related("teaser_image__renditions")
             )
 
-        return sorted(page_list, key=lambda x: x.newly_published_at, reverse=True)
+        return sorted(page_list, key=lambda x: x.published_date, reverse=True)
 
     @cached_property
     def related_highlight_gallery_pages(self):
@@ -761,7 +761,9 @@ class TopicalPageMixin:
 
 
 class HighlightSerializer(serializers.ModelSerializer):
-    image = HighlightImageSerializer(rendition_size="max-1024x1024")
+    image = HighlightImageSerializer(
+        rendition_size="max-1024x1024", background_colour=None
+    )
 
     class Meta:
         model = Highlight
@@ -782,6 +784,7 @@ class HighlightCardSerializer(serializers.Serializer):
     rendition_size = "fill-600x400"
     jpeg_quality = 60
     webp_quality = 60
+    background_colour = "fff"
     additional_formats = []
 
     def to_representation(self, value):

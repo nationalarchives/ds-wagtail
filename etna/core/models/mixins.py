@@ -12,6 +12,7 @@ from wagtail.fields import RichTextField
 from wagtail.images import get_image_model_string
 
 from etna.core.serializers import (
+    DateTimeSerializer,
     DetailedImageSerializer,
     ImageSerializer,
     RichTextSerializer,
@@ -23,10 +24,10 @@ from .forms import RequiredHeroImagePageForm
 __all__ = [
     "AccentColourMixin",
     "ContentWarningMixin",
-    "NewLabelMixin",
     "HeroImageMixin",
     "HeroLayoutMixin",
     "HeroStyleMixin",
+    "PublishedDateMixin",
     "RequiredHeroImageMixin",
     "SidebarMixin",
     "SocialMixin",
@@ -71,81 +72,41 @@ class ContentWarningMixin(models.Model):
         abstract = True
 
 
-class NewLabelMixin(models.Model):
-    """Mixin to allow editors to toggle 'new' label to be applied on-publish"""
-
-    mark_new_on_next_publish = models.BooleanField(
-        verbose_name="mark this page as 'new' when published",
-        default=True,
-        help_text="This will set the 'new' label for 21 days",
-    )
-
-    newly_published_at = models.DateField(
-        editable=False,
-        verbose_name="Page marked as new on",
-        default=None,
-        null=True,
-    )
+class PublishedDateMixin(models.Model):
+    """Mixin to add a published date to a Page."""
 
     new_label_display_for_days = 21
 
-    def with_content_json(self, content):
-        """
-        Overrides Page.with_content_json() to ensure page's `newly_published_at`
-        value is always preserved between revisions.
-        """
-        obj = super().with_content_json(content)
-        obj.newly_published_at = self.newly_published_at
-        return obj
-
-    def save(self, *args, **kwargs):
-        """
-        Overrides Page.save() to set `newly_published_at` under the right
-        circumstances, and to ensure `mark_new_on_next_publish` is unset
-        once that wish has been fulfilled.
-        """
-        # Set/reset newly_published_at where requested
-        if self.live and self.mark_new_on_next_publish:
-            self.newly_published_at = timezone.now().date()
-            self.mark_new_on_next_publish = False
-
-        # Save page changes to the database
-        super().save(*args, **kwargs)
-
-        if self.live and self.mark_new_on_next_publish and self.latest_revision:
-            # If `mark_new_on_next_publish` is still 'True' in the latest revision,
-            # The checkbox will remain checked when the page is next edited in Wagtail.
-            # Checking the box has had the desired effect now, so we 'uncheck' it
-            # in the revision content to avoid unexpected resetting.
-            self.latest_revision.content["mark_new_on_next_publish"] = False
-            self.latest_revision.save()
+    published_date = models.DateTimeField(
+        verbose_name="Published date",
+        help_text="The date the page was published to the public.",
+        default=timezone.now,
+    )
 
     @cached_property
     def is_newly_published(self):
         expiry_date = timezone.now().date() - timedelta(
             days=self.new_label_display_for_days
         )
-        if self.newly_published_at:
-            if self.newly_published_at > expiry_date:
+        if self.published_date:
+            if self.published_date.date() > expiry_date:
                 return True
         return False
-
-    promote_panels = [
-        MultiFieldPanel(
-            [
-                FieldPanel("mark_new_on_next_publish"),
-                FieldPanel("newly_published_at", read_only=True),
-            ],
-            heading="New label",
-        )
-    ]
 
     class Meta:
         abstract = True
 
-    api_fields = [
-        APIField("is_newly_published"),
+    promote_panels = [
+        FieldPanel("published_date"),
     ]
+
+    @classmethod
+    def get_published_date_apifield(cls) -> APIField:
+        return APIField("published_date", serializer=DateTimeSerializer())
+
+    @classmethod
+    def get_is_newly_published_apifield(cls) -> APIField:
+        return APIField("is_newly_published")
 
 
 class HeroImageMixin(models.Model):

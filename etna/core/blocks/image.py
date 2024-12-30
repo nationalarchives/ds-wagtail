@@ -34,16 +34,21 @@ class APIImageChooserBlock(ImageChooserBlock):
         rendition_size="fill-600x400",
         jpeg_quality=60,
         webp_quality=60,
+        background_colour="fff",
         **kwargs,
     ):
+        self.rendition_size = rendition_size
         self.jpeg_quality = jpeg_quality
         self.webp_quality = webp_quality
-        self.rendition_size = rendition_size
+        self.background_colour = background_colour
         super().__init__(required=required, help_text=help_text, **kwargs)
 
     def get_api_representation(self, value, context=None):
         serializer = DetailedImageSerializer(
-            self.rendition_size, self.jpeg_quality, self.webp_quality
+            rendition_size=self.rendition_size,
+            jpeg_quality=self.jpeg_quality,
+            webp_quality=self.webp_quality,
+            background_colour=self.background_colour,
         )
         return serializer.to_representation(value)
 

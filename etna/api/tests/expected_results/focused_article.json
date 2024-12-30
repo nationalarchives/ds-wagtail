@@ -28,14 +28,14 @@
             "id": 14,
             "title": "An image",
             "jpeg": {
-                "url": "/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60_Qqqrhoo.jpg",
-                "full_url": "https://nationalarchives.gov.uk/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60_Qqqrhoo.jpg",
+                "url": "/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                "full_url": "https://nationalarchives.gov.uk/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
                 "width": 100,
                 "height": 68
             },
             "webp": {
-                "url": "/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-60_EW7Ow5o.webp",
-                "full_url": "https://nationalarchives.gov.uk/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-60_EW7Ow5o.webp",
+                "url": "/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-60.bgcolor-fff.webp",
+                "full_url": "https://nationalarchives.gov.uk/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-60.bgcolor-fff.webp",
                 "width": 100,
                 "height": 68
             }
@@ -44,14 +44,14 @@
             "id": 14,
             "title": "An image",
             "jpeg": {
-                "url": "/media/images/example.2e16d0ba.fill-512x512.format-jpeg.jpegquality-60_3mqgkw3.jpg",
-                "full_url": "https://nationalarchives.gov.uk/media/images/example.2e16d0ba.fill-512x512.format-jpeg.jpegquality-60_3mqgkw3.jpg",
+                "url": "/media/images/example.2e16d0ba.fill-512x512.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                "full_url": "https://nationalarchives.gov.uk/media/images/example.2e16d0ba.fill-512x512.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
                 "width": 100,
                 "height": 100
             },
             "webp": {
-                "url": "/media/images/exampl.2e16d0ba.fill-512x512.format-webp.webpquality-60_iIlAHIz.webp",
-                "full_url": "https://nationalarchives.gov.uk/media/images/exampl.2e16d0ba.fill-512x512.format-webp.webpquality-60_iIlAHIz.webp",
+                "url": "/media/images/exampl.2e16d0ba.fill-512x512.format-webp.webpquality-60.bgcolor-fff.webp",
+                "full_url": "https://nationalarchives.gov.uk/media/images/exampl.2e16d0ba.fill-512x512.format-webp.webpquality-60.bgcolor-fff.webp",
                 "width": 100,
                 "height": 100
             }
@@ -74,14 +74,14 @@
         "id": 15,
         "title": "An image",
         "jpeg": {
-            "url": "/media/images/exampl.2e16d0ba.fill-1200x480.format-jpeg.jpegquality-60_jQ9quCl.jpg",
-            "full_url": "https://nationalarchives.gov.uk/media/images/exampl.2e16d0ba.fill-1200x480.format-jpeg.jpegquality-60_jQ9quCl.jpg",
+            "url": "/media/images/exampl.2e16d0ba.fill-1200x480.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+            "full_url": "https://nationalarchives.gov.uk/media/images/exampl.2e16d0ba.fill-1200x480.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
             "width": 100,
             "height": 40
         },
         "webp": {
-            "url": "/media/images/examp.2e16d0ba.fill-1200x480.format-webp.webpquality-60_mfg9Hat.webp",
-            "full_url": "https://nationalarchives.gov.uk/media/images/examp.2e16d0ba.fill-1200x480.format-webp.webpquality-60_mfg9Hat.webp",
+            "url": "/media/images/examp.2e16d0ba.fill-1200x480.format-webp.webpquality-60.bgcolor-fff.webp",
+            "full_url": "https://nationalarchives.gov.uk/media/images/examp.2e16d0ba.fill-1200x480.format-webp.webpquality-60.bgcolor-fff.webp",
             "width": 100,
             "height": 40
         },
@@ -89,20 +89,20 @@
         "translation": null,
         "copyright": null,
         "is_sensitive": false,
-        "custom_sensitive_image": null
+        "custom_sensitive_image_warning": null
     },
     "hero_image_small": {
         "id": 15,
         "title": "An image",
         "jpeg": {
-            "url": "/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60_KklEhEZ.jpg",
-            "full_url": "https://nationalarchives.gov.uk/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60_KklEhEZ.jpg",
+            "url": "/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+            "full_url": "https://nationalarchives.gov.uk/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
             "width": 100,
             "height": 68
         },
         "webp": {
-            "url": "/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-60_bj9aWVy.webp",
-            "full_url": "https://nationalarchives.gov.uk/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-60_bj9aWVy.webp",
+            "url": "/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-60.bgcolor-fff.webp",
+            "full_url": "https://nationalarchives.gov.uk/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-60.bgcolor-fff.webp",
             "width": 100,
             "height": 68
         },
@@ -110,15 +110,21 @@
         "translation": null,
         "copyright": null,
         "is_sensitive": false,
-        "custom_sensitive_image": null
+        "custom_sensitive_image_warning": null
     },
     "display_content_warning": false,
     "custom_warning_text": "",
-    "is_newly_published": true,
     "tags": [
         "Medicine",
         "Witchcraft"
     ],
+    "is_newly_published": false,
+    "published_date": {
+        "value": "2000-01-02T00:00:00Z",
+        "year": 2000,
+        "month": 1,
+        "day": 2
+    },
     "body": [],
     "similar_items": [
         {
@@ -132,14 +138,14 @@
                 "id": 12,
                 "title": "An image",
                 "jpeg": {
-                    "url": "/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60_HJzpFFv.jpg",
-                    "full_url": "https://nationalarchives.gov.uk/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60_HJzpFFv.jpg",
+                    "url": "/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                    "full_url": "https://nationalarchives.gov.uk/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
                     "width": 100,
                     "height": 68
                 },
                 "webp": {
-                    "url": "/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-60_q1PKELE.webp",
-                    "full_url": "https://nationalarchives.gov.uk/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-60_q1PKELE.webp",
+                    "url": "/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-60.bgcolor-fff.webp",
+                    "full_url": "https://nationalarchives.gov.uk/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-60.bgcolor-fff.webp",
                     "width": 100,
                     "height": 68
                 }
@@ -161,14 +167,14 @@
                 "id": 2,
                 "title": "An image",
                 "jpeg": {
-                    "url": "/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60_Qqqrhoo.jpg",
-                    "full_url": "https://nationalarchives.gov.uk/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60_Qqqrhoo.jpg",
+                    "url": "/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                    "full_url": "https://nationalarchives.gov.uk/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
                     "width": 100,
                     "height": 68
                 },
                 "webp": {
-                    "url": "/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-60_EW7Ow5o.webp",
-                    "full_url": "https://nationalarchives.gov.uk/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-60_EW7Ow5o.webp",
+                    "url": "/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-60.bgcolor-fff.webp",
+                    "full_url": "https://nationalarchives.gov.uk/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-60.bgcolor-fff.webp",
                     "width": 100,
                     "height": 68
                 }
@@ -188,14 +194,14 @@
                 "id": 4,
                 "title": "An image",
                 "jpeg": {
-                    "url": "/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60_uNQeuSn.jpg",
-                    "full_url": "https://nationalarchives.gov.uk/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60_uNQeuSn.jpg",
+                    "url": "/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                    "full_url": "https://nationalarchives.gov.uk/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
                     "width": 100,
                     "height": 68
                 },
                 "webp": {
-                    "url": "/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-60_hHTWoNv.webp",
-                    "full_url": "https://nationalarchives.gov.uk/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-60_hHTWoNv.webp",
+                    "url": "/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-60.bgcolor-fff.webp",
+                    "full_url": "https://nationalarchives.gov.uk/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-60.bgcolor-fff.webp",
                     "width": 100,
                     "height": 68
                 }
@@ -215,14 +221,14 @@
                 "id": 10,
                 "title": "An image",
                 "jpeg": {
-                    "url": "/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.jpg",
-                    "full_url": "https://nationalarchives.gov.uk/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.jpg",
+                    "url": "/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                    "full_url": "https://nationalarchives.gov.uk/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
                     "width": 100,
                     "height": 68
                 },
                 "webp": {
-                    "url": "/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-60.webp",
-                    "full_url": "https://nationalarchives.gov.uk/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-60.webp",
+                    "url": "/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-60.bgcolor-fff.webp",
+                    "full_url": "https://nationalarchives.gov.uk/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-60.bgcolor-fff.webp",
                     "width": 100,
                     "height": 68
                 }
@@ -233,14 +239,14 @@
                 "id": 9,
                 "title": "An image",
                 "jpeg": {
-                    "url": "/media/images/example.2e16d0ba.fill-512x512.format-jpeg.jpegquality-60_Z7O3taC.jpg",
-                    "full_url": "https://nationalarchives.gov.uk/media/images/example.2e16d0ba.fill-512x512.format-jpeg.jpegquality-60_Z7O3taC.jpg",
+                    "url": "/media/images/example.2e16d0ba.fill-512x512.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                    "full_url": "https://nationalarchives.gov.uk/media/images/example.2e16d0ba.fill-512x512.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
                     "width": 100,
                     "height": 100
                 },
                 "webp": {
-                    "url": "/media/images/exampl.2e16d0ba.fill-512x512.format-webp.webpquality-60_d2IUyJ1.webp",
-                    "full_url": "https://nationalarchives.gov.uk/media/images/exampl.2e16d0ba.fill-512x512.format-webp.webpquality-60_d2IUyJ1.webp",
+                    "url": "/media/images/exampl.2e16d0ba.fill-512x512.format-webp.webpquality-60.bgcolor-fff.webp",
+                    "full_url": "https://nationalarchives.gov.uk/media/images/exampl.2e16d0ba.fill-512x512.format-webp.webpquality-60.bgcolor-fff.webp",
                     "width": 100,
                     "height": 100
                 }
@@ -249,14 +255,14 @@
                 "id": 9,
                 "title": "An image",
                 "jpeg": {
-                    "url": "/media/images/example.2e16d0ba.fill-128x128.format-jpeg.jpegquality-60_gYjgh70.jpg",
-                    "full_url": "https://nationalarchives.gov.uk/media/images/example.2e16d0ba.fill-128x128.format-jpeg.jpegquality-60_gYjgh70.jpg",
+                    "url": "/media/images/example.2e16d0ba.fill-128x128.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                    "full_url": "https://nationalarchives.gov.uk/media/images/example.2e16d0ba.fill-128x128.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
                     "width": 100,
                     "height": 100
                 },
                 "webp": {
-                    "url": "/media/images/exampl.2e16d0ba.fill-128x128.format-webp.webpquality-60_igefotD.webp",
-                    "full_url": "https://nationalarchives.gov.uk/media/images/exampl.2e16d0ba.fill-128x128.format-webp.webpquality-60_igefotD.webp",
+                    "url": "/media/images/exampl.2e16d0ba.fill-128x128.format-webp.webpquality-60.bgcolor-fff.webp",
+                    "full_url": "https://nationalarchives.gov.uk/media/images/exampl.2e16d0ba.fill-128x128.format-webp.webpquality-60.bgcolor-fff.webp",
                     "width": 100,
                     "height": 100
                 }

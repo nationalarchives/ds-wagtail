@@ -32,7 +32,7 @@ from etna.core.models import (
     BasePageWithRequiredIntro,
     ContentWarningMixin,
     HeroImageMixin,
-    NewLabelMixin,
+    PublishedDateMixin,
     RequiredHeroImageMixin,
 )
 from etna.core.serializers import (
@@ -149,12 +149,6 @@ class ArticleIndexPage(BasePageWithRequiredIntro):
             serializer=DefaultPageSerializer(required_api_fields=["teaser_image"]),
         ),
         APIField("featured_pages"),
-        # APIField( TODO: Commented out until we have a way to paginate the child pages effectively
-        #     "article_pages",
-        #     serializer=DefaultPageSerializer(
-        #         required_api_fields=["teaser_image"], many=True
-        #     ),
-        # ),
     ]
 
     # DataLayerMixin overrides
@@ -171,9 +165,9 @@ class ArticleIndexPage(BasePageWithRequiredIntro):
             .live()
             .order_by(
                 Coalesce(
-                    "recordarticlepage__newly_published_at",
-                    "focusedarticlepage__newly_published_at",
-                    "articlepage__newly_published_at",
+                    "recordarticlepage__published_date",
+                    "focusedarticlepage__published_date",
+                    "articlepage__published_date",
                 )
             )
             .reverse()
@@ -205,7 +199,7 @@ class ArticlePage(
     TopicalPageMixin,
     RequiredHeroImageMixin,
     ContentWarningMixin,
-    NewLabelMixin,
+    PublishedDateMixin,
     ArticleTagMixin,
     BasePageWithRequiredIntro,
 ):
@@ -236,7 +230,7 @@ class ArticlePage(
     )
 
     promote_panels = (
-        NewLabelMixin.promote_panels
+        PublishedDateMixin.promote_panels
         + BasePageWithRequiredIntro.promote_panels
         + ArticleTagMixin.promote_panels
         + [
@@ -259,16 +253,17 @@ class ArticlePage(
     )
 
     default_api_fields = BasePageWithRequiredIntro.default_api_fields + [
-        APIField("is_newly_published"),
+        PublishedDateMixin.get_is_newly_published_apifield(),
     ]
 
     api_fields = (
         BasePageWithRequiredIntro.api_fields
         + RequiredHeroImageMixin.api_fields
         + ContentWarningMixin.api_fields
-        + NewLabelMixin.api_fields
         + ArticleTagMixin.api_fields
         + [
+            PublishedDateMixin.get_published_date_apifield(),
+            PublishedDateMixin.get_is_newly_published_apifield(),
             APIField("body"),
             APIField(
                 "similar_items",
@@ -358,9 +353,9 @@ class ArticlePage(
                 .prefetch_related("teaser_image__renditions")
             )
 
-        return sorted(
-            latest_query_set, key=lambda x: x.newly_published_at, reverse=True
-        )[:3]
+        return sorted(latest_query_set, key=lambda x: x.published_date, reverse=True)[
+            :3
+        ]
 
 
 class FocusedArticlePage(
@@ -368,7 +363,7 @@ class FocusedArticlePage(
     AuthorPageMixin,
     HeroImageMixin,
     ContentWarningMixin,
-    NewLabelMixin,
+    PublishedDateMixin,
     ArticleTagMixin,
     BasePageWithRequiredIntro,
 ):
@@ -399,7 +394,7 @@ class FocusedArticlePage(
     )
 
     promote_panels = (
-        NewLabelMixin.promote_panels
+        PublishedDateMixin.promote_panels
         + BasePageWithRequiredIntro.promote_panels
         + ArticleTagMixin.promote_panels
         + [
@@ -424,16 +419,17 @@ class FocusedArticlePage(
     )
 
     default_api_fields = BasePageWithRequiredIntro.default_api_fields + [
-        APIField("is_newly_published"),
+        PublishedDateMixin.get_is_newly_published_apifield(),
     ]
 
     api_fields = (
         BasePageWithRequiredIntro.api_fields
         + HeroImageMixin.api_fields
         + ContentWarningMixin.api_fields
-        + NewLabelMixin.api_fields
         + ArticleTagMixin.api_fields
         + [
+            PublishedDateMixin.get_is_newly_published_apifield(),
+            PublishedDateMixin.get_published_date_apifield(),
             APIField("type_label"),
             APIField("body"),
             APIField(
@@ -525,9 +521,9 @@ class FocusedArticlePage(
                 .prefetch_related("teaser_image__renditions")
             )
 
-        return sorted(
-            latest_query_set, key=lambda x: x.newly_published_at, reverse=True
-        )[:3]
+        return sorted(latest_query_set, key=lambda x: x.published_date, reverse=True)[
+            :3
+        ]
 
 
 class PageGalleryImage(Orderable):
@@ -560,7 +556,9 @@ class PageGalleryImage(Orderable):
 
 
 class GallerySerializer(serializers.ModelSerializer):
-    image = HighlightImageSerializer(rendition_size="max-1024x1024")
+    image = HighlightImageSerializer(
+        rendition_size="max-1024x1024", background_colour=None
+    )
     caption = RichTextSerializer()
 
     class Meta:
@@ -575,7 +573,7 @@ class GallerySerializer(serializers.ModelSerializer):
 class RecordArticlePage(
     TopicalPageMixin,
     ContentWarningMixin,
-    NewLabelMixin,
+    PublishedDateMixin,
     ArticleTagMixin,
     BasePageWithRequiredIntro,
 ):
@@ -707,7 +705,7 @@ class RecordArticlePage(
     )
 
     promote_panels = (
-        NewLabelMixin.promote_panels
+        PublishedDateMixin.promote_panels
         + BasePageWithRequiredIntro.promote_panels
         + ArticleTagMixin.promote_panels
         + [
@@ -729,15 +727,16 @@ class RecordArticlePage(
     )
 
     default_api_fields = BasePageWithRequiredIntro.default_api_fields + [
-        APIField("is_newly_published"),
+        PublishedDateMixin.get_is_newly_published_apifield(),
     ]
 
     api_fields = (
         BasePageWithRequiredIntro.api_fields
         + ContentWarningMixin.api_fields
-        + NewLabelMixin.api_fields
         + ArticleTagMixin.api_fields
         + [
+            PublishedDateMixin.get_is_newly_published_apifield(),
+            PublishedDateMixin.get_published_date_apifield(),
             APIField("type_label"),
             APIField("date_text"),
             APIField("about", serializer=RichTextSerializer()),
@@ -759,7 +758,9 @@ class RecordArticlePage(
             APIField("promoted_links"),
             APIField(
                 "intro_image",
-                serializer=ImageSerializer(rendition_size="width-400"),
+                serializer=ImageSerializer(
+                    rendition_size="width-400", background_colour=None
+                ),
             ),
         ]
         + TopicalPageMixin.api_fields
