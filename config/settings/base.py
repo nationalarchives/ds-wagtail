@@ -113,7 +113,6 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
-    "etna.core.middleware.MaintenanceModeMiddleware",
     "wagtail.contrib.redirects.middleware.RedirectMiddleware",
     "etna.core.middleware.InterpretCookiesMiddleware",
 ]
@@ -419,16 +418,6 @@ except ValueError:
 CACHE_CONTROL_STALE_WHILE_REVALIDATE = int(
     os.getenv("CACHE_CONTROL_STALE_WHILE_REVALIDATE", 30)
 )
-
-# -----------------------------------------------------------------------------
-# Maintenance mode
-# -----------------------------------------------------------------------------
-
-MAINTENANCE_MODE = strtobool(os.getenv("MAINTENANCE_MODE", "False"))
-# MAINTENENCE_MODE_ALLOW_IPS="IPA1,IPA2" where IPA is IP address
-MAINTENENCE_MODE_ALLOW_IPS = os.getenv("MAINTENENCE_MODE_ALLOW_IPS", "").split(",")
-# datetime is iso MAINTENENCE_MODE_ENDS = "2011-11-04T00:05:23+04:00"
-MAINTENENCE_MODE_ENDS = os.getenv("MAINTENENCE_MODE_ENDS", "")
 
 # -----------------------------------------------------------------------------
 # Feature flags
