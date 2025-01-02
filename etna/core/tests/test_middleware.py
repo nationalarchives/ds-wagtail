@@ -1,12 +1,10 @@
-from unittest.mock import patch
 from urllib.parse import quote
 
 from django.http import HttpRequest
 from django.template.response import TemplateResponse
-from django.test import SimpleTestCase, TestCase, override_settings
+from django.test import SimpleTestCase, override_settings
 
 from etna.core.middleware import InterpretCookiesMiddleware
-from etna.core.test_utils import prevent_request_warnings
 
 
 class TestInterpretCookiesMiddleware(SimpleTestCase):
