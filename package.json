@@ -20,6 +20,7 @@
     "sass": "^1.80.6",
     "stylelint": "~16.5",
     "stylelint-config-standard-scss": "~13.1",
+    "stylelint-order": "^6.0.4",
     "stylelint-selector-bem-pattern": "~4.0",
     "webpack": "~5.94",
     "webpack-cli": "~5.1"
