@@ -1,5 +1,7 @@
 import json
 
+from datetime import datetime, timezone
+
 from django.conf import settings
 from django.urls import reverse
 
@@ -20,6 +22,8 @@ TEST_RECORD_DATA = {
 }
 
 BLOCK_TITLE_OVERRIDE = "This record is sooooo featured!"
+
+DATE_1 = datetime(2000, 1, 1, tzinfo=timezone.utc)
 
 
 class TestFeaturedRecordBlockIntegration(WagtailPageTestCase):
@@ -64,6 +68,7 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTestCase):
                 "intro": rich_text("test"),
                 "hero_image": test_image.id,
                 "teaser_text": "test",
+                "published_date": DATE_1,
                 "body": streamfield(
                     [
                         (
