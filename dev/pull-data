@@ -6,16 +6,19 @@ set -e
 
 echo "Pulling data from $ENVIRONMENT..."
 
-echo "Creating a directory for database dumps..."
-mkdir -p "$DB_DUMP_DIR"
+if [ ! -d "$DB_DUMP_DIR" ];
+then
+    echo "Creating a directory for database dumps..."
+    mkdir "$DB_DUMP_DIR"
+fi
 
 echo "Creating a database dump..."
 platform db:dump -e "$ENVIRONMENT" -p "$PLATFORM_PROJECT_ID" -f "$DB_DUMP" -d "$DB_DUMP_DIR"
 
 echo "Replacing values in the database dump..."
-sed -i -e 's/beta.nationalarchives.gov.uk\([[:space:]]\)443/localhost\165535/g' "$DB_DUMP_DIR/$DB_DUMP"
-sed -i -e 's/develop.tna.dblclk.dev\([[:space:]]\)443/localhost\165535/g' "$DB_DUMP_DIR/$DB_DUMP"
-sed -i -e 's/tna.dblclk.dev\([[:space:]]\)443/localhost\165535/g' "$DB_DUMP_DIR/$DB_DUMP"
+sed -i -r -e 's/(dev-|staging-)?www.nationalarchives.gov.uk([[:space:]])443/localhost\265535/g' "$DB_DUMP_DIR/$DB_DUMP"
+sed -i -r -e 's/(dev-|staging-)?beta.nationalarchives.gov.uk([[:space:]])443/localhost\265535/g' "$DB_DUMP_DIR/$DB_DUMP"
+sed -i -r -e 's/(develop.)?tna.dblclk.dev([[:space:]])443/localhost\265535/g' "$DB_DUMP_DIR/$DB_DUMP"
 
 echo "Starting the db container..."
 docker compose -p ds-wagtail up db -d
