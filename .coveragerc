@@ -2,9 +2,9 @@
 omit =
     config/*
     docs/*
+    dev/*
     etna/**/migrations/*
     etna/**/tests/*
-    fabfile.py
     gunicorn.conf.py
     manage.py
 source = .

@@ -1,5 +1,0 @@
-#!/bin/bash
-
-poetry update
-
-docker exec -it web poetry install --sync --no-root 

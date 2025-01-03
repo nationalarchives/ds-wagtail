@@ -17,41 +17,48 @@ Developers from external agencies may not be able to register for a platform.sh 
 
 ## Download environment data
 
-Run the following command from the console. NOTE: This will not work from within an existing shell session, so you may have to exit that first.
-
 ### Staging
 
-```console
-$ fab pull-staging-data
+```sh
+docker compose exec dev pull-data
 ```
 
 ### Production
 
-```console
-$ fab pull-production-data
+```sh
+docker compose exec dev pull-data main
 ```
 
 **NOTE:**
 
-- Data is automatically anonymised after downloading to protect sensitive data, so user logins from production will NOT work locally. 
+- Data is automatically anonymised after downloading to protect sensitive data, so user logins from production will NOT work locally.
 - Also, any Django users you created locally before running the command will no longer exist.
-- A superuser whose credentials are defined in the docker-compose.yml will be created. 
-- You can also run `python manage.py createsuperuser` from a container shell to create yourself a new one.
+- A superuser whose credentials are defined in the docker-compose.yml will be created.
 
 ## Download environment media
 
-Run the following command from the console. NOTE: This will not work from within an existing shell session, so you may have to exit that first.
-
-**N.B. These commands must be run with `sudo` so the permissions can be correctly updated once pulled. This is to fix an issue which will be resolved once we move platforms.**
-
 ### Staging
 
-```console
-$ sudo fab pull-staging-media
+```sh
+docker compose exec dev pull-media
 ```
 
 ### Production
 
-```console
-$ sudo fab pull-production-media
+```sh
+docker compose exec dev pull-media main
+```
+
+## Download everything
+
+### Staging
+
+```sh
+docker compose exec dev pull
+```
+
+### Production
+
+```sh
+docker compose exec dev pull main
 ```
