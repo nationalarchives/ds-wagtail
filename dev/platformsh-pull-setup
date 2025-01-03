@@ -13,16 +13,19 @@ export DB_DUMP_DIR=/home/app/database_dumps
 export TIMESTAMP=$(date +%s)
 export DB_DUMP="$TIMESTAMP.psql"
 
-echo "Installing openssh, postgresql and rsync..."
-apt update
-apt install -y --no-install-recommends openssh-client postgresql rsync
-
 if ! command -v platform --version 2>&1 >/dev/null
 then
+    echo "Installing openssh, postgresql and rsync..."
+    apt update
+    apt install -y --no-install-recommends openssh-client postgresql rsync
+
     echo "Installing Platform.sh CLI..."
     curl -fsSL https://raw.githubusercontent.com/platformsh/cli/main/installer.sh | bash
 fi
 
-echo "Logging in to Platform.sh..."
-platform auth:api-token-login || true
-platform ssh-cert:load --no-interaction
+if ! command -v platform auth:info 2>&1 >/dev/null
+then
+    echo "Logging in to Platform.sh..."
+    platform auth:api-token-login || true
+    platform ssh-cert:load --no-interaction
+fi
