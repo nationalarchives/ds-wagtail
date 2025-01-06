@@ -45,9 +45,7 @@ options.DEFAULT_NAMES = options.DEFAULT_NAMES + ("verbose_name_public",)
 
 @method_decorator(apply_default_vary_headers, name="serve")
 @method_decorator(apply_default_cache_control, name="serve")
-class BasePage(
-    AlertMixin, SocialMixin, DataLayerMixin, HeadlessPreviewMixin, Page
-):
+class BasePage(AlertMixin, SocialMixin, DataLayerMixin, HeadlessPreviewMixin, Page):
     """
     An abstract base model that is used for all Page models within
     the project. Any common fields, Wagtail overrides or custom
@@ -67,9 +65,7 @@ class BasePage(
         blank=True,
         on_delete=models.SET_NULL,
         related_name="+",
-        help_text=_(
-            "Image that will appear on thumbnails and promos around the site."
-        ),
+        help_text=_("Image that will appear on thumbnails and promos around the site."),
     )
 
     # DataLayerMixin overrides

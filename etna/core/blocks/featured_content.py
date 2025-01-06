@@ -33,9 +33,7 @@ class RelatedItemBlock(SectionDepthAwareStructBlock):
     teaser_image = APIImageChooserBlock(
         help_text="Image that will appear on thumbnails and promos around the site."
     )
-    url = blocks.URLBlock(
-        label="external URL", help_text="URL for the external page"
-    )
+    url = blocks.URLBlock(label="external URL", help_text="URL for the external page")
 
     class Meta:
         icon = "link"

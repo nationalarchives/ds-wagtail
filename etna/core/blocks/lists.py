@@ -9,9 +9,7 @@ class DoDontBlock(blocks.StructBlock):
 
 
 class DoDontListBlock(blocks.StructBlock):
-    do = blocks.ListBlock(
-        DoDontBlock(icon="check", label="Do item"), label="Dos"
-    )
+    do = blocks.ListBlock(DoDontBlock(icon="check", label="Do item"), label="Dos")
     dont = blocks.ListBlock(
         DoDontBlock(icon="cross", label="Don't item"), label="Don'ts"
     )

@@ -11,9 +11,7 @@ register = template.Library()
 
 
 @register.simple_tag(takes_context=True)
-def render_feedback_prompt(
-    context, template_name="feedback/includes/prompt.html"
-):
+def render_feedback_prompt(context, template_name="feedback/includes/prompt.html"):
     request = context["request"]
 
     # Avoid rendering if not enabled

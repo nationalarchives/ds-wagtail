@@ -28,9 +28,7 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTestCase):
         super().setUp()
         self.login()
 
-        record_response = create_response(
-            records=[create_record(**TEST_RECORD_DATA)]
-        )
+        record_response = create_response(records=[create_record(**TEST_RECORD_DATA)])
 
         responses.add(
             responses.GET,

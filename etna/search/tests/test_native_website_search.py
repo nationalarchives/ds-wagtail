@@ -28,15 +28,9 @@ class NativeWebsiteSearchTestCase(TestCase):
         # NOTE: These would normally be added under special 'index' pages, but that doesn't matter for
         # these tests
 
-        cls.arts = TopicPageFactory(
-            title="Arts and culture", parent=cls.homepage
-        )
-        cls.military = TopicPageFactory(
-            title="Military and war", parent=cls.homepage
-        )
-        cls.health = TopicPageFactory(
-            title="Health and welfare", parent=cls.homepage
-        )
+        cls.arts = TopicPageFactory(title="Arts and culture", parent=cls.homepage)
+        cls.military = TopicPageFactory(title="Military and war", parent=cls.homepage)
+        cls.health = TopicPageFactory(title="Health and welfare", parent=cls.homepage)
         cls.transport = TopicPageFactory(
             title="Transport and travel", parent=cls.homepage
         )
@@ -197,9 +191,7 @@ class NativeWebsiteSearchTestCase(TestCase):
         )
 
         # No filters are selected, so 'Selected filters' should not be present
-        self.assertNotContains(
-            response, '<h2 class="sr-only">Selected filters</h2>'
-        )
+        self.assertNotContains(response, '<h2 class="sr-only">Selected filters</h2>')
 
     def test_sorting(self):
         for sort_by, expected_results in (
@@ -209,9 +201,7 @@ class NativeWebsiteSearchTestCase(TestCase):
             ),
             (
                 "-title",
-                sorted(
-                    self.all_result_pages, key=lambda p: p.title, reverse=True
-                ),
+                sorted(self.all_result_pages, key=lambda p: p.title, reverse=True),
             ),
             (
                 "first_published_at",
@@ -230,9 +220,7 @@ class NativeWebsiteSearchTestCase(TestCase):
             ),
         ):
             with self.subTest(f"Sort by: {sort_by}"):
-                response = self.client.get(
-                    self.test_url, data={"sort_by": sort_by}
-                )
+                response = self.client.get(self.test_url, data={"sort_by": sort_by})
                 self.assertEqual(response.status_code, 200)
                 self.assertEqual(
                     [p.specific for p in response.context["page"].object_list],
@@ -288,9 +276,7 @@ class NativeWebsiteSearchTestCase(TestCase):
         )
 
         # 'Selected filters' should reflect the values in GET
-        self.assertContains(
-            response, '<h2 class="sr-only">Selected filters</h2>'
-        )
+        self.assertContains(response, '<h2 class="sr-only">Selected filters</h2>')
         for label in ["article", "record article"]:
             self.assertContains(response, f"Remove Format: {label} from search")
         for label in [
@@ -298,9 +284,7 @@ class NativeWebsiteSearchTestCase(TestCase):
             "time period page",
             "topic page",
         ]:
-            self.assertNotContains(
-                response, f"Remove Format: {label} from search"
-            )
+            self.assertNotContains(response, f"Remove Format: {label} from search")
 
     def test_filter_by_topic(self):
         """
@@ -322,17 +306,11 @@ class NativeWebsiteSearchTestCase(TestCase):
         )
 
         # 'Selected filters' should reflect the values in GET
-        self.assertContains(
-            response, '<h2 class="sr-only">Selected filters</h2>'
-        )
+        self.assertContains(response, '<h2 class="sr-only">Selected filters</h2>')
         for topic in [self.arts, self.health]:
-            self.assertContains(
-                response, f"Remove Topic: {topic.title} from search"
-            )
+            self.assertContains(response, f"Remove Topic: {topic.title} from search")
         for topic in [self.military, self.transport]:
-            self.assertNotContains(
-                response, f"Remove Topic: {topic.title} from search"
-            )
+            self.assertNotContains(response, f"Remove Topic: {topic.title} from search")
 
     def test_filter_by_time_period(self):
         """
@@ -355,9 +333,7 @@ class NativeWebsiteSearchTestCase(TestCase):
         )
 
         # 'Selected filters' should reflect the values in GET
-        self.assertContains(
-            response, '<h2 class="sr-only">Selected filters</h2>'
-        )
+        self.assertContains(response, '<h2 class="sr-only">Selected filters</h2>')
         for time_period in [self.interwar, self.postwar]:
             self.assertContains(
                 response, f"Remove Time period: {time_period.title} from search"
@@ -384,9 +360,7 @@ class NativeWebsiteSearchTestCase(TestCase):
         )
 
     def test_search_for_foo_ordered_by_title(self):
-        response = self.client.get(
-            self.test_url, data={"q": "foo", "sort_by": "title"}
-        )
+        response = self.client.get(self.test_url, data={"q": "foo", "sort_by": "title"})
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             [p.specific for p in response.context["page"].object_list],
@@ -446,9 +420,7 @@ class NativeWebsiteSearchTestCase(TestCase):
         """
         Tests the view using the 'bar' search term in isolation (without any filters)
         """
-        response = self.client.get(
-            self.test_url, data={"q": "bar", "sort_by": "title"}
-        )
+        response = self.client.get(self.test_url, data={"q": "bar", "sort_by": "title"})
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             [p.specific for p in response.context["page"].object_list],
@@ -490,9 +462,7 @@ class NativeWebsiteSearchTestCase(TestCase):
             ("foo AND bar", 0),
         ):
             with self.subTest(f"Searching for: {search_terms}"):
-                response = self.client.get(
-                    self.test_url, data={"q": search_terms}
-                )
+                response = self.client.get(self.test_url, data={"q": search_terms})
                 self.assertEqual(
                     response.context_data["paginator"].count,
                     expected_result_count,
@@ -520,7 +490,5 @@ class NativeWebsiteSearchTestCase(TestCase):
             ("display", "foo"),
         ]:
             with self.subTest(f"{field_name} = {value}"):
-                response = self.client.get(
-                    self.test_url, data={field_name: value}
-                )
+                response = self.client.get(self.test_url, data={field_name: value})
                 self.assertEqual(response.status_code, 400)

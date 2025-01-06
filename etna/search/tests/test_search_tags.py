@@ -53,9 +53,7 @@ class QueryStringExcludeTest(SimpleTestCase):
     def test_ensure_correct_param_is_removed_if_multiple_exist(self):
         # All params in QueryDict are strings, values passed to tag should be
         # cast during comparison.
-        context = {
-            "request": self.factory.get("?param=to-remove&param=to-keep")
-        }
+        context = {"request": self.factory.get("?param=to-remove&param=to-keep")}
         result = query_string_exclude(context, "param", "to-remove")
 
         self.assertEqual(result, "param=to-keep")

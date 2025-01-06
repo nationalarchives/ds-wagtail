@@ -77,8 +77,7 @@ class SiteSettings(BaseSiteSetting, ClusterableModel):
         """
         obj = super().for_request(request)
         obj.main_menu_items = [
-            item.bind_to_request(request)
-            for item in obj.main_menu_items_rel.all()
+            item.bind_to_request(request) for item in obj.main_menu_items_rel.all()
         ]
         return obj
 

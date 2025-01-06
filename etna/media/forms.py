@@ -51,13 +51,9 @@ class BaseMediaForm(BaseCollectionMemberForm):
         # Ensure file is a valid type for the current instance.
         if self.instance.type == "audio":
             if mime_type not in ALLOWED_AUDIO_MIME_TYPES:
-                raise ValidationError(
-                    error_messages["mime_type"], params=params
-                )
+                raise ValidationError(error_messages["mime_type"], params=params)
         else:
             if mime_type not in ALLOWED_VIDEO_MIME_TYPES:
-                raise ValidationError(
-                    error_messages["mime_type"], params=params
-                )
+                raise ValidationError(error_messages["mime_type"], params=params)
 
         return data

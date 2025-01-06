@@ -160,9 +160,7 @@ class ExplorerIndexPage(BasePageWithRequiredIntro):
         APIField("articles_introduction"),
         APIField(
             "featured_article",
-            serializer=DefaultPageSerializer(
-                required_api_fields=["teaser_image"]
-            ),
+            serializer=DefaultPageSerializer(required_api_fields=["teaser_image"]),
         ),
         APIField("featured_articles"),
     ]
@@ -305,9 +303,7 @@ class TopicExplorerPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
             APIField("body"),
             APIField(
                 "featured_article",
-                serializer=DefaultPageSerializer(
-                    required_api_fields=["teaser_image"]
-                ),
+                serializer=DefaultPageSerializer(required_api_fields=["teaser_image"]),
             ),
             APIField("skos_id"),
             APIField(
@@ -408,9 +404,7 @@ class TopicExplorerPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
         )
 
 
-class TimePeriodExplorerIndexPage(
-    RequiredHeroImageMixin, BasePageWithRequiredIntro
-):
+class TimePeriodExplorerIndexPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
     """Time period explorer BasePage.
 
     This page lists all child TimePeriodExplorerPage
@@ -526,9 +520,7 @@ class TimePeriodExplorerPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
             APIField("body"),
             APIField(
                 "featured_article",
-                serializer=DefaultPageSerializer(
-                    required_api_fields=["teaser_image"]
-                ),
+                serializer=DefaultPageSerializer(required_api_fields=["teaser_image"]),
             ),
             APIField(
                 "related_articles",
@@ -631,9 +623,7 @@ class PageTopic(Orderable):
     configuration to use it!
     """
 
-    page = ParentalKey(
-        Page, on_delete=models.CASCADE, related_name="page_topics"
-    )
+    page = ParentalKey(Page, on_delete=models.CASCADE, related_name="page_topics")
     topic = models.ForeignKey(
         TopicExplorerPage,
         verbose_name=_("topic"),
@@ -655,9 +645,7 @@ class PageTimePeriod(Orderable):
     configuration to use it!
     """
 
-    page = ParentalKey(
-        Page, on_delete=models.CASCADE, related_name="page_time_periods"
-    )
+    page = ParentalKey(Page, on_delete=models.CASCADE, related_name="page_time_periods")
     time_period = models.ForeignKey(
         TimePeriodExplorerPage,
         verbose_name=_("time period"),
@@ -690,9 +678,7 @@ class TopicalPageMixin:
     ]
 
     @classmethod
-    def get_time_periods_inlinepanel(
-        cls, max_num: Optional[int] = 4
-    ) -> InlinePanel:
+    def get_time_periods_inlinepanel(cls, max_num: Optional[int] = 4) -> InlinePanel:
         return InlinePanel(
             "page_time_periods",
             heading=_("Related time periods"),
@@ -752,9 +738,9 @@ class TopicalPageMixin:
     def time_periods(self) -> Tuple[TimePeriodExplorerPage]:
         return tuple(
             item.time_period
-            for item in self.page_time_periods.select_related(
-                "time_period"
-            ).filter(time_period__live=True)
+            for item in self.page_time_periods.select_related("time_period").filter(
+                time_period__live=True
+            )
         )
 
     @cached_property
@@ -832,14 +818,10 @@ class HighlightGalleryPage(
         + [
             APIField(
                 "featured_article",
-                serializer=DefaultPageSerializer(
-                    required_api_fields=["teaser_image"]
-                ),
+                serializer=DefaultPageSerializer(required_api_fields=["teaser_image"]),
             ),
             APIField("highlights", serializer=HighlightSerializer(many=True)),
-            APIField(
-                "highlight_cards", serializer=HighlightCardSerializer(many=True)
-            ),
+            APIField("highlight_cards", serializer=HighlightCardSerializer(many=True)),
         ]
         + TopicalPageMixin.api_fields
     )

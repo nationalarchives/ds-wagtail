@@ -31,9 +31,7 @@ class GeneralPage(SidebarMixin, HeroImageMixin, BasePageWithIntro):
         ]
     )
 
-    settings_panels = (
-        BasePageWithIntro.settings_panels + SidebarMixin.settings_panels
-    )
+    settings_panels = BasePageWithIntro.settings_panels + SidebarMixin.settings_panels
 
     api_fields = (
         BasePageWithIntro.api_fields
@@ -111,15 +109,11 @@ class LinkItem(Orderable):
 class LinkItemSerializer(serializers.Serializer):
     def to_representation(self, instance):
         if instance.internal_page:
-            return DefaultPageSerializer().to_representation(
-                instance.internal_page
-            )
+            return DefaultPageSerializer().to_representation(instance.internal_page)
         else:
             return {
                 "title": instance.title,
-                "teaser_image": ImageSerializer().to_representation(
-                    instance.image
-                ),
+                "teaser_image": ImageSerializer().to_representation(instance.image),
                 "teaser_text": instance.description,
                 "url": instance.url,
                 "full_url": instance.url,

@@ -61,9 +61,7 @@ def query_string_exclude(
 
 
 @register.simple_tag
-def render_fields_as_hidden(
-    form: Form, exclude: str = "", include: str = ""
-) -> str:
+def render_fields_as_hidden(form: Form, exclude: str = "", include: str = "") -> str:
     """
     Render the supplied `form`'s fields as hidden inputs. Used within a <form> tag
     to preserve state between requests when the same Django form is rendered in

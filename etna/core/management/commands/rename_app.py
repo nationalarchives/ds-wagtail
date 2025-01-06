@@ -15,7 +15,9 @@ logger = logging.getLogger(__name__)
 
 
 class Command(BaseCommand):
-    help = "Renames a Django Application. Usage rename_app [old_app_name] [new_app_name]"
+    help = (
+        "Renames a Django Application. Usage rename_app [old_app_name] [new_app_name]"
+    )
 
     def add_arguments(self, parser):
         parser.add_argument("old_app_name", nargs=1, type=str)
@@ -28,8 +30,7 @@ class Command(BaseCommand):
             new_app_name = new_app_name[0]
             print(f"Renaming {old_app_name} to {new_app_name}, please wait...")
             cursor.execute(
-                "SELECT * FROM django_content_type "
-                f"where app_label='{new_app_name}'"
+                "SELECT * FROM django_content_type " f"where app_label='{new_app_name}'"
             )
 
             has_already_been_ran = cursor.fetchone()
@@ -71,19 +72,14 @@ class Command(BaseCommand):
                     connection.ops.max_name_length(),
                 )
 
-                print(
-                    f"Renaming table from: {old_table_name} to: {new_table_name}."
-                )
+                print(f"Renaming table from: {old_table_name} to: {new_table_name}.")
                 query = (
-                    f'ALTER TABLE "{old_table_name}" '
-                    f'RENAME TO "{new_table_name}"'
+                    f'ALTER TABLE "{old_table_name}" ' f'RENAME TO "{new_table_name}"'
                 )
 
                 try:
                     cursor.execute(query)
                 except ProgrammingError:
-                    logger.warning(
-                        'Rename query failed: "%s"', query, exc_info=True
-                    )
+                    logger.warning('Rename query failed: "%s"', query, exc_info=True)
 
             print("Renaming successfully done!")

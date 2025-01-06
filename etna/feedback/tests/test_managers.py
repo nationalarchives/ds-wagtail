@@ -52,14 +52,10 @@ class TestGetForPath(TestCase):
         self.assertMatchForPath("/SEARCH/", self.search_view_prompt)
         self.assertMatchForPath("/search", self.search_view_prompt)
         self.assertMatchForPath("/search/result/", self.search_result_prompt)
-        self.assertMatchForPath(
-            "/search/result/ITEM_ID", self.search_result_prompt
-        )
+        self.assertMatchForPath("/search/result/ITEM_ID", self.search_result_prompt)
         self.assertMatchForPath("/search/result", self.search_section_prompt)
         self.assertMatchForPath("/search/sub-path", self.search_section_prompt)
-        self.assertMatchForPath(
-            "/search/result-machine", self.search_section_prompt
-        )
+        self.assertMatchForPath("/search/result-machine", self.search_section_prompt)
 
     def test_matching_for_page_type(self):
         path = "/not-root"
@@ -99,9 +95,7 @@ class TestGetForPath(TestCase):
             ],
         )
 
-        self.assertMatchForPath(
-            path, homepage_prompt, page=HomePage(title="Homepage")
-        )
+        self.assertMatchForPath(path, homepage_prompt, page=HomePage(title="Homepage"))
         self.assertMatchForPath(
             path, genericpage_prompt, page=GeneralPage(title="General page")
         )

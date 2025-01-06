@@ -90,9 +90,7 @@ class ShopItem(models.Model):
         APIField("title"),
         APIField("url"),
         APIField("price"),
-        APIField(
-            "image", serializer=ImageSerializer(rendition_size="fill-600x400")
-        ),
+        APIField("image", serializer=ImageSerializer(rendition_size="fill-600x400")),
     ]
 
 
@@ -114,9 +112,7 @@ class PersonPage(BasePage):
     role = models.CharField(max_length=100)
     summary = RichTextField(features=settings.RESTRICTED_RICH_TEXT_FEATURES)
 
-    research_summary = StreamField(
-        ResearchSummaryStreamBlock, blank=True, null=True
-    )
+    research_summary = StreamField(ResearchSummaryStreamBlock, blank=True, null=True)
 
     first_name = models.CharField(
         max_length=255,
@@ -152,14 +148,10 @@ class PersonPage(BasePage):
 
     default_api_fields = BasePage.default_api_fields + [
         APIField("role"),
-        APIField(
-            "image", serializer=ImageSerializer(rendition_size="fill-512x512")
-        ),
+        APIField("image", serializer=ImageSerializer(rendition_size="fill-512x512")),
         APIField(
             "image_small",
-            serializer=ImageSerializer(
-                rendition_size="fill-128x128", source="image"
-            ),
+            serializer=ImageSerializer(rendition_size="fill-128x128", source="image"),
         ),
         APIField("first_name"),
         APIField("last_name"),
@@ -172,14 +164,10 @@ class PersonPage(BasePage):
         APIField("last_name"),
         APIField("role"),
         APIField("role_tags"),
-        APIField(
-            "image", serializer=ImageSerializer(rendition_size="fill-512x512")
-        ),
+        APIField("image", serializer=ImageSerializer(rendition_size="fill-512x512")),
         APIField(
             "image_small",
-            serializer=ImageSerializer(
-                rendition_size="fill-128x128", source="image"
-            ),
+            serializer=ImageSerializer(rendition_size="fill-128x128", source="image"),
         ),
         APIField("summary", serializer=RichTextSerializer()),
         APIField("research_summary"),
@@ -258,9 +246,7 @@ class AuthorTag(models.Model):
     for `FocusedArticlePage`) to the page's model to use this.
     """
 
-    page = ParentalKey(
-        Page, on_delete=models.CASCADE, related_name="author_tags"
-    )
+    page = ParentalKey(Page, on_delete=models.CASCADE, related_name="author_tags")
     author = models.ForeignKey(
         PersonPage,
         verbose_name="author",
@@ -311,9 +297,7 @@ class AuthorPageMixin:
     api_fields = [
         APIField(
             "authors",
-            serializer=DefaultPageSerializer(
-                required_api_fields=["image"], many=True
-            ),
+            serializer=DefaultPageSerializer(required_api_fields=["image"], many=True),
         )
     ]
 
@@ -378,7 +362,5 @@ class ExternalAuthorMixin:
         return self.external_author_tags.order_by("last_name")
 
     api_fields = [
-        APIField(
-            "external_authors", serializer=ExternalAuthorSerializer(many=True)
-        ),
+        APIField("external_authors", serializer=ExternalAuthorSerializer(many=True)),
     ]

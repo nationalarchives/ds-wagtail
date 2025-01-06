@@ -113,9 +113,7 @@ class FeedbackSubmitView(VersionedFeedbackViewMixin, FormView):
                 {
                     "id": str(obj.public_id),
                     "signature": sign_submission_id(obj.public_id),
-                    "comment_prompt_text": form.cleaned_data[
-                        "comment_prompt_text"
-                    ],
+                    "comment_prompt_text": form.cleaned_data["comment_prompt_text"],
                 }
             )
 

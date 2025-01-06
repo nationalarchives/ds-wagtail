@@ -20,9 +20,7 @@ class PublishedDateFilter(BaseFilterBackend):
                 "cannot use day filter without a year and month filter"
             )
         if "month" in request.GET and "year" not in request.GET:
-            raise BadRequestError(
-                "cannot use month filter without a year filter"
-            )
+            raise BadRequestError("cannot use month filter without a year filter")
 
         if "year" in request.GET:
             try:

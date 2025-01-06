@@ -363,9 +363,7 @@ class RecordModelCreatorsTests(SimpleTestCase):
 
         self.record = Record(self.source)
 
-        self.assertEqual(
-            self.record.record_creators_date, "1897-1981; 1935-1974"
-        )
+        self.assertEqual(self.record.record_creators_date, "1897-1981; 1935-1974")
 
     def test_record_creators_date_with_all_dates(self):
         self.source.update(
@@ -398,9 +396,7 @@ class RecordModelCreatorsTests(SimpleTestCase):
 
         self.record = Record(self.source)
 
-        self.assertEqual(
-            self.record.name_authority_reference, "GB/NNAF/P163769"
-        )
+        self.assertEqual(self.record.name_authority_reference, "GB/NNAF/P163769")
 
     def test_former_name_authority_reference(self):
         self.source.update(
@@ -417,6 +413,4 @@ class RecordModelCreatorsTests(SimpleTestCase):
 
         self.record = Record(self.source)
 
-        self.assertEqual(
-            self.record.former_name_authority_reference, "GB/NNAF/P16782"
-        )
+        self.assertEqual(self.record.former_name_authority_reference, "GB/NNAF/P16782")

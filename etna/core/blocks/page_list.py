@@ -74,9 +74,7 @@ class PageListBlock(blocks.ListBlock):
             for item in value
         ]
         # fetch pages to match these values
-        pages_by_id = (
-            self.get_base_queryset().filter(id__in=raw_values).in_bulk()
-        )
+        pages_by_id = self.get_base_queryset().filter(id__in=raw_values).in_bulk()
 
         # assemble return value (a ListValue), only including items for which
         # a suitable page was found.
@@ -89,9 +87,7 @@ class PageListBlock(blocks.ListBlock):
             page_obj = pages_by_id.get(raw_values[i])
             if page_obj:
                 bound_blocks.append(
-                    ListValue.ListChild(
-                        self.child_block, page_obj, id=list_item_id
-                    )
+                    ListValue.ListChild(self.child_block, page_obj, id=list_item_id)
                 )
         return ListValue(self, bound_blocks=bound_blocks)
 

@@ -64,9 +64,7 @@ class BadRequestHandlingTest(SearchViewTestCase):
             ("display", "foo"),
         ]:
             with self.subTest(f"{field_name} = {value}"):
-                response = self.client.get(
-                    self.test_url, data={field_name: value}
-                )
+                response = self.client.get(self.test_url, data={field_name: value})
                 self.assertEqual(response.status_code, 400)
 
 
@@ -232,20 +230,14 @@ class CatalogueSearchAPIIntegrationTest(SearchViewTestCase):
 @override_settings(CLIENT_BASE_URL=f"{settings.CLIENT_BASE_URL}")
 class EndToEndSearchTestCase(TestCase):
     # The following HTML snippets must be updated to reflect any future HTML changes
-    results_html = (
-        '<ul class="search-results__list" id="analytics-results-list">'
-    )
+    results_html = '<ul class="search-results__list" id="analytics-results-list">'
     no_results_messaging_html = '<div class="no-results">'
     bucket_links_html = (
         '<ul class="search-buckets__list" data-id="search-buckets-list">'
     )
     search_within_option_html = '<label for="id_filter_keyword" class="search-filters__label--block example-text">Search within results:</label>'
-    sort_by_desktop_options_html = (
-        '<label for="id_sort_by_desktop">Sort by</label>'
-    )
-    sort_by_mobile_options_html = (
-        '<label for="id_sort_by_mobile">Sort by</label>'
-    )
+    sort_by_desktop_options_html = '<label for="id_sort_by_desktop">Sort by</label>'
+    sort_by_mobile_options_html = '<label for="id_sort_by_mobile">Sort by</label>'
     filter_options_html = '<form method="GET" data-id="filters-form"'
 
     def patch_api_endpoint(self, url: str, fixture_path: str):
@@ -258,9 +250,7 @@ class EndToEndSearchTestCase(TestCase):
         responses.add(responses.GET, url, json=fixture_content, status=200)
 
     def patch_search_endpoint(self, fixture_path: str):
-        self.patch_api_endpoint(
-            f"{settings.CLIENT_BASE_URL}/search", fixture_path
-        )
+        self.patch_api_endpoint(f"{settings.CLIENT_BASE_URL}/search", fixture_path)
 
     def assertNoResultsMessagingRendered(self, response):
         self.assertIn(self.no_results_messaging_html, response)
@@ -351,9 +341,7 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
         - Search results
         """
 
-        self.patch_search_endpoint(
-            "catalogue_search_with_some_empty_buckets.json"
-        )
+        self.patch_search_endpoint("catalogue_search_with_some_empty_buckets.json")
         response = self.client.get(
             self.test_url, data={"q": "snub", "group": "creator"}
         )
@@ -454,9 +442,7 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
 
         Test covers create session info for Catalogue search with query.
         """
-        self.patch_search_endpoint(
-            "catalogue_search_with_multiple_filters.json"
-        )
+        self.patch_search_endpoint("catalogue_search_with_multiple_filters.json")
 
         expected_url = "/search/catalogue/?q=test%2Bsearch%2Bterm&group=tna&collection=DEFE&collection=HW&collection=RGO&level=Piece&closure=Open%2BDocument%252C%2BOpen%2BDescription"
 
@@ -476,15 +462,9 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(session.get("back_to_search_url"), expected_url)
 
-        self.assertIn(
-            '<input type="checkbox" name="collection" value="DEFE"', content
-        )
-        self.assertIn(
-            '<input type="checkbox" name="collection" value="HW"', content
-        )
-        self.assertIn(
-            '<input type="checkbox" name="collection" value="RGO"', content
-        )
+        self.assertIn('<input type="checkbox" name="collection" value="DEFE"', content)
+        self.assertIn('<input type="checkbox" name="collection" value="HW"', content)
+        self.assertIn('<input type="checkbox" name="collection" value="RGO"', content)
 
     @responses.activate
     def test_render_invalid_date_range_message(self):
@@ -531,9 +511,7 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
             )
 
 
-@unittest.skip(
-    "CIIM-powered website search is to be re-instated at a later date"
-)
+@unittest.skip("CIIM-powered website search is to be re-instated at a later date")
 class WebsiteSearchEndToEndTest(EndToEndSearchTestCase):
     test_url = reverse_lazy("search-website")
 
@@ -582,12 +560,8 @@ class WebsiteSearchEndToEndTest(EndToEndSearchTestCase):
         - Filter options to refine the search
         - Search results
         """
-        self.patch_search_endpoint(
-            "website_search_with_some_empty_buckets.json"
-        )
-        response = self.client.get(
-            self.test_url, data={"q": "japan", "group": "audio"}
-        )
+        self.patch_search_endpoint("website_search_with_some_empty_buckets.json")
+        response = self.client.get(self.test_url, data={"q": "japan", "group": "audio"})
         content = str(response.content)
 
         # SHOULD see
@@ -778,9 +752,7 @@ class FeaturedSearchTestCase(SearchViewTestCase):
         self.assertEqual(response.context["result_count"], 1)
 
 
-@unittest.skip(
-    "CIIM-powered website search is to be re-instated at a later date"
-)
+@unittest.skip("CIIM-powered website search is to be re-instated at a later date")
 class WebsiteSearchAPIIntegrationTest(SearchViewTestCase):
     test_url = reverse_lazy("search-website")
 
@@ -806,9 +778,7 @@ class WebsiteSearchAPIIntegrationTest(SearchViewTestCase):
         )
 
 
-@unittest.skip(
-    "CIIM-powered website search is to be re-instated at a later date"
-)
+@unittest.skip("CIIM-powered website search is to be re-instated at a later date")
 @override_settings(
     CLIENT_BASE_URL=f"{settings.CLIENT_BASE_URL}",
 )
@@ -1383,9 +1353,7 @@ class TestDataLayerSearchViews(WagtailTestUtils, TestCase):
         )
 
 
-@unittest.skip(
-    "CIIM-powered website search is to be re-instated at a later date"
-)
+@unittest.skip("CIIM-powered website search is to be re-instated at a later date")
 class WebsiteSearchLongFilterChooserAPIIntegrationTest(SearchViewTestCase):
     test_url = reverse_lazy(
         "search-website-long-filter-chooser", kwargs={"field_name": "topic"}

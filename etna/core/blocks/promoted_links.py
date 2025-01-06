@@ -12,12 +12,8 @@ from .image import NoCaptionImageBlock
 
 
 class PromotedLinkBlock(blocks.StructBlock):
-    url = blocks.URLBlock(
-        label="External URL", help_text="URL for the external page"
-    )
-    title = blocks.CharBlock(
-        max_length=100, help_text="Title of the promoted page"
-    )
+    url = blocks.URLBlock(label="External URL", help_text="URL for the external page")
+    title = blocks.CharBlock(max_length=100, help_text="Title of the promoted page")
     teaser_image = APIImageChooserBlock(
         help_text="Image that will appear on thumbnails and promos around the site."
     )
@@ -71,9 +67,7 @@ class PromotedItemBlock(SectionDepthAwareStructBlock):
         label="Duration",
         help_text="Podcast or video duration.",
     )
-    url = blocks.URLBlock(
-        label="External URL", help_text="URL for the external page"
-    )
+    url = blocks.URLBlock(label="External URL", help_text="URL for the external page")
     target_blank = blocks.BooleanBlock(
         label=format_html(
             "%s <p style='font-size: 11px;'>%s</p>"

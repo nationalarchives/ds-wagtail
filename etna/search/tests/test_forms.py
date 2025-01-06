@@ -52,9 +52,7 @@ class CatalogueSearchFormTest(SimpleTestCase):
                 ),
             ):
                 with self.subTest(label):
-                    form = CatalogueSearchForm(
-                        data={"group": "tna", **form_data}
-                    )
+                    form = CatalogueSearchForm(data={"group": "tna", **form_data})
                     self.assertTrue(form.is_valid(), label)
 
     def test_invalid_date_range_values(self):
@@ -92,13 +90,9 @@ class CatalogueSearchFormTest(SimpleTestCase):
                 ),
             ):
                 with self.subTest(label):
-                    form = CatalogueSearchForm(
-                        data={"group": "tna", **form_data}
-                    )
+                    form = CatalogueSearchForm(data={"group": "tna", **form_data})
                     self.assertFalse(form.is_valid(), label)
                     self.assertEqual(
                         form.errors.get(from_field_name, None),
-                        [
-                            "This date must be earlier than or equal to the 'to' date."
-                        ],
+                        ["This date must be earlier than or equal to the 'to' date."],
                     )

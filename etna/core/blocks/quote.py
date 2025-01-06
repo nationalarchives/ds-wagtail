@@ -9,9 +9,7 @@ class QuoteBlock(blocks.StructBlock):
     Quote streamfield component
     """
 
-    quote = APIRichTextBlock(
-        required=True, features=settings.INLINE_RICH_TEXT_FEATURES
-    )
+    quote = APIRichTextBlock(required=True, features=settings.INLINE_RICH_TEXT_FEATURES)
     attribution = blocks.CharBlock(required=False, max_length=100)
 
     class Meta:

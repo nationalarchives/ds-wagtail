@@ -104,9 +104,7 @@ def record_detail_view(request, iaid):
             back_to_search_url_timestamp
         )
 
-        if timezone.now() <= (
-            back_to_search_url_timestamp + SEARCH_URL_RETAIN_DELTA
-        ):
+        if timezone.now() <= (back_to_search_url_timestamp + SEARCH_URL_RETAIN_DELTA):
             back_to_search_url = request.session.get("back_to_search_url")
 
     context.update(
@@ -119,6 +117,4 @@ def record_detail_view(request, iaid):
     )
 
     # Note: This page uses cookies to render GTM, please ensure to keep TemplateResponse or similar when changed.
-    return TemplateResponse(
-        request=request, template=template_name, context=context
-    )
+    return TemplateResponse(request=request, template=template_name, context=context)

@@ -61,9 +61,7 @@ class DateInputField(forms.MultiValueField):
             ),
             forms.CharField(
                 label=_("Month"),
-                error_messages={
-                    "incomplete": "Entered date must include a month."
-                },
+                error_messages={"incomplete": "Entered date must include a month."},
                 validators=[
                     PositiveIntegerStringValidator(
                         min=1,
@@ -75,12 +73,8 @@ class DateInputField(forms.MultiValueField):
             ),
             forms.CharField(
                 label=_("Year"),
-                error_messages={
-                    "incomplete": "Entered date must include a year."
-                },
-                validators=[
-                    PositiveIntegerStringValidator(msg=ERR_MSG_REAL_DATE)
-                ],
+                error_messages={"incomplete": "Entered date must include a year."},
+                validators=[PositiveIntegerStringValidator(msg=ERR_MSG_REAL_DATE)],
                 required=default_year is None,
             ),
         )
@@ -121,9 +115,7 @@ class DateInputField(forms.MultiValueField):
             value = self.widget.decompress(value)
 
         if not value or isinstance(value, (list, tuple)):
-            if not value or not [
-                v for v in value if v not in self.empty_values
-            ]:
+            if not value or not [v for v in value if v not in self.empty_values]:
                 # If all sub-field values are empty, don't attempt to fill in any blanks
                 if self.required:
                     raise ValidationError(
@@ -132,9 +124,7 @@ class DateInputField(forms.MultiValueField):
                 else:
                     return self.compress((None, None, None))
         else:
-            raise ValidationError(
-                self.error_messages["invalid"], code="invalid"
-            )
+            raise ValidationError(self.error_messages["invalid"], code="invalid")
 
         for i, field in enumerate(self.fields):
             field.widget.errors = []

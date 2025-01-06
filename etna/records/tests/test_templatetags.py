@@ -75,9 +75,7 @@ class TestRecordURLTag(SimpleTestCase):
                         "@entity": "reference",
                         "level": {"code": 2},
                         "source": {"value": "CAT"},
-                        "summary": {
-                            "title": "Records of Naval Staff Departments"
-                        },
+                        "summary": {"title": "Records of Naval Staff Departments"},
                     },
                     {
                         "@admin": {
@@ -544,9 +542,7 @@ class TestRecordURLTag(SimpleTestCase):
                 )
                 # is_editorial should't make a difference unless
                 # FEATURE_RECORD_LINKS_GO_TO_DISCOVERY is True
-                self.assertEqual(
-                    record_url(source, is_editorial=True), expected_result
-                )
+                self.assertEqual(record_url(source, is_editorial=True), expected_result)
 
     @override_settings(FEATURE_RECORD_LINKS_GO_TO_DISCOVERY=True)
     def test_discovery_links_when_is_editorial_is_true(self):
@@ -566,9 +562,7 @@ class TestRecordURLTag(SimpleTestCase):
         ):
             with self.subTest(attribute_name):
                 source = getattr(self, attribute_name)
-                self.assertEqual(
-                    record_url(source, is_editorial=True), expected_result
-                )
+                self.assertEqual(record_url(source, is_editorial=True), expected_result)
 
     @override_settings(FEATURE_RECORD_LINKS_GO_TO_DISCOVERY=True)
     def test_no_discovery_links_when_is_editorial_is_false(self):
@@ -1130,9 +1124,7 @@ class TestRecordURLTag(SimpleTestCase):
                 # and this function then retrieves the level name associated
                 # with that level code/record
                 self.assertEqual(
-                    level_name(
-                        current_record.level_code, current_record.is_tna
-                    ),
+                    level_name(current_record.level_code, current_record.is_tna),
                     expected_result,
                 )
 

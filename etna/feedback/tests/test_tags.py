@@ -45,20 +45,14 @@ class TestRenderFeedbackPromptTag(TestCase):
     @override_settings(FEATURE_FEEDBACK_MECHANISM_ENABLED=True)
     def test_prompt_rendering_for_path(self):
         with self.assertNumQueries(2):
-            result = render_feedback_prompt(
-                fake_request_context(self.home_path)
-            )
+            result = render_feedback_prompt(fake_request_context(self.home_path))
         self.assertTrue(result)
-        self.assertInHTML(
-            f"<legend>{self.default_prompt.text}</legend>", result
-        )
+        self.assertInHTML(f"<legend>{self.default_prompt.text}</legend>", result)
         self.assertInHTML(
             f'<input type="hidden" name="url" value="{self.home_url}" id="id_url">',
             result,
         )
-        self.assertInHTML(
-            '<input type="hidden" name="page" id="id_page">', result
-        )
+        self.assertInHTML('<input type="hidden" name="page" id="id_page">', result)
         self.assertInHTML(
             '<input type="hidden" name="page_revision" id="id_page_revision">',
             result,
@@ -75,9 +69,7 @@ class TestRenderFeedbackPromptTag(TestCase):
                 fake_request_context(self.home_path, page=self.page)
             )
         self.assertTrue(result)
-        self.assertInHTML(
-            f"<legend>{self.default_prompt.text}</legend>", result
-        )
+        self.assertInHTML(f"<legend>{self.default_prompt.text}</legend>", result)
         self.assertInHTML(
             f'<input type="hidden" name="url" value="{self.home_url}" id="id_url">',
             result,

@@ -70,9 +70,7 @@ class FeedbackForm(forms.Form):
 
         # Find the relevant Site
         try:
-            site = get_site_for_hostname(
-                parse_result.hostname, parse_result.port
-            )
+            site = get_site_for_hostname(parse_result.hostname, parse_result.port)
         except Site.DoesNotExist:
             raise ValidationError(
                 "value could not be matched to a Wagtail site.",
@@ -81,8 +79,7 @@ class FeedbackForm(forms.Form):
 
         # Create dict from querystring data
         query_params = {
-            name: values
-            for name, values in QueryDict(parse_result.query).lists()
+            name: values for name, values in QueryDict(parse_result.query).lists()
         }
 
         # Add derived values to 'cleaned_data'

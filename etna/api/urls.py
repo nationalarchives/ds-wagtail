@@ -37,22 +37,16 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
         # Exclude pages that the user doesn't have access to
         restricted_pages = [
             restriction.page
-            for restriction in PageViewRestriction.objects.all().select_related(
-                "page"
-            )
+            for restriction in PageViewRestriction.objects.all().select_related("page")
             if not restriction.accept_request(self.request)
         ]
 
         # Exclude the restricted pages and their descendants from the queryset
         for restricted_page in restricted_pages:
-            queryset = queryset.not_descendant_of(
-                restricted_page, inclusive=True
-            )
+            queryset = queryset.not_descendant_of(restricted_page, inclusive=True)
 
         if "author" in request.GET:
-            queryset = queryset.filter(
-                author_tags__author=request.GET["author"]
-            )
+            queryset = queryset.filter(author_tags__author=request.GET["author"])
 
         self.check_query_parameters(queryset)
         queryset = self.filter_queryset(queryset)
@@ -79,9 +73,7 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
                     ):
                         return Response(data)
                     else:
-                        data = restricted_data | {
-                            "message": "Incorrect password."
-                        }
+                        data = restricted_data | {"message": "Incorrect password."}
                         return Response(data)
                 else:
                     data = restricted_data | {
@@ -155,16 +147,12 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
 
         if site:
             base_queryset = queryset
-            queryset = base_queryset.descendant_of(
-                site.root_page, inclusive=True
-            )
+            queryset = base_queryset.descendant_of(site.root_page, inclusive=True)
 
             # If internationalisation is enabled, include pages from other language trees
             if getattr(settings, "WAGTAIL_I18N_ENABLED", False):
                 for translation in site.root_page.get_translations():
-                    queryset |= base_queryset.descendant_of(
-                        translation, inclusive=True
-                    )
+                    queryset |= base_queryset.descendant_of(translation, inclusive=True)
 
         else:
             # No sites configured
@@ -195,23 +183,17 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
             if redirects.exists():
                 if redirects.get().redirect_page:
                     if new_path := redirects.get().redirect_page.url:
-                        logger.info(
-                            f"Redirect detected: {path} ---> {new_path}"
-                        )
+                        logger.info(f"Redirect detected: {path} ---> {new_path}")
                         path = new_path
                 # elif redirects.get().redirect_link:
                 #     if new_path := redirects.get().redirect_link:
                 #         logger.info(f"Redirect detected: {path} ---> {new_path}")
                 #         path = new_path
 
-            path_components = [
-                component for component in path.split("/") if component
-            ]
+            path_components = [component for component in path.split("/") if component]
 
             try:
-                page, _, _ = site.root_page.specific.route(
-                    request, path_components
-                )
+                page, _, _ = site.root_page.specific.route(request, path_components)
             except Http404:
                 return
 
@@ -284,28 +266,20 @@ class BlogsAPIViewSet(CustomPagesAPIViewSet):
         queryset = self.get_queryset()
         restricted_pages = [
             restriction.page
-            for restriction in PageViewRestriction.objects.all().select_related(
-                "page"
-            )
+            for restriction in PageViewRestriction.objects.all().select_related("page")
             if not restriction.accept_request(self.request)
         ]
         for restricted_page in restricted_pages:
-            queryset = queryset.not_descendant_of(
-                restricted_page, inclusive=True
-            )
+            queryset = queryset.not_descendant_of(restricted_page, inclusive=True)
         blog_post_counts = {}
         for blog in queryset:
             # Ignore all "sub-blogs" (BlogPages which are children of other BlogPages)
             queryset = queryset.not_descendant_of(blog, inclusive=False)
-            blog_posts = (
-                BlogPostPage.objects.all().live().descendant_of(blog).count()
-            )
+            blog_posts = BlogPostPage.objects.all().live().descendant_of(blog).count()
             blog_post_counts[blog.id] = blog_posts
         serializer = DefaultPageSerializer(queryset, many=True)
         blogs = sorted(serializer.data, key=lambda x: x["title"])
-        blogs = [
-            blog | {"posts": blog_post_counts[blog["id"]]} for blog in blogs
-        ]
+        blogs = [blog | {"posts": blog_post_counts[blog["id"]]} for blog in blogs]
         top_level_queryset = BlogIndexPage.objects.all().live()
         top_level = DefaultPageSerializer(top_level_queryset, many=True)
         blogs = top_level.data + blogs
@@ -377,9 +351,7 @@ class BlogPostsAPIViewSet(CustomPagesAPIViewSet):
                         )
                     )
                 ],
-                "posts": queryset.filter(
-                    **{"published_date__year": year}
-                ).count(),
+                "posts": queryset.filter(**{"published_date__year": year}).count(),
             }
             for year in sorted(years)
         ]
@@ -404,14 +376,10 @@ class BlogPostsAPIViewSet(CustomPagesAPIViewSet):
                 authors_count.append(
                     {
                         "author": serializer.to_representation(author_item),
-                        "posts": queryset.filter(
-                            author_tags__author=author
-                        ).count(),
+                        "posts": queryset.filter(author_tags__author=author).count(),
                     }
                 )
-        return Response(
-            sorted(authors_count, key=lambda x: x["posts"], reverse=True)
-        )
+        return Response(sorted(authors_count, key=lambda x: x["posts"], reverse=True))
 
     @classmethod
     def get_urlpatterns(cls):
@@ -421,9 +389,7 @@ class BlogPostsAPIViewSet(CustomPagesAPIViewSet):
         return [
             path("", cls.as_view({"get": "listing_view"}), name="listing"),
             path("count/", cls.as_view({"get": "count_view"}), name="count"),
-            path(
-                "authors/", cls.as_view({"get": "author_view"}), name="authors"
-            ),
+            path("authors/", cls.as_view({"get": "author_view"}), name="authors"),
         ]
 
 

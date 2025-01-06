@@ -27,9 +27,7 @@ class MediaChooserBlock(AbstractMediaChooserBlock):
             {
                 "time": int(chapter.value["time"]),
                 "heading": chapter.value["heading"],
-                "transcript": expand_db_html(
-                    chapter.value["transcript"].source
-                ),
+                "transcript": expand_db_html(chapter.value["transcript"].source),
             }
             for chapter in value.chapters
         ]

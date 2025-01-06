@@ -53,9 +53,7 @@ class TestRecordDisambiguationView(TestCase):
         self.assertEqual(
             response.resolver_match.view_name, "details-page-human-readable"
         )
-        self.assertTemplateUsed(
-            response, "records/record_disambiguation_page.html"
-        )
+        self.assertTemplateUsed(response, "records/record_disambiguation_page.html")
 
     @responses.activate
     def test_rendering_deferred_to_details_page_view(self):
@@ -191,9 +189,7 @@ class TestRecordView(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "records/record_detail.html")
-        self.assertTemplateUsed(
-            response, "includes/records/image-viewer-panel.html"
-        )
+        self.assertTemplateUsed(response, "includes/records/image-viewer-panel.html")
 
     @responses.activate
     def test_record_rendered_for_archive_record(self):
@@ -623,9 +619,7 @@ class TestImageViewerView(TestCase):
             f"{settings.CLIENT_BASE_URL}/search",
             json=create_response(
                 records=[
-                    create_media(
-                        location="path/to/previous-image.jpeg", sort="01"
-                    ),
+                    create_media(location="path/to/previous-image.jpeg", sort="01"),
                     create_media(location="path/to/image.jpeg", sort="02"),
                     create_media(location="path/to/next-image.jpeg", sort="03"),
                 ]
@@ -646,9 +640,7 @@ class TestImageViewerView(TestCase):
             response.context["previous_image"].location,
             "path/to/previous-image.jpeg",
         )
-        self.assertEqual(
-            response.context["image"].location, "path/to/image.jpeg"
-        )
+        self.assertEqual(response.context["image"].location, "path/to/image.jpeg")
         self.assertEqual(
             response.context["next_image"].location, "path/to/next-image.jpeg"
         )
@@ -669,9 +661,7 @@ class TestImageViewerView(TestCase):
             f"{settings.CLIENT_BASE_URL}/search",
             json=create_response(
                 records=[
-                    create_media(
-                        location="path/to/previous-image.jpeg", sort="01"
-                    ),
+                    create_media(location="path/to/previous-image.jpeg", sort="01"),
                     create_media(location="path/to/image.jpeg", sort="02"),
                 ]
             ),
@@ -685,9 +675,7 @@ class TestImageViewerView(TestCase):
             response.context["previous_image"].location,
             "path/to/previous-image.jpeg",
         )
-        self.assertEqual(
-            response.context["image"].location, "path/to/image.jpeg"
-        )
+        self.assertEqual(response.context["image"].location, "path/to/image.jpeg")
         self.assertEqual(response.context["next_image"], None)
 
     @responses.activate
@@ -717,9 +705,7 @@ class TestImageViewerView(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.resolver_match.url_name, "image-viewer")
         self.assertEqual(response.context["previous_image"], None)
-        self.assertEqual(
-            response.context["image"].location, "path/to/image.jpeg"
-        )
+        self.assertEqual(response.context["image"].location, "path/to/image.jpeg")
         self.assertEqual(
             response.context["next_image"].location, "path/to/next-image.jpeg"
         )
@@ -742,9 +728,7 @@ class TestImageViewerView(TestCase):
             f"{settings.CLIENT_BASE_URL}/search",
             json=create_response(
                 records=[
-                    create_media(
-                        location="path/to/previous-image.jpeg", sort="01"
-                    ),
+                    create_media(location="path/to/previous-image.jpeg", sort="01"),
                 ]
             ),
         )
@@ -783,9 +767,7 @@ class TestImageViewerView(TestCase):
             status=400,
         )
 
-        response = self.client.get(
-            "/records/images/C123456/11000000000000000000/"
-        )
+        response = self.client.get("/records/images/C123456/11000000000000000000/")
 
         self.assertEqual(response.status_code, 404)
 
@@ -824,10 +806,8 @@ class RecordDetailBackToSearchTest(TestCase):
 
         response = self.client.get(self.record_detail_url)
 
-        expected_button_link_gen_value = (
-            self.expected_button_link_gen_value_fmt.format(
-                back_to_search_url=search_url_gen_html_resp,
-            )
+        expected_button_link_gen_value = self.expected_button_link_gen_value_fmt.format(
+            back_to_search_url=search_url_gen_html_resp,
         )
         self.assertContains(response, expected_button_link_gen_value)
 
@@ -847,10 +827,8 @@ class RecordDetailBackToSearchTest(TestCase):
 
         response = self.client.get(self.record_detail_url)
 
-        expected_button_link_gen_value = (
-            self.expected_button_link_gen_value_fmt.format(
-                back_to_search_url=search_url_gen_html_resp,
-            )
+        expected_button_link_gen_value = self.expected_button_link_gen_value_fmt.format(
+            back_to_search_url=search_url_gen_html_resp,
         )
         self.assertContains(response, expected_button_link_gen_value)
 
@@ -862,10 +840,8 @@ class RecordDetailBackToSearchTest(TestCase):
 
         response = self.client.get(self.record_detail_url)
 
-        expected_button_link_gen_value = (
-            self.expected_button_link_gen_value_fmt.format(
-                back_to_search_url=new_search_url
-            )
+        expected_button_link_gen_value = self.expected_button_link_gen_value_fmt.format(
+            back_to_search_url=new_search_url
         )
         self.assertContains(response, expected_button_link_gen_value)
 
@@ -884,9 +860,7 @@ class RecordDetailBackToSearchTest(TestCase):
 
         response = self.client.get(self.record_detail_url)
 
-        expected_button_link_gen_value = (
-            self.expected_button_link_gen_value_fmt.format(
-                back_to_search_url=browser_search_url,
-            )
+        expected_button_link_gen_value = self.expected_button_link_gen_value_fmt.format(
+            back_to_search_url=browser_search_url,
         )
         self.assertContains(response, expected_button_link_gen_value)
