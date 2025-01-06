@@ -67,7 +67,7 @@ jobs:
           key: ds-wagtail-venv-${{ runner.os }}-${{ inputs.poetry-version }}-${{ inputs.python-version }}-${{ hashFiles('**/poetry.lock') }}
       - name: Install dependencies
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
-        run: poetry install --no-interaction --no-root
+        run: poetry install --no-interaction --no-root --with dev
       - name: Run Django checks
         run: poetry run python manage.py check
       - name: Run test suite
