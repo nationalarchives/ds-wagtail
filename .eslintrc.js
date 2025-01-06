@@ -23,6 +23,7 @@ module.exports = {
     ignorePatterns: [
         "templates/static/scripts/**/*.js",
         ".*.js",
+        "*.test.js",
         "*.config.js",
         "static",
     ],

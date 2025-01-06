@@ -6,7 +6,6 @@
             margin-left: 2rem;
 
             display: grid;
-            display: grid;
             grid-template-columns: 1fr 1fr 1fr;
             -ms-grid-columns: 1fr 1fr 1fr;
         }
@@ -87,7 +86,6 @@
         @media only screen and (min-width: #{$screen__md + 1px}) {
             margin-left: 2rem;
 
-            display: grid;
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
             -ms-grid-columns: 1fr 1fr 1fr;

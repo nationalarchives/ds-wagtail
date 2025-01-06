@@ -10,6 +10,8 @@ class PublishedDateFilter(BaseFilterBackend):
     contain blog posts that were published in the specified year/month/day.
     """
 
+    # TODO: Reduce cyclomatic complexity from 14 to 12 or below
+    # flake8: noqa: C901
     def filter_queryset(self, request, queryset, view):
         if "day" in request.GET and (
             "year" not in request.GET or "month" not in request.GET
