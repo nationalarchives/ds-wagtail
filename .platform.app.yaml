@@ -42,7 +42,7 @@ hooks:
     python3.12 -m pip install --upgrade pip
 
     # Install dependencies
-    poetry install --only main
+    poetry install
 
     # Install NVM
     unset NPM_CONFIG_PREFIX
