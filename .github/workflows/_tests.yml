@@ -20,12 +20,12 @@ jobs:
         with:
           python-version: ${{ inputs.python-version }}
       - run: pip install flake8 isort black
-      - name: Check compliance with flake8
-        run: flake8 .
       - name: Check compliance with isort
         run: isort -c .
       - name: Check compliance with Black
-        run: black etna config --check --fast
+        run: black -t py38 -t py39 -t py310 -t py311 -t py312 --line-length 80 --verbose etna config
+      - name: Check compliance with flake8
+        run: flake8 --config=/app/.flake8 .
 
   test-python:
     name: Test Python
