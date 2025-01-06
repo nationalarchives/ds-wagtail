@@ -3,22 +3,27 @@
 
     h2 {
         margin-bottom: 2rem;
-        font-size: 2rem;
+
         font-family: $font__supria-sans;
+        font-size: 2rem;
         font-weight: 400;
     }
 
     &__list {
-        display: flex;
         padding-left: 0;
+
+        display: flex;
+
         list-style: none;
     }
 
     &__item {
         a {
-            color: $color__white;
-            display: inline-block;
             width: 100%;
+
+            display: inline-block;
+
+            color: $color__white;
         }
 
         h3 {
@@ -33,35 +38,39 @@
     }
 
     &__summary {
-        display: flex;
-        justify-content: center;
-        text-align: center;
-        align-items: center;
-        background-color: #26262a;
+        width: 100%;
         height: 200px;
         padding: 2rem;
-        width: 100%;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        text-align: center;
+
+        background-color: #26262a;
     }
 
-    @media only screen and (max-width: 56.25rem) {
+    @media only screen and (width <= 56.25rem) {
         &__list {
             flex-direction: column;
         }
 
         &__item {
-            flex: 1 1 auto;
-            margin-right: 0;
-            margin-bottom: 2rem;
             width: 100%;
             max-width: 100%;
+            margin-right: 0;
+            margin-bottom: 2rem;
+            flex: 1 1 auto;
 
             picture {
                 width: 50%;
             }
 
             a {
-                display: flex;
                 height: 15.625rem;
+
+                display: flex;
             }
         }
 
@@ -70,16 +79,17 @@
         }
 
         &__summary {
-            height: auto;
             width: 50%;
+            height: auto;
         }
     }
 
     @media only screen and (max-width: $screen__md) {
         &__item {
             a {
-                flex-direction: column;
                 height: auto;
+
+                flex-direction: column;
             }
 
             picture {
@@ -92,7 +102,7 @@
         }
     }
 
-    @media only screen and (max-width: 36rem) {
+    @media only screen and (width <= 36rem) {
         &__item {
             picture {
                 width: 100%;

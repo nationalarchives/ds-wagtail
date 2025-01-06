@@ -2,16 +2,22 @@
 // See: http://a11yproject.com/posts/how-to-hide-content/
 
 .sr-only {
-    position: absolute;
     width: 0.0625rem;
     height: 0.0625rem;
     margin: -0.0625rem;
     padding: 0;
+
     overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    border: 0;
-    background-color: black !important;
+
+    position: absolute;
+
     color: white !important;
+
+    background-color: black !important;
+
+    border: 0;
+
+    clip: rect(0, 0, 0, 0);
 }
 
 // Use in conjunction with .sr-only to only display content when it's focused.
@@ -21,36 +27,44 @@
 .sr-only-focusable {
     &:active,
     &:focus {
-        position: static;
         width: auto;
         height: auto;
         margin: 0;
+
         overflow: visible;
+
+        position: static;
+
         clip: auto;
     }
 }
 
 .skip-to-content-link {
-    background-color: $color__white;
     padding: 0.2rem;
+
+    background-color: $color__white;
 }
 
 mark {
-    font-weight: bold;
-    background-color: inherit;
     color: inherit;
+    font-weight: bold;
+
+    background-color: inherit;
 }
 
 .global-tna-link {
     text-align: right;
 
     &__link {
+        padding: 0.5rem 3rem 0.5rem 1rem;
+
         display: inline-block;
+
         text-decoration: none;
+
         background: url("/static/images/icons/open-in-new-tab.svg") no-repeat;
         background-position-x: 97.5%;
         background-position-y: 40%;
-        padding: 0.5rem 3rem 0.5rem 1rem;
 
         &:hover {
             text-decoration: underline;

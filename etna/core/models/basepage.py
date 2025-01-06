@@ -8,7 +8,6 @@ from django.utils.decorators import method_decorator
 from django.utils.functional import cached_property
 from django.utils.text import capfirst
 from django.utils.translation import gettext_lazy as _
-
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel
 from wagtail.admin.widgets.slug import SlugInput
 from wagtail.api import APIField
@@ -16,7 +15,6 @@ from wagtail.fields import RichTextField
 from wagtail.images import get_image_model_string
 from wagtail.models import Page
 from wagtail.search import index
-
 from wagtail_headless_preview.models import HeadlessPreviewMixin
 
 from etna.alerts.models import AlertMixin
@@ -47,7 +45,9 @@ options.DEFAULT_NAMES = options.DEFAULT_NAMES + ("verbose_name_public",)
 
 @method_decorator(apply_default_vary_headers, name="serve")
 @method_decorator(apply_default_cache_control, name="serve")
-class BasePage(AlertMixin, SocialMixin, DataLayerMixin, HeadlessPreviewMixin, Page):
+class BasePage(
+    AlertMixin, SocialMixin, DataLayerMixin, HeadlessPreviewMixin, Page
+):
     """
     An abstract base model that is used for all Page models within
     the project. Any common fields, Wagtail overrides or custom
@@ -67,7 +67,9 @@ class BasePage(AlertMixin, SocialMixin, DataLayerMixin, HeadlessPreviewMixin, Pa
         blank=True,
         on_delete=models.SET_NULL,
         related_name="+",
-        help_text=_("Image that will appear on thumbnails and promos around the site."),
+        help_text=_(
+            "Image that will appear on thumbnails and promos around the site."
+        ),
     )
 
     # DataLayerMixin overrides

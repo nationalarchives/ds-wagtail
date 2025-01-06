@@ -1,5 +1,4 @@
 import uuid
-
 from typing import Union
 
 from django.conf import settings
@@ -11,7 +10,6 @@ from django.db.models.functions import Length
 from django.utils.functional import cached_property
 from django.utils.text import Truncator
 from django.utils.translation import gettext_lazy as _
-
 from modelcluster.fields import ParentalKey
 from modelcluster.models import ClusterableModel
 from wagtail.admin import panels
@@ -71,12 +69,18 @@ class FeedbackPromptManager(models.Manager):
             .order_by("match", Length("path").desc(), "id")
         ):
             if isinstance(page, Page):
-                page_ctype = ContentType.objects.get_for_id(page.content_type_id)
+                page_ctype = ContentType.objects.get_for_id(
+                    page.content_type_id
+                )
             else:
                 page_ctype = None
-            valid_ctypes = set(obj.content_type for obj in match.for_page_types.all())
+            valid_ctypes = set(
+                obj.content_type for obj in match.for_page_types.all()
+            )
 
-            if valid_ctypes and (page_ctype is None or page_ctype not in valid_ctypes):
+            if valid_ctypes and (
+                page_ctype is None or page_ctype not in valid_ctypes
+            ):
                 continue
 
             # checks passed! return this match
@@ -84,12 +88,16 @@ class FeedbackPromptManager(models.Manager):
 
         raise FeedbackPrompt.DoesNotExist
 
-    def get_by_natural_key(self, public_id: Union[str, uuid.UUID]) -> "FeedbackPrompt":
+    def get_by_natural_key(
+        self, public_id: Union[str, uuid.UUID]
+    ) -> "FeedbackPrompt":
         return self.get(public_id=public_id)
 
 
 class FeedbackPromptPageType(Orderable):
-    prompt = ParentalKey("feedback.FeedbackPrompt", related_name="for_page_types")
+    prompt = ParentalKey(
+        "feedback.FeedbackPrompt", related_name="for_page_types"
+    )
     ctype = models.ForeignKey(
         ContentType, verbose_name="type", on_delete=models.PROTECT
     )
@@ -104,7 +112,10 @@ class FeedbackPromptPageType(Orderable):
 @register_snippet
 class FeedbackPrompt(DraftStateMixin, RevisionMixin, ClusterableModel):
     public_id = models.UUIDField(
-        editable=False, unique=True, default=uuid.uuid4, verbose_name=_("public ID")
+        editable=False,
+        unique=True,
+        default=uuid.uuid4,
+        verbose_name=_("public ID"),
     )
     text = models.CharField(
         verbose_name=_("prompt text"),
@@ -119,7 +130,9 @@ class FeedbackPrompt(DraftStateMixin, RevisionMixin, ClusterableModel):
         max_length=100,
         verbose_name=_("thank you heading"),
         default=_("Thank you for your valuable feedback"),
-        help_text=_("Displayed to users after succesfully submitting feedback."),
+        help_text=_(
+            "Displayed to users after succesfully submitting feedback."
+        ),
     )
     thank_you_message = RichTextField(
         max_length=200,
@@ -179,7 +192,9 @@ class FeedbackPrompt(DraftStateMixin, RevisionMixin, ClusterableModel):
             ],
         ),
         panels.InlinePanel(
-            "for_page_types", heading=_("Page type must be one of"), label="Page type"
+            "for_page_types",
+            heading=_("Page type must be one of"),
+            label="Page type",
         ),
     ]
 
@@ -229,9 +244,14 @@ class FeedbackPrompt(DraftStateMixin, RevisionMixin, ClusterableModel):
 
 
 class FeedbackSubmission(models.Model):
-    received_at = models.DateTimeField(auto_now_add=True, verbose_name=_("received at"))
+    received_at = models.DateTimeField(
+        auto_now_add=True, verbose_name=_("received at")
+    )
     public_id = models.UUIDField(
-        editable=False, unique=True, default=uuid.uuid4, verbose_name=_("public ID")
+        editable=False,
+        unique=True,
+        default=uuid.uuid4,
+        verbose_name=_("public ID"),
     )
 
     # Where the feedback was given
@@ -242,7 +262,9 @@ class FeedbackSubmission(models.Model):
         on_delete=models.PROTECT,
         editable=False,
     )
-    page_type = models.TextField(verbose_name=_("page type"), null=True, editable=False)
+    page_type = models.TextField(
+        verbose_name=_("page type"), null=True, editable=False
+    )
     page_title = models.TextField(
         verbose_name=_("page title"), null=True, editable=False
     )

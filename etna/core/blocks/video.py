@@ -1,5 +1,4 @@
 from django.core.validators import RegexValidator
-
 from wagtail import blocks
 
 from etna.media.blocks import MediaBlock

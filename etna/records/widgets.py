@@ -31,7 +31,9 @@ class RecordChooser(AdminChooser):
             try:
                 instance = self.get_instance(value)
             except Exception:
-                logger.exception(f"Error fetching Record '{value}'. Using dummy value.")
+                logger.exception(
+                    f"Error fetching Record '{value}'. Using dummy value."
+                )
                 return {
                     "value": value,
                     "title": "Record currently unavailable",

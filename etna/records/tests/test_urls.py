@@ -52,13 +52,16 @@ class TestHumanReadableDetailsRouteResolution(TestCase):
 
 class TestHumanReadableDetailsURL(TestCase):
     def test_reverse_reference_number_lettercode(self):
-        url = reverse("details-page-human-readable", kwargs={"reference_number": "CP"})
+        url = reverse(
+            "details-page-human-readable", kwargs={"reference_number": "CP"}
+        )
 
         self.assertEqual(url, "/catalogue/ref/CP/")
 
     def test_reverse_reference_number(self):
         url = reverse(
-            "details-page-human-readable", kwargs={"reference_number": "PROB 1/4"}
+            "details-page-human-readable",
+            kwargs={"reference_number": "PROB 1/4"},
         )
 
         self.assertEqual(url, "/catalogue/ref/PROB/1/4/")
@@ -72,7 +75,8 @@ class TestHumanReadableDetailsURL(TestCase):
         )
 
         self.assertEqual(
-            url, "/catalogue/ref/LAB/2/1782/SandER106/1934/Part25and27-28and30to32/"
+            url,
+            "/catalogue/ref/LAB/2/1782/SandER106/1934/Part25and27-28and30to32/",
         )
 
 
@@ -127,7 +131,8 @@ class TestHumanReadableDetailsWithPseudoReferenceURL(TestCase):
         )
 
         self.assertEqual(
-            url, "/catalogue/ref/LAB/2/1782/SandER106/1934/Part25and27-28and30to32/~3/"
+            url,
+            "/catalogue/ref/LAB/2/1782/SandER106/1934/Part25and27-28and30to32/~3/",
         )
 
 
@@ -146,7 +151,9 @@ class TestMachineReadableDetailsRouteResolution(TestCase):
 
     def test_resolves_uuid(self):
         # Some IAIDs are UUIDs. Tested IAID is a real example
-        resolver = resolve("/catalogue/id/43f766a9-e968-4b82-93dc-8cf11a841d41/")
+        resolver = resolve(
+            "/catalogue/id/43f766a9-e968-4b82-93dc-8cf11a841d41/"
+        )
 
         self.assertEqual(resolver.view_name, "details-page-machine-readable")
         self.assertEqual(
@@ -156,7 +163,9 @@ class TestMachineReadableDetailsRouteResolution(TestCase):
 
 class TestMachineReadableDetailsURL(TestCase):
     def test_reverse_iaid(self):
-        url = reverse("details-page-machine-readable", kwargs={"iaid": "C7810139"})
+        url = reverse(
+            "details-page-machine-readable", kwargs={"iaid": "C7810139"}
+        )
 
         self.assertEqual(url, "/catalogue/id/C7810139/")
 
@@ -166,4 +175,6 @@ class TestMachineReadableDetailsURL(TestCase):
             kwargs={"iaid": "43f766a9-e968-4b82-93dc-8cf11a841d41"},
         )
 
-        self.assertEqual(url, "/catalogue/id/43f766a9-e968-4b82-93dc-8cf11a841d41/")
+        self.assertEqual(
+            url, "/catalogue/id/43f766a9-e968-4b82-93dc-8cf11a841d41/"
+        )

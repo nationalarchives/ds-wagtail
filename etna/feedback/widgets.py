@@ -1,7 +1,6 @@
 from django import forms
 from django.contrib.contenttypes.models import ContentType
 from django.utils.text import capfirst
-
 from wagtail.blocks import StreamValue
 from wagtail.models import Page, get_page_models
 
@@ -15,7 +14,9 @@ class ResponseSubmitButtonList(forms.RadioSelect):
         self.choices = list(
             (option.id, option.value["label"]) for option in response_options
         )
-        self.icons = {option.id: option.value["icon"] for option in response_options}
+        self.icons = {
+            option.id: option.value["icon"] for option in response_options
+        }
         self.sentiments = {
             option.id: option.value["sentiment"] for option in response_options
         }

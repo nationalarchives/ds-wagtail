@@ -2,7 +2,6 @@ import json
 import re
 
 from django.test import TestCase
-
 from wagtail.models import Site
 
 from ..models import ArticlePage
@@ -31,7 +30,9 @@ class TestArticlePageSectionBlockIntegration(TestCase):
                                 },
                                 {
                                     "type": "sub_heading",
-                                    "value": {"heading": "This should render as a h3"},
+                                    "value": {
+                                        "heading": "This should render as a h3"
+                                    },
                                 },
                                 {
                                     "type": "paragraph",
@@ -55,7 +56,9 @@ class TestArticlePageSectionBlockIntegration(TestCase):
                                 },
                                 {
                                     "type": "sub_heading",
-                                    "value": {"heading": "This should render as a h3"},
+                                    "value": {
+                                        "heading": "This should render as a h3"
+                                    },
                                 },
                             ],
                         },

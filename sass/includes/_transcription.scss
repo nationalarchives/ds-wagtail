@@ -3,31 +3,33 @@
 .transcription {
     @include colour.contrast;
     $root: &;
+    padding-top: 2.5rem;
+    padding-bottom: 0.5rem;
+
+    color: $color__white;
+
+    background: $color__grey-800;
     // provides visual boundary in high contrast mode
     border: 1px solid transparent;
-    background: $color__grey-800;
-    color: $color__white;
-    padding-bottom: 0.5rem;
-    padding-top: 2.5rem;
 
     .hidden {
         display: none;
     }
 
     &__content {
+        max-width: 80%;
+        margin-right: auto;
+        margin-bottom: 4rem;
+        margin-left: auto;
+        padding-top: 1rem;
+
         display: flex;
         flex-direction: column;
-        margin-bottom: 4rem;
-        padding-top: 1rem;
-        margin-right: auto;
-        margin-left: auto;
-
-        max-width: 80%;
 
         @media screen and (min-width: map-get($grid-breakpoints, "lg")) {
             display: grid;
-            gap: 1.875rem 3rem;
             grid-template-columns: 55% 45%;
+            gap: 1.875rem 3rem;
         }
 
         &--full-width {
@@ -48,16 +50,18 @@
 
     &__preview {
         margin-bottom: 4rem;
+
         display: block;
+
         position: relative;
     }
 
     &__container {
-        margin-left: auto;
-        margin-right: auto;
-
         max-width: 100%;
         max-height: 100%;
+        margin-right: auto;
+        margin-left: auto;
+
         display: block;
 
         @media screen and (min-width: #{$screen__sm + 1px}) {
@@ -67,14 +71,16 @@
     }
 
     &__caption {
-        border-left: 2px solid $color__white;
-        padding-left: 0.5rem;
         margin-top: 0.5rem;
+        padding-left: 0.5rem;
+
         font-weight: $font-weight-bold;
+        border-left: 2px solid $color__white;
 
         p {
-            display: inline;
             margin: 0;
+
+            display: inline;
         }
 
         a {
@@ -92,37 +98,45 @@
     }
 
     &__sensitive_image {
-        filter: blur(8px);
         -webkit-filter: blur(8px);
+        filter: blur(8px);
     }
 
     &__open {
         @extend .tna-button--yellow;
         position: absolute;
+        bottom: -3%;
         left: 50%;
+
         -webkit-transform: translateX(-50%);
         transform: translateX(-50%);
-        bottom: -3%;
+
         cursor: pointer;
 
         &:hover {
-            background-color: $color__white;
             color: $color__black;
+
+            background-color: $color__white;
+
             outline: 0.1875rem solid $color__grey-700;
         }
     }
 
     &__close {
         @extend .tna-button--yellow;
-        display: block;
-        margin-left: auto;
         margin-right: auto;
         margin-bottom: 2rem;
+        margin-left: auto;
+
+        display: block;
+
         cursor: pointer;
 
         &:hover {
-            background-color: $color__white;
             color: $color__black;
+
+            background-color: $color__white;
+
             outline: 0.1875rem solid $color__white;
 
             #{$root}__icon {
@@ -134,14 +148,16 @@
     &__icon {
         width: 2rem;
         height: 1.7rem;
-        padding-left: 0.3rem;
-        float: left;
         padding-right: 1em;
+        padding-left: 0.3rem;
+
+        float: left;
     }
 
     &__image {
         max-width: 100%;
         height: auto;
+
         display: block;
 
         &--preview {
@@ -151,24 +167,30 @@
 
     &__figure-image {
         display: flex;
-        justify-content: center;
         align-items: center;
+        justify-content: center;
     }
 
     &__tablist {
         max-width: 65em;
+
         font-family: $font__body;
     }
 
     &__tab {
-        background-color: inherit;
-        border: none;
-        cursor: pointer;
-        display: inline-block;
         margin: 0.125rem;
+
+        display: inline-block;
+
         color: $color__white;
         font-size: $font-size-base;
         font-weight: $headings-font-weight;
+
+        background-color: inherit;
+
+        border: none;
+
+        cursor: pointer;
 
         @media screen and (min-width: map-get($grid-breakpoints, "lg")) {
             font-size: 1.4rem;
@@ -191,8 +213,10 @@
         }
 
         &:hover {
-            background-color: $color__grey-700;
             color: $color__white;
+
+            background-color: $color__grey-700;
+
             outline: 0.1875rem solid $color__grey-700;
         }
 
@@ -204,6 +228,7 @@
 
     &__tabpanel {
         margin-top: 2.5rem;
+
         color: $color__white;
 
         &:visited {
@@ -211,8 +236,10 @@
         }
 
         &:hover {
-            background-color: $color__grey-700;
             color: $color__white;
+
+            background-color: $color__grey-700;
+
             outline: 0.1875rem solid $color__grey-700;
         }
 
@@ -244,8 +271,9 @@
 
     &__gallery-heading {
         @extend .container;
-        text-align: center;
         margin-top: 0;
         margin-bottom: 0;
+
+        text-align: center;
     }
 }

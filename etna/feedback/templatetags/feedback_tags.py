@@ -2,7 +2,6 @@ from django import template
 from django.conf import settings
 from django.template.loader import get_template
 from django.utils.safestring import mark_safe
-
 from wagtail.models import Page
 
 from etna.feedback.forms import FeedbackCommentForm, FeedbackForm
@@ -12,7 +11,9 @@ register = template.Library()
 
 
 @register.simple_tag(takes_context=True)
-def render_feedback_prompt(context, template_name="feedback/includes/prompt.html"):
+def render_feedback_prompt(
+    context, template_name="feedback/includes/prompt.html"
+):
     request = context["request"]
 
     # Avoid rendering if not enabled

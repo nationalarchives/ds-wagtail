@@ -22,13 +22,17 @@
     }
 
     &__button {
-        background: none;
-        border: 0;
+        width: 100%;
+
         display: flex;
         align-items: center;
-        transition: color 0.2s ease;
+
         text-decoration: none;
-        width: 100%;
+
+        background: none;
+
+        border: 0;
+        transition: color 0.2s ease;
 
         &:hover {
             cursor: pointer;
@@ -40,7 +44,7 @@
     }
 
     &__content {
-        margin-bottom: 10px;
         margin-top: 15px;
+        margin-bottom: 10px;
     }
 }

@@ -1,7 +1,6 @@
+import responses
 from django.conf import settings
 from django.test import SimpleTestCase, override_settings
-
-import responses
 
 from etna.records.api import get_records_client
 from etna.records.models import Record
@@ -20,7 +19,9 @@ class ClientAPIExceptionTest(SimpleTestCase):
         responses.add(
             responses.GET,
             f"{settings.CLIENT_BASE_URL}/fetch",
-            json={"hits": {"total": {"value": 0, "relation": "eq"}, "hits": []}},
+            json={
+                "hits": {"total": {"value": 0, "relation": "eq"}, "hits": []}
+            },
         )
 
         with self.assertRaises(DoesNotExist):
@@ -31,7 +32,12 @@ class ClientAPIExceptionTest(SimpleTestCase):
         responses.add(
             responses.GET,
             f"{settings.CLIENT_BASE_URL}/fetch",
-            json={"hits": {"total": {"value": 2, "relation": "eq"}, "hits": [{}, {}]}},
+            json={
+                "hits": {
+                    "total": {"value": 2, "relation": "eq"},
+                    "hits": [{}, {}],
+                }
+            },
         )
 
         with self.assertRaises(MultipleObjectsReturned):

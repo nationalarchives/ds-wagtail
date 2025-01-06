@@ -2,6 +2,7 @@
 .highlight-gallery-teaser {
     $root: &;
     padding-bottom: 3rem;
+
     background-color: $color__cream;
 
     @media screen and (min-width: map-get($grid-breakpoints, "sm")) {
@@ -23,13 +24,17 @@
 
         &::after {
             content: "";
-            background-image: url("/static/images/fontawesome-svgs/chevron-right.svg");
-            background-repeat: no-repeat;
-            display: inline-block;
-            top: -50%;
+
             width: 0.75rem;
             height: 1rem;
             margin-left: 0.5rem;
+
+            display: inline-block;
+
+            top: -50%;
+
+            background-image: url("/static/images/fontawesome-svgs/chevron-right.svg");
+            background-repeat: no-repeat;
         }
     }
 
@@ -59,35 +64,41 @@
         }
 
         &:focus {
-            outline-color: $color__blue;
             color: $color__blue;
+
+            outline-color: $color__blue;
         }
     }
 
     &__card {
-        background-color: $color__grey-700;
         text-decoration: none !important;
+
         list-style: none;
+
+        background-color: $color__grey-700;
     }
 
     &__content {
         margin: 1.25rem;
+
         color: $color__white;
     }
 
     &__text {
         @include font-size("s");
-        font-family: $font__body;
-        line-height: 21px;
-        color: $color__grey-400;
-        font-weight: inherit;
         margin: 0;
+
+        color: $color__grey-400;
+        font-family: $font__body;
+        font-weight: inherit;
+        line-height: 21px;
     }
 
     &__image {
         width: 100%;
         height: auto;
         object-fit: cover;
+
         outline: none;
     }
 }

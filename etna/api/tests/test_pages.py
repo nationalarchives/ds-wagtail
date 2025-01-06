@@ -1,11 +1,9 @@
 import os
 import re
-
 from datetime import datetime, timezone
 
 from wagtail.models import Site
 from wagtail.test.utils import WagtailPageTestCase
-
 from wagtail_factories import ImageFactory
 
 from etna.alerts.models import Alert
@@ -322,7 +320,9 @@ class APIResponseTest(WagtailPageTestCase):
             parent=cls.arts,
             title="highlight_gallery",
             featured_article=cls.article,
-            page_highlights=[Highlight(image=cls.test_image, alt_text="Alt text")],
+            page_highlights=[
+                Highlight(image=cls.test_image, alt_text="Alt text")
+            ],
             page_topics=[PageTopic(topic=cls.arts)],
             page_time_periods=[PageTimePeriod(time_period=cls.early_modern)],
             first_published_at=DATE_3,
@@ -373,13 +373,17 @@ class APIResponseTest(WagtailPageTestCase):
                 expected_data = self.replace_placeholders(expected_data)
 
                 # Remove random image rendition IDs
-                regex_start = r"/media/images/[a-zA-Z0-9_]+\.([a-fA-F0-9]{6,8}\.)?"
+                regex_start = (
+                    r"/media/images/[a-zA-Z0-9_]+\.([a-fA-F0-9]{6,8}\.)?"
+                )
                 replace_end = "/media/images/image."
                 expected_data = re.sub(regex_start, replace_end, expected_data)
                 api_data = re.sub(regex_start, replace_end, api_data)
                 regex_end = r"\.format-(jpeg|webp)\.(jpegquality|webpquality)-([0-9]+)[a-zA-Z0-9_]*\.(jpg|webp)"
                 regex_replace_end = r".format-\g<1>.\g<2>-\g<3>.\g<4>"
-                expected_data = re.sub(regex_end, regex_replace_end, expected_data)
+                expected_data = re.sub(
+                    regex_end, regex_replace_end, expected_data
+                )
                 api_data = re.sub(regex_end, regex_replace_end, api_data)
 
                 self.assertEqual(expected_data, api_data)

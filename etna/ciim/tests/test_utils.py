@@ -83,7 +83,9 @@ class TestExtract(SimpleTestCase):
             ),
         ):
             with self.subTest(key):
-                msg_part = f"{error_class} raised when extracting '{problematic_bit}'"
+                msg_part = (
+                    f"{error_class} raised when extracting '{problematic_bit}'"
+                )
                 with self.assertRaisesRegex(ValueExtractionError, msg_part):
                     extract(self.test_data, key)
 
@@ -103,15 +105,14 @@ class TestExtract(SimpleTestCase):
         ):
             with self.subTest(key):
                 self.assertIs(
-                    extract(self.test_data, key, default=default_value), default_value
+                    extract(self.test_data, key, default=default_value),
+                    default_value,
                 )
 
 
 class TestResolveLinks(SimpleTestCase):
     def test_test(self):
-        markup = (
-            '<span><span class="extref" link="$link(C11996672)">link text</span></span>'
-        )
+        markup = '<span><span class="extref" link="$link(C11996672)">link text</span></span>'
 
         stripped_markup = format_description_markup(markup)
 
@@ -157,7 +158,11 @@ class TestResolveLinks(SimpleTestCase):
         stripped_markup = format_description_markup(markup)
 
         self.assertEqual(
-            ("<span>" '<a href="http://example.com/">link text one</a>' "</span>"),
+            (
+                "<span>"
+                '<a href="http://example.com/">link text one</a>'
+                "</span>"
+            ),
             stripped_markup,
         )
 
@@ -402,14 +407,14 @@ class TestStripHtml(SimpleTestCase):
 
         for label, value, expected in test_data:
             with self.subTest(label):
-                result = strip_html(value, preserve_marks=True, ensure_spaces=True)
+                result = strip_html(
+                    value, preserve_marks=True, ensure_spaces=True
+                )
                 self.assertEqual(result, expected)
 
     def test_allow_tags(self):
         value = """<a href="http://test.com">this is a test</a>"""
-        expected = (
-            """<a href="http://test.com" rel="noopener noreferrer">this is a test</a>"""
-        )
+        expected = """<a href="http://test.com" rel="noopener noreferrer">this is a test</a>"""
         allow_tags = {"a", "br", "p"}
         result = strip_html(value, allow_tags=allow_tags)
         self.assertEqual(result, expected)

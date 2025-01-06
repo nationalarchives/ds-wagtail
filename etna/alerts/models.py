@@ -2,7 +2,6 @@ import time
 
 from django.conf import settings
 from django.db import models
-
 from wagtail.admin.panels import FieldPanel
 from wagtail.api import APIField
 from wagtail.fields import RichTextField

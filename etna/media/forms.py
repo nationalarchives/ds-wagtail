@@ -1,12 +1,11 @@
+import magic
 from django import forms
 from django.core.exceptions import ValidationError
-
 from wagtail.admin import widgets
 from wagtail.admin.forms.collections import BaseCollectionMemberForm
-
-import magic
-
-from wagtailmedia.permissions import permission_policy as media_permission_policy
+from wagtailmedia.permissions import (
+    permission_policy as media_permission_policy,
+)
 
 # Valid audio/video media types - https://www.iana.org/assignments/media-types/media-types.xhtml
 ALLOWED_AUDIO_MIME_TYPES = [
@@ -54,9 +53,13 @@ class BaseMediaForm(BaseCollectionMemberForm):
         # Ensure file is a valid type for the current instance.
         if self.instance.type == "audio":
             if mime_type not in ALLOWED_AUDIO_MIME_TYPES:
-                raise ValidationError(error_messages["mime_type"], params=params)
+                raise ValidationError(
+                    error_messages["mime_type"], params=params
+                )
         else:
             if mime_type not in ALLOWED_VIDEO_MIME_TYPES:
-                raise ValidationError(error_messages["mime_type"], params=params)
+                raise ValidationError(
+                    error_messages["mime_type"], params=params
+                )
 
         return data

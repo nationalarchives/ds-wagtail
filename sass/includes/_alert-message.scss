@@ -17,16 +17,20 @@
     }
 
     &__label {
-        display: inline-block;
-        background-color: $color__white;
-        padding: 0.2rem 0.4rem;
         margin-right: 0.4rem;
+        padding: 0.2rem 0.4rem;
+
+        display: inline-block;
+
         font-weight: bold;
         text-transform: uppercase;
+
+        background-color: $color__white;
     }
 
     &__description {
         margin-bottom: 0;
+
         display: inline-block;
 
         a {

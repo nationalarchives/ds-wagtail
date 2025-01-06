@@ -1,6 +1,5 @@
 from django.contrib.contenttypes.models import ContentType
 from django.test import TestCase
-
 from wagtail.models import Page
 
 from etna.articles.models import ArticlePage
@@ -38,7 +37,10 @@ class TestGetForPath(TestCase):
         )
 
     def assertMatchForPath(
-        self, path: str, expected_prompt: FeedbackPrompt, page: Page | None = None
+        self,
+        path: str,
+        expected_prompt: FeedbackPrompt,
+        page: Page | None = None,
     ):
         result = FeedbackPrompt.objects.get_for_path(path, page=page)
         self.assertEqual(result, expected_prompt)
@@ -50,10 +52,14 @@ class TestGetForPath(TestCase):
         self.assertMatchForPath("/SEARCH/", self.search_view_prompt)
         self.assertMatchForPath("/search", self.search_view_prompt)
         self.assertMatchForPath("/search/result/", self.search_result_prompt)
-        self.assertMatchForPath("/search/result/ITEM_ID", self.search_result_prompt)
+        self.assertMatchForPath(
+            "/search/result/ITEM_ID", self.search_result_prompt
+        )
         self.assertMatchForPath("/search/result", self.search_section_prompt)
         self.assertMatchForPath("/search/sub-path", self.search_section_prompt)
-        self.assertMatchForPath("/search/result-machine", self.search_section_prompt)
+        self.assertMatchForPath(
+            "/search/result-machine", self.search_section_prompt
+        )
 
     def test_matching_for_page_type(self):
         path = "/not-root"
@@ -93,7 +99,9 @@ class TestGetForPath(TestCase):
             ],
         )
 
-        self.assertMatchForPath(path, homepage_prompt, page=HomePage(title="Homepage"))
+        self.assertMatchForPath(
+            path, homepage_prompt, page=HomePage(title="Homepage")
+        )
         self.assertMatchForPath(
             path, genericpage_prompt, page=GeneralPage(title="General page")
         )

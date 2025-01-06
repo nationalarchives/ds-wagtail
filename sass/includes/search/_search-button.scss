@@ -1,23 +1,29 @@
 .search-button {
-    background-color: $color__grey-700 !important;
-    text-decoration: none;
-    color: $color__white !important;
-    border: $default__border;
-    padding: 0.5em 0.9em;
-    display: inline-block;
     min-width: 24px;
+    padding: 0.5em 0.9em;
+
+    display: inline-block;
+
+    color: $color__white !important;
     text-align: center;
+    text-decoration: none;
+
+    background-color: $color__grey-700 !important;
+
+    border: $default__border;
 
     &:visited,
     &:active {
-        background-color: $color__grey-700 !important;
         color: $color__white !important;
+
+        background-color: $color__grey-700 !important;
     }
 
     &:hover {
-        background-color: $color__white !important;
         color: $color__grey-700 !important;
         text-decoration: none;
+
+        background-color: $color__white !important;
     }
 
     &:focus {
@@ -25,38 +31,46 @@
     }
 
     &--primary {
-        background-color: $color__white !important;
         color: $color__grey-700 !important;
+
+        background-color: $color__white !important;
 
         &:visited,
         &:active {
-            background-color: $color__white !important;
             color: $color__grey-700 !important;
+
+            background-color: $color__white !important;
         }
 
         &:hover {
-            background-color: $color__grey-700 !important;
             color: $color__white !important;
             text-decoration: none;
+
+            background-color: $color__grey-700 !important;
         }
     }
 
     &--secondary {
-        border-color: $color__grey-light !important;
-        background-color: $color__grey-light !important;
         color: $color__black;
+
+        background-color: $color__grey-light !important;
+
+        border-color: $color__grey-light !important;
 
         &:visited,
         &:active {
-            background-color: $color__grey-light !important;
             color: $color__black !important;
+
+            background-color: $color__grey-light !important;
         }
 
         &:hover {
-            border-color: $color__black !important;
-            background-color: $color__black !important;
             color: $color__white;
             text-decoration: none;
+
+            background-color: $color__black !important;
+
+            border-color: $color__black !important;
         }
     }
 }

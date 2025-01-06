@@ -1,7 +1,6 @@
 from datetime import datetime, timezone
 
 from django.test import TestCase
-
 from wagtail.models import Site
 
 from ..models import ArticleIndexPage, ArticlePage, ArticleTag
@@ -31,7 +30,9 @@ class TestArticleTagClean(TestCase):
 
     def test_clean_generates_skos_id_from_name_with_conflicts(self):
         ArticleTag.objects.create(name="Test", slug="test", skos_id="Test")
-        ArticleTag.objects.create(name="Test 2", slug="test-2", skos_id="Test_2")
+        ArticleTag.objects.create(
+            name="Test 2", slug="test-2", skos_id="Test_2"
+        )
 
         tag = ArticleTag(name="Test", slug="test-3")
         tag.clean()

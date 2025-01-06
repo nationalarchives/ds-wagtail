@@ -18,8 +18,9 @@
         }
 
         #btn_preferences {
-            color: $color__white;
             padding: 0.5rem;
+
+            color: $color__white;
 
             &:hover {
                 transition: none;

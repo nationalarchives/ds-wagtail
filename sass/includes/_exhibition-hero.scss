@@ -4,6 +4,7 @@
 .exhibition-hero {
     $root: &;
     width: 100%;
+
     display: flex;
     flex-direction: column;
 
@@ -12,15 +13,17 @@
     }
 
     &__info-wrapper {
+        padding-bottom: 3rem;
+
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        padding-bottom: 3rem;
     }
 
     &__heading {
         margin-top: 1.5rem;
         padding-top: 0;
+
         font-weight: 700;
 
         #{$root}--light & {
@@ -29,9 +32,10 @@
     }
 
     &__subtitle {
-        font-weight: 400;
         margin-top: 0;
         padding-top: 0;
+
+        font-weight: 400;
 
         #{$root}--light & {
             color: colour.brand-colour("white");
@@ -44,16 +48,20 @@
     }
 
     @include media.on-larger-than-mobile {
-        flex-direction: row;
         min-height: 560px;
+
+        flex-direction: row;
+
         position: relative;
+
         background-color: transparent;
 
         &__info-wrapper {
-            position: relative;
-            z-index: 1;
             width: 50%;
             padding-bottom: 3.625rem;
+
+            position: relative;
+            z-index: 1;
         }
 
         &__picture {

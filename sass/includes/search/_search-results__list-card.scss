@@ -1,20 +1,21 @@
 .search-results__list-card {
     width: 100%;
+    margin-bottom: 1em;
+
     display: flex;
-    justify-content: stretch;
     align-items: stretch;
+    justify-content: stretch;
 
     // max-height:300px;
     border-bottom: solid 1px #ccc;
-    margin-bottom: 1em;
 
-    @media only screen and (max-width: 57rem) {
+    @media only screen and (width <= 57rem) {
         padding-bottom: 1rem;
     }
 
     &--grid {
         @extend .search-results__list-card;
-        @media only screen and (min-width: 57rem) {
+        @media only screen and (width >= 57rem) {
             width: 47%;
             max-height: 100%;
         }
@@ -30,7 +31,7 @@
         font-size: 1.7rem;
         letter-spacing: 0.05rem;
 
-        @media only screen and (min-width: 57rem) {
+        @media only screen and (width >= 57rem) {
             margin-top: 0;
         }
     }
@@ -47,7 +48,7 @@
         margin-bottom: 2rem;
         padding-right: 1rem;
         // max-width: 46rem;
-        @media only screen and (min-width: 57rem) {
+        @media only screen and (width >= 57rem) {
         }
 
         .title-fix {
@@ -57,6 +58,7 @@
 
     &-link {
         display: block;
+
         color: $color__navy;
 
         &:visited {
@@ -65,15 +67,16 @@
     }
 
     &-description {
-        margin-bottom: 0.5rem;
         max-width: 90%;
+        margin-bottom: 0.5rem;
+
         font-weight: 100;
     }
 
     &-desc {
         max-width: 12rem;
-        margin-bottom: 0;
         margin-top: 0.2rem;
+        margin-bottom: 0;
     }
 
     &-metadata-item {
@@ -82,31 +85,34 @@
     }
 
     &-metadata-item-held-by-icon {
+        padding-left: 2rem;
+
+        font-weight: 100;
+        vertical-align: middle;
         // list-style-image: url(/static/images/icons/search-archive-icon.svg);
         background-image: url("/static/images/icons/search-archive-icon.svg");
         background-repeat: no-repeat;
-        padding-left: 2rem;
         background-position: 0 center;
-        vertical-align: middle;
-        font-weight: 100;
     }
 
     &-metadata-item-date-icon {
+        padding-left: 2rem;
+
+        vertical-align: middle;
         // list-style-image: url(/static/images/icons/search-calendar-icon.svg);
         background-image: url("/static/images/icons/search-calendar-icon.svg");
         background-repeat: no-repeat;
-        padding-left: 2rem;
         background-position: 0 center;
-        vertical-align: middle;
     }
 
     &-metadata-item-data-icon {
+        padding-left: 2rem;
+
+        vertical-align: middle;
         // list-style-image: url(/static/images/icons/search-data-icon.svg);
         background-image: url("/static/images/icons/search-data-icon.svg");
         background-repeat: no-repeat;
-        padding-left: 2rem;
         background-position: 0 center;
-        vertical-align: middle;
     }
 
     &-metadata-item-subjects-icon {
@@ -139,12 +145,15 @@
             margin-bottom: 0;
             // margin-top: 0.2rem;
             padding: 1em 0;
-            background: black;
+
             text-align: center;
+
+            background: black;
         }
 
         &-link {
             display: block;
+
             color: white;
             text-decoration: none;
             flex: 0 0 200px;
@@ -159,8 +168,9 @@
         }
 
         @media only screen and (max-width: $screen__md) {
-            margin-left: auto;
             margin-right: auto;
+            margin-left: auto;
+
             text-align: center;
             // margin-top:1em;
             &-desc {
@@ -178,8 +188,9 @@
         }
 
         @media only screen and (max-width: $screen__md) {
-            margin-left: auto;
             margin-right: auto;
+            margin-left: auto;
+
             text-align: center;
 
             &-desc {
@@ -192,13 +203,13 @@
 .search-list-image {
     position: absolute;
     right: 50px;
-    @media only screen and (max-width: 1320px) {
+    @media only screen and (width <= 1320px) {
         right: 80px;
     }
-    @media only screen and (max-width: 1080px) {
+    @media only screen and (width <= 1080px) {
         right: 120px;
     }
-    @media only screen and (max-width: 768px) {
+    @media only screen and (width <= 768px) {
         position: unset;
     }
 }
@@ -217,15 +228,15 @@
 
 .search-results__list-card-details {
     flex: 1 1 auto;
-    @media only screen and (max-width: 480px) {
+    @media only screen and (width <= 480px) {
         padding-left: 0.5rem;
     }
 }
 
 .search-results__list-card-image {
+    margin-bottom: 1em;
     margin-left: 20px;
     flex: 0 0 200px;
-    margin-bottom: 1em;
 }
 
 .search-results__list-card-image-anchor {
@@ -233,6 +244,7 @@
 
     img {
         width: 100%;
+
         display: block;
     }
 }
@@ -270,20 +282,22 @@
 
 .featured-search__website-results__head {
     @media only screen and (min-width: #{$screen__md + 1px}) {
-        padding-left: 1.75em;
         padding-bottom: 1em;
+        padding-left: 1.75em;
     }
 }
 
 .featured-search__website-results-list {
-    padding-left: 1em;
     width: 100%;
+    padding-left: 1em;
 }
 
 .featured-search__website-results-list ul {
     list-style-type: none;
+
     margin: 0;
     padding: 0;
+
     overflow: hidden;
 }
 
@@ -305,10 +319,10 @@
 }
 
 .image-web-results {
-    flex: 0 0 348px;
     max-width: 100%;
-    margin-left: 1em;
     margin-right: 1em;
+    margin-left: 1em;
+    flex: 0 0 348px;
     @media only screen and (min-width: #{$screen__sm + 1px}) {
         margin-left: 0;
     }

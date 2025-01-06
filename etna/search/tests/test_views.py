@@ -1,19 +1,21 @@
 import json as json_module
 import unittest
-
 from typing import Any, Dict
 
+import responses
 from django.conf import settings
 from django.test import SimpleTestCase, TestCase, override_settings
 from django.urls import reverse, reverse_lazy
-
 from wagtail.test.utils import WagtailTestUtils
-
-import responses
 
 from etna.articles.factories import ArticlePageFactory
 from etna.articles.models import ArticleIndexPage, ArticlePage
-from etna.ciim.constants import DEFAULT_AGGREGATIONS, Aggregation, Bucket, BucketList
+from etna.ciim.constants import (
+    DEFAULT_AGGREGATIONS,
+    Aggregation,
+    Bucket,
+    BucketList,
+)
 from etna.ciim.tests.factories import create_response, create_search_response
 from etna.core.test_utils import prevent_request_warnings
 from etna.home.models import HomePage
@@ -67,7 +69,9 @@ class BadRequestHandlingTest(SearchViewTestCase):
             ("display", "foo"),
         ]:
             with self.subTest(f"{field_name} = {value}"):
-                response = self.client.get(self.test_url, data={field_name: value})
+                response = self.client.get(
+                    self.test_url, data={field_name: value}
+                )
                 self.assertEqual(response.status_code, 400)
 
 
@@ -233,14 +237,20 @@ class CatalogueSearchAPIIntegrationTest(SearchViewTestCase):
 @override_settings(CLIENT_BASE_URL=f"{settings.CLIENT_BASE_URL}")
 class EndToEndSearchTestCase(TestCase):
     # The following HTML snippets must be updated to reflect any future HTML changes
-    results_html = '<ul class="search-results__list" id="analytics-results-list">'
+    results_html = (
+        '<ul class="search-results__list" id="analytics-results-list">'
+    )
     no_results_messaging_html = '<div class="no-results">'
     bucket_links_html = (
         '<ul class="search-buckets__list" data-id="search-buckets-list">'
     )
     search_within_option_html = '<label for="id_filter_keyword" class="search-filters__label--block example-text">Search within results:</label>'
-    sort_by_desktop_options_html = '<label for="id_sort_by_desktop">Sort by</label>'
-    sort_by_mobile_options_html = '<label for="id_sort_by_mobile">Sort by</label>'
+    sort_by_desktop_options_html = (
+        '<label for="id_sort_by_desktop">Sort by</label>'
+    )
+    sort_by_mobile_options_html = (
+        '<label for="id_sort_by_mobile">Sort by</label>'
+    )
     filter_options_html = '<form method="GET" data-id="filters-form"'
 
     def patch_api_endpoint(self, url: str, fixture_path: str):
@@ -253,7 +263,9 @@ class EndToEndSearchTestCase(TestCase):
         responses.add(responses.GET, url, json=fixture_content, status=200)
 
     def patch_search_endpoint(self, fixture_path: str):
-        self.patch_api_endpoint(f"{settings.CLIENT_BASE_URL}/search", fixture_path)
+        self.patch_api_endpoint(
+            f"{settings.CLIENT_BASE_URL}/search", fixture_path
+        )
 
     def assertNoResultsMessagingRendered(self, response):
         self.assertIn(self.no_results_messaging_html, response)
@@ -344,7 +356,9 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
         - Search results
         """
 
-        self.patch_search_endpoint("catalogue_search_with_some_empty_buckets.json")
+        self.patch_search_endpoint(
+            "catalogue_search_with_some_empty_buckets.json"
+        )
         response = self.client.get(
             self.test_url, data={"q": "snub", "group": "creator"}
         )
@@ -445,7 +459,9 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
 
         Test covers create session info for Catalogue search with query.
         """
-        self.patch_search_endpoint("catalogue_search_with_multiple_filters.json")
+        self.patch_search_endpoint(
+            "catalogue_search_with_multiple_filters.json"
+        )
 
         expected_url = "/search/catalogue/?q=test%2Bsearch%2Bterm&group=tna&collection=DEFE&collection=HW&collection=RGO&level=Piece&closure=Open%2BDocument%252C%2BOpen%2BDescription"
 
@@ -465,9 +481,15 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(session.get("back_to_search_url"), expected_url)
 
-        self.assertIn('<input type="checkbox" name="collection" value="DEFE"', content)
-        self.assertIn('<input type="checkbox" name="collection" value="HW"', content)
-        self.assertIn('<input type="checkbox" name="collection" value="RGO"', content)
+        self.assertIn(
+            '<input type="checkbox" name="collection" value="DEFE"', content
+        )
+        self.assertIn(
+            '<input type="checkbox" name="collection" value="HW"', content
+        )
+        self.assertIn(
+            '<input type="checkbox" name="collection" value="RGO"', content
+        )
 
     @responses.activate
     def test_render_invalid_date_range_message(self):
@@ -503,7 +525,8 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
             # SHOULD see
             self.assertNoResultsMessagingRendered(content)
             self.assertIn(
-                "<li>Try removing any filters that you may have applied</li>", content
+                "<li>Try removing any filters that you may have applied</li>",
+                content,
             )
             self.assertSearchWithinOptionRendered(content)
             self.assertIn(from_date_field, response.context["form"].errors)
@@ -513,7 +536,9 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
             )
 
 
-@unittest.skip("CIIM-powered website search is to be re-instated at a later date")
+@unittest.skip(
+    "CIIM-powered website search is to be re-instated at a later date"
+)
 class WebsiteSearchEndToEndTest(EndToEndSearchTestCase):
     test_url = reverse_lazy("search-website")
 
@@ -562,8 +587,12 @@ class WebsiteSearchEndToEndTest(EndToEndSearchTestCase):
         - Filter options to refine the search
         - Search results
         """
-        self.patch_search_endpoint("website_search_with_some_empty_buckets.json")
-        response = self.client.get(self.test_url, data={"q": "japan", "group": "audio"})
+        self.patch_search_endpoint(
+            "website_search_with_some_empty_buckets.json"
+        )
+        response = self.client.get(
+            self.test_url, data={"q": "japan", "group": "audio"}
+        )
         content = str(response.content)
 
         # SHOULD see
@@ -652,7 +681,8 @@ class WebsiteSearchEndToEndTest(EndToEndSearchTestCase):
 
 class CatalogueSearchLongFilterChooserAPIIntegrationTest(SearchViewTestCase):
     test_url = reverse_lazy(
-        "search-catalogue-long-filter-chooser", kwargs={"field_name": "collection"}
+        "search-catalogue-long-filter-chooser",
+        kwargs={"field_name": "collection"},
     )
 
     @responses.activate
@@ -710,7 +740,8 @@ class FeaturedSearchTestCase(SearchViewTestCase):
         # When no query is present, website_results should contain the few
         # most recent pages
         self.assertEqual(
-            response.context["website_results"], [self.article_2, self.article_1]
+            response.context["website_results"],
+            [self.article_2, self.article_1],
         )
         self.assertEqual(response.context["website_result_count"], 2)
 
@@ -752,7 +783,9 @@ class FeaturedSearchTestCase(SearchViewTestCase):
         self.assertEqual(response.context["result_count"], 1)
 
 
-@unittest.skip("CIIM-powered website search is to be re-instated at a later date")
+@unittest.skip(
+    "CIIM-powered website search is to be re-instated at a later date"
+)
 class WebsiteSearchAPIIntegrationTest(SearchViewTestCase):
     test_url = reverse_lazy("search-website")
 
@@ -778,7 +811,9 @@ class WebsiteSearchAPIIntegrationTest(SearchViewTestCase):
         )
 
 
-@unittest.skip("CIIM-powered website search is to be re-instated at a later date")
+@unittest.skip(
+    "CIIM-powered website search is to be re-instated at a later date"
+)
 @override_settings(
     CLIENT_BASE_URL=f"{settings.CLIENT_BASE_URL}",
 )
@@ -901,7 +936,8 @@ class WebsiteSearchArticleTest(WagtailTestUtils, TestCase):
     def test_page_instance_added_for_source_url(self):
         response = self.client.get(self.test_url, data={"group": "insight"})
         self.assertIsInstance(
-            response.context_data["page"].object_list[0].source_page, ArticlePage
+            response.context_data["page"].object_list[0].source_page,
+            ArticlePage,
         )
 
 
@@ -1201,7 +1237,11 @@ class TestDataLayerSearchViews(WagtailTestUtils, TestCase):
     def test_datalayer_catalogue_filtered_search_tna(self):
         self.assertDataLayerEquals(
             path=reverse("search-catalogue"),
-            query_data={"collection": "ZOS", "level": "Sub-sub-series", "group": "tna"},
+            query_data={
+                "collection": "ZOS",
+                "level": "Sub-sub-series",
+                "group": "tna",
+            },
             api_resonse_path=f"{settings.BASE_DIR}/etna/search/tests/fixtures/catalogue_filtered_search_tna.json",
             expected={
                 "contentGroup1": "Search",
@@ -1348,7 +1388,9 @@ class TestDataLayerSearchViews(WagtailTestUtils, TestCase):
         )
 
 
-@unittest.skip("CIIM-powered website search is to be re-instated at a later date")
+@unittest.skip(
+    "CIIM-powered website search is to be re-instated at a later date"
+)
 class WebsiteSearchLongFilterChooserAPIIntegrationTest(SearchViewTestCase):
     test_url = reverse_lazy(
         "search-website-long-filter-chooser", kwargs={"field_name": "topic"}
@@ -1413,7 +1455,8 @@ class RecordCreatorsTestCase(WagtailTestUtils, TestCase):
     @responses.activate
     def test_record_creators_country_long_filter(self):
         test_url = reverse_lazy(
-            "search-catalogue-long-filter-chooser", kwargs={"field_name": "country"}
+            "search-catalogue-long-filter-chooser",
+            kwargs={"field_name": "country"},
         )
 
         responses.add(
@@ -1478,7 +1521,8 @@ class ArchiveTestCase(WagtailTestUtils, TestCase):
     @responses.activate
     def test_record_creators_country_long_filter(self):
         test_url = reverse_lazy(
-            "search-catalogue-long-filter-chooser", kwargs={"field_name": "location"}
+            "search-catalogue-long-filter-chooser",
+            kwargs={"field_name": "location"},
         )
 
         responses.add(

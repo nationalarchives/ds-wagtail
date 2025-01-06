@@ -5,7 +5,6 @@ from django.utils import timezone
 from django.utils.functional import cached_property
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
-
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel
 from wagtail.api import APIField
 from wagtail.fields import RichTextField
@@ -17,7 +16,11 @@ from etna.core.serializers import (
     ImageSerializer,
     RichTextSerializer,
 )
-from etna.core.styling import BrandColourChoices, HeroColourChoices, HeroLayoutChoices
+from etna.core.styling import (
+    BrandColourChoices,
+    HeroColourChoices,
+    HeroLayoutChoices,
+)
 
 from .forms import RequiredHeroImagePageForm
 
@@ -150,7 +153,9 @@ class HeroImageMixin(models.Model):
         ),
         APIField(
             "hero_image_small",
-            serializer=DetailedImageSerializer("fill-600x400", source="hero_image"),
+            serializer=DetailedImageSerializer(
+                "fill-600x400", source="hero_image"
+            ),
         ),
     ]
 

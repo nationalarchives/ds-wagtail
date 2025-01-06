@@ -1,12 +1,20 @@
 from wagtail import blocks
 
-from etna.core.blocks import APIPageChooserBlock, ParagraphBlock, ParagraphWithHeading
+from etna.core.blocks import (
+    APIPageChooserBlock,
+    ParagraphBlock,
+    ParagraphWithHeading,
+)
 from etna.core.blocks.image import APIImageChooserBlock
 
 
 class FeaturedExternalPageBlock(blocks.StructBlock):
-    url = blocks.URLBlock(label="external URL", help_text="URL for the external page")
-    title = blocks.CharBlock(max_length=100, help_text="Title of the promoted page")
+    url = blocks.URLBlock(
+        label="external URL", help_text="URL for the external page"
+    )
+    title = blocks.CharBlock(
+        max_length=100, help_text="Title of the promoted page"
+    )
     teaser_image = APIImageChooserBlock(
         help_text="Image that will appear on thumbnails and promos around the site."
     )
@@ -16,13 +24,17 @@ class FeaturedExternalPageBlock(blocks.StructBlock):
 
     class Meta:
         template = "home/blocks/featured_external_page.html"
-        help_text = "Block used to feature a page external to Wagtail or a Record"
+        help_text = (
+            "Block used to feature a page external to Wagtail or a Record"
+        )
         icon = "star"
 
 
 class FeaturedPageBlock(blocks.StructBlock):
     title = blocks.CharBlock(
-        max_length=100, required=False, help_text="Optionally override the page's title"
+        max_length=100,
+        required=False,
+        help_text="Optionally override the page's title",
     )
     page = APIPageChooserBlock(required_api_fields=["teaser_image"])
     description = blocks.CharBlock(
@@ -49,7 +61,9 @@ class FeaturedItemsBlock(blocks.ListBlock):
 
     class Meta:
         template = "home/blocks/featured_items.html"
-        help_text = "Block used to feature pages from within and external to Wagtail"
+        help_text = (
+            "Block used to feature pages from within and external to Wagtail"
+        )
         icon = "list"
 
 

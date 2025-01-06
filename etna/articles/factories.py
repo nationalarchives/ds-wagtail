@@ -1,5 +1,4 @@
 import factory
-
 from wagtail_factories import ImageFactory
 
 from etna.articles import models as app_models

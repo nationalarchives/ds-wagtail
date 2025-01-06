@@ -1,6 +1,5 @@
 from wagtail import blocks
 from wagtail.rich_text import expand_db_html
-
 from wagtailmedia.blocks import AbstractMediaChooserBlock
 
 from etna.core.blocks.image import APIImageChooserBlock
@@ -28,7 +27,9 @@ class MediaChooserBlock(AbstractMediaChooserBlock):
             {
                 "time": int(chapter.value["time"]),
                 "heading": chapter.value["heading"],
-                "transcript": expand_db_html(chapter.value["transcript"].source),
+                "transcript": expand_db_html(
+                    chapter.value["transcript"].source
+                ),
             }
             for chapter in value.chapters
         ]

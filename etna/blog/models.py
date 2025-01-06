@@ -51,7 +51,9 @@ class BlogPage(HeroImageMixin, BasePageWithRequiredIntro):
 
     promote_panels = BasePageWithRequiredIntro.promote_panels
 
-    api_fields = BasePageWithRequiredIntro.api_fields + HeroImageMixin.api_fields
+    api_fields = (
+        BasePageWithRequiredIntro.api_fields + HeroImageMixin.api_fields
+    )
 
 
 class BlogPostPage(

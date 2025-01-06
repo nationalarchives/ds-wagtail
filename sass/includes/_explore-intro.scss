@@ -3,21 +3,26 @@
 .explore-intro {
     $root: &;
     padding-top: 1rem;
-    background-color: $color__white;
-    color: $color__black;
+
     overflow: hidden; // cut off image when browser is narrow
 
+    color: $color__black;
+
+    background-color: $color__white;
+
     &__image-container {
-        display: flex;
         align-self: flex-end;
+
+        display: flex;
     }
 
     &__image {
-        display: block;
-        max-width: 390px; // match wagtail image rendition width
-        max-height: 390px; // match wagtail image rendition height
-        height: auto;
         width: auto;
+        max-width: 390px; // match wagtail image rendition width
+        height: auto;
+        max-height: 390px; // match wagtail image rendition height
+
+        display: block;
 
         @include media.on-mobile {
             display: none;
@@ -26,11 +31,12 @@
 
     &__title {
         @include font-size(xxxl);
-        line-height: 1.2;
         margin-top: 0;
         margin-bottom: 0;
+
         font-family: $font__supria-sans;
         font-weight: $font-weight-bold;
+        line-height: 1.2;
 
         &--meta {
             @include font-size(xxl);

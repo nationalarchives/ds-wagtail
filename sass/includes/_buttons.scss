@@ -10,6 +10,7 @@
 
     &__target-blank-label {
         display: block;
+
         font-size: 0.7rem;
     }
 
@@ -32,19 +33,25 @@
 
 .tna-button--dark,
 .tna-button--dark:visited {
-    display: inline-block;
-    text-decoration: none;
-    background-color: $color__black;
-    color: $color__white;
-    outline: 0.1875rem solid $color__black;
-    font-weight: bold;
-    padding: 0.5rem 1rem;
     margin: 0.5rem 0;
+    padding: 0.5rem 1rem;
+
+    display: inline-block;
+
+    color: $color__white;
+    font-weight: bold;
+    text-decoration: none;
+
+    background-color: $color__black;
+
     border: none;
+    outline: 0.1875rem solid $color__black;
 
     &:hover {
-        background-color: $color__white;
         color: $color__grey-700;
+
+        background-color: $color__white;
+
         outline: 0.1875rem solid $color__grey-700;
     }
 
@@ -58,13 +65,17 @@
 .tna-button--yellow,
 .tna-button--yellow:visited {
     @extend .tna-button--dark;
-    background-color: $color__yellow;
     color: $color__grey-700;
+
+    background-color: $color__yellow;
+
     outline: 0.1875rem solid $color__yellow;
 
     &:hover {
-        background-color: $color__grey-700;
         color: $color__white;
+
+        background-color: $color__grey-700;
+
         outline: 0.1875rem solid $color__grey-700;
     }
 
@@ -76,8 +87,8 @@
 // stylelint-able no-descending-specificity
 
 .tna-button--row-item {
-    margin-left: 0.5rem;
     margin-right: 0.5rem;
+    margin-left: 0.5rem;
 }
 
 .response-btn {
@@ -89,5 +100,6 @@
     height: 25px;
     // margin-left:1em;
     margin-right: 0.5em;
+
     display: inline-block;
 }

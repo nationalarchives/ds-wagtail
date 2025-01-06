@@ -4,30 +4,33 @@
 .image-block {
     $root: &;
     @include spacing.space-above;
-    background-color: $color__grey-200;
-
-    picture {
-        position: relative;
-        display: block;
-    }
+    margin-right: -24px;
 
     // Removes parent margin to ensure it's flush with viewport edge
     margin-left: -24px;
-    margin-right: -24px;
+
+    background-color: $color__grey-200;
+
+    picture {
+        display: block;
+
+        position: relative;
+    }
 
     @media screen and (min-width: map-get($grid-breakpoints, "sm")) {
-        margin-left: 0;
         margin-right: 0;
+        margin-left: 0;
         padding: 0;
     }
 
     &__image {
-        display: block;
         width: 100%;
-        max-height: 590px;
         height: auto;
-        margin-left: auto;
+        max-height: 590px;
         margin-right: auto;
+        margin-left: auto;
+
+        display: block;
         object-fit: contain;
 
         &--portrait {
@@ -41,9 +44,11 @@
 
     &__caption {
         @include font-size("xs");
-        background-color: $color__white;
-        display: inline-block;
         width: 100%;
+
+        display: inline-block;
+
+        background-color: $color__white;
         border-bottom: 1px solid $color__grey-300;
 
         @media screen and (min-width: map-get($grid-breakpoints, "lg")) {
@@ -53,31 +58,37 @@
         // Overides global typography styles
         p {
             @include font-size(xs);
-            padding: 18px 36px;
             margin-bottom: 0;
+            padding: 18px 36px;
 
             @media screen and (min-width: map-get($grid-breakpoints, "lg")) {
-                border-bottom: 1px solid $color__grey-300;
+                width: 80%;
                 margin: 18px auto;
                 padding: 0 18px 18px;
-                width: 80%;
+                border-bottom: 1px solid $color__grey-300;
             }
         }
     }
 
     &__transcript {
-        position: absolute;
-        bottom: 1rem;
-        right: 1rem;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background-color: rgba($color__black, 0.8);
-        color: $color__white;
-        border: 0;
         padding: 0.25rem 0.75rem 0.25rem 0.5rem;
-        cursor: pointer;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        position: absolute;
+        right: 1rem;
+        bottom: 1rem;
+
+        color: $color__white;
         font-size: 0.875rem;
+
+        background-color: rgba($color__black, 0.8);
+
+        border: 0;
+
+        cursor: pointer;
 
         &[aria-expanded="true"] {
             svg {

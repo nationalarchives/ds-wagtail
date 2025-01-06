@@ -1,16 +1,20 @@
 .feedback {
     &__form {
-        border: 1px solid $color__black;
-        display: block;
         max-width: 50rem;
         margin: 0 auto;
         padding: 2rem;
+
+        display: block;
+
         position: relative;
+
+        border: 1px solid $color__black;
 
         legend {
             @include font-size(l);
-            font-weight: $font-weight-bold;
             margin-bottom: 1rem;
+
+            font-weight: $font-weight-bold;
         }
 
         &--comment {
@@ -18,8 +22,9 @@
         }
 
         &--success {
-            border: none;
             padding: 1rem 0 2rem;
+
+            border: none;
         }
     }
 
@@ -37,14 +42,18 @@
     }
 
     &__form-close {
+        width: 2.75rem;
+        height: 2.75rem;
+
+        display: block;
+
         position: absolute;
         top: 0;
         right: 0;
-        display: block;
+
         background-color: transparent;
+
         border: 1px solid transparent;
-        width: 2.75rem;
-        height: 2.75rem;
 
         &:hover {
             cursor: pointer;
@@ -52,15 +61,17 @@
     }
 
     &__form-close-icon {
-        color: inherit;
-        height: 1.75rem;
         width: 1.5rem;
+        height: 1.75rem;
+
+        color: inherit;
     }
 
     &__success-heading {
         @include font-size(xl);
-        font-weight: $font-weight-bold;
         margin-top: 0;
+
+        font-weight: $font-weight-bold;
     }
 
     &__success {

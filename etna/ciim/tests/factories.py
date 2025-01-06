@@ -1,5 +1,4 @@
 import json
-
 from typing import Any, Dict, Optional
 
 
@@ -166,5 +165,7 @@ def paginate_records_callback(records, request):
     return (
         200,
         {},
-        json.dumps(create_response(records=response_records, total_count=len(records))),
+        json.dumps(
+            create_response(records=response_records, total_count=len(records))
+        ),
     )

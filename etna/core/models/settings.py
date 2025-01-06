@@ -1,5 +1,4 @@
 from django.db import models
-
 from modelcluster.models import ClusterableModel, ParentalKey
 from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
 from wagtail.contrib.settings.models import BaseSiteSetting, register_setting
@@ -78,14 +77,17 @@ class SiteSettings(BaseSiteSetting, ClusterableModel):
         """
         obj = super().for_request(request)
         obj.main_menu_items = [
-            item.bind_to_request(request) for item in obj.main_menu_items_rel.all()
+            item.bind_to_request(request)
+            for item in obj.main_menu_items_rel.all()
         ]
         return obj
 
 
 class MainMenuItem(AbstractMenuItem):
     settings = ParentalKey(
-        "SiteSettings", on_delete=models.CASCADE, related_name="main_menu_items_rel"
+        "SiteSettings",
+        on_delete=models.CASCADE,
+        related_name="main_menu_items_rel",
     )
     handle = models.SlugField(
         blank=True,

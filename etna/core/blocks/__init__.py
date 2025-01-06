@@ -8,7 +8,12 @@ from .featured_content import (
     FeaturedRecordArticleBlock,
     RelatedItemBlock,
 )
-from .image import ContentImageBlock, ImageBlock, ImageGalleryBlock, NoCaptionImageBlock
+from .image import (
+    ContentImageBlock,
+    ImageBlock,
+    ImageGalleryBlock,
+    NoCaptionImageBlock,
+)
 from .lists import DescriptionListBlock, DoDontListBlock
 from .page_chooser import APIPageChooserBlock
 from .page_list import PageListBlock

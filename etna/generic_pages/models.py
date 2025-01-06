@@ -2,15 +2,13 @@ from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-
 from modelcluster.fields import ParentalKey
+from rest_framework import serializers
 from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
 from wagtail.api import APIField
 from wagtail.fields import RichTextField, StreamField
 from wagtail.images import get_image_model_string
 from wagtail.models import Orderable
-
-from rest_framework import serializers
 
 from etna.core.models import BasePageWithIntro, HeroImageMixin, SidebarMixin
 from etna.core.serializers import (
@@ -33,7 +31,9 @@ class GeneralPage(SidebarMixin, HeroImageMixin, BasePageWithIntro):
         ]
     )
 
-    settings_panels = BasePageWithIntro.settings_panels + SidebarMixin.settings_panels
+    settings_panels = (
+        BasePageWithIntro.settings_panels + SidebarMixin.settings_panels
+    )
 
     api_fields = (
         BasePageWithIntro.api_fields
@@ -111,11 +111,15 @@ class LinkItem(Orderable):
 class LinkItemSerializer(serializers.Serializer):
     def to_representation(self, instance):
         if instance.internal_page:
-            return DefaultPageSerializer().to_representation(instance.internal_page)
+            return DefaultPageSerializer().to_representation(
+                instance.internal_page
+            )
         else:
             return {
                 "title": instance.title,
-                "teaser_image": ImageSerializer().to_representation(instance.image),
+                "teaser_image": ImageSerializer().to_representation(
+                    instance.image
+                ),
                 "teaser_text": instance.description,
                 "url": instance.url,
                 "full_url": instance.url,

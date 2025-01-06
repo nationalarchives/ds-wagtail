@@ -1,5 +1,4 @@
 from django.test import TestCase
-
 from wagtail.models import Site
 
 from etna.collections.models import ExplorerIndexPage, TopicExplorerPage

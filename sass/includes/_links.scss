@@ -23,9 +23,11 @@ a {
     }
 
     &:hover {
-        outline: 0.312rem solid $color__card-hover;
-        background: $color__card-hover;
         color: $color__white;
+
+        background: $color__card-hover;
+
+        outline: 0.312rem solid $color__card-hover;
     }
 
     &:focus {

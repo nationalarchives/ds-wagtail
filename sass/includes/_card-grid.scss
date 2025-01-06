@@ -3,15 +3,16 @@
     display: grid;
 
     &--list {
+        margin: 0;
+        padding: 0;
         // A modifier to normalise the grid for list items.
         list-style: none;
-        padding: 0;
-        margin: 0;
     }
 
     &__duo {
-        grid-gap: 1rem;
         margin: 1rem 0;
+
+        grid-gap: 1rem;
 
         @media (min-width: map-get($grid-breakpoints, "md")) {
             grid-template-columns: repeat(2, 1fr);
@@ -19,9 +20,10 @@
     }
 
     &__trio {
+        padding: 0 1rem 1rem;
+
         grid-gap: 1.5rem;
         row-gap: 1.875rem;
-        padding: 0 1rem 1rem;
 
         @media (min-width: map-get($grid-breakpoints, "sm")) {
             grid-template-columns: repeat(2, 1fr);
@@ -42,8 +44,9 @@
     }
 
     &__quad {
-        grid-gap: 40px;
         margin: 20px 0;
+
+        grid-gap: 40px;
 
         @media (min-width: map-get($grid-breakpoints, "sm")) {
             grid-template-columns: repeat(2, 1fr);
@@ -55,8 +58,8 @@
     }
 
     &__quint {
-        gap: 14px;
         grid-template-columns: repeat(2, 1fr);
+        gap: 14px;
 
         @media (min-width: map-get($grid-breakpoints, "md")) {
             gap: 42px;
@@ -68,8 +71,9 @@
     }
 
     &__title {
+        padding: 0.5rem 0;
+
         font-size: $h2-font-size;
         font-weight: $font-weight-normal;
-        padding: 0.5rem 0;
     }
 }

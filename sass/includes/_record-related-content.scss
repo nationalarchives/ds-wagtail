@@ -2,19 +2,22 @@
     margin-bottom: 4rem;
 
     &__list {
-        list-style: none;
         padding-left: 0;
 
+        list-style: none;
+
         li {
-            background-color: $color__grey-800;
             margin-bottom: 1rem;
             padding: 1rem;
+
+            background-color: $color__grey-800;
             border-left: 1.25rem solid $color__navy;
 
             a {
-                text-decoration: underline;
-                color: $color__navy;
                 display: inline-block;
+
+                color: $color__navy;
+                text-decoration: underline;
 
                 &:hover {
                     text-decoration: none;

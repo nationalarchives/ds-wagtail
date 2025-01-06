@@ -1,10 +1,12 @@
 @use "@nationalarchives/frontend/nationalarchives/tools/media";
 
 .featured-card {
-    text-decoration: none;
-    color: $color__black;
-    position: relative;
     margin-bottom: 2.25rem;
+
+    position: relative;
+
+    color: $color__black;
+    text-decoration: none;
 
     @include media.on-larger-than-mobile {
         margin-bottom: 4.375rem;
@@ -17,28 +19,35 @@
     }
 
     &__pick {
-        display: inline-block;
-        font-size: 0.875rem;
-        font-family: $font__roboto-mono;
-        text-transform: uppercase;
-        padding: 0 0.4rem;
         margin: 0;
-        color: $color__white;
-        background-color: $color__maroon;
+        padding: 0 0.4rem;
+
+        display: inline-block;
+
         position: absolute;
         top: 1rem;
         left: 1rem;
+
+        color: $color__white;
+        font-family: $font__roboto-mono;
+        font-size: 0.875rem;
+        text-transform: uppercase;
+
+        background-color: $color__maroon;
     }
 
     &__tag-wrapper {
-        display: inline-block;
-        background-color: $color__white;
-        padding: 1rem 1.25rem 0 1.5rem;
         margin-top: -1.25rem;
+        padding: 1rem 1.25rem 0 1.5rem;
+
+        display: inline-block;
+
+        background-color: $color__white;
 
         @include media.on-larger-than-mobile {
-            top: auto;
             padding: 0;
+
+            top: auto;
         }
     }
 
@@ -64,10 +73,11 @@
 
         @include media.on-larger-than-mobile {
             width: 66%;
+            padding: 1.875rem 1.5rem 1.25rem;
+
             position: absolute;
             right: 0;
             bottom: 0;
-            padding: 1.875rem 1.5rem 1.25rem;
         }
     }
 
@@ -95,8 +105,9 @@
 // that it overlaps the filters (full-width-header) above.
 .featured-card-background {
     @include media.on-larger-than-mobile {
-        background-color: $color__pastel-pink;
         width: 100%;
         height: 12rem;
+
+        background-color: $color__pastel-pink;
     }
 }

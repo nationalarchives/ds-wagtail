@@ -1,11 +1,8 @@
 import re
-
 from typing import Any, Dict, Optional
 
-from django.urls import NoReverseMatch, reverse
-
 import nh3
-
+from django.urls import NoReverseMatch, reverse
 from pyquery import PyQuery as pq
 
 
@@ -205,8 +202,12 @@ def resolve_links(markup):
 
     def link_from_span(span):
         if link := pq(span).attr("link"):
-            if iaid := re.match(r"\$link\((?P<iaid>[C0-9]*)\)", link).group("iaid"):
-                url = reverse("details-page-machine-readable", kwargs={"iaid": iaid})
+            if iaid := re.match(r"\$link\((?P<iaid>[C0-9]*)\)", link).group(
+                "iaid"
+            ):
+                url = reverse(
+                    "details-page-machine-readable", kwargs={"iaid": iaid}
+                )
                 return pq(f'<a href="{url}">{pq(span).text()}</a>')
         if link := pq(span).attr("href"):
             return pq(f'<a href="{link}">{pq(span).text()}</a>')

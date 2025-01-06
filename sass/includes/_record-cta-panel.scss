@@ -1,23 +1,28 @@
 .cta-primary-panel {
+    margin: 0.75rem 0 0;
+    padding: 0 0.5rem;
+
     display: block;
     justify-content: space-between;
+
     font-family: $font__roboto;
     font-size: 1rem;
-    padding: 0 0.5rem;
-    margin: 0.75rem 0 0;
 
     @media screen and (min-width: #{$screen__sm + 1px}) {
         margin: 0.5rem 0 1.5rem;
     }
 
     &__link {
-        display: inline-flex;
+        margin: 0;
         padding: 0.5rem 0.5rem 0.25rem 1rem;
+
+        display: inline-flex;
+
+        position: relative;
+
         font-family: $font__supria-sans;
         font-size: 1.1rem;
         text-align: center;
-        margin: 0;
-        position: relative;
 
         &:visited {
             color: $color__link-blue;
@@ -39,29 +44,34 @@
 }
 
 .cta-secondary-panel {
-    text-align: left;
-    background: $color__grey-100;
     padding: 2rem 0;
+
+    text-align: left;
+
+    background: $color__grey-100;
     border-bottom: 2px dotted $color__grey-500;
 
     &__heading {
-        font-size: 1.25rem;
         margin-bottom: 1.5rem;
+
         font-family: $font__supria-sans;
+        font-size: 1.25rem;
     }
 
     &__text {
     }
 
     &__link {
-        border-bottom: 5px solid $color__yellow;
-        display: inline-block;
-        font-size: 1.1rem;
-        padding: 0.25rem 0;
         margin: 1rem 1rem 1rem 0;
-        text-decoration: none;
-        font-family: supria-sans-condensed, sans-serif;
+        padding: 0.25rem 0;
+
+        display: inline-block;
+
         color: $color__link;
+        font-family: supria-sans-condensed, sans-serif;
+        font-size: 1.1rem;
+        text-decoration: none;
+        border-bottom: 5px solid $color__yellow;
 
         &:hover {
             color: $color__black;

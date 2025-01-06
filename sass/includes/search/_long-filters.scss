@@ -1,15 +1,16 @@
 .long-filters {
-    margin-left: 1rem;
     margin-right: 1rem;
+    margin-left: 1rem;
 
     @media only screen and (min-width: #{$screen__md + 1px}) {
-        margin-left: 2rem;
         margin-right: 2rem;
+        margin-left: 2rem;
     }
 
     &__heading {
-        font-family: $font__supria-sans;
         padding-top: 1.2rem;
+
+        font-family: $font__supria-sans;
     }
 
     &__options {
@@ -21,8 +22,8 @@
 
         @media only screen and (min-width: #{$screen__md + 1px}) {
             display: flex;
-            justify-content: space-between;
             align-items: baseline;
+            justify-content: space-between;
         }
     }
 
@@ -36,20 +37,23 @@
         }
 
         &-list {
-            padding-left: 0;
             margin-bottom: 0;
+            padding-left: 0;
 
             @media only screen and (min-width: #{$screen__md + 1px}) {
                 column-count: 3;
+
                 column-gap: 1rem;
             }
 
             &-item {
-                list-style: none;
-                margin-right: 4rem;
                 width: 100%;
                 max-width: 20rem;
+                margin-right: 4rem;
+
                 vertical-align: text-top;
+
+                list-style: none;
             }
         }
 
@@ -61,19 +65,23 @@
         }
 
         &-label {
-            cursor: pointer;
             max-width: 85%;
+
             vertical-align: top;
+
+            cursor: pointer;
         }
     }
 
     &__search {
-        background-color: $color__grey-200;
-        border: 0.0625rem solid $color__grey-500;
-        padding: 1rem;
         max-height: 14rem;
         margin-right: 1rem;
         margin-bottom: 1rem;
+        padding: 1rem;
+
+        background-color: $color__grey-200;
+
+        border: 0.0625rem solid $color__grey-500;
 
         @media only screen and (min-width: #{$screen__lg + 1px}) {
             max-width: 20rem;
@@ -85,23 +93,27 @@
 
         &-button {
             @extend .tna-button--dark;
-            display: block;
             margin-top: 0.25rem;
+
+            display: block;
+
             font-weight: normal;
+
             cursor: pointer;
         }
 
         &-box {
             width: 100%;
+            height: 2.7rem;
+            margin-bottom: 0.5rem;
+            margin-left: -0.2rem;
+            padding: 1rem;
+
+            border: 0.0625rem solid $color__grey-500;
+            border-radius: 0.5rem;
             @media only screen and (min-width: #{$screen__lg + 1px}) {
                 max-width: 17.5rem;
             }
-            margin-bottom: 0.5rem;
-            border: 0.0625rem solid $color__grey-500;
-            border-radius: 0.5rem;
-            height: 2.7rem;
-            padding: 1rem;
-            margin-left: -0.2rem;
 
             &:focus {
                 outline: 0.3125rem solid $color__focus-outline-light-bg;
@@ -111,14 +123,15 @@
 
     &__submit-section {
         margin-top: 2rem;
+        margin-bottom: 2rem;
         padding-top: 2rem;
         border-top: 0.1875rem dotted $color__grey-500;
-        margin-bottom: 2rem;
     }
 
     &__submit-button {
         @extend .tna-button;
         font-size: 1.3rem;
+
         cursor: pointer;
     }
 

@@ -1,21 +1,23 @@
 .featured-search {
     &__results {
-        margin-left: 1rem;
         margin-right: 1rem;
+        margin-left: 1rem;
         @media only screen and (min-width: #{$screen__md + 1px}) {
             margin-left: 2rem;
-            display: -ms-grid;
+
+            display: grid;
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
             -ms-grid-columns: 1fr 1fr 1fr;
         }
 
         &-block {
+            margin-top: 1rem;
+            margin-right: 1rem;
+            padding: 1rem;
+
             border: 3px solid $color__yellow;
             border-radius: 0.3rem;
-            padding: 1rem;
-            margin-right: 1rem;
-            margin-top: 1rem;
 
             &:nth-of-type(1) {
                 -ms-grid-column: 1;
@@ -31,14 +33,16 @@
         }
 
         &-list {
-            list-style: none;
             padding-left: 0.5rem;
+
+            list-style: none;
         }
 
         &-heading {
+            margin-bottom: 0.1rem;
+
             font-family: $font__supria-sans;
             font-size: 1.5rem;
-            margin-bottom: 0.1rem;
         }
 
         &-link {
@@ -52,6 +56,7 @@
 
     &__see-all-link {
         border-top: 4px dotted $color__grey-500;
+
         margin-top: 2rem;
         padding-top: 1rem;
     }
@@ -73,17 +78,19 @@
     }
 
     &__interpretive-results {
-        display: none;
         margin: 2rem 1rem 3rem;
         padding-top: 2rem;
+
+        display: none;
         border-top: 3px dotted $color__grey-500;
 
         @media only screen and (min-width: #{$screen__md + 1px}) {
-            display: grid;
-            display: -ms-grid;
-            -ms-grid-columns: 1fr 1fr 1fr;
-            grid-template-columns: 1fr 1fr 1fr;
             margin-left: 2rem;
+
+            display: grid;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            -ms-grid-columns: 1fr 1fr 1fr;
 
             &-section {
                 // display:none;
@@ -109,8 +116,9 @@
 
     &__interpretive-card {
         &-image {
-            border: 1px solid $color__grey-500;
             display: block;
+
+            border: 1px solid $color__grey-500;
 
             &-fallback {
                 width: 100%;

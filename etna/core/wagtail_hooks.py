@@ -1,7 +1,6 @@
 from django.conf import settings
 from django.templatetags.static import static
 from django.utils.html import format_html
-
 from wagtail import hooks
 
 
@@ -15,7 +14,8 @@ def editor_css():
 @hooks.register("insert_editor_js")
 def editor_js():
     return format_html(
-        '<script src="{}"></script>', static("admin/js/inputLengthIndicators.js")
+        '<script src="{}"></script>',
+        static("admin/js/inputLengthIndicators.js"),
     )
 
 

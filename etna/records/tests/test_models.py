@@ -1,16 +1,18 @@
 import json
 import unittest
-
 from copy import deepcopy
 
+import responses
 from django.conf import settings
 from django.test import SimpleTestCase, TestCase, override_settings
 from django.urls import reverse
 from django.utils.safestring import SafeString
 
-import responses
-
-from etna.ciim.tests.factories import create_media, create_record, create_response
+from etna.ciim.tests.factories import (
+    create_media,
+    create_record,
+    create_response,
+)
 from etna.ciim.utils import ValueExtractionError
 
 from ..api import get_records_client
@@ -32,15 +34,21 @@ class RecordModelTests(SimpleTestCase):
 
     def test_template_uses_detail_template_when_present(self):
         self.assertIn("details", self.record._raw["@template"])
-        self.assertEqual(self.record.template, self.record._raw["@template"]["details"])
+        self.assertEqual(
+            self.record.template, self.record._raw["@template"]["details"]
+        )
 
-    def test_template_uses_results_template_if_details_template_not_present(self):
+    def test_template_uses_results_template_if_details_template_not_present(
+        self,
+    ):
         self.assertIn("results", self.record._raw["@template"])
 
         # patch raw data
         self.record._raw["@template"].pop("details")
 
-        self.assertEqual(self.record.template, self.record._raw["@template"]["results"])
+        self.assertEqual(
+            self.record.template, self.record._raw["@template"]["results"]
+        )
 
     def test_template_returns_empty_dict_when_no_template_available(self):
         # patch raw data
@@ -73,7 +81,9 @@ class RecordModelTests(SimpleTestCase):
     def test_reference_number(self):
         self.assertEqual(self.record.reference_number, "LO 2")
 
-    def test_raises_valueextractionerror_when_reference_number_is_not_present(self):
+    def test_raises_valueextractionerror_when_reference_number_is_not_present(
+        self,
+    ):
         # patch raw data
         self.record._raw.pop("identifier")
         self.record._raw["@template"]["details"].pop("referenceNumber")
@@ -132,7 +142,9 @@ class RecordModelTests(SimpleTestCase):
             ),
         )
 
-    def test_url_uses_source_url_when_reference_number_and_iaid_are_missing(self):
+    def test_url_uses_source_url_when_reference_number_and_iaid_are_missing(
+        self,
+    ):
         record = Record(
             {
                 "@template": {
@@ -324,14 +336,22 @@ class RecordModelTests(SimpleTestCase):
         r = self.record.next_record
         self.assertEqual(
             (r.iaid, r.reference_number, r.summary_title),
-            ("C10298", "LO 1", "Law Officers' Department: Law Officers' Opinions"),
+            (
+                "C10298",
+                "LO 1",
+                "Law Officers' Department: Law Officers' Opinions",
+            ),
         )
 
     def test_previous_record(self):
         r = self.record.previous_record
         self.assertEqual(
             (r.iaid, r.reference_number, r.summary_title),
-            ("C10296", "LO 3", "Law Officers' Department: Patents for Inventions"),
+            (
+                "C10296",
+                "LO 3",
+                "Law Officers' Department: Patents for Inventions",
+            ),
         )
 
     @unittest.skip("Data not supported for the json record")
@@ -366,7 +386,9 @@ class RecordModelTests(SimpleTestCase):
         self.assertEqual(self.record.source, "CAT")
 
     def test_repo_summary_title(self):
-        self.assertEqual(self.record.repo_summary_title, "The National Archives")
+        self.assertEqual(
+            self.record.repo_summary_title, "The National Archives"
+        )
 
     def test_repo_archon_value(self):
         self.assertEqual(self.record.repo_archon_value, "66")
@@ -412,7 +434,8 @@ class RecordModelTests(SimpleTestCase):
         self.assertEqual(self.record.repository.iaid, "A13530124")
         self.assertEqual(self.record.repository.url, "/catalogue/ref/66/")
         self.assertEqual(
-            self.record.repository.non_reference_number_url, "/catalogue/id/A13530124/"
+            self.record.repository.non_reference_number_url,
+            "/catalogue/id/A13530124/",
         )
 
     def test_closure_status_empty_value(self):
@@ -611,7 +634,9 @@ class ImageTestCase(TestCase):
         image = images[0]
 
         # Fallback serves image through Wagtail instead of from Client API
-        self.assertEqual(image.thumbnail_url, "/records/image/path/to/image.jpeg")
+        self.assertEqual(
+            image.thumbnail_url, "/records/image/path/to/image.jpeg"
+        )
 
 
 @override_settings(CLIENT_BASE_URL=f"{settings.CLIENT_BASE_URL}")
@@ -723,7 +748,9 @@ class ArchiveRecordModelTests(SimpleTestCase):
 
         record = self.records_client.fetch(iaid="A13532479")
 
-        self.assertEqual(record.archive_contact_info.address_line1, "this is line1")
+        self.assertEqual(
+            record.archive_contact_info.address_line1, "this is line1"
+        )
         self.assertEqual(record.archive_contact_info.address_town, "this town")
         self.assertEqual(record.archive_contact_info.postcode, "KW1 1AB")
         self.assertEqual(record.archive_contact_info.address_country, "England")
@@ -741,9 +768,13 @@ class ArchiveRecordModelTests(SimpleTestCase):
         self.assertEqual(
             record.archive_contact_info.corresp_addr, "this is corresp address"
         )
-        self.assertEqual(record.archive_contact_info.contact_job_title, "Manager")
+        self.assertEqual(
+            record.archive_contact_info.contact_job_title, "Manager"
+        )
         self.assertEqual(record.archive_contact_info.contact_title, "X")
-        self.assertEqual(record.archive_contact_info.contact_first_name, "fname")
+        self.assertEqual(
+            record.archive_contact_info.contact_first_name, "fname"
+        )
         self.assertEqual(record.archive_contact_info.contact_last_name, "lname")
 
     @responses.activate
@@ -777,7 +808,9 @@ class ArchiveRecordModelTests(SimpleTestCase):
         self.assertEqual(
             record.archive_further_info.opening_hours, "this is opening hours"
         )
-        self.assertEqual(record.archive_further_info.holidays, "this is holidays")
+        self.assertEqual(
+            record.archive_further_info.holidays, "this is holidays"
+        )
         self.assertEqual(
             record.archive_further_info.facilities,
             [
@@ -833,10 +866,14 @@ class ArchiveRecordModelTests(SimpleTestCase):
                                         "identifier": [{"value": "O"}],
                                         "place": {
                                             "name": [
-                                                {"value": "Abbeycwmhir, Radnorshire"}
+                                                {
+                                                    "value": "Abbeycwmhir, Radnorshire"
+                                                }
                                             ]
                                         },
-                                        "summary": {"title": "Abbey Cwmhir Abbey"},
+                                        "summary": {
+                                            "title": "Abbey Cwmhir Abbey"
+                                        },
                                     },
                                     {
                                         "@admin": {
@@ -845,7 +882,9 @@ class ArchiveRecordModelTests(SimpleTestCase):
                                         "identifier": [{"value": "P"}],
                                         "place": {
                                             "name": [
-                                                {"value": "Kettering, Northamptonshire"}
+                                                {
+                                                    "value": "Kettering, Northamptonshire"
+                                                }
                                             ]
                                         },
                                         "summary": {
@@ -859,7 +898,9 @@ class ArchiveRecordModelTests(SimpleTestCase):
                                         "identifier": [{"value": "D"}],
                                         "place": {
                                             "name": [
-                                                {"value": "Blisworth, Northamptonshire"}
+                                                {
+                                                    "value": "Blisworth, Northamptonshire"
+                                                }
                                             ]
                                         },
                                         "summary": {
@@ -901,10 +942,14 @@ class ArchiveRecordModelTests(SimpleTestCase):
             "Businesses",
         )
         self.assertEqual(
-            record.archive_collections.collection_info_list[0].long_display_name,
+            record.archive_collections.collection_info_list[
+                0
+            ].long_display_name,
             "Businesses",
         )
-        self.assertEqual(record.archive_collections.collection_info_list[0].count, 1)
+        self.assertEqual(
+            record.archive_collections.collection_info_list[0].count, 1
+        )
         self.assertEqual(
             record.archive_collections.collection_info_list[0].info_list,
             [
@@ -917,17 +962,22 @@ class ArchiveRecordModelTests(SimpleTestCase):
         )
 
         self.assertEqual(
-            record.archive_collections.collection_info_list[1].name, "organisation"
+            record.archive_collections.collection_info_list[1].name,
+            "organisation",
         )
         self.assertEqual(
             record.archive_collections.collection_info_list[1].display_name,
             "Organisations",
         )
         self.assertEqual(
-            record.archive_collections.collection_info_list[1].long_display_name,
+            record.archive_collections.collection_info_list[
+                1
+            ].long_display_name,
             "Organisations",
         )
-        self.assertEqual(record.archive_collections.collection_info_list[1].count, 1)
+        self.assertEqual(
+            record.archive_collections.collection_info_list[1].count, 1
+        )
         self.assertEqual(
             record.archive_collections.collection_info_list[1].info_list,
             [
@@ -943,13 +993,18 @@ class ArchiveRecordModelTests(SimpleTestCase):
             record.archive_collections.collection_info_list[2].name, "person"
         )
         self.assertEqual(
-            record.archive_collections.collection_info_list[2].display_name, "Persons"
-        )
-        self.assertEqual(
-            record.archive_collections.collection_info_list[2].long_display_name,
+            record.archive_collections.collection_info_list[2].display_name,
             "Persons",
         )
-        self.assertEqual(record.archive_collections.collection_info_list[2].count, 1)
+        self.assertEqual(
+            record.archive_collections.collection_info_list[
+                2
+            ].long_display_name,
+            "Persons",
+        )
+        self.assertEqual(
+            record.archive_collections.collection_info_list[2].count, 1
+        )
         self.assertEqual(
             record.archive_collections.collection_info_list[2].info_list,
             [
@@ -965,13 +1020,18 @@ class ArchiveRecordModelTests(SimpleTestCase):
             record.archive_collections.collection_info_list[3].name, "diary"
         )
         self.assertEqual(
-            record.archive_collections.collection_info_list[3].display_name, "Diaries"
-        )
-        self.assertEqual(
-            record.archive_collections.collection_info_list[3].long_display_name,
+            record.archive_collections.collection_info_list[3].display_name,
             "Diaries",
         )
-        self.assertEqual(record.archive_collections.collection_info_list[3].count, 1)
+        self.assertEqual(
+            record.archive_collections.collection_info_list[
+                3
+            ].long_display_name,
+            "Diaries",
+        )
+        self.assertEqual(
+            record.archive_collections.collection_info_list[3].count, 1
+        )
         self.assertEqual(
             record.archive_collections.collection_info_list[3].info_list,
             [
@@ -987,13 +1047,18 @@ class ArchiveRecordModelTests(SimpleTestCase):
             record.archive_collections.collection_info_list[4].name, "family"
         )
         self.assertEqual(
-            record.archive_collections.collection_info_list[4].display_name, "Families"
-        )
-        self.assertEqual(
-            record.archive_collections.collection_info_list[4].long_display_name,
+            record.archive_collections.collection_info_list[4].display_name,
             "Families",
         )
-        self.assertEqual(record.archive_collections.collection_info_list[4].count, 1)
+        self.assertEqual(
+            record.archive_collections.collection_info_list[
+                4
+            ].long_display_name,
+            "Families",
+        )
+        self.assertEqual(
+            record.archive_collections.collection_info_list[4].count, 1
+        )
         self.assertEqual(
             record.archive_collections.collection_info_list[4].info_list,
             [
@@ -1040,17 +1105,22 @@ class ArchiveRecordModelTests(SimpleTestCase):
         record = self.records_client.fetch(iaid="A13532479")
 
         self.assertEqual(
-            record.archive_collections.collection_info_list[0].name, "paper_catalogue"
+            record.archive_collections.collection_info_list[0].name,
+            "paper_catalogue",
         )
         self.assertEqual(
             record.archive_collections.collection_info_list[0].display_name,
             "Paper catalogues",
         )
         self.assertEqual(
-            record.archive_collections.collection_info_list[0].long_display_name,
+            record.archive_collections.collection_info_list[
+                0
+            ].long_display_name,
             "Paper catalogues available to view at The National Archives",
         )
-        self.assertEqual(record.archive_collections.collection_info_list[0].count, 1)
+        self.assertEqual(
+            record.archive_collections.collection_info_list[0].count, 1
+        )
         self.assertEqual(
             record.archive_collections.collection_info_list[0].info_list,
             [
@@ -1107,7 +1177,11 @@ class ArchiveRecordModelTests(SimpleTestCase):
                         iaid="A13532479",
                         source_values=[
                             {"source": {"value": "ARCHON"}},
-                            {"repository": {"url": "http://nro.adlibhosting.com/"}},
+                            {
+                                "repository": {
+                                    "url": "http://nro.adlibhosting.com/"
+                                }
+                            },
                         ],
                     ),
                 ]
@@ -1116,7 +1190,9 @@ class ArchiveRecordModelTests(SimpleTestCase):
 
         record = self.records_client.fetch(iaid="A13532479")
 
-        self.assertEqual(record.archive_repository_url, "http://nro.adlibhosting.com/")
+        self.assertEqual(
+            record.archive_repository_url, "http://nro.adlibhosting.com/"
+        )
 
 
 class RecordModelCatalogueTests(SimpleTestCase):
@@ -1464,7 +1540,9 @@ class RecordModelCatalogueTests(SimpleTestCase):
         )
         self.record = Record(self.source)
 
-        self.assertTrue(isinstance(self.record.administrative_background, SafeString))
+        self.assertTrue(
+            isinstance(self.record.administrative_background, SafeString)
+        )
         self.assertEqual(
             self.record.administrative_background,
             "<bioghist><bioghist><p>The Industrial Relations Department was set up as soon as the British Transport Commission began functioning and continued in existence until the end of the British Railway Board. In 1983 it was renamed Employee Relations Department.</p></bioghist></bioghist>",
@@ -1528,7 +1606,10 @@ class RecordModelCatalogueTests(SimpleTestCase):
             {
                 "@template": {
                     "details": {
-                        "unpublishedFindingAids": ["some value 1", "some value 2"],
+                        "unpublishedFindingAids": [
+                            "some value 1",
+                            "some value 2",
+                        ],
                     }
                 },
             }
@@ -1536,7 +1617,8 @@ class RecordModelCatalogueTests(SimpleTestCase):
         self.record = Record(self.source)
 
         self.assertEqual(
-            self.record.unpublished_finding_aids, ["some value 1", "some value 2"]
+            self.record.unpublished_finding_aids,
+            ["some value 1", "some value 2"],
         )
 
     def test_copies_information(self):
@@ -1611,7 +1693,9 @@ class RecordModelCatalogueTests(SimpleTestCase):
         )
         self.record = Record(self.source)
 
-        self.assertEqual(self.record.publication_note, ["some value 1", "some value 2"])
+        self.assertEqual(
+            self.record.publication_note, ["some value 1", "some value 2"]
+        )
 
     def test_delivery_option(self):
         self.source.update(

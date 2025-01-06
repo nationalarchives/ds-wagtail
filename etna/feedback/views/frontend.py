@@ -1,6 +1,5 @@
 import logging
 import uuid
-
 from http import HTTPStatus
 from typing import Any, Dict
 
@@ -20,7 +19,6 @@ from django.utils.decorators import method_decorator
 from django.utils.http import urlencode
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import FormView, TemplateView
-
 from wagtail.models import Revision
 
 from etna.feedback.forms import FeedbackCommentForm, FeedbackForm
@@ -115,7 +113,9 @@ class FeedbackSubmitView(VersionedFeedbackViewMixin, FormView):
                 {
                     "id": str(obj.public_id),
                     "signature": sign_submission_id(obj.public_id),
-                    "comment_prompt_text": form.cleaned_data["comment_prompt_text"],
+                    "comment_prompt_text": form.cleaned_data[
+                        "comment_prompt_text"
+                    ],
                 }
             )
 

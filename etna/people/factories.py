@@ -1,7 +1,5 @@
-from django.utils import timezone
-
 import factory
-
+from django.utils import timezone
 from wagtail_factories import ImageFactory, PageFactory
 
 from etna.people.models import PeopleIndexPage, PersonPage

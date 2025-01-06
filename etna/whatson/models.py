@@ -4,7 +4,6 @@ from django.db import models
 from django.utils import timezone
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
-
 from modelcluster.fields import ParentalKey
 from wagtail import blocks
 from wagtail.admin.panels import (
@@ -493,7 +492,9 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithRequiredIntro):
     registration_info = RichTextField(
         verbose_name=_("registration info"),
         blank=True,
-        help_text=_("Additional information about how to register for the event."),
+        help_text=_(
+            "Additional information about how to register for the event."
+        ),
         features=settings.RESTRICTED_RICH_TEXT_FEATURES,
     )
 
@@ -631,7 +632,9 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithRequiredIntro):
         format_day_and_date = "%A %-d %B %Y"
         # One session on one date where start and end times are the same
         # return eg. Monday 1 January 2024, 19:00
-        if (self.start_date == self.end_date) and (len(self.sessions.all()) == 1):
+        if (self.start_date == self.end_date) and (
+            len(self.sessions.all()) == 1
+        ):
             return self.start_date.strftime(format_day_date_and_time)
         # One session on one date where there are values for both start time and end time
         # eg. Monday 1 January 2024, 19:00–20:00 (note this uses an en dash)
@@ -671,7 +674,10 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithRequiredIntro):
                         ),
                     }
                 )
-            elif self.venue_type == VenueType.IN_PERSON and not self.venue_address:
+            elif (
+                self.venue_type == VenueType.IN_PERSON
+                and not self.venue_address
+            ):
                 raise ValidationError(
                     {
                         "venue_address": _(
@@ -679,7 +685,10 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithRequiredIntro):
                         ),
                     }
                 )
-            elif self.venue_type == VenueType.ONLINE and not self.video_conference_info:
+            elif (
+                self.venue_type == VenueType.ONLINE
+                and not self.video_conference_info
+            ):
                 raise ValidationError(
                     {
                         "video_conference_info": _(
@@ -806,7 +815,9 @@ class ExhibitionPage(
         max_length=40,
         null=True,
         verbose_name=_("booking details"),
-        help_text=_("Information about how to book tickets for the exhibition."),
+        help_text=_(
+            "Information about how to book tickets for the exhibition."
+        ),
         features=["link"],
     )
 
@@ -903,7 +914,12 @@ class ExhibitionPage(
     )
 
     event_links = StreamField(
-        [("event_links", blocks.ListBlock(FeaturedExternalLinkBlock(), max_num=2))],
+        [
+            (
+                "event_links",
+                blocks.ListBlock(FeaturedExternalLinkBlock(), max_num=2),
+            )
+        ],
         max_num=1,
         null=True,
         blank=True,
@@ -1070,7 +1086,9 @@ class ExhibitionPage(
             ObjectList(key_details_panels, heading="Key details"),
             ObjectList(design_panels, heading="Design"),
             ObjectList(promote_panels, heading="Promote"),
-            ObjectList(BasePageWithRequiredIntro.settings_panels, heading="Settings"),
+            ObjectList(
+                BasePageWithRequiredIntro.settings_panels, heading="Settings"
+            ),
         ]
     )
 
@@ -1098,8 +1116,12 @@ class ExhibitionPage(
             if self.start_date > self.end_date:
                 raise ValidationError(
                     {
-                        "start_date": _("The start date must be before the end date."),
-                        "end_date": _("The end date must be after the start date."),
+                        "start_date": _(
+                            "The start date must be before the end date."
+                        ),
+                        "end_date": _(
+                            "The end date must be after the start date."
+                        ),
                     }
                 )
         return super().clean()

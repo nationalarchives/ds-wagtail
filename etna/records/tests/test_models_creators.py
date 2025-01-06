@@ -30,7 +30,9 @@ class RecordModelCreatorsTests(SimpleTestCase):
         self.assertEqual(self.record.iaid, "F69594")
         self.assertEqual(self.record.custom_record_type, "CREATORS")
 
-    def test_record_creators_where_other_attributes_are_optionally_not_received(self):
+    def test_record_creators_where_other_attributes_are_optionally_not_received(
+        self,
+    ):
         self.record = Record(self.source)
 
         self.assertEqual(self.record.iaid, "F69594")
@@ -59,9 +61,18 @@ class RecordModelCreatorsTests(SimpleTestCase):
             {
                 "name": [
                     {"type": "maiden name", "value": "A maiden name value"},
-                    {"type": "also known as", "value": "An also known as value"},
-                    {"type": "formerly known as", "value": "A formerly known as value"},
-                    {"type": "later known as", "value": "A later known as value"},
+                    {
+                        "type": "also known as",
+                        "value": "An also known as value",
+                    },
+                    {
+                        "type": "formerly known as",
+                        "value": "A formerly known as value",
+                    },
+                    {
+                        "type": "later known as",
+                        "value": "A later known as value",
+                    },
                     {"type": "pseudonym", "value": "A pseudonym value"},
                     {"type": "relation of", "value": "A relation of value"},
                     {"type": "real name", "value": "A real name value"},
@@ -69,7 +80,10 @@ class RecordModelCreatorsTests(SimpleTestCase):
                         "type": "standardised form of name according to other rules",
                         "value": "A standardised form of name according to other rules value",
                     },
-                    {"type": "unknown / other", "value": "An unknown / other value"},
+                    {
+                        "type": "unknown / other",
+                        "value": "An unknown / other value",
+                    },
                 ],
             }
         )
@@ -80,7 +94,10 @@ class RecordModelCreatorsTests(SimpleTestCase):
             (
                 {"label": "Maiden name", "value": "A maiden name value"},
                 {"label": "Also known as", "value": "An also known as value"},
-                {"label": "Formerly known as", "value": "A formerly known as value"},
+                {
+                    "label": "Formerly known as",
+                    "value": "A formerly known as value",
+                },
                 {"label": "Later known as", "value": "A later known as value"},
                 {"label": "Pseudonym", "value": "A pseudonym value"},
                 {"label": "Relation of", "value": "A relation of value"},
@@ -89,7 +106,10 @@ class RecordModelCreatorsTests(SimpleTestCase):
                     "label": "Standardised form of name according to other rules",
                     "value": "A standardised form of name according to other rules value",
                 },
-                {"label": "Unknown / Other", "value": "An unknown / other value"},
+                {
+                    "label": "Unknown / Other",
+                    "value": "An unknown / other value",
+                },
             ),
         )
 
@@ -343,7 +363,9 @@ class RecordModelCreatorsTests(SimpleTestCase):
 
         self.record = Record(self.source)
 
-        self.assertEqual(self.record.record_creators_date, "1897-1981; 1935-1974")
+        self.assertEqual(
+            self.record.record_creators_date, "1897-1981; 1935-1974"
+        )
 
     def test_record_creators_date_with_all_dates(self):
         self.source.update(
@@ -376,7 +398,9 @@ class RecordModelCreatorsTests(SimpleTestCase):
 
         self.record = Record(self.source)
 
-        self.assertEqual(self.record.name_authority_reference, "GB/NNAF/P163769")
+        self.assertEqual(
+            self.record.name_authority_reference, "GB/NNAF/P163769"
+        )
 
     def test_former_name_authority_reference(self):
         self.source.update(
@@ -393,4 +417,6 @@ class RecordModelCreatorsTests(SimpleTestCase):
 
         self.record = Record(self.source)
 
-        self.assertEqual(self.record.former_name_authority_reference, "GB/NNAF/P16782")
+        self.assertEqual(
+            self.record.former_name_authority_reference, "GB/NNAF/P16782"
+        )

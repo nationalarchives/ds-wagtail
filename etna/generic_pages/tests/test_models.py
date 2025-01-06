@@ -1,7 +1,6 @@
 import json
 
 from django.test import TestCase
-
 from wagtail.models import Site
 
 from ..models import GeneralPage
@@ -16,7 +15,10 @@ class TestGeneral(TestCase):
             teaser_text="test",
             body=json.dumps(
                 [
-                    {"type": "paragraph", "value": {"text": "This is a paragraph"}},
+                    {
+                        "type": "paragraph",
+                        "value": {"text": "This is a paragraph"},
+                    },
                 ]
             ),
         )

@@ -11,4 +11,6 @@ def skos_id_from_text(text: str) -> str:
 
 
 def urlunparse(scheme="", netloc="", path="", params="", query="", fragment=""):
-    return urllib.parse.urlunparse((scheme, netloc, path, params, query, fragment))
+    return urllib.parse.urlunparse(
+        (scheme, netloc, path, params, query, fragment)
+    )
