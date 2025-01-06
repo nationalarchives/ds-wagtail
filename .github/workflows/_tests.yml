@@ -21,7 +21,7 @@ jobs:
           python-version: ${{ inputs.python-version }}
       - run: pip install flake8 isort black
       - name: Check compliance with isort
-        run: isort -c .
+        run: isort -c --profile black .
       - name: Check compliance with Black
         run: black -t py38 -t py39 -t py310 -t py311 -t py312 --line-length 80 --verbose etna config
       - name: Check compliance with flake8
