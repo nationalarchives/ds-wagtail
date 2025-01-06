@@ -1,5 +1,4 @@
 from django.conf import settings
-
 from wagtail import blocks
 from wagtail.rich_text import expand_db_html
 

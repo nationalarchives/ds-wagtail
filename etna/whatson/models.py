@@ -4,7 +4,6 @@ from django.db import models
 from django.utils import timezone
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
-
 from modelcluster.fields import ParentalKey
 from wagtail import blocks
 from wagtail.admin.panels import (
@@ -903,7 +902,12 @@ class ExhibitionPage(
     )
 
     event_links = StreamField(
-        [("event_links", blocks.ListBlock(FeaturedExternalLinkBlock(), max_num=2))],
+        [
+            (
+                "event_links",
+                blocks.ListBlock(FeaturedExternalLinkBlock(), max_num=2),
+            )
+        ],
         max_num=1,
         null=True,
         blank=True,

@@ -9,6 +9,8 @@ from ..models import Record
 register = template.Library()
 
 
+# TODO: Reduce cyclomatic complexity from 14 to 12 or below
+# flake8: noqa: C901
 @register.simple_tag
 def record_url(
     record: Record,

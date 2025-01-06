@@ -1,9 +1,11 @@
 .beta-banner {
-    background-color: $color__cream;
     padding: 1rem 0;
+
+    background-color: $color__cream;
 
     &__standfirst {
         margin-bottom: 1rem;
+
         font-size: 2rem;
     }
 
@@ -13,21 +15,25 @@
 
     &__options {
         display: flex;
-        justify-content: space-between;
         align-items: center;
+        justify-content: space-between;
     }
 
     &__button {
-        background: none;
-        border: none;
-        text-decoration: underline;
         padding-left: 0;
-        text-align: left;
+
         color: $color__link-blue;
+        text-align: left;
+        text-decoration: underline;
+
+        background: none;
+
+        border: none;
 
         &:hover {
-            cursor: pointer;
             text-decoration: none;
+
+            cursor: pointer;
         }
 
         &:focus {

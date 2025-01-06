@@ -2,10 +2,12 @@
 
 .jumplinks {
     max-height: 100vh;
+    padding: 2rem 0 0;
+
+    overflow: auto visible;
+
     position: sticky;
     top: 0;
-    padding: 2rem 0 0;
-    overflow: auto visible;
     -ms-overflow-style: none; /* Hide jumplinks scrollbar on Internet Explorer 10+ and Edge */
     scrollbar-width: none; /* Hide jumplinks scrollbar on Firefox */
 
@@ -15,14 +17,16 @@
 
     &__heading {
         @include font-size(xl);
+        margin: 0;
+
         font-family: $font__body;
         font-weight: 700;
-        margin: 0;
     }
 
     &__list {
         padding-right: 0.5rem;
         padding-left: 0.5rem;
+
         list-style: none;
     }
 
@@ -61,7 +65,8 @@
     }
 
     @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
-        overflow-y: hidden;
         height: 100%;
+
+        overflow-y: hidden;
     }
 }

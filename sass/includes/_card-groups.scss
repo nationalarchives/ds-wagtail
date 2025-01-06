@@ -1,8 +1,10 @@
+/* stylelint-disable -- This will become redundant when the new frontend is added */
 .card-group {
+    width: 100%;
     padding-left: 0;
+
     display: flex;
     flex-wrap: wrap;
-    width: 100%;
 
     &--list-style-none {
         @extend .card-group;
@@ -16,8 +18,9 @@
     }
 
     &-secondary-nav {
-        display: inline-block;
         width: 100%;
+
+        display: inline-block;
 
         &__image-link {
             @extend .tna-card__link;
@@ -25,13 +28,14 @@
         }
 
         &__title-label {
-            color: $color__grey-700;
-            font-family: $font__roboto-mono;
+            margin-top: 1.05rem;
             // TODO: update global font sizes to match new style guide
             margin-bottom: 0;
-            margin-top: 1.05rem;
-            text-transform: uppercase;
+
+            color: $color__grey-700;
+            font-family: $font__roboto-mono;
             font-size: 0.875rem;
+            text-transform: uppercase;
 
             @media only screen and (min-width: #{$screen__md + 1px}) {
                 font-size: 0.9rem;
@@ -39,11 +43,12 @@
         }
 
         &__title-link {
-            font-family: $font__body;
-            font-weight: $font-weight-bold;
-            font-size: 1.125rem;
             display: inline;
+
             color: $color__black;
+            font-family: $font__body;
+            font-size: 1.125rem;
+            font-weight: $font-weight-bold;
             text-decoration-thickness: 1px;
 
             @media only screen and (min-width: #{$screen__md + 1px}) {
@@ -65,18 +70,22 @@
         }
 
         &__heading {
-            display: block;
             margin-top: 0.3rem;
             margin-bottom: 0.5rem;
 
+            display: block;
+
             span {
-                background: green;
-                display: inline-block;
-                font-size: 0.8rem;
-                color: white;
-                padding: 2px 3px 0;
                 margin-left: 1px;
+                padding: 2px 3px 0;
+
+                display: inline-block;
+
+                color: white;
+                font-size: 0.8rem;
                 vertical-align: middle;
+
+                background: green;
             }
         }
 
@@ -105,15 +114,17 @@
     }
 
     &-record-summary {
-        list-style: none;
-        display: inline-block;
         width: 100%;
         margin-bottom: 2rem;
 
+        display: inline-block;
+
+        list-style: none;
+
         &__image {
+            margin-top: 0.7rem;
             // @extend .tna-card__image;
             border: 0.0625rem solid $color__black;
-            margin-top: 0.7rem;
 
             &-fallback {
                 width: 100%;
@@ -126,10 +137,12 @@
 
         &__link {
             @extend .tna-card__link;
+            margin-left: 0.5rem;
+
             display: inline-block;
+
             color: $color__navy;
             text-decoration: underline;
-            margin-left: 0.5rem;
 
             &:active {
                 color: $color__navy;
@@ -146,23 +159,27 @@
         }
 
         &__heading {
+            display: inline;
+
             font-size: 1.3rem;
             font-weight: 700;
-            display: inline;
         }
     }
 
     &-promo {
-        list-style: none;
-        padding: 1rem;
-        margin-bottom: 1rem;
         width: 100%;
+        margin-bottom: 1rem;
+        padding: 1rem;
+
+        list-style: none;
 
         &--green {
             @extend .card-group-promo;
-            background-color: $color__pastel-green;
-            color: $color__black;
             padding: 1rem 2rem;
+
+            color: $color__black;
+
+            background-color: $color__pastel-green;
 
             a,
             hr {
@@ -172,9 +189,11 @@
 
         &--dark {
             @extend .card-group-promo;
-            background-color: $color__grey-700;
-            color: $color__white;
             padding: 1rem 2rem;
+
+            color: $color__white;
+
+            background-color: $color__grey-700;
 
             a,
             hr {
@@ -187,12 +206,13 @@
                 width: 100%;
                 margin-top: 1rem;
                 margin-bottom: 1rem;
+
                 display: block;
             }
 
             &-heading {
-                font-weight: 800;
                 font-size: 1.5rem;
+                font-weight: 800;
             }
 
             &-paragraph {
@@ -200,8 +220,8 @@
             }
 
             &-list {
-                padding-left: 1rem;
                 margin-bottom: 1rem;
+                padding-left: 1rem;
 
                 &-item {
                     list-style-type: "- ";

@@ -1,7 +1,6 @@
 from django.conf import settings
 from django.forms.utils import ErrorList
 from django.utils.safestring import mark_safe
-
 from wagtail import blocks
 from wagtail.blocks import StructValue
 from wagtail.blocks.struct_block import StructBlockValidationError

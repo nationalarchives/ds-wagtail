@@ -2,18 +2,21 @@
     margin-bottom: 2rem;
 
     &__heading {
-        color: $color__grey-700;
-        background-color: $color__yellow;
         margin-bottom: 0;
         padding: 1rem 0 1rem 1rem;
-        font-weight: 400;
-        font-size: 2rem;
+
+        color: $color__grey-700;
         font-family: $font__supria-sans;
+        font-size: 2rem;
+        font-weight: 400;
+
+        background-color: $color__yellow;
     }
 
     &__content {
-        border: 3px solid $color__grey-400;
         padding: 1rem;
+
+        border: 3px solid $color__grey-400;
         border-top: none;
     }
 
@@ -24,33 +27,38 @@
     }
 
     &__list {
-        list-style: none;
         padding-left: 0;
+
+        list-style: none;
     }
 
     &__list-item {
-        background-color: $color__grey-700;
         margin-bottom: 1rem;
         padding: 1rem;
+
+        background-color: $color__grey-700;
         border-left: 1.25rem solid $color__yellow;
     }
 
     &__list-item-description {
-        color: $color__white;
-        margin-bottom: 0;
         margin-top: 0.5rem;
+        margin-bottom: 0;
+
+        color: $color__white;
     }
 
     &__link {
-        text-decoration: underline;
-        transition: none;
-        color: $color__white !important;
-        display: inline-block;
         width: 100%;
 
+        display: inline-block;
+
+        color: $color__white !important;
+        text-decoration: underline;
+        transition: none;
+
         &:hover {
-            text-decoration: none;
             color: $color__white;
+            text-decoration: none;
         }
 
         &:focus {
@@ -62,7 +70,8 @@
     &__link-heading {
         margin-top: 0;
         margin-bottom: 0;
-        font-size: 1.625rem;
+
         font-family: $font__supria-sans;
+        font-size: 1.625rem;
     }
 }

@@ -9,8 +9,9 @@
     }
 
     &__figcaption {
-        background-color: $color__grey-300;
         padding: 1rem;
+
+        background-color: $color__grey-300;
         border-bottom: 0.1875rem solid $color__grey-400;
 
         p {
@@ -41,9 +42,11 @@
                 // Added container as an @include due to @extend selectors may not be used across media queries
                 @include make-container;
                 @include make-container-max-widths;
-                position: relative;
                 margin: 0 auto;
+
                 display: block;
+
+                position: relative;
             }
 
             &__figure {

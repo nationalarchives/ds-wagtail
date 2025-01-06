@@ -1,6 +1,5 @@
 import datetime
 import logging
-
 from typing import Union
 
 from django import template

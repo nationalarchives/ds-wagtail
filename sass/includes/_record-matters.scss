@@ -1,11 +1,14 @@
+/* stylelint-disable -- This will become redundant when the new frontend is added */
 .record-matters {
     padding-bottom: 1rem;
-    background-color: $color__white;
+
     color: $color__black;
 
+    background-color: $color__white;
+
     @media (max-width: $screen__md) {
-        margin: 0 auto;
         width: 80%;
+        margin: 0 auto;
     }
 
     .hidden {
@@ -13,13 +16,17 @@
     }
 
     &__plain-button {
-        background: none;
-        border: none;
         padding: 0.25rem;
-        font: inherit;
-        cursor: pointer;
-        outline: inherit;
+
         font-weight: $font-weight-bold;
+
+        background: none;
+
+        border: none;
+        outline: inherit;
+
+        cursor: pointer;
+        font: inherit;
 
         &:visited {
             outline: 0.1875rem solid $color__yellow;
@@ -39,13 +46,15 @@
         width: 1.5rem;
         height: 1.5rem;
         margin-left: 0.5rem;
+
         display: inline-block;
     }
 
     &__content {
+        padding-bottom: 2rem;
+
         display: flex;
         flex-direction: column;
-        padding-bottom: 2rem;
     }
 
     &__text {
@@ -62,10 +71,12 @@
 
     &__buttons {
         margin-top: 1rem;
-        text-align: center;
+
         display: flex;
         // grid-template-columns: 1fr 1fr 1fr;
         grid-gap: 1.5rem;
+
+        text-align: center;
 
         @media (max-width: $screen__md) {
             // grid-template-columns: 1fr;

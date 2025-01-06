@@ -2,7 +2,6 @@ from django.contrib.contenttypes.models import ContentType
 from django.http import HttpRequest
 from django.test import TestCase, override_settings
 from django.urls import resolve, reverse
-
 from wagtail.models import Page
 
 from etna.feedback.models import FeedbackPrompt
@@ -55,7 +54,8 @@ class TestRenderFeedbackPromptTag(TestCase):
         )
         self.assertInHTML('<input type="hidden" name="page" id="id_page">', result)
         self.assertInHTML(
-            '<input type="hidden" name="page_revision" id="id_page_revision">', result
+            '<input type="hidden" name="page_revision" id="id_page_revision">',
+            result,
         )
         self.assertInHTML(
             f'<h3 class="tna-heading-m feedback__success-heading">{self.default_prompt.thank_you_heading}</h3>',

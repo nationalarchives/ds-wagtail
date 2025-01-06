@@ -1,15 +1,12 @@
 import json as json_module
 import unittest
-
 from typing import Any, Dict
 
+import responses
 from django.conf import settings
 from django.test import SimpleTestCase, TestCase, override_settings
 from django.urls import reverse, reverse_lazy
-
 from wagtail.test.utils import WagtailTestUtils
-
-import responses
 
 from etna.articles.factories import ArticlePageFactory
 from etna.articles.models import ArticleIndexPage, ArticlePage
@@ -503,7 +500,8 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
             # SHOULD see
             self.assertNoResultsMessagingRendered(content)
             self.assertIn(
-                "<li>Try removing any filters that you may have applied</li>", content
+                "<li>Try removing any filters that you may have applied</li>",
+                content,
             )
             self.assertSearchWithinOptionRendered(content)
             self.assertIn(from_date_field, response.context["form"].errors)
@@ -652,7 +650,8 @@ class WebsiteSearchEndToEndTest(EndToEndSearchTestCase):
 
 class CatalogueSearchLongFilterChooserAPIIntegrationTest(SearchViewTestCase):
     test_url = reverse_lazy(
-        "search-catalogue-long-filter-chooser", kwargs={"field_name": "collection"}
+        "search-catalogue-long-filter-chooser",
+        kwargs={"field_name": "collection"},
     )
 
     @responses.activate
@@ -710,7 +709,8 @@ class FeaturedSearchTestCase(SearchViewTestCase):
         # When no query is present, website_results should contain the few
         # most recent pages
         self.assertEqual(
-            response.context["website_results"], [self.article_2, self.article_1]
+            response.context["website_results"],
+            [self.article_2, self.article_1],
         )
         self.assertEqual(response.context["website_result_count"], 2)
 
@@ -901,7 +901,8 @@ class WebsiteSearchArticleTest(WagtailTestUtils, TestCase):
     def test_page_instance_added_for_source_url(self):
         response = self.client.get(self.test_url, data={"group": "insight"})
         self.assertIsInstance(
-            response.context_data["page"].object_list[0].source_page, ArticlePage
+            response.context_data["page"].object_list[0].source_page,
+            ArticlePage,
         )
 
 
@@ -1201,7 +1202,11 @@ class TestDataLayerSearchViews(WagtailTestUtils, TestCase):
     def test_datalayer_catalogue_filtered_search_tna(self):
         self.assertDataLayerEquals(
             path=reverse("search-catalogue"),
-            query_data={"collection": "ZOS", "level": "Sub-sub-series", "group": "tna"},
+            query_data={
+                "collection": "ZOS",
+                "level": "Sub-sub-series",
+                "group": "tna",
+            },
             api_resonse_path=f"{settings.BASE_DIR}/etna/search/tests/fixtures/catalogue_filtered_search_tna.json",
             expected={
                 "contentGroup1": "Search",
@@ -1413,7 +1418,8 @@ class RecordCreatorsTestCase(WagtailTestUtils, TestCase):
     @responses.activate
     def test_record_creators_country_long_filter(self):
         test_url = reverse_lazy(
-            "search-catalogue-long-filter-chooser", kwargs={"field_name": "country"}
+            "search-catalogue-long-filter-chooser",
+            kwargs={"field_name": "country"},
         )
 
         responses.add(
@@ -1478,7 +1484,8 @@ class ArchiveTestCase(WagtailTestUtils, TestCase):
     @responses.activate
     def test_record_creators_country_long_filter(self):
         test_url = reverse_lazy(
-            "search-catalogue-long-filter-chooser", kwargs={"field_name": "location"}
+            "search-catalogue-long-filter-chooser",
+            kwargs={"field_name": "location"},
         )
 
         responses.add(

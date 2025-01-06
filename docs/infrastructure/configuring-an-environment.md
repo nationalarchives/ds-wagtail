@@ -30,33 +30,7 @@ The primary domain that will be used to access the Wagtail CMS for this environm
 
 e.g. **eta.nationalarchives.gov.uk**.
 
-## 2. Media storage
-
-### `AWS_STORAGE_BUCKET_NAME`
-
-The name of the bucket to store uploaded media in.
-
-e.g. **etna-production**.
-
-### `AWS_ACCESS_KEY_ID`
-
-Access credential for the `AWS_STORAGE_BUCKET_NAME` bucket.
-
-e.g. **AKIXRCHO54ALNGIYM9FK**.
-
-### `AWS_SECRET_ACCESS_KEY`
-
-Access credential for the `AWS_STORAGE_BUCKET_NAME` bucket.
-
-e.g. **LbxF12Yf0a8eDFVWxEvVcKRiFimLr5f/TxYImevS**.
-
-### `AWS_S3_CUSTOM_DOMAIN`
-
-Generally only set in production to put the S3 bucket behind a CDN using a custom domain.
-
-e.g. **eta-media.nationalarchives.gov.uk**.
-
-## 3. Redis (for internal caching)
+## 2. Redis (for internal caching)
 
 ### `REDIS_TLS_URL`
 
@@ -70,7 +44,7 @@ Connection string for a Redis instance without TLS enabled.
 
 e.g. **redis://USER:PASSWORD@HOST:PORT/DB_NAME**
 
-## 4. Email (SMTP)
+## 3. Email (SMTP)
 
 ### `SERVER_EMAIL`
 
@@ -116,7 +90,7 @@ Whether to use an implicit TLS (secure) connection when talking to the SMTP serv
 
 NOTE: `EMAIL_USE_TLS` and `EMAIL_USE_SSL` are mutually exclusive, so only set one of those settings to `True`.
 
-## 5. Sentry (Error logging and performance monitoring)
+## 4. Sentry (Error logging and performance monitoring)
 
 Below are the key env vars used to configure Sentry for each environment. See [Sentry's official guide](https://docs.sentry.io/platforms/python/guides/django/) for further information on configuring Sentry for Django projects.
 

@@ -1,6 +1,5 @@
 import json
 import logging
-
 from urllib.parse import unquote
 
 from django.conf import settings

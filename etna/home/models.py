@@ -1,6 +1,5 @@
 from django.conf import settings
 from django.db import models
-
 from modelcluster.fields import ParentalKey
 from wagtail.admin.panels import FieldPanel, InlinePanel
 from wagtail.api import APIField

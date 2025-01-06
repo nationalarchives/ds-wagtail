@@ -103,7 +103,8 @@ class TestExtract(SimpleTestCase):
         ):
             with self.subTest(key):
                 self.assertIs(
-                    extract(self.test_data, key, default=default_value), default_value
+                    extract(self.test_data, key, default=default_value),
+                    default_value,
                 )
 
 

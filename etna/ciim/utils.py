@@ -1,11 +1,8 @@
 import re
-
 from typing import Any, Dict, Optional
 
-from django.urls import NoReverseMatch, reverse
-
 import nh3
-
+from django.urls import NoReverseMatch, reverse
 from pyquery import PyQuery as pq
 
 

@@ -13,7 +13,6 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 import os
 
 import sentry_sdk
-
 from sentry_sdk.integrations.django import DjangoIntegration
 
 from ..versioning import get_git_sha

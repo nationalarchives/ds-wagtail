@@ -14,7 +14,8 @@ WAGTAILADMIN_BASE_URL = os.getenv("WAGTAILADMIN_BASE_URL", "http://localhost:800
 WAGTAIL_HEADLESS_PREVIEW = {
     "CLIENT_URLS": {
         "default": os.getenv(
-            "WAGTAILADMIN_HEADLESS_PREVIEW_URL", "http://localhost:65535/preview"
+            "WAGTAILADMIN_HEADLESS_PREVIEW_URL",
+            "http://localhost:65535/preview",
         ),
     },
     "SERVE_BASE_URL": os.getenv(

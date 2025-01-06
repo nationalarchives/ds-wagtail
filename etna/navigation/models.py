@@ -6,7 +6,6 @@ from django.http import HttpRequest
 from django.urls import NoReverseMatch, reverse
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
-
 from wagtail.admin.panels import FieldPanel
 from wagtail.models import Orderable, Page
 from wagtail.query import PageQuerySet

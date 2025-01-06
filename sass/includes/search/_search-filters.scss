@@ -1,13 +1,17 @@
+/* stylelint-disable -- This will become redundant when the new frontend is added */
 .search-filters {
-    background-color: $color__grey-200;
-    border: 1px solid $color__grey-500;
     padding: 1rem;
 
+    background-color: $color__grey-200;
+
+    border: 1px solid $color__grey-500;
+
     &__header {
-        display: flex;
-        gap: 1rem;
-        align-items: center;
         margin-bottom: 1rem;
+
+        display: flex;
+        align-items: center;
+        gap: 1rem;
         border-top: 1px solid #8c9694;
 
         h2 {
@@ -16,13 +20,15 @@
     }
 
     &__heading {
-        font-size: 1.3em;
         display: none;
+
+        font-size: 1.3em;
     }
 
     &__widget-list {
-        list-style: none;
         padding-left: 0.5rem;
+
+        list-style: none;
 
         &:focus {
             outline: 5px solid $color__focus-outline-light-bg;
@@ -37,10 +43,12 @@
         }
 
         label {
-            cursor: pointer;
-            display: inline-block;
-            margin-bottom: 0.5rem;
             max-width: 100%;
+            margin-bottom: 0.5rem;
+
+            display: inline-block;
+
+            cursor: pointer;
         }
     }
 
@@ -50,15 +58,17 @@
 
     &__submit {
         @extend .search-button;
-        display: block;
         margin-top: 1em;
         margin-left: auto;
+
+        display: block;
     }
 
     &__submitleft {
         @extend .search-button;
-        display: block;
         margin-top: 1em;
+
+        display: block;
         // margin-left: auto;
     }
 
@@ -70,27 +80,32 @@
 
     &__label {
         max-width: 80%;
+
         vertical-align: top;
 
         &--block {
-            display: block;
             max-width: 100%;
+
+            display: block;
         }
     }
 
     &__search {
-        margin-bottom: 0.5rem;
-        border: 1px solid $color__grey-500;
-        border-radius: 0.5rem;
         width: 100%;
         height: 3rem;
+        margin-bottom: 0.5rem;
         padding: 1rem;
+
+        border: 1px solid $color__grey-500;
+        border-radius: 0.5rem;
     }
 
     &__accordion-section {
-        background-color: $color__grey-100;
-        padding: 0.5rem;
         margin-bottom: 1rem;
+        padding: 0.5rem;
+
+        background-color: $color__grey-100;
+
         border: 1px solid $color__grey-400;
 
         &-heading {
@@ -109,8 +124,8 @@
     }
 
     &__checkbox {
-        margin-bottom: 1rem;
         margin-right: 0.5rem;
+        margin-bottom: 1rem;
 
         &:focus {
             outline: 5px solid $color__focus-outline-light-bg;
@@ -130,34 +145,41 @@
     }
 
     .errorlist {
-        list-style-type: none;
-        font-weight: 700;
-        padding: 1rem 2rem;
-        background-color: #a72916;
-        color: #fff;
         margin-bottom: 2rem;
+        padding: 1rem 2rem;
+
+        color: #fff;
+        font-weight: 700;
+
+        background-color: #a72916;
+        list-style-type: none;
     }
 
     button {
-        border: 0;
-        background: #f4f4f4;
-        border-bottom: 1px solid grey;
+        width: 100%;
         margin-bottom: 10px;
         padding-bottom: 10px;
-        width: 100%;
-        text-align: left;
-        font-weight: 400;
+
         font-size: 1.12rem;
+        font-weight: 400;
+        text-align: left;
+
+        background: #f4f4f4;
+
+        border: 0;
+
         cursor: pointer;
+        border-bottom: 1px solid grey;
     }
 }
 
 /* date filters via GDS pattern */
 
 .tna-date-input__item {
-    display: inline-block;
     margin-right: 20px;
     margin-bottom: 0;
+
+    display: inline-block;
 }
 
 .tna-form-group .tna-form-group:last-of-type {
@@ -195,8 +217,9 @@
 // GDS chevrons
 
 .govuk-accordion__show-all-text {
-    margin-left: 0.5rem;
     margin-bottom: 0.5rem;
+    margin-left: 0.5rem;
+
     display: inline-block;
 }
 
@@ -210,25 +233,33 @@
 }
 
 .govuk-accordion-nav__chevron {
-    box-sizing: border-box;
-    display: inline-block;
-    position: relative;
     width: 1.25rem;
     height: 1.25rem;
+
+    display: inline-block;
+    box-sizing: border-box;
+
+    position: relative;
+
+    vertical-align: middle;
+
     border: 0.0625rem solid;
     border-radius: 50%;
-    vertical-align: middle;
 }
 
 .govuk-accordion-nav__chevron::after {
     content: "";
-    box-sizing: border-box;
+
+    width: 0.375rem;
+    height: 0.375rem;
+
     display: block;
+    box-sizing: border-box;
+
     position: absolute;
     bottom: 0.3125rem;
     left: 0.375rem;
-    width: 0.375rem;
-    height: 0.375rem;
+
     -webkit-transform: rotate(-45deg);
     transform: rotate(-45deg);
     border-top: 0.125rem solid;

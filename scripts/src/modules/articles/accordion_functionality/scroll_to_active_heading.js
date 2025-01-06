@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 export default function scroll_to_active_heading(heading) {
     $("html, body").animate(
         {

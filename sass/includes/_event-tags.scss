@@ -3,25 +3,30 @@
 
 .event-tags {
     $root: &;
-    display: inline-flex;
+    margin-bottom: 1rem;
+    padding: 0;
+
     align-self: flex-start;
+
+    display: inline-flex;
+
+    border: 2px solid colour.brand-colour("pastel-pink");
     list-style-type: none;
     flex-basis: 50%;
-    border: 2px solid colour.brand-colour("pastel-pink");
-    padding: 0;
     order: 2;
-    margin-bottom: 1rem;
 
     &__tag {
-        @include typography.relative-font-size(14);
+        @include typography.font-size(14);
         @include typography.detail-font;
-        text-transform: uppercase;
         padding: 0 0.4rem;
+
         display: flex;
         align-items: center;
 
+        text-transform: uppercase;
+
         &--event-type {
-            @include colour.plain;
+            // @include colour.plain;
             background-color: colour.brand-colour("pastel-pink");
         }
 
@@ -37,6 +42,7 @@
 
         #{$root}__tag {
             color: colour.brand-colour("white");
+
             background-color: colour.brand-colour("black");
         }
     }

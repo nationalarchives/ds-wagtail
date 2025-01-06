@@ -1,7 +1,6 @@
 import copy
 import logging
 import re
-
 from typing import Any, Dict, Iterator, List, Optional, Tuple, Union
 from urllib.parse import urlparse
 
@@ -14,7 +13,6 @@ from django.utils import timezone
 from django.utils.text import capfirst
 from django.views.generic import FormView, TemplateView
 from django.views.generic.list import MultipleObjectMixin
-
 from wagtail.coreutils import camelcase_to_underscore
 from wagtail.models import Page
 from wagtail.query import PageQuerySet
@@ -129,7 +127,9 @@ class BucketsMixin:
                 break
 
         return super().get_context_data(
-            buckets=buckets, buckets_contain_results=buckets_contain_results, **kwargs
+            buckets=buckets,
+            buckets_contain_results=buckets_contain_results,
+            **kwargs,
         )
 
 
@@ -525,7 +525,8 @@ class BaseFilteredSearchView(BaseSearchView):
             if field_name in self.dynamic_choice_fields:
                 choice_data = value.get("buckets", ())
                 form.fields[field_name].update_choices(
-                    choice_data, selected_values=form.cleaned_data.get(field_name, ())
+                    choice_data,
+                    selected_values=form.cleaned_data.get(field_name, ()),
                 )
                 form[field_name].more_filter_options_available = bool(
                     value.get("sum_other_doc_count", 0)

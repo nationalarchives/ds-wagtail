@@ -1,6 +1,5 @@
 from django.conf import settings
 from django.utils.html import format_html
-
 from wagtail import blocks
 from wagtail.snippets.blocks import SnippetChooserBlock
 

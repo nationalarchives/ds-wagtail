@@ -1,7 +1,6 @@
 from typing import Dict, List
 
 from django.test import TestCase, override_settings
-
 from wagtail.models import Page, Site
 
 from etna.feedback.forms import FeedbackForm
@@ -41,7 +40,10 @@ class TestSubmissionFormValidation(TestCase):
         )
 
     def assertFieldErrorsEqual(
-        self, form: FeedbackForm, field_name: str, expected_errors: List[Dict[str, str]]
+        self,
+        form: FeedbackForm,
+        field_name: str,
+        expected_errors: List[Dict[str, str]],
     ):
         form_errors = form.errors.get_json_data()
         self.assertIn(field_name, form_errors)

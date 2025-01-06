@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 export default function set_active(sections) {
     sections.each(function () {
         if (!$("html, body").is(":animated")) {

@@ -2,15 +2,13 @@ from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-
 from modelcluster.fields import ParentalKey
+from rest_framework import serializers
 from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
 from wagtail.api import APIField
 from wagtail.fields import RichTextField, StreamField
 from wagtail.images import get_image_model_string
 from wagtail.models import Orderable
-
-from rest_framework import serializers
 
 from etna.core.models import BasePageWithIntro, HeroImageMixin, SidebarMixin
 from etna.core.serializers import (

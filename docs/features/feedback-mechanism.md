@@ -50,7 +50,7 @@ For a thorough understanding of the validation that is applied to submissions, y
 
 After submitting their initial feedback response, most users (those with Javascript enabled) will be presented with a second form to allow them to post a comment.
 
-The comment form that appears in prompts is hidden from all users initially, then modified and shown depending on the `JsonResponse` received from  `FeedbackSubmitView`. The response data is used in the following ways:
+The comment form that appears in prompts is hidden from all users initially, then modified and shown depending on the `JsonResponse` received from `FeedbackSubmitView`. The response data is used in the following ways:
 
     `comment_prompt_text`:
         Used to populate the `label` text for the `comment` field. If the value is blank or missing, it is assumed that comments are not desired for the selected response option, and only the success message is displayed.

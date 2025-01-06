@@ -1,8 +1,11 @@
 .maintenance {
-    background-color: $color__yellow;
-    padding: 2rem;
     margin: 3rem 20rem;
+    padding: 2rem;
+
     text-align: center;
+
+    background-color: $color__yellow;
+
     border-radius: 1rem;
 
     @media only screen and (max-width: $screen__xl) {
@@ -17,7 +20,7 @@
         margin: 3rem 5rem;
     }
 
-    @media only screen and (max-width: 37.5rem) {
+    @media only screen and (width <= 37.5rem) {
         margin: 3rem 2rem;
     }
 
@@ -59,7 +62,7 @@
             height: 15rem;
         }
 
-        @media only screen and (max-width: 21.875rem) {
+        @media only screen and (width <= 21.875rem) {
             width: 13rem;
             height: 13rem;
         }

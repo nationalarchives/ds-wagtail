@@ -1,14 +1,17 @@
+/* stylelint-disable -- This will become redundant when the new frontend is added */
 .highlight-cards {
     $root: &;
-    background-color: $color__cream;
-    font-family: $font__supria-sans;
-    padding: 2em;
     margin-top: 3rem;
     margin-bottom: 3rem;
+    padding: 2em;
+
+    font-family: $font__supria-sans;
+
+    background-color: $color__cream;
 
     &__link {
-        text-decoration: none !important;
         color: $color__grey-700;
+        text-decoration: none !important;
 
         &:visited {
             color: inherit;
@@ -23,12 +26,13 @@
     }
 
     &__card_title {
-        font-family: $font__body;
-        font-weight: $font-weight-bold;
-        font-size: 1rem;
-        line-height: 1.3;
         margin-top: 12px 0;
         padding: 0;
+
+        font-family: $font__body;
+        font-size: 1rem;
+        font-weight: $font-weight-bold;
+        line-height: 1.3;
     }
 
     &__card-title-link {
@@ -41,13 +45,14 @@
     }
 
     &__description {
-        font-family: $font__body;
+        margin-bottom: 0;
+
         color: $color__grey-700;
+        font-family: $font__body;
         font-size: 1rem;
         font-weight: 400;
         line-height: 1.5;
         letter-spacing: 0;
-        margin-bottom: 0;
     }
 
     &__card {
@@ -57,6 +62,7 @@
 
             #{$root}__card_title {
                 margin-top: 1.5rem;
+
                 font-size: 1.125rem;
 
                 @media screen and (min-width: map-get($grid-breakpoints, "md")) {

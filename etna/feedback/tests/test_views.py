@@ -4,7 +4,6 @@ from django.contrib.auth.models import Permission
 from django.test import TestCase, override_settings
 from django.urls import reverse
 from django.utils.http import urlencode
-
 from wagtail.models import Page, Site
 from wagtail.test.utils import WagtailTestUtils
 
@@ -109,7 +108,8 @@ class TestFeedbackSubmitView(WagtailTestUtils, TestCase):
                 self.assertEqual(submission.path, "/some-url")
                 self.assertEqual(submission.prompt, self.prompt)
                 self.assertEqual(
-                    submission.response_sentiment, response_option.value["sentiment"]
+                    submission.response_sentiment,
+                    response_option.value["sentiment"],
                 )
                 self.assertEqual(
                     submission.response_label, response_option.value["label"]
@@ -156,7 +156,8 @@ class TestFeedbackSubmitView(WagtailTestUtils, TestCase):
                 self.assertEqual(submission.path, "/some-url")
                 self.assertEqual(submission.prompt, self.prompt)
                 self.assertEqual(
-                    submission.response_sentiment, response_option.value["sentiment"]
+                    submission.response_sentiment,
+                    response_option.value["sentiment"],
                 )
                 self.assertEqual(
                     submission.response_label, response_option.value["label"]
@@ -369,7 +370,8 @@ class TestFeedbackSuccessView(TestCase):
 
     def test_golden_path(self):
         response = self.client.get(
-            self.url, {"submission": self.submission.public_id, "next": self.next_url}
+            self.url,
+            {"submission": self.submission.public_id, "next": self.next_url},
         )
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context["prompt"], self.prompt)
@@ -411,7 +413,8 @@ class TestFeedbackSuccessView(TestCase):
         invalid_submission_id = "not-a-uuid"
 
         response = self.client.get(
-            self.url, {"submission": invalid_submission_id, "next": self.next_url}
+            self.url,
+            {"submission": invalid_submission_id, "next": self.next_url},
         )
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context["prompt"], self.prompt)

@@ -1,5 +1,4 @@
 from django.conf import settings
-
 from wagtail import blocks
 
 from etna.core.blocks.paragraph import APIRichTextBlock

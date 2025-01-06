@@ -1,7 +1,9 @@
+/* stylelint-disable -- This will become redundant when the new frontend is added */
 .featured-link {
+    margin: 3rem 0;
+
     border: 1px solid $color__grey-300;
     border-top: 0.25rem solid $color__yellow;
-    margin: 3rem 0;
 
     &__container {
         @media screen and (min-width: #{$screen__lg + 1px}) {
@@ -59,11 +61,12 @@
     }
 
     &__img {
-        position: relative;
         width: 100%;
         height: 100%;
-        object-fit: cover;
         max-height: 330px; // prevent image getting huge on smaller viewports
+
+        position: relative;
+        object-fit: cover;
 
         @media screen and (min-width: map-get($grid-breakpoints, "lg")) {
             max-height: 390px;
@@ -71,26 +74,33 @@
     }
 
     &__content {
-        color: $color__grey-700;
         padding: 1.5rem;
+
+        color: $color__grey-700;
     }
 
     &__metadata-item {
-        color: $color__grey-700;
         margin-bottom: 0.75rem;
 
+        color: $color__grey-700;
+
         @media screen and (min-width: #{$screen__lg + 1px}) {
-            display: inline-flex;
             margin: 0;
+
+            display: inline-flex;
 
             &:not(:last-child) {
                 &::after {
                     content: "–";
-                    color: $color__grey-700;
-                    display: inline-block;
-                    vertical-align: middle;
+
                     margin-left: 0.25rem;
+
+                    display: inline-block;
+
                     position: relative;
+
+                    color: $color__grey-700;
+                    vertical-align: middle;
                 }
             }
         }
