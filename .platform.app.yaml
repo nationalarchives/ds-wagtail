@@ -7,7 +7,7 @@ name: app
 # in multiple versions. Check the Python documentation
 # (https://docs.platform.sh/languages/python.html#supported-versions)
 # to find the supported versions for the 'python' type.
-type: "python:3.12"
+type: "python:3.13"
 
 dependencies:
   python3:
