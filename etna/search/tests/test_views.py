@@ -10,12 +10,7 @@ from wagtail.test.utils import WagtailTestUtils
 
 from etna.articles.factories import ArticlePageFactory
 from etna.articles.models import ArticleIndexPage, ArticlePage
-from etna.ciim.constants import (
-    DEFAULT_AGGREGATIONS,
-    Aggregation,
-    Bucket,
-    BucketList,
-)
+from etna.ciim.constants import DEFAULT_AGGREGATIONS, Aggregation, Bucket, BucketList
 from etna.ciim.tests.factories import create_response, create_search_response
 from etna.core.test_utils import prevent_request_warnings
 from etna.home.models import HomePage

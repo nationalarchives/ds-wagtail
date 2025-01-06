@@ -11,11 +11,7 @@ from django.utils import timezone
 from wagtail.models import Group
 from wagtail.test.utils import WagtailTestUtils
 
-from etna.ciim.tests.factories import (
-    create_media,
-    create_record,
-    create_response,
-)
+from etna.ciim.tests.factories import create_media, create_record, create_response
 from etna.core.test_utils import prevent_request_warnings
 from etna.records.views.records import SEARCH_URL_RETAIN_DELTA
 

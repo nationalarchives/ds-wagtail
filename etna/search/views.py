@@ -8,12 +8,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.paginator import Page as PaginatorPage
 from django.db.models import Count, Q
 from django.forms import Form
-from django.http import (
-    Http404,
-    HttpRequest,
-    HttpResponse,
-    HttpResponseBadRequest,
-)
+from django.http import Http404, HttpRequest, HttpResponse, HttpResponseBadRequest
 from django.utils import timezone
 from django.utils.text import capfirst
 from django.views.generic import FormView, TemplateView
@@ -21,9 +16,7 @@ from django.views.generic.list import MultipleObjectMixin
 from wagtail.coreutils import camelcase_to_underscore
 from wagtail.models import Page
 from wagtail.query import PageQuerySet
-from wagtail.search.backends.database.postgres.postgres import (
-    PostgresSearchResults,
-)
+from wagtail.search.backends.database.postgres.postgres import PostgresSearchResults
 
 from etna.analytics.mixins import SearchDataLayerMixin
 from etna.articles.models import ArticleIndexPage, ArticlePage

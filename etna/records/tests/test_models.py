@@ -8,11 +8,7 @@ from django.test import SimpleTestCase, TestCase, override_settings
 from django.urls import reverse
 from django.utils.safestring import SafeString
 
-from etna.ciim.tests.factories import (
-    create_media,
-    create_record,
-    create_response,
-)
+from etna.ciim.tests.factories import create_media, create_record, create_response
 from etna.ciim.utils import ValueExtractionError
 
 from ..api import get_records_client

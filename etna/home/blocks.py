@@ -1,10 +1,6 @@
 from wagtail import blocks
 
-from etna.core.blocks import (
-    APIPageChooserBlock,
-    ParagraphBlock,
-    ParagraphWithHeading,
-)
+from etna.core.blocks import APIPageChooserBlock, ParagraphBlock, ParagraphWithHeading
 from etna.core.blocks.image import APIImageChooserBlock
 
 

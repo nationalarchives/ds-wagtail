@@ -6,11 +6,7 @@ from django.conf import settings
 from django.urls import reverse
 from wagtail.models import Site
 from wagtail.test.utils import WagtailPageTestCase
-from wagtail.test.utils.form_data import (
-    nested_form_data,
-    rich_text,
-    streamfield,
-)
+from wagtail.test.utils.form_data import nested_form_data, rich_text, streamfield
 
 from etna.articles.models import ArticleIndexPage, ArticlePage
 from etna.ciim.tests.factories import create_record, create_response

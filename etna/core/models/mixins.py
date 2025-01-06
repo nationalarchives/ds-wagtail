@@ -16,11 +16,7 @@ from etna.core.serializers import (
     ImageSerializer,
     RichTextSerializer,
 )
-from etna.core.styling import (
-    BrandColourChoices,
-    HeroColourChoices,
-    HeroLayoutChoices,
-)
+from etna.core.styling import BrandColourChoices, HeroColourChoices, HeroLayoutChoices
 
 from .forms import RequiredHeroImagePageForm
 
