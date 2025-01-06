@@ -39,10 +39,11 @@ hooks:
     curl -sS https://platform.sh/cli/installer | php
 
     # Download the latest version of pip
-    python3.12 -m pip install --upgrade pip
+    python -m pip install --upgrade pip
 
     # Install dependencies
     poetry install
+    poetry show
 
     # Install NVM
     unset NPM_CONFIG_PREFIX
@@ -56,9 +57,9 @@ hooks:
     cp -R node_modules/@nationalarchives/frontend/nationalarchives/assets/* templates/static/assets
     npm run compile
 
-    poetry run python3.12 manage.py collectstatic --no-input
+    poetry run python manage.py collectstatic --no-input
   deploy: |
-    poetry run python3.12 manage.py migrate
+    poetry run python manage.py migrate
 
 web:
   upstream:
