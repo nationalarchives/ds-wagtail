@@ -334,6 +334,9 @@ def pull_database_from_platform(c, environment_name):
         f"platform db:dump -e {environment_name} -p {PLATFORM_PROJECT_ID} -f {timestamp}.psql -d {LOCAL_DB_DUMP_DIR}"
     )
     cli_exec(
+        f"sed -i -e 's/dev-beta.nationalarchives.gov.uk\\([[:space:]]\\)443/localhost\\165535/g' {LOCAL_DB_DUMP_DIR}/{timestamp}.psql"
+    )
+    cli_exec(
         f"sed -i -e 's/beta.nationalarchives.gov.uk\\([[:space:]]\\)443/localhost\\165535/g' {LOCAL_DB_DUMP_DIR}/{timestamp}.psql"
     )
     cli_exec(
