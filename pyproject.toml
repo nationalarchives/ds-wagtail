@@ -27,8 +27,9 @@ wagtail-metadata = "~5.0"
 wagtail-headless-preview = "0.8.0"
 whitenoise = "~6.8"
 
+# TODO: Make `optional = true` when moving to AWS (for Docker)
 [tool.poetry.group.dev]
-optional = true
+optional = false
 
 [tool.poetry.group.dev.dependencies]
 coverage = "~7.6"
