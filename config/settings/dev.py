@@ -7,7 +7,7 @@ from .util import strtobool
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = strtobool(os.getenv("DEBUG", "True"))  # noqa: F405
 DEBUG_TOOLBAR_ENABLED = strtobool(  # noqa: F405
-    os.getenv("DEBUG_TOOLBAR_ENABLED", "True")  # noqa: F405
+    os.getenv("DEBUG_TOOLBAR_ENABLED", "False")  # noqa: F405
 )
 
 WAGTAILADMIN_BASE_URL = os.getenv("WAGTAILADMIN_BASE_URL", "http://localhost:8000")
