@@ -1,5 +1,8 @@
 site_name: ETNA Wagtail Docs
 repo_url: https://github.com/nationalarchives/ds-wagtail
+theme:
+  name: material
+  font: false
 markdown_extensions:
   - admonition
   - sane_lists
