@@ -176,7 +176,8 @@ Modified to match the existing site (for now)
 // }
 
 .tna-breadcrumbs {
-    padding-bottom: 0;
+    padding-top: 16px;
+    padding-bottom: 16px;
 }
 
 .tna-button-group {
@@ -202,6 +203,7 @@ Modified to match the existing site (for now)
     margin-bottom: 2rem;
 
     &__figure {
+        overflow: hidden;
         &--smaller {
             min-height: 20vw;
         }
@@ -455,8 +457,18 @@ Modified to match the existing site (for now)
 // Event card overrides
 
 .tna-card {
+    &__inner {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    position: relative;
+    }
     &__heading--has-highlight {
         max-width: calc(100% - 5.125rem);
+    }
+
+    &__image-container {
+        display: block;
     }
 
     &__highlight {
