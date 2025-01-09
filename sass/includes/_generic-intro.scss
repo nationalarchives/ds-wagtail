@@ -1,7 +1,8 @@
+/* stylelint-disable -- This will become redundant when the new frontend is added */
 .generic-intro {
+    color: $color__black;
     // padding-top: 1rem;
     background-color: $color__white;
-    color: $color__black;
 
     a {
         color: $color__black;
@@ -10,8 +11,9 @@
     &__title {
         margin-top: 0;
         margin-bottom: 0;
-        font-size: 4rem;
+
         font-family: $font__supria-sans;
+        font-size: 4rem;
         // background: green;
 
         @media (max-width: $screen__md) {
@@ -19,29 +21,34 @@
         }
 
         &-prefix {
+            margin-top: 1rem;
+
             display: block;
+
+            font-size: 2rem;
+            line-height: 0.3rem;
             @media (max-width: $screen__md) {
                 font-size: 1.25rem;
                 line-height: 1.3rem;
             }
-            font-size: 2rem;
-            line-height: 0.3rem;
-            margin-top: 1rem;
         }
     }
 
     &__meta {
-        background-color: $color__grey-700;
-        color: $color__white;
         padding-bottom: 1.875rem;
+
+        color: $color__white;
+
+        background-color: $color__grey-700;
 
         &-list {
             margin-bottom: 0;
         }
 
         &-item {
-            color: $color__grey-200;
             display: inline-block;
+
+            color: $color__grey-200;
 
             &:not(:last-of-type) {
                 margin-right: 1.25rem;
@@ -50,8 +57,9 @@
     }
 
     &__paragraph {
-        font-size: 1.125rem; // one off font size (18px)
         margin-bottom: 0.5rem;
+
+        font-size: 1.125rem; // one off font size (18px)
 
         @media only screen and (min-width: #{$screen__lg + 1px}) {
             font-size: 1.313rem; // one off font size (21px)
@@ -59,10 +67,12 @@
 
         .template-focused-article & {
             margin-top: 2.875rem;
+
             font-size: $font-size-base;
 
             @media (min-width: #{$screen__md + 1px}) {
                 margin-top: 4.625rem;
+
                 font-size: 1.313rem;
             }
         }
@@ -73,9 +83,10 @@
         background-color: $color__grey-700;
 
         &__title {
+            margin-bottom: 1rem;
+
             color: $color__white;
             line-height: 122%;
-            margin-bottom: 1rem;
             @extend .col-md-9;
             @extend .row;
         }
@@ -87,9 +98,11 @@
 
     &--dark .generic-intro__paragraph {
         margin-top: 0;
-        background-color: $color__grey-700;
-        color: $color__white;
         margin-bottom: 0;
+
+        color: $color__white;
+
+        background-color: $color__grey-700;
         @extend .col-md-9;
         @extend .row;
 

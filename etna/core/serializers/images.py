@@ -142,7 +142,15 @@ class HighlightImageSerializer(DetailedImageSerializer):
             representation.update(
                 {
                     "description": value.description,
-                    "record": value.record.iaid if value.record else None,
+                    "record": (
+                        {
+                            "title": value.record.summary_title,
+                            "iaid": value.record.iaid,
+                            "reference_number": value.record.reference_number,
+                        }
+                        if value.record
+                        else None
+                    ),
                     "record_dates": value.record_dates,
                 }
             )

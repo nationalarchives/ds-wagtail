@@ -1,6 +1,8 @@
 .highlight-intro {
     margin-bottom: 2rem;
+
     position: relative;
+
     background: $color__grey-800;
 
     &__image {
@@ -12,6 +14,7 @@
 
     &__standout-container {
         padding: 0;
+
         position: relative;
 
         // mimics left & right padding of body-container to match page content
@@ -21,32 +24,39 @@
     }
 
     &__standout {
-        position: relative;
         height: auto;
-        background: $color__grey-dark;
-        left: 0;
-        color: $color__white;
         padding: 28px 0 36px;
+
+        position: relative;
+        left: 0;
+
+        color: $color__white;
+
+        background: $color__grey-dark;
 
         // tablet and up
         @media screen and (min-width: #{$screen__lg + 1px}) {
             width: 46rem;
+            padding-right: 1.5rem;
+            padding-left: 1.5rem;
+
             position: absolute;
             bottom: 3.25rem;
-            background: $color__white;
+
             color: $color__black;
-            padding-left: 1.5rem;
-            padding-right: 1.5rem;
+
+            background: $color__white;
         }
     }
 
     &__title {
+        margin: 0;
+        padding-bottom: 0.75rem;
+
         font-family: $font__supria-sans;
-        @include font-size(xxxl);
         font-weight: $font-weight-bold;
         line-height: 1.33;
-        padding-bottom: 0.75rem;
-        margin: 0;
+        @include font-size(xxxl);
 
         @media screen and (min-width: #{$screen__lg + 1px}) {
             line-height: 1.22;
@@ -54,11 +64,12 @@
     }
 
     &__intro {
-        font-size: 1rem;
-        font-family: $font__open-sans;
-        line-height: 1.5;
-        padding: 0;
         margin: 0;
+        padding: 0;
+
+        font-family: $font__open-sans;
+        font-size: 1rem;
+        line-height: 1.5;
 
         @media screen and (min-width: #{$screen__lg + 1px}) {
             @include font-size(xl);

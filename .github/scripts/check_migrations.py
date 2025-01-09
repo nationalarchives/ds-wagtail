@@ -13,7 +13,9 @@ def get_diff():
     merging develop into the main branch.
     """
     subprocess.run(
-        ["git", "fetch", "origin"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
+        ["git", "fetch", "origin"],
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
     )
     output = [
         f"./{file_path}"

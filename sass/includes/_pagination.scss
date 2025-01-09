@@ -1,7 +1,7 @@
 .pagination {
     margin-top: 1rem;
-    margin-left: 2rem;
     margin-right: 2rem;
+    margin-left: 2rem;
 
     @media only screen and (max-width: $screen__sm) {
         margin: 0;
@@ -10,16 +10,17 @@
     // background-color: $color__grey-700;
 
     &__list {
-        text-align: center;
-        list-style-type: none;
+        width: 65%;
         // padding-left: 0;
         min-height: 3.125rem;
+        margin: auto;
+        margin-bottom: 2em;
 
         display: flex;
         justify-content: start;
-        margin: auto;
-        margin-bottom: 2em;
-        width: 65%;
+
+        text-align: center;
+        list-style-type: none;
 
         &-pages {
             padding: 0;
@@ -42,17 +43,18 @@
         }
 
         &-item {
-            display: inline-block;
             min-height: 3.125rem;
 
+            display: inline-block;
+
             &:first-child {
-                margin-left: 0;
                 margin-right: auto;
+                margin-left: 0;
             }
 
             &:last-child {
-                margin-left: auto;
                 margin-right: 0;
+                margin-left: auto;
             }
         }
     }
@@ -60,16 +62,18 @@
     &__page {
         &-link,
         &-link-current {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-decoration: none;
             width: 3.125rem;
             height: 3.125rem;
-            background: #26262a;
             margin: 0.3em;
 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
             color: white;
+            text-decoration: none;
+
+            background: #26262a;
 
             @media only screen and (max-width: $screen__md) {
                 margin: 0.3em;
@@ -82,18 +86,21 @@
         }
 
         &-link-current {
-            background: #fc0;
             color: black;
+
+            background: #fc0;
         }
 
         &-chevron-next,
         &-chevron-previous {
             height: 100%;
-            display: block;
             margin-top: 1.16em;
+
+            display: block;
+
+            background-size: 40%;
             background-repeat: no-repeat;
             background-position: center;
-            background-size: 40%;
 
             @media only screen and (max-width: $screen__md) {
                 display: none;
@@ -114,15 +121,17 @@
             }
 
             &--disabled {
+                width: 3.125rem;
+                height: 100%;
+
+                display: flex;
+                justify-content: center;
+
+                background-size: 40%;
                 // background-color: $color__yellow;
                 // background-image: url($fa_chevron_right_disabled);
                 background-repeat: no-repeat;
                 background-position: center;
-                background-size: 40%;
-                width: 3.125rem;
-                height: 100%;
-                display: flex;
-                justify-content: center;
 
                 @media only screen and (max-width: $screen__md) {
                     display: none;
@@ -150,15 +159,17 @@
         }
 
         &--disabled {
+            width: 3.125rem;
+            height: 100%;
+
+            display: flex;
+            justify-content: center;
+
+            background-size: 40%;
             // background-color: $color__yellow;
             // background-image: url($fa_chevron_left_disabled);
             // background-repeat: no-repeat;
             background-position: center;
-            background-size: 40%;
-            width: 3.125rem;
-            height: 100%;
-            display: flex;
-            justify-content: center;
 
             &:hover,
             &:focus {
@@ -194,16 +205,19 @@
     &-link-current:visited,
     &-link:hover,
     &-link:focus {
-        background-color: $color__white;
         color: $color__black;
         font-weight: bold;
+
+        background-color: $color__white;
+
         outline-color: $color__focus-outline-dark-bg;
     }
 }
 
 .pagination__page-chevron-previous--disabled {
-    display: block;
     margin-top: 1.16em;
+
+    display: block;
     @media only screen and (max-width: $screen__md) {
         display: none;
     }

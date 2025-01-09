@@ -7,9 +7,10 @@ from django.http import HttpRequest
 from django.utils.functional import cached_property
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
-
 from modelcluster.contrib.taggit import ClusterTaggableManager
 from modelcluster.fields import ParentalKey
+from rest_framework import serializers
+from taggit.models import ItemBase, TagBase
 from wagtail.admin.panels import (
     FieldPanel,
     InlinePanel,
@@ -22,9 +23,6 @@ from wagtail.images import get_image_model_string
 from wagtail.models import Orderable, Page
 from wagtail.search import index
 from wagtail.snippets.models import register_snippet
-
-from rest_framework import serializers
-from taggit.models import ItemBase, TagBase
 
 from etna.collections.models import TopicalPageMixin
 from etna.core.blocks import AuthorPromotedPagesBlock, FeaturedCollectionBlock
@@ -529,7 +527,10 @@ class FocusedArticlePage(
 class PageGalleryImage(Orderable):
     page = ParentalKey(Page, on_delete=models.CASCADE, related_name="gallery_images")
     image = models.ForeignKey(
-        get_image_model_string(), on_delete=models.SET_NULL, null=True, related_name="+"
+        get_image_model_string(),
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name="+",
     )
     alt_text = models.CharField(
         verbose_name=_("alternative text"),

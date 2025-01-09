@@ -3,7 +3,7 @@ const lengthIndicatorExceededClassname = "inputlengthindicator--exceeded";
 const countHTMLBase = '<span class="w-sr-only">Character count:</span> ';
 
 const countChars = function (text) {
-  /*
+    /*
   Count characters in a string, with special processing to account for astral symbols in UCS-2. See:
   - https://github.com/RadLikeWhoa/Countable/blob/master/Countable.js#L29
   - https://mathiasbynens.be/notes/javascript-unicode
@@ -18,11 +18,7 @@ const countChars = function (text) {
     return 0;
 };
 
-const updateLengthIndicator = function (
-    lengthIndicator,
-    length,
-    maxChars,
-) {
+const updateLengthIndicator = function (lengthIndicator, length, maxChars) {
     lengthIndicator.innerHTML = countHTMLBase + `${length}/${maxChars}`;
 
     if (length > maxChars) {
@@ -62,7 +58,9 @@ const initializeLengthIndicator = function (input) {
 };
 
 document.addEventListener("DOMContentLoaded", function () {
-    for (input of document.querySelectorAll(".w-field__input input[maxlength], .w-field__input textarea[maxlength]")) {
+    for (input of document.querySelectorAll(
+        ".w-field__input input[maxlength], .w-field__input textarea[maxlength]",
+    )) {
         initializeLengthIndicator(input);
     }
 });

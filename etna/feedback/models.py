@@ -1,5 +1,4 @@
 import uuid
-
 from typing import Union
 
 from django.conf import settings
@@ -11,7 +10,6 @@ from django.db.models.functions import Length
 from django.utils.functional import cached_property
 from django.utils.text import Truncator
 from django.utils.translation import gettext_lazy as _
-
 from modelcluster.fields import ParentalKey
 from modelcluster.models import ClusterableModel
 from wagtail.admin import panels
@@ -104,7 +102,10 @@ class FeedbackPromptPageType(Orderable):
 @register_snippet
 class FeedbackPrompt(DraftStateMixin, RevisionMixin, ClusterableModel):
     public_id = models.UUIDField(
-        editable=False, unique=True, default=uuid.uuid4, verbose_name=_("public ID")
+        editable=False,
+        unique=True,
+        default=uuid.uuid4,
+        verbose_name=_("public ID"),
     )
     text = models.CharField(
         verbose_name=_("prompt text"),
@@ -179,7 +180,9 @@ class FeedbackPrompt(DraftStateMixin, RevisionMixin, ClusterableModel):
             ],
         ),
         panels.InlinePanel(
-            "for_page_types", heading=_("Page type must be one of"), label="Page type"
+            "for_page_types",
+            heading=_("Page type must be one of"),
+            label="Page type",
         ),
     ]
 
@@ -231,7 +234,10 @@ class FeedbackPrompt(DraftStateMixin, RevisionMixin, ClusterableModel):
 class FeedbackSubmission(models.Model):
     received_at = models.DateTimeField(auto_now_add=True, verbose_name=_("received at"))
     public_id = models.UUIDField(
-        editable=False, unique=True, default=uuid.uuid4, verbose_name=_("public ID")
+        editable=False,
+        unique=True,
+        default=uuid.uuid4,
+        verbose_name=_("public ID"),
     )
 
     # Where the feedback was given

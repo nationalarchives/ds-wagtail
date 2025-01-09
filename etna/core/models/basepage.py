@@ -8,7 +8,6 @@ from django.utils.decorators import method_decorator
 from django.utils.functional import cached_property
 from django.utils.text import capfirst
 from django.utils.translation import gettext_lazy as _
-
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel
 from wagtail.admin.widgets.slug import SlugInput
 from wagtail.api import APIField
@@ -16,7 +15,6 @@ from wagtail.fields import RichTextField
 from wagtail.images import get_image_model_string
 from wagtail.models import Page
 from wagtail.search import index
-
 from wagtail_headless_preview.models import HeadlessPreviewMixin
 
 from etna.alerts.models import AlertMixin

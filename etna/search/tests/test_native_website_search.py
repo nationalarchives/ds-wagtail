@@ -36,13 +36,22 @@ class NativeWebsiteSearchTestCase(TestCase):
         )
 
         cls.early_modern = TimePeriodPageFactory(
-            title="Early modern", start_year=1485, end_year=1714, parent=cls.homepage
+            title="Early modern",
+            start_year=1485,
+            end_year=1714,
+            parent=cls.homepage,
         )
         cls.georgians = TimePeriodPageFactory(
-            title="Georgians", start_year=1714, end_year=1837, parent=cls.homepage
+            title="Georgians",
+            start_year=1714,
+            end_year=1837,
+            parent=cls.homepage,
         )
         cls.interwar = TimePeriodPageFactory(
-            title="Interwar", start_year=1918, end_year=1939, parent=cls.homepage
+            title="Interwar",
+            start_year=1918,
+            end_year=1939,
+            parent=cls.homepage,
         )
         cls.postwar = TimePeriodPageFactory(
             title="Postwar", start_year=1945, end_year=2030, parent=cls.homepage
@@ -57,7 +66,10 @@ class NativeWebsiteSearchTestCase(TestCase):
         cls.foo_article = ArticlePageFactory(
             parent=cls.article_index,
             title="Foo article",
-            page_topics=[PageTopic(topic=cls.arts), PageTopic(topic=cls.health)],
+            page_topics=[
+                PageTopic(topic=cls.arts),
+                PageTopic(topic=cls.health),
+            ],
             page_time_periods=[
                 PageTimePeriod(time_period=cls.early_modern),
                 PageTimePeriod(time_period=cls.georgians),
@@ -66,7 +78,10 @@ class NativeWebsiteSearchTestCase(TestCase):
         cls.foo_focussed_article = FocusedArticlePageFactory(
             parent=cls.article_index,
             title="Foo focussed article",
-            page_topics=[PageTopic(topic=cls.arts), PageTopic(topic=cls.health)],
+            page_topics=[
+                PageTopic(topic=cls.arts),
+                PageTopic(topic=cls.health),
+            ],
             page_time_periods=[
                 PageTimePeriod(time_period=cls.early_modern),
                 PageTimePeriod(time_period=cls.georgians),
@@ -82,7 +97,10 @@ class NativeWebsiteSearchTestCase(TestCase):
         cls.bar_article = ArticlePageFactory(
             parent=cls.article_index,
             title="Bar article",
-            page_topics=[PageTopic(topic=cls.military), PageTopic(topic=cls.transport)],
+            page_topics=[
+                PageTopic(topic=cls.military),
+                PageTopic(topic=cls.transport),
+            ],
             page_time_periods=[
                 PageTimePeriod(time_period=cls.interwar),
                 PageTimePeriod(time_period=cls.postwar),
@@ -91,7 +109,10 @@ class NativeWebsiteSearchTestCase(TestCase):
         cls.bar_focussed_article = FocusedArticlePageFactory(
             parent=cls.article_index,
             title="Bar focussed article",
-            page_topics=[PageTopic(topic=cls.military), PageTopic(topic=cls.transport)],
+            page_topics=[
+                PageTopic(topic=cls.military),
+                PageTopic(topic=cls.transport),
+            ],
             page_time_periods=[
                 PageTimePeriod(time_period=cls.interwar),
                 PageTimePeriod(time_period=cls.postwar),
@@ -258,7 +279,11 @@ class NativeWebsiteSearchTestCase(TestCase):
         self.assertContains(response, '<h2 class="sr-only">Selected filters</h2>')
         for label in ["article", "record article"]:
             self.assertContains(response, f"Remove Format: {label} from search")
-        for label in ["highlight gallery page", "time period page", "topic page"]:
+        for label in [
+            "highlight gallery page",
+            "time period page",
+            "topic page",
+        ]:
             self.assertNotContains(response, f"Remove Format: {label} from search")
 
     def test_filter_by_topic(self):
@@ -439,7 +464,8 @@ class NativeWebsiteSearchTestCase(TestCase):
             with self.subTest(f"Searching for: {search_terms}"):
                 response = self.client.get(self.test_url, data={"q": search_terms})
                 self.assertEqual(
-                    response.context_data["paginator"].count, expected_result_count
+                    response.context_data["paginator"].count,
+                    expected_result_count,
                 )
 
     def test_no_results_search(self):

@@ -1,26 +1,25 @@
-FROM ghcr.io/nationalarchives/tna-python-django:latest
+ARG IMAGE=ghcr.io/nationalarchives/tna-python-django
+ARG IMAGE_TAG=latest
+
+FROM "$IMAGE":"$IMAGE_TAG"
 
 ENV NPM_BUILD_COMMAND=compile
-ENV DJANGO_SETTINGS_MODULE=config.settings.production
+ARG BUILD_VERSION
+ENV BUILD_VERSION="$BUILD_VERSION"
 
-HEALTHCHECK CMD curl --fail http://localhost:8080/healthcheck/ || exit 1
-
-# Copy in the project dependency files and config
-COPY --chown=app pyproject.toml poetry.lock ./
-COPY --chown=app package.json package-lock.json .nvmrc webpack.config.js ./
-COPY --chown=app sass sass
-COPY --chown=app scripts scripts
-COPY --chown=app config config
-COPY --chown=app templates templates
-
-# Install Python dependencies AND the 'etna' app
-RUN tna-build
-
-# Copy application code
+# Copy in the application code
 COPY --chown=app . .
 
+# Install dependencies
+RUN tna-build
+
 # Copy the assets from the @nationalarchives/frontend repository
+# TODO: Remove once completely headless
 RUN mkdir -p /app/templates/static/assets; \
-  cp -R /app/node_modules/@nationalarchives/frontend/nationalarchives/assets/* /app/templates/static/assets
+  cp -R /app/node_modules/@nationalarchives/frontend/nationalarchives/assets/* /app/templates/static/assets; \
+  poetry run python /app/manage.py collectstatic --no-input --clear
+
+# Delete source files, tests and docs
+# RUN rm -fR /app/src /app/test /app/docs
 
 CMD ["tna-run", "config.wsgi:application"]

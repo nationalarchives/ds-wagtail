@@ -1,35 +1,41 @@
 .image-viewer-panel {
-    margin-top: 1rem;
-    text-align: center;
     width: 100%;
-    background-color: $color__grey-700;
+    margin-top: 1rem;
     padding: 2.5rem 0 0;
+
+    text-align: center;
+
+    background-color: $color__grey-700;
 
     figure {
         margin: 0;
 
         img {
             height: 25rem;
-            display: block;
             margin: 0 auto;
 
+            display: block;
+
             @media only screen and (max-width: $screen__md) {
-                height: auto;
                 width: 100%;
+                height: auto;
             }
         }
     }
 
     &__text-link {
         padding: 2rem 1rem 2rem 2.5rem;
+
         display: inline-block;
+
         color: $color__white;
+        font-size: 1.1rem;
+        font-weight: bold;
+        text-align: center;
+        vertical-align: top;
+
         background: url($fa_search_plus) no-repeat center left;
         background-size: 1.75rem;
-        text-align: center;
-        font-weight: bold;
-        vertical-align: top;
-        font-size: 1.1rem;
 
         &:visited {
             color: $color__white;

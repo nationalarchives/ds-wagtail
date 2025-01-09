@@ -2,16 +2,14 @@ import io
 import re
 import unittest
 
+import responses
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
 from django.utils import timezone
-
 from wagtail.models import Group
 from wagtail.test.utils import WagtailTestUtils
-
-import responses
 
 from etna.ciim.tests.factories import create_media, create_record, create_response
 from etna.core.test_utils import prevent_request_warnings
@@ -510,7 +508,9 @@ class TestImageBrowseView(TestCase):
             json=create_response(
                 records=[
                     create_record(
-                        iaid="C123456", is_digitised=True, media_reference_id=None
+                        iaid="C123456",
+                        is_digitised=True,
+                        media_reference_id=None,
                     ),
                 ]
             ),
@@ -591,7 +591,9 @@ class TestImageViewerView(TestCase):
             json=create_response(
                 records=[
                     create_record(
-                        iaid="C123456", is_digitised=True, media_reference_id=None
+                        iaid="C123456",
+                        is_digitised=True,
+                        media_reference_id=None,
                     ),
                 ]
             ),
@@ -635,7 +637,8 @@ class TestImageViewerView(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.resolver_match.url_name, "image-viewer")
         self.assertEqual(
-            response.context["previous_image"].location, "path/to/previous-image.jpeg"
+            response.context["previous_image"].location,
+            "path/to/previous-image.jpeg",
         )
         self.assertEqual(response.context["image"].location, "path/to/image.jpeg")
         self.assertEqual(
@@ -669,7 +672,8 @@ class TestImageViewerView(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.resolver_match.url_name, "image-viewer")
         self.assertEqual(
-            response.context["previous_image"].location, "path/to/previous-image.jpeg"
+            response.context["previous_image"].location,
+            "path/to/previous-image.jpeg",
         )
         self.assertEqual(response.context["image"].location, "path/to/image.jpeg")
         self.assertEqual(response.context["next_image"], None)

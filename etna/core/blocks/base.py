@@ -1,5 +1,4 @@
 from django.utils.text import slugify
-
 from wagtail import blocks
 
 

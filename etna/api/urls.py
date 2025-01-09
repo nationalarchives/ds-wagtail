@@ -7,16 +7,14 @@ from django.http import Http404
 from django.shortcuts import redirect
 from django.urls import path
 from django.utils.crypto import constant_time_compare
-
+from rest_framework import status
+from rest_framework.response import Response
 from wagtail.api.v2.router import WagtailAPIRouter
 from wagtail.api.v2.utils import BadRequestError, get_object_detail_url
 from wagtail.api.v2.views import PagesAPIViewSet
 from wagtail.contrib.redirects.models import Redirect
 from wagtail.images.api.v2.views import ImagesAPIViewSet
 from wagtail.models import Page, PageViewRestriction, Site
-
-from rest_framework import status
-from rest_framework.response import Response
 from wagtail_headless_preview.models import PagePreview
 from wagtailmedia.api.views import MediaAPIViewSet
 

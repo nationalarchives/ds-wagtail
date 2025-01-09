@@ -1,10 +1,8 @@
+import responses
 from django.conf import settings
 from django.test import TestCase, override_settings
 from django.urls import reverse_lazy
-
 from wagtail.test.utils import WagtailTestUtils
-
-import responses
 
 from etna.ciim.tests.factories import create_record, create_response
 

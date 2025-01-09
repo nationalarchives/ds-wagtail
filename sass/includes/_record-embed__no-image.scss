@@ -1,25 +1,28 @@
 .record-embed-no-image {
-    text-align: center;
     margin: 0 0 2rem;
     padding: 2rem 0;
 
+    text-align: center;
+
     &__icon {
-        background-color: $color__navy;
-        border-radius: 50%;
-        margin: 0 auto 1rem;
-        padding: 1rem;
         width: 5rem;
         height: 5rem;
-        background-repeat: no-repeat;
-        background-position: center;
+        margin: 0 auto 1rem;
+        padding: 1rem;
+
+        background-color: $color__navy;
         background-size: 3rem;
+        background-repeat: no-repeat;
+
+        border-radius: 50%;
+        background-position: center;
     }
 
     &__icon-label {
-        text-transform: uppercase;
         font-family: $font__roboto;
-        font-weight: bold;
         font-size: 0.9rem;
+        font-weight: bold;
+        text-transform: uppercase;
     }
 
     &__heading {
@@ -28,16 +31,19 @@
     }
 
     &__list {
-        list-style: none;
         padding-left: 0;
+
+        list-style: none;
     }
 
     &__list-item {
-        background-color: $color__navy;
         margin-bottom: 1rem;
         padding: 1rem;
-        border-left: 1.25rem solid $color__navy;
+
         text-align: left;
+
+        background-color: $color__navy;
+        border-left: 1.25rem solid $color__navy;
     }
 
     &__link {
@@ -50,13 +56,15 @@
     }
 
     &__text {
-        text-align: left;
         font-size: 1.2rem;
+        text-align: left;
 
         &--inline {
-            display: inline-block;
-            font-size: 1.2rem;
             margin: 0 1rem 1rem;
+
+            display: inline-block;
+
+            font-size: 1.2rem;
         }
     }
 

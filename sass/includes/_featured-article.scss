@@ -12,18 +12,20 @@
     }
 
     &__image-link {
-        display: inline-block;
         width: 50%;
+
+        display: inline-block;
+
         z-index: 998;
 
         picture {
-            height: 100%;
             width: 100%;
+            height: 100%;
         }
 
         img {
-            height: 100%;
             width: 100%;
+            height: 100%;
             object-fit: cover;
         }
 
@@ -37,11 +39,12 @@
     }
 
     &__description {
+        width: 50%;
+        padding: 2rem 4rem 2rem 2rem;
+
+        background-color: #fc0;
         // provides visual boundary in high contrast mode
         border: 1px solid transparent;
-        background-color: #fc0;
-        padding: 2rem 4rem 2rem 2rem;
-        width: 50%;
 
         p {
             margin-top: 2rem;
@@ -50,14 +53,17 @@
 
     &__heading {
         border-bottom: 0.125rem solid $color__grey-700;
+
         line-height: 1.3;
 
         small {
+            margin-bottom: 0.5rem;
+
             display: block;
+
             color: $color__grey-700;
             font-family: $font__roboto-mono;
             font-size: 0.875rem;
-            margin-bottom: 0.5rem;
             text-transform: uppercase;
 
             @media only screen and (min-width: #{$screen__md + 1px}) {
@@ -66,10 +72,12 @@
         }
 
         span {
-            background: green;
-            font-size: 0.8rem;
-            color: white;
             padding: 3px 3px 0;
+
+            color: white;
+            font-size: 0.8rem;
+
+            background: green;
         }
     }
 

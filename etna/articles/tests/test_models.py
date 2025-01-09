@@ -1,7 +1,6 @@
 from datetime import datetime, timezone
 
 from django.test import TestCase
-
 from wagtail.models import Site
 
 from ..models import ArticleIndexPage, ArticlePage, ArticleTag

@@ -1,15 +1,12 @@
 import json
-
 from datetime import datetime, timezone
 
+import responses
 from django.conf import settings
 from django.urls import reverse
-
 from wagtail.models import Site
 from wagtail.test.utils import WagtailPageTestCase
 from wagtail.test.utils.form_data import nested_form_data, rich_text, streamfield
-
-import responses
 
 from etna.articles.models import ArticleIndexPage, ArticlePage
 from etna.ciim.tests.factories import create_record, create_response
@@ -111,7 +108,8 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTestCase):
         )
 
         response = self.client.post(
-            reverse("wagtailadmin_pages:edit", args=(self.article_page.id,)), data
+            reverse("wagtailadmin_pages:edit", args=(self.article_page.id,)),
+            data,
         )
         self.assertEqual(len(responses.calls), 3)
         self.assertRedirects(

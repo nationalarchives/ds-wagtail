@@ -1,18 +1,19 @@
+/* stylelint-disable -- This will become redundant when the new frontend is added */
 .related-resources {
     margin: 2rem 0;
     padding-bottom: 1rem;
 
     @media (min-width: #{$screen__lg + 1px}) {
         .template-focused-article & {
-            padding-left: 10%;
             padding-right: 10%;
+            padding-left: 10%;
         }
     }
 
     &__heading {
+        font-family: $font__supria-sans;
         font-size: 2rem;
         font-weight: 400;
-        font-family: $font__supria-sans;
     }
 
     &__description {
@@ -20,16 +21,19 @@
     }
 
     &__list {
-        list-style: none;
         padding-left: 0;
+
+        list-style: none;
     }
 
     &__list-item {
-        background-color: $color__grey-100;
         margin-bottom: 1rem;
         padding: 1rem 1.5rem;
-        border-left: 0.3125rem solid $color__yellow;
+
         text-align: left;
+
+        background-color: $color__grey-100;
+        border-left: 0.3125rem solid $color__yellow;
 
         @media (min-width: map-get($grid-breakpoints, "md")) {
             border-left-width: 0.3125rem;
@@ -39,11 +43,12 @@
     // stylelint-disable no-descending-specificity
     &__link {
         transition: none;
+
         text-decoration-thickness: 1px;
 
         &:hover {
-            text-decoration: none;
             color: $color__white;
+            text-decoration: none;
         }
 
         // &:focus {
@@ -54,9 +59,10 @@
 
     &__link-heading {
         margin-top: 0;
+
         font-family: $font__body;
-        font-weight: $font-weight-bold;
         font-size: 1.125rem;
+        font-weight: $font-weight-bold;
 
         @media (min-width: map-get($grid-breakpoints, "md")) {
             font-size: 1.25rem;

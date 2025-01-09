@@ -3,11 +3,9 @@ import mimetypes
 from django.conf import settings
 from django.core.validators import FileExtensionValidator, MinValueValidator
 from django.db import models
-
 from wagtail import blocks
 from wagtail.api import APIField
 from wagtail.fields import RichTextField, StreamField
-
 from wagtailmedia.models import AbstractMedia
 
 from etna.core.blocks.paragraph import APIRichTextBlock

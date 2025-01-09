@@ -81,6 +81,8 @@ class DateInputField(forms.MultiValueField):
 
         super().__init__(fields=fields, **kwargs)
 
+    # TODO: Reduce cyclomatic complexity from 25 to 12 or below
+    # flake8: noqa: C901
     def clean(self, value):
         """
         Validate the values entered into the day, month and year fields.

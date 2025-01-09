@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import scroll_to_active_heading from "./scroll_to_active_heading";
 import slide_toggle from "./slide_toggle";
 import toggle_aria_expanded from "./toggle_aria_expanded";

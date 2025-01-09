@@ -1,5 +1,4 @@
 from django.test import TestCase
-
 from wagtail.models import Site
 
 from etna.articles.models import FocusedArticlePage
@@ -62,7 +61,8 @@ class TestAuthorPages(TestCase):
     def test_focused_article_author(self):
         for i in self.focused_articles:
             self.assertEqual(
-                self.focused_articles[i].author_tags.first().author.title, "John Doe"
+                self.focused_articles[i].author_tags.first().author.title,
+                "John Doe",
             )
 
     def test_authored_focused_articles(self):

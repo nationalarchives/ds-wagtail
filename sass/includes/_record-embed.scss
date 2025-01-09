@@ -1,17 +1,20 @@
 .record-embed {
     &__image-container {
-        background-color: $color__black;
-        text-align: center;
         padding: 2rem 0;
+
+        text-align: center;
+
+        background-color: $color__black;
     }
 
     &__heading {
+        margin-bottom: 2rem;
+        padding-bottom: 0.625rem;
+
         font-size: 2rem;
         font-weight: 400;
         text-align: left;
         border-bottom: 0.3125rem solid $color__grey-500;
-        padding-bottom: 0.625rem;
-        margin-bottom: 2rem;
     }
 
     &__image {
@@ -19,26 +22,31 @@
     }
 
     &__button {
-        display: inline-block;
         margin: 0 1rem 1rem 0;
+
+        display: inline-block;
     }
 
     &__description {
-        background-color: $color__grey-800;
         padding: 2rem 0;
+
+        background-color: $color__grey-800;
     }
 
     &__image-viewer-link,
     &__image-viewer-link:visited {
         padding: 2rem 1rem 2rem 2.5rem;
+
         display: inline-block;
+
         color: $color__white;
+        font-size: 1.2rem;
+        font-weight: bold;
+        text-align: center;
+        vertical-align: top;
+
         background: url($fa_search_plus) no-repeat center left;
         background-size: 1.75rem;
-        text-align: center;
-        font-weight: bold;
-        vertical-align: top;
-        font-size: 1.2rem;
         transition: none;
     }
 
@@ -63,18 +71,24 @@ a.record-embed__text:visited,
 }
 
 .tna-button-secondary--no-underline {
-    background-color: $color__white !important;
-    color: $color__black !important;
-    border: 0.125rem solid $color__white;
-    padding: 0.5rem 0.9rem;
-    display: inline-block;
     min-width: 1.625rem;
+    padding: 0.5rem 0.9rem;
+
+    display: inline-block;
+
+    color: $color__black !important;
     text-align: center;
     text-decoration: none;
 
+    background-color: $color__white !important;
+
+    border: 0.125rem solid $color__white;
+
     &:hover {
-        background-color: $color__black !important;
         color: $color__white !important;
+
+        background-color: $color__black !important;
+
         border: 0.125rem solid $color__black;
     }
 }

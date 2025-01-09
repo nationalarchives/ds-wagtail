@@ -1,6 +1,5 @@
 from django.contrib.contenttypes.models import ContentType
 from django.test import TestCase
-
 from wagtail.models import Page
 
 from etna.articles.models import ArticlePage
@@ -38,7 +37,10 @@ class TestGetForPath(TestCase):
         )
 
     def assertMatchForPath(
-        self, path: str, expected_prompt: FeedbackPrompt, page: Page | None = None
+        self,
+        path: str,
+        expected_prompt: FeedbackPrompt,
+        page: Page | None = None,
     ):
         result = FeedbackPrompt.objects.get_for_path(path, page=page)
         self.assertEqual(result, expected_prompt)

@@ -1,0 +1,14 @@
+#!/bin/bash
+
+set -e
+
+. platformsh-pull-setup
+
+echo "Pulling media from $ENVIRONMENT..."
+
+echo "Downloading media..."
+platform mount:download -e "$ENVIRONMENT" -p "$PLATFORM_PROJECT_ID" -m media --target=/media --exclude='/images/*' --yes
+docker compose -p ds-wagtail exec app chmod -fR 777 /media
+
+echo "Deleting image renditions..."
+psql "postgresql://$POSTGRES_USER:$POSTGRES_PASSWORD@db/$POSTGRES_DB" -c "TRUNCATE images_customimagerendition;"

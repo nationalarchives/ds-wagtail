@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 export default function remove_aria_roles(sectionHeadings) {
     sectionHeadings.each(function () {
         $(this).removeAttr("role");

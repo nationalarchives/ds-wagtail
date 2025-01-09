@@ -6,13 +6,16 @@
 aid legibility when appearing over help text */
 
 .inputlengthindicator {
-  display: block;
-  background-color: #fff;
-  position: absolute;
-  bottom: -1.6rem;
-  right: 0;
-  padding-left: 0.375rem;
   padding-right: 0.375rem;
+  padding-left: 0.375rem;
+
+  display: block;
+
+  position: absolute;
+  right: 0;
+  bottom: -1.6rem;
+
+  background-color: #fff;
   pointer-events: none;
   font-variant-numeric: tabular-nums;
 }
@@ -29,9 +32,10 @@ aid legibility when appearing over help text */
 }
 
 .Draftail-MetaToolbar .w-help-text {
-  padding-left: 0.375rem;
   padding-right: 0.375rem;
-  background-color: #ffffff;
+  padding-left: 0.375rem;
+
+  background-color: #fff;
 }
 
 /* CSS to be applied to record chooser widget, due to
@@ -40,6 +44,7 @@ Wagtail 4.1 upgrade changes breaking the CSS to display on hover */
   .chooser__actions {
     opacity: 0;
   }
+
   :is(.w-field--record_chooser):is(:hover, :focus-within) .chooser__actions {
     opacity: 1;
   }

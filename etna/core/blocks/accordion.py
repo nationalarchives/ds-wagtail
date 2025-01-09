@@ -1,5 +1,4 @@
 from django.conf import settings
-
 from wagtail import blocks
 
 from .document import DocumentsBlock

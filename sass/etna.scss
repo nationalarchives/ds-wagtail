@@ -257,12 +257,12 @@ Modified to match the existing site (for now)
     // tna-container variant which is full-width at mobile - used on what's on landing page
     &--full-width-mobile {
         @include media.on-mobile {
-            padding-left: 0;
             padding-right: 0;
+            padding-left: 0;
 
             .tna-column {
-                padding-left: 0;
                 padding-right: 0;
+                padding-left: 0;
             }
         }
     }
@@ -280,7 +280,7 @@ Modified to match the existing site (for now)
 
 .tna-large-paragraph {
     @include colour.colour-font("font-dark");
-    @include typography.relative-font-size(22);
+    @include typography.font-size(22);
 }
 
 .template-focused-article {
@@ -291,7 +291,9 @@ Modified to match the existing site (for now)
 
     .tna-breadcrumbs {
         margin-bottom: 0;
+
         color: #fff !important;
+
         background-color: #343338 !important;
 
         a,
@@ -313,11 +315,13 @@ Modified to match the existing site (for now)
     .generic-intro,
     .generic-intro__meta {
         @include colour.contrast;
-        background-color: #343338 !important;
         color: #fff !important;
+
+        background-color: #343338 !important;
 
         .tna-heading {
             padding-top: 1rem;
+
             color: inherit !important;
         }
 
@@ -342,6 +346,7 @@ Modified to match the existing site (for now)
             max-width: grid.$largest-container-width;
             margin: 0 auto;
             padding: 0 grid.$gutter-width;
+
             box-sizing: border-box;
 
             @include media.on-mobile {
@@ -435,8 +440,11 @@ Modified to match the existing site (for now)
 
 #ds-cookie-consent-banner {
     padding: 1rem 0 !important;
+
     position: static !important;
+
     background: #134571 !important;
+
     border-radius: 0 !important;
 
     .container {
@@ -452,23 +460,27 @@ Modified to match the existing site (for now)
     }
 
     &__highlight {
-        @include typography.relative-font-size(14);
-        @include colour.plain;
-        z-index: 1;
-        border-radius: 50%;
+        @include typography.font-size(14);
         aspect-ratio: 1 / 1;
+        padding: 1rem;
+
         align-self: flex-end;
-        position: absolute;
-        right: 1.14rem;
-        top: 1.14rem;
+
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 1rem;
+
+        position: absolute;
+        top: 1.14rem;
+        right: 1.14rem;
+        // @include colour.plain;
+        z-index: 1;
+
+        border-radius: 50%;
 
         @include media.on-larger-than-mobile {
-            right: 0;
             top: auto;
+            right: 0;
         }
 
         &--yellow {
@@ -494,8 +506,8 @@ Modified to match the existing site (for now)
 
     &--event {
         .tna-card__inner {
-            padding-left: 1.5rem;
             padding-right: 1.5rem;
+            padding-left: 1.5rem;
 
             @include media.on-larger-than-mobile {
                 padding: 1rem 2rem 1rem 2.5rem;
@@ -503,14 +515,14 @@ Modified to match the existing site (for now)
         }
 
         .tna-card__image-container {
-            margin-left: -1.5rem;
             margin-right: -1.5rem;
             margin-bottom: 1.375rem;
+            margin-left: -1.5rem;
 
             @include media.on-larger-than-mobile {
-                margin-left: 0;
                 margin-right: 0;
                 margin-bottom: 0;
+                margin-left: 0;
             }
         }
 
@@ -518,7 +530,7 @@ Modified to match the existing site (for now)
             margin-top: 0;
 
             @include media.on-larger-than-mobile {
-                @include typography.relative-font-size(30);
+                @include typography.font-size(30);
             }
         }
 
@@ -527,7 +539,7 @@ Modified to match the existing site (for now)
         }
 
         .tna-card__body {
-            @include typography.relative-font-size(16);
+            @include typography.font-size(16);
             line-height: 1.5;
         }
     }
@@ -543,7 +555,7 @@ Modified to match the existing site (for now)
 
 .tna-scene-setter {
     &--small {
-        @include typography.relative-font-size(21);
+        @include typography.font-size(21);
         font-weight: $font-weight-light;
     }
 }
@@ -569,9 +581,10 @@ Modified to match the existing site (for now)
     }
 
     .tna-heading {
+        margin-top: 0.5rem;
+
         color: $color--white;
         font-weight: 500;
-        margin-top: 0.5rem;
     }
 }
 

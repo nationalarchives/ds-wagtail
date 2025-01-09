@@ -19,15 +19,13 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ inputs.python-version }}
-          cache: "pip"
-          cache-dependency-path: "**/lint-requirements.txt"
-      - run: pip install -r lint-requirements.txt
-      - name: Check compliance with flake8
-        run: flake8 .
+      - run: pip install flake8 isort black
       - name: Check compliance with isort
         run: isort -c .
       - name: Check compliance with Black
-        run: black etna config --check --fast
+        run: black -t py38 -t py39 -t py310 -t py311 -t py312 --line-length 88 --verbose etna config
+      - name: Check compliance with flake8
+        run: flake8 .
 
   test-python:
     name: Test Python
@@ -69,32 +67,17 @@ jobs:
           key: ds-wagtail-venv-${{ runner.os }}-${{ inputs.poetry-version }}-${{ inputs.python-version }}-${{ hashFiles('**/poetry.lock') }}
       - name: Install dependencies
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
-        run: poetry install --no-interaction --no-root
+        run: poetry install --no-interaction --no-root --with dev
       - name: Run Django checks
         run: poetry run python manage.py check
       - name: Run test suite
         run: poetry run coverage run manage.py test etna
       - name: Check for missing migrations
         run: poetry run python manage.py makemigrations --check --noinput
-  
-  prettier:
-    name: Prettier format
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Set up Node
-        uses: actions/setup-node@v4
-        with:
-          node-version-file: .nvmrc
-      - name: Install npm modules
-        run: npm install
-      - name: Lint SCSS and JS and run prettier
-        run: npm run lint
 
   compile-javascript:
     name: Compile JavaScript
     runs-on: ubuntu-latest
-    needs: prettier
     steps:
       - uses: actions/checkout@v4
       - name: Set up Node
@@ -124,7 +107,6 @@ jobs:
   compile-scss:
     name: Compile SCSS
     runs-on: ubuntu-latest
-    needs: prettier
     steps:
       - uses: actions/checkout@v4
       - name: Set up Node

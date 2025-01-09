@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import logging
 import re
-
 from dataclasses import dataclass
 from typing import Any, Dict, Optional, Tuple, Union
 
@@ -11,7 +10,6 @@ from django.http import HttpRequest
 from django.urls import NoReverseMatch, reverse
 from django.utils.functional import cached_property
 from django.utils.safestring import mark_safe
-
 from pyquery import PyQuery as pq
 
 from etna.analytics.mixins import DataLayerMixin
@@ -311,7 +309,8 @@ class Record(DataLayerMixin, APIModel):
         if self.held_by_id:
             try:
                 return reverse(
-                    "details-page-machine-readable", kwargs={"iaid": self.held_by_id}
+                    "details-page-machine-readable",
+                    kwargs={"iaid": self.held_by_id},
                 )
             except NoReverseMatch:
                 pass
@@ -759,7 +758,10 @@ class Record(DataLayerMixin, APIModel):
                         )
                     elif type == "unknown / other":
                         alternative_names += (
-                            {"label": type.title(), "value": item.get("value", "")},
+                            {
+                                "label": type.title(),
+                                "value": item.get("value", ""),
+                            },
                         )
 
         return alternative_names
@@ -823,7 +825,10 @@ class Record(DataLayerMixin, APIModel):
         if description := self.get("description", ()):
             for item in description:
                 if item.get("type") == "biography":
-                    return {"value": item.get("value", ""), "url": item.get("url", "")}
+                    return {
+                        "value": item.get("value", ""),
+                        "url": item.get("url", ""),
+                    }
         return {}
 
     @cached_property

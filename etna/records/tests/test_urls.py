@@ -58,7 +58,8 @@ class TestHumanReadableDetailsURL(TestCase):
 
     def test_reverse_reference_number(self):
         url = reverse(
-            "details-page-human-readable", kwargs={"reference_number": "PROB 1/4"}
+            "details-page-human-readable",
+            kwargs={"reference_number": "PROB 1/4"},
         )
 
         self.assertEqual(url, "/catalogue/ref/PROB/1/4/")
@@ -72,7 +73,8 @@ class TestHumanReadableDetailsURL(TestCase):
         )
 
         self.assertEqual(
-            url, "/catalogue/ref/LAB/2/1782/SandER106/1934/Part25and27-28and30to32/"
+            url,
+            "/catalogue/ref/LAB/2/1782/SandER106/1934/Part25and27-28and30to32/",
         )
 
 
@@ -127,7 +129,8 @@ class TestHumanReadableDetailsWithPseudoReferenceURL(TestCase):
         )
 
         self.assertEqual(
-            url, "/catalogue/ref/LAB/2/1782/SandER106/1934/Part25and27-28and30to32/~3/"
+            url,
+            "/catalogue/ref/LAB/2/1782/SandER106/1934/Part25and27-28and30to32/~3/",
         )
 
 

@@ -1,13 +1,15 @@
 .hierarchy-local {
+    padding: 1.5rem 0;
+
     text-align: center;
     border-top: 3px solid $color__grey-800;
-    padding: 1.5rem 0;
 
     &__nav-item {
         margin: 0;
 
         &-link {
             display: block;
+
             word-break: break-all;
         }
     }
@@ -17,10 +19,11 @@
     }
 
     &__nav-indicator {
-        display: block;
         width: 1.5rem;
         height: 1.5rem;
         margin: 0 auto 1rem;
+
+        display: block;
 
         &--left {
             background: url($fa_chevron_left) no-repeat;

@@ -2,7 +2,6 @@ import json
 import re
 
 from django.test import TestCase
-
 from wagtail.models import Site
 
 from ..models import ArticlePage

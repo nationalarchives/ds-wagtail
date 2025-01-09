@@ -141,7 +141,8 @@ class RenderFieldsAsHiddenTest(SimpleTestCase):
         )
 
     @mock.patch(
-        "etna.search.templatetags.search_tags.get_random_string", return_value="123"
+        "etna.search.templatetags.search_tags.get_random_string",
+        return_value="123",
     )
     @mock.patch.object(BoundField, "as_hidden", return_value="", autospec=True)
     def test_generates_random_suffixes_for_input_ids(
@@ -208,5 +209,6 @@ class RenderSortByTest(SimpleTestCase):
     def test_render_sort_by_input_input_id(self):
         expected_html = '<select name="sort_by" class="search-sort-view__form-select" id="id_sort_by_somevalue" aria-invalid="true">'
         self.assertIn(
-            expected_html, render_sort_by_input(self.form, id_suffix="somevalue")
+            expected_html,
+            render_sort_by_input(self.form, id_suffix="somevalue"),
         )

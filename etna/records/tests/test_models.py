@@ -1,14 +1,12 @@
 import json
 import unittest
-
 from copy import deepcopy
 
+import responses
 from django.conf import settings
 from django.test import SimpleTestCase, TestCase, override_settings
 from django.urls import reverse
 from django.utils.safestring import SafeString
-
-import responses
 
 from etna.ciim.tests.factories import create_media, create_record, create_response
 from etna.ciim.utils import ValueExtractionError
@@ -34,7 +32,9 @@ class RecordModelTests(SimpleTestCase):
         self.assertIn("details", self.record._raw["@template"])
         self.assertEqual(self.record.template, self.record._raw["@template"]["details"])
 
-    def test_template_uses_results_template_if_details_template_not_present(self):
+    def test_template_uses_results_template_if_details_template_not_present(
+        self,
+    ):
         self.assertIn("results", self.record._raw["@template"])
 
         # patch raw data
@@ -73,7 +73,9 @@ class RecordModelTests(SimpleTestCase):
     def test_reference_number(self):
         self.assertEqual(self.record.reference_number, "LO 2")
 
-    def test_raises_valueextractionerror_when_reference_number_is_not_present(self):
+    def test_raises_valueextractionerror_when_reference_number_is_not_present(
+        self,
+    ):
         # patch raw data
         self.record._raw.pop("identifier")
         self.record._raw["@template"]["details"].pop("referenceNumber")
@@ -132,7 +134,9 @@ class RecordModelTests(SimpleTestCase):
             ),
         )
 
-    def test_url_uses_source_url_when_reference_number_and_iaid_are_missing(self):
+    def test_url_uses_source_url_when_reference_number_and_iaid_are_missing(
+        self,
+    ):
         record = Record(
             {
                 "@template": {
@@ -324,14 +328,22 @@ class RecordModelTests(SimpleTestCase):
         r = self.record.next_record
         self.assertEqual(
             (r.iaid, r.reference_number, r.summary_title),
-            ("C10298", "LO 1", "Law Officers' Department: Law Officers' Opinions"),
+            (
+                "C10298",
+                "LO 1",
+                "Law Officers' Department: Law Officers' Opinions",
+            ),
         )
 
     def test_previous_record(self):
         r = self.record.previous_record
         self.assertEqual(
             (r.iaid, r.reference_number, r.summary_title),
-            ("C10296", "LO 3", "Law Officers' Department: Patents for Inventions"),
+            (
+                "C10296",
+                "LO 3",
+                "Law Officers' Department: Patents for Inventions",
+            ),
         )
 
     @unittest.skip("Data not supported for the json record")
@@ -412,7 +424,8 @@ class RecordModelTests(SimpleTestCase):
         self.assertEqual(self.record.repository.iaid, "A13530124")
         self.assertEqual(self.record.repository.url, "/catalogue/ref/66/")
         self.assertEqual(
-            self.record.repository.non_reference_number_url, "/catalogue/id/A13530124/"
+            self.record.repository.non_reference_number_url,
+            "/catalogue/id/A13530124/",
         )
 
     def test_closure_status_empty_value(self):
@@ -917,7 +930,8 @@ class ArchiveRecordModelTests(SimpleTestCase):
         )
 
         self.assertEqual(
-            record.archive_collections.collection_info_list[1].name, "organisation"
+            record.archive_collections.collection_info_list[1].name,
+            "organisation",
         )
         self.assertEqual(
             record.archive_collections.collection_info_list[1].display_name,
@@ -943,7 +957,8 @@ class ArchiveRecordModelTests(SimpleTestCase):
             record.archive_collections.collection_info_list[2].name, "person"
         )
         self.assertEqual(
-            record.archive_collections.collection_info_list[2].display_name, "Persons"
+            record.archive_collections.collection_info_list[2].display_name,
+            "Persons",
         )
         self.assertEqual(
             record.archive_collections.collection_info_list[2].long_display_name,
@@ -965,7 +980,8 @@ class ArchiveRecordModelTests(SimpleTestCase):
             record.archive_collections.collection_info_list[3].name, "diary"
         )
         self.assertEqual(
-            record.archive_collections.collection_info_list[3].display_name, "Diaries"
+            record.archive_collections.collection_info_list[3].display_name,
+            "Diaries",
         )
         self.assertEqual(
             record.archive_collections.collection_info_list[3].long_display_name,
@@ -987,7 +1003,8 @@ class ArchiveRecordModelTests(SimpleTestCase):
             record.archive_collections.collection_info_list[4].name, "family"
         )
         self.assertEqual(
-            record.archive_collections.collection_info_list[4].display_name, "Families"
+            record.archive_collections.collection_info_list[4].display_name,
+            "Families",
         )
         self.assertEqual(
             record.archive_collections.collection_info_list[4].long_display_name,
@@ -1040,7 +1057,8 @@ class ArchiveRecordModelTests(SimpleTestCase):
         record = self.records_client.fetch(iaid="A13532479")
 
         self.assertEqual(
-            record.archive_collections.collection_info_list[0].name, "paper_catalogue"
+            record.archive_collections.collection_info_list[0].name,
+            "paper_catalogue",
         )
         self.assertEqual(
             record.archive_collections.collection_info_list[0].display_name,
@@ -1528,7 +1546,10 @@ class RecordModelCatalogueTests(SimpleTestCase):
             {
                 "@template": {
                     "details": {
-                        "unpublishedFindingAids": ["some value 1", "some value 2"],
+                        "unpublishedFindingAids": [
+                            "some value 1",
+                            "some value 2",
+                        ],
                     }
                 },
             }
@@ -1536,7 +1557,8 @@ class RecordModelCatalogueTests(SimpleTestCase):
         self.record = Record(self.source)
 
         self.assertEqual(
-            self.record.unpublished_finding_aids, ["some value 1", "some value 2"]
+            self.record.unpublished_finding_aids,
+            ["some value 1", "some value 2"],
         )
 
     def test_copies_information(self):

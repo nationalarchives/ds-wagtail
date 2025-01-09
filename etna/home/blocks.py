@@ -22,7 +22,9 @@ class FeaturedExternalPageBlock(blocks.StructBlock):
 
 class FeaturedPageBlock(blocks.StructBlock):
     title = blocks.CharBlock(
-        max_length=100, required=False, help_text="Optionally override the page's title"
+        max_length=100,
+        required=False,
+        help_text="Optionally override the page's title",
     )
     page = APIPageChooserBlock(required_api_fields=["teaser_image"])
     description = blocks.CharBlock(

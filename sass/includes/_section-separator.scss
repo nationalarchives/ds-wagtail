@@ -1,15 +1,16 @@
 .section-separator {
     &__heading {
         @include font-size(xxl);
-        font-weight: 500;
-        font-family: $font__supria-sans;
         color: $color__grey-700;
+        font-family: $font__supria-sans;
+        font-weight: 500;
+
         background: transparent;
 
         @media (min-width: #{$screen__lg + 1px}) {
             .template-focused-article & {
-                padding-left: 10%;
                 padding-right: 10%;
+                padding-left: 10%;
             }
         }
 
@@ -38,9 +39,11 @@
             &__heading {
                 @media only screen and (max-width: $screen__md) {
                     display: flex;
-                    justify-content: space-between;
-                    font-size: 2rem;
                     align-items: center;
+                    justify-content: space-between;
+
+                    font-size: 2rem;
+
                     cursor: pointer;
 
                     &:hover {
@@ -69,13 +72,15 @@
                     }
 
                     &-chevron {
-                        display: inline-block;
-                        background-image: url($fa_chevron_down);
-                        background-repeat: no-repeat;
-                        background-position: top right;
-                        background-size: 30px 30px;
                         width: 30px;
                         height: 30px;
+
+                        display: inline-block;
+
+                        background-image: url($fa_chevron_down);
+                        background-size: 30px 30px;
+                        background-repeat: no-repeat;
+                        background-position: top right;
                     }
                 }
             }

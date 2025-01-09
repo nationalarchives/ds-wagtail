@@ -1,9 +1,8 @@
 from datetime import datetime
 
+import responses
 from django.conf import settings
 from django.test import SimpleTestCase
-
-import responses
 
 from etna.ciim.constants import Aggregation
 from etna.ciim.tests.factories import (
@@ -40,7 +39,8 @@ class ClientSearchAllTest(SimpleTestCase):
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
-            responses.calls[0].request.url, f"{settings.CLIENT_BASE_URL}/searchAll"
+            responses.calls[0].request.url,
+            f"{settings.CLIENT_BASE_URL}/searchAll",
         )
 
     @responses.activate
@@ -314,7 +314,11 @@ class ClientSearchTest(SimpleTestCase):
     @responses.activate
     def test_with_aggregations(self):
         self.records_client.search(
-            aggregations=[Aggregation.LEVEL, Aggregation.COLLECTION, Aggregation.TYPE]
+            aggregations=[
+                Aggregation.LEVEL,
+                Aggregation.COLLECTION,
+                Aggregation.TYPE,
+            ]
         )
 
         self.assertEqual(len(responses.calls), 1)
@@ -725,7 +729,8 @@ class ClientFetchAllTest(SimpleTestCase):
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
-            responses.calls[0].request.url, f"{settings.CLIENT_BASE_URL}/fetchAll"
+            responses.calls[0].request.url,
+            f"{settings.CLIENT_BASE_URL}/fetchAll",
         )
 
     @responses.activate
@@ -893,7 +898,9 @@ class TestClientFetchReponse(SimpleTestCase):
             self.records_client.fetch()
 
     @responses.activate
-    def test_raises_multipleobjectsreturned_when_multiple_results_received(self):
+    def test_raises_multipleobjectsreturned_when_multiple_results_received(
+        self,
+    ):
         responses.add(
             responses.GET,
             f"{settings.CLIENT_BASE_URL}/fetch",
@@ -1151,7 +1158,12 @@ class TestClientFetchAllReponse(SimpleTestCase):
             json={
                 "took": 85,
                 "timed_out": False,
-                "_shards": {"total": 2, "successful": 2, "skipped": 0, "failed": 0},
+                "_shards": {
+                    "total": 2,
+                    "successful": 2,
+                    "skipped": 0,
+                    "failed": 0,
+                },
                 "hits": {
                     "total": {"value": 0, "relation": "eq"},
                     "max_score": 14.217057,

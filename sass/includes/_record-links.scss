@@ -1,43 +1,47 @@
 .record-links {
     &__wrapper {
-        display: flex;
-        align-items: center;
-        flex-direction: column;
         margin-bottom: 2rem;
 
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
         @media (min-width: #{$screen__lg + 1px}) {
-            padding-left: 10%;
             padding-right: 10%;
+            padding-left: 10%;
         }
     }
 
     &__list {
-        list-style: none;
-        margin-bottom: 0;
         width: 100%;
+        margin-bottom: 0;
         padding-left: 0;
+
+        list-style: none;
         border-top: 0.3rem solid $color__yellow;
     }
 
     &__item {
-        display: block;
-        align-items: center;
-        border: 1px solid $color__grey-300;
-        border-top: 0;
+        width: 100%;
         padding-top: 2rem;
         padding-bottom: 2rem;
-        width: 100%;
+
+        display: block;
+        align-items: center;
+
+        border: 1px solid $color__grey-300;
+        border-top: 0;
 
         @media (min-width: #{$screen__lg + 1px}) {
             display: flex;
         }
 
         &__thumbnail {
-            flex-shrink: 0;
             width: 7.5rem;
             height: 7.5rem;
-            margin-left: 2rem;
             margin-bottom: 1rem;
+            margin-left: 2rem;
+            flex-shrink: 0;
 
             @media (min-width: #{$screen__lg + 1px}) {
                 margin-bottom: 0;
@@ -51,24 +55,25 @@
         }
 
         &__text {
-            flex: 100%;
-            padding-left: 2rem;
             padding-right: 2rem;
+            padding-left: 2rem;
+            flex: 100%;
         }
 
         &__title {
             margin: 5px 0;
+
             color: $color__black;
-            text-decoration-line: underline;
             font-family: $font__roboto-mono;
-            font-style: normal;
-            font-weight: 700;
             font-size: 1.1rem;
+            font-weight: 700;
+            font-style: normal;
+            text-decoration-line: underline;
         }
 
         &__title a {
-            text-decoration: none;
             color: inherit;
+            text-decoration: none;
         }
 
         &__title a:hover,
@@ -81,17 +86,19 @@
         }
 
         &__dates {
+            margin: 0;
+
             color: #747474;
             font-size: 0.9rem;
-            margin: 0;
         }
 
         &__reference {
+            margin: 0;
+
+            color: #004c7e;
+            font-family: $font__roboto-mono;
             font-size: 0.9rem;
             font-weight: 400;
-            font-family: $font__roboto-mono;
-            margin: 0;
-            color: #004c7e;
         }
     }
 }

@@ -4,15 +4,13 @@ from django.conf import settings
 from django.db import models
 from django.http import HttpRequest
 from django.utils.functional import cached_property
-
 from modelcluster.fields import ParentalKey
+from rest_framework import serializers
 from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
 from wagtail.api import APIField
 from wagtail.fields import RichTextField, StreamField
 from wagtail.images import get_image_model_string
 from wagtail.models import Page
-
-from rest_framework import serializers
 
 from etna.core.models import BasePage
 from etna.core.serializers import (

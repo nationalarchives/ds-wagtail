@@ -2,16 +2,16 @@
 
 .event-card-listing {
     &__heading-area {
-        padding-left: 1.5rem;
-        padding-right: 1.5rem;
-        padding-top: 3rem;
-        border-top: 1px solid $color__grey-300;
         margin-bottom: 1.5rem;
+        padding-top: 3rem;
+        padding-right: 1.5rem;
+        padding-left: 1.5rem;
+        border-top: 1px solid $color__grey-300;
 
         @include media.on-larger-than-mobile {
-            padding-left: 0;
-            padding-right: 0;
             margin-bottom: 3rem;
+            padding-right: 0;
+            padding-left: 0;
         }
     }
 
@@ -24,9 +24,10 @@
     }
 
     &__summary {
+        margin-top: 0;
+
         color: $color__grey-600;
         font-size: 1rem;
-        margin-top: 0;
 
         @include media.on-larger-than-mobile {
             font-size: 1.25rem;
@@ -34,10 +35,11 @@
     }
 
     &__list {
+        margin: 0;
+        padding: 0;
+
         background-color: $color--white;
         list-style-type: none;
-        padding: 0;
-        margin: 0;
     }
 
     &__item {
@@ -45,6 +47,7 @@
 
         @include media.on-larger-than-mobile {
             border-bottom: 1px solid $color__grey-300;
+
             margin-bottom: 2.5rem;
         }
     }

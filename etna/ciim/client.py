@@ -1,7 +1,6 @@
 import json
 import logging
 import re
-
 from collections.abc import Sequence
 from datetime import date, datetime, time
 from enum import StrEnum
@@ -17,10 +16,9 @@ from typing import (
     Union,
 )
 
+import requests
 from django.utils.functional import cached_property
 from django.utils.timezone import get_current_timezone
-
-import requests
 
 from etna.ciim.constants import Aggregation
 from etna.records.models import Record
@@ -80,7 +78,9 @@ class Template(StrEnum):
     RESULTS = "results"
 
 
-def prepare_filter_aggregations(items: Sequence[str] | None) -> list[str] | None:
+def prepare_filter_aggregations(
+    items: Sequence[str] | None,
+) -> list[str] | None:
     """
     Filter format in items: 'field:value', 'field:value:or'
     Prepares i.e. removes/replaces special chars from a filter fields' value to be passed to the api
@@ -228,7 +228,9 @@ class ClientAPI:
         """
         if not isinstance(value, datetime):
             value = datetime.combine(
-                value, supplementary_time or time.min, tzinfo=get_current_timezone()
+                value,
+                supplementary_time or time.min,
+                tzinfo=get_current_timezone(),
             )
         return value.isoformat()
 

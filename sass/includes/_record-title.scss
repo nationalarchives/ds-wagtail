@@ -6,9 +6,10 @@
     }
 
     &__description {
+        margin: 0;
+
         font-family: $font__supria-sans;
         font-size: 1.25rem;
-        margin: 0;
         @media (max-width: $screen__md) {
             font-size: 1.1rem;
         }

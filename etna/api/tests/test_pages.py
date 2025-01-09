@@ -1,11 +1,9 @@
 import os
 import re
-
 from datetime import datetime, timezone
 
 from wagtail.models import Site
 from wagtail.test.utils import WagtailPageTestCase
-
 from wagtail_factories import ImageFactory
 
 from etna.alerts.models import Alert

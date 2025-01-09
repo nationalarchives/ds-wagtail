@@ -25,10 +25,6 @@ templates/static
 /static/*
 !/static/.gitkeep
 
-# Ignore the contents of /database_dumps but keep the directory
-/database_dumps/*
-!/database_dumps/.gitkeep
-
 # Database backups
 /db/
 

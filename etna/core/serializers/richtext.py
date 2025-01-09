@@ -1,6 +1,5 @@
-from wagtail.rich_text import expand_db_html
-
 from rest_framework import serializers
+from wagtail.rich_text import expand_db_html
 
 
 class RichTextSerializer(serializers.CharField):
