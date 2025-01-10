@@ -87,7 +87,7 @@ web:
       allow: true
       # Apply rules to all static files (dynamic files get rules from your app)
       headers:
-        Access-Control-Allow-Origin: *
+        Access-Control-Allow-Origin: "*"
 
 # The following block defines a single writable directory, 'web/uploads'
 # The 'source' specifies where the writable mount is. The 'local' source
