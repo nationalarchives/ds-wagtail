@@ -114,6 +114,7 @@ MIDDLEWARE = [
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "wagtail.contrib.redirects.middleware.RedirectMiddleware",
     "etna.core.middleware.InterpretCookiesMiddleware",
+    "etna.core.middleware.CorsMiddleware",
 ]
 
 COOKIE_DOMAIN = os.getenv("COOKIE_DOMAIN", "nationalarchives.gov.uk")
