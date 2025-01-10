@@ -87,6 +87,4 @@ if DEBUG and DEBUG_TOOLBAR_ENABLED:
         "SHOW_TOOLBAR_CALLBACK": show_toolbar,
     }
 
-MIDDLEWARE += [
-    "config.middleware.CorsMiddleware",
-]
+MIDDLEWARE += ["config.middleware.CorsMiddleware"]  # noqa: F405

@@ -93,7 +93,4 @@ if email_host:
 
 STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
 
-
-MIDDLEWARE += [
-    "config.middleware.CorsMiddleware",
-]
+MIDDLEWARE += ["config.middleware.CorsMiddleware"]  # noqa: F405
