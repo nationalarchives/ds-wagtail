@@ -55,6 +55,7 @@ services:
     volumes:
       - ./:/app
       - ./dev:/home/app/.local/bin/tasks
+      - /var/run/docker.sock:/var/run/docker.sock:ro
       - media:/media
 
   redis:
