@@ -28,7 +28,7 @@ logger = logging.getLogger(__name__)
 
 class CustomPagesAPIViewSet(PagesAPIViewSet):
     known_query_parameters = PagesAPIViewSet.known_query_parameters.union(
-        ["password", "author", "exclude_aliases"]
+        ["password", "author", "include_aliases"]
     )
 
     def listing_view(self, request):
@@ -47,12 +47,17 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
 
         if "author" in request.GET:
             queryset = queryset.filter(author_tags__author=request.GET["author"])
-
-        if "exclude_aliases" in request.GET:
-            queryset = queryset.exclude(alias_of_id__isnull=False)
+    
 
         self.check_query_parameters(queryset)
         queryset = self.filter_queryset(queryset)
+
+        if "include_aliases" not in request.GET:
+            pages_with_aliases = queryset.filter(aliases__isnull=False).values_list("id", flat=True)
+            queryset = queryset.exclude(alias_of_id__in=pages_with_aliases)
+            original_page_ids = queryset.filter(alias_of_id__isnull=True).values_list("id", flat=True)
+            queryset = queryset.exclude(alias_of_id__in=original_page_ids)
+
         queryset = self.paginate_queryset(queryset)
         serializer = DefaultPageSerializer(queryset, many=True)
         return self.get_paginated_response(serializer.data)
