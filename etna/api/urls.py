@@ -56,18 +56,20 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
             alias_pages = queryset.filter(alias_of_id__isnull=False).values("id", "alias_of_id")
             original_ids = set(queryset.filter(alias_of_id__isnull=True).values_list("id", flat=True))
             alias_ids = set(page["id"] for page in alias_pages)
+            alias_of_ids = alias_pages.values_list("alias_of_id", flat=True)
 
+            # Exclude any pages with matching alias_of_ids - aliases of the same original page
+            for alias_of_id in alias_of_ids:
+                alias_pages_with_same_id = alias_pages.filter(alias_of_id=alias_of_id)
+                if alias_pages_with_same_id.count() > 1:
+                    first_page_id = alias_pages_with_same_id.order_by("depth").first()["id"]
+                    queryset = queryset.exclude(id__in=alias_pages_with_same_id.values_list("id", flat=True).exclude(id=first_page_id))
+
+            # Exclude any pages that are aliases of pages in the current queryset
             for page in alias_pages:
                 if page["alias_of_id"] in original_ids or page["alias_of_id"] in alias_ids:
                     queryset = queryset.exclude(id=page["id"])
-
-            # TODO: Remove aliases if an alias already exists, but original ID not in
-            # queryset. e.g. page ID 1 exists somewhere on the site, and page 2
-            # and 3 are aliases of this. 2 and 3 are then in the queryset, but 1 isn't
-            # so the pages aren't compared because they're "different pages" albeit the same
-            # page (copies of).
             
-
         queryset = self.paginate_queryset(queryset)
         serializer = DefaultPageSerializer(queryset, many=True)
         return self.get_paginated_response(serializer.data)
