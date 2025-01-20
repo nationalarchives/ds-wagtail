@@ -26,7 +26,7 @@ e.g. `x.1.z` -> `x.2.z` or `1.y.z` -> `2.y.z`
 docker compose exec dev poetry add tna-frontend-jinja=0.5.0
 
 # Update the tna-frontend package to 0.5.0 in npm
-npm i @nationalarchives/frontend@0.5.0
+docker compose exec dev /bin/bash -c ". tna-nvm && npm i @nationalarchives/frontend@0.8.0"
 
 # After installing, rebuild the app container
 docker compose up --build -d app
@@ -41,7 +41,7 @@ See the [Poetry docs](https://python-poetry.org/docs/cli/#add) for more options.
 docker compose exec dev poetry remove pendulum
 
 # Remove the jquery package
-npm remove jquery
+docker compose exec dev /bin/bash -c ". tna-nvm && npm remove jquery"
 
 # After removing, rebuild the app container
 docker compose up --build -d app

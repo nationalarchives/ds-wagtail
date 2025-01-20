@@ -76,6 +76,7 @@ class BlogPostPage(
     content_panels = (
         BasePageWithRequiredIntro.content_panels
         + HeroImageMixin.content_panels
+        + ContentWarningMixin.content_panels
         + [
             FieldPanel("body"),
         ]

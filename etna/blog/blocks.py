@@ -17,6 +17,7 @@ from etna.core.blocks import (
     YouTubeBlock,
 )
 from etna.media.blocks import MediaBlock
+from etna.records.blocks import RecordLinksBlock
 
 
 class SectionContentBlock(blocks.StreamBlock):
@@ -31,6 +32,7 @@ class SectionContentBlock(blocks.StreamBlock):
     media = MediaBlock()
     paragraph = ParagraphBlock()
     quote = QuoteBlock()
+    record = RecordLinksBlock()
     sub_heading = SubHeadingBlock()
     table = ContentTableBlock()
     youtube_video = YouTubeBlock()
