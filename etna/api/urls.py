@@ -28,7 +28,7 @@ logger = logging.getLogger(__name__)
 
 class CustomPagesAPIViewSet(PagesAPIViewSet):
     known_query_parameters = PagesAPIViewSet.known_query_parameters.union(
-        ["password", "author"]
+        ["password", "author", "include_aliases"]
     )
 
     def listing_view(self, request):
@@ -50,6 +50,38 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
 
         self.check_query_parameters(queryset)
         queryset = self.filter_queryset(queryset)
+
+        if "include_aliases" not in request.GET:
+            alias_pages = queryset.filter(alias_of_id__isnull=False).values(
+                "id", "alias_of_id"
+            )
+            original_ids = set(
+                queryset.filter(alias_of_id__isnull=True).values_list("id", flat=True)
+            )
+            alias_ids = set(page["id"] for page in alias_pages)
+            alias_of_ids = alias_pages.values_list("alias_of_id", flat=True)
+
+            # Exclude any pages with matching alias_of_ids - aliases of the same original page
+            for alias_of_id in alias_of_ids:
+                alias_pages_with_same_id = alias_pages.filter(alias_of_id=alias_of_id)
+                if alias_pages_with_same_id.count() > 1:
+                    first_page_id = alias_pages_with_same_id.order_by("depth").first()[
+                        "id"
+                    ]
+                    queryset = queryset.exclude(
+                        id__in=alias_pages_with_same_id.values_list(
+                            "id", flat=True
+                        ).exclude(id=first_page_id)
+                    )
+
+            # Exclude any pages that are aliases of pages in the current queryset
+            for page in alias_pages:
+                if (
+                    page["alias_of_id"] in original_ids
+                    or page["alias_of_id"] in alias_ids
+                ):
+                    queryset = queryset.exclude(id=page["id"])
+
         queryset = self.paginate_queryset(queryset)
         serializer = DefaultPageSerializer(queryset, many=True)
         return self.get_paginated_response(serializer.data)
