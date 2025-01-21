@@ -1,3 +1,4 @@
+from django.db import models
 from wagtail.admin.panels import FieldPanel
 from wagtail.api import APIField
 from wagtail.fields import StreamField
@@ -35,6 +36,13 @@ class BlogPage(HeroImageMixin, BasePageWithRequiredIntro):
     blogs within this blog.
     """
 
+    chip_override = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True,
+        help_text="Override the chip for child blog posts. If left blank, the chip will be the title of the blog.",
+    )
+
     parent_page_types = [
         "blog.BlogIndexPage",
         "blog.BlogPage",
@@ -49,7 +57,9 @@ class BlogPage(HeroImageMixin, BasePageWithRequiredIntro):
         BasePageWithRequiredIntro.content_panels + HeroImageMixin.content_panels
     )
 
-    promote_panels = BasePageWithRequiredIntro.promote_panels
+    promote_panels = BasePageWithRequiredIntro.promote_panels + [
+        FieldPanel("chip_override"),
+    ]
 
     api_fields = BasePageWithRequiredIntro.api_fields + HeroImageMixin.api_fields
 
