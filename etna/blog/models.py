@@ -80,12 +80,12 @@ class BlogPostPage(
         Overrides the type_label method from BasePage, to return the correct
         type label for the blog post page.
         """
-        if parent := cls.get_parent():
-            print(parent.get_parent().specific_class)
-            if parent.get_parent().specific_class == BlogPage:
-                return parent.get_parent().title
-            return parent.title
-        return "Blog post"
+        parent = cls.get_parent()
+        if not parent:
+            return "Blog post"
+        while parent.get_parent().specific_class == BlogPage:
+            parent = parent.get_parent()
+        return parent.title
 
     content_panels = (
         BasePageWithRequiredIntro.content_panels
