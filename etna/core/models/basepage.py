@@ -24,6 +24,7 @@ from etna.core.cache_control import (
     apply_default_vary_headers,
 )
 from etna.core.serializers import (
+    AliasOfSerializer,
     ImageSerializer,
     MourningSerializer,
     RichTextSerializer,
@@ -162,6 +163,7 @@ class BasePage(AlertMixin, SocialMixin, DataLayerMixin, HeadlessPreviewMixin, Pa
             "teaser_image",
             serializer=ImageSerializer("fill-600x400"),
         ),
+        APIField("alias_of", serializer=AliasOfSerializer()),
     ] + SocialMixin.api_meta_fields
 
 
