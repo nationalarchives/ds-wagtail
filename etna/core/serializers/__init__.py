@@ -1,10 +1,11 @@
 from .date import DateTimeSerializer
 from .images import DetailedImageSerializer, HighlightImageSerializer, ImageSerializer
-from .pages import DefaultPageSerializer, SimplePageSerializer
+from .pages import AliasOfSerializer, DefaultPageSerializer, SimplePageSerializer
 from .richtext import RichTextSerializer
 from .tags import MourningSerializer, TaggableSerializer
 
 __all__ = [
+    "AliasOfSerializer",
     "DateTimeSerializer",
     "DefaultPageSerializer",
     "SimplePageSerializer",
