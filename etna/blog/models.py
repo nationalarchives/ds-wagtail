@@ -1,4 +1,6 @@
 from django.db import models
+from django.utils.functional import cached_property
+
 from wagtail.admin.panels import FieldPanel
 from wagtail.api import APIField
 from wagtail.fields import StreamField
@@ -82,6 +84,19 @@ class BlogPostPage(
     body = StreamField(
         BlogPostPageStreamBlock(),
     )
+
+    @cached_property
+    def type_label(cls) -> str:
+        """
+        Overrides the type_label method from BasePage, to return the correct
+        type label for the blog post page.
+        """
+        parent = cls.get_parent()
+        if not parent:
+            return "Blog post"
+        while parent.get_parent().specific_class == BlogPage:
+            parent = parent.get_parent()
+        return parent.title
 
     content_panels = (
         BasePageWithRequiredIntro.content_panels
