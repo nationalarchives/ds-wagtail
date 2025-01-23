@@ -37,11 +37,12 @@ class BlogPage(HeroImageMixin, BasePageWithRequiredIntro):
     blogs within this blog.
     """
 
-    chip_override = models.CharField(
+    custom_type_label = models.CharField(
         max_length=255,
         blank=True,
         null=True,
         help_text="Override the chip for child blog posts. If left blank, the chip will be the title of the blog.",
+        verbose_name="Chip override",
     )
 
     parent_page_types = [
@@ -59,13 +60,13 @@ class BlogPage(HeroImageMixin, BasePageWithRequiredIntro):
     )
 
     promote_panels = BasePageWithRequiredIntro.promote_panels + [
-        FieldPanel("chip_override"),
+        FieldPanel("custom_type_label"),
     ]
 
     api_fields = (
         BasePageWithRequiredIntro.api_fields
         + HeroImageMixin.api_fields
-        + [APIField("chip_override")]
+        + [APIField("custom_type_label")]
     )
 
 
@@ -97,8 +98,8 @@ class BlogPostPage(
         top_level = cls.get_ancestors().type(BlogPage).first().specific
         if not top_level:
             return "Blog post"
-        if top_level.chip_override:
-            return top_level.chip_override
+        if top_level.custom_type_label:
+            return top_level.custom_type_label
         return top_level.title
 
     content_panels = (
