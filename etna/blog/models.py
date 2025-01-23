@@ -62,7 +62,11 @@ class BlogPage(HeroImageMixin, BasePageWithRequiredIntro):
         FieldPanel("chip_override"),
     ]
 
-    api_fields = BasePageWithRequiredIntro.api_fields + HeroImageMixin.api_fields
+    api_fields = (
+        BasePageWithRequiredIntro.api_fields
+        + HeroImageMixin.api_fields
+        + [APIField("chip_override")]
+    )
 
 
 class BlogPostPage(
