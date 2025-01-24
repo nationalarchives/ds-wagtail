@@ -309,7 +309,9 @@ class BlogsAPIViewSet(CustomPagesAPIViewSet):
             queryset = queryset.not_descendant_of(blog, inclusive=False)
             blog_posts = BlogPostPage.objects.all().live().descendant_of(blog).count()
             blog_post_counts[blog.id] = blog_posts
-        serializer = DefaultPageSerializer(queryset, many=True)
+        serializer = DefaultPageSerializer(
+            queryset, required_api_fields=["custom_type_label"], many=True
+        )
         blogs = sorted(serializer.data, key=lambda x: x["title"])
         blogs = [blog | {"posts": blog_post_counts[blog["id"]]} for blog in blogs]
         top_level_queryset = BlogIndexPage.objects.all().live()
