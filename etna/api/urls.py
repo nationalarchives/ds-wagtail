@@ -45,7 +45,7 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
         for restricted_page in restricted_pages:
             queryset = queryset.not_descendant_of(restricted_page, inclusive=True)
 
-        if "author" in request.GET:
+        if "author" in request.GET and request.GET["author"]:
             queryset = queryset.filter(author_tags__author=request.GET["author"])
 
         self.check_query_parameters(queryset)
