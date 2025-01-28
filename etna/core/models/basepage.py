@@ -161,6 +161,7 @@ class BasePage(AlertMixin, SocialMixin, DataLayerMixin, HeadlessPreviewMixin, Pa
     default_api_fields = [
         APIField("id"),
         APIField("title"),
+        APIField("short_title"),
         APIField("url"),
         APIField("full_url"),
         APIField("type_label"),
@@ -178,6 +179,7 @@ class BasePage(AlertMixin, SocialMixin, DataLayerMixin, HeadlessPreviewMixin, Pa
     ]
 
     api_meta_fields = [
+        APIField("short_title"),
         APIField("teaser_text"),
         APIField(
             "teaser_image",
