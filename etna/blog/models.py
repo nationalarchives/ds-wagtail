@@ -38,7 +38,7 @@ class BlogPage(HeroImageMixin, BasePageWithRequiredIntro):
     """
 
     custom_type_label = models.CharField(
-        max_length=255,
+        max_length=20,
         blank=True,
         null=True,
         help_text="Override the chip for child blog posts. If left blank, the chip will be the title of the blog.",
