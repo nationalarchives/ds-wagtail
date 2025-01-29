@@ -23,6 +23,7 @@
         "last_published_at": "2000-01-01T00:00:00Z",
         "url": "/people/author/",
         "depth": 4,
+        "short_title": null,
         "teaser_text": "Teaser text",
         "teaser_image": {
             "id": 10,
@@ -121,6 +122,7 @@
         {
             "id": FOCUSED_ID,
             "title": "focused_article",
+            "short_title": null,
             "url": "/article_index/focused_article/",
             "full_url": "http://localhost/article_index/focused_article/",
             "type_label": "Focus on",
