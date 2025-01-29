@@ -1,3 +1,4 @@
+from django.db import models
 from django.utils.functional import cached_property
 from wagtail.admin.panels import FieldPanel
 from wagtail.api import APIField
@@ -36,6 +37,14 @@ class BlogPage(HeroImageMixin, BasePageWithRequiredIntro):
     blogs within this blog.
     """
 
+    custom_type_label = models.CharField(
+        max_length=20,
+        blank=True,
+        null=True,
+        help_text="Override the chip for child blog posts. If left blank, the chip will be the title of the blog.",
+        verbose_name="Chip override",
+    )
+
     parent_page_types = [
         "blog.BlogIndexPage",
         "blog.BlogPage",
@@ -50,9 +59,15 @@ class BlogPage(HeroImageMixin, BasePageWithRequiredIntro):
         BasePageWithRequiredIntro.content_panels + HeroImageMixin.content_panels
     )
 
-    promote_panels = BasePageWithRequiredIntro.promote_panels
+    promote_panels = BasePageWithRequiredIntro.promote_panels + [
+        FieldPanel("custom_type_label"),
+    ]
 
-    api_fields = BasePageWithRequiredIntro.api_fields + HeroImageMixin.api_fields
+    api_fields = (
+        BasePageWithRequiredIntro.api_fields
+        + HeroImageMixin.api_fields
+        + [APIField("custom_type_label")]
+    )
 
 
 class BlogPostPage(
@@ -80,12 +95,12 @@ class BlogPostPage(
         Overrides the type_label method from BasePage, to return the correct
         type label for the blog post page.
         """
-        parent = cls.get_parent()
-        if not parent:
+        top_level = cls.get_ancestors().type(BlogPage).first().specific
+        if not top_level:
             return "Blog post"
-        while parent.get_parent().specific_class == BlogPage:
-            parent = parent.get_parent()
-        return parent.title
+        if top_level.custom_type_label:
+            return top_level.custom_type_label
+        return top_level.title
 
     content_panels = (
         BasePageWithRequiredIntro.content_panels
