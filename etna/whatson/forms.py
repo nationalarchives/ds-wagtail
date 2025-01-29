@@ -14,5 +14,4 @@ class EventPageForm(WagtailAdminPageForm):
         self.fields["lead_image"].required = True
         self.fields["event_type"].required = True
         self.fields["venue_type"].required = True
-        self.fields["short_title"].required = True
         self.fields["event_type"].required = True
