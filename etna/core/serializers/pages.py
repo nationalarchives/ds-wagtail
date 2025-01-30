@@ -83,3 +83,16 @@ class SimplePageSerializer(serializers.Serializer):
             "url": instance.url,
             "full_url": instance.full_url,
         }
+
+
+class AliasOfSerializer(serializers.Serializer):
+    """
+    A serializer used to override the default representation of an alias page,
+    to include information that can decide is necessary for the front-end.
+    """
+
+    def to_representation(self, instance):
+        return {
+            "id": instance.id,
+            "url": instance.url,
+        }

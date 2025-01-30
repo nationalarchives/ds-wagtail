@@ -25,6 +25,7 @@ from wagtail.snippets.models import register_snippet
 from etna.articles.models import ArticleTagMixin
 from etna.collections.models import TopicalPageMixin
 from etna.core.blocks import (
+    ContentImageBlock,
     FeaturedExternalLinkBlock,
     FeaturedPagesBlock,
     ImageGalleryBlock,
@@ -781,11 +782,13 @@ class ExhibitionPage(
     start_date = models.DateField(
         verbose_name=_("start date"),
         null=True,
+        blank=True,
     )
 
     end_date = models.DateField(
         verbose_name=_("end date"),
         null=True,
+        blank=True,
     )
 
     exclude_days = models.BooleanField(
@@ -837,23 +840,32 @@ class ExhibitionPage(
         help_text=_("The location of the exhibition within the venue."),
     )
 
-    location_link_text = models.CharField(
-        verbose_name=_("location link text"),
+    location_address = RichTextField(
+        verbose_name=_("location address"),
         null=True,
-        help_text=_("The text for the location section."),
-    )
-
-    location_link_url = models.URLField(
-        max_length=255,
-        verbose_name=_("location link URL"),
-        null=True,
-        help_text=_("The URL for the location section."),
+        blank=True,
+        help_text=_("Leave blank to default to TNA address."),
+        features=["link"],
     )
 
     # Body section
+    intro_title = models.CharField(
+        max_length=100,
+        verbose_name=_("intro title"),
+        blank=True,
+        help_text=_(
+            "Only used in jump links. Does not appear on page. Leave blank to default to 'About [Page title]'."
+        ),
+    )
+
     body = StreamField(ExhibitionPageStreamBlock, blank=True, null=True)
 
-    # email_signup = ...
+    exhibition_highlights_title = models.CharField(
+        max_length=100,
+        verbose_name=_("exhibition highlights title"),
+        blank=True,
+        help_text=_("Leave blank to default to 'Exhibition highlights'."),
+    )
 
     exhibition_highlights = StreamField(
         [("exhibition_highlights", ImageGalleryBlock())],
@@ -865,6 +877,13 @@ class ExhibitionPage(
         [("review", ReviewBlock())],
         blank=True,
         max_num=1,
+    )
+
+    video_title = models.CharField(
+        max_length=100,
+        verbose_name=_("video title"),
+        blank=True,
+        help_text=_("The title of the video section."),
     )
 
     video = StreamField(
@@ -920,6 +939,19 @@ class ExhibitionPage(
     )
 
     # Plan your visit section
+    plan_your_visit_title = models.CharField(
+        max_length=100,
+        blank=True,
+        help_text=_("Leave blank to default to 'Plan your visit'."),
+    )
+
+    plan_your_visit_image = StreamField(
+        [("image", ContentImageBlock())],
+        blank=True,
+        null=True,
+        max_num=1,
+    )
+
     plan_your_visit = StreamField(
         [("plan_your_visit", blocks.ListBlock(SimplifiedAccordionBlock()))],
         blank=True,
@@ -958,11 +990,13 @@ class ExhibitionPage(
         ),
         MultiFieldPanel(
             [
+                FieldPanel("intro_title"),
                 FieldPanel("intro"),
                 FieldPanel("body"),
-                # FieldPanel("email_signup"),
+                FieldPanel("exhibition_highlights_title"),
                 FieldPanel("exhibition_highlights"),
                 FieldPanel("review"),
+                FieldPanel("video_title"),
                 FieldPanel("video"),
             ],
             heading=_("Content"),
@@ -978,7 +1012,14 @@ class ExhibitionPage(
             ],
             heading=_("Related content"),
         ),
-        FieldPanel("plan_your_visit"),
+        MultiFieldPanel(
+            [
+                FieldPanel("plan_your_visit_title"),
+                FieldPanel("plan_your_visit_image"),
+                FieldPanel("plan_your_visit"),
+            ],
+            heading=_("Plan your visit"),
+        ),
     ]
 
     key_details_panels = [
@@ -1012,8 +1053,7 @@ class ExhibitionPage(
         MultiFieldPanel(
             [
                 FieldPanel("location_space_name"),
-                FieldPanel("location_link_text"),
-                FieldPanel("location_link_url"),
+                FieldPanel("location_address"),
             ],
             heading=_("Location details"),
         ),
@@ -1049,12 +1089,13 @@ class ExhibitionPage(
             APIField("audience_heading"),
             APIField("audience_detail"),
             APIField("location_space_name"),
-            APIField("location_link_text"),
-            APIField("location_link_url"),
+            APIField("location_address", serializer=RichTextSerializer()),
+            APIField("intro_title"),
             APIField("body"),
-            # APIField("email_signup"),
+            APIField("exhibition_highlights_title"),
             APIField("exhibition_highlights"),
             APIField("review"),
+            APIField("video_title"),
             APIField("video"),
             APIField("related_pages_title"),
             APIField("featured_page", serializer=DefaultPageSerializer()),
@@ -1062,6 +1103,8 @@ class ExhibitionPage(
             APIField("event_title"),
             APIField("event_links"),
             APIField("shop"),
+            APIField("plan_your_visit_title"),
+            APIField("plan_your_visit_image"),
             APIField("plan_your_visit"),
         ]
         + TopicalPageMixin.api_fields
@@ -1106,4 +1149,12 @@ class ExhibitionPage(
                         "end_date": _("The end date must be after the start date."),
                     }
                 )
+        if self.video and not self.video_title:
+            raise ValidationError(
+                {
+                    "video_title": _(
+                        "The video title is required if a video is added."
+                    ),
+                }
+            )
         return super().clean()

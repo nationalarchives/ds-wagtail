@@ -300,8 +300,8 @@ class APIResponseTest(WagtailPageTestCase):
         cls.article.body = cls.BODY_JSON
         cls.article.save()
 
-        cls.focused_article.tags.add(cls.witchcraft)
         cls.focused_article.tags.add(cls.medicine)
+        cls.focused_article.tags.add(cls.witchcraft)
         cls.focused_article.save()
 
         cls.article_index.featured_article = cls.article

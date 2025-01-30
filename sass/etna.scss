@@ -208,6 +208,7 @@ Modified to match the existing site (for now)
 
     &__figure {
         overflow: hidden;
+
         &--smaller {
             min-height: 20vw;
         }
@@ -465,8 +466,10 @@ Modified to match the existing site (for now)
         display: flex;
         flex-direction: column;
         gap: 16px;
-    position: relative;
+
+        position: relative;
     }
+
     &__heading--has-highlight {
         max-width: calc(100% - 5.125rem);
     }
