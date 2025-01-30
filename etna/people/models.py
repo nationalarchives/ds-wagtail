@@ -187,8 +187,6 @@ class PersonPage(BasePage):
             .public()
             .filter(pk__in=self.related_page_pks)
             .order_by("-first_published_at")
-            .select_related("teaser_image")
-            .specific
         )
 
     @cached_property
