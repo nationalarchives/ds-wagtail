@@ -63,6 +63,13 @@
     },
     "title": "early_modern",
     "short_title": null,
+    "global_alert": null,
+    "type_label": "Explore the collection",
+    "mourning_notice": {
+        "title": "Test title",
+        "message": "<p>Test message</p>"
+    },
+    "intro": "<p>Intro text</p>",
     "hero_image_caption": "<p>Hero image caption</p>",
     "hero_image": {
         "id": 5,
@@ -106,13 +113,6 @@
         "is_sensitive": false,
         "custom_sensitive_image_warning": null
     },
-    "global_alert": null,
-    "type_label": "Explore the collection",
-    "mourning_notice": {
-        "title": "Test title",
-        "message": "<p>Test message</p>"
-    },
-    "intro": "<p>Intro text</p>",
     "body": [],
     "featured_article": null,
     "related_articles": [
