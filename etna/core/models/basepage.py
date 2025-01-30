@@ -173,13 +173,16 @@ class BasePage(AlertMixin, SocialMixin, DataLayerMixin, HeadlessPreviewMixin, Pa
         APIField("last_published_at"),
     ]
 
-    api_fields = AlertMixin.api_fields + [
-        APIField("type_label"),
-        APIField("mourning_notice", serializer=MourningSerializer()),
-    ]
+    api_fields = (
+        [APIField("short_title")]
+        + AlertMixin.api_fields
+        + [
+            APIField("type_label"),
+            APIField("mourning_notice", serializer=MourningSerializer()),
+        ]
+    )
 
     api_meta_fields = [
-        APIField("short_title"),
         APIField("teaser_text"),
         APIField(
             "teaser_image",
