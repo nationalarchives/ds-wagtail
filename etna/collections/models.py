@@ -297,8 +297,8 @@ class TopicExplorerPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
     ]
 
     api_fields = (
-        RequiredHeroImageMixin.api_fields
-        + BasePageWithRequiredIntro.api_fields
+        BasePageWithRequiredIntro.api_fields
+        + RequiredHeroImageMixin.api_fields
         + [
             APIField("body"),
             APIField(
@@ -514,8 +514,8 @@ class TimePeriodExplorerPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
     )
 
     api_fields = (
-        RequiredHeroImageMixin.api_fields
-        + BasePageWithRequiredIntro.api_fields
+        BasePageWithRequiredIntro.api_fields
+        + RequiredHeroImageMixin.api_fields
         + [
             APIField("body"),
             APIField(
