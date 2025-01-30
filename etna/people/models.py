@@ -172,12 +172,6 @@ class PersonPage(BasePage):
         APIField("summary", serializer=RichTextSerializer()),
         APIField("research_summary"),
         APIField(
-            "authored_focused_articles",
-            serializer=DefaultPageSerializer(
-                required_api_fields=["teaser_image"], many=True
-            ),
-        ),
-        APIField(
             "shop_items",
         ),
     ]
@@ -185,13 +179,14 @@ class PersonPage(BasePage):
     @cached_property
     def authored_focused_articles(self):
         from etna.articles.models import FocusedArticlePage
+        from etna.blog.models import BlogPostPage
 
         return (
-            FocusedArticlePage.objects.live()
+            Page.objects.type(FocusedArticlePage, BlogPostPage)
+            .live()
             .public()
             .filter(pk__in=self.related_page_pks)
             .order_by("-first_published_at")
-            .select_related("teaser_image")
         )
 
     @cached_property
