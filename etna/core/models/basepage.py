@@ -1,6 +1,7 @@
 from typing import Any, Dict
 
 from django.conf import settings
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import options
 from django.http import HttpRequest
@@ -53,6 +54,16 @@ class BasePage(AlertMixin, SocialMixin, DataLayerMixin, HeadlessPreviewMixin, Pa
     functionality can be added here.
     """
 
+    short_title = models.CharField(
+        verbose_name=_("short title"),
+        help_text=_(
+            "A shorter title for use in breadcrumbs and other navigational elements, where applicable."
+        ),
+        max_length=30,
+        blank=True,
+        null=True,
+    )
+
     teaser_text = models.TextField(
         verbose_name=_("teaser text"),
         help_text=_(
@@ -60,6 +71,7 @@ class BasePage(AlertMixin, SocialMixin, DataLayerMixin, HeadlessPreviewMixin, Pa
         ),
         max_length=160,
     )
+
     teaser_image = models.ForeignKey(
         get_image_model_string(),
         null=True,
@@ -88,12 +100,20 @@ class BasePage(AlertMixin, SocialMixin, DataLayerMixin, HeadlessPreviewMixin, Pa
             ],
             _("For search engines"),
         ),
+        FieldPanel("short_title"),
     ] + SocialMixin.promote_panels
 
     settings_panels = Page.settings_panels + AlertMixin.settings_panels
 
     class Meta:
         abstract = True
+
+    def clean(self, *args, **kwargs):
+        if self.short_title and len(self.short_title) > len(self.title):
+            raise ValidationError(
+                {"short_title": ["The short title must not be longer than the title."]}
+            )
+        return super().clean(*args, **kwargs)
 
     @cached_property
     def type_label(cls) -> str:
@@ -141,6 +161,7 @@ class BasePage(AlertMixin, SocialMixin, DataLayerMixin, HeadlessPreviewMixin, Pa
     default_api_fields = [
         APIField("id"),
         APIField("title"),
+        APIField("short_title"),
         APIField("url"),
         APIField("full_url"),
         APIField("type_label"),
@@ -152,10 +173,14 @@ class BasePage(AlertMixin, SocialMixin, DataLayerMixin, HeadlessPreviewMixin, Pa
         APIField("last_published_at"),
     ]
 
-    api_fields = AlertMixin.api_fields + [
-        APIField("type_label"),
-        APIField("mourning_notice", serializer=MourningSerializer()),
-    ]
+    api_fields = (
+        [APIField("short_title")]
+        + AlertMixin.api_fields
+        + [
+            APIField("type_label"),
+            APIField("mourning_notice", serializer=MourningSerializer()),
+        ]
+    )
 
     api_meta_fields = [
         APIField("teaser_text"),

@@ -504,16 +504,6 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithRequiredIntro):
         features=settings.RESTRICTED_RICH_TEXT_FEATURES,
     )
 
-    # Promote tab
-    short_title = models.CharField(
-        max_length=50,
-        verbose_name=_("short title"),
-        blank=True,
-        help_text=_(
-            "A short title for the event. This will be used in the event listings."
-        ),
-    )
-
     # DataLayerMixin overrides
     gtm_content_group = "What's On"
 
@@ -729,9 +719,6 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithRequiredIntro):
 
     promote_panels = (
         BasePageWithRequiredIntro.promote_panels
-        + [
-            FieldPanel("short_title"),
-        ]
         + ArticleTagMixin.promote_panels
         + [
             TopicalPageMixin.get_topics_inlinepanel(),

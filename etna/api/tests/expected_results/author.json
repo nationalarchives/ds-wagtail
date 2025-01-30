@@ -62,6 +62,7 @@
         "twitter_og_image": null
     },
     "title": "author",
+    "short_title": null,
     "global_alert": {
         "title": "BETA",
         "message": "<p>Message</p>",

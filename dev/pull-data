@@ -38,8 +38,11 @@ rm "$DB_DUMP_DIR/$DB_DUMP"
 echo "Starting the app container..."
 docker compose -p ds-wagtail restart app
 
-echo "Running migrations..."
-docker compose -p ds-wagtail exec app poetry run python manage.py migrate
+# echo "Wait for application container to be healthy..."
+# for c in {1..30}; do sleep 1 && curl -s -w '%{http_code}' -o /dev/null http://host.docker.internal:8000/healthcheck/live/ | grep -o "200" && break; done
+
+# echo "Running migrations..."
+# docker compose -p ds-wagtail exec app poetry run python manage.py migrate
 
 echo "Running birdbath..."
 docker compose -p ds-wagtail exec app poetry run python manage.py run_birdbath

@@ -62,6 +62,7 @@
         "twitter_og_image": null
     },
     "title": "article",
+    "short_title": null,
     "global_alert": null,
     "type_label": "The story of",
     "mourning_notice": {
@@ -317,6 +318,7 @@
         {
             "id": FOCUSED_ID,
             "title": "focused_article",
+            "short_title": null,
             "url": "/article_index/focused_article/",
             "full_url": "http://localhost/article_index/focused_article/",
             "type_label": "Focus on",
@@ -346,6 +348,7 @@
         {
             "id": ARTS_ID,
             "title": "arts",
+            "short_title": null,
             "url": "/arts/",
             "full_url": "http://localhost/arts/",
             "type_label": "Explore the collection",
@@ -373,6 +376,7 @@
         {
             "id": EARLY_MODERN_ID,
             "title": "early_modern",
+            "short_title": null,
             "url": "/early_modern/",
             "full_url": "http://localhost/early_modern/",
             "type_label": "Explore the collection",
@@ -398,6 +402,7 @@
         {
             "id": POSTWAR_ID,
             "title": "postwar",
+            "short_title": null,
             "url": "/postwar/",
             "full_url": "http://localhost/postwar/",
             "type_label": "Explore the collection",
