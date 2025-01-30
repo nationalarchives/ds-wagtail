@@ -113,7 +113,7 @@ class PersonPage(BasePage):
     role = models.CharField(max_length=100)
 
     summary = RichTextField(features=settings.RESTRICTED_RICH_TEXT_FEATURES)
-    
+
     research_summary = StreamField(ResearchSummaryStreamBlock, blank=True, null=True)
 
     first_name = models.CharField(
