@@ -23,7 +23,6 @@
         "last_published_at": "2000-01-01T00:00:00Z",
         "url": "/early_modern/",
         "depth": 3,
-        "short_title": null,
         "teaser_text": "Teaser text",
         "teaser_image": {
             "id": 4,
@@ -63,6 +62,7 @@
         "twitter_og_image": null
     },
     "title": "early_modern",
+    "short_title": null,
     "hero_image_caption": "<p>Hero image caption</p>",
     "hero_image": {
         "id": 5,

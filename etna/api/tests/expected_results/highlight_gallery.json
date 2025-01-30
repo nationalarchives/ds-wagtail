@@ -23,7 +23,6 @@
         "last_published_at": "2000-01-03T00:00:00Z",
         "url": "/arts/highlight_gallery/",
         "depth": 4,
-        "short_title": null,
         "teaser_text": "Teaser text",
         "teaser_image": {
             "id": 16,
@@ -63,6 +62,7 @@
         "twitter_og_image": null
     },
     "title": "highlight_gallery",
+    "short_title": null,
     "global_alert": null,
     "type_label": "In pictures",
     "mourning_notice": {

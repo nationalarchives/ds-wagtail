@@ -23,7 +23,6 @@
         "last_published_at": null,
         "url": "/people/",
         "depth": 3,
-        "short_title": null,
         "teaser_text": "Teaser text",
         "teaser_image": {
             "id": 8,
@@ -63,6 +62,7 @@
         "twitter_og_image": null
     },
     "title": "people",
+    "short_title": null,
     "global_alert": {
         "title": "BETA",
         "message": "<p>Message</p>",
