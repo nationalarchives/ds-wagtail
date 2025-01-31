@@ -299,7 +299,6 @@ class ClientAPI:
 
         # Convert the HTTP response to a Python dict
         response_data = self.decode_json_response(response)
-        print(f"response_data....{response_data}")
 
         # Convert the Python dict to a ResultList
         result_list = self.resultlist_from_response(response_data)
@@ -601,11 +600,8 @@ class ClientAPI:
     def decode_json_response(self, response):
         """Returns decoded JSON data using the built-in json decoder"""
         try:
-            print(f"decode_json_response............................1")
             return response.json()
-            print(f"decode_json_response............................2")
         except ValueError as e:
-            print(f"decode_json_response............................Error")
             # log exception value with response body
             logger.warning(f"{str(e)}:Response body:{response.text}")
             # suppress double exception raising, keeping original exception available
