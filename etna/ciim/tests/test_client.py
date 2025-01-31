@@ -1192,14 +1192,14 @@ class DecodeJSONResponseTest(SimpleTestCase):
             content_type="application/json",
         )
 
-        with self.assertLogs("etna.ciim.client", level="WARNING") as lc:
+        with self.assertLogs("etna.ciim.client", level="ERROR") as lc:
             with self.assertRaisesMessage(
                 Exception, "Expecting value: line 1 column 1 (char 0)"
             ):
                 self.records_client.fetch()
             
         self.assertIn(
-            "WARNING:etna.ciim.client:"
+            "ERROR:etna.ciim.client:"
             "Expecting value: line 1 column 1 (char 0):"
             "Response body:",
             lc.output,
@@ -1216,14 +1216,14 @@ class DecodeJSONResponseTest(SimpleTestCase):
             content_type="application/json",
         )
 
-        with self.assertLogs("etna.ciim.client", level="WARNING") as lc:
+        with self.assertLogs("etna.ciim.client", level="ERROR") as lc:
             with self.assertRaisesMessage(
                 Exception, "Expecting value: line 1 column 1 (char 0)"
             ):
                 self.records_client.search()
             
         self.assertIn(
-            "WARNING:etna.ciim.client:"
+            "ERROR:etna.ciim.client:"
             "Expecting value: line 1 column 1 (char 0):"
             "Response body:",
             lc.output,

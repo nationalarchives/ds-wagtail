@@ -603,7 +603,7 @@ class ClientAPI:
             return response.json()
         except ValueError as e:
             # log exception value with response body
-            logger.warning(f"{str(e)}:Response body:{response.text}")
+            logger.error(f"{str(e)}:Response body:{response.text}")
             # suppress double exception raising, keeping original exception available
             raise Exception(e) from None
 
