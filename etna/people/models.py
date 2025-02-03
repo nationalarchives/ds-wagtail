@@ -109,7 +109,9 @@ class PersonPage(BasePage):
         on_delete=models.SET_NULL,
         related_name="+",
     )
+
     role = models.CharField(max_length=100)
+
     summary = RichTextField(features=settings.RESTRICTED_RICH_TEXT_FEATURES)
 
     research_summary = StreamField(ResearchSummaryStreamBlock, blank=True, null=True)
