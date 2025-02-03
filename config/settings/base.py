@@ -21,7 +21,7 @@ from .util import strtobool
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR = os.path.dirname(PROJECT_DIR)
-WAGTAILAPI_BASE_URL = os.getenv("WAGTAILAPI_BASE_URL", "http://host.docker.internal:8000")
+WAGTAILAPI_BASE_URL = os.getenv("WAGTAILAPI_BASE_URL", "")
 WAGTAIL_HEADLESS_PREVIEW = {
     "CLIENT_URLS": {
         "default": os.getenv("WAGTAILADMIN_HEADLESS_PREVIEW_URL", "{SITE_ROOT_URL}"),
