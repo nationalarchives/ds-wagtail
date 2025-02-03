@@ -39,7 +39,6 @@ jobs:
       DATABASE_PASSWORD: postgres
       DATABASE_HOST: localhost
       DATABASE_PORT: 5432
-      WAGTAILAPI_BASE_URL: http://host.docker.internal:8000
     services:
       postgres:
         image: postgres:16.0

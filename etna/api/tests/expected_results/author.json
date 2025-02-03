@@ -2,7 +2,7 @@
     "id": AUTHOR_ID,
     "meta": {
         "type": "people.PersonPage",
-        "detail_url": "/api/v2/pages/AUTHOR_ID/",
+        "detail_url": "WAGTAILAPI_BASE_URL/api/v2/pages/AUTHOR_ID/",
         "html_url": "http://localhost/people/author/",
         "slug": "author",
         "show_in_menus": false,
@@ -14,7 +14,7 @@
             "id": AUTHOR_INDEX_ID,
             "meta": {
                 "type": "people.PeopleIndexPage",
-                "detail_url": "/api/v2/pages/AUTHOR_INDEX_ID/",
+                "detail_url": "WAGTAILAPI_BASE_URL/api/v2/pages/AUTHOR_INDEX_ID/",
                 "html_url": "http://localhost/people/"
             },
             "title": "people"
