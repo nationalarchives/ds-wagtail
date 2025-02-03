@@ -298,7 +298,7 @@ class ClientAPI:
         response = self.make_request(f"{self.base_url}/fetch", params=params)
 
         # Convert the HTTP response to a Python dict
-        response_data = response.json()
+        response_data = self.decode_json_response(response)
 
         # Convert the Python dict to a ResultList
         result_list = self.resultlist_from_response(response_data)
@@ -399,7 +399,7 @@ class ClientAPI:
         response = self.make_request(f"{self.base_url}/search", params=params)
 
         # Convert the HTTP response to a Python dict
-        response_data = response.json()
+        response_data = self.decode_json_response(response)
 
         # Pull out the separate ES responses
         bucket_counts_data, results_data = response_data["responses"]
@@ -457,7 +457,7 @@ class ClientAPI:
         response = self.make_request(f"{self.base_url}/searchAll", params=params)
 
         # Convert the HTTP response to a Python dict
-        response_data = response.json()
+        response_data = self.decode_json_response(response)
 
         # The API returns a series of ES 'responses', with results for each 'bucket'.
         # Each of these responses is converted to it's own `ResultList`, and the collective
@@ -521,7 +521,7 @@ class ClientAPI:
         response = self.make_request(f"{self.base_url}/searchUnified", params=params)
 
         # Convert the HTTP response to a Python dict
-        response_data = response.json()
+        response_data = self.decode_json_response(response)
 
         # The API returns a single ES response for this endpoint, which can be directly converted
         # to a ResultList.
@@ -570,7 +570,7 @@ class ClientAPI:
         response = self.make_request(f"{self.base_url}/fetchAll", params=params)
 
         # Convert the HTTP response to a Python dict
-        response_data = response.json()
+        response_data = self.decode_json_response(response)
 
         # The API returns a single ES response for this endpoint, which can be directly converted
         # to a ResultList.
@@ -596,6 +596,16 @@ class ClientAPI:
         response = self.session.get(url, params=params, timeout=self.timeout)
         self._raise_for_status(response)
         return response
+
+    def decode_json_response(self, response):
+        """Returns decoded JSON data using the built-in json decoder"""
+        try:
+            return response.json()
+        except ValueError as e:
+            # log exception value with response body
+            logger.error(f"{str(e)}:Response body:{response.text}")
+            # suppress double exception raising, keeping original exception available
+            raise Exception(e) from None
 
     def _raise_for_status(self, response: requests.Response) -> None:
         """Raise custom error for any requests.HTTPError raised for a request.
