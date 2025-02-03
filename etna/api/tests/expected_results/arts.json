@@ -2,7 +2,7 @@
     "id": ARTS_ID,
     "meta": {
         "type": "collections.TopicExplorerPage",
-        "detail_url": "/api/v2/pages/ARTS_ID/",
+        "detail_url": "WAGTAILAPI_BASE_URL/api/v2/pages/ARTS_ID/",
         "html_url": "http://localhost/arts/",
         "slug": "arts",
         "show_in_menus": false,
@@ -14,7 +14,7 @@
             "id": 3,
             "meta": {
                 "type": "home.HomePage",
-                "detail_url": "/api/v2/pages/3/",
+                "detail_url": "WAGTAILAPI_BASE_URL/api/v2/pages/3/",
                 "html_url": "http://localhost/"
             },
             "title": "Home"

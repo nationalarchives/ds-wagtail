@@ -2,7 +2,7 @@
     "id": ARTICLE_ID,
     "meta": {
         "type": "articles.ArticlePage",
-        "detail_url": "/api/v2/pages/ARTICLE_ID/",
+        "detail_url": "WAGTAILAPI_BASE_URL/api/v2/pages/ARTICLE_ID/",
         "html_url": "http://localhost/article_index/article/",
         "slug": "article",
         "show_in_menus": false,
@@ -14,7 +14,7 @@
             "id": ARTICLE_INDEX_ID,
             "meta": {
                 "type": "articles.ArticleIndexPage",
-                "detail_url": "/api/v2/pages/ARTICLE_INDEX_ID/",
+                "detail_url": "WAGTAILAPI_BASE_URL/api/v2/pages/ARTICLE_INDEX_ID/",
                 "html_url": "http://localhost/article_index/"
             },
             "title": "article_index"

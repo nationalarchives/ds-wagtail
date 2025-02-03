@@ -2,7 +2,7 @@
     "id": EARLY_MODERN_ID,
     "meta": {
         "type": "collections.TimePeriodExplorerPage",
-        "detail_url": "/api/v2/pages/EARLY_MODERN_ID/",
+        "detail_url": "WAGTAILAPI_BASE_URL/api/v2/pages/EARLY_MODERN_ID/",
         "html_url": "http://localhost/early_modern/",
         "slug": "early_modern",
         "show_in_menus": false,
@@ -14,7 +14,7 @@
             "id": 3,
             "meta": {
                 "type": "home.HomePage",
-                "detail_url": "/api/v2/pages/3/",
+                "detail_url": "WAGTAILAPI_BASE_URL/api/v2/pages/3/",
                 "html_url": "http://localhost/"
             },
             "title": "Home"
