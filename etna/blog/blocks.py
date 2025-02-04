@@ -32,7 +32,7 @@ class SectionContentBlock(blocks.StreamBlock):
     media = MediaBlock()
     paragraph = ParagraphBlock()
     quote = QuoteBlock()
-    record = RecordLinksBlock()
+    record_links = RecordLinksBlock()
     sub_heading = SubHeadingBlock()
     table = ContentTableBlock()
     youtube_video = YouTubeBlock()
