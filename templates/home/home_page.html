@@ -1,22 +1,15 @@
 {% extends "base_page.html" %}
 
+{% load static i18n wagtailcore_tags wagtailimages_tags %}
 
-{% load static %}
-{% load i18n %}
 {% block breadcrumb %}
 {% endblock %}
 {% block body_class %}template-homepage{% endblock %}
-{% load wagtailcore_tags %}
-{% load wagtailmetadata_tags %}
-{% load wagtailimages_tags %}
-{% block meta_tag %}
-    {% meta_tags %}
-{% endblock %}
-{% block content %}
 
+{% block content %}
     {% include "includes/generic-intro.html" with title=page.title intro=page.intro %}
-    <div class="container pt-2">
-        <div class="row">
+    <div class="tna-container tna-section">
+        <div class="tna-column tna-column--full">
             {% for item in page.body %}
                 {% if item.value.paragraph or item.value.text %}
                     {{item}}
@@ -34,48 +27,6 @@
             {% endfor %}
         </div>
     </div>
-
-    {% if page.featured_article %}
-        {% include "includes/article-spotlight.html" with page=page.featured_article title="Spotlight on" %}
-    {% endif %}
-
-    {% if page.featured_pages %}
-    <div class="container">
-        {% include_block page.featured_pages %}
-    </div>
-    {% endif %}
-
-    <div class="cta-banner-survey no-dots">
-        <div class="container py-3">
-            <div class="row justify-content-md-center text-center">
-                <div class="col-sm-12 col-lg-12">
-                    <a class="tna-button--dark" href="/articles/" rel="noopener noreferrer" target="_blank">Explore stories from the collection</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!--new survey element-->
-    <!--
-    <div class="cta-banner-survey">
-        <div class="container py-3">
-            <div class="row justify-content-md-center text-center">
-
-                <div class="col-sm-12 col-lg-12">
-                    <div class="survey-outline">
-                    <p>How would you rate this page?</p>
-                    <a class="tna-button--dark response-btn" href="https://www.smartsurvey.co.uk/s/SY13JD/" rel="noopener noreferrer" target="_blank">Very helpful</a>
-                    <a class="tna-button--dark response-btn" href="https://www.smartsurvey.co.uk/s/SY13JD/" rel="noopener noreferrer" target="_blank">Could be better</a>
-                    <p><a href="https://www.nationalarchives.gov.uk/contact-us/your-views/" target="_blank">Leave a comment</a></p>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
-    -->
-
-</div>
 {% endblock content %}
 
 {% block extra_js %}

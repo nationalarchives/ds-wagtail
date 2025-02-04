@@ -1,9 +1,11 @@
+/* stylelint-disable -- This will become redundant when the new frontend is added */
+// stylelint-disable no-descending-specificity
 .highlight-gallery-teaser {
     $root: &;
     padding-bottom: 3rem;
-    
-    background-color: $color__yellow_6;
-    
+
+    background-color: $color__cream;
+
     @media screen and (min-width: map-get($grid-breakpoints, "sm")) {
         margin-bottom: 3rem;
     }
@@ -15,69 +17,90 @@
     &__title {
         @include font-size("xxl");
         margin: 0;
-        padding: 3rem 0 1.5rem 0;
-        
+        padding: 3rem 0 1.5rem;
+
         @media (min-width: map-get($grid-breakpoints, "md")) {
-            padding: 5.18rem 0 2.75rem 0;
+            padding: 3rem 0 2.75rem;
         }
 
         &::after {
             content: "";
-            display: block;
-            background-image: url(/static/images/fontawesome-svgs/chevron-right.svg);
-            background-repeat: no-repeat;
-            display: inline-block;
-            top: -50%;
+
             width: 0.75rem;
-            height: 1.25rem;
+            height: 1rem;
             margin-left: 0.5rem;
+
+            display: inline-block;
+
+            top: -50%;
+
+            background-image: url("/static/images/fontawesome-svgs/chevron-right.svg");
+            background-repeat: no-repeat;
         }
     }
-    
-    &__title-link {
-        color: $color__grey-6;
 
-        &:visited{
-            color: $color__grey-8;
+    &__title-link {
+        color: $color__grey-700;
+        text-decoration-thickness: 1px;
+
+        &:visited {
+            color: $color__grey-700;
         }
     }
 
     &__link {
+        color: $color__white;
         text-decoration-color: $color__white;
 
-        &:visited{
-            color: $color__grey-8;
+        &:visited {
+            color: $color__grey-200;
+
+            &:hover {
+                color: $color__white;
+            }
+        }
+
+        &:hover {
+            color: $color__white;
+        }
+
+        &:focus {
+            color: $color__blue;
+
+            outline-color: $color__blue;
         }
     }
 
     &__card {
-        background-color: $color__grey-6;
         text-decoration: none !important;
-        font-family: $font__supria-sans;
+
         list-style: none;
 
-        &:hover,
-        &:focus {            
-            outline: 0.313rem solid #1a67a2 !important;
-        }
+        background-color: $color__grey-700;
     }
 
     &__content {
         margin: 1.25rem;
+
         color: $color__white;
     }
 
     &__text {
         @include font-size("s");
-        line-height: 21px;
-        color: $color__grey-7;
         margin: 0;
+
+        color: $color__grey-400;
+        font-family: $font__body;
+        font-weight: inherit;
+        line-height: 21px;
     }
 
     &__image {
         width: 100%;
         height: auto;
         object-fit: cover;
+
         outline: none;
     }
 }
+// stylelint-enable no-descending-specificity

@@ -1,33 +1,20 @@
+from django.conf import settings
+from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
-
 from wagtail import blocks
 
-
-class TimePeriodBlock(blocks.StructBlock):
-    heading = blocks.CharBlock(max_length=100, default="Explore by time period")
-
-    page = blocks.PageChooserBlock(page_type="collections.TimePeriodExplorerIndexPage")
-
-    class Meta:
-        template = "collections/blocks/time_period_explorer.html"
-        help_text = "Outputs all time period child pages"
-        icon = "th-large"
-
-
-class TopicExplorerBlock(blocks.StructBlock):
-    heading = blocks.CharBlock(max_length=100, default="Explore by topic")
-    page = blocks.PageChooserBlock(page_type="collections.TopicExplorerIndexPage")
-
-    class Meta:
-        template = "collections/blocks/topic_explorer.html"
-        help_text = "Outputs all topic child pages"
-        icon = "th-large"
+from .page_chooser import APIPageChooserBlock
+from .paragraph import APIRichTextBlock
 
 
 class LargeCardLinksBlock(blocks.StructBlock):
-    heading = blocks.CharBlock(max_length=100, default="More to explore")
-    page_1 = blocks.PageChooserBlock(label=_("Link one target"))
-    page_2 = blocks.PageChooserBlock(label=_("Link two target"))
+    heading = blocks.CharBlock(max_length=100, required=False)
+    page_1 = APIPageChooserBlock(
+        label=_("Link one target"), required_api_fields=["teaser_image"]
+    )
+    page_2 = APIPageChooserBlock(
+        label=_("Link two target"), required_api_fields=["teaser_image"]
+    )
 
     class Meta:
         template = "blocks/large_links_block.html"
@@ -44,3 +31,52 @@ class LargeCardLinksBlock(blocks.StructBlock):
             link_pages.append(page_2.specific)
         context["link_pages"] = link_pages
         return context
+
+
+class ButtonBlock(blocks.StructBlock):
+    label = blocks.CharBlock()
+    link = APIPageChooserBlock(required=False)
+    external_link = blocks.URLBlock(required=False)
+    accented = blocks.BooleanBlock(
+        required=False,
+        help_text="Use the accented button style",
+        label="Accented",
+    )
+
+    def clean(self, value):
+        data = super().clean(value)
+
+        if data.get("link") and data.get("external_link"):
+            raise ValidationError(
+                "You must provide either a page link or an external link, not both."
+            )
+        elif not (data.get("link") or data.get("external_link")):
+            raise ValidationError(
+                "You must provide either a page link or an external link."
+            )
+
+        return data
+
+    def get_api_representation(self, value, context=None):
+        representation = {
+            "label": value["label"],
+            "href": value.get("external_link") or value["link"].full_url,
+            "accent": value.get("accented") or False,
+        }
+
+        return representation
+
+    class Meta:
+        icon = "link"
+        label = "Button"
+
+
+class CallToActionBlock(blocks.StructBlock):
+    body = APIRichTextBlock(
+        max_length=100, features=settings.RESTRICTED_RICH_TEXT_FEATURES
+    )
+    button = ButtonBlock()
+
+    class Meta:
+        icon = "link"
+        label = "Call to action"

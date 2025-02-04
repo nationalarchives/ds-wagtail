@@ -1,8 +1,6 @@
 {% extends 'base-images.html' %}
 
-{% load static %}
-{% load datalayer_tags %}
-{% load records_tags %}
+{% load static datalayer_tags records_tags %}
 
 {% block extra_gtm_js %}
     {% image_browse_datalayer as datalayer %}
@@ -17,7 +15,7 @@
     <div class="image-browse">
         <div class="image-browse__header">
             <div class="image-browse__reference_and_count">
-                <h1><strong>{{ page.reference_number }}</strong>
+                <h1 class="tna-heading-xl">{{ page.reference_number }}
                     <span>- {{ images_count }} images</span>
                 </h1>
             </div>

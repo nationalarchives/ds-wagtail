@@ -1,29 +1,21 @@
 {% extends 'base_page.html' %}
-{% load static wagtailcore_tags wagtailmetadata_tags %}
 
-{% block meta_tag %}
-  {% meta_tags %}
-{% endblock %}
+{% load static wagtailcore_tags  %}
+
 {% block content %}
     {% include "includes/generic-intro.html" with title=page.title intro=page.intro %}
 
-    <div class="container mt-4">
-        <div class="row">
+    <div class="tna-container mt-4">
             <h2 class="sr-only">Select a topic</h2>
             <ul class="card-group--list-style-none" data-container-name="select-a-topic" id="analytics-select-a-topic">
-                {% for child in page.topic_explorer_pages %}
-                    {% include 'includes/card-group-secondary-nav.html' with page=child.specific %}
+                {% for child in page.explorer_pages %}
+                    {% include 'includes/card-group-secondary-nav.html' with link_page=child.specific card_type="Navigation" %}
                 {% endfor %}
             </ul>
         </div>
         {% if page.body %}
-            <div class="row">
-                <div class="col-md-12">
-                    {% include_block page.body %}
-                </div>
-            </div>
+            {% include_block page.body %}
         {% endif %}
-    </div>
 {% endblock %}
 
 {% block extra_js %}

@@ -5,19 +5,21 @@
 {% trans "Choose a media item" as  choose_str %}
 {% include "wagtailadmin/shared/header.html" with title=choose_str tabbed=1 merged=1 icon="media" %}
 
-<div class="tab-content">
+<div>
     <section id="search" class="{% if not uploadforms.audio.errors and not uploadforms.video.errors %}active {% endif %}nice-padding">
         <form class="media-search search-bar" action="{% url 'wagtailmedia:chooser' %}" method="GET" novalidate id="analytics-chooser">
             <ul class="fields">
                 {% for field in searchform %}
-                    {% include "wagtailadmin/shared/field_as_li.html" with field=field %}
+                    <li>
+                        {% include "wagtailadmin/shared/field.html" with field=field %}
+                    </li>
                 {% endfor %}
                 {% if collections %}
                     {% include "wagtailadmin/shared/collection_chooser.html" %}
                 {% endif %}
                 {% if popular_tags %}
                     <li class="taglist">
-                        <h3>{% trans 'Popular tags' %}</h3>
+                        <h3 class="tna-heading-l">{% trans 'Popular tags' %}</h3>
                         {% for tag in popular_tags %}
                             <a class="suggested-tag tag" href="{% url 'wagtailmedia:index' %}?tag={{ tag.name|urlencode }}">{{ tag.name }}</a>
                         {% endfor %}

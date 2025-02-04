@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import logging
 import re
-
 from dataclasses import dataclass
 from typing import Any, Dict, Optional, Tuple, Union
 
@@ -11,44 +10,44 @@ from django.http import HttpRequest
 from django.urls import NoReverseMatch, reverse
 from django.utils.functional import cached_property
 from django.utils.safestring import mark_safe
-
 from pyquery import PyQuery as pq
 
-from ..analytics.mixins import DataLayerMixin
-from ..ciim.constants import (
+from etna.analytics.mixins import DataLayerMixin
+from etna.ciim.constants import (
     ARCHIVE_NRA_RECORDS_COLLECTION,
     ARCHIVE_RECORD_CREATORS_COLLECTION,
     TNA_URLS,
 )
-from ..ciim.models import APIModel
-from ..ciim.utils import (
+from etna.ciim.models import APIModel
+from etna.ciim.utils import (
     NOT_PROVIDED,
     ValueExtractionError,
     extract,
+    find,
     find_all,
-    format_description_markup,
     format_link,
     strip_html,
 )
-from ..records.classes import (
+from etna.records.classes import (
     AccessionsInfo,
     ArchiveCollections,
     CollectionInfo,
     ContactInfo,
     FurtherInfo,
 )
+
 from .converters import IAIDConverter
 
 logger = logging.getLogger(__name__)
 
 
 class Record(DataLayerMixin, APIModel):
-    """A 'lazy' data-interaction layer for record data retrieved from the Kong API"""
+    """A 'lazy' data-interaction layer for record data retrieved from the Client API"""
 
     def __init__(self, raw_data: Dict[str, Any]):
         """
         This method recieves the raw JSON data dict recieved from
-        Kong and makes it available to the instance as `self._raw`.
+        Client API and makes it available to the instance as `self._raw`.
         """
         self._raw = raw_data.get("_source") or raw_data
         self.score = raw_data.get("_score")
@@ -90,6 +89,13 @@ class Record(DataLayerMixin, APIModel):
             candidate = self.template["iaid"]
         except KeyError:
             candidate = self.get("@admin.id", default="")
+
+        try:
+            # fallback for Record Creators
+            if not candidate:
+                candidate = self.template["primaryIdentifier"]
+        except KeyError:
+            candidate = ""
 
         if candidate and re.match(IAIDConverter.regex, candidate):
             # value is not guaranteed to be a valid 'iaid', so we must
@@ -153,7 +159,7 @@ class Record(DataLayerMixin, APIModel):
     @cached_property
     def summary_title(self) -> str:
         if raw := self._get_raw_summary_title():
-            return mark_safe(strip_html(raw, preserve_marks=True))
+            return mark_safe(strip_html(raw, preserve_marks=True, ensure_spaces=True))
         return raw
 
     def _get_raw_summary_title(self) -> str:
@@ -167,16 +173,8 @@ class Record(DataLayerMixin, APIModel):
             pass
         return self.get("summary.title", default="")
 
-    @cached_property
-    def url(self) -> str:
-        if self.iaid:
-            try:
-                return reverse(
-                    "details-page-machine-readable", kwargs={"iaid": self.iaid}
-                )
-            except NoReverseMatch:
-                pass
-        if self.reference_number:
+    def get_url(self, use_reference_number: bool = True) -> str:
+        if use_reference_number and self.reference_number:
             try:
                 return reverse(
                     "details-page-human-readable",
@@ -184,9 +182,25 @@ class Record(DataLayerMixin, APIModel):
                 )
             except NoReverseMatch:
                 pass
+        if self.iaid:
+            try:
+                return reverse(
+                    "details-page-machine-readable", kwargs={"iaid": self.iaid}
+                )
+            except NoReverseMatch:
+                pass
+
         if self.has_source_url():
             return self.source_url
         return ""
+
+    @cached_property
+    def url(self) -> str:
+        return self.get_url()
+
+    @cached_property
+    def non_reference_number_url(self) -> str:
+        return self.get_url(use_reference_number=False)
 
     @cached_property
     def is_tna(self):
@@ -216,7 +230,7 @@ class Record(DataLayerMixin, APIModel):
             raw = self.template["arrangement"]
         except KeyError:
             raw = self.get("arrangement.value", default="")
-        return format_description_markup(raw)
+        return mark_safe(raw)
 
     @cached_property
     def legal_status(self) -> str:
@@ -256,7 +270,7 @@ class Record(DataLayerMixin, APIModel):
         will be left in-tact, but and other HTML is stripped.
         """
         if raw := self._get_raw_description(use_highlights=True):
-            return mark_safe(strip_html(raw, preserve_marks=True))
+            return mark_safe(strip_html(raw, preserve_marks=True, ensure_spaces=True))
         return ""
 
     def _get_raw_description(self, use_highlights: bool = False) -> str:
@@ -291,6 +305,22 @@ class Record(DataLayerMixin, APIModel):
         return self.template.get("heldBy", "")
 
     @cached_property
+    def held_by_id(self) -> str:
+        return self.template.get("heldById", "")
+
+    @cached_property
+    def held_by_url(self) -> str:
+        if self.held_by_id:
+            try:
+                return reverse(
+                    "details-page-machine-readable",
+                    kwargs={"iaid": self.held_by_id},
+                )
+            except NoReverseMatch:
+                pass
+        return ""
+
+    @cached_property
     def date_created(self) -> str:
         return self.template.get("dateCreated", "")
 
@@ -317,6 +347,11 @@ class Record(DataLayerMixin, APIModel):
     @cached_property
     def repo_summary_title(self) -> str:
         return self.get("repository.summary.title", default="")
+
+    @cached_property
+    def repository(self) -> Union["Record", None]:
+        if repository := self.get("repository", default=None):
+            return Record(repository)
 
     @cached_property
     def repo_archon_value(self) -> str:
@@ -405,6 +440,16 @@ class Record(DataLayerMixin, APIModel):
             for item in self.template.get("relatedMaterials", ())
         )
 
+    @cached_property
+    def custom_record_type(self) -> str:
+        if source := self.source:
+            return source
+        else:
+            identifier = self.get("identifier", ())
+            if find(identifier, predicate=lambda i: i["type"] == "faid"):
+                return "CREATORS"
+        return ""
+
     def get_gtm_content_group(self) -> str:
         """
         Overrides DataLayerMixin.get_gtm_content_group() to
@@ -474,7 +519,7 @@ class Record(DataLayerMixin, APIModel):
 
     @cached_property
     def title(self) -> str:
-        return self.template.get("title", "")
+        return mark_safe(self.template.get("title", ""))
 
     @cached_property
     def archive_contact_info(self) -> Optional[ContactInfo]:
@@ -618,7 +663,7 @@ class Record(DataLayerMixin, APIModel):
             for item in manifestations:
                 info_list.append(
                     {
-                        "identifier_title": f'NRA {item.get("identifier",[{}])[0].get("value", "") } {item.get("title", [{}])[0].get("value", "")}',
+                        "identifier_title": f'NRA {item.get("identifier", [{}])[0].get("value", "")} {item.get("title", [{}])[0].get("value", "")}',
                         "url": item.get("url", ""),
                     }
                 )
@@ -693,10 +738,296 @@ class Record(DataLayerMixin, APIModel):
     def archive_repository_url(self) -> str:
         return self.get("repository.url", "")
 
+    @cached_property
+    def alternative_names(self) -> tuple(dict):
+        alternative_names = ()
+        if names := self.get("name", ()):
+            for item in names:
+                if type := item.get("type", ""):
+                    if type in (
+                        "maiden name",
+                        "also known as",
+                        "formerly known as",
+                        "later known as",
+                        "pseudonym",
+                        "relation of",
+                        "real name",
+                        "standardised form of name according to other rules",
+                    ):
+                        alternative_names += (
+                            {
+                                "label": type.capitalize(),
+                                "value": item.get("value", ""),
+                            },
+                        )
+                    elif type == "unknown / other":
+                        alternative_names += (
+                            {
+                                "label": type.title(),
+                                "value": item.get("value", ""),
+                            },
+                        )
+
+        return alternative_names
+
+    @cached_property
+    def first_name(self) -> str:
+        first_name = ""
+        if name_data := self.get("name", ()):
+            for item in name_data:
+                if first_name_list := item.get("first_name"):
+                    first_name = " ".join(first_name_list)
+        return first_name
+
+    @cached_property
+    def last_name(self) -> str:
+        if name_data := self.get("name", ()):
+            for item in name_data:
+                if last_name := item.get("last_name", ""):
+                    return last_name
+        return ""
+
+    @cached_property
+    def title_prefix(self) -> str:
+        if name_data := self.get("name", ()):
+            for item in name_data:
+                if title_prefix := item.get("title_prefix"):
+                    return title_prefix
+        return ""
+
+    @cached_property
+    def title_for_name(self) -> str:
+        if name_data := self.get("name", ()):
+            for item in name_data:
+                if title := item.get("title"):
+                    return title
+        return ""
+
+    @cached_property
+    def gender(self) -> str:
+        if gender := self.get("gender", ""):
+            if gender == "M":
+                return "Male"
+            elif gender == "F":
+                return "Female"
+            logger.debug(
+                f"Gender value={gender} could not be translated for iaid={self.iaid}"
+            )
+        return gender
+
+    @cached_property
+    def history(self) -> str:
+        if description := self.get("description", ()):
+            for item in description:
+                if item.get("type") == "history":
+                    if value := item.get("value", ""):
+                        return mark_safe(value)
+        return ""
+
+    @cached_property
+    def biography(self) -> dict:
+        if description := self.get("description", ()):
+            for item in description:
+                if item.get("type") == "biography":
+                    return {
+                        "value": item.get("value", ""),
+                        "url": item.get("url", ""),
+                    }
+        return {}
+
+    @cached_property
+    def func_occup_activ(self) -> str:
+        if description := self.get("description", ()):
+            for item in description:
+                if item.get("type") == "functions, occupations and activities":
+                    if value := item.get("value", ""):
+                        document = pq(value)
+                        for tag in ("foa", "function"):
+                            if doc_value := document(tag).text():
+                                return doc_value
+                        return value
+        return ""
+
+    @cached_property
+    def places(self) -> tuple(str):
+        places = ()
+        if place := self.get("place", ()):
+            for item in place:
+                if name := item.get("name", ()):
+                    for item in name:
+                        if value := item.get("value", ""):
+                            places += (value,)
+        return places
+
+    @cached_property
+    def birth_date(self) -> str:
+        return extract(self.get("birth", {}), "date.value", default="")
+
+    @cached_property
+    def death_date(self) -> str:
+        return extract(self.get("death", {}), "date.value", default="")
+
+    @cached_property
+    def start_date(self) -> str:
+        if date := extract(self.get("start", {}), "date", default=()):
+            for item in date:
+                if value := item.get("value", ""):
+                    return value
+        return ""
+
+    @cached_property
+    def end_date(self) -> str:
+        if date := extract(self.get("end", {}), "date", default=()):
+            for item in date:
+                if value := item.get("value", ""):
+                    return value
+        return ""
+
+    @cached_property
+    def record_creators_date(self) -> str:
+        """
+        Returns dates for person, person's activity/service,  both, or any if available
+        """
+        separator = "-"
+        joiner = "; "
+        person_date = service_activity_date = ""
+        if self.birth_date and self.death_date:
+            person_date = f"{self.birth_date}{separator}{self.death_date}"
+        else:
+            person_date = self.birth_date or self.death_date
+
+        if self.start_date and self.end_date:
+            service_activity_date = f"{self.start_date}{separator}{self.end_date}"
+        else:
+            service_activity_date = self.start_date or self.end_date
+
+        # return self.birth_date or self.death_date or self.start_date or self.end_date
+        if person_date and service_activity_date:
+            return joiner.join([person_date, service_activity_date])
+
+        return person_date or service_activity_date
+
+    @cached_property
+    def name_authority_reference(self) -> str:
+        if identifier := self.get("identifier", ()):
+            for item in identifier:
+                if name_authority_reference := item.get("name_authority_reference", ""):
+                    return name_authority_reference
+        return ""
+
+    @cached_property
+    def former_name_authority_reference(self) -> str:
+        if identifier := self.get("identifier", ()):
+            for item in identifier:
+                if former_name_authority_reference := item.get(
+                    "former_name_authority_reference", ""
+                ):
+                    return former_name_authority_reference
+        return ""
+
+    @cached_property
+    def closure_status(self) -> str:
+        return extract(self.get("@template", {}), "details.closureStatus", default="")
+
+    @cached_property
+    def creator(self) -> list(str):
+        return self.template.get("creator", [])
+
+    @cached_property
+    def dimensions(self) -> str:
+        return self.template.get("dimensions", "")
+
+    @cached_property
+    def former_department_reference(self) -> str:
+        return self.template.get("formerDepartmentReference", "")
+
+    @cached_property
+    def former_pro_reference(self) -> str:
+        return self.template.get("formerProReference", "")
+
+    @cached_property
+    def language(self) -> list(str):
+        return self.template.get("language", [])
+
+    @cached_property
+    def map_designation(self) -> str:
+        return mark_safe(self.template.get("mapDesignation", ""))
+
+    @cached_property
+    def map_scale(self) -> str:
+        return self.template.get("mapScale", "")
+
+    @cached_property
+    def note(self) -> list(str):
+        notes = [mark_safe(note) for note in self.template.get("note", [])]
+        return notes
+
+    @cached_property
+    def physical_condition(self) -> str:
+        return self.template.get("physicalCondition", "")
+
+    @cached_property
+    def physical_description(self) -> str:
+        return self.template.get("physicalDescription", "")
+
+    @cached_property
+    def accruals(self) -> str:
+        return self.template.get("accruals", "")
+
+    @cached_property
+    def accumulation_dates(self) -> str:
+        return self.template.get("accumulationDates", "")
+
+    @cached_property
+    def appraisal_information(self) -> str:
+        return self.template.get("appraisalInformation", "")
+
+    @cached_property
+    def immediate_source_of_acquisition(self) -> list(str):
+        return self.template.get("immediateSourceOfAcquisition", [])
+
+    @cached_property
+    def administrative_background(self) -> str:
+        return mark_safe(self.template.get("administrativeBackground", ""))
+
+    @cached_property
+    def separated_materials(self) -> Tuple[Dict[str, Any]]:
+        return tuple(
+            dict(
+                description=item.get("description", ""),
+                links=list(format_link(val) for val in item.get("links", ())),
+            )
+            for item in self.template.get("separatedMaterials", ())
+        )
+
+    @cached_property
+    def unpublished_finding_aids(self) -> list(str):
+        return self.template.get("unpublishedFindingAids", [])
+
+    @cached_property
+    def copies_information(self) -> list(str):
+        return self.template.get("copiesInformation", [])
+
+    @cached_property
+    def custodial_history(self) -> str:
+        return self.template.get("custodialHistory", "")
+
+    @cached_property
+    def location_of_originals(self) -> list(str):
+        return self.template.get("locationOfOriginals", [])
+
+    @cached_property
+    def restrictions_on_use(self) -> str:
+        return self.template.get("restrictionsOnUse", "")
+
+    @cached_property
+    def publication_note(self) -> list(str):
+        return self.template.get("publicationNote", [])
+
 
 @dataclass
 class Image:
-    """Represents an image item returned by Kong."""
+    """Represents an image item returned by Client API."""
 
     location: str
     # Sort position of this image. Used to create the image-viewer URL
@@ -710,6 +1041,6 @@ class Image:
     def thumbnail_url(self):
         """Use thumbnail URL is available, otherwise fallback to image-serve."""
         if self.thumbnail_location:
-            return f"{settings.KONG_IMAGE_PREVIEW_BASE_URL}{self.thumbnail_location}"
+            return f"{settings.IMAGE_PREVIEW_BASE_URL}{self.thumbnail_location}"
         elif self.location:
             return reverse("image-serve", kwargs={"location": self.location})

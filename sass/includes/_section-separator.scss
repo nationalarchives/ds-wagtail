@@ -1,75 +1,89 @@
 .section-separator {
-  &__heading {
-    @include font-size(xxl);
-    font-weight: 500;
-    font-family: $font__supria-sans;
-    color: $color__dark;
-    background: transparent;
+    &__heading {
+        @include font-size(xxl);
+        color: $color__grey-700;
+        font-family: $font__supria-sans;
+        font-weight: 500;
 
-    &-text {
-      display: inline-block;
+        background: transparent;
 
-      @media only screen and (max-width: $screen__md) {
-        width: 100%;
-        overflow-wrap: break-word;
-      }
+        @media (min-width: #{$screen__lg + 1px}) {
+            .template-focused-article & {
+                padding-right: 10%;
+                padding-left: 10%;
+            }
+        }
+
+        &-text {
+            display: inline-block;
+
+            @media only screen and (max-width: $screen__md) {
+                width: 100%;
+                overflow-wrap: break-word;
+            }
+        }
+
+        &-chevron {
+            display: none;
+        }
     }
-
-    &-chevron {
-      display: none;
-    }
-  }
 }
 
 .js {
-  .section-wrapper {
-    .container {
-      overflow: hidden;
-    }
-    .section-separator {
-      &__heading {
-        @media only screen and (max-width: $screen__md) {
-          display: flex;
-          justify-content: space-between;
-          font-size: 2rem;
-          align-items: center;
-          cursor: pointer;
+    .section-wrapper {
+        .container {
+            overflow: hidden;
+        }
 
-          &:hover {
-            cursor: pointer;
-          }
+        .section-separator {
+            &__heading {
+                @media only screen and (max-width: $screen__md) {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
 
-          &:focus {
-            outline: 0.3125rem solid $color__blue_4;
-          }
+                    font-size: 2rem;
 
-          &[aria-expanded='true'] {
-            .section-separator__heading-chevron {
-              background-image: url($fa_chevron_up);
+                    cursor: pointer;
+
+                    &:hover {
+                        cursor: pointer;
+                    }
+
+                    &:focus {
+                        outline: 0.3125rem solid $color__navy;
+                    }
+
+                    &[aria-expanded="true"] {
+                        .section-separator__heading-chevron {
+                            background-image: url($fa_chevron_up);
+                        }
+                    }
+                }
+
+                &-text,
+                &-chevron {
+                    pointer-events: none;
+                }
+
+                @media only screen and (max-width: $screen__md) {
+                    &-text {
+                        width: 85%;
+                    }
+
+                    &-chevron {
+                        width: 30px;
+                        height: 30px;
+
+                        display: inline-block;
+
+                        background-image: url($fa_chevron_down);
+                        background-size: 30px 30px;
+                        background-repeat: no-repeat;
+                        background-position: top right;
+                    }
+                }
             }
-          }
         }
-
-        &-text,
-        &-chevron {
-          pointer-events: none;
-        }
-
-        @media only screen and (max-width: $screen__md) {
-          &-text {
-            width: 85%;
-          }
-          &-chevron {
-            display: inline-block;
-            background-image: url($fa_chevron_down);
-            background-repeat: no-repeat;
-            background-position: top right;
-            background-size: 30px 30px;
-            width: 30px;
-            height: 30px;
-          }
-        }
-      }
     }
-  }
 }

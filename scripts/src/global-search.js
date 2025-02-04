@@ -1,3 +1,3 @@
-import globalSearch from './modules/search/global-search.js';
+import globalSearch from "./modules/search/global-search.js";
 
 globalSearch();

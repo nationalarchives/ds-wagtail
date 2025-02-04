@@ -1,13 +1,16 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Page
-
 from wagtail.admin.forms.choosers import BaseFilterForm, SearchFilterMixin
 from wagtail.admin.views.generic import chooser as chooser_views
 from wagtail.admin.viewsets.chooser import ChooserViewSet
+from django.shortcuts import Http404
+from django.urls import re_path
+from generic_chooser.views import BaseChosenView, ChooserMixin, ChooserViewSet
 
-from ...ciim.client import Stream
-from ...ciim.exceptions import KongAPIError
-from ...ciim.paginator import APIPaginator
+from etna.ciim.client import Stream
+from etna.ciim.exceptions import ClientAPIError
+from etna.ciim.paginator import APIPaginator
+
 from ..api import records_client
 from ..models import Record
 from ..widgets import RecordChooser
@@ -16,7 +19,7 @@ from ..widgets import RecordChooser
 class SearchForm(SearchFilterMixin, BaseFilterForm):
     pass
 
-
+  
 class RecordMixin:
     model = Record
     filter_form_class = SearchForm
@@ -69,10 +72,8 @@ class RecordChooseView(RecordMixin, chooser_views.ChooseView):
 class RecordChooseResultsView(RecordMixin, chooser_views.ChooseResultsView):
     pass
 
-
 class RecordChosenView(RecordMixin, chooser_views.ChosenView):
     pass
-
 
 class RecordChosenMultipleView(RecordMixin, chooser_views.ChosenMultipleView):
     pass

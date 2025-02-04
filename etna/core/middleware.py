@@ -1,14 +1,10 @@
 import json
 import logging
-
-from datetime import datetime
 from urllib.parse import unquote
 
 from django.conf import settings
 from django.http import HttpRequest
-from django.template.response import SimpleTemplateResponse, TemplateResponse
-
-from pytz import timezone
+from django.template.response import TemplateResponse
 
 logger = logging.getLogger(__name__)
 
@@ -23,45 +19,6 @@ def get_client_ip(request) -> str:
     else:
         ip = request.META.get("REMOTE_ADDR")
     return ip
-
-
-class MaintenanceModeMiddleware:
-    def __init__(self, get_response):
-        self.get_response = get_response
-
-    def __call__(self, request):
-        """
-        Renders for a 503 if MAINTENANCE_MODE is set.
-        Maintenance mode should be bypassed when the user's public IP address is present in  MAINTENENCE_MODE_ALLOW_IPS
-        """
-        if settings.MAINTENANCE_MODE:
-            # check override maintenance mode
-            if get_client_ip(request) not in settings.MAINTENENCE_MODE_ALLOW_IPS:
-                kwargs = {"template": "503.html", "status": 503}
-                if maintenance_mode_ends := settings.MAINTENENCE_MODE_ENDS:
-                    # Evaluate only if config is set
-                    try:
-                        end_datetime = datetime.fromisoformat(maintenance_mode_ends)
-                    except ValueError:
-                        end_datetime = None
-                        logger.debug(
-                            f"settings.MAINTENENCE_MODE_ENDS={maintenance_mode_ends} is not iso format to add to Retry-After header."
-                        )
-
-                    if end_datetime:
-                        # GMT is assumed for naive datetimes, but timezone-aware
-                        # datetimes must be converted to GMT
-                        if end_datetime.utcoffset() is not None:
-                            end_datetime = end_datetime.astimezone(timezone("GMT"))
-
-                        kwargs["headers"] = {
-                            "Retry-After": end_datetime.strftime(HTTP_HEADER_FORMAT)
-                        }
-                return SimpleTemplateResponse(**kwargs).render()
-
-        response = self.get_response(request)
-
-        return response
 
 
 class InterpretCookiesMiddleware:

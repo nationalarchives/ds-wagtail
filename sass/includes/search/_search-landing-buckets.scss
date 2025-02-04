@@ -1,69 +1,92 @@
 .search-landing-buckets {
-
-    @media only screen and (min-width: $screen__md) {
-        margin-left: 2rem;
-        margin-right: 2rem;
-    }
+    // margin-left: auto;
+    // margin-right: auto;
 
     &__heading {
-        margin-left: 4rem;
+        // margin-left: 2.5rem;
         font-family: $font__supria-sans;
         font-size: 1.5rem;
 
         @media only screen and (max-width: $screen__md) {
-            margin-left: 2rem;
+            // margin-left: 2rem;
         }
     }
 
     &__list {
+        margin: 0;
+        padding: 0;
+
         display: flex;
-        flex-wrap: wrap;
-        margin-left: auto;
-        margin-right: auto;
-        padding-left: 2rem;
-        padding-right: 2rem;
+        flex-wrap: nowrap;
+        align-items: stretch;
+        justify-content: space-around;
+        // margin-left: auto;
+        // margin-right: auto;
+        // padding-left: 2rem;
+        // padding-right: 2rem;
+
+        // @include media.on-large {
+        // padding-left: 0;
+        // padding-right: 0;
+        // margin-left: 2.5em;
+        // }
+
+        @include media.on-mobile {
+            flex-wrap: wrap;
+        }
 
         &-item {
-            font-size: 1.2rem;
-            display: inline-block;
-            list-style: none;
-            width: 250px;
-            margin-right: 1rem;
-            min-height: 100px;
+            // margin-right: 1rem;
             margin-bottom: 1rem;
+
+            display: inline-block;
+
             font-family: $font__supria-sans;
+            font-size: 1.2rem;
+
+            list-style: none;
+            // width: 250px;
+            flex: 1 1 250px;
+
+            @include media.on-large {
+                flex: 1;
+            }
         }
     }
 
     &__link {
-        text-align: center;
-        padding: 14px;
-        display: block;
-        border: 1px solid $color__grey-4;
         width: 100%;
-        margin-top: auto;
-        margin-bottom: auto;
-        text-decoration: none;
         height: 100%;
-        color: $color__blue_4;
+        margin: 0;
+        padding: 1rem;
+
         display: flex;
         align-items: center;
         justify-content: center;
 
+        text-align: center;
+        text-decoration: none;
+
+        border: 1px solid $color__grey-500;
+
+        &,
         &:visited {
-            color: $color__blue_4;
+            color: $color__navy;
         }
 
-        &[aria-current=true], &:hover, &:focus {
-            background-color: $color__yellow_2;
+        &[aria-current="true"],
+        &:hover,
+        &:focus {
             color: #000;
 
+            background-color: $color__yellow;
         }
     }
 }
 
 .search-results__explainer--desktop,
 .search-results__explainer--mobile {
-    padding-left:2rem;
+    padding-left: 2rem;
+
     display: none;
 }

@@ -1,5 +1,4 @@
 {% load wagtailimages_tags %}
-{% load media_tags %}
 
 {% with value.media as media %}
 
@@ -7,14 +6,10 @@
 
         {% image value.background_image fill-800x700 as bg_image %}
 
-        <div class="media-embed {% if value.media.transcript %}media-embed--transcript{% endif %} u-margin-l" style="background: url('{{ bg_image.url }}') left top/cover;">
+        <div class="media-embed {% if value.media.transcript %}media-embed--transcript{% endif %} tna-!--margin-top-l" style="background-image: url('{{ bg_image.url }}')">
             <div class="media-embed__overlay"></div>
             <div class="media-embed__content-panel container">
-                {% if media.type == "audio"%}
-                    {% audio media %}
-                {% else %}
-                    {% video media %}
-                {% endif %}
+                {% include "media/blocks/media-block--embed.html" with media=media %}
             </div>
         </div>
 

@@ -1,16 +1,16 @@
 import json
 import unittest
-
 from copy import deepcopy
 
+import responses
 from django.conf import settings
 from django.test import SimpleTestCase, TestCase, override_settings
 from django.urls import reverse
+from django.utils.safestring import SafeString
 
-import responses
+from etna.ciim.tests.factories import create_media, create_record, create_response
+from etna.ciim.utils import ValueExtractionError
 
-from ...ciim.tests.factories import create_media, create_record, create_response
-from ...ciim.utils import ValueExtractionError
 from ..api import get_records_client
 from ..models import Image, Record
 
@@ -32,7 +32,9 @@ class RecordModelTests(SimpleTestCase):
         self.assertIn("details", self.record._raw["@template"])
         self.assertEqual(self.record.template, self.record._raw["@template"]["details"])
 
-    def test_template_uses_results_template_if_details_template_not_present(self):
+    def test_template_uses_results_template_if_details_template_not_present(
+        self,
+    ):
         self.assertIn("results", self.record._raw["@template"])
 
         # patch raw data
@@ -52,6 +54,7 @@ class RecordModelTests(SimpleTestCase):
         # patch raw data
         self.record._raw["@admin"].pop("id")
         self.record._raw["@template"]["details"].pop("iaid")
+        self.record._raw["@template"]["details"].pop("primaryIdentifier")
         self.assertEqual(self.record.iaid, "")
 
     def test_returns_blank_string_when_iaid_value_is_invalid(self):
@@ -70,7 +73,9 @@ class RecordModelTests(SimpleTestCase):
     def test_reference_number(self):
         self.assertEqual(self.record.reference_number, "LO 2")
 
-    def test_raises_valueextractionerror_when_reference_number_is_not_present(self):
+    def test_raises_valueextractionerror_when_reference_number_is_not_present(
+        self,
+    ):
         # patch raw data
         self.record._raw.pop("identifier")
         self.record._raw["@template"]["details"].pop("referenceNumber")
@@ -90,28 +95,12 @@ class RecordModelTests(SimpleTestCase):
         with self.assertRaises(ValueExtractionError):
             self.record.source_url
 
-    def test_url_prefers_iaid_over_reference_number_and_source_url(self):
+    def test_url_prefers_reference_number_over_iaid_and_source_url(self):
         record = Record(
             {
                 "@template": {
                     "details": {
                         "iaid": "e7e92a0b-3666-4fd6-9dac-9d9530b0888c",
-                        "referenceNumber": "2515/300/1",
-                        "sourceUrl": "https://www.example.com",
-                    }
-                }
-            }
-        )
-        self.assertEqual(
-            record.url,
-            reverse("details-page-machine-readable", kwargs={"iaid": record.iaid}),
-        )
-
-    def test_url_prefers_reference_number_over_source_url(self):
-        record = Record(
-            {
-                "@template": {
-                    "details": {
                         "referenceNumber": "2515/300/1",
                         "sourceUrl": "https://www.example.com",
                     }
@@ -126,7 +115,28 @@ class RecordModelTests(SimpleTestCase):
             ),
         )
 
-    def test_url_uses_source_url_when_no_iaid_or_reference_number_is_available(self):
+    def test_url_prefers_iaid_over_source_url(self):
+        record = Record(
+            {
+                "@template": {
+                    "details": {
+                        "iaid": "e7e92a0b-3666-4fd6-9dac-9d9530b0888c",
+                        "sourceUrl": "https://www.example.com",
+                    }
+                }
+            }
+        )
+        self.assertEqual(
+            record.url,
+            reverse(
+                "details-page-machine-readable",
+                kwargs={"iaid": record.iaid},
+            ),
+        )
+
+    def test_url_uses_source_url_when_reference_number_and_iaid_are_missing(
+        self,
+    ):
         record = Record(
             {
                 "@template": {
@@ -150,6 +160,26 @@ class RecordModelTests(SimpleTestCase):
         )
         self.assertEqual(record.url, "")
 
+    def test_no_reference_number_url_prefers_iaid_over_reference_number(self):
+        record = Record(
+            {
+                "@template": {
+                    "details": {
+                        "iaid": "e7e92a0b-3666-4fd6-9dac-9d9530b0888c",
+                        "referenceNumber": "2515/300/1",
+                        "sourceUrl": "https://www.example.com",
+                    }
+                }
+            }
+        )
+        self.assertEqual(
+            record.non_reference_number_url,
+            reverse(
+                "details-page-machine-readable",
+                kwargs={"iaid": record.iaid},
+            ),
+        )
+
     def test_description(self):
         self.assertEqual(
             self.record.description,
@@ -166,11 +196,11 @@ class RecordModelTests(SimpleTestCase):
         self.assertEqual(
             self.record.listing_description,
             (
-                "\nThis series contains papers concering a wide variety of legal matters referred "
+                "This series contains papers concering a wide variety of legal matters referred "
                 "to the Law Officers for their advice or approval and includes applications for the "
                 "Attorney General's General Fiat for leave to appeal to the House of Lords in criminal "
-                "cases."
-                "\nAlso included are a number of opinions, more of which can be found in LO 3"
+                "cases. "
+                "Also included are a number of opinions, more of which can be found in LO 3"
             ),
         )
 
@@ -298,14 +328,22 @@ class RecordModelTests(SimpleTestCase):
         r = self.record.next_record
         self.assertEqual(
             (r.iaid, r.reference_number, r.summary_title),
-            ("C10298", "LO 1", "Law Officers' Department: Law Officers' Opinions"),
+            (
+                "C10298",
+                "LO 1",
+                "Law Officers' Department: Law Officers' Opinions",
+            ),
         )
 
     def test_previous_record(self):
         r = self.record.previous_record
         self.assertEqual(
             (r.iaid, r.reference_number, r.summary_title),
-            ("C10296", "LO 3", "Law Officers' Department: Patents for Inventions"),
+            (
+                "C10296",
+                "LO 3",
+                "Law Officers' Department: Patents for Inventions",
+            ),
         )
 
     @unittest.skip("Data not supported for the json record")
@@ -382,11 +420,35 @@ class RecordModelTests(SimpleTestCase):
             ),
         )
 
+    def test_repository_attr(self):
+        self.assertEqual(self.record.repository.iaid, "A13530124")
+        self.assertEqual(self.record.repository.url, "/catalogue/ref/66/")
+        self.assertEqual(
+            self.record.repository.non_reference_number_url,
+            "/catalogue/id/A13530124/",
+        )
 
-@override_settings(KONG_CLIENT_BASE_URL="https://kong.test")
+    def test_closure_status_empty_value(self):
+        self.assertEqual(self.record.closure_status, "")
+
+    def test_closure_status_with_value(self):
+        self.record = Record(
+            raw_data={
+                "@template": {
+                    "details": {
+                        "iaid": "C12345",
+                        "closureStatus": "Some status value",
+                    }
+                }
+            }
+        )
+        self.assertEqual(self.record.closure_status, "Some status value")
+
+
+@override_settings(CLIENT_BASE_URL=f"{settings.CLIENT_BASE_URL}")
 class UnexpectedParsingIssueTest(SimpleTestCase):
     """A collection of tests verifying fixes for real-world (but unexpected)
-    issues with data returned by Kong"""
+    issues with data returned by Client API"""
 
     @classmethod
     def setUpClass(cls):
@@ -397,7 +459,7 @@ class UnexpectedParsingIssueTest(SimpleTestCase):
     def test_hierarchy_with_no_identifier_is_skipped(self):
         responses.add(
             responses.GET,
-            "https://kong.test/data/fetch",
+            f"{settings.CLIENT_BASE_URL}/fetch",
             json=create_response(
                 records=[
                     create_record(
@@ -430,7 +492,7 @@ class UnexpectedParsingIssueTest(SimpleTestCase):
 
         responses.add(
             responses.GET,
-            "https://kong.test/data/fetch",
+            f"{settings.CLIENT_BASE_URL}/fetch",
             json=create_response(records=[record]),
         )
 
@@ -464,7 +526,7 @@ class UnexpectedParsingIssueTest(SimpleTestCase):
 
         responses.add(
             responses.GET,
-            "https://kong.test/data/fetch",
+            f"{settings.CLIENT_BASE_URL}/fetch",
             json=create_response(records=[record]),
         )
 
@@ -505,7 +567,7 @@ class UnexpectedParsingIssueTest(SimpleTestCase):
 
         responses.add(
             responses.GET,
-            "https://kong.test/data/fetch",
+            f"{settings.CLIENT_BASE_URL}/fetch",
             json=create_response(records=[record]),
         )
 
@@ -515,18 +577,18 @@ class UnexpectedParsingIssueTest(SimpleTestCase):
 
 
 @unittest.skip(
-    "Kong open beta API does not support media. Re-enable/update once media is available."
+    "Client API open beta API does not support media. Re-enable/update once media is available."
 )
 @override_settings(
-    KONG_CLIENT_BASE_URL="https://kong.test",
-    KONG_IMAGE_PREVIEW_BASE_URL="https://media.preview/",
+    CLIENT_BASE_URL=f"{settings.CLIENT_BASE_URL}",
+    IMAGE_PREVIEW_BASE_URL="https://media.preview/",
 )
 class ImageTestCase(TestCase):
     @responses.activate
     def test_thumbnail_url(self):
         responses.add(
             responses.GET,
-            "https://kong.test/data/search",
+            f"{settings.CLIENT_BASE_URL}/search",
             json=create_response(
                 records=[
                     create_media(
@@ -540,7 +602,7 @@ class ImageTestCase(TestCase):
         images = Image.search.filter(rid="")
         image = images[0]
 
-        self.assertEquals(
+        self.assertEqual(
             image.thumbnail_url, "https://media.preview/path/to/thumbnail.jpeg"
         )
 
@@ -548,7 +610,7 @@ class ImageTestCase(TestCase):
     def test_thumbnail_url_fallback(self):
         responses.add(
             responses.GET,
-            "https://kong.test/data/search",
+            f"{settings.CLIENT_BASE_URL}/search",
             json=create_response(
                 records=[
                     create_media(
@@ -561,11 +623,11 @@ class ImageTestCase(TestCase):
         images = Image.search.filter(rid="")
         image = images[0]
 
-        # Fallback serves image through Wagtail instead of from kong
-        self.assertEquals(image.thumbnail_url, "/records/image/path/to/image.jpeg")
+        # Fallback serves image through Wagtail instead of from Client API
+        self.assertEqual(image.thumbnail_url, "/records/image/path/to/image.jpeg")
 
 
-@override_settings(KONG_CLIENT_BASE_URL="https://kong.test")
+@override_settings(CLIENT_BASE_URL=f"{settings.CLIENT_BASE_URL}")
 class ArchiveRecordModelTests(SimpleTestCase):
     """Record model tests for an Archive record"""
 
@@ -578,7 +640,7 @@ class ArchiveRecordModelTests(SimpleTestCase):
     def test_source(self):
         responses.add(
             responses.GET,
-            "https://kong.test/data/fetch",
+            f"{settings.CLIENT_BASE_URL}/fetch",
             json=create_response(
                 records=[
                     create_record(
@@ -599,7 +661,7 @@ class ArchiveRecordModelTests(SimpleTestCase):
     def test_no_data_for_archive_attributes(self):
         responses.add(
             responses.GET,
-            "https://kong.test/data/fetch",
+            f"{settings.CLIENT_BASE_URL}/fetch",
             json=create_response(
                 records=[
                     create_record(
@@ -622,7 +684,7 @@ class ArchiveRecordModelTests(SimpleTestCase):
     def test_title(self):
         responses.add(
             responses.GET,
-            "https://kong.test/data/fetch",
+            f"{settings.CLIENT_BASE_URL}/fetch",
             json=create_response(
                 records=[
                     create_record(
@@ -650,7 +712,7 @@ class ArchiveRecordModelTests(SimpleTestCase):
     def test_archive_contact_info(self):
         responses.add(
             responses.GET,
-            "https://kong.test/data/fetch",
+            f"{settings.CLIENT_BASE_URL}/fetch",
             json=create_response(
                 records=[
                     create_record(
@@ -701,7 +763,7 @@ class ArchiveRecordModelTests(SimpleTestCase):
     def test_archive_further_info(self):
         responses.add(
             responses.GET,
-            "https://kong.test/data/fetch",
+            f"{settings.CLIENT_BASE_URL}/fetch",
             json=create_response(
                 records=[
                     create_record(
@@ -749,7 +811,7 @@ class ArchiveRecordModelTests(SimpleTestCase):
     def test_archive_collection_record_creators(self):
         responses.add(
             responses.GET,
-            "https://kong.test/data/fetch",
+            f"{settings.CLIENT_BASE_URL}/fetch",
             json=create_response(
                 records=[
                     create_record(
@@ -868,7 +930,8 @@ class ArchiveRecordModelTests(SimpleTestCase):
         )
 
         self.assertEqual(
-            record.archive_collections.collection_info_list[1].name, "organisation"
+            record.archive_collections.collection_info_list[1].name,
+            "organisation",
         )
         self.assertEqual(
             record.archive_collections.collection_info_list[1].display_name,
@@ -894,7 +957,8 @@ class ArchiveRecordModelTests(SimpleTestCase):
             record.archive_collections.collection_info_list[2].name, "person"
         )
         self.assertEqual(
-            record.archive_collections.collection_info_list[2].display_name, "Persons"
+            record.archive_collections.collection_info_list[2].display_name,
+            "Persons",
         )
         self.assertEqual(
             record.archive_collections.collection_info_list[2].long_display_name,
@@ -916,7 +980,8 @@ class ArchiveRecordModelTests(SimpleTestCase):
             record.archive_collections.collection_info_list[3].name, "diary"
         )
         self.assertEqual(
-            record.archive_collections.collection_info_list[3].display_name, "Diaries"
+            record.archive_collections.collection_info_list[3].display_name,
+            "Diaries",
         )
         self.assertEqual(
             record.archive_collections.collection_info_list[3].long_display_name,
@@ -938,7 +1003,8 @@ class ArchiveRecordModelTests(SimpleTestCase):
             record.archive_collections.collection_info_list[4].name, "family"
         )
         self.assertEqual(
-            record.archive_collections.collection_info_list[4].display_name, "Families"
+            record.archive_collections.collection_info_list[4].display_name,
+            "Families",
         )
         self.assertEqual(
             record.archive_collections.collection_info_list[4].long_display_name,
@@ -960,7 +1026,7 @@ class ArchiveRecordModelTests(SimpleTestCase):
     def test_archive_nra_records_info(self):
         responses.add(
             responses.GET,
-            "https://kong.test/data/fetch",
+            f"{settings.CLIENT_BASE_URL}/fetch",
             json=create_response(
                 records=[
                     create_record(
@@ -991,7 +1057,8 @@ class ArchiveRecordModelTests(SimpleTestCase):
         record = self.records_client.fetch(iaid="A13532479")
 
         self.assertEqual(
-            record.archive_collections.collection_info_list[0].name, "paper_catalogue"
+            record.archive_collections.collection_info_list[0].name,
+            "paper_catalogue",
         )
         self.assertEqual(
             record.archive_collections.collection_info_list[0].display_name,
@@ -1016,7 +1083,7 @@ class ArchiveRecordModelTests(SimpleTestCase):
     def test_archive_accessions(self):
         responses.add(
             responses.GET,
-            "https://kong.test/data/fetch",
+            f"{settings.CLIENT_BASE_URL}/fetch",
             json=create_response(
                 records=[
                     create_record(
@@ -1051,7 +1118,7 @@ class ArchiveRecordModelTests(SimpleTestCase):
     def test_archive_repository_url(self):
         responses.add(
             responses.GET,
-            "https://kong.test/data/fetch",
+            f"{settings.CLIENT_BASE_URL}/fetch",
             json=create_response(
                 records=[
                     create_record(
@@ -1068,3 +1135,519 @@ class ArchiveRecordModelTests(SimpleTestCase):
         record = self.records_client.fetch(iaid="A13532479")
 
         self.assertEqual(record.archive_repository_url, "http://nro.adlibhosting.com/")
+
+
+class RecordModelCatalogueTests(SimpleTestCase):
+    maxDiff = None
+
+    def setUp(self):
+        self.source = {
+            "@admin": {
+                "id": "C123456",
+            },
+            "source": {"value": "CAT"},
+            "@template": {
+                "details": {
+                    "iaid": "C123456",
+                }
+            },
+        }
+
+    def test_record_catalogue(self):
+        self.record = Record(self.source)
+
+        self.assertEqual(self.record.iaid, "C123456")
+        self.assertEqual(self.record.custom_record_type, "CAT")
+
+    def test_empty_for_optional_attributes(self):
+        self.record = Record(self.source)
+
+        self.assertEqual(self.record.arrangement, "")
+        self.assertEqual(self.record.held_by_id, "")
+        self.assertEqual(self.record.held_by_url, "")
+        self.assertEqual(self.record.record_opening, "")
+        self.assertEqual(self.record.title, "")
+        self.assertEqual(self.record.creator, [])
+        self.assertEqual(self.record.dimensions, "")
+        self.assertEqual(self.record.former_department_reference, "")
+        self.assertEqual(self.record.former_pro_reference, "")
+        self.assertEqual(self.record.language, [])
+        self.assertEqual(self.record.map_designation, "")
+        self.assertEqual(self.record.map_scale, "")
+        self.assertEqual(self.record.note, [])
+        self.assertEqual(self.record.physical_condition, "")
+        self.assertEqual(self.record.physical_description, "")
+        self.assertEqual(self.record.accruals, "")
+        self.assertEqual(self.record.accumulation_dates, "")
+        self.assertEqual(self.record.appraisal_information, "")
+        self.assertEqual(self.record.immediate_source_of_acquisition, [])
+        self.assertEqual(self.record.administrative_background, "")
+        self.assertEqual(self.record.separated_materials, ())
+        self.assertEqual(self.record.unpublished_finding_aids, [])
+        self.assertEqual(self.record.copies_information, [])
+        self.assertEqual(self.record.custodial_history, "")
+        self.assertEqual(self.record.location_of_originals, [])
+        self.assertEqual(self.record.restrictions_on_use, "")
+        self.assertEqual(self.record.publication_note, [])
+        self.assertEqual(self.record.delivery_option, "")
+
+    def test_held_by_url_attrs(self):
+        self.source.update(
+            {
+                "@template": {
+                    "details": {
+                        "heldById": "A13530124",
+                    }
+                },
+            }
+        )
+        self.record = Record(self.source)
+
+        self.assertEqual(self.record.held_by_id, "A13530124")
+        self.assertEqual(self.record.held_by_url, "/catalogue/id/A13530124/")
+
+    def test_arrangement(self):
+        self.source.update(
+            {
+                "@template": {
+                    "details": {
+                        "arrangement": "<arrangement><p>Former reference order within two accessions (AN 171/1-648 and AN 171/649-970). </p></arrangement>",
+                    }
+                },
+            }
+        )
+        self.record = Record(self.source)
+
+        self.assertTrue(isinstance(self.record.arrangement, SafeString))
+        self.assertEqual(
+            self.record.arrangement,
+            "<arrangement><p>Former reference order within two accessions (AN 171/1-648 and AN 171/649-970). </p></arrangement>",
+        )
+
+    def test_record_opening(self):
+        self.source.update(
+            {
+                "@template": {
+                    "details": {
+                        "recordOpening": "some value",
+                    }
+                },
+            }
+        )
+        self.record = Record(self.source)
+
+        self.assertEqual(self.record.record_opening, "some value")
+
+    def test_title(self):
+        self.source.update(
+            {
+                "@template": {
+                    "details": {
+                        "title": '<span class="unittitle" type="Title">Records of the General Register Office, Government Social Survey Department, and Office of Population Censuses and Surveys</span>',
+                    }
+                },
+            }
+        )
+        self.record = Record(self.source)
+
+        self.assertTrue(isinstance(self.record.title, SafeString))
+        self.assertEqual(
+            self.record.title,
+            '<span class="unittitle" type="Title">Records of the General Register Office, Government Social Survey Department, and Office of Population Censuses and Surveys</span>',
+        )
+
+    def test_creator(self):
+        self.source.update(
+            {
+                "@template": {
+                    "details": {
+                        "creator": ["some value 1", "some value 2"],
+                    }
+                },
+            }
+        )
+        self.record = Record(self.source)
+
+        self.assertEqual(self.record.creator, ["some value 1", "some value 2"])
+
+    def test_dimensions(self):
+        self.source.update(
+            {
+                "@template": {
+                    "details": {
+                        "dimensions": "some value",
+                    }
+                },
+            }
+        )
+        self.record = Record(self.source)
+
+        self.assertEqual(self.record.dimensions, "some value")
+
+    def test_former_department_reference(self):
+        self.source.update(
+            {
+                "@template": {
+                    "details": {
+                        "formerDepartmentReference": "some value",
+                    }
+                },
+            }
+        )
+        self.record = Record(self.source)
+
+        self.assertEqual(self.record.former_department_reference, "some value")
+
+    def test_former_pro_reference(self):
+        self.source.update(
+            {
+                "@template": {
+                    "details": {
+                        "formerProReference": "some value",
+                    }
+                },
+            }
+        )
+        self.record = Record(self.source)
+
+        self.assertEqual(self.record.former_pro_reference, "some value")
+
+    def test_language(self):
+        self.source.update(
+            {
+                "@template": {
+                    "details": {
+                        "language": ["some value 1", "some value 2"],
+                    }
+                },
+            }
+        )
+        self.record = Record(self.source)
+
+        self.assertEqual(self.record.language, ["some value 1", "some value 2"])
+
+    def test_map_designation(self):
+        self.source.update(
+            {
+                "@template": {
+                    "details": {
+                        "mapDesignation": '<unittitle type="Map Designation">some value</unittitle>',
+                    }
+                },
+            }
+        )
+        self.record = Record(self.source)
+
+        self.assertEqual(
+            self.record.map_designation,
+            '<unittitle type="Map Designation">some value</unittitle>',
+        )
+        self.assertTrue(isinstance(self.record.map_designation, SafeString))
+
+    def test_map_scale(self):
+        self.source.update(
+            {
+                "@template": {
+                    "details": {
+                        "mapScale": "some value",
+                    }
+                },
+            }
+        )
+        self.record = Record(self.source)
+
+        self.assertEqual(self.record.map_scale, "some value")
+
+    def test_note(self):
+        self.source.update(
+            {
+                "@template": {
+                    "details": {
+                        "note": [
+                            "Details have been added from C 32/18, which also gives information about further process. </p><p>",
+                        ],
+                    }
+                },
+            }
+        )
+        self.record = Record(self.source)
+
+        self.assertEqual(
+            self.record.note,
+            [
+                "Details have been added from C 32/18, which also gives information about further process. </p><p>"
+            ],
+        )
+        self.assertTrue(isinstance(self.record.note[0], SafeString))
+
+    def test_physical_condition(self):
+        self.source.update(
+            {
+                "@template": {
+                    "details": {
+                        "physicalCondition": "some value",
+                    }
+                },
+            }
+        )
+        self.record = Record(self.source)
+
+        self.assertEqual(self.record.physical_condition, "some value")
+
+    def test_physical_description(self):
+        self.source.update(
+            {
+                "@template": {
+                    "details": {
+                        "physicalDescription": "some value",
+                    }
+                },
+            }
+        )
+        self.record = Record(self.source)
+
+        self.assertEqual(self.record.physical_description, "some value")
+
+    def test_accruals(self):
+        self.source.update(
+            {
+                "@template": {
+                    "details": {
+                        "accruals": "some value",
+                    }
+                },
+            }
+        )
+        self.record = Record(self.source)
+
+        self.assertEqual(self.record.accruals, "some value")
+
+    def test_accumulation_dates(self):
+        self.source.update(
+            {
+                "@template": {
+                    "details": {
+                        "accumulationDates": "some value",
+                    }
+                },
+            }
+        )
+        self.record = Record(self.source)
+
+        self.assertEqual(self.record.accumulation_dates, "some value")
+
+    def test_appraisal_information(self):
+        self.source.update(
+            {
+                "@template": {
+                    "details": {
+                        "appraisalInformation": "some value",
+                    }
+                },
+            }
+        )
+        self.record = Record(self.source)
+
+        self.assertEqual(self.record.appraisal_information, "some value")
+
+    def test_immediate_source_of_acquisition(self):
+        self.source.update(
+            {
+                "@template": {
+                    "details": {
+                        "immediateSourceOfAcquisition": [
+                            "some value 1",
+                            "some value 2",
+                        ],
+                    }
+                },
+            }
+        )
+        self.record = Record(self.source)
+
+        self.assertEqual(
+            self.record.immediate_source_of_acquisition,
+            ["some value 1", "some value 2"],
+        )
+
+    def test_administrative_background(self):
+        self.source.update(
+            {
+                "@template": {
+                    "details": {
+                        "administrativeBackground": "<bioghist><bioghist><p>The Industrial Relations Department was set up as soon as the British Transport Commission began functioning and continued in existence until the end of the British Railway Board. In 1983 it was renamed Employee Relations Department.</p></bioghist></bioghist>",
+                    }
+                },
+            }
+        )
+        self.record = Record(self.source)
+
+        self.assertTrue(isinstance(self.record.administrative_background, SafeString))
+        self.assertEqual(
+            self.record.administrative_background,
+            "<bioghist><bioghist><p>The Industrial Relations Department was set up as soon as the British Transport Commission began functioning and continued in existence until the end of the British Railway Board. In 1983 it was renamed Employee Relations Department.</p></bioghist></bioghist>",
+        )
+
+    def test_separated_materials(self):
+        self.source.update(
+            {
+                "@template": {
+                    "details": {
+                        "separatedMaterials": [
+                            {
+                                "description": "for 4 maps extracted from this item see",
+                                "links": [
+                                    '<a href="C8956177">MFQ 1/761/7</a>',
+                                    '<a href="C8956176">MFQ 1/761/6</a>',
+                                    '<a href="C8956175">MFQ 1/761/5</a>',
+                                    '<a href="C8956174">MFQ 1/761/4</a>',
+                                ],
+                            }
+                        ],
+                    }
+                },
+            }
+        )
+        self.record = Record(self.source)
+
+        self.assertEqual(
+            self.record.separated_materials,
+            (
+                {
+                    "description": "for 4 maps extracted from this item see",
+                    "links": [
+                        {
+                            "href": "/catalogue/id/C8956177/",
+                            "id": "C8956177",
+                            "text": "MFQ 1/761/7",
+                        },
+                        {
+                            "href": "/catalogue/id/C8956176/",
+                            "id": "C8956176",
+                            "text": "MFQ 1/761/6",
+                        },
+                        {
+                            "href": "/catalogue/id/C8956175/",
+                            "id": "C8956175",
+                            "text": "MFQ 1/761/5",
+                        },
+                        {
+                            "href": "/catalogue/id/C8956174/",
+                            "id": "C8956174",
+                            "text": "MFQ 1/761/4",
+                        },
+                    ],
+                },
+            ),
+        )
+
+    def test_unpublished_finding_aids(self):
+        self.source.update(
+            {
+                "@template": {
+                    "details": {
+                        "unpublishedFindingAids": [
+                            "some value 1",
+                            "some value 2",
+                        ],
+                    }
+                },
+            }
+        )
+        self.record = Record(self.source)
+
+        self.assertEqual(
+            self.record.unpublished_finding_aids,
+            ["some value 1", "some value 2"],
+        )
+
+    def test_copies_information(self):
+        self.source.update(
+            {
+                "@template": {
+                    "details": {
+                        "copiesInformation": ["some value 1", "some value 2"],
+                    }
+                },
+            }
+        )
+        self.record = Record(self.source)
+
+        self.assertEqual(
+            self.record.copies_information, ["some value 1", "some value 2"]
+        )
+
+    def test_custodial_history(self):
+        self.source.update(
+            {
+                "@template": {
+                    "details": {
+                        "custodialHistory": "some value",
+                    }
+                },
+            }
+        )
+        self.record = Record(self.source)
+
+        self.assertEqual(self.record.custodial_history, "some value")
+
+    def test_location_of_originals(self):
+        self.source.update(
+            {
+                "@template": {
+                    "details": {
+                        "locationOfOriginals": ["some value 1", "some value 2"],
+                    }
+                },
+            }
+        )
+        self.record = Record(self.source)
+
+        self.assertEqual(
+            self.record.location_of_originals, ["some value 1", "some value 2"]
+        )
+
+    def test_restrictions_on_use(self):
+        self.source.update(
+            {
+                "@template": {
+                    "details": {
+                        "restrictionsOnUse": "some value",
+                    }
+                },
+            }
+        )
+        self.record = Record(self.source)
+
+        self.assertEqual(self.record.restrictions_on_use, "some value")
+
+    def test_publication_note(self):
+        self.source.update(
+            {
+                "@template": {
+                    "details": {
+                        "publicationNote": ["some value 1", "some value 2"],
+                    }
+                },
+            }
+        )
+        self.record = Record(self.source)
+
+        self.assertEqual(self.record.publication_note, ["some value 1", "some value 2"])
+
+    def test_delivery_option(self):
+        self.source.update(
+            {
+                "@template": {
+                    "details": {
+                        "deliveryOption": "No availability condition provisioned for this record",
+                    }
+                },
+            }
+        )
+        self.record = Record(self.source)
+
+        self.assertEqual(
+            self.record.delivery_option,
+            "No availability condition provisioned for this record",
+        )

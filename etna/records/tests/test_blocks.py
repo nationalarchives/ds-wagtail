@@ -1,17 +1,26 @@
 import json
+from datetime import datetime, timezone
 
+import responses
+from django.conf import settings
 from django.urls import reverse
-
 from wagtail.models import Site
 from wagtail.test.utils import WagtailPageTestCase
 from wagtail.test.utils.form_data import nested_form_data, rich_text, streamfield
 
-import responses
-
+from etna.articles.models import ArticleIndexPage, ArticlePage
+from etna.ciim.tests.factories import create_record, create_response
 from etna.images.models import CustomImage
 
-from ...articles.models import ArticleIndexPage, ArticlePage
-from ...ciim.tests.factories import create_record, create_response
+TEST_RECORD_DATA = {
+    "iaid": "C123456",
+    "reference_number": "ZZ/TEST/1",
+    "summary_title": "Test record",
+}
+
+BLOCK_TITLE_OVERRIDE = "This record is sooooo featured!"
+
+DATE_1 = datetime(2000, 1, 1, tzinfo=timezone.utc)
 
 
 class TestFeaturedRecordBlockIntegration(WagtailPageTestCase):
@@ -19,16 +28,18 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTestCase):
         super().setUp()
         self.login()
 
-        response = create_response(
-            records=[
-                create_record(
-                    iaid="C123456",
-                    summary_title="Test record",
-                ),
-            ]
+        record_response = create_response(records=[create_record(**TEST_RECORD_DATA)])
+
+        responses.add(
+            responses.GET,
+            f"{settings.CLIENT_BASE_URL}/fetch",
+            json=record_response,
         )
-        responses.add(responses.GET, "https://kong.test/data/fetch", json=response)
-        responses.add(responses.GET, "https://kong.test/data/fetchAll", json=response)
+        responses.add(
+            responses.GET,
+            f"{settings.CLIENT_BASE_URL}/fetchAll",
+            json=record_response,
+        )
 
         root = Site.objects.get().root_page
 
@@ -45,7 +56,7 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTestCase):
         self.article_index_page.add_child(instance=self.article_page)
 
     @responses.activate
-    def test_add_featured_record(self):
+    def test_add_record_links(self):
         test_image = CustomImage.objects.create(width=0, height=0)
         data = nested_form_data(
             {
@@ -54,6 +65,7 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTestCase):
                 "intro": rich_text("test"),
                 "hero_image": test_image.id,
                 "teaser_text": "test",
+                "published_date": DATE_1,
                 "body": streamfield(
                     [
                         (
@@ -63,10 +75,22 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTestCase):
                                 "content": streamfield(
                                     [
                                         (
-                                            "featured_record",
+                                            "record_links",
                                             {
-                                                "title": "This record is sooooo featured!",
-                                                "record": "C123456",
+                                                "items": streamfield(
+                                                    [
+                                                        (
+                                                            "record_link",
+                                                            {
+                                                                "record": TEST_RECORD_DATA[
+                                                                    "iaid"
+                                                                ],
+                                                                "descriptive_title": BLOCK_TITLE_OVERRIDE,
+                                                                "record_dates": "2020-01-01",
+                                                            },
+                                                        )
+                                                    ]
+                                                )
                                             },
                                         )
                                     ]
@@ -84,7 +108,8 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTestCase):
         )
 
         response = self.client.post(
-            reverse("wagtailadmin_pages:edit", args=(self.article_page.id,)), data
+            reverse("wagtailadmin_pages:edit", args=(self.article_page.id,)),
+            data,
         )
         self.assertEqual(len(responses.calls), 3)
         self.assertRedirects(
@@ -94,30 +119,29 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTestCase):
 
         self.article_page.refresh_from_db()
 
-        featured_record = self.article_page.body[0].value["content"][0]
-        self.assertEqual(featured_record.block_type, "featured_record")
-        self.assertEqual(
-            featured_record.value["title"], "This record is sooooo featured!"
-        )
-        self.assertEqual(featured_record.value["record"].iaid, "C123456")
-        self.assertEqual(featured_record.value["image"]["image"], None)
+        record_links = self.article_page.body[0].value["content"][0]
+        record_link = record_links.value["items"][0]
+
+        self.assertEqual(record_links.block_type, "record_links")
+        self.assertEqual(record_link["descriptive_title"], BLOCK_TITLE_OVERRIDE)
+        self.assertEqual(record_link["record"].iaid, TEST_RECORD_DATA["iaid"])
 
         self.assertEqual(len(responses.calls), 4)
         self.assertEqual(
             responses.calls[0].request.url,
-            "https://kong.test/data/fetch?metadataId=C123456",
+            f"{settings.CLIENT_BASE_URL}/fetch?metadataId=C123456",
         )
         self.assertEqual(
             responses.calls[1].request.url,
-            "https://kong.test/data/fetch?metadataId=C123456",
+            f"{settings.CLIENT_BASE_URL}/fetch?metadataId=C123456",
         )
         self.assertEqual(
             responses.calls[2].request.url,
-            "https://kong.test/data/fetchAll?metadataIds=C123456",
+            f"{settings.CLIENT_BASE_URL}/fetchAll?metadataIds=C123456",
         )
 
     @responses.activate
-    def test_page_with_featured_record(self):
+    def test_page_with_record_links(self):
         self.article_page.body = json.dumps(
             [
                 {
@@ -126,10 +150,15 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTestCase):
                         "heading": "Heading",
                         "content": [
                             {
-                                "type": "featured_record",
+                                "type": "record_links",
                                 "value": {
-                                    "title": "This record is sooooo featured!",
-                                    "record": "C123456",
+                                    "items": [
+                                        {
+                                            "record": TEST_RECORD_DATA["iaid"],
+                                            "descriptive_title": BLOCK_TITLE_OVERRIDE,
+                                            "record_dates": "2020-01-01",
+                                        }
+                                    ],
                                 },
                             }
                         ],
@@ -146,31 +175,36 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTestCase):
         response = self.client.get(
             reverse("wagtailadmin_pages:edit", args=(self.article_page.id,))
         )
-        self.assertContains(response, "This record is sooooo featured!")
-        self.assertContains(response, "Test record")
+        self.assertContains(response, BLOCK_TITLE_OVERRIDE)
 
         # The record details are requested again to display for the field value
         self.assertEqual(len(responses.calls), 2)
         self.assertEqual(
             responses.calls[0].request.url,
-            "https://kong.test/data/fetchAll?metadataIds=C123456",
+            f"{settings.CLIENT_BASE_URL}/fetchAll?metadataIds=C123456",
         )
 
         # View the page to check rendering also
         response = self.client.get(self.article_page.get_url())
-        self.assertContains(response, "C123456")
+        self.assertContains(response, BLOCK_TITLE_OVERRIDE)
+        self.assertContains(
+            response,
+            'href="/catalogue/id/' + TEST_RECORD_DATA["iaid"] + '/"',
+        )
         self.assertEqual(len(responses.calls), 3)
         self.assertEqual(
             responses.calls[1].request.url,
-            "https://kong.test/data/fetchAll?metadataIds=C123456",
+            f"{settings.CLIENT_BASE_URL}/fetchAll?metadataIds=C123456",
         )
 
     @responses.activate
-    def test_view_edit_page_with_kong_exception(self):
+    def test_view_edit_page_with_client_api_exception(self):
         """Ensure that even if a record associated with this page doesn't
         exist, we're still able to render its edit page."""
 
-        responses.replace(responses.GET, "https://kong.test/data/fetch", status=500)
+        responses.replace(
+            responses.GET, f"{settings.CLIENT_BASE_URL}/fetch", status=500
+        )
 
         self.article_page.body = json.dumps(
             [
@@ -180,14 +214,13 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTestCase):
                         "heading": "Heading",
                         "content": [
                             {
-                                "type": "featured_records",
+                                "type": "record_links",
                                 "value": {
-                                    "heading": "This is a heading",
-                                    "introduction": "This is some text",
                                     "items": [
                                         {
-                                            "title": "",
-                                            "record": "C123456",
+                                            "record": TEST_RECORD_DATA["iaid"],
+                                            "descriptive_title": BLOCK_TITLE_OVERRIDE,
+                                            "record_dates": "2020-01-01",
                                         }
                                     ],
                                 },
@@ -203,4 +236,4 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTestCase):
             reverse("wagtailadmin_pages:edit", args=(self.article_page.id,))
         )
 
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)

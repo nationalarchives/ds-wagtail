@@ -1,9 +1,16 @@
-from typing import List
+import hmac
+from uuid import UUID
 
 from django.conf import settings
 
 
-def get_allowed_hosts() -> List[str]:
+def sign_submission_id(id: UUID) -> str:
+    return hmac.new(
+        settings.SECRET_KEY.encode(), str(id).encode(), "sha256"
+    ).hexdigest()
+
+
+def get_allowed_hosts() -> list[str]:
     allowed_hosts = settings.ALLOWED_HOSTS
     if settings.DEBUG and not allowed_hosts:
         # Allow variants of localhost in local development

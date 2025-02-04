@@ -1,31 +1,27 @@
-# Etna Technical Documentation
+# Welcome
 
-## Project overview
+⚠️ IMPORTANT: Remember that this documentation is public. Treat any sensitive data or credentials with the same level of caution that you would on any public forum.
 
-- A brief summary of the project
-- Who are the target audiences?
-- What technologies are being used?
+## Quickstart
 
-For help setting up a development environment, [view the README](https://github.com/nationalarchives/ds-wagtail/blob/main/README.md).
+To create all the relevant Docker containers, run:
 
-### External integrations
+```sh
+# Build and start the containers defined in docker-compose.yml
+docker-compose up -d
+```
 
-List here any key external services this project depends. Preferably link to a separate documentation page for each.
-
-- [Search and record data (Kong API)](features/search-and-record-data.md)
+To get data and media from the host platform, check out [fetching data](./development/fetching-data.md).
 
 ## Updating this documentation
 
-The navigation for this this documentation is configured in [``mkdocs.yml``](https://github.com/nationalarchives/ds-wagtail/blob/main/). You can add new markdown files there to get them to appear in the navigation.
+The navigation for this this documentation is configured in [`mkdocs.yml`](https://github.com/nationalarchives/ds-wagtail/blob/main/). You can add new markdown files there to get them to appear in the navigation.
 
-You can preview changes locally via [mkdocs](https://www.mkdocs.org/) by running the following from a `web` container shell:
+You can preview changes locally by starting the `docs` container (if it isn't already running):
 
-```console
-$ mkdocs serve
+```sh
+docker compose up -d docs
 ```
 
 This will make your local copy of the documentation available in your browser at:
 http://localhost:8001/
-
-
-IMPORTANT: Remember that this documentation is public. Treat any sensitive data or credentials with the same level of caution that you would on any public forum.

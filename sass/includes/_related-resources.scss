@@ -1,55 +1,92 @@
+/* stylelint-disable -- This will become redundant when the new frontend is added */
 .related-resources {
-  margin: 2rem 0;
-  padding-bottom: 1rem;
+    margin: 2rem 0;
+    padding-bottom: 1rem;
 
-  &__heading {
-    font-size: 2rem;
-    font-weight: 400;
-    font-family: $font__supria-sans;
-  }
-
-  &__description {
-    font-size: 1rem;
-  }
-
-  &__list {
-    list-style: none;
-    padding-left: 0;
-  }
-
-  &__list-item {
-    background-color: $color__dark;
-    margin-bottom: 1rem;
-    padding: 1rem;
-    border-left: 1.25rem solid $color__yellow_2;
-    text-align: left;
-  }
-
-  &__link {
-    text-decoration: none;
-    transition: none;
-
-    &:hover {
-      text-decoration: underline;
-      color: $color__white;
+    @media (min-width: #{$screen__lg + 1px}) {
+        .template-focused-article & {
+            padding-right: 10%;
+            padding-left: 10%;
+        }
     }
 
-    &:focus {
-      outline: 0.313rem solid $color__white;
-      outline-offset: .25rem;
+    &__heading {
+        font-family: $font__supria-sans;
+        font-size: 2rem;
+        font-weight: 400;
     }
-  }
 
-  &__link-heading {
-    margin-top: 0;
-    font-size: 1.625rem;
-  }
+    &__description {
+        font-size: 1rem;
+    }
 
-  &__link-text {
-    font-size: 1.2rem;
-  }
+    &__list {
+        padding-left: 0;
 
-  &__link, &__link-text {
-    color: $color__white !important;
-  }
+        list-style: none;
+    }
+
+    &__list-item {
+        margin-bottom: 1rem;
+        padding: 1rem 1.5rem;
+
+        text-align: left;
+
+        background-color: $color__grey-100;
+        border-left: 0.3125rem solid $color__yellow;
+
+        @media (min-width: map-get($grid-breakpoints, "md")) {
+            border-left-width: 0.3125rem;
+        }
+    }
+
+    // stylelint-disable no-descending-specificity
+    &__link {
+        transition: none;
+
+        text-decoration-thickness: 1px;
+
+        &:hover {
+            color: $color__white;
+            text-decoration: none;
+        }
+
+        // &:focus {
+        //   outline: 0.313rem solid $color__white;
+        //   outline-offset: .25rem;
+        // }
+    }
+
+    &__link-heading {
+        margin-top: 0;
+
+        font-family: $font__body;
+        font-size: 1.125rem;
+        font-weight: $font-weight-bold;
+
+        @media (min-width: map-get($grid-breakpoints, "md")) {
+            font-size: 1.25rem;
+        }
+    }
+
+    &__link-text {
+        font-family: $font__body;
+        font-size: 1rem;
+
+        p {
+            margin-bottom: 0;
+        }
+    }
+
+    &__link,
+    &__link-text {
+        color: $color__black;
+
+        &:hover,
+        &:visited,
+        &:focus {
+            color: $color__black;
+        }
+    }
+    // stylelint-enable no-descending-specificity
 }

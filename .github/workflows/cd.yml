@@ -1,103 +1,113 @@
-name: CD
+name: Build and deploy
 
 on:
+  workflow_dispatch:
   push:
+    # TODO: Remove when we test and build on all branches - at the moment the tests are run as part of pr.yml
     branches:
       - main
-      - develop
-    paths:
-      # Host config
-      - '.plaform/**'
-      - '.platform.app.yaml'
-      - 'gunicorn.conf.py'
-      # Python config
-      - 'poetry.lock'
-      - 'pyproject.toml'
-      # NPM config
-      - 'package.json'
-      - 'package-lock.json'
-      - 'webpack.config.js'
-      # App changes
-      - 'config/**'
-      - 'sass/**'
-      - 'scripts/**'
-      - 'templates/**'
-      - 'etna/**'
+  release:
+    types:
+      - published
 
-env:
-  PYTHON_VERSION: "3.11"
+concurrency:
+  group: cd-${{ github.ref }}
 
 jobs:
-  notify-slack:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v3
-    - uses: rtCamp/action-slack-notify@v2
-      env:
-        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-        SLACK_TITLE: "A deployment to ${{ github.head_ref || github.ref_name }} is imminent"
+  test:
+    name: Tests
+    uses: ./.github/workflows/_tests.yml
+    with:
+      python-version: ${{ vars.CI_PYTHON_VERSION }}
+      poetry-version: ${{ vars.CI_POETRY_VERSION }}
 
-  test-python:
+  version:
     runs-on: ubuntu-latest
-    env:
-      DJANGO_SETTINGS_MODULE: config.settings.test
-      DATABASE_ENGINE: django.db.backends.postgresql
-      DATABASE_NAME: postgres
-      DATABASE_USER: postgres
-      DATABASE_PASSWORD: postgres
-      DATABASE_HOST: localhost
-      DATABASE_PORT: 5432
-    services:
-      postgres:
-        image: postgres:12.3
-        env:
-          POSTGRES_USER: ${{ env.DATABASE_USER }}
-          POSTGRES_PASSWORD: ${{ env.DATABASE_PASSWORD }}
-          POSTGRES_DB: ${{ env.DATABASE_NAME }}
-        ports:
-          - 5432:5432
-        options: --health-cmd pg_isready --health-interval 1s --health-timeout 3s --health-retries 10
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
-        with:
-          python-version: ${{ env.PYTHON_VERSION }}
-      - uses: snok/install-poetry@v1
-        with:
-          virtualenvs-create: true
-          virtualenvs-in-project: true
-      - id: cached-poetry-dependencies
-        uses: actions/cache@v3
-        with:
-          path: .venv
-          key: ds-wagtail-venv-${{ runner.os }}-${{ env.PYTHON_VERSION }}-${{ hashFiles('**/poetry.lock') }}
-      - name: Install dependencies
-        if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
-        run: poetry install --no-interaction --no-root
-      - name: Run Django checks
-        run: poetry run python manage.py check
-      - name: Run test suite
-        run: poetry run python manage.py test etna
-      - name: Check for missing migrations
-        run: poetry run python manage.py makemigrations --check --noinput
+      - uses: actions/checkout@v4
+      - name: Get tag
+        id: version-tag
+        uses: nationalarchives/ds-docker-actions/.github/actions/get-version-tag@main
+    outputs:
+      version: ${{ steps.version-tag.outputs.version-tag }}
 
-  test-javascript:
+  build:
     runs-on: ubuntu-latest
+    needs:
+      - test
+      - version
+    permissions:
+      packages: write
+      contents: write
     steps:
-      - uses: actions/checkout@v3
-      - name: Install npm modules
-        run: npm install
-      - name: Run jest tests
-        run: npm test
-
-  deploy:
-    runs-on: ubuntu-latest
-    needs: [notify-slack, test-python, test-javascript]
-    steps:
-      - uses: actions/checkout@v3
-      - uses: axelerant/platformsh-deploy-action@v1
+      - uses: actions/checkout@v4
+      - name: Build Docker image
+        uses: nationalarchives/ds-docker-actions/.github/actions/docker-build@main
         with:
-          project-id: ${{ secrets.PLATFORM_PROJECT_ID }}
-          cli-token: ${{ secrets.PLATFORM_CLI_TOKEN }}
-          ssh-private-key: ${{ secrets.PLATFORM_SSH_KEY }}
-          force-push: true
+          version: ${{ needs.version.outputs.version }}
+          latest: ${{ github.ref == 'refs/heads/main' }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          docker-image-name: ${{ vars.DOCKER_IMAGE_NAME }}
+      - name: Create tag
+        if: github.ref == 'refs/heads/main'
+        uses: actions/github-script@v5
+        with:
+          script: |
+            github.rest.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: 'refs/tags/v${{ needs.version.outputs.version }}',
+              sha: context.sha
+            })
+
+  update-ds-infrastructure-web:
+    runs-on: ubuntu-latest
+    needs:
+      - build
+      - version
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: nationalarchives/ds-infrastructure-web
+          ref: main
+          token: ${{ secrets.ACTIONS_GITHUB_TOKEN }}
+      - name: Set up git config
+        run: |
+          git config user.name "ds-wagtail"
+          git config user.email "<>"
+      - name: Install jq
+        run: sudo apt-get install jq
+      - name: Update config
+        run: jq --indent 4 '(.services.cms.version|="${{ needs.version.outputs.version }}")' config/develop.json > tmp.$$.json && mv tmp.$$.json config/develop.json
+      - name: Push new version
+        run: |
+          git add config/develop.json
+          git commit -m "Update cms to v${{ needs.version.outputs.version }}"
+          git push origin main
+
+  update-dblclk:
+    runs-on: ubuntu-latest
+    needs:
+      - build
+      - version
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: nationalarchives/ds-etna
+          ref: proof-of-concept
+          token: ${{ secrets.ACTIONS_GITHUB_TOKEN }}
+      - name: Set up git config
+        run: |
+          git config user.name "ds-wagtail"
+          git config user.email "<>"
+      - name: Install yq
+        uses: dcarbone/install-yq-action@v1.1.1
+      - name: Update config
+        run: yq '(.services.cms.image|="ghcr.io/${{ github.repository_owner }}/${{ vars.DOCKER_IMAGE_NAME }}:${{ needs.version.outputs.version }}")' docker-compose.yml > tmp.$$.yml && mv tmp.$$.yml docker-compose.yml
+      - name: Push new version
+        run: |
+          git add docker-compose.yml
+          git commit -m "Update cms to v${{ needs.version.outputs.version }}"
+          git push origin proof-of-concept

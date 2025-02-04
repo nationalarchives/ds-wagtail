@@ -2,21 +2,24 @@
 
 
 <div class="search-sort-view">
-    <form method="GET" class="search-sort-view__form search-sort-view__desktop" data-id="sort-form" id="catalogue-sort-form-desktop" data-search-type="{{ view.search_tab }}" data-search-bucket="{{ buckets.current.label }}" data-search-filter-name="Sort results" data-search-filter-value="">
+<!--    <p class="search-results__explainer">Results for everything on our website that matches your search term.</p>-->
+    <div class="tna-container">
+    <form method="GET" class="search-sort-view__form search-sort-view__desktop" data-id="sort-form-desktop" id="catalogue-sort-form-desktop" data-search-type="{{ view.search_tab }}" data-search-bucket="{{ buckets.current.label }}" data-search-filter-name="Sort results" data-search-filter-value="">
 
-        <h2 class="search-sort-view__heading">
-           <label for="{{form.sort_by.id_for_label}}">Sort by</label>
+        <h2 class="tna-heading-l search-sort-view__heading sr-only">
+           <label for="id_sort_by_desktop">Sort by</label>
         </h2>
-        
+
         {{ form.sort_by.errors }}
-        {{ form.sort_by }}
+        {% render_sort_by_input form=form id_suffix="desktop" %}
 
-        {{ 'sort_by'|include_hidden_fields:form }}
+        {% render_fields_as_hidden form exclude='sort_by' %}
 
-        <input type="submit" value="Update" class="search-sort-view__form-submit">
+        <input type="submit" value="Sort by" class="search-sort-view__form-submit">
     </form>
 
-    <h2 class="search-sort-view__heading"><span class="sr-only">Display as:</span></h2>
+
+    <h2 class="tna-heading-l search-sort-view__heading"><span class="sr-only">Display as:</span></h2>
     <ul class="search-sort-view__list">
 
         <li class="search-sort-view__list-item">
@@ -26,7 +29,7 @@
                     <span class="sr-only">Displaying results as a list</span>
                 </span>
             {% else %}
-                <a href="?{% query_string_include 'display' 'list' %}" id="listview" search-type="{{ view.search_tab }}" search-bucket="{{ buckets.current.label }}" search-filter-name="Sort results" search-filter-value="Display results as a list" class="search-sort-view__icon">
+                <a href="?{% query_string_include 'display' 'list' %}" id="listview" search-type="{{ view.search_tab }}" search-bucket="{{ buckets.current.label }}" search-filter-name="Sort results" search-filter-value="Display results as a list" title="Display results as a list" class="search-sort-view__icon">
                     {% include "includes/icon.html" with name="list" classname="search-sort-view__svg" %}
                     <span class="sr-only">Displaying results as a list</span>
                 </a>
@@ -39,33 +42,14 @@
                     <span class="sr-only">Displaying results as a grid</span>
                 </span>
             {% else %}
-                <a href="?{% query_string_include 'display' 'grid' %}" id="gridView" search-type="{{ view.search_tab }}" search-bucket="{{ buckets.current.label }}" search-filter-name="Sort results" search-filter-value="Display results as a grid" class="search-sort-view__icon">
+                <a href="?{% query_string_include 'display' 'grid' %}" id="gridView" search-type="{{ view.search_tab }}" search-bucket="{{ buckets.current.label }}" search-filter-name="Sort results" search-filter-value="Display results as a grid"  title="Display results as a grid" class="search-sort-view__icon">
                     {% include "includes/icon.html" with name="grid" classname="search-sort-view__svg" %}
                     <span class="sr-only">Display results as a grid</span>
                 </a>
             {% endif %}
         </li>
     </ul>
-
+    </div>
     {{ form.display.errors }}
     {{ form.display.as_hidden }}
 </div>
-
-<script>
-    // get value of selected option based on id : id_sort_by
-
-    function getOption() {
-        selectElement = document.querySelector('#id_sort_by');
-        output = selectElement.options[selectElement.selectedIndex].value.trim();
-        document.getElementById("catalogue-sort-form-desktop").setAttribute("data-search-filter-value", output);
-
-        selectElement.onchange = function() {
-            let output = this.options[this.selectedIndex].value.trim();
-
-            document.getElementById("catalogue-sort-form-desktop").setAttribute("data-search-filter-value", output);
-        }
-    }
-
-    getOption();
-</script>
-

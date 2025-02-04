@@ -1,48 +1,59 @@
+@use "@nationalarchives/frontend/nationalarchives/tools/media";
+
 .explore-intro {
-  $root: &;
-  padding-top: 1rem;
-  background-color: $color__white;
-  color: $color__black;
+    $root: &;
+    padding-top: 1rem;
 
-  &__image-container {
-    display: flex;
-  }
+    overflow: hidden; // cut off image when browser is narrow
 
-  &__image {
-    display: block;
-    max-width: 100%;
-    height: auto;
+    color: $color__black;
 
-    @media (max-width: $screen__lg) {
-      display: none;
-    }
-  }
+    background-color: $color__white;
 
-  &__title {
-    margin-top: 0;
-    margin-bottom: 0;
-    font-size: 2.5rem;
-    font-family: $font__supria-sans;
+    &__image-container {
+        align-self: flex-end;
 
-    @media (max-width: $screen__md) {
-      font-size: 2.5rem;
+        display: flex;
     }
 
-    &--meta {
-      font-size: 1.4rem;
-    }
-  }
+    &__image {
+        width: auto;
+        max-width: 390px; // match wagtail image rendition width
+        height: auto;
+        max-height: 390px; // match wagtail image rendition height
 
-  &__paragraph {
-    margin-bottom: 1rem;
-    font-size: 1.313rem;
+        display: block;
 
-    @media (max-width: $screen__md) {
-      padding-bottom: 1.5em;
+        @include media.on-mobile {
+            display: none;
+        }
     }
 
-    &--short {
-      padding-bottom: 0;
+    &__title {
+        @include font-size(xxxl);
+        margin-top: 0;
+        margin-bottom: 0;
+
+        font-family: $font__supria-sans;
+        font-weight: $font-weight-bold;
+        line-height: 1.2;
+
+        &--meta {
+            @include font-size(xxl);
+            font-weight: $font-weight-normal;
+        }
     }
-  }
+
+    &__paragraph {
+        @include font-size(m);
+        line-height: 1.5;
+
+        @media (min-width: #{$screen__md + 1px}) {
+            @include font-size(xl);
+        }
+
+        &--short {
+            margin-bottom: 0;
+        }
+    }
 }

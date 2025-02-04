@@ -1,49 +1,26 @@
-FROM python:3.11
-LABEL maintainer="dan@numiko.com"
+ARG IMAGE=ghcr.io/nationalarchives/tna-python-django
+ARG IMAGE_TAG=latest
 
-ARG POETRY_HOME=/opt/poetry
+FROM "$IMAGE":"$IMAGE_TAG"
 
-EXPOSE 8000
+# TODO: Remove NPM_BUILD_COMMAND once completely headless
+ENV NPM_BUILD_COMMAND=compile
+ARG BUILD_VERSION
+ENV BUILD_VERSION="$BUILD_VERSION"
 
-ENV \
-  # python:
-  PYTHONFAULTHANDLER=1 \
-  PYTHONUNBUFFERED=1 \
-  PYTHONHASHSEED=random \
-  PYTHONDONTWRITEBYTECODE=1 \
-  # pip:
-  PIP_NO_CACHE_DIR=off \
-  PIP_DISABLE_PIP_VERSION_CHECK=on \
-  PIP_DEFAULT_TIMEOUT=100 \
-  # poetry:
-  POETRY_HOME=/opt/poetry \
-  POETRY_VERSION=1.4.2 \
-  POETRY_NO_INTERACTION=1 \
-  POETRY_VIRTUALENVS_CREATE=false
+# Copy in the application code
+COPY --chown=app . .
 
-WORKDIR /app
+# Install dependencies
+RUN tna-build
 
-# Upgrade pip
-RUN pip install --upgrade pip
+# Copy the assets from the @nationalarchives/frontend repository
+# TODO: Remove once completely headless
+RUN mkdir -p /app/templates/static/assets; \
+  cp -R /app/node_modules/@nationalarchives/frontend/nationalarchives/assets/* /app/templates/static/assets; \
+  poetry run python /app/manage.py collectstatic --no-input --clear
 
-# Install poetry as per official guidance:
-# https://github.com/python-poetry/poetry#installation
-RUN curl -sSL "https://install.python-poetry.org" | python -
+# Delete source files, tests and docs
+# RUN rm -fR /app/src /app/test /app/docs
 
-# Add poetry's bin directory to PATH
-ENV PATH="$POETRY_HOME/bin:$PATH"
-
-# Copy files used by poetry
-COPY pyproject.toml poetry.lock ./
-
-# Copy application code
-COPY . .
-
-# Load shortcuts
-RUN cp ./bash/bashrc.sh /root/.bashrc
-
-# Install Python dependencies AND the 'etna' app
-RUN poetry install
-
-# Do nothing forever (use 'exec' to resuse the container)
-CMD tail -f /dev/null
+CMD ["tna-run", "config.wsgi:application"]

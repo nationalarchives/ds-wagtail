@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from enum import StrEnum
 from typing import Any, List
 
@@ -26,7 +26,7 @@ class BucketKeys(StrEnum):
 class SearchTabs(StrEnum):
     ALL = "All results"
     CATALOGUE = "Catalogue results"
-    WEBSITE = "Website results"
+    WEBSITE = "Our website results"
 
 
 class Aggregation(StrEnum):
@@ -47,17 +47,10 @@ class Aggregation(StrEnum):
     LOCATION = "location"
 
 
-DEFAULT_AGGREGATIONS = (
-    Aggregation.COLLECTION,
-    Aggregation.LEVEL,
-    Aggregation.TOPIC,
-    Aggregation.CLOSURE,
-    Aggregation.HELD_BY,
-    Aggregation.CATALOGUE_SOURCE,
+DEFAULT_AGGREGATIONS = [
     Aggregation.GROUP
     + ":30",  # Fetch more 'groups' so that we receive counts for any bucket/tab options we might be showing.
-    Aggregation.TYPE,
-)
+]
 
 
 @dataclass
@@ -70,7 +63,7 @@ class Bucket:
     results: List[Any] = None
 
     # By default, 10 items of each aggregation are requested from the API. This can be overridden by using a string in the format '{name}:{number_of_items}'
-    aggregations: List[str] = DEFAULT_AGGREGATIONS
+    aggregations: List[str] = field(default_factory=lambda: DEFAULT_AGGREGATIONS)
 
     @cached_property
     def aggregations_normalised(self) -> List[str]:
@@ -127,62 +120,72 @@ CATALOGUE_BUCKETS = BucketList(
             key="tna",
             label="Records at The National Archives",
             description="Results for records held at The National Archives that match your search term.",
+            aggregations=DEFAULT_AGGREGATIONS
+            + [Aggregation.COLLECTION, Aggregation.LEVEL, Aggregation.CLOSURE],
         ),
         Bucket(
             key="digitised",
             label="Online records at The National Archives",
             description="Results for records available to download and held at The National Archives that match your search term.",
+            aggregations=DEFAULT_AGGREGATIONS
+            + [Aggregation.COLLECTION, Aggregation.LEVEL, Aggregation.CLOSURE],
         ),
         Bucket(
             key="nonTna",
             label="Records at other UK archives",
             description="Results for records held at other archives in the UK (and not at The National Archives) that match your search term.",
+            aggregations=DEFAULT_AGGREGATIONS
+            + [
+                Aggregation.COLLECTION,
+                Aggregation.CLOSURE,
+                Aggregation.HELD_BY,
+                Aggregation.CATALOGUE_SOURCE,
+            ],
         ),
         Bucket(
             key="creator",
             label="Record creators",
             description="Results for original creators of records (for example organisations, businesses, people, diaries and manors) that match your search term.",
-            aggregations=(
-                Aggregation.GROUP + ":30",
-                Aggregation.TYPE,
-                Aggregation.COUNTRY,
-            ),
+            aggregations=DEFAULT_AGGREGATIONS + [Aggregation.TYPE, Aggregation.COUNTRY],
         ),
         Bucket(
             key="archive",
             label="Find an archive",
             description="Results for archives in the UK and from across the world that match your search term.",
-            aggregations=(
-                Aggregation.GROUP + ":30",
-                Aggregation.LOCATION,
-            ),
+            aggregations=DEFAULT_AGGREGATIONS + [Aggregation.LOCATION],
         ),
     ]
 )
+
 
 WEBSITE_BUCKETS = BucketList(
     [
         Bucket(
             key="blog",
             label="Blog posts",
+            aggregations=DEFAULT_AGGREGATIONS + [Aggregation.TOPIC],
         ),
         Bucket(
             key="researchGuide",
             label="Research Guides",
+            aggregations=DEFAULT_AGGREGATIONS + [Aggregation.TOPIC],
         ),
         Bucket(
             key=BucketKeys.INSIGHT.value,
             label="Insights",
+            aggregations=DEFAULT_AGGREGATIONS,
         ),
         # TODO: Restore when we are succesfully indexing new highlight pages
         # Bucket(key=BucketKeys.HIGHLIGHT.value, label="Highlights"),
         Bucket(
             key="audio",
             label="Audio",
+            aggregations=DEFAULT_AGGREGATIONS + [Aggregation.TOPIC],
         ),
         Bucket(
             key="video",
             label="Video",
+            aggregations=DEFAULT_AGGREGATIONS + [Aggregation.TOPIC],
         ),
     ]
 )
@@ -192,9 +195,6 @@ FEATURED_BUCKETS = BucketList(
         Bucket(key="tna", label="Records at The National Archives"),
         Bucket(key="nonTna", label="Records at other UK archives"),
         Bucket(key="creator", label="Record creators"),
-        Bucket(key="blog", label="Blogs"),
-        Bucket(key="researchGuide", label="Research Guides"),
-        Bucket(key=BucketKeys.INSIGHT.value, label="Stories from the collection"),
     ]
 )
 
@@ -669,6 +669,21 @@ class LevelKeys(StrEnum):
     LEVEL_7 = "Item"
 
 
+@forTemplate
+class NonTNALevelKeys(StrEnum):
+    LEVEL_1 = "Fonds"
+    LEVEL_2 = "Sub-fonds"
+    LEVEL_3 = "Sub-sub-fonds"
+    LEVEL_4 = "Sub-sub-sub-fonds"
+    LEVEL_5 = "Series"
+    LEVEL_6 = "Sub-series"
+    LEVEL_7 = "Sub-sub-series"
+    LEVEL_8 = "Sub-sub-sub-series"
+    LEVEL_9 = "File"
+    LEVEL_10 = "Item"
+    LEVEL_11 = "Sub-item"
+
+
 LEVELS = (
     "Division",
     "Lettercode",
@@ -682,6 +697,7 @@ LEVELS = (
 LEVEL_CHOICES = tuple((level, level) for level in LEVELS)
 
 
+@forTemplate
 class Display(StrEnum):
     """Display type to support veiw, template."""
 
@@ -701,13 +717,12 @@ TYPE_CHOICES = tuple(
     (k, f"{v}") for k, v in sorted(TYPE_NAMES.items(), key=lambda x: x[1])
 )
 
-CUSTOM_ERROR_MESSAGES = {
-    "invalid_date_range": "There is a problem. Start date cannot be after end date."
-}
-
 TNA_URLS = {
     "discovery_browse": "https://discovery.nationalarchives.gov.uk/browse/r/h",
     "tna_accessions": "https://www.nationalarchives.gov.uk/accessions",
+    "discovery_rec_default_fmt": "https://discovery.nationalarchives.gov.uk/details/r/{iaid}",
+    "discovery_rec_archon_fmt": "https://discovery.nationalarchives.gov.uk/details/a/{iaid}",
+    "discovery_rec_creators_fmt": "https://discovery.nationalarchives.gov.uk/details/c/{iaid}",
 }
 
 #  associate readable names with api identifiers
@@ -752,4 +767,9 @@ ARCHIVE_NRA_RECORDS_COLLECTION = [
         "display_name": "Paper catalogues",
         "long_display_name": "Paper catalogues available to view at The National Archives",
     },
+]
+
+CLOSURE_CLOSED_STATUS = [
+    "Closed Or Retained Document, Closed Description",
+    "Closed Or Retained Document, Open Description",
 ]

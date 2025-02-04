@@ -1,61 +1,72 @@
+@use "@nationalarchives/frontend/nationalarchives/tools/media";
+
 .jumplinks {
-  max-height: 100vh;
-  position: sticky;
-  top: 0;
-  padding: 2.5rem 0.5rem 0;
-  overflow-y: auto;
-  -ms-overflow-style: none; /* Hide jumplinks scrollbar on Internet Explorer 10+ and Edge */
-  scrollbar-width: none; /* Hide jumplinks scrollbar on Firefox */
+    max-height: 100vh;
+    padding: 2rem 0 0;
 
-  &::-webkit-scrollbar {
-    display: none; /* Hide jumplinks scrollbar on Safari and Chrome */
-  }
+    overflow: auto visible;
 
-  &__heading {
-    @include font-size(xl);
-    font-family: $font__supria-sans;
-    margin: 0;
-  }
+    position: sticky;
+    top: 0;
+    -ms-overflow-style: none; /* Hide jumplinks scrollbar on Internet Explorer 10+ and Edge */
+    scrollbar-width: none; /* Hide jumplinks scrollbar on Firefox */
 
-  &__list {
-    padding-left: 0;
-    list-style: none;
-  }
-
-  &__list-item {
-    padding: 0.3rem 0;
-
-    a {
-      color: $color__dark;
-      position: relative;
-      bottom: 3px;
+    &::-webkit-scrollbar {
+        display: none; /* Hide jumplinks scrollbar on Safari and Chrome */
     }
 
-    &::marker {
-      font-size: 1.5rem;
+    &__heading {
+        @include font-size(xl);
+        margin: 0;
+
+        font-family: $font__body;
+        font-weight: 700;
     }
-  }
 
-  &__list-item.active {
-    color: $color__yellow_2;
+    &__list {
+        padding-right: 0.5rem;
+        padding-left: 0.5rem;
 
-    a {
-      outline: 0.1875rem solid $color__yellow_2;
-      outline-offset: 0.25rem;
-      text-decoration: none;
-
-      &:focus {
-        outline-color: $color__blue_4;
-      }
+        list-style: none;
     }
-  }
 
-  @media (max-width: $screen__md) {
-    display: none;
-  }
+    &__list-item {
+        padding: 0.375rem 0;
 
-  @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
-    overflow-y: hidden;
-    height: 100%;
-  }
+        a {
+            display: block;
+
+            &,
+            &:link,
+            &:visited {
+                color: $color__link;
+            }
+        }
+
+        &::marker {
+            font-size: 1.5rem;
+        }
+    }
+
+    &__list-item.active {
+        a {
+            outline: 0.3125rem solid $color__yellow;
+            outline-offset: 0.125rem;
+            // text-decoration: none;
+
+            &:focus {
+                outline-color: $color__navy;
+            }
+        }
+    }
+
+    @include media.on-mobile {
+        display: none;
+    }
+
+    @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+        height: 100%;
+
+        overflow-y: hidden;
+    }
 }

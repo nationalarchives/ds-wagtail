@@ -19,7 +19,10 @@ class TextInputWithLabel(LabelWidgetMixin, forms.TextInput):
     input to have its own label.
     """
 
-    pass
+    def get_context(self, name, value, attrs):
+        context = super().get_context(name, value, attrs)
+        context["widget"]["label"] = self.label
+        return context
 
 
 class DateInputWidget(forms.MultiWidget):
@@ -39,7 +42,6 @@ class DateInputWidget(forms.MultiWidget):
                 _("Day"),
                 attrs={
                     "size": 2,
-                    "placeholder": "DD",
                     "inputmode": "numeric",
                 },
             ),
@@ -47,7 +49,6 @@ class DateInputWidget(forms.MultiWidget):
                 _("Month"),
                 attrs={
                     "size": 2,
-                    "placeholder": "MM",
                     "inputmode": "numeric",
                 },
             ),
@@ -55,7 +56,6 @@ class DateInputWidget(forms.MultiWidget):
                 _("Year"),
                 attrs={
                     "size": 4,
-                    "placeholder": "YYYY",
                     "inputmode": "numeric",
                 },
             ),
@@ -77,3 +77,36 @@ class DateInputWidget(forms.MultiWidget):
         if value:
             return value.day, value.month, value.year
         return None, None, None
+
+
+class HiddenDateInputWidget(forms.widgets.MultiWidget):
+    """
+    Allows DateField's to be rendered as a series of hidden inputs in a form,
+    with the separate hidden input for each component of the date value.
+    """
+
+    def __init__(
+        self,
+        attrs=None,
+    ):
+        widgets = (
+            forms.HiddenInput(attrs=attrs),
+            forms.HiddenInput(attrs=attrs),
+            forms.HiddenInput(attrs=attrs),
+        )
+        super().__init__(widgets, attrs)
+
+    def decompress(self, value):
+        """
+        Convert a ``date`` into values for the day, month and year so it can be
+        displayed in the widget's fields.
+
+        Args:
+            value (date): the date to be displayed
+
+        Returns:
+            a 3-tuple containing the day, month and year components of the date.
+        """
+        if value:
+            return [value.day, value.month, value.year]
+        return [None, None, None]

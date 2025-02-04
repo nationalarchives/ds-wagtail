@@ -1,73 +1,51 @@
-from typing import Any, Dict, Tuple
+from typing import Any, Dict, List, Tuple, Union
 
 from django.conf import settings
 from django.db import models
+from django.db.models.functions import Coalesce
 from django.http import HttpRequest
 from django.utils.functional import cached_property
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
-
 from modelcluster.contrib.taggit import ClusterTaggableManager
 from modelcluster.fields import ParentalKey
-from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
+from rest_framework import serializers
+from taggit.models import ItemBase, TagBase
+from wagtail.admin.panels import (
+    FieldPanel,
+    InlinePanel,
+    MultiFieldPanel,
+    PageChooserPanel,
+)
+from wagtail.api import APIField
 from wagtail.fields import RichTextField, StreamField
 from wagtail.images import get_image_model_string
 from wagtail.models import Orderable, Page
 from wagtail.search import index
 from wagtail.snippets.models import register_snippet
 
-from taggit.models import ItemBase, TagBase
-
 from etna.collections.models import TopicalPageMixin
+from etna.core.blocks import AuthorPromotedPagesBlock, FeaturedCollectionBlock
 from etna.core.models import (
-    BasePageWithIntro,
+    BasePageWithRequiredIntro,
     ContentWarningMixin,
     HeroImageMixin,
-    NewLabelMixin,
+    PublishedDateMixin,
+    RequiredHeroImageMixin,
+)
+from etna.core.serializers import (
+    DefaultPageSerializer,
+    HighlightImageSerializer,
+    ImageSerializer,
+    RichTextSerializer,
+    TaggableSerializer,
 )
 from etna.core.utils import skos_id_from_text
+from etna.people.models import AuthorPageMixin
 from etna.records.fields import RecordField
+from etna.records.serializers import RecordSerializer
 
-from .blocks import (
-    ArticlePageStreamBlock,
-    AuthorPromotedPagesBlock,
-    FeaturedCollectionBlock,
-)
-
-
-class ArticleIndexPage(BasePageWithIntro):
-    """ArticleIndexPage
-
-    This page lists the ArticlePage objects that are children of this page.
-    """
-
-    featured_article = models.ForeignKey(
-        "articles.ArticlePage", blank=True, null=True, on_delete=models.SET_NULL
-    )
-    featured_pages = StreamField(
-        [("featuredpages", FeaturedCollectionBlock())],
-        blank=True,
-        null=True,
-        use_json_field=True,
-    )
-
-    # DataLayerMixin overrides
-    gtm_content_group = "stories"
-
-    class Meta:
-        verbose_name = _("article index page")
-
-    def get_context(self, request):
-        context = super().get_context(request)
-        context["article_pages"] = self.get_children().public().live().specific()
-        return context
-
-    content_panels = BasePageWithIntro.content_panels + [
-        FieldPanel("featured_article", heading=_("Featured article")),
-        FieldPanel("featured_pages"),
-    ]
-
-    subpage_types = ["articles.ArticlePage"]
+from .blocks import ArticlePageStreamBlock
 
 
 @register_snippet
@@ -113,63 +91,146 @@ class TaggedArticle(ItemBase):
         ArticleTag, related_name="tagged_article", on_delete=models.CASCADE
     )
     content_object = ParentalKey(
-        to="articles.ArticlePage",
+        to="wagtailcore.Page",
         on_delete=models.CASCADE,
         related_name="tagged_items",
     )
 
 
+class ArticleTagMixin(models.Model):
+    """Mixin to add article tags to a Page."""
+
+    article_tag_names = models.TextField(editable=False, null=True)
+    tags = ClusterTaggableManager(through=TaggedArticle, blank=True)
+
+    class Meta:
+        abstract = True
+
+    promote_panels = [
+        FieldPanel("tags"),
+    ]
+
+    search_fields = [
+        index.SearchField("article_tag_names", boost=2),
+    ]
+
+    api_fields = [APIField("tags", serializer=TaggableSerializer())]
+
+
+class ArticleIndexPage(BasePageWithRequiredIntro):
+    """ArticleIndexPage
+
+    This page lists the ArticlePage objects that are children of this page.
+    """
+
+    featured_article = models.ForeignKey(
+        "wagtailcore.Page",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        help_text=_(
+            "Select a page to display in the featured area. This can be an Article, Focused Article or Record Article."
+        ),
+        verbose_name=_("featured article"),
+    )
+
+    featured_pages = StreamField(
+        [("featuredpages", FeaturedCollectionBlock())],
+        blank=True,
+        null=True,
+    )
+
+    api_fields = BasePageWithRequiredIntro.api_fields + [
+        APIField(
+            "featured_article",
+            serializer=DefaultPageSerializer(required_api_fields=["teaser_image"]),
+        ),
+        APIField("featured_pages"),
+    ]
+
+    # DataLayerMixin overrides
+    gtm_content_group = "Explore the collection"
+
+    class Meta:
+        verbose_name = _("article index page")
+
+    @cached_property
+    def article_pages(self):
+        return (
+            self.get_children()
+            .public()
+            .live()
+            .order_by(
+                Coalesce(
+                    "recordarticlepage__published_date",
+                    "focusedarticlepage__published_date",
+                    "articlepage__published_date",
+                )
+            )
+            .reverse()
+            .specific()
+        )
+
+    content_panels = BasePageWithRequiredIntro.content_panels + [
+        PageChooserPanel(
+            "featured_article",
+            [
+                "articles.ArticlePage",
+                "articles.FocusedArticlePage",
+                "articles.RecordArticlePage",
+            ],
+        ),
+        FieldPanel("featured_pages"),
+    ]
+
+    max_count = 1
+    parent_page_types = ["collections.ExplorerIndexPage"]
+    subpage_types = [
+        "articles.ArticlePage",
+        "articles.FocusedArticlePage",
+        "articles.RecordArticlePage",
+    ]
+
+
 class ArticlePage(
     TopicalPageMixin,
-    HeroImageMixin,
+    RequiredHeroImageMixin,
     ContentWarningMixin,
-    NewLabelMixin,
-    BasePageWithIntro,
+    PublishedDateMixin,
+    ArticleTagMixin,
+    BasePageWithRequiredIntro,
 ):
     """ArticlePage
 
     The ArticlePage model.
     """
 
-    body = StreamField(
-        ArticlePageStreamBlock, blank=True, null=True, use_json_field=True
-    )
-    article_tag_names = models.TextField(editable=False)
-    tags = ClusterTaggableManager(through=TaggedArticle, blank=True)
-
-    search_fields = BasePageWithIntro.search_fields + [
-        index.SearchField("article_tag_names"),
-    ]
+    body = StreamField(ArticlePageStreamBlock, blank=True, null=True)
 
     # DataLayerMixin overrides
-    gtm_content_group = "stories"
+    gtm_content_group = "Explore the collection"
 
     template = "articles/article_page.html"
 
     class Meta:
         verbose_name = _("article")
         verbose_name_plural = _("articles")
+        verbose_name_public = _("the story of")
 
     content_panels = (
-        BasePageWithIntro.content_panels
-        + HeroImageMixin.content_panels
+        BasePageWithRequiredIntro.content_panels
+        + RequiredHeroImageMixin.content_panels
+        + ContentWarningMixin.content_panels
         + [
-            FieldPanel("tags"),
-            MultiFieldPanel(
-                [
-                    FieldPanel("display_content_warning"),
-                    FieldPanel("custom_warning_text"),
-                ],
-                heading="Content Warning Options",
-                classname="collapsible",
-            ),
             FieldPanel("body"),
         ]
     )
 
     promote_panels = (
-        NewLabelMixin.promote_panels
-        + BasePageWithIntro.promote_panels
+        PublishedDateMixin.promote_panels
+        + BasePageWithRequiredIntro.promote_panels
+        + ArticleTagMixin.promote_panels
         + [
             TopicalPageMixin.get_topics_inlinepanel(),
             TopicalPageMixin.get_time_periods_inlinepanel(),
@@ -179,12 +240,44 @@ class ArticlePage(
     parent_page_types = ["articles.ArticleIndexPage"]
     subpage_types = []
 
-    search_fields = BasePageWithIntro.search_fields + [
-        index.SearchField("body"),
-        index.SearchField("article_tag_names", boost=2),
-        index.SearchField("topic_names", boost=1),
-        index.SearchField("time_period_names", boost=1),
+    search_fields = (
+        BasePageWithRequiredIntro.search_fields
+        + ArticleTagMixin.search_fields
+        + [
+            index.SearchField("body"),
+            index.SearchField("topic_names", boost=1),
+            index.SearchField("time_period_names", boost=1),
+        ]
+    )
+
+    default_api_fields = BasePageWithRequiredIntro.default_api_fields + [
+        PublishedDateMixin.get_is_newly_published_apifield(),
     ]
+
+    api_fields = (
+        BasePageWithRequiredIntro.api_fields
+        + RequiredHeroImageMixin.api_fields
+        + ContentWarningMixin.api_fields
+        + ArticleTagMixin.api_fields
+        + [
+            PublishedDateMixin.get_published_date_apifield(),
+            PublishedDateMixin.get_is_newly_published_apifield(),
+            APIField("body"),
+            APIField(
+                "similar_items",
+                serializer=DefaultPageSerializer(
+                    required_api_fields=["teaser_image"], many=True
+                ),
+            ),
+            APIField(
+                "latest_items",
+                serializer=DefaultPageSerializer(
+                    required_api_fields=["teaser_image"], many=True
+                ),
+            ),
+        ]
+        + TopicalPageMixin.api_fields
+    )
 
     def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
         data = super().get_datalayer_data(request)
@@ -207,7 +300,9 @@ class ArticlePage(
         super().save(*args, **kwargs)
 
     @cached_property
-    def similar_items(self) -> Tuple["ArticlePage"]:
+    def similar_items(
+        self,
+    ) -> Tuple[Union["ArticlePage", "FocusedArticlePage", "RecordArticlePage"], ...]:
         """
         Returns a maximum of three ArticlePages that are tagged with at least
         one of the same ArticleTags. Items should be ordered by the number
@@ -222,54 +317,269 @@ class ArticlePage(
             # Avoid unncecssary lookups
             return ()
 
-        # Identify 'other' live pages with tags in common
-        tag_match_ids = (
-            ArticlePage.objects.public()
+        # Identify other live pages with tags in common
+        related_tags = (
+            Page.objects.filter(tagged_items__tag_id__in=tag_ids)
+            .exact_type(ArticlePage, FocusedArticlePage, RecordArticlePage)
             .live()
+            .public()
             .not_page(self)
-            .filter(tagged_items__tag_id__in=tag_ids)
-            .values_list("id", flat=True)
-            .distinct()
         )
-        if not tag_match_ids:
-            # Avoid unncecssary lookups
-            return ()
 
-        # Use search() to prioritise items with the highest number of matches
         return tuple(
-            ArticlePage.objects.filter(id__in=tag_match_ids).search(
-                self.article_tag_names,
-                fields=["article_tag_names"],
-                operator="or",
-            )[:3]
+            Page.objects.filter(id__in=related_tags).order_by("-first_published_at")[:3]
         )
 
     @cached_property
-    def latest_items(self) -> Tuple["ArticlePage"]:
+    def latest_items(
+        self,
+    ) -> List[Union["ArticlePage", "FocusedArticlePage", "RecordArticlePage"]]:
         """
         Return the three most recently published ArticlePages,
         excluding this object.
         """
-        similarqueryset = list(self.similar_items)
 
-        latestqueryset = list(
-            ArticlePage.objects.public()
-            .live()
-            .not_page(self)
-            .select_related("hero_image")
-            .prefetch_related("hero_image__renditions")
-            .order_by("-first_published_at")
-        )
-        filterlatestpages = [
-            page for page in latestqueryset if page not in similarqueryset
+        latest_query_set = []
+
+        for page_type in [ArticlePage, FocusedArticlePage, RecordArticlePage]:
+            latest_query_set.extend(
+                page_type.objects.live()
+                .public()
+                .exclude(id__in=[page.id for page in self.similar_items])
+                .not_page(self)
+                .select_related("teaser_image")
+                .prefetch_related("teaser_image__renditions")
+            )
+
+        return sorted(latest_query_set, key=lambda x: x.published_date, reverse=True)[
+            :3
         ]
 
-        return tuple(filterlatestpages[:3])
+
+class FocusedArticlePage(
+    TopicalPageMixin,
+    AuthorPageMixin,
+    HeroImageMixin,
+    ContentWarningMixin,
+    PublishedDateMixin,
+    ArticleTagMixin,
+    BasePageWithRequiredIntro,
+):
+    """FocusedArticlePage
+
+    The FocusedArticlePage model.
+    """
+
+    body = StreamField(ArticlePageStreamBlock, blank=True, null=True)
+
+    # DataLayerMixin overrides
+    gtm_content_group = "Explore the collection"
+
+    template = "articles/focused_article_page.html"
+
+    class Meta:
+        verbose_name = _("focused article")
+        verbose_name_plural = _("focused articles")
+        verbose_name_public = _("focus on")
+
+    content_panels = (
+        BasePageWithRequiredIntro.content_panels
+        + HeroImageMixin.content_panels
+        + ContentWarningMixin.content_panels
+        + [
+            FieldPanel("body"),
+        ]
+    )
+
+    promote_panels = (
+        PublishedDateMixin.promote_panels
+        + BasePageWithRequiredIntro.promote_panels
+        + ArticleTagMixin.promote_panels
+        + [
+            AuthorPageMixin.get_authors_inlinepanel(),
+            TopicalPageMixin.get_topics_inlinepanel(),
+            TopicalPageMixin.get_time_periods_inlinepanel(),
+        ]
+    )
+
+    parent_page_types = ["articles.ArticleIndexPage"]
+    subpage_types = []
+
+    search_fields = (
+        BasePageWithRequiredIntro.search_fields
+        + ArticleTagMixin.search_fields
+        + [
+            index.SearchField("body"),
+            index.SearchField("topic_names", boost=1),
+            index.SearchField("time_period_names", boost=1),
+            index.SearchField("author_names", boost=1),
+        ]
+    )
+
+    default_api_fields = BasePageWithRequiredIntro.default_api_fields + [
+        PublishedDateMixin.get_is_newly_published_apifield(),
+    ]
+
+    api_fields = (
+        BasePageWithRequiredIntro.api_fields
+        + HeroImageMixin.api_fields
+        + ContentWarningMixin.api_fields
+        + ArticleTagMixin.api_fields
+        + [
+            PublishedDateMixin.get_is_newly_published_apifield(),
+            PublishedDateMixin.get_published_date_apifield(),
+            APIField("type_label"),
+            APIField("body"),
+            APIField(
+                "similar_items",
+                serializer=DefaultPageSerializer(
+                    required_api_fields=["teaser_image"], many=True
+                ),
+            ),
+            APIField(
+                "latest_items",
+                serializer=DefaultPageSerializer(
+                    required_api_fields=["teaser_image"], many=True
+                ),
+            ),
+        ]
+        + TopicalPageMixin.api_fields
+        + AuthorPageMixin.api_fields
+    )
+
+    def save(self, *args, **kwargs):
+        """
+        Overrides Page.save() to ensure 'article_tag_names' always reflects the tags() value
+        """
+        if (
+            "update_fields" not in kwargs
+            or "article_tag_names" in kwargs["update_fields"]
+        ):
+            self.article_tag_names = "\n".join(t.name for t in self.tags.all())
+        super().save(*args, **kwargs)
+
+    def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
+        data = super().get_datalayer_data(request)
+        data.update(
+            customDimension4="; ".join(obj.title for obj in self.topics),
+            customDimension6="; ".join(self.article_tag_names.split("\n")),
+            customDimension7="; ".join(obj.title for obj in self.time_periods),
+        )
+        return data
+
+    @cached_property
+    def similar_items(
+        self,
+    ) -> Tuple[Union["ArticlePage", "FocusedArticlePage", "RecordArticlePage"], ...]:
+        """
+        Returns a maximum of three ArticlePages that are tagged with at least
+        one of the same ArticleTags. Items should be ordered by the number
+        of tags they have in common.
+        """
+        if not self.article_tag_names:
+            # Avoid unncecssary lookups
+            return ()
+
+        tag_ids = self.tagged_items.values_list("tag_id", flat=True)
+        if not tag_ids:
+            # Avoid unncecssary lookups
+            return ()
+
+        # Identify other live pages with tags in common
+        related_tags = (
+            Page.objects.filter(tagged_items__tag_id__in=tag_ids)
+            .exact_type(ArticlePage, FocusedArticlePage, RecordArticlePage)
+            .live()
+            .public()
+            .not_page(self)
+        )
+
+        return tuple(
+            Page.objects.filter(id__in=related_tags).order_by("-first_published_at")[:3]
+        )
+
+    @cached_property
+    def latest_items(
+        self,
+    ) -> List[Union["ArticlePage", "FocusedArticlePage", "RecordArticlePage"]]:
+        """
+        Return the three most recently published ArticlePages,
+        excluding this object.
+        """
+
+        latest_query_set = []
+
+        for page_type in [ArticlePage, FocusedArticlePage, RecordArticlePage]:
+            latest_query_set.extend(
+                page_type.objects.live()
+                .public()
+                .exclude(id__in=[page.id for page in self.similar_items])
+                .not_page(self)
+                .select_related("teaser_image")
+                .prefetch_related("teaser_image__renditions")
+            )
+
+        return sorted(latest_query_set, key=lambda x: x.published_date, reverse=True)[
+            :3
+        ]
 
 
-class RecordArticlePage(TopicalPageMixin, ContentWarningMixin, BasePageWithIntro):
+class PageGalleryImage(Orderable):
+    page = ParentalKey(Page, on_delete=models.CASCADE, related_name="gallery_images")
+    image = models.ForeignKey(
+        get_image_model_string(),
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name="+",
+    )
+    alt_text = models.CharField(
+        verbose_name=_("alternative text"),
+        max_length=100,
+        help_text=mark_safe(
+            'Alternative (alt) text describes images when they fail to load, and is read aloud by assistive technologies. Use a maximum of 100 characters to describe your image. <a href="https://html.spec.whatwg.org/multipage/images.html#alt" target="_blank">Check the guidance for tips on writing alt text</a>.'
+        ),
+    )
+    caption = RichTextField(
+        features=["bold", "italic", "link"],
+        help_text="An optional caption, which will be displayed directly below the image. This could be used for image sources or for other useful metadata.",
+        blank=True,
+    )
+
+    class Meta(Orderable.Meta):
+        verbose_name = _("gallery image")
+        verbose_name_plural = _("gallery images")
+
+    panels = [
+        FieldPanel("image"),
+        FieldPanel("alt_text"),
+        FieldPanel("caption"),
+    ]
+
+
+class GallerySerializer(serializers.ModelSerializer):
+    image = HighlightImageSerializer(
+        rendition_size="max-1024x1024", background_colour=None
+    )
+    caption = RichTextSerializer()
+
+    class Meta:
+        model = PageGalleryImage
+        fields = (
+            "image",
+            "alt_text",
+            "caption",
+        )
+
+
+class RecordArticlePage(
+    TopicalPageMixin,
+    ContentWarningMixin,
+    PublishedDateMixin,
+    ArticleTagMixin,
+    BasePageWithRequiredIntro,
+):
     template = "articles/record_article_page.html"
-    parent_page_types = ["collections.ExplorerIndexPage"]
+    parent_page_types = ["articles.ArticleIndexPage"]
     subpage_types = []
 
     intro_image = models.ForeignKey(
@@ -308,6 +618,14 @@ class RecordArticlePage(TopicalPageMixin, ContentWarningMixin, BasePageWithIntro
         help_text="Link to an external print on demand service",
     )
 
+    gallery_heading = models.CharField(
+        verbose_name=_("gallery heading"),
+        max_length=250,
+        blank=True,
+        null=True,
+        help_text=_("Optional heading for the gallery"),
+    )
+
     featured_highlight_gallery = models.ForeignKey(
         "collections.HighlightGalleryPage",
         blank=True,
@@ -317,10 +635,14 @@ class RecordArticlePage(TopicalPageMixin, ContentWarningMixin, BasePageWithIntro
     )
 
     featured_article = models.ForeignKey(
-        "articles.ArticlePage",
-        blank=True,
+        "wagtailcore.Page",
         null=True,
+        blank=True,
         on_delete=models.SET_NULL,
+        related_name="+",
+        help_text=_(
+            "Select a page to display in the featured area. This can be an Article, Focused Article or Record Article."
+        ),
         verbose_name=_("featured article"),
     )
 
@@ -329,60 +651,121 @@ class RecordArticlePage(TopicalPageMixin, ContentWarningMixin, BasePageWithIntro
         max_num=1,
         blank=True,
         null=True,
-        use_json_field=True,
     )
 
     # DataLayerMixin overrides
-    gtm_content_group = "Record articles"
+    gtm_content_group = "Explore the collection"
 
     class Meta:
         verbose_name = _("record article")
         verbose_name_plural = _("record articles")
+        verbose_name_public = _("record revealed")
 
-    content_panels = BasePageWithIntro.content_panels + [
-        FieldPanel("intro_image"),
-        MultiFieldPanel(
-            heading="Content Warning Options",
-            classname="collapsible",
-            children=[
-                FieldPanel("display_content_warning"),
-                FieldPanel("custom_warning_text"),
-            ],
-        ),
-        InlinePanel(
-            "gallery_images",
-            heading="Image Gallery",
-            label="Item",
-            min_num=1,
-            max_num=6,
-        ),
-        MultiFieldPanel(
-            heading="Body",
-            children=[
-                FieldPanel("record"),
-                FieldPanel("date_text"),
-                FieldPanel("about"),
-                FieldPanel("image_library_link"),
-                FieldPanel("print_on_demand_link"),
-            ],
-        ),
-        FieldPanel("featured_highlight_gallery"),
-        FieldPanel("featured_article"),
-        FieldPanel("promoted_links"),
+    content_panels = (
+        BasePageWithRequiredIntro.content_panels
+        + [
+            FieldPanel("intro_image"),
+        ]
+        + ContentWarningMixin.content_panels
+        + [
+            MultiFieldPanel(
+                heading="Image Gallery",
+                classname="collapsible",
+                children=[
+                    FieldPanel("gallery_heading"),
+                    InlinePanel(
+                        "gallery_images",
+                        heading="Image Gallery",
+                        label="Item",
+                        min_num=1,
+                        max_num=6,
+                    ),
+                ],
+            ),
+            MultiFieldPanel(
+                heading="Body",
+                children=[
+                    FieldPanel("record"),
+                    FieldPanel("date_text"),
+                    FieldPanel("about"),
+                    FieldPanel("image_library_link"),
+                    FieldPanel("print_on_demand_link"),
+                ],
+            ),
+            FieldPanel("featured_highlight_gallery"),
+            PageChooserPanel(
+                "featured_article",
+                [
+                    "articles.ArticlePage",
+                    "articles.FocusedArticlePage",
+                    "articles.RecordArticlePage",
+                ],
+            ),
+            FieldPanel("promoted_links"),
+        ]
+    )
+
+    promote_panels = (
+        PublishedDateMixin.promote_panels
+        + BasePageWithRequiredIntro.promote_panels
+        + ArticleTagMixin.promote_panels
+        + [
+            TopicalPageMixin.get_topics_inlinepanel(),
+            TopicalPageMixin.get_time_periods_inlinepanel(),
+        ]
+    )
+
+    search_fields = (
+        BasePageWithRequiredIntro.search_fields
+        + ArticleTagMixin.search_fields
+        + [
+            index.SearchField("gallery_text"),
+            index.SearchField("date_text"),
+            index.SearchField("about"),
+            index.SearchField("topic_names", boost=1),
+            index.SearchField("time_period_names", boost=1),
+        ]
+    )
+
+    default_api_fields = BasePageWithRequiredIntro.default_api_fields + [
+        PublishedDateMixin.get_is_newly_published_apifield(),
     ]
 
-    promote_panels = BasePageWithIntro.promote_panels + [
-        TopicalPageMixin.get_topics_inlinepanel(),
-        TopicalPageMixin.get_time_periods_inlinepanel(),
-    ]
-
-    search_fields = BasePageWithIntro.search_fields + [
-        index.SearchField("gallery_text"),
-        index.SearchField("date_text"),
-        index.SearchField("about"),
-        index.SearchField("topic_names", boost=1),
-        index.SearchField("time_period_names", boost=1),
-    ]
+    api_fields = (
+        BasePageWithRequiredIntro.api_fields
+        + ContentWarningMixin.api_fields
+        + ArticleTagMixin.api_fields
+        + [
+            PublishedDateMixin.get_is_newly_published_apifield(),
+            PublishedDateMixin.get_published_date_apifield(),
+            APIField("type_label"),
+            APIField("date_text"),
+            APIField("about", serializer=RichTextSerializer()),
+            APIField("record", serializer=RecordSerializer()),
+            APIField("gallery_heading"),
+            APIField("gallery_items", serializer=GallerySerializer(many=True)),
+            APIField("image_library_link"),
+            APIField("print_on_demand_link"),
+            APIField(
+                "featured_article",
+                serializer=DefaultPageSerializer(required_api_fields=["teaser_image"]),
+            ),
+            APIField(
+                "featured_highlight_gallery",
+                serializer=DefaultPageSerializer(
+                    required_api_fields=["highlight_cards"]
+                ),
+            ),
+            APIField("promoted_links"),
+            APIField(
+                "intro_image",
+                serializer=ImageSerializer(
+                    rendition_size="width-400", background_colour=None
+                ),
+            ),
+        ]
+        + TopicalPageMixin.api_fields
+    )
 
     @cached_property
     def gallery_items(self):
@@ -422,30 +805,22 @@ class RecordArticlePage(TopicalPageMixin, ContentWarningMixin, BasePageWithIntro
                 return True
         return False
 
+    def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
+        data = super().get_datalayer_data(request)
+        data.update(
+            customDimension4="; ".join(obj.title for obj in self.topics),
+            customDimension6="; ".join(self.article_tag_names.split("\n")),
+            customDimension7="; ".join(obj.title for obj in self.time_periods),
+        )
+        return data
 
-class PageGalleryImage(Orderable):
-    page = ParentalKey(Page, on_delete=models.CASCADE, related_name="gallery_images")
-    image = models.ForeignKey(
-        get_image_model_string(), on_delete=models.SET_NULL, null=True, related_name="+"
-    )
-    alt_text = models.CharField(
-        verbose_name=_("alternative text"),
-        max_length=100,
-        help_text=mark_safe(
-            'Alternative (alt) text describes images when they fail to load, and is read aloud by assistive technologies. Use a maximum of 100 characters to describe your image. <a href="https://html.spec.whatwg.org/multipage/images.html#alt" target="_blank">Check the guidance for tips on writing alt text</a>.'
-        ),
-    )
-    caption = RichTextField(
-        help_text="An optional caption, which will be displayed directly below the image. This could be used for image sources or for other useful metadata.",
-        blank=True,
-    )
-
-    class Meta(Orderable.Meta):
-        verbose_name = _("gallery image")
-        verbose_name_plural = _("gallery images")
-
-    panels = [
-        FieldPanel("image"),
-        FieldPanel("alt_text"),
-        FieldPanel("caption"),
-    ]
+    def save(self, *args, **kwargs):
+        """
+        Overrides Page.save() to ensure 'article_tag_names' always reflects the tags() value
+        """
+        if (
+            "update_fields" not in kwargs
+            or "article_tag_names" in kwargs["update_fields"]
+        ):
+            self.article_tag_names = "\n".join(t.name for t in self.tags.all())
+        super().save(*args, **kwargs)

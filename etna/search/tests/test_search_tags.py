@@ -1,9 +1,17 @@
-from django.test import RequestFactory, SimpleTestCase
+from datetime import date
+from unittest import mock
 
+from django.forms.boundfield import BoundField
+from django.test import RequestFactory, SimpleTestCase
+from django.utils.datastructures import MultiValueDict
+
+from ..forms import CatalogueSearchForm
 from ..templatetags.search_tags import (
     extended_in_operator,
     query_string_exclude,
     query_string_include,
+    render_fields_as_hidden,
+    render_sort_by_input,
 )
 
 
@@ -62,6 +70,29 @@ class QueryStringExcludeTest(SimpleTestCase):
 
         self.assertEqual(result, "test=true")
 
+    def test_record_opening_year_lessthan_four_digits(self):
+        context = {
+            "request": self.factory.get(
+                "?opening_start_date_0=&opening_start_date_1=&opening_start_date_2=19&opening_end_date_0=&opening_end_date_1=&opening_end_date_2=200"
+            )
+        }
+
+        for field_name, value, expected_result in (
+            (
+                "opening_start_date",
+                date(19, 1, 1),
+                "opening_end_date_0=&opening_end_date_1=&opening_end_date_2=200",
+            ),
+            (
+                "opening_end_date",
+                date(200, 1, 1),
+                "opening_start_date_0=&opening_start_date_1=&opening_start_date_2=19",
+            ),
+        ):
+            with self.subTest(field_name):
+                result = query_string_exclude(context, field_name, value)
+                self.assertEqual(result, expected_result)
+
 
 class TestExtendedInOperator(SimpleTestCase):
     def test_extended_in_operator(self):
@@ -90,3 +121,94 @@ class TestExtendedInOperator(SimpleTestCase):
             with self.subTest(label):
                 result = extended_in_operator(value[0], value[1], value[2])
                 self.assertEqual(result, expected)
+
+
+class RenderFieldsAsHiddenTest(SimpleTestCase):
+    def setUp(self):
+        self.form = CatalogueSearchForm(
+            data=MultiValueDict(
+                {
+                    "q": "test",
+                    "group": "tna",
+                    "sort_by": "relevance",
+                    "sort_order": "asc",
+                    "opening_start_date_0": "01",
+                    "opening_start_date_1": "01",
+                    "opening_start_date_2": "2000",
+                    "collection": ["ADM", "AIR", "WO"],
+                }
+            )
+        )
+
+    @mock.patch(
+        "etna.search.templatetags.search_tags.get_random_string",
+        return_value="123",
+    )
+    @mock.patch.object(BoundField, "as_hidden", return_value="", autospec=True)
+    def test_generates_random_suffixes_for_input_ids(
+        self, mocked_as_hidden, mocked_get_random_string
+    ):
+        render_fields_as_hidden(self.form, include="q")
+        mocked_as_hidden.assert_called_once_with(
+            self.form["q"], attrs={"id": "id_q_123"}
+        )
+
+    @mock.patch.object(BoundField, "as_hidden", return_value="", autospec=True)
+    def test_exclude(self, mocked_as_hidden):
+        exclude_names = ("q", "group", "sort_by")
+
+        # call the function under test
+        render_fields_as_hidden(self.form, exclude=" ".join(exclude_names))
+
+        # assert as_hidden() was called for the correct fields
+        for field in self.form:
+            if field.name in exclude_names:
+                with self.subTest(
+                    f"as_hidden() should NOT have been called for field: '{field.name}'"
+                ):
+                    with self.assertRaises(AssertionError):
+                        mocked_as_hidden.assert_any_call(field, attrs=mock.ANY)
+            else:
+                with self.subTest(
+                    f"as_hidden() should have been called for field: '{field.name}'"
+                ):
+                    mocked_as_hidden.assert_any_call(field, attrs=mock.ANY)
+
+    @mock.patch.object(BoundField, "as_hidden", return_value="", autospec=True)
+    def test_include(self, mocked_as_hidden):
+        include_names = ("q", "group")
+
+        # call the function under test
+        render_fields_as_hidden(self.form, include=" ".join(include_names))
+
+        # assert as_hidden() was called for the correct fields
+        for field in self.form:
+            if field.name not in include_names:
+                with self.subTest(
+                    f"as_hidden() should NOT have been called for field: '{field.name}'"
+                ):
+                    with self.assertRaises(AssertionError):
+                        mocked_as_hidden.assert_any_call(field, attrs=mock.ANY)
+            else:
+                with self.subTest(
+                    f"as_hidden() should have been called for field: '{field.name}'"
+                ):
+                    mocked_as_hidden.assert_any_call(field, attrs=mock.ANY)
+
+
+class RenderSortByTest(SimpleTestCase):
+    def setUp(self):
+        self.form = CatalogueSearchForm(
+            {
+                "group": "tna",
+                "sort_by": "relevance",
+                "sort_order": "asc",
+            }
+        )
+
+    def test_render_sort_by_input_input_id(self):
+        expected_html = '<select name="sort_by" class="search-sort-view__form-select" id="id_sort_by_somevalue" aria-invalid="true">'
+        self.assertIn(
+            expected_html,
+            render_sort_by_input(self.form, id_suffix="somevalue"),
+        )

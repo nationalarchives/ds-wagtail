@@ -13,16 +13,7 @@ __pycache__
 .DS_Store
 
 # Ignore the contents of template/static/ but keep the directory
-templates/static/*
-!templates/static/.gitkeep
-
-templates/static/css/*
-!templates/static/css
-!templates/static/css/.gitkeep
-
-templates/static/css/libraries/*
-!templates/static/css/libraries
-!templates/static/css/libraries/.gitkeep
+templates/static
 
 # Allow images within static
 !templates/static/images
@@ -33,14 +24,6 @@ templates/static/css/libraries/*
 # Ignore the contents of /static but keep the directory
 /static/*
 !/static/.gitkeep
-
-# Ignore the contents of /media but keep the directory
-/media/*
-!/media/.gitkeep
-
-# Ignore the contents of /database_dumps but keep the directory
-/database_dumps/*
-!/database_dumps/.gitkeep
 
 # Database backups
 /db/
@@ -70,3 +53,11 @@ config/settings/local.py
 *.css
 *.css.map
 !wagtail-overrides.css
+
+# NVM/NPM
+.npm
+.nvm
+
+media/images
+media/original_images
+coverage.xml

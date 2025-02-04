@@ -1,8 +1,8 @@
 {% load wagtailcore_tags %}
 
-<div class="container">
-    <div class="col-12">
-        <{{ heading_level }} class="related-content__heading">{{ value.heading }}</{{ heading_level }}>
+<div class="tna-container">
+    <div class="tna-column tna-column--full">
+        <{{ heading_level }} class="tna-heading-l related-content__heading">{{ value.heading }}</{{ heading_level }}>
         <p>{{ value.description }}</p>
     </div>
     <ul class="card-group--list-style-none" data-container-name="related-items" id="analytics-related-items">

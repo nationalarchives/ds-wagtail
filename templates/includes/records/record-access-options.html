@@ -1,6 +1,6 @@
 {% comment %}
 
-Output availability text depending on the delivery condition returned by Kong.
+Output availability text depending on the delivery condition returned by Client API.
 
 This content should almost certainly be moved into snippets at a later phase,
 with options for the available CTAs for each condition.
@@ -14,7 +14,7 @@ this template
 <div class="record-access" data-container-name="record-access" id="analytics-record-access">
     {% if page.availability_delivery_condition == 'TooLargeToCopyOriginal' %}
 
-        <h3>Ordering and viewing options</h3>
+        <h3 class="tna-heading-m">Ordering and viewing options</h3>
         <p>This record has not been digitised and cannot be downloaded.</p>
         <details>
             <summary data-link="Further information">Further information</summary>
@@ -28,7 +28,7 @@ this template
 
     {% elif page.availability_delivery_condition == 'OrderOriginal' %}
 
-        <h3>Ordering and viewing options</h3>
+        <h3 class="tna-heading-m">Ordering and viewing options</h3>
         <p>This record has not been digitised and cannot be downloaded.</p>
         <details>
             <summary data-link="Further information">Further information</summary>
@@ -41,7 +41,7 @@ this template
 
     {% elif page.availability_delivery_condition == 'InvigilationSafeRoom' %}
 
-        <h3>Ordering and viewing options</h3>
+        <h3 class="tna-heading-m">Ordering and viewing options</h3>
         <p>This record can only be seen under supervision at The National Archives</p>
         <p>Request a quotation for a copy to be digitised or printed and sent to you.  </p>
 
@@ -51,7 +51,7 @@ this template
 
     {% elif page.availability_delivery_condition == 'Surrogate' %}
 
-        <h3>Ordering and viewing options</h3>
+        <h3 class="tna-heading-m">Ordering and viewing options</h3>
         <p>This record has not been digitised and cannot be downloaded.</p>
         <p>Request a quotation for a copy to be digitised and sent to you.</p>
 
@@ -61,7 +61,7 @@ this template
 
     {% elif page.availability_delivery_condition == 'DigitizedDiscovery' %}
 
-        <h3>Ordering and viewing options</h3>
+        <h3 class="tna-heading-m">Ordering and viewing options</h3>
         <p>Free</p>
         <p>Download format PDF</p>
         <p>Approximate size 16 MB</p>
@@ -71,11 +71,11 @@ this template
 
     {% elif page.availability_delivery_condition == 'UnAvailable' %}
 
-        <h3>This record is not available to order. More information may be available in the catalogue description.</h3>
+        <h3 class="tna-heading-m">This record is not available to order. More information may be available in the catalogue description.</h3>
 
     {% elif page.availability_delivery_condition == 'Offsite' %}
 
-        <h3>Ordering and viewing options</h3>
+        <h3 class="tna-heading-m">Ordering and viewing options</h3>
         <p>This record has not been digitised and cannot be downloaded.</p>
 
         <details>
@@ -90,7 +90,7 @@ this template
 
     {% elif page.availability_delivery_condition == 'DigitizedAvailableButNotDownloadableAtPieceLevel' %}
 
-        <h3>Ordering and viewing options</h3>
+        <h3 class="tna-heading-m">Ordering and viewing options</h3>
         <p>This record has been digitised as part of multiple records</p>
         <p>You can browse for these records.</p>
         <ul class="record-access__list">
@@ -99,13 +99,13 @@ this template
 
     {% elif page.availability_delivery_condition == 'CollectionCare' %}
 
-        <h3>This record requires supervised handling in Collection Care</h3>
+        <h3 class="tna-heading-m">This record requires supervised handling in Collection Care</h3>
         <p>The National Archives is closed until further notice due to the Covid-19 pandemic. For updated information <a href="https://www.nationalarchives.gov.uk/about/news/coronavirus-update/">read our news story</a>.</p>
         <p>Please expect further delays once normal operations have resumed.</p>
 
     {% else %}
 
-        <h3> Ordering and viewing options currently unavailable</h3>
+        <h3 class="tna-heading-m"> Ordering and viewing options currently unavailable</h3>
 
     {% endif %}
 </div>

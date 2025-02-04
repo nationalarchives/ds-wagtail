@@ -1,20 +1,12 @@
 {% load static %}
 
-<div class="quote">
-    <div class="container quote__container">
-        {% if value.attribution %}
-            <figure>
-                <blockquote class="quote__text">
-                    {{ value.quote }}
-                </blockquote>
-                <figcaption class="quote__citation">
-                    <cite>{{ value.attribution }}</cite>
-                </figcaption>
-            </figure>
-        {% else %}
-            <blockquote class="quote__text">
-                {{ value.quote }}
-            </blockquote>
-        {% endif %}
+<blockquote class="tna-blockquote">
+    <div class="tna-blockquote__quote">
+        {{ value.quote }}
     </div>
-</div>
+    {% if value.attribution %}
+    <p class="tna-blockquote__citation">
+        {{ value.attribution }}
+    </p>
+    {% endif %}
+</blockquote>

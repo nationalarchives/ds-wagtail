@@ -1,25 +1,22 @@
+/* stylelint-disable -- This will become redundant when the new frontend is added */
 .highlight-gallery {
     $root: &;
-    background-color: $color__grey-6;
-    padding-top: 3%;
+    padding-top: 3rem;
+
     font-family: $font__open-sans;
-    margin-bottom: 3rem;
-    
-    @media screen and (min-width: map-get($grid-breakpoints, "sm")) {
-        margin-bottom: 4.5rem;
-    }
+
+    background-color: $color__grey-700;
 
     &__item {
+        padding-bottom: 3rem;
+
         display: grid;
         grid-template-columns: 1fr;
-        padding-bottom: 5%;
-        
+        border-bottom: 1px dashed $color__grey-500;
+
         @media screen and (min-width: map-get($grid-breakpoints, "lg")) {
             grid-template-columns: 50% 50%;
-            padding-bottom: 3%;
         }
-
-        border-bottom: 1px dashed $color__grey-5;
     }
 
     &__content {
@@ -30,18 +27,28 @@
         }
     }
 
+    &__richtext {
+        p {
+            margin-bottom: 1rem;
+
+            color: $color__grey-300;
+        }
+    }
+
     &__heading {
         margin-top: 0;
-        font-weight: $font-weight-normal;
-        font-size: 1.875rem;
-        line-height: 2.8125rem;
+
         color: $color__white;
+        font-size: 1.875rem;
+        font-weight: $font-weight-normal;
+        line-height: 2.8125rem;
     }
 
     &__intro {
         p {
-            color: $color__grey-5;
             margin-bottom: 0;
+
+            color: $color__grey-300;
 
             &:last-of-type {
                 margin-bottom: 1rem;
@@ -49,48 +56,39 @@
         }
     }
 
-    &__richtext {
-        p {
-            margin-bottom: 1rem;
-            color: $color__grey-5;
-        }
-    }
-
     &__link {
-        font-weight: $font-weight-bold;
-        font-size: 1rem;
-        line-height: 1.25rem;
-        color: $color__white;
-        text-decoration: none;
-        position: relative;
         display: unset;
 
+        position: relative;
+
+        color: $color__link-dark-bg;
+        font-size: 1rem;
+        font-weight: $font-weight-bold;
+        line-height: 1.25rem;
+
         svg {
+            width: 8px;
+            height: 12px;
+
             position: absolute;
             right: -1.5rem;
             bottom: 4px;
-            fill: $color__white;
-            width: 8px;
-            height: 12px;
+
+            fill: currentColor;
+            transition: fill $transition_duration ease-in;
         }
 
         &:hover,
-        &:visited {
-            color: $color__grey-3;
+        &:focus {
+            color: $color__link-hover-dark-bg;
+        }
 
-            svg {
-                fill: $color__grey-3;
-            }
+        &:visited {
+            color: $color__link-dark-bg;
         }
     }
 
     &__wrapper {
-        padding: 0 4%;
-
-        @media screen and (min-width: map-get($grid-breakpoints, "lg")) {
-            padding: 3% 11% 0 11%;
-        }
-
         &:last-of-type {
             #{$root}__item {
                 border-bottom: none;
@@ -99,11 +97,13 @@
     }
 
     &__image-container {
-        position: relative;
+        margin: 5% 0;
+
         display: flex;
         justify-content: center;
-        margin: 5% 0;
-        
+
+        position: relative;
+
         @media screen and (min-width: map-get($grid-breakpoints, "lg")) {
             margin: 0 0 0 2.5%;
             order: 2;

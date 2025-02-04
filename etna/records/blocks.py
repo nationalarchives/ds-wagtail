@@ -2,11 +2,12 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
-
 from wagtail import blocks
-from wagtail.images.blocks import ImageChooserBlock
+from wagtail.api import APIField
 
-from ..ciim.exceptions import KongAPIError
+from etna.ciim.exceptions import ClientAPIError
+from etna.core.blocks.image import APIImageChooserBlock
+
 from .api import records_client
 
 
@@ -27,7 +28,7 @@ class RecordChooserBlock(blocks.ChooserBlock):
         """Return the associated field to pick a Record.
 
         ChooserBlock.field returns a ModelChoiceField. Record data is held
-        externally and populated via an API call to Kong and not the database.
+        externally and populated via an API call to Client API and not the database.
         """
         return forms.ChoiceField(
             choices=[],
@@ -91,8 +92,8 @@ class RecordChooserBlock(blocks.ChooserBlock):
 
         try:
             return records_client.fetch(iaid=value)
-        except KongAPIError:
-            # If there's a connection issue with Kong, return a stub Record
+        except ClientAPIError:
+            # If there's a connection issue with Client API, return a stub Record
             # so we have something to render on the ResultsPage edit form.
             return self.target_model(raw_data={"iaid": value})
 
@@ -104,6 +105,15 @@ class RecordChooserBlock(blocks.ChooserBlock):
         Wagtail's reference index from rebuilding this block"""
         return []
 
+    def get_api_representation(self, value, context=None):
+        if value:
+            return {
+                "title": value.summary_title,
+                "iaid": value.iaid,
+                "reference_number": value.reference_number,
+            }
+        return None
+
     class Meta:
         icon = "archive"
 
@@ -112,12 +122,19 @@ class RecordLinkBlock(blocks.StructBlock):
     record = RecordChooserBlock(label=_("Record"))
     descriptive_title = blocks.CharBlock(label=_("Descriptive title"), max_length=255)
     record_dates = blocks.CharBlock(label=_("Date(s)"), max_length=100)
-    thumbnail_image = ImageChooserBlock(
+    thumbnail_image = APIImageChooserBlock(
         label=_("Thumbnail image (optional)"), required=False
     )
 
     class Meta:
         icon = "archive"
+
+    def collection(self):
+        return self.record.reference_number
+
+    api_fields = [
+        APIField("collection"),
+    ]
 
 
 class RecordLinksBlock(blocks.StructBlock):
@@ -125,4 +142,4 @@ class RecordLinksBlock(blocks.StructBlock):
 
     class Meta:
         template = "records/blocks/record_links_block.html"
-        icon = "archive"
+        icon = "box-archive"

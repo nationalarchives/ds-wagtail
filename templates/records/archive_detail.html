@@ -1,14 +1,16 @@
 {% extends "base.html" %}
 
-{% load static %}
-{% load datalayer_tags %}
-{% load records_tags %}
+{% load static datalayer_tags records_tags %}
 
 {% block extra_gtm_js %}
     {% render_gtm_datalayer record %}
 {% endblock extra_gtm_js %}
+{% block breadcrumb %}
+{% endblock %}
 
 {% block content %}
+
+    {% include "includes/records/record-cta-panel.html" %}
 
     <div class="container">
 
@@ -17,7 +19,7 @@
         {% include "includes/records/archive-collections.html" %}
 
         {% include "includes/records/archive-additional-resources.html" %}
-
+    </div>
 {% endblock %}
 
 {% block extra_js %}

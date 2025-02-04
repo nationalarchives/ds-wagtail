@@ -1,7 +1,8 @@
 from wagtail import blocks
-from wagtail.images.blocks import ImageChooserBlock
-
+from wagtail.rich_text import expand_db_html
 from wagtailmedia.blocks import AbstractMediaChooserBlock
+
+from etna.core.blocks.image import APIImageChooserBlock
 
 
 class MediaChooserBlock(AbstractMediaChooserBlock):
@@ -14,14 +15,54 @@ class MediaChooserBlock(AbstractMediaChooserBlock):
         """
         pass
 
+    def get_api_representation(self, value, context=None):
+        """
+        Overwrite the default get_api_representation method to include
+        additional fields from the EtnaMedia model.
+
+        We use expand_db_html to get any rich text fields as useful HTML,
+        rather than the raw database representation.
+        """
+        chapters = [
+            {
+                "time": int(chapter.value["time"]),
+                "heading": chapter.value["heading"],
+                "transcript": expand_db_html(chapter.value["transcript"].source),
+            }
+            for chapter in value.chapters
+        ]
+        return {
+            "id": value.id,
+            "file": value.url,
+            "full_url": value.full_url,
+            "type": value.type,
+            "mime": value.mime(),
+            "title": value.title,
+            "date": value.date,
+            "description": expand_db_html(value.description),
+            "transcript": expand_db_html(value.transcript),
+            "chapters": sorted(chapters, key=lambda x: x["time"]),
+            "width": value.width,
+            "height": value.height,
+            "duration": value.duration,
+            "subtitles_file": value.subtitles_file_url,
+            "subtitles_file_full_url": value.subtitles_file_full_url,
+            "chapters_file": value.chapters_file_url,
+            "chapters_file_full_url": value.chapters_file_full_url,
+        }
+
 
 class MediaBlock(blocks.StructBlock):
     """
-    Embedded media block with a selectable background image.
+    Embedded media block with a selectable thumbnail image.
     """
 
-    background_image = ImageChooserBlock(
-        help_text="A background image for the media block"
+    title = blocks.CharBlock(
+        required=True,
+        help_text="A descriptive title for the media block",
+    )
+    thumbnail = APIImageChooserBlock(
+        required=False, help_text="A thumbnail image for the media block"
     )
     media = MediaChooserBlock()
 
@@ -30,6 +71,12 @@ class MediaBlock(blocks.StructBlock):
         help_text = "An embedded audio or video block"
         icon = "play"
         label = "Media"
+
+    def get_context(self, value, parent_context=None):
+        context = super().get_context(value, parent_context=parent_context)
+        context["src"] = value["media"].sources[0]["src"]
+        context["type"] = value["media"].sources[0]["type"]
+        return context
 
     @property
     def admin_label(self):

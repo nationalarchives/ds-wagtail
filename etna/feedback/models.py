@@ -1,29 +1,32 @@
 import uuid
-
 from typing import Union
 
 from django.conf import settings
 from django.contrib.contenttypes.fields import GenericRelation
+from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.db.models import Case, IntegerField, Q, When
 from django.db.models.functions import Length
 from django.utils.functional import cached_property
 from django.utils.text import Truncator
 from django.utils.translation import gettext_lazy as _
-
+from modelcluster.fields import ParentalKey
 from modelcluster.models import ClusterableModel
 from wagtail.admin import panels
 from wagtail.fields import RichTextField, StreamField
-from wagtail.models import DraftStateMixin, RevisionMixin
+from wagtail.models import DraftStateMixin, Orderable, Page, RevisionMixin
 from wagtail.snippets.models import register_snippet
 
 from etna.feedback import constants
 from etna.feedback.blocks import ResponseOptionBlock
 from etna.feedback.utils import normalize_path
+from etna.feedback.widgets import PageTypeChooser
 
 
 class FeedbackPromptManager(models.Manager):
-    def get_for_path(self, path: str) -> Union["FeedbackPrompt", None]:
+    def get_for_path(
+        self, path: str, page: Page | None
+    ) -> Union["FeedbackPrompt", None]:
         """
         Return the most appropriate `FeedbackPrompt` instance for the
         supplied `path`.
@@ -32,16 +35,17 @@ class FeedbackPromptManager(models.Manager):
         presceeding_paths = [path[:i] for i in range(1, len(path))]
 
         if path.endswith("/"):
-            # Allow prompts have been defined without a trailing slash
-            # to be matched to this request
+            # Allow prompts that have been defined without a trailing
+            # slash to be matched to this request
             exact_path_variations = (path, path.rstrip("/"))
         else:
             # If the prompt has been defined with a trailing slash, but
             # this request does not have one, do not allow a match
             exact_path_variations = (path,)
 
-        obj = (
+        for match in (
             self.filter(live=True)
+            .prefetch_related("for_page_types")
             .annotate(
                 match=Case(
                     When(
@@ -62,21 +66,46 @@ class FeedbackPromptManager(models.Manager):
                 Q(path__in=exact_path_variations)
                 | Q(path__in=presceeding_paths, startswith_path=True)
             )
-            .order_by("match", Length("path").desc())
-            .first()
-        )
-        if obj is None:
-            raise FeedbackPrompt.DoesNotExist
-        return obj
+            .order_by("match", Length("path").desc(), "id")
+        ):
+            if isinstance(page, Page):
+                page_ctype = ContentType.objects.get_for_id(page.content_type_id)
+            else:
+                page_ctype = None
+            valid_ctypes = set(obj.content_type for obj in match.for_page_types.all())
+
+            if valid_ctypes and (page_ctype is None or page_ctype not in valid_ctypes):
+                continue
+
+            # checks passed! return this match
+            return match
+
+        raise FeedbackPrompt.DoesNotExist
 
     def get_by_natural_key(self, public_id: Union[str, uuid.UUID]) -> "FeedbackPrompt":
         return self.get(public_id=public_id)
 
 
+class FeedbackPromptPageType(Orderable):
+    prompt = ParentalKey("feedback.FeedbackPrompt", related_name="for_page_types")
+    ctype = models.ForeignKey(
+        ContentType, verbose_name="type", on_delete=models.PROTECT
+    )
+
+    panels = [panels.FieldPanel("ctype", widget=PageTypeChooser)]
+
+    @property
+    def content_type(self):
+        return ContentType.objects.get_for_id(self.ctype_id)
+
+
 @register_snippet
 class FeedbackPrompt(DraftStateMixin, RevisionMixin, ClusterableModel):
     public_id = models.UUIDField(
-        editable=False, unique=True, default=uuid.uuid4, verbose_name=_("public ID")
+        editable=False,
+        unique=True,
+        default=uuid.uuid4,
+        verbose_name=_("public ID"),
     )
     text = models.CharField(
         verbose_name=_("prompt text"),
@@ -85,7 +114,6 @@ class FeedbackPrompt(DraftStateMixin, RevisionMixin, ClusterableModel):
     )
     response_options = StreamField(
         [("option", ResponseOptionBlock())],
-        use_json_field=True,
         verbose_name=_("response options"),
     )
     thank_you_heading = models.CharField(
@@ -151,10 +179,14 @@ class FeedbackPrompt(DraftStateMixin, RevisionMixin, ClusterableModel):
                 panels.FieldPanel("startswith_path"),
             ],
         ),
+        panels.InlinePanel(
+            "for_page_types",
+            heading=_("Page type must be one of"),
+            label="Page type",
+        ),
     ]
 
     class Meta:
-        unique_together = ("path", "startswith_path")
         ordering = ("path", "startswith_path")
 
     def natural_key(self):
@@ -202,30 +234,52 @@ class FeedbackPrompt(DraftStateMixin, RevisionMixin, ClusterableModel):
 class FeedbackSubmission(models.Model):
     received_at = models.DateTimeField(auto_now_add=True, verbose_name=_("received at"))
     public_id = models.UUIDField(
-        editable=False, unique=True, default=uuid.uuid4, verbose_name=_("public ID")
+        editable=False,
+        unique=True,
+        default=uuid.uuid4,
+        verbose_name=_("public ID"),
     )
 
     # Where the feedback was given
-    full_url = models.TextField(verbose_name=_("full URL"))
+    full_url = models.TextField(verbose_name=_("full URL"), editable=False)
     site = models.ForeignKey(
-        "wagtailcore.Site", verbose_name=_("site"), on_delete=models.PROTECT
+        "wagtailcore.Site",
+        verbose_name=_("site"),
+        on_delete=models.PROTECT,
+        editable=False,
     )
-    path = models.CharField(max_length=255, db_index=True, verbose_name=_("path"))
-    query_params = models.JSONField(default=dict, verbose_name=_("query params"))
+    page_type = models.TextField(verbose_name=_("page type"), null=True, editable=False)
+    page_title = models.TextField(
+        verbose_name=_("page title"), null=True, editable=False
+    )
+    path = models.CharField(
+        max_length=255, db_index=True, verbose_name=_("path"), editable=False
+    )
+    query_params = models.JSONField(
+        default=dict, verbose_name=_("query params"), editable=False
+    )
 
     # Common feedback values
     prompt_text = models.CharField(
-        max_length=constants.PROMPT_TEXT_MAX_LENGTH, verbose_name=_("prompt text")
+        max_length=constants.PROMPT_TEXT_MAX_LENGTH,
+        verbose_name=_("prompt text"),
+        editable=False,
     )
     response_sentiment = models.SmallIntegerField(
-        db_index=True, verbose_name=_("response sentiment")
+        db_index=True, verbose_name=_("response sentiment"), editable=False
     )
     response_label = models.CharField(
         max_length=constants.RESPONSE_LABEL_MAX_LENGTH,
         db_index=True,
         verbose_name=_("response label"),
+        editable=False,
     )
-    comment = models.TextField(verbose_name=_("comment"))
+    comment_prompt_text = models.CharField(
+        max_length=constants.COMMENT_PROMPT_TEXT_MAX_LENGTH,
+        verbose_name=_("comment prompt text"),
+        editable=False,
+    )
+    comment = models.TextField(verbose_name=_("comment"), editable=False)
 
     # Additional metadata
     prompt = models.ForeignKey(
@@ -234,6 +288,7 @@ class FeedbackSubmission(models.Model):
         on_delete=models.SET_NULL,
         null=True,
         related_name="submissions",
+        editable=False,
     )
     prompt_revision = models.ForeignKey(
         "wagtailcore.Revision",
@@ -241,12 +296,14 @@ class FeedbackSubmission(models.Model):
         verbose_name=_("prompt revision"),
         on_delete=models.SET_NULL,
         related_name="+",
+        editable=False,
     )
     page = models.ForeignKey(
         "wagtailcore.Page",
         null=True,
         on_delete=models.SET_NULL,
         verbose_name=_("wagtail page"),
+        editable=False,
     )
     page_revision = models.ForeignKey(
         "wagtailcore.Revision",
@@ -254,15 +311,19 @@ class FeedbackSubmission(models.Model):
         verbose_name=_("page revision"),
         on_delete=models.SET_NULL,
         related_name="+",
+        editable=False,
     )
     page_revision_published = models.DateTimeField(
-        null=True, verbose_name=_("page revision published at")
+        null=True,
+        verbose_name=_("page revision published at"),
+        editable=False,
     )
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         null=True,
         on_delete=models.SET_NULL,
         verbose_name=_("user"),
+        editable=False,
     )
 
     class Meta:

@@ -1,67 +1,77 @@
 .featured-records {
-  margin-bottom: 2rem;
+    margin-bottom: 2rem;
 
-  &__heading {
-    color: $color__dark;
-    background-color: $color__yellow_2;
-    margin-bottom: 0;
-    padding: 1rem 0 1rem 1rem;
-    font-weight: 400;
-    font-size: 2rem;
-    font-family: $font__supria-sans;
-  }
+    &__heading {
+        margin-bottom: 0;
+        padding: 1rem 0 1rem 1rem;
 
-  &__content {
-    border: 3px solid $color__grey-7;
-    padding: 1rem;
-    border-top: none;
-  }
+        color: $color__grey-700;
+        font-family: $font__supria-sans;
+        font-size: 2rem;
+        font-weight: 400;
 
-  &__standfirst {
-    color: $color__dark;
-    font-family: $font__supria-sans;
-    font-size: 1.4rem;
-  }
+        background-color: $color__yellow;
+    }
 
-  &__list {
-    list-style: none;
-    padding-left: 0;
-  }
+    &__content {
+        padding: 1rem;
 
- &__list-item {
-   background-color: $color__dark;
-   margin-bottom: 1rem;
-   padding: 1rem;
-   border-left: 1.25rem solid $color__yellow_2;
- }
+        border: 3px solid $color__grey-400;
+        border-top: none;
+    }
 
- &__list-item-description {
-    color: $color__white;
-    margin-bottom: 0;
-    margin-top: 0.5rem;
-  }
+    &__standfirst {
+        color: $color__grey-700;
+        font-family: $font__supria-sans;
+        font-size: 1.4rem;
+    }
 
- &__link {
-   text-decoration: underline;
-   transition: none;
-   color: $color__white !important;
-   display: inline-block;
-   width: 100%;
-   &:hover {
-     text-decoration: none;
-     color: $color__white;
-   }
+    &__list {
+        padding-left: 0;
 
-   &:focus {
-     outline: 0.313rem solid $color__blue_5;
-     outline-offset: .25rem;
-   }
- }
+        list-style: none;
+    }
 
- &__link-heading {
-   margin-top: 0;
-   margin-bottom: 0;
-   font-size: 1.625rem;
-   font-family: $font__supria-sans;
- }
+    &__list-item {
+        margin-bottom: 1rem;
+        padding: 1rem;
+
+        background-color: $color__grey-700;
+        border-left: 1.25rem solid $color__yellow;
+    }
+
+    &__list-item-description {
+        margin-top: 0.5rem;
+        margin-bottom: 0;
+
+        color: $color__white;
+    }
+
+    &__link {
+        width: 100%;
+
+        display: inline-block;
+
+        color: $color__white !important;
+        text-decoration: underline;
+        transition: none;
+
+        &:hover {
+            color: $color__white;
+            text-decoration: none;
+        }
+
+        &:focus {
+            outline: 0.313rem solid $color__blue;
+            outline-offset: 0.25rem;
+        }
+    }
+
+    &__link-heading {
+        margin-top: 0;
+        margin-bottom: 0;
+
+        font-family: $font__supria-sans;
+        font-size: 1.625rem;
+    }
 }

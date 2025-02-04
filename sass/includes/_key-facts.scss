@@ -1,32 +1,36 @@
+/* stylelint-disable -- This will become redundant when the new frontend is added */
 .key-facts {
-  margin: 2rem 0 3rem;
+    margin: 2rem 0 3rem;
 
-  &__list {
-    list-style-type: none;
-    padding: 0;
+    &__list {
+        list-style-type: none;
 
-    li {
-      margin-bottom: 1rem;
+        padding: 0;
 
-      @media only screen and (min-width: $screen__lg) {
-        margin-bottom: 0.3rem;
-      }
+        li {
+            margin-bottom: 1rem;
 
-      span {
-        display: block;
+            @media only screen and (min-width: #{$screen__lg + 1px}) {
+                margin-bottom: 0.3rem;
+            }
 
-        @media only screen and (min-width: $screen__lg) {
-          display: inline-block;
-          width: 10rem;
+            span {
+                display: block;
+
+                @media only screen and (min-width: #{$screen__lg + 1px}) {
+                    width: 10rem;
+
+                    display: inline-block;
+                }
+            }
         }
-      }
     }
-  }
 
-  &__link {
-    background: url($fa_chevron_down) no-repeat;
-    background-size: 1.25rem;
-    padding-left: 2.5rem;
-    @extend .link--bold;
-  }
+    &__link {
+        padding-left: 2.5rem;
+
+        background: url($fa_chevron_down) no-repeat;
+        background-size: 1.25rem;
+        @extend .link--bold;
+    }
 }

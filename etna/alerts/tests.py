@@ -1,11 +1,11 @@
 from django.test import TestCase
-
 from wagtail.models import Site
 
-from ..alerts.models import Alert
-from ..alerts.templatetags import alert_tags
-from ..collections.models import ExplorerIndexPage, TopicExplorerPage
-from ..home.models import HomePage
+from etna.collections.models import ExplorerIndexPage, TopicExplorerPage
+from etna.home.models import HomePage
+
+from .models import Alert
+from .templatetags import alert_tags
 
 
 def rich_text_msg(level):

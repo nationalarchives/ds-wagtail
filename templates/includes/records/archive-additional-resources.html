@@ -1,6 +1,6 @@
 {% if record.archive_accessions.accession_years %}
     <div class="archive-additional-resources">
-        <h2>Accessions</h2>
+        <h2 class="tna-heading-l">Accessions</h2>
         <p>These are selected lists of new or additional collections that were acquired by this archive during a specific year. If a date is not displayed there are no accessions for that year.</p>
 
         <form action="" id="archive" method="GET">
@@ -18,7 +18,7 @@
 
 {% if record.archive_repository_url %}
     <div class="archive-additional-resources">
-        <h2>Other finding aids</h2>
+        <h2 class="tna-heading-l">Other finding aids</h2>
         <ul>
             <li><a href="{{ record.archive_repository_url }}">Repository's catalogue</a></li>
             <li><a href="{{ discovery_browse }}/{{ record.iaid }}">Browse records in Discovery</a></li>

@@ -1,11 +1,14 @@
 {% load wagtailcore_tags %}
-<div class="content-warning {% if classes %}{{ classes }}{% endif %}" aria-label="Content warning">
-    {% include "includes/icon.html" with name="content-warning" classname="content-warning__icon" %}
-    <div class="content-warning__content">
+<div class="tna-warning">
+    <h2 class="tna-warning__heading tna-visually-hidden">
+      Important information
+    </h2>
+    <span class="tna-warning__heading-icon" aria-hidden="true">!</span>
+    <div class="tna-warning__body">
         {% if custom_warning_text %}
-            {{ custom_warning_text | richtext }}
+        {{ custom_warning_text | richtext }}
         {% else %}
-            <p>This article contains content that some people may find offensive.</p>
+        This article contains content that some people may find offensive.
         {% endif %}
     </div>
-</div>
+  </div>

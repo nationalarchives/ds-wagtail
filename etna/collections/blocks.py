@@ -1,19 +1,6 @@
 from wagtail import blocks
 
-from etna.core.blocks import LargeCardLinksBlock, PromotedLinkBlock
-
-
-class FeaturedPageBlock(blocks.StructBlock):
-    heading = blocks.CharBlock(max_length=100)
-    description = blocks.CharBlock(
-        required=False, max_length=200, help_text="A description of the featured page"
-    )
-    page = blocks.PageChooserBlock()
-
-    class Meta:
-        template = "collections/blocks/featured_page.html"
-        help_text = "Block used feature a page from within Wagtail"
-        icon = "arrow-up"
+from etna.core.blocks import LargeCardLinksBlock, PageListBlock, PromotedLinkBlock
 
 
 class PromotedPagesBlock(blocks.StructBlock):
@@ -23,38 +10,16 @@ class PromotedPagesBlock(blocks.StructBlock):
 
     class Meta:
         template = "collections/blocks/promoted_pages.html"
-        help_text = "Block used promote external pages"
-        icon = "th-large"
-
-
-class TopicExplorerIndexBlock(blocks.StructBlock):
-    heading = blocks.CharBlock(max_length=100, default="Explore by topic")
-    page = blocks.PageChooserBlock(page_type="collections.TopicExplorerIndexPage")
-
-    class Meta:
-        template = "collections/blocks/topic_explorer.html"
-        help_text = "Outputs all topic child pages"
-        icon = "th-large"
-
-
-class TimePeriodExplorerIndexBlock(blocks.StructBlock):
-    heading = blocks.CharBlock(max_length=100, default="Explore by time period")
-    page = blocks.PageChooserBlock(page_type="collections.TimePeriodExplorerIndexPage")
-
-    class Meta:
-        template = "collections/blocks/time_period_explorer.html"
-        help_text = "Outputs all time period child pages"
+        help_text = "Block used to promote external pages"
         icon = "th-large"
 
 
 class ExplorerIndexPageStreamBlock(blocks.StreamBlock):
-    time_period_explorer_index = TimePeriodExplorerIndexBlock()
-    topic_explorer_index = TopicExplorerIndexBlock()
+    large_card_links = LargeCardLinksBlock()
 
     class Meta:
         block_counts = {
-            "time_period_explorer_index": {"min_num": 1, "max_num": 1},
-            "topic_explorer_index": {"min_num": 1, "max_num": 1},
+            "large_card_links": {"max_num": 1},
         }
 
 
@@ -83,3 +48,21 @@ class TopicIndexPageStreamBlock(blocks.StreamBlock):
         block_counts = {
             "large_card_links": {"max_num": 1},
         }
+
+
+class FeaturedArticlesBlock(blocks.StructBlock):
+    items = PageListBlock(
+        "articles.ArticlePage",
+        "articles.RecordArticlePage",
+        "articles.FocusedArticlePage",
+        exclude_drafts=True,
+        exclude_private=True,
+        select_related=["teaser_image"],
+        min_num=3,
+        max_num=6,
+    )
+
+    class Meta:
+        icon = "list"
+        label = "Featured articles"
+        template = "collections/blocks/featured_articles.html"

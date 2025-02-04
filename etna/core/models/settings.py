@@ -1,5 +1,4 @@
 from django.db import models
-
 from modelcluster.models import ClusterableModel, ParentalKey
 from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
 from wagtail.contrib.settings.models import BaseSiteSetting, register_setting
@@ -48,7 +47,6 @@ class SiteSettings(BaseSiteSetting, ClusterableModel):
             "main_menu_items_rel",
             heading="main menu items",
             label="item",
-            min_num=1,
             max_num=6,
         ),
     ]
@@ -86,7 +84,9 @@ class SiteSettings(BaseSiteSetting, ClusterableModel):
 
 class MainMenuItem(AbstractMenuItem):
     settings = ParentalKey(
-        "SiteSettings", on_delete=models.CASCADE, related_name="main_menu_items_rel"
+        "SiteSettings",
+        on_delete=models.CASCADE,
+        related_name="main_menu_items_rel",
     )
     handle = models.SlugField(
         blank=True,

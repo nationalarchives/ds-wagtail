@@ -1,228 +1,280 @@
+/* stylelint-disable -- This will become redundant when the new frontend is added */
+@use "@nationalarchives/frontend/nationalarchives/tools/colour";
+
 .transcription {
-  $root: &;
-  // provides visual boundary in high contrast mode
-  border: 1px solid transparent;
-  background: $color__grey-2;
-  color: $color__white;
-  padding-bottom: 0.5rem;
+    @include colour.contrast;
+    $root: &;
+    padding-top: 2.5rem;
+    padding-bottom: 0.5rem;
 
-  .hidden {
-    display: none;
-  }
+    color: $color__white;
 
-  &__content {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 4rem;
-    padding-top: 1rem;
-    margin-right: auto;
-    margin-left: auto;
+    background: $color__grey-800;
+    // provides visual boundary in high contrast mode
+    border: 1px solid transparent;
 
-    max-width: 80%;
-
-    @media screen and (min-width: map-get($grid-breakpoints, "lg")) {
-      display: grid;
-      row-gap: 1.875rem;
-      column-gap: 3rem;
-      grid-template-columns: 55% 45%;
+    .hidden {
+        display: none;
     }
 
-    &--full-width {
-      display: flex;
-      flex-direction: column;
+    &__content {
+        max-width: 80%;
+        margin-right: auto;
+        margin-bottom: 4rem;
+        margin-left: auto;
+        padding-top: 1rem;
+
+        display: flex;
+        flex-direction: column;
+
+        @media screen and (min-width: map-get($grid-breakpoints, "lg")) {
+            display: grid;
+            grid-template-columns: 55% 45%;
+            gap: 1.875rem 3rem;
+        }
+
+        &--full-width {
+            display: flex;
+            flex-direction: column;
+        }
     }
-  }
 
-  &__text {
-    margin-top: 0;
-
-    @media screen and (min-width: map-get($grid-breakpoints, "lg")) {
-      h2 {
+    &__text {
         margin-top: 0;
-      }
-    }
-  }
 
-  &__preview {
-    margin-bottom: 4rem;
-    display: block;
-    position: relative;
-  }
-
-  &__container {
-    display: flex;
-    margin-left: auto;
-    margin-right: auto;
-
-    max-width: 100%;
-    max-height: 100%;
-    display: block;
-
-    @media screen and (min-width: $screen__sm) {
-      max-width: 80%;
-      margin: 0 auto;
-    }
-  }
-
-  &__caption {
-    border-left: 2px solid $color__white;
-    padding-left: 0.5rem;
-    margin-top: 0.5rem;
-    font-weight: $font-weight-bold;
-
-    p {
-      display: inline;
-      margin: 0;
+        @media screen and (min-width: map-get($grid-breakpoints, "lg")) {
+            h2 {
+                margin-top: 0;
+            }
+        }
     }
 
-    a {
-      color: $color__yellow_2
-    }
-  }
+    &__preview {
+        margin-bottom: 4rem;
 
-  &__image-counter {
-    text-align: center;
-    padding-top: 1.5em;
+        display: block;
 
-    &:focus {
-      outline: 0.312rem solid $color__blue_4;
-      outline-offset: 0.125rem;
+        position: relative;
     }
 
-  }
+    &__container {
+        max-width: 100%;
+        max-height: 100%;
+        margin-right: auto;
+        margin-left: auto;
 
-  &__sensitive_image {
-    filter: blur(8px);
-    -webkit-filter: blur(8px);
-  }
+        display: block;
 
-  &__open {
-    @extend .tna-button--yellow;
-    position: absolute;
-    left: 50%;
-    -webkit-transform: translateX(-50%);
-    transform: translateX(-50%);
-    bottom: -3%;
-    cursor: pointer;
-
-    &:hover {
-      background-color: $color__white;
-      color: $color__black;
-      outline: 0.1875rem solid $color__dark;
-    }
-  }
-
-  &__close {
-    @extend .tna-button--yellow;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 2rem;
-    cursor: pointer;
-
-    &:hover {
-      background-color: $color__white;
-      color: $color__black;
-      outline: 0.1875rem solid $color__white;
-
-      #{$root}__icon {
-        fill: $color__dark;
-      }
-    }
-  }
-
-  &__icon {
-    width: 2rem;
-    height: 2rem;
-    padding-left: 0.3rem;
-  }
-
-  &__image {
-    max-width: 100%;
-    height: auto;
-    display: block;
-
-    &--preview {
-      margin: 0 auto;
-    }
-  }
-
-  &__figure-image {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  &__tablist {
-    max-width: 65em;
-    font-family: $font__supria-sans;
-  }
-
-  &__tab {
-    background-color: inherit;
-    border: none;
-    cursor: pointer;
-    display: inline-block;
-    margin: 0.125rem;
-    color: $color__white;
-    font-size: $h2-font-size;
-    font-weight: $headings-font-weight;
-
-    @media screen and (min-width: map-get($grid-breakpoints, "lg")) {
-      font-size: 1.4rem;
+        @media screen and (min-width: #{$screen__sm + 1px}) {
+            max-width: 80%;
+            margin: 0 auto;
+        }
     }
 
-    @media screen and (min-width: map-get($grid-breakpoints, "xl")) {
-      font-size: 1.8rem;
+    &__caption {
+        margin-top: 0.5rem;
+        padding-left: 0.5rem;
+
+        font-weight: $font-weight-bold;
+        border-left: 2px solid $color__white;
+
+        p {
+            margin: 0;
+
+            display: inline;
+        }
+
+        a {
+            color: $color__yellow;
+        }
     }
 
-    &:first-of-type {
-      margin-right: 1.875rem;
+    &__image-counter {
+        text-align: center;
+
+        &:focus {
+            outline: 0.312rem solid $color__navy;
+            outline-offset: 0.125rem;
+        }
     }
 
-    &[aria-selected="true"] {
-      border-bottom: $color__white solid 3px;
+    &__sensitive_image {
+        -webkit-filter: blur(8px);
+        filter: blur(8px);
     }
 
-    &:visited {
-      outline: 0.1875rem solid $color__yellow_2;
+    &__open {
+        @extend .tna-button--yellow;
+        position: absolute;
+        bottom: -3%;
+        left: 50%;
+
+        -webkit-transform: translateX(-50%);
+        transform: translateX(-50%);
+
+        cursor: pointer;
+
+        &:hover {
+            color: $color__black;
+
+            background-color: $color__white;
+
+            outline: 0.1875rem solid $color__grey-700;
+        }
     }
 
-    &:hover {
-      background-color: $color__dark;
-      color: $color__white;
-      outline: 0.1875rem solid $color__dark;
+    &__close {
+        @extend .tna-button--yellow;
+        margin-right: auto;
+        margin-bottom: 2rem;
+        margin-left: auto;
+
+        display: block;
+
+        cursor: pointer;
+
+        &:hover {
+            color: $color__black;
+
+            background-color: $color__white;
+
+            outline: 0.1875rem solid $color__white;
+
+            #{$root}__icon {
+                fill: $color__grey-700;
+            }
+        }
     }
 
-    &:focus {
-      outline: 0.312rem solid $color__blue_4;
-      outline-offset: 0.125rem;
+    &__icon {
+        width: 2rem;
+        height: 1.7rem;
+        padding-right: 1em;
+        padding-left: 0.3rem;
+
+        float: left;
     }
 
-  }
+    &__image {
+        max-width: 100%;
+        height: auto;
 
-  &__tabpanel {
-    margin-top: 2.5rem;
-    color: $color__white;
+        display: block;
 
-    &:visited {
-      outline: 0.1875rem solid $color__yellow_2;
+        &--preview {
+            margin: 0 auto;
+        }
     }
 
-    &:hover {
-      background-color: $color__dark;
-      color: $color__white;
-      outline: 0.1875rem solid $color__dark;
+    &__figure-image {
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
-    &:focus {
-      outline: 0.312rem solid $color__blue_4;
-      outline-offset: 0.125rem;
+    &__tablist {
+        max-width: 65em;
+
+        font-family: $font__body;
     }
 
-    >p {
-      // Normalise the rich-text output
-      margin: 0;
+    &__tab {
+        margin: 0.125rem;
+
+        display: inline-block;
+
+        color: $color__white;
+        font-size: $font-size-base;
+        font-weight: $headings-font-weight;
+
+        background-color: inherit;
+
+        border: none;
+
+        cursor: pointer;
+
+        @media screen and (min-width: map-get($grid-breakpoints, "lg")) {
+            font-size: 1.4rem;
+        }
+
+        @media screen and (min-width: map-get($grid-breakpoints, "xl")) {
+            font-size: 1.8rem;
+        }
+
+        &:first-of-type {
+            margin-right: 1.875rem;
+        }
+
+        &[aria-selected="true"] {
+            border-bottom: $color__white solid 3px;
+        }
+
+        &:visited {
+            outline: 0.1875rem solid $color__yellow;
+        }
+
+        &:hover {
+            color: $color__white;
+
+            background-color: $color__grey-700;
+
+            outline: 0.1875rem solid $color__grey-700;
+        }
+
+        &:focus {
+            outline: 0.312rem solid $color__navy;
+            outline-offset: 0.125rem;
+        }
     }
-  }
+
+    &__tabpanel {
+        margin-top: 2.5rem;
+
+        color: $color__white;
+
+        &:visited {
+            outline: 0.1875rem solid $color__yellow;
+        }
+
+        &:hover {
+            color: $color__white;
+
+            background-color: $color__grey-700;
+
+            outline: 0.1875rem solid $color__grey-700;
+        }
+
+        &:focus {
+            outline: 0.312rem solid $color__navy;
+            outline-offset: 0.125rem;
+        }
+
+        ul {
+            @extend .tna-ul;
+        }
+
+        ol {
+            @extend .tna-ol;
+        }
+
+        > p,
+        > ul,
+        > ol {
+            // Normalise the rich-text output
+            // margin-top: 0;
+            // margin-bottom: 1rem;
+
+            &:last-child {
+                // margin-bottom: 0;
+            }
+        }
+    }
+
+    &__gallery-heading {
+        @extend .container;
+        margin-top: 0;
+        margin-bottom: 0;
+
+        text-align: center;
+    }
 }

@@ -3,12 +3,12 @@ from django.conf import settings
 from django.contrib import admin
 from django.urls import include, path, register_converter
 from django.views.decorators.cache import never_cache
-
 from wagtail import urls as wagtail_urls
 from wagtail.admin import urls as wagtailadmin_urls
 from wagtail.documents import urls as wagtaildocs_urls
 from wagtail.utils.urlpatterns import decorate_urlpatterns
 
+from etna.api.urls import api_router
 from etna.core.cache_control import (
     apply_default_cache_control,
     apply_default_vary_headers,
@@ -18,6 +18,7 @@ from etna.errors import views as errors_view
 from etna.records import converters
 from etna.records import views as records_views
 from etna.search import views as search_views
+from etna.whatson import views as whatson_views
 
 register_converter(converters.ReferenceNumberConverter, "reference_number")
 register_converter(converters.IAIDConverter, "iaid")
@@ -35,11 +36,18 @@ handler503 = "etna.errors.views.custom_503_error_view"
 
 # Private URLs that are not meant to be cached.
 private_urls = [
+    path("api/v2/", api_router.urls),
     path("django-admin/", admin.site.urls),
     path("admin/", include(wagtailadmin_urls)),
     path("accounts/", include("allauth.urls")),
     path("documents/", include(wagtaildocs_urls)),
+    path(
+        "webhook/eventbrite/",
+        whatson_views.eventbrite_webhook_view,
+        name="eventbrite_webhook",
+    ),
     path("feedback/", include("etna.feedback.urls")),
+    path("healthcheck/", include("etna.healthcheck.urls")),
 ]
 
 if settings.SENTRY_DEBUG_URL_ENABLED:
@@ -58,7 +66,8 @@ public_urls = [
     path(
         r"catalogue/ref/<reference_number:reference_number>/",
         setting_controlled_login_required(
-            records_views.record_disambiguation_view, "RECORD_DETAIL_REQUIRE_LOGIN"
+            records_views.record_disambiguation_view,
+            "RECORD_DETAIL_REQUIRE_LOGIN",
         ),
         name="details-page-human-readable",
     ),
@@ -84,28 +93,32 @@ public_urls = [
     path(
         r"search/",
         setting_controlled_login_required(
-            search_views.SearchLandingView.as_view(), "SEARCH_VIEWS_REQUIRE_LOGIN"
+            search_views.SearchLandingView.as_view(),
+            "SEARCH_VIEWS_REQUIRE_LOGIN",
         ),
         name="search",
     ),
     path(
         r"search/featured/",
         setting_controlled_login_required(
-            search_views.FeaturedSearchView.as_view(), "SEARCH_VIEWS_REQUIRE_LOGIN"
+            search_views.FeaturedSearchView.as_view(),
+            "SEARCH_VIEWS_REQUIRE_LOGIN",
         ),
         name="search-featured",
     ),
     path(
         r"search/catalogue/",
         setting_controlled_login_required(
-            search_views.CatalogueSearchView.as_view(), "SEARCH_VIEWS_REQUIRE_LOGIN"
+            search_views.CatalogueSearchView.as_view(),
+            "SEARCH_VIEWS_REQUIRE_LOGIN",
         ),
         name="search-catalogue",
     ),
     path(
         r"search/website/",
         setting_controlled_login_required(
-            search_views.WebsiteSearchView.as_view(), "SEARCH_VIEWS_REQUIRE_LOGIN"
+            search_views.NativeWebsiteSearchView.as_view(),
+            "SEARCH_VIEWS_REQUIRE_LOGIN",
         ),
         name="search-website",
     ),

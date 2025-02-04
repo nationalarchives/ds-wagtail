@@ -1,28 +1,38 @@
-{% load static wagtailuserbar wagtailcore_tags wagtailsettings_tags  wagtailmetadata_tags  %}<!DOCTYPE html>
+{% load static wagtailuserbar wagtailcore_tags wagtailsettings_tags robots_meta %}<!DOCTYPE html>
 {% get_settings %}
-<html class="no-js" lang="en">
+<html class="tna-template tna-template--light-theme tna-template--yellow-accent no-js {% block html_class%}{% endblock %}" lang="en-GB">
     <head>
     {% if request.in_preview_panel %}
     <base target="_blank">
     {% endif %}
         <meta charset="utf-8" />
-    {% block meta_tag %}
-        <title>
-            {% block prepend_title %}{% endblock %}
-            {% block title_prefix %}
-                {% if form.errors %}Error: {% endif %}
-            {% endblock %}
-            {% block title %}
-                {% firstof page.seo_title page.title meta_title "Untitled" %}
-            {% endblock %}
-            {% block title_suffix %}
-                {% wagtail_site as current_site %}
-                 - {{ current_site.site_name }}
-            {% endblock %}
-        </title>
-        <meta name="description" content="" />
-     {% endblock %}
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        {% block meta_tag %}
+        {% wagtail_site as current_site %}
+            <title>
+                {% block prepend_title %}{% endblock %}
+                {% block title_prefix %}
+                    {% if form.errors %}Error: {% endif %}
+                {% endblock %}
+                {% block title %}
+                    {% firstof page.seo_title page.title meta_title "Untitled" %}
+                {% endblock %}
+                {% block title_suffix %}
+                    – {{ current_site.site_name }}
+                {% endblock %}
+            </title>
+        <meta property="og:site_name" content="{{ current_site.site_name }}">
+        <meta property="og:locale" content="en_GB">
+        {% endblock %}
+        <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+        <meta name="format-detection" content="telephone=no" />
+        <!--hiding from robots/indexing if search pages or detail page.-->
+        {% if request.path|is_search_or_catalogue %}
+        <meta name="robots" content="noindex,nofollow">
+        {% endif %}
+
+
+
+
 
         {# Global stylesheets #}
         <link rel="stylesheet" type="text/css" href="{% static 'css/dist/etna.css' %}">
@@ -43,13 +53,6 @@
             {% include 'includes/gtm-script.html' %}
         {% endif %}
 
-
-        {# Google Fonts #}
-        <link rel="preconnect" href="https://fonts.gstatic.com">
-        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Roboto:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&family=Roboto+Mono&display=swap"
-            rel="stylesheet">
-
-
         <script>document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';</script>
 
         {# Adobe Fonts #}
@@ -61,19 +64,19 @@
         <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.png' %}">
     </head>
 
-    <body class="{% block body_class %}{% endblock %}">
+    <body class="tna-template__body {% block body_class %}{% endblock %}">
         {# icon sprites #}
         {% include "includes/icons/sprites.html" %}
 
         {% if show_cookie_notice %}
             {% include 'includes/cookie-consent.html' %}
         {% endif %}
-        <a href="#maincontent" class="skip-to-content-link sr-only sr-only-focusable" data-link="Skip to main content">Skip to main content</a>
-        {% wagtailuserbar %}
-
+        <a href="#maincontent" class="tna-skip-link" data-link="Skip to main content">Skip to main content</a>
         {% if search_query %}
-            <a href="#search-results-title" class="skip-to-content-link sr-only sr-only-focusable">Skip to search results</a>
+            <a href="#search-results-title" class="tna-skip-link">Skip to search results</a>
         {% endif %}
+
+        {% wagtailuserbar %}
 
         {% if cookies_permitted %}
             {% include 'includes/gtm-no-script.html' %}
@@ -86,13 +89,23 @@
         {% if show_beta_banner %}
             {% include 'includes/beta-banner.html' %}
         {% endif %}
+
         {% block breadcrumb %}
-        {% include 'includes/breadcrumb.html' %}
+        <div class="tna-breadcrumb-wrapper">
+            <div class="tna-container">
+                <div class="tna-column">
+                    {% include 'components/breadcrumb.html' %}
+                </div>
+            </div>
+        </div>
         {% endblock %}
+
         {% block main %}
+
             <main id="maincontent">
                 {% block content %}{% endblock %}
             </main>
+
         {% endblock %}
 
         {% block footer %}
@@ -102,8 +115,10 @@
         {% block extra_js %}
             {# Override this in templates to add extra javascript #}
         {% endblock %}
+        <script src="{% static 'scripts/all.js' %}"></script>
         <script src="{% static 'scripts/global_search.js' %}"></script>
         <script src="{% static 'scripts/hamburger_menu.js' %}"></script>
+        <script src="{% static 'scripts/feedback_tracking.js' %}"></script>
         {% if show_cookie_notice %}
             <script src="{% static 'scripts/cookie_consent.js' %}"></script>
         {% endif %}

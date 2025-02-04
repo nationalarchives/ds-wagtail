@@ -9,19 +9,31 @@ https://docs.djangoproject.com/en/3.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
+
 import os
 
-from distutils.util import strtobool
-
 import sentry_sdk
-
 from sentry_sdk.integrations.django import DjangoIntegration
 
 from ..versioning import get_git_sha
+from .util import strtobool
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR = os.path.dirname(PROJECT_DIR)
+WAGTAILAPI_BASE_URL = os.getenv("WAGTAILAPI_BASE_URL", "")
+WAGTAIL_HEADLESS_PREVIEW = {
+    "CLIENT_URLS": {
+        "default": os.getenv("WAGTAILADMIN_HEADLESS_PREVIEW_URL", "{SITE_ROOT_URL}"),
+    },
+    "SERVE_BASE_URL": os.getenv("WAGTAILADMIN_HEADLESS_BASE_URL", None),
+    "REDIRECT_ON_PREVIEW": strtobool(
+        os.getenv("WAGTAILADMIN_HEADLESS_REDIRECT_ON_PREVIEW", "False")
+    ),
+    "ENFORCE_TRAILING_SLASH": strtobool(
+        os.getenv("WAGTAILADMIN_HEADLESS_ENFORCE_TRAILING_SLASH", "True")
+    ),
+}
 
 DEBUG = strtobool(os.getenv("DEBUG", "False"))
 
@@ -36,6 +48,9 @@ INSTALLED_APPS = [
     "etna.alerts",
     "etna.analytics",
     "etna.articles",
+    "etna.blog",
+    "etna.people",
+    "etna.cookies",
     "etna.categories",
     "etna.ciim",
     "etna.collections",
@@ -49,8 +64,10 @@ INSTALLED_APPS = [
     "etna.records",
     "etna.search",
     "etna.users",
+    "etna.whatson",
     "wagtail.contrib.forms",
     "wagtail.contrib.redirects",
+    "wagtail.contrib.table_block",
     "wagtail.embeds",
     "wagtail.sites",
     "wagtail.users",
@@ -63,8 +80,8 @@ INSTALLED_APPS = [
     "wagtailfontawesomesvg",
     "wagtailmedia",
     "wagtail.contrib.settings",
-    "wagtail.contrib.styleguide",
-    "wagtailmetadata",
+    "generic_chooser",
+    "wagtailmetadata",  # TODO: Remove this package when we reset migrations and remove the dependency from the pyproject.toml
     "modelcluster",
     "taggit",
     "django.contrib.admin",
@@ -78,11 +95,15 @@ INSTALLED_APPS = [
     "allauth",
     "allauth.account",
     "birdbath",
+    "wagtail.api.v2",
+    "rest_framework",
+    "wagtail_headless_preview",
 ]
 
 SITE_ID = 1
 
 MIDDLEWARE = [
+    "allauth.account.middleware.AccountMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -90,7 +111,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django.middleware.security.SecurityMiddleware",
-    "etna.core.middleware.MaintenanceModeMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "wagtail.contrib.redirects.middleware.RedirectMiddleware",
     "etna.core.middleware.InterpretCookiesMiddleware",
 ]
@@ -98,6 +119,9 @@ MIDDLEWARE = [
 COOKIE_DOMAIN = os.getenv("COOKIE_DOMAIN", "nationalarchives.gov.uk")
 
 ROOT_URLCONF = "config.urls"
+
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "").split(",")
+USE_X_FORWARDED_HOST = strtobool(os.getenv("USE_X_FORWARDED_HOST", "False"))
 
 TEMPLATES = [
     {
@@ -246,7 +270,7 @@ STATICFILES_DIRS = [
 STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
 
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
-STATIC_URL = "/static/"
+STATIC_URL = "static/"
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = "/media/"
@@ -266,7 +290,13 @@ WAGTAIL_SITE_NAME = "etna"
 
 # Base URL to use when referring to full URLs within the Wagtail admin backend -
 # e.g. in notification emails. Don't include '/admin' or a trailing slash
-WAGTAILADMIN_BASE_URL = os.getenv("WAGTAILADMIN_BASE_URL", "https://www.example.com")
+WAGTAILADMIN_BASE_URL = os.getenv(
+    "WAGTAILADMIN_BASE_URL", "https://nationalarchives.gov.uk"
+)
+
+CSRF_TRUSTED_ORIGINS = [
+    os.getenv("CSRF_TRUSTED_ORIGIN", "https://nationalarchives.gov.uk")
+]
 
 # For search results within Wagtail itself
 WAGTAILSEARCH_BACKENDS = {
@@ -275,16 +305,41 @@ WAGTAILSEARCH_BACKENDS = {
     }
 }
 
+WAGTAILDOCS_DOCUMENT_MODEL = "core.CustomDocument"
+WAGTAILDOCS_EXTENSIONS = [
+    "pdf",
+    "xls",
+    "xlsx",
+    "doc",
+    "docx",
+    "xls",
+    "xlsx",
+    "stl",
+    "txt",
+    "csv",
+]
+
 WAGTAILIMAGES_IMAGE_MODEL = "images.CustomImage"
 
-# Kong client
+# Custom password template for private pages
 
-KONG_CLIENT_BASE_URL = os.getenv("KONG_CLIENT_BASE_URL")
-KONG_CLIENT_KEY = os.getenv("KONG_CLIENT_KEY")
-KONG_CLIENT_VERIFY_CERTIFICATES = strtobool(
+WAGTAIL_PASSWORD_REQUIRED_TEMPLATE = "password_pages/password_required.html"
+
+# Eventbrite client
+
+EVENTBRITE_KEY = os.getenv("EVENTBRITE_KEY")
+EVENTBRITE_SECRET = os.getenv("EVENTBRITE_SECRET")
+EVENTBRITE_PRIVATE_TOKEN = os.getenv("EVENTBRITE_PRIVATE_TOKEN")
+EVENTBRITE_PUBLIC_TOKEN = os.getenv("EVENTBRITE_PUBLIC_TOKEN")
+
+# API Client
+
+CLIENT_BASE_URL = os.getenv("KONG_CLIENT_BASE_URL")
+CLIENT_KEY = os.getenv("KONG_CLIENT_KEY")
+CLIENT_VERIFY_CERTIFICATES = strtobool(
     os.getenv("KONG_CLIENT_VERIFY_CERTIFICATES", "True")
 )
-KONG_IMAGE_PREVIEW_BASE_URL = os.getenv("KONG_IMAGE_PREVIEW_BASE_URL")
+IMAGE_PREVIEW_BASE_URL = os.getenv("KONG_IMAGE_PREVIEW_BASE_URL")
 
 # Rich Text Features
 # https://docs.wagtail.io/en/stable/advanced_topics/customisation/page_editing_interface.html#limiting-features-in-a-rich-text-field
@@ -293,12 +348,13 @@ INLINE_RICH_TEXT_FEATURES = [
     "italic",
     "link",
 ]
-RESTRICTED_RICH_TEXT_FEATURES = [
-    "bold",
-    "italic",
-    "link",
+RESTRICTED_RICH_TEXT_FEATURES = INLINE_RICH_TEXT_FEATURES + [
     "ol",
     "ul",
+]
+EXPANDED_RICH_TEXT_FEATURES = RESTRICTED_RICH_TEXT_FEATURES + [
+    "h2",
+    "h3",
 ]
 
 # Analytics
@@ -363,16 +419,6 @@ CACHE_CONTROL_STALE_WHILE_REVALIDATE = int(
 )
 
 # -----------------------------------------------------------------------------
-# Maintenance mode
-# -----------------------------------------------------------------------------
-
-MAINTENANCE_MODE = strtobool(os.getenv("MAINTENANCE_MODE", "False"))
-# MAINTENENCE_MODE_ALLOW_IPS="IPA1,IPA2" where IPA is IP address
-MAINTENENCE_MODE_ALLOW_IPS = os.getenv("MAINTENENCE_MODE_ALLOW_IPS", "").split(",")
-# datetime is iso MAINTENENCE_MODE_ENDS = "2011-11-04T00:05:23+04:00"
-MAINTENENCE_MODE_ENDS = os.getenv("MAINTENENCE_MODE_ENDS", "")
-
-# -----------------------------------------------------------------------------
 # Feature flags
 # -----------------------------------------------------------------------------
 
@@ -392,10 +438,28 @@ FEATURE_BETA_BANNER_ENABLED = strtobool(
 FEATURE_COOKIE_BANNER_ENABLED = strtobool(
     os.getenv("FEATURE_COOKIE_BANNER_ENABLED", "True")
 )
-FEATURE_STORIES_TOPIC_AND_TIME_PROMOS_ENABLED = strtobool(
-    os.getenv("FEATURE_STORIES_TOPIC_AND_TIME_PROMOS_ENABLED", "True")
-)
 FEATURE_PLATFORM_ENVIRONMENT_TYPE = os.getenv("PLATFORM_ENVIRONMENT_TYPE", "production")
 FEATURE_FEEDBACK_MECHANISM_ENABLED = strtobool(
     os.getenv("FEATURE_FEEDBACK_MECHANISM_ENABLED", "False")
 )
+FEATURE_DISABLE_JS_WHATS_ON_LISTING = strtobool(
+    os.getenv("FEATURE_DISABLE_JS_WHATS_ON_LISTING", "False")
+)
+
+if redis_url := os.getenv("REDIS_URL"):
+    CACHES = {
+        "default": {
+            "BACKEND": "django_redis.cache.RedisCache",
+            "LOCATION": redis_url,
+            "OPTIONS": {
+                "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            },
+        },
+        "renditions": {
+            "BACKEND": "django_redis.cache.RedisCache",
+            "LOCATION": redis_url,
+            "KEY_PREFIX": "renditions",
+        },
+    }
+
+WAGTAILAPI_LIMIT_MAX = int(os.getenv("WAGTAILAPI_LIMIT_MAX", "0")) or None

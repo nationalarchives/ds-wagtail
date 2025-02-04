@@ -1,15 +1,15 @@
 {% load search_tags %}
-
+<div class="tna-background-tint">
+<div class="tna-container">
 <div class="search-results-hero">
-    <h1 class="search-results-hero__heading">{{search_tab|search_title}}</h1>
-    <form method="GET" class="search-results-hero__form" data-id="search-form" id="catalogue-search-form">
-        {{ form.q.errors }}
+    <h1 class="tna-heading-l search-results-hero__heading">{{search_tab|search_title}}</h1>
+    <form method="GET" class="search-results-hero__form tna-!--margin-top-s" data-id="search-form" id="catalogue-search-form">
+
         <label for="{{form.q.id_for_label}}" class="sr-only">Search term</label>
+        {{ form.q.errors }}
         {{ form.q }}
-        
-        {% if search_tab == searchtabs.CATALOGUE.value or search_tab == searchtabs.WEBSITE.value %}
-            {{ 'q'|include_hidden_fields:form }}
-        {% endif %}
+
+        {% render_fields_as_hidden form exclude='q' %}
 
         <input type="submit" value="Search" class="search-results-hero__form-submit">
     </form>
@@ -46,4 +46,6 @@
             </ul>
         </nav>
     {% endwith %}
+</div>
+</div>
 </div>

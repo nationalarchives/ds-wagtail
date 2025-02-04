@@ -10,6 +10,7 @@ from ..utils import (
     find_all,
     format_description_markup,
     pluck,
+    strip_html,
 )
 
 
@@ -102,7 +103,8 @@ class TestExtract(SimpleTestCase):
         ):
             with self.subTest(key):
                 self.assertIs(
-                    extract(self.test_data, key, default=default_value), default_value
+                    extract(self.test_data, key, default=default_value),
+                    default_value,
                 )
 
 
@@ -114,7 +116,7 @@ class TestResolveLinks(SimpleTestCase):
 
         stripped_markup = format_description_markup(markup)
 
-        self.assertEquals(
+        self.assertEqual(
             '<span><a href="/catalogue/id/C11996672/">link text</a></span>',
             stripped_markup,
         )
@@ -124,7 +126,7 @@ class TestResolveLinks(SimpleTestCase):
 
         stripped_markup = format_description_markup(markup)
 
-        self.assertEquals("<span/>", stripped_markup)
+        self.assertEqual("<span/>", stripped_markup)
 
     def test_multiple_links(self):
         markup = (
@@ -136,7 +138,7 @@ class TestResolveLinks(SimpleTestCase):
 
         stripped_markup = format_description_markup(markup)
 
-        self.assertEquals(
+        self.assertEqual(
             (
                 "<span>"
                 '<a href="/catalogue/id/C11996672/">link text one</a>'
@@ -155,7 +157,7 @@ class TestResolveLinks(SimpleTestCase):
 
         stripped_markup = format_description_markup(markup)
 
-        self.assertEquals(
+        self.assertEqual(
             ("<span>" '<a href="http://example.com/">link text one</a>' "</span>"),
             stripped_markup,
         )
@@ -166,7 +168,7 @@ class TestResolveLinks(SimpleTestCase):
 
         stripped_markup = format_description_markup(markup)
 
-        self.assertEquals(
+        self.assertEqual(
             ("<span></span>"),
             stripped_markup,
         )
@@ -327,46 +329,88 @@ class TestConvertSortKeyToIndex(SimpleTestCase):
 
         index = convert_sort_key_to_index(sort)
 
-        self.assertEquals(index, 0)
+        self.assertEqual(index, 0)
 
     def test_empty_string(self):
         sort = None
 
         index = convert_sort_key_to_index(sort)
 
-        self.assertEquals(index, 0)
+        self.assertEqual(index, 0)
 
     def test_converts_sort_key_with_leading_zero(self):
         sort = "01"
 
         index = convert_sort_key_to_index(sort)
 
-        self.assertEquals(index, 0)
+        self.assertEqual(index, 0)
 
     def test_converts_sort_key_at_three_digit_boundary(self):
         sort = "31000"
 
         index = convert_sort_key_to_index(sort)
 
-        self.assertEquals(index, 999)
+        self.assertEqual(index, 999)
 
     def test_converts_sort_key_at_four_digit_boundary(self):
         sort = "31001"
 
         index = convert_sort_key_to_index(sort)
 
-        self.assertEquals(index, 1000)
+        self.assertEqual(index, 1000)
 
     def test_index_is_zero_for_invalid_sort_key(self):
         sort = "10000"
 
         index = convert_sort_key_to_index(sort)
 
-        self.assertEquals(index, 0)
+        self.assertEqual(index, 0)
 
     def test_index_is_zero_for_non_int_sort_key(self):
         sort = "NaN"
 
         index = convert_sort_key_to_index(sort)
 
-        self.assertEquals(index, 0)
+        self.assertEqual(index, 0)
+
+
+class TestStripHtml(SimpleTestCase):
+
+    def test_ensure_spaces_preserve_marks(self):
+
+        test_data = (
+            (
+                "test for span tag",
+                "This is a<span>test example</span>",
+                "This is a test example",
+            ),
+            (
+                "test for p tag",
+                "This is a<p>test example</p>",
+                "This is a test example",
+            ),
+            (
+                "test for unknown tag",
+                "This is a<unknown>test example</unknown>",
+                "This is atest example",
+            ),
+            (
+                "D7376859",
+                '<span class="wrapper"><span altrender="doctype" class="emph"></span><span class="persname"><span altrender="surname" class="emph">Patman</span><span altrender="forenames" class="emph">Clifford Douglas</span></span><span altrender="rank" class="emph">Armament Quarter Master Serjeant</span><span altrender="regno" class="emph">1865334</span><span class="corpname">Royal Army Ordnance Corps, 8 Hussars now Royal Electrical and Mechanical Engineers</span><span class="geogname">Escape and Evasion</span><span altrender="award" class="emph">Mentions in Despatches</span></span>',
+                "Patman Clifford Douglas Armament Quarter Master Serjeant 1865334 Royal Army Ordnance Corps, 8 Hussars now Royal Electrical and Mechanical Engineers Escape and Evasion Mentions in Despatches",
+            ),
+        )
+
+        for label, value, expected in test_data:
+            with self.subTest(label):
+                result = strip_html(value, preserve_marks=True, ensure_spaces=True)
+                self.assertEqual(result, expected)
+
+    def test_allow_tags(self):
+        value = """<a href="http://test.com">this is a test</a>"""
+        expected = (
+            """<a href="http://test.com" rel="noopener noreferrer">this is a test</a>"""
+        )
+        allow_tags = {"a", "br", "p"}
+        result = strip_html(value, allow_tags=allow_tags)
+        self.assertEqual(result, expected)

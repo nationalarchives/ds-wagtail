@@ -1,41 +1,47 @@
 .archive-description {
-  margin: 6.5rem 0 3rem;
+    margin: 3.5rem 0 3rem;
 
     &__address {
-      margin-bottom: 0;
+        margin-bottom: 0;
     }
 
     &__url {
-      font-size: 1.6rem;
-      margin: 0;
+        margin: 0;
+
+        font-size: 1.6rem;
     }
 
     &__contact {
-      padding: 2rem;
-      font-family: $font__open-sans;
-      background: $color__grey-5;
+        padding: 2rem;
 
-      h2 {
-        margin: 0 0 1rem;
-      }
+        font-family: $font__open-sans;
 
-      p {
-        font-weight: normal;
-        margin-bottom: 0.25rem;
-      }
+        background: $color__grey-200;
 
-      ul {
+        border: 0.125rem solid $color__grey-400;
 
-        li {
-          font-family: $font__open-sans;
+        h2 {
+            margin: 0 0 1rem;
         }
 
-      }
+        p {
+            margin-bottom: 0.25rem;
+
+            font-weight: normal;
+        }
+
+        a {
+            word-wrap: break-word;
+        }
+
+        ul {
+            li {
+                font-family: $font__open-sans;
+            }
+        }
     }
 
     &__container {
-      margin: 2rem 0;
+        margin: 2rem 0;
     }
 }
-
-

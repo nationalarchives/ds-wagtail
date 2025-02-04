@@ -1,14 +1,13 @@
 from wagtail import blocks
-from wagtail.images.blocks import ImageChooserBlock
 
-from etna.core.blocks import ParagraphBlock, ParagraphWithHeading
-from etna.core.blocks.cta import TimePeriodBlock, TopicExplorerBlock
+from etna.core.blocks import APIPageChooserBlock, ParagraphBlock, ParagraphWithHeading
+from etna.core.blocks.image import APIImageChooserBlock
 
 
 class FeaturedExternalPageBlock(blocks.StructBlock):
     url = blocks.URLBlock(label="external URL", help_text="URL for the external page")
     title = blocks.CharBlock(max_length=100, help_text="Title of the promoted page")
-    teaser_image = ImageChooserBlock(
+    teaser_image = APIImageChooserBlock(
         help_text="Image that will appear on thumbnails and promos around the site."
     )
     description = blocks.CharBlock(
@@ -23,9 +22,11 @@ class FeaturedExternalPageBlock(blocks.StructBlock):
 
 class FeaturedPageBlock(blocks.StructBlock):
     title = blocks.CharBlock(
-        max_length=100, required=False, help_text="Optionally override the page's title"
+        max_length=100,
+        required=False,
+        help_text="Optionally override the page's title",
     )
-    page = blocks.PageChooserBlock()
+    page = APIPageChooserBlock(required_api_fields=["teaser_image"])
     description = blocks.CharBlock(
         max_length=200, help_text="A description of the promoted page"
     )
@@ -55,7 +56,5 @@ class FeaturedItemsBlock(blocks.ListBlock):
 
 
 class HomePageStreamBlock(blocks.StreamBlock):
-    time_period = TimePeriodBlock()
-    topic_explorer = TopicExplorerBlock()
     paragraph = ParagraphBlock()
     paragraph_with_heading = ParagraphWithHeading()

@@ -1,4 +1,4 @@
-from ..ciim.utils import pluck
+from etna.ciim.utils import pluck
 
 
 def transform_image_result(result):
@@ -7,7 +7,8 @@ def transform_image_result(result):
     data = {}
 
     data["thumbnail_location"] = pluck(
-        result["_source"], accessor=lambda i: i["processed"]["preview"]["location"]
+        result["_source"],
+        accessor=lambda i: i["processed"]["preview"]["location"],
     )
     data["location"] = result["_source"]["processed"]["original"]["location"]
     data["sort"] = result["_source"]["sort"]

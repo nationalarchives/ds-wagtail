@@ -1,37 +1,66 @@
-version: '3'
-
 services:
   db:
-    image: postgres:12.0
-    ports:
-     - "5432:5432"
-    volumes:
-     - ./database_dumps:/app/database_dumps
-  web:
-    platform: linux/amd64
-    build: .
+    image: postgres:16.0
+    environment:
+      - POSTGRES_PASSWORD=postgres
+
+  app:
+    build:
+      context: .
+      args:
+        IMAGE: ghcr.io/nationalarchives/tna-python-django-root
+        IMAGE_TAG: preview
     volumes:
       - ./:/app
+      - media:/media
     depends_on:
-     - db
+      - db
+      - redis
     ports:
-     - 8000:8000 # runserver
-     - 8001:8001 # mkdocs serve
-    # Closely match prod server
-    # command: pipenv run gunicorn config.wsgi:application --bind 0.0.0.0:8000 --timeout 3600 --workers 3 --reload --capture-output
-    # Server for better debugging output
-    command: tail -f /dev/null  # do nothing forever. Use fab sh to run the django server
-    restart: on-failure
-    init: true
-    stdin_open: true
-    tty: true
+      - 8000:8080
     env_file:
       - .env
-  cli:
-    platform: linux/amd64
-    build: platformsh-cli
+    environment:
+      - ENVIRONMENT=develop
+      - DJANGO_SETTINGS_MODULE=config.settings.dev
+      - SECRET_KEY=abc123
+      - DATABASE_HOST=db
+      - DATABASE_NAME=postgres
+      - DATABASE_USER=postgres
+      - DATABASE_PASSWORD=postgres
+      - DJANGO_SUPERUSER_PASSWORD=admin
+      - DJANGO_SUPERUSER_USERNAME=admin
+      - DJANGO_SUPERUSER_EMAIL=admin@tna.dev
+      - FEATURE_BETA_BANNER_ENABLED=False
+      - KONG_CLIENT_VERIFY_CERTIFICATES=False
+      - KEEP_ALIVE=30
+      - WAGTAILAPI_BASE_URL=http://host.docker.internal:8000
+      - REDIS_URL=redis://:redis@redis:6379
+
+  docs:
+    image: squidfunk/mkdocs-material
     volumes:
-      - ./media:/app/media
-      - ./database_dumps:/app/database_dumps
-    env_file:
-      - .env
+      - .:/docs
+    ports:
+      - 8001:8000
+
+  dev:
+    image: ghcr.io/nationalarchives/tna-python-dev:preview
+    environment:
+      - PLATFORMSH_CLI_TOKEN=${PLATFORMSH_CLI_TOKEN}
+      - PLATFORM_PROJECT_ID=rasrzs7pi6sd4
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - ./:/app
+      - ./dev:/home/app/.local/bin/tasks
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - media:/media
+
+  redis:
+    image: redis:latest
+    command: /bin/sh -c "redis-server --requirepass redis"
+
+volumes:
+  media:

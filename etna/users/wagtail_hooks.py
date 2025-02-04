@@ -1,5 +1,4 @@
 from django.urls import path, reverse
-
 from wagtail import hooks
 from wagtail.admin.menu import AdminOnlyMenuItem
 
@@ -11,7 +10,7 @@ def register_unpublished_changes_report_menu_item():
     return AdminOnlyMenuItem(
         "Beta testers",
         reverse("beta_testers_report"),
-        classnames="icon icon-user",
+        classname="icon icon-user",
     )
 
 

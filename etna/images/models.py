@@ -1,13 +1,15 @@
 from django.conf import settings
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-
 from modelcluster.models import ClusterableModel
+from wagtail.api import APIField
 from wagtail.fields import RichTextField
 from wagtail.images.models import AbstractImage, AbstractRendition
 from wagtail.search import index
 
+from etna.core.serializers import RichTextSerializer
 from etna.records.fields import RecordField
+from etna.records.serializers import RecordSerializer
 
 DEFAULT_SENSITIVE_IMAGE_WARNING = (
     "This image contains content which some people may find offensive or distressing."
@@ -33,13 +35,14 @@ class CustomImage(ClusterableModel, AbstractImage):
         ),
     )
 
-    copyright = models.CharField(
+    copyright = RichTextField(
         verbose_name=_("copyright"),
         blank=True,
         max_length=200,
         help_text=_(
             "Credit for images not owned by TNA. Do not include the copyright symbol."
         ),
+        features=settings.INLINE_RICH_TEXT_FEATURES,
     )
 
     is_sensitive = models.BooleanField(
@@ -50,7 +53,7 @@ class CustomImage(ClusterableModel, AbstractImage):
         ),
     )
 
-    custom_sensitive_image_warning = models.TextField(
+    custom_sensitive_image_warning = models.CharField(
         verbose_name=_("Why might this image be considered sensitive? (optional)"),
         help_text=_(
             'Replaces the default warning message where the image is displayed. For example: "This image has been marked as potentially sensitive because it contains depictions of violence".'
@@ -131,6 +134,18 @@ class CustomImage(ClusterableModel, AbstractImage):
         index.SearchField("copyright"),
         index.FilterField("record"),
         index.FilterField("is_sensitive"),
+    ]
+
+    api_fields = [
+        APIField("title"),
+        APIField("copyright"),
+        APIField("description", serializer=RichTextSerializer()),
+        APIField("transcription_heading"),
+        APIField("transcription", serializer=RichTextSerializer()),
+        APIField("translation_heading"),
+        APIField("translation", serializer=RichTextSerializer()),
+        APIField("record_dates"),
+        APIField("record", serializer=RecordSerializer()),
     ]
 
     @property
