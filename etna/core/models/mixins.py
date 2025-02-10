@@ -40,9 +40,7 @@ class ContentWarningMixin(models.Model):
         verbose_name="custom content warning text (optional)",
         features=["link"],
         blank=True,
-        help_text=(
-            "If specified, will be used for the content warning."
-        ),
+        help_text=("If specified, will be used for the content warning."),
     )
 
     content_panels = [
