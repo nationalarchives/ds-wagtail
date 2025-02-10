@@ -3,7 +3,7 @@
 {% load static wagtailcore_tags sections_tags %}
 
 {% block content %}
-    {% include "includes/record-revealed-intro.html" with display_content_warning=page.display_content_warning custom_warning_text=page.custom_warning_text %}
+    {% include "includes/record-revealed-intro.html" with custom_warning_text=page.custom_warning_text %}
     {% if page.gallery_items %}
         {% include "includes/image_gallery.html" with gallery=page.gallery_items has_text=page.gallery_has_translations_transcriptions %}
     {% endif %}

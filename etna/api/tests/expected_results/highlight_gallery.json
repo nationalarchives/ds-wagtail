@@ -70,7 +70,6 @@
         "message": "<p>Test message</p>"
     },
     "intro": "<p>Intro text</p>",
-    "display_content_warning": false,
     "custom_warning_text": "",
     "featured_article": {
         "id": ARTICLE_ID,
