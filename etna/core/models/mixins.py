@@ -34,36 +34,22 @@ __all__ = [
 
 
 class ContentWarningMixin(models.Model):
-    """Mixin to allow editors to toggle content warnings on and off"""
-
-    display_content_warning = models.BooleanField(
-        verbose_name="display a content warning on this page",
-        default=False,
-    )
+    """Mixin to allow editors to add content warnings to a page."""
 
     custom_warning_text = RichTextField(
         verbose_name="custom content warning text (optional)",
         features=["link"],
         blank=True,
         help_text=(
-            "If specified, will be used for the content warning. "
-            "Otherwise the default text will be used."
+            "If specified, will be used for the content warning."
         ),
     )
 
     content_panels = [
-        MultiFieldPanel(
-            [
-                FieldPanel("display_content_warning"),
-                FieldPanel("custom_warning_text"),
-            ],
-            heading="Content Warning Options",
-            classname="collapsible",
-        ),
+        FieldPanel("custom_warning_text"),
     ]
 
     api_fields = [
-        APIField("display_content_warning"),
         APIField("custom_warning_text", serializer=RichTextSerializer()),
     ]
 
