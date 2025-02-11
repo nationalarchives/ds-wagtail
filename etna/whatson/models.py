@@ -888,6 +888,12 @@ class ExhibitionPage(
         help_text=_("The title to display for the related content section."),
     )
 
+    related_pages_description = RichTextField(
+        blank=True,
+        help_text=_("The description to display for the related content section."),
+        features=settings.INLINE_RICH_TEXT_FEATURES,
+    )
+
     featured_page = models.ForeignKey(
         "wagtailcore.Page",
         null=True,
@@ -991,6 +997,7 @@ class ExhibitionPage(
         MultiFieldPanel(
             [
                 FieldPanel("related_pages_title"),
+                FieldPanel("related_pages_description"),
                 FieldPanel("featured_page"),
                 FieldPanel("related_pages"),
                 FieldPanel("event_title"),
@@ -1085,6 +1092,7 @@ class ExhibitionPage(
             APIField("video_title"),
             APIField("video"),
             APIField("related_pages_title"),
+            APIField("related_pages_description", serializer=RichTextSerializer()),
             APIField("featured_page", serializer=DefaultPageSerializer()),
             APIField("related_pages"),
             APIField("event_title"),
