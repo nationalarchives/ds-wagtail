@@ -997,6 +997,7 @@ class ExhibitionPage(
         MultiFieldPanel(
             [
                 FieldPanel("related_pages_title"),
+                FieldPanel("related_pages_description"),
                 FieldPanel("featured_page"),
                 FieldPanel("related_pages"),
                 FieldPanel("event_title"),
@@ -1091,6 +1092,7 @@ class ExhibitionPage(
             APIField("video_title"),
             APIField("video"),
             APIField("related_pages_title"),
+            APIField("related_pages_description", serializer=RichTextSerializer()),
             APIField("featured_page", serializer=DefaultPageSerializer()),
             APIField("related_pages"),
             APIField("event_title"),
