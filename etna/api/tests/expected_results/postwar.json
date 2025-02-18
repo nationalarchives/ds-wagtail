@@ -122,6 +122,7 @@
             "short_title": null,
             "url": "/article_index/article/",
             "full_url": "http://localhost/article_index/article/",
+            "type": "ArticlePage",
             "type_label": "The story of",
             "teaser_text": "Teaser text",
             "teaser_image": {

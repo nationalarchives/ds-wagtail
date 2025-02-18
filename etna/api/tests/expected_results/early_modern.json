@@ -122,6 +122,7 @@
             "short_title": null,
             "url": "/article_index/focused_article/",
             "full_url": "http://localhost/article_index/focused_article/",
+            "type": "FocusedArticlePage",
             "type_label": "Focus on",
             "teaser_text": "Teaser text",
             "teaser_image": {
@@ -149,6 +150,7 @@
             "short_title": null,
             "url": "/article_index/article/",
             "full_url": "http://localhost/article_index/article/",
+            "type": "ArticlePage",
             "type_label": "The story of",
             "teaser_text": "Teaser text",
             "teaser_image": {
@@ -178,6 +180,7 @@
             "short_title": null,
             "url": "/arts/highlight_gallery/",
             "full_url": "http://localhost/arts/highlight_gallery/",
+            "type": "HighlightGalleryPage",
             "type_label": "In pictures",
             "teaser_text": "Teaser text",
             "teaser_image": {

@@ -82,6 +82,7 @@
             "short_title": null,
             "url": "/people/author/",
             "full_url": "http://localhost/people/author/",
+            "type": "PersonPage",
             "type_label": null,
             "teaser_text": "Teaser text",
             "teaser_image": {
