@@ -2,7 +2,7 @@
     "id": EARLY_MODERN_ID,
     "meta": {
         "type": "collections.TimePeriodExplorerPage",
-        "detail_url": "/api/v2/pages/EARLY_MODERN_ID/",
+        "detail_url": "WAGTAILAPI_BASE_URL/api/v2/pages/EARLY_MODERN_ID/",
         "html_url": "http://localhost/early_modern/",
         "slug": "early_modern",
         "show_in_menus": false,
@@ -14,7 +14,7 @@
             "id": 3,
             "meta": {
                 "type": "home.HomePage",
-                "detail_url": "/api/v2/pages/3/",
+                "detail_url": "WAGTAILAPI_BASE_URL/api/v2/pages/3/",
                 "html_url": "http://localhost/"
             },
             "title": "Home"
@@ -62,6 +62,14 @@
         "twitter_og_image": null
     },
     "title": "early_modern",
+    "short_title": null,
+    "global_alert": null,
+    "type_label": "Explore the collection",
+    "mourning_notice": {
+        "title": "Test title",
+        "message": "<p>Test message</p>"
+    },
+    "intro": "<p>Intro text</p>",
     "hero_image_caption": "<p>Hero image caption</p>",
     "hero_image": {
         "id": 5,
@@ -105,19 +113,13 @@
         "is_sensitive": false,
         "custom_sensitive_image_warning": null
     },
-    "global_alert": null,
-    "type_label": "Explore the collection",
-    "mourning_notice": {
-        "title": "Test title",
-        "message": "<p>Test message</p>"
-    },
-    "intro": "<p>Intro text</p>",
     "body": [],
     "featured_article": null,
     "related_articles": [
         {
             "id": FOCUSED_ID,
             "title": "focused_article",
+            "short_title": null,
             "url": "/article_index/focused_article/",
             "full_url": "http://localhost/article_index/focused_article/",
             "type_label": "Focus on",
@@ -144,6 +146,7 @@
         {
             "id": ARTICLE_ID,
             "title": "article",
+            "short_title": null,
             "url": "/article_index/article/",
             "full_url": "http://localhost/article_index/article/",
             "type_label": "The story of",
@@ -172,6 +175,7 @@
         {
             "id": HIGHLIGHT_GALLERY_ID,
             "title": "highlight_gallery",
+            "short_title": null,
             "url": "/arts/highlight_gallery/",
             "full_url": "http://localhost/arts/highlight_gallery/",
             "type_label": "In pictures",

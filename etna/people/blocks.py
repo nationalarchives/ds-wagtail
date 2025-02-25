@@ -1,6 +1,7 @@
 from wagtail import blocks
 
 from etna.core.blocks import (
+    ContactBlock,
     InsetTextBlock,
     ParagraphBlock,
     SectionDepthAwareStructBlock,
@@ -8,6 +9,7 @@ from etna.core.blocks import (
 
 
 class SectionContentBlock(blocks.StreamBlock):
+    contact = ContactBlock()
     inset_text = InsetTextBlock()
     paragraph = ParagraphBlock()
 

@@ -2,6 +2,7 @@ import os
 import re
 from datetime import datetime, timezone
 
+from django.conf import settings
 from wagtail.models import Site
 from wagtail.test.utils import WagtailPageTestCase
 from wagtail_factories import ImageFactory
@@ -352,6 +353,7 @@ class APIResponseTest(WagtailPageTestCase):
             "AUTHOR_INDEX_ID": str(self.author_index_page.id),
             "AUTHOR_ID": str(self.author_page.id),
             "HIGHLIGHT_GALLERY_ID": str(self.highlight_gallery.id),
+            "WAGTAILAPI_BASE_URL": str(settings.WAGTAILAPI_BASE_URL),
         }
 
         for placeholder, id in placeholder_ids.items():

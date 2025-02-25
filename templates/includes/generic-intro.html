@@ -17,7 +17,7 @@
             {% if intro %}
             {{ intro|richtext }}
             {% endif %}
-            {% if display_content_warning %}    
+            {% if custom_warning_text %}    
                 {% include "includes/content-warning.html" with custom_warning_text=custom_warning_text classes=classes %} 
             {% endif %}
         </div>

@@ -504,16 +504,6 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithRequiredIntro):
         features=settings.RESTRICTED_RICH_TEXT_FEATURES,
     )
 
-    # Promote tab
-    short_title = models.CharField(
-        max_length=50,
-        verbose_name=_("short title"),
-        blank=True,
-        help_text=_(
-            "A short title for the event. This will be used in the event listings."
-        ),
-    )
-
     # DataLayerMixin overrides
     gtm_content_group = "What's On"
 
@@ -729,9 +719,6 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithRequiredIntro):
 
     promote_panels = (
         BasePageWithRequiredIntro.promote_panels
-        + [
-            FieldPanel("short_title"),
-        ]
         + ArticleTagMixin.promote_panels
         + [
             TopicalPageMixin.get_topics_inlinepanel(),
@@ -901,6 +888,12 @@ class ExhibitionPage(
         help_text=_("The title to display for the related content section."),
     )
 
+    related_pages_description = RichTextField(
+        blank=True,
+        help_text=_("The description to display for the related content section."),
+        features=settings.INLINE_RICH_TEXT_FEATURES,
+    )
+
     featured_page = models.ForeignKey(
         "wagtailcore.Page",
         null=True,
@@ -1004,6 +997,7 @@ class ExhibitionPage(
         MultiFieldPanel(
             [
                 FieldPanel("related_pages_title"),
+                FieldPanel("related_pages_description"),
                 FieldPanel("featured_page"),
                 FieldPanel("related_pages"),
                 FieldPanel("event_title"),
@@ -1098,6 +1092,7 @@ class ExhibitionPage(
             APIField("video_title"),
             APIField("video"),
             APIField("related_pages_title"),
+            APIField("related_pages_description", serializer=RichTextSerializer()),
             APIField("featured_page", serializer=DefaultPageSerializer()),
             APIField("related_pages"),
             APIField("event_title"),

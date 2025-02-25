@@ -1174,3 +1174,56 @@ class TestClientFetchAllReponse(SimpleTestCase):
         response = self.records_client.fetch_all()
         self.assertIsInstance(response, ResultList)
         self.assertEqual(response.hits, ())
+
+
+class DecodeJSONResponseTest(SimpleTestCase):
+    def setUp(self):
+        self.records_client = get_records_client()
+
+    @responses.activate
+    def test_decode_json_response_fetch(self):
+
+        responses.add(
+            responses.GET,
+            f"{settings.CLIENT_BASE_URL}/fetch",
+            status=204,  # no content
+            body="",
+            content_type="application/json",
+        )
+
+        with self.assertLogs("etna.ciim.client", level="ERROR") as lc:
+            with self.assertRaisesMessage(
+                Exception, "Expecting value: line 1 column 1 (char 0)"
+            ):
+                self.records_client.fetch()
+
+        self.assertIn(
+            "ERROR:etna.ciim.client:"
+            "Expecting value: line 1 column 1 (char 0):"
+            "Response body:",
+            lc.output,
+        )
+
+    @responses.activate
+    def test_decode_json_response_search(self):
+
+        responses.add(
+            responses.GET,
+            f"{settings.CLIENT_BASE_URL}/search",
+            status=204,  # no content
+            body="",
+            content_type="application/json",
+        )
+
+        with self.assertLogs("etna.ciim.client", level="ERROR") as lc:
+            with self.assertRaisesMessage(
+                Exception, "Expecting value: line 1 column 1 (char 0)"
+            ):
+                self.records_client.search()
+
+        self.assertIn(
+            "ERROR:etna.ciim.client:"
+            "Expecting value: line 1 column 1 (char 0):"
+            "Response body:",
+            lc.output,
+        )
