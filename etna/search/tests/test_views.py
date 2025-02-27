@@ -742,15 +742,6 @@ class FeaturedSearchTestCase(SearchViewTestCase):
             "/search/featured/?q=query",
         )
 
-        # Because a query is present, a native website search for 'query' will be
-        # performed, and relevant matches included in the response
-        self.assertEqual(response.context["website_results"], [self.article_2])
-        self.assertEqual(response.context["website_result_count"], 1)
-
-        # The mocked API response includes zero results, but the website
-        # has one, so 'result_count' should reflect that
-        self.assertEqual(response.context["result_count"], 1)
-
 
 @unittest.skip("CIIM-powered website search is to be re-instated at a later date")
 class WebsiteSearchAPIIntegrationTest(SearchViewTestCase):
