@@ -720,8 +720,6 @@ class FeaturedSearchTestCase(SearchViewTestCase):
 
     @responses.activate
     def test_with_search_query(self):
-        response = self.client.get(self.test_url, data={"q": "query"})
-
         # The query should be passed to the search API
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
