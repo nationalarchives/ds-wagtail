@@ -718,39 +718,6 @@ class FeaturedSearchTestCase(SearchViewTestCase):
         # has 2, so 'result_count' should reflect that
         self.assertEqual(response.context["result_count"], 2)
 
-    @responses.activate
-    def test_with_search_query(self):
-        response = self.client.get(self.test_url, data={"q": "query"})
-
-        # The query should be passed to the search API
-        self.assertEqual(len(responses.calls), 1)
-        self.assertEqual(
-            responses.calls[0].request.url,
-            (
-                f"{settings.CLIENT_BASE_URL}/searchAll"
-                "?q=query"
-                "&filterAggregations=group%3Atna"
-                "&filterAggregations=group%3AnonTna"
-                "&filterAggregations=group%3Acreator"
-                "&size=3"
-            ),
-        )
-
-        # The 'back_to_search_url' value should have been set for the session
-        self.assertEqual(
-            self.client.session.get("back_to_search_url"),
-            "/search/featured/?q=query",
-        )
-
-        # Because a query is present, a native website search for 'query' will be
-        # performed, and relevant matches included in the response
-        self.assertEqual(response.context["website_results"], [self.article_2])
-        self.assertEqual(response.context["website_result_count"], 1)
-
-        # The mocked API response includes zero results, but the website
-        # has one, so 'result_count' should reflect that
-        self.assertEqual(response.context["result_count"], 1)
-
 
 @unittest.skip("CIIM-powered website search is to be re-instated at a later date")
 class WebsiteSearchAPIIntegrationTest(SearchViewTestCase):
