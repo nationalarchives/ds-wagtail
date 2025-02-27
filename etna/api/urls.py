@@ -15,6 +15,7 @@ from wagtail.api.v2.views import PagesAPIViewSet
 from wagtail.contrib.redirects.models import Redirect
 from wagtail.images.api.v2.views import ImagesAPIViewSet
 from wagtail.models import Page, PageViewRestriction, Site
+from wagtail.search.backends.database.postgres.postgres import PostgresSearchResults
 from wagtail_headless_preview.models import PagePreview
 from wagtailmedia.api.views import MediaAPIViewSet
 
@@ -51,36 +52,43 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
         self.check_query_parameters(queryset)
         queryset = self.filter_queryset(queryset)
 
+        # TODO: Investigate a way to not use PostgresSearchResults here
+        # when using the `?search` parameter (currently throws error)
         if "include_aliases" not in request.GET:
-            alias_pages = queryset.filter(alias_of_id__isnull=False).values(
-                "id", "alias_of_id"
-            )
-            original_ids = set(
-                queryset.filter(alias_of_id__isnull=True).values_list("id", flat=True)
-            )
-            alias_ids = set(page["id"] for page in alias_pages)
-            alias_of_ids = alias_pages.values_list("alias_of_id", flat=True)
-
-            # Exclude any pages with matching alias_of_ids - aliases of the same original page
-            for alias_of_id in alias_of_ids:
-                alias_pages_with_same_id = alias_pages.filter(alias_of_id=alias_of_id)
-                if alias_pages_with_same_id.count() > 1:
-                    first_page_id = alias_pages_with_same_id.order_by("depth").first()[
-                        "id"
-                    ]
-                    queryset = queryset.exclude(
-                        id__in=alias_pages_with_same_id.values_list(
-                            "id", flat=True
-                        ).exclude(id=first_page_id)
+            if not isinstance(queryset, PostgresSearchResults):
+                alias_pages = queryset.filter(alias_of_id__isnull=False).values(
+                    "id", "alias_of_id"
+                )
+                original_ids = set(
+                    queryset.filter(alias_of_id__isnull=True).values_list(
+                        "id", flat=True
                     )
+                )
+                alias_ids = set(page["id"] for page in alias_pages)
+                alias_of_ids = alias_pages.values_list("alias_of_id", flat=True)
 
-            # Exclude any pages that are aliases of pages in the current queryset
-            for page in alias_pages:
-                if (
-                    page["alias_of_id"] in original_ids
-                    or page["alias_of_id"] in alias_ids
-                ):
-                    queryset = queryset.exclude(id=page["id"])
+                # Exclude any pages with matching alias_of_ids - aliases of the same original page
+                for alias_of_id in alias_of_ids:
+                    alias_pages_with_same_id = alias_pages.filter(
+                        alias_of_id=alias_of_id
+                    )
+                    if alias_pages_with_same_id.count() > 1:
+                        first_page_id = alias_pages_with_same_id.order_by(
+                            "depth"
+                        ).first()["id"]
+                        queryset = queryset.exclude(
+                            id__in=alias_pages_with_same_id.values_list(
+                                "id", flat=True
+                            ).exclude(id=first_page_id)
+                        )
+
+                # Exclude any pages that are aliases of pages in the current queryset
+                for page in alias_pages:
+                    if (
+                        page["alias_of_id"] in original_ids
+                        or page["alias_of_id"] in alias_ids
+                    ):
+                        queryset = queryset.exclude(id=page["id"])
 
         queryset = self.paginate_queryset(queryset)
         serializer = DefaultPageSerializer(queryset, many=True)

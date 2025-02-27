@@ -1176,7 +1176,6 @@ class TestClientFetchAllReponse(SimpleTestCase):
         self.assertEqual(response.hits, ())
 
 
-
 class DecodeJSONResponseTest(SimpleTestCase):
     def setUp(self):
         self.records_client = get_records_client()
@@ -1197,7 +1196,7 @@ class DecodeJSONResponseTest(SimpleTestCase):
                 Exception, "Expecting value: line 1 column 1 (char 0)"
             ):
                 self.records_client.fetch()
-            
+
         self.assertIn(
             "ERROR:etna.ciim.client:"
             "Expecting value: line 1 column 1 (char 0):"
@@ -1221,7 +1220,7 @@ class DecodeJSONResponseTest(SimpleTestCase):
                 Exception, "Expecting value: line 1 column 1 (char 0)"
             ):
                 self.records_client.search()
-            
+
         self.assertIn(
             "ERROR:etna.ciim.client:"
             "Expecting value: line 1 column 1 (char 0):"

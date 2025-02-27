@@ -3,7 +3,7 @@
 {% load i18n static wagtailcore_tags wagtailimages_tags records_tags %}
 
 {% block content %}
-    {% include "includes/generic-intro.html" with title=page.title intro=page.intro display_content_warning=page.display_content_warning custom_warning_text=page.custom_warning_text %}
+    {% include "includes/generic-intro.html" with title=page.title intro=page.intro custom_warning_text=page.custom_warning_text %}
 
     {% if page.highlights %}
         {% include 'includes/highlights-gallery.html' with highlights=page.highlights %}
