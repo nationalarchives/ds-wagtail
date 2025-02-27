@@ -191,7 +191,7 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTestCase):
             response,
             'href="/catalogue/id/' + TEST_RECORD_DATA["iaid"] + '/"',
         )
-        self.assertEqual(len(responses.calls), 3)
+        self.assertEqual(len(responses.calls), 2)
         self.assertEqual(
             responses.calls[1].request.url,
             f"{settings.CLIENT_BASE_URL}/fetchAll?metadataIds=C123456",
