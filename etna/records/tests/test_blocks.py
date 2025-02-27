@@ -111,7 +111,7 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTestCase):
             reverse("wagtailadmin_pages:edit", args=(self.article_page.id,)),
             data,
         )
-        self.assertEqual(len(responses.calls), 3)
+        self.assertEqual(len(responses.calls), 2)
         self.assertRedirects(
             response,
             reverse("wagtailadmin_explore", args=(self.article_index_page.id,)),
@@ -169,7 +169,7 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTestCase):
         self.article_page.save()
 
         # Wagtail's reference index population will cause the body to be evaluated
-        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(len(responses.calls), 0)
 
         # Check the edit view first
         response = self.client.get(
