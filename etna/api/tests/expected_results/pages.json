@@ -226,7 +226,7 @@
             "short_title": null,
             "url": "/article_index/",
             "full_url": "http://localhost/article_index/",
-            "type": "ArticleIndexPage",
+            "type": "articles.ArticleIndexPage",
             "type_label": null,
             "teaser_text": "Teaser text",
             "teaser_image": {
