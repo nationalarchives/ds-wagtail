@@ -350,7 +350,7 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithRequiredIntro):
 
     A page for an event.
     """
-
+    
     # Content
     lead_image = models.ForeignKey(
         get_image_model_string(),
@@ -486,7 +486,6 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithRequiredIntro):
         max_length=255,
         verbose_name=_("eventbrite ID"),
         null=True,
-        editable=False,
     )
     # The booking info fields above will be brought in from the API when we have it.
 
@@ -512,6 +511,7 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithRequiredIntro):
 
     content_panels = BasePageWithRequiredIntro.content_panels + [
         FieldPanel("lead_image"),
+        FieldPanel("eventbrite_id"),
         MultiFieldPanel(
             [
                 FieldPanel("event_type"),
@@ -579,6 +579,34 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithRequiredIntro):
             ],
             heading=_("Booking information"),
         ),
+    ]
+
+    api_fields = BasePageWithRequiredIntro.api_fields + [
+        APIField("lead_image"),
+        APIField("eventbrite_id"),
+        APIField("event_type", serializer=DefaultPageSerializer()),
+        APIField("start_date"),
+        APIField("end_date"),
+        APIField("description"),
+        APIField("useful_info"),
+        APIField("need_to_know_button_text"),
+        APIField("need_to_know_button_link"),
+        APIField("target_audience"),
+        APIField("venue_type"),
+        APIField("venue_website"),
+        APIField("venue_address"),
+        APIField("venue_space_name"),
+        APIField("venue_directions"),
+        APIField("video_conference_info"),
+        APIField("registration_url"),
+        APIField("min_price"),
+        APIField("max_price"),
+        APIField("registration_info"),
+        APIField("contact_info"),
+        APIField("event_access_types"),
+        APIField("event_audience_types"),
+        APIField("hosts"),
+        APIField("speakers"),
     ]
 
     @cached_property
