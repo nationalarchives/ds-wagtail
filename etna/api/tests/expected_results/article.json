@@ -320,7 +320,7 @@
             "short_title": null,
             "url": "/article_index/focused_article/",
             "full_url": "http://localhost/article_index/focused_article/",
-            "type": "FocusedArticlePage",
+            "type": "articles.FocusedArticlePage",
             "type_label": "Focus on",
             "teaser_text": "Teaser text",
             "teaser_image": {
@@ -351,7 +351,7 @@
             "short_title": null,
             "url": "/arts/",
             "full_url": "http://localhost/arts/",
-            "type": "TopicExplorerPage",
+            "type": "collections.TopicExplorerPage",
             "type_label": "Explore the collection",
             "teaser_text": "Teaser text",
             "teaser_image": {
@@ -380,7 +380,7 @@
             "short_title": null,
             "url": "/early_modern/",
             "full_url": "http://localhost/early_modern/",
-            "type": "TimePeriodExplorerPage",
+            "type": "collections.TimePeriodExplorerPage",
             "type_label": "Explore the collection",
             "teaser_text": "Teaser text",
             "teaser_image": {
@@ -407,7 +407,7 @@
             "short_title": null,
             "url": "/postwar/",
             "full_url": "http://localhost/postwar/",
-            "type": "TimePeriodExplorerPage",
+            "type": "collections.TimePeriodExplorerPage",
             "type_label": "Explore the collection",
             "teaser_text": "Teaser text",
             "teaser_image": {
