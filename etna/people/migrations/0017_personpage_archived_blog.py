@@ -12,7 +12,7 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AddField(
             model_name='personpage',
-            name='archived_blog',
+            name='archived_blog_url',
             field=models.URLField(blank=True, help_text="Link to the author's blog on the web archive", null=True),
         ),
     ]
