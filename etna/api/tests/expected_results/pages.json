@@ -130,7 +130,7 @@
             "short_title": null,
             "url": "/people/",
             "full_url": "http://localhost/people/",
-            "type": "PeopleIndexPage",
+            "type": "people.PeopleIndexPage",
             "type_label": null,
             "teaser_text": "Teaser text",
             "teaser_image": {
