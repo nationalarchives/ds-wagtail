@@ -158,12 +158,17 @@ class BasePage(AlertMixin, SocialMixin, DataLayerMixin, HeadlessPreviewMixin, Pa
 
         return MourningNotice.objects.first()
 
+    @cached_property
+    def type(self):
+        return self._meta.label
+    
     default_api_fields = [
         APIField("id"),
         APIField("title"),
         APIField("short_title"),
         APIField("url"),
         APIField("full_url"),
+        APIField("type"),
         APIField("type_label"),
         APIField("teaser_text"),
         APIField(
