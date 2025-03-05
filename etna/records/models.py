@@ -103,6 +103,10 @@ class Record(DataLayerMixin, APIModel):
             return candidate
         return ""
 
+    @property
+    def pk(self):
+        return self.iaid
+
     @cached_property
     def reference_number(self) -> str:
         """
