@@ -118,5 +118,6 @@
     },
     "summary": "<p>Summary text</p>",
     "research_summary": [],
-    "shop_items": []
+    "shop_items": [],
+    "archived_blog_url": null
 }
