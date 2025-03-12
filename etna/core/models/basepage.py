@@ -161,7 +161,7 @@ class BasePage(AlertMixin, SocialMixin, DataLayerMixin, HeadlessPreviewMixin, Pa
     @cached_property
     def type(self):
         return self._meta.label
-    
+
     default_api_fields = [
         APIField("id"),
         APIField("title"),
