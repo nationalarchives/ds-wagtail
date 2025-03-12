@@ -454,11 +454,16 @@ class RedirectsAPIViewSet(BaseAPIViewSet):
 
     def find_object(self, queryset, request):
         if "path" in request.GET:
-            return queryset.get(old_path=request.GET["path"])
+            path = request.GET["path"]
+            path = path.strip()
+            if not path.startswith("/"):
+                path = "/" + path
+            if path.endswith("/") and len(path) > 1:
+                path = path[:-1]
+            return queryset.get(old_path=path)
 
 
 api_router = WagtailAPIRouter("wagtailapi")
-
 api_router.register_endpoint("pages", CustomPagesAPIViewSet)
 api_router.register_endpoint("page_preview", PagePreviewAPIViewSet)
 api_router.register_endpoint("images", CustomImagesAPIViewSet)
