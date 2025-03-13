@@ -1,4 +1,8 @@
+from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Page
+from wagtail.admin.forms.choosers import BaseFilterForm, SearchFilterMixin
+from wagtail.admin.views.generic import chooser as chooser_views
+from wagtail.admin.viewsets.chooser import ChooserViewSet
 from django.shortcuts import Http404
 from django.urls import re_path
 from generic_chooser.views import BaseChosenView, ChooserMixin, ChooserViewSet
@@ -9,98 +13,82 @@ from etna.ciim.paginator import APIPaginator
 
 from ..api import records_client
 from ..models import Record
+from ..widgets import RecordChooser
 
 
-class ClientAPIModelChooserMixinIn(ChooserMixin):
-    """Chooser source to allow filtering and selection of Client API model data.
+class SearchForm(SearchFilterMixin, BaseFilterForm):
+    pass
 
-    Similar to the DFRDRFChooserMixin:
-
-    https://github.com/wagtail/wagtail-generic-chooser/blob/9ec9db937fe40311c67ed055e1b3f0dcd1b86908/generic_chooser/views.py#L223
-    """
-
-    # Model belonging to this chooser, set via <model>ChooserViewSet.
-    model: Record = None
-
-    # Allow models to be searched via chooser. Hides the search box if False
+  
+class RecordMixin:
+    model = Record
+    filter_form_class = SearchForm
     is_searchable = True
 
-    def get_paginated_object_list(self, page_number, search_term="", **kwargs):
-        offset = ((page_number - 1) * self.per_page,)
-        count = 0
-        results = []
-
-        if search_term:
-            results = records_client.search_unified(
-                q=search_term,
-                stream=Stream.EVIDENTIAL,
-                size=self.per_page,
-                offset=offset,
-            )
-            count = results.total_count
-
-        paginator = APIPaginator(count, self.per_page)
-        page = Page(results, page_number, paginator)
-        return (page, paginator)
-
     def get_object(self, pk):
-        """Fetch selected object"""
-        return records_client.fetch(iaid=pk)
+        try:
+            return records_client.fetch(iaid=pk)
+        except KongAPIError:
+            raise ObjectDoesNotExist
+
+    def get_objects(self, pks):
+        return records_client.fetch_all(iaids=pks)
 
     def get_object_id(self, instance):
-        """Return selected object's ID, used when resolving a link to this item.
-
-        see RecordChooserViewSet.get_urlpatterns for overridden pattern for selected item.
-        """
         return instance.iaid
 
-    def user_can_create(self, user):
-        """Records cannot be created in Wagtail.
+    def get_edit_item_url(self, instance):
+        # Avoid trying to show 'edit' links for records
+        return None
 
-        Hides the "create" tab in chooser.
-        """
+    def can_create(self):
+        # Avoid showing 'create' options for records
         return False
 
+    def get_results_page(self, request):
+        page_number = int(request.GET.get("p", 1))
 
-class ClientAPIChosenView(BaseChosenView):
-    """View to handle fetching a selected item."""
+        query = request.GET.get("q", "")
+        if query:
+            results = records_client.search_unified(
+                q=query,
+                stream=Stream.EVIDENTIAL,
+                size=self.per_page,
+                offset=((page_number - 1) * self.per_page,),
+            )
+            count = results.total_count
+        else:
+            results = []
+            count = 0
 
-    def get(self, request, pk):
-        """Fetch selected item by its pk (in our case IAID)
+        paginator = APIPaginator(count, self.per_page)
+        return Page(results, page_number, paginator)
 
-        Override parent to handle any errors from the Client API.
-        """
-        try:
-            return super().get(request, pk)
-        except ClientAPIError:
-            raise Http404
+
+class RecordChooseView(RecordMixin, chooser_views.ChooseView):
+    pass
+
+
+class RecordChooseResultsView(RecordMixin, chooser_views.ChooseResultsView):
+    pass
+
+class RecordChosenView(RecordMixin, chooser_views.ChosenView):
+    pass
+
+class RecordChosenMultipleView(RecordMixin, chooser_views.ChosenMultipleView):
+    pass
 
 
 class RecordChooserViewSet(ChooserViewSet):
     """Custom chooser to allow users to filter and select records."""
 
-    base_chosen_view_class = ClientAPIChosenView
-    chooser_mixin_class = ClientAPIModelChooserMixinIn
     icon = "form"
     model = Record
+    choose_view_class = RecordChooseView
+    choose_results_view_class = RecordChooseResultsView
+    chosen_view_class = RecordChosenView
+    chosen_multiple_view_class = RecordChosenMultipleView
+    widget_class = RecordChooser
     page_title = "Choose a record"
-    per_page = 10
-
-    def get_choose_view_attrs(self):
-        attrs = super().get_choose_view_attrs()
-        attrs.update(model=self.model)
-        return attrs
-
-    def get_chosen_view_attrs(self):
-        attrs = super().get_chosen_view_attrs()
-        attrs.update(model=self.model)
-        return attrs
-
-    def get_urlpatterns(self):
-        """Define patterns for chooser and chosen views.
-
-        Overridden to allow IAID to be used as an ID for chosen view"""
-        return super().get_urlpatterns() + [
-            re_path(r"^$", self.choose_view, name="choose"),
-            re_path(r"^([\w-]+)/$", self.chosen_view, name="chosen"),
-        ]
+    per_page = 15
+    register_widget = False
