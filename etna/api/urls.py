@@ -454,6 +454,7 @@ class RedirectsAPIViewSet(BaseAPIViewSet):
 
     def find_object(self, queryset, request):
         if "path" in request.GET:
+            # Taken from https://github.com/wagtail/wagtail/blob/main/wagtail/contrib/redirects/models.py#L165-L169
             path = request.GET["path"]
             path = path.strip()
             if not path.startswith("/"):
