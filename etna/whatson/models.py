@@ -46,6 +46,7 @@ from etna.core.serializers import DefaultPageSerializer, RichTextSerializer
 
 from .blocks import ExhibitionPageStreamBlock, WhatsOnPromotedLinksBlock
 from .forms import EventPageForm
+from .utils import get_event_details
 
 
 class VenueType(models.TextChoices):
@@ -486,7 +487,6 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithRequiredIntro):
         max_length=255,
         verbose_name=_("eventbrite ID"),
         null=True,
-        editable=False,
     )
     # The booking info fields above will be brought in from the API when we have it.
 
@@ -514,6 +514,7 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithRequiredIntro):
         FieldPanel("lead_image"),
         MultiFieldPanel(
             [
+                FieldPanel("eventbrite_id"),
                 FieldPanel("event_type"),
                 FieldPanel("start_date", read_only=True),
                 FieldPanel("end_date", read_only=True),
@@ -580,6 +581,21 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithRequiredIntro):
             heading=_("Booking information"),
         ),
     ]
+
+    api_fields = (
+        BasePageWithRequiredIntro.api_fields + ArticleTagMixin.api_fields + TopicalPageMixin.api_fields + [APIField("external_api_data")]
+    )
+
+
+    @cached_property
+    def external_api_data(self):
+        """
+        Returns the external API data (Eventbrite API) for the event.
+        """
+        if eventbrite_id := self.eventbrite_id:
+            return get_event_details(eventbrite_id)
+        return {}
+
 
     @cached_property
     def price_range(self):
