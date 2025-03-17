@@ -40,6 +40,7 @@ DEBUG = strtobool(os.getenv("DEBUG", "False"))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
+SECRET_KEY = os.getenv("SECRET_KEY", "")
 
 # Application definition
 
@@ -212,12 +213,12 @@ if SENTRY_DSN := os.getenv("SENTRY_DSN", ""):
 
 DATABASES = {
     "default": {
-        "ENGINE": os.getenv("DATABASE_ENGINE", "django.db.backends.sqlite3"),
-        "NAME": os.getenv("DATABASE_NAME", "db.sqlite3"),
+        "ENGINE": os.getenv("DATABASE_ENGINE", "django.db.backends.postgresql"),
+        "NAME": os.getenv("DATABASE_NAME"),
         "USER": os.getenv("DATABASE_USER"),
         "PASSWORD": os.getenv("DATABASE_PASSWORD"),
         "HOST": os.getenv("DATABASE_HOST"),
-        "PORT": os.getenv("DATABASE_PORT"),
+        "PORT": os.getenv("DATABASE_PORT", "5432"),
     }
 }
 

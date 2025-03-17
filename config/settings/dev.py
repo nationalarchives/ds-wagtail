@@ -29,9 +29,6 @@ WAGTAIL_HEADLESS_PREVIEW = {
     ),
 }
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "abc123"
-
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "*").split(",")
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"

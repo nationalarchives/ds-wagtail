@@ -85,10 +85,3 @@ except (BuildTimeVariableAccessException, NotValidPlatformException):
 if email_host:
     EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
     EMAIL_HOST = email_host
-
-
-# Static files
-#
-# https://docs.djangoproject.com/en/3.2/ref/contrib/staticfiles/#django.contrib.staticfiles.storage.ManifestStaticFilesStorage
-
-STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
