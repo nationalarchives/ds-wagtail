@@ -20,15 +20,16 @@ def eventbrite_api_request_handler(uri, params={}):
     raise ConnectionError("Request to API failed")
 
 
-def get_tna_events(page, children_per_page, params={}):
-    uri = "organizations/32190014757/events/"
+def get_events_listings(page, page_size, params={}):
+    uri = "organizations/32190014757/events"
     params.update(
         {
             "page": page,
-            "page_size": children_per_page,
+            "page_size": page_size,
             "order_by": "start_asc",
             "status": "live",
             "expand": "logo,venue,ticket_availability,logo",
+            # "event_ids": "329859457517,1284317410949", # for testing
         }
     )
     if "start_date.range_start" not in params and "start_date.range_end" not in params:
