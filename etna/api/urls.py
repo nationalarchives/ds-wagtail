@@ -22,6 +22,8 @@ from wagtailmedia.api.views import MediaAPIViewSet
 from etna.blog.models import BlogIndexPage, BlogPage, BlogPostPage
 from etna.core.serializers.pages import DefaultPageSerializer
 from etna.core.serializers.redirects import RedirectSerializer
+from etna.whatson.models import EventPage
+from etna.whatson.utils import get_events_listings
 
 from .filters import AuthorFilter, PublishedDateFilter
 
@@ -434,6 +436,55 @@ class BlogPostsAPIViewSet(CustomPagesAPIViewSet):
             path("count/", cls.as_view({"get": "count_view"}), name="count"),
             path("authors/", cls.as_view({"get": "author_view"}), name="authors"),
         ]
+    
+class EventsAPIViewSet(CustomPagesAPIViewSet):
+    model = EventPage
+    known_query_parameters = PagesAPIViewSet.known_query_parameters.union(
+        ["eventbrite_page", "eventbrite_page_size"]
+    )
+
+    def listing_view(self, request):
+        queryset = self.get_queryset()
+
+        # Exclude pages that the user doesn't have access to
+        restricted_pages = [
+            restriction.page
+            for restriction in PageViewRestriction.objects.all().select_related("page")
+            if not restriction.accept_request(self.request)
+        ]
+
+        # Exclude the restricted pages and their descendants from the queryset
+        for restricted_page in restricted_pages:
+            queryset = queryset.not_descendant_of(restricted_page, inclusive=True)
+
+        self.check_query_parameters(queryset)
+        queryset = self.filter_queryset(queryset)
+        listing_api_data = get_events_listings(
+            page=request.GET.get("eventbrite_page", 1),
+            page_size=request.GET.get("eventbrite_page_size", 12),
+        )
+        event_ids = [event["id"] for event in listing_api_data["events"]]
+        queryset = queryset.filter(eventbrite_id__in=event_ids)
+        queryset = self.paginate_queryset(queryset)
+        serializer = DefaultPageSerializer(queryset, many=True)
+
+        paginated_response = self.get_paginated_response(serializer.data)
+        event_data_dict = {event["id"]: event for event in listing_api_data["events"]}
+        for page_data in paginated_response.data["items"]:
+            event_id = page_data.get("eventbrite_id")
+            if event_id and event_id in event_data_dict:
+                event_data = event_data_dict[event_id]
+                page_data["eventbrite"] = {
+                    "start_date": event_data.get("start").get("local"),
+                    "end_date": event_data.get("end").get("local"),
+                    "location": "Online event" if event_data.get("online_event") else "Event",
+                    "logo": ({
+                        "url": event_data.get("logo").get("url"),
+                        "width": event_data.get("logo").get("crop_mask").get("width"),
+                        "height": event_data.get("logo").get("crop_mask").get("height"),
+                    }) if event_data.get("logo") else None,
+                }
+        return paginated_response
 
 
 class RedirectsAPIViewSet(BaseAPIViewSet):
@@ -471,4 +522,5 @@ api_router.register_endpoint("images", CustomImagesAPIViewSet)
 api_router.register_endpoint("media", MediaAPIViewSet)
 api_router.register_endpoint("blogs", BlogsAPIViewSet)
 api_router.register_endpoint("blog_posts", BlogPostsAPIViewSet)
+api_router.register_endpoint("events", EventsAPIViewSet)
 api_router.register_endpoint("redirects", RedirectsAPIViewSet)
