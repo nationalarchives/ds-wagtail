@@ -42,4 +42,6 @@ def get_tna_events(page, children_per_page, params={}):
 
 def get_event_details(event_id):
     uri = f"events/{event_id}/"
-    return eventbrite_api_request_handler(uri, params={"expand": "logo,venue,ticket_availability,logo"})
+    return eventbrite_api_request_handler(
+        uri, params={"expand": "logo,venue,ticket_availability,logo"}
+    )

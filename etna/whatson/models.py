@@ -583,9 +583,11 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithRequiredIntro):
     ]
 
     api_fields = (
-        BasePageWithRequiredIntro.api_fields + ArticleTagMixin.api_fields + TopicalPageMixin.api_fields + [APIField("external_api_data")]
+        BasePageWithRequiredIntro.api_fields
+        + ArticleTagMixin.api_fields
+        + TopicalPageMixin.api_fields
+        + [APIField("eventbrite_id"), APIField("external_api_data")]
     )
-
 
     @cached_property
     def external_api_data(self):
@@ -593,9 +595,11 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithRequiredIntro):
         Returns the external API data (Eventbrite API) for the event.
         """
         if eventbrite_id := self.eventbrite_id:
-            return get_event_details(eventbrite_id)
-        return {}
-
+            try:
+                return get_event_details(eventbrite_id)
+            except Exception:
+                return None
+        return None
 
     @cached_property
     def price_range(self):
