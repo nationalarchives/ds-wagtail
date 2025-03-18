@@ -589,6 +589,10 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithRequiredIntro):
         + [APIField("eventbrite_id"), APIField("external_api_data")]
     )
 
+    default_api_fields = BasePageWithRequiredIntro.default_api_fields + [
+        APIField("eventbrite_id"),
+    ]
+
     @cached_property
     def external_api_data(self):
         """
