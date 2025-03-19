@@ -45,7 +45,6 @@ from etna.core.models import (
 from etna.core.serializers import DefaultPageSerializer, RichTextSerializer
 
 from .blocks import ExhibitionPageStreamBlock, WhatsOnPromotedLinksBlock
-from .forms import EventPageForm
 from .utils import get_event_details
 
 
@@ -250,54 +249,6 @@ class EventSpeaker(Orderable):
         FieldPanel("image"),
     ]
 
-
-class EventSession(models.Model):
-    """
-    This model is used to add sessions to an event
-    e.g. 28th September @ 9:00, 29th September @ 10:30, 30th September @ 12:00.
-    These will link to the Eventbrite page.
-    """
-
-    page = ParentalKey(
-        "wagtailcore.Page",
-        on_delete=models.CASCADE,
-        related_name="sessions",
-    )
-
-    """
-    Session ID will be used to hold the Eventbrite "event ID"
-    in Event Series pages, for each occurrence of the event.
-    For single events, it will be blank. We will also leave
-    it blank for editor created events, as we won't have an
-    Eventbrite event ID for these.
-    """
-    session_id = models.CharField(
-        verbose_name=_("session ID"),
-        null=True,
-        blank=True,
-        editable=False,
-        max_length=35,
-    )
-
-    start = models.DateTimeField(
-        verbose_name=_("starts at"),
-    )
-
-    end = models.DateTimeField(
-        verbose_name=_("ends at"),
-    )
-
-    panels = [
-        FieldPanel("start"),
-        FieldPanel("end"),
-    ]
-
-    class Meta:
-        verbose_name = _("session")
-        verbose_name_plural = _("sessions")
-        ordering = ["start"]
-
-
 class WhatsOnPage(BasePageWithRequiredIntro):
     """WhatsOnPage
 
@@ -368,18 +319,6 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithRequiredIntro):
         blank=True,
         on_delete=models.SET_NULL,
         related_name="+",
-    )
-
-    start_date = models.DateTimeField(
-        verbose_name=_("start date"),
-        null=True,
-        editable=False,
-    )
-
-    end_date = models.DateTimeField(
-        verbose_name=_("end date"),
-        null=True,
-        editable=False,
     )
 
     description = RichTextField(
@@ -465,18 +404,6 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithRequiredIntro):
         editable=False,
     )
 
-    min_price = models.IntegerField(
-        verbose_name=_("minimum price"),
-        default=0,
-        editable=False,
-    )
-
-    max_price = models.IntegerField(
-        verbose_name=_("maximum price"),
-        default=0,
-        editable=False,
-    )
-
     """
     We will use this field to hold the event ID from Eventbrite,
     or if it is the parent page of an Event Series, it will hold
@@ -516,13 +443,6 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithRequiredIntro):
             [
                 FieldPanel("eventbrite_id"),
                 FieldPanel("event_type"),
-                FieldPanel("start_date", read_only=True),
-                FieldPanel("end_date", read_only=True),
-                InlinePanel(
-                    "sessions",
-                    heading=_("Sessions"),
-                    min_num=1,
-                ),
                 FieldPanel("description"),
                 FieldPanel("useful_info"),
                 FieldPanel("need_to_know_button_text"),
@@ -573,8 +493,6 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithRequiredIntro):
         MultiFieldPanel(
             [
                 FieldPanel("registration_url", read_only=True),
-                FieldPanel("min_price", read_only=True),
-                FieldPanel("max_price", read_only=True),
                 FieldPanel("registration_info"),
                 FieldPanel("contact_info"),
             ],
@@ -606,141 +524,13 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithRequiredIntro):
         return None
 
     @cached_property
-    def price_range(self):
-        """
-        Returns the price range for the event.
-        """
-        if self.max_price == 0:
-            return "Free"
-        elif self.min_price == self.max_price:
-            return f"{self.min_price}"
-        else:
-            if self.min_price == 0:
-                return f"Free - {self.max_price}"
-            return f"{self.min_price} - {self.max_price}"
-
-    @property
-    def event_status(self):
-        """
-        Returns the event status based on different conditions.
-        """
-        if self.start_date.date() <= (
-            timezone.now().date() + timezone.timedelta(days=5)
-        ):
-            return "Last chance"
-
-    @cached_property
     def primary_access_type(self):
         """
         Returns the primary access type for the event.
         """
         if primary_access := self.event_access_types.first():
             return primary_access.access_type
-
-    @cached_property
-    def date_time_range(self):
-        format_day_date_and_time = "%A %-d %B %Y, %H:%M"
-        format_date_only = "%-d %B %Y"
-        format_time_only = "%H:%M"
-        format_day_and_date = "%A %-d %B %Y"
-        # One session on one date where start and end times are the same
-        # return eg. Monday 1 January 2024, 19:00
-        if (self.start_date == self.end_date) and (len(self.sessions.all()) == 1):
-            return self.start_date.strftime(format_day_date_and_time)
-        # One session on one date where there are values for both start time and end time
-        # eg. Monday 1 January 2024, 19:00–20:00 (note this uses an en dash)
-        dates_same = self.start_date.date() == self.end_date.date()
-        if (
-            dates_same
-            and (self.start_date.time() != self.end_date.time())
-            and (len(self.sessions.all()) == 1)
-        ):
-            return f"{self.start_date.strftime(format_day_date_and_time)}–{self.end_date.strftime(format_time_only)}"
-        # Multiple sessions on one date
-        # Eg. Monday 1 January 2024
-        if dates_same and len(self.sessions.all()) > 1:
-            return self.start_date.strftime(format_day_and_date)
-        # Event has multiple dates
-        # Eg. 1 January 2024 to 5 January 2024
-        if not dates_same:
-            return f"{self.start_date.strftime(format_date_only)} to {self.end_date.strftime(format_date_only)}"
-
-    def clean(self):
-        """
-        Check that the venue address and video conference information are
-        provided for the correct venue type.
-        """
-
-        if self.venue_type:
-            if self.venue_type == VenueType.HYBRID and (
-                not self.venue_address or not self.video_conference_info
-            ):
-                raise ValidationError(
-                    {
-                        "venue_address": _(
-                            "The venue address is required for hybrid events."
-                        ),
-                        "video_conference_info": _(
-                            "The video conference information is required for hybrid events."
-                        ),
-                    }
-                )
-            elif self.venue_type == VenueType.IN_PERSON and not self.venue_address:
-                raise ValidationError(
-                    {
-                        "venue_address": _(
-                            "The venue address is required for in person events."
-                        ),
-                    }
-                )
-            elif self.venue_type == VenueType.ONLINE and not self.video_conference_info:
-                raise ValidationError(
-                    {
-                        "video_conference_info": _(
-                            "The video conference information is required for online events."
-                        ),
-                    }
-                )
-        return super().clean()
-
-    def serializable_data(self):
-        # Keep aggregated field values out of revision content
-
-        data = super().serializable_data()
-
-        for field_name in ("start_date", "end_date"):
-            data.pop(field_name, None)
-
-        return data
-
-    def with_content_json(self, content):
-        """
-        Overrides Page.with_content_json() to ensure page's `start_date` and `end_date`
-        value is always preserved between revisions.
-        """
-        obj = super().with_content_json(content)
-        obj.start_date = self.start_date
-        obj.end_date = self.end_date
-        return obj
-
-    def save(self, *args, **kwargs):
-        """
-        Set the event start date to the earliest session start date.
-        Set the event end date to the latest session end date.
-        """
-        min_start = None
-        max_end = None
-        for session in self.sessions.all():
-            if min_start is None or session.start < min_start:
-                min_start = session.start
-            if max_end is None or session.end > max_end:
-                max_end = session.end
-
-        self.start_date = min_start
-        self.end_date = max_end
-
-        super().save(*args, **kwargs)
-
+        
     promote_panels = (
         BasePageWithRequiredIntro.promote_panels
         + ArticleTagMixin.promote_panels
@@ -763,8 +553,6 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithRequiredIntro):
         "whatson.WhatsOnPage",
     ]
     subpage_types = []
-
-    base_form_class = EventPageForm
 
 
 class ExhibitionPage(
