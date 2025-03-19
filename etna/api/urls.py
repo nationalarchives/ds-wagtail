@@ -459,32 +459,29 @@ class EventsAPIViewSet(CustomPagesAPIViewSet):
 
         self.check_query_parameters(queryset)
         queryset = self.filter_queryset(queryset)
+        eventbrite_ids = ",".join(queryset.values_list("eventbrite_id", flat=True))
         listing_api_data = get_events_listings(
             page=request.GET.get("eventbrite_page", 1),
             page_size=request.GET.get("eventbrite_page_size", 12),
+            params={"event_ids": eventbrite_ids},
         )
-        event_ids = [event["id"] for event in listing_api_data["events"]]
-        queryset = queryset.filter(eventbrite_id__in=event_ids)
+        event_data_dict = {event["id"]: event for event in listing_api_data["events"]}
+        queryset = queryset.filter(eventbrite_id__in=event_data_dict.keys())
         queryset = self.paginate_queryset(queryset)
         serializer = DefaultPageSerializer(queryset, many=True)
-
-        paginated_response = self.get_paginated_response(serializer.data)
-        event_data_dict = {event["id"]: event for event in listing_api_data["events"]}
-        for page_data in paginated_response.data["items"]:
-            event_id = page_data.get("eventbrite_id")
-            if event_id and event_id in event_data_dict:
-                event_data = event_data_dict[event_id]
-                page_data["eventbrite"] = {
-                    "start_date": event_data.get("start").get("local"),
-                    "end_date": event_data.get("end").get("local"),
-                    "location": "Online event" if event_data.get("online_event") else "Event",
-                    "logo": ({
-                        "url": event_data.get("logo").get("url"),
-                        "width": event_data.get("logo").get("crop_mask").get("width"),
-                        "height": event_data.get("logo").get("crop_mask").get("height"),
-                    }) if event_data.get("logo") else None,
-                }
-        return paginated_response
+        for page_data in serializer.data:
+            event_data = event_data_dict[page_data["eventbrite_id"]]
+            page_data["eventbrite"] = {
+                "start_date": event_data.get("start").get("local"),
+                "end_date": event_data.get("end").get("local"),
+                "location": "Online event" if event_data.get("online_event") else "Event",
+                "logo": ({
+                    "url": event_data.get("logo").get("url"),
+                    "width": event_data.get("logo").get("crop_mask").get("width"),
+                    "height": event_data.get("logo").get("crop_mask").get("height"),
+                }) if event_data.get("logo") else None,
+            }
+        return self.get_paginated_response(serializer.data)
 
 
 class RedirectsAPIViewSet(BaseAPIViewSet):

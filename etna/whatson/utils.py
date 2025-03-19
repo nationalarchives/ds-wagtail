@@ -29,7 +29,6 @@ def get_events_listings(page, page_size, params={}):
             "order_by": "start_asc",
             "status": "live",
             "expand": "logo,venue,ticket_availability,logo",
-            # "event_ids": "329859457517,1284317410949", # for testing
         }
     )
     if "start_date.range_start" not in params and "start_date.range_end" not in params:
