@@ -1,6 +1,12 @@
-from requests import JSONDecodeError, Timeout, TooManyRedirects, codes, get, HTTPError, RequestException
+from requests import JSONDecodeError, Timeout, TooManyRedirects, get, HTTPError, RequestException
 from django.http import Http404
-from django.core.exceptions import PermissionDenied, ValidationError
+from django.core.exceptions import PermissionDenied
+
+class APIClientError(Exception):
+    def __init__(self, message, response=None):
+        super().__init__(message)
+        self.response = response
+
 
 class JSONAPIClient:
     """
@@ -36,7 +42,7 @@ class JSONAPIClient:
             raise RequestException(str(e))
         except HTTPError as e:
             if response.status_code == 400:
-                raise ValidationError("Bad request")
+                raise APIClientError("Bad request", response=response)
             elif response.status_code == 401:
                 raise PermissionDenied("Unauthorized request")
             elif response.status_code == 403:
