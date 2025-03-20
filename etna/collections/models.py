@@ -82,7 +82,7 @@ class Highlight(Orderable):
         return super().clean()
 
 
-class ExplorerIndexPage(BasePageWithRequiredIntro):
+class ExplorerIndexPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
     """Collection Explorer landing BasePage.
 
     This page is the starting point for a user's journey through the collection
@@ -122,7 +122,7 @@ class ExplorerIndexPage(BasePageWithRequiredIntro):
         null=True,
     )
 
-    content_panels = BasePageWithRequiredIntro.content_panels + [
+    content_panels = BasePageWithRequiredIntro.content_panels + RequiredHeroImageMixin.content_panels + [
         FieldPanel("body"),
         MultiFieldPanel(
             [
@@ -154,7 +154,7 @@ class ExplorerIndexPage(BasePageWithRequiredIntro):
     # DataLayerMixin overrides
     gtm_content_group = "Explore the collection"
 
-    api_fields = BasePageWithRequiredIntro.api_fields + [
+    api_fields = BasePageWithRequiredIntro.api_fields + RequiredHeroImageMixin.api_fields + [
         APIField("body"),
         APIField("articles_title"),
         APIField("articles_introduction"),
