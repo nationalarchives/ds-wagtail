@@ -9,7 +9,6 @@ def eventbrite_api_request_handler(uri, params={}):
     api_url = settings.EVENTBRITE_API_URL
     params["token"] = settings.EVENTBRITE_API_PRIVATE_TOKEN
     url = f"{api_url}/{uri}"
-    print(url)
     request = requests.get(url, params=params)
     if request.status_code == 404:
         raise Http404("Resource not found")

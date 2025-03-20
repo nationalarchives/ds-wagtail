@@ -43,6 +43,7 @@ from etna.core.models import (
     RequiredHeroImageMixin,
 )
 from etna.core.serializers import DefaultPageSerializer, RichTextSerializer
+from etna.core.api import JSONAPIClient
 
 from .blocks import ExhibitionPageStreamBlock, WhatsOnPromotedLinksBlock
 from .utils import get_event_details
@@ -517,10 +518,8 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithRequiredIntro):
         Returns the external API data (Eventbrite API) for the event.
         """
         if eventbrite_id := self.eventbrite_id:
-            try:
-                return get_event_details(eventbrite_id)
-            except Exception:
-                return None
+            client = JSONAPIClient(api_url=settings.EVENTBRITE_API_URL, params={"expand": "logo,venue,ticket_availability,logo", "token": settings.EVENTBRITE_API_PRIVATE_TOKEN})
+            return client.get(path=f"/events/{eventbrite_id}")
         return None
 
     @cached_property

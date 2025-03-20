@@ -493,7 +493,6 @@ class EventsAPIViewSet(CustomPagesAPIViewSet):
         } if eventbrite_pagination else {}
         paginated_response = self.get_paginated_response(serializer.data)
         paginated_response.data["meta"].update(pagination_data)
-        print(paginated_response.data)
         return paginated_response
 
 
