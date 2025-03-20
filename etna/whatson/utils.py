@@ -26,7 +26,7 @@ class EventbriteAPIClient(JSONAPIClient):
         try:
             response = super().get(path, headers)
         except APIClientError as e:
-            return self._handle_eventbrite_apiclienterror(e)
+            return self._handle_api_client_error(e)
         return response
 
     def _handle_api_client_error(self, error: APIClientError) -> dict:
