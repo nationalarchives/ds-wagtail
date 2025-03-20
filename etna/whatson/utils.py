@@ -1,21 +1,34 @@
-import requests
 from django.conf import settings
-from django.core.exceptions import ValidationError
-from django.http import Http404
 from requests.exceptions import JSONDecodeError
+from etna.core.api import JSONAPIClient, APIClientError
 
+class EventbriteAPIClient(JSONAPIClient):
+    """
+    A client for interacting with the Eventbrite API.
+    """
 
-def eventbrite_api_request_handler(uri, params={}):
-    api_url = settings.EVENTBRITE_API_URL
-    params["token"] = settings.EVENTBRITE_API_PRIVATE_TOKEN
-    url = f"{api_url}/{uri}"
-    request = requests.get(url, params=params)
-    if request.status_code == 404:
-        raise Http404("Resource not found")
-    if request.status_code == 400:
+    EVENTBRITE_API_URL = settings.EVENTBRITE_API_URL
+    EVENTBRITE_API_PRIVATE_TOKEN = settings.EVENTBRITE_API_PRIVATE_TOKEN
+    ORGANIZATION_ID = "32190014757"
+    
+    def __init__(self):
+        super().__init__(api_url=self.EVENTBRITE_API_URL, 
+                         params={"token": self.EVENTBRITE_API_PRIVATE_TOKEN})
+ 
+    def get(self, path: str = "/", headers: dict = None) -> dict:
+        """
+        Extends the get method to handle specific error responses from the Eventbrite API
+        """
+        try:
+            response = super().get(path, headers)
+        except APIClientError as e:
+            return self._handle_eventbrite_apiclienterror(e)
+        return response
+    
+    def _handle_api_client_error(self, error: APIClientError):
         error_detail = None
         try:
-            error_detail = request.json().get("error_detail")
+            error_detail = error.response.json().get("error_detail")
         except JSONDecodeError:
             pass
         if error_detail and error_detail.get("ARGUMENTS_ERROR"):
@@ -24,45 +37,36 @@ def eventbrite_api_request_handler(uri, params={}):
                 id = id.strip("event_ids.")
                 error_indices.append(id)
             return {"error_indices": error_indices}
-        raise ValidationError("Bad request")
-    if request.status_code == requests.codes.ok:
-        try:
-            return request.json()
-        except JSONDecodeError:
-            raise ConnectionError("API provided non-JSON response")
-    raise ConnectionError("Request to API failed")
+        raise error
 
-
-def get_events_listings(page, page_size, params={}):
-    uri = "organizations/32190014757/events"
-    params.update(
-        {
+    def get_event_details(self, event_id: str) -> dict:
+        self.add_parameters({"expand": "logo,venue,ticket_availability,logo"})
+        return self.get(path=f"events/{event_id}/")
+    
+    def get_event_listings(self, page: int, page_size: int, params: dict = {}) -> dict:
+        """
+        Give a list of our published event IDs, return a list of valid events from the Eventbrite API.
+        Includes logic to remove any invalid event IDs from the list if a 400 error is raised.
+        """        
+        self.add_parameters({
             "page": page,
             "page_size": page_size,
             "order_by": "start_asc",
             "status": "live",
             "expand": "logo,venue,ticket_availability,logo",
-        }
-    )
-    if "start_date.range_start" not in params and "start_date.range_end" not in params:
-        params.update(
-            {
-                "time_filter": "current_future",
-            }
-        )
-    response = eventbrite_api_request_handler(uri, params)
-    if "error_indices" in response:
-        error_indices = response["error_indices"]
-        event_ids_list = params["event_ids"].split(",")
-        for index in sorted(error_indices, reverse=True):
-            del event_ids_list[int(index)]
-        params["event_ids"] = ",".join(event_ids_list)
-        return get_events_listings(page, page_size, params)
-    return response
+            **params
+        })
 
+        if "start_date.range_start" not in params and "start_date.range_end" not in params:
+            self.add_parameters({"time_filter": "current_future"})
 
-def get_event_details(event_id):
-    uri = f"events/{event_id}/"
-    return eventbrite_api_request_handler(
-        uri, params={"expand": "logo,venue,ticket_availability,logo"}
-    )
+        response = self.get(path=f"organizations/{self.ORGANIZATION_ID}/events")
+
+        if error_indices := response.get("error_indices", []):
+            event_ids_list = params.get("event_ids", "").split(",")
+            for index in sorted(error_indices, reverse=True):
+                del event_ids_list[int(index)]
+            params["event_ids"] = ",".join(event_ids_list)
+            return self.get_event_listings(page, page_size, params)
+        
+        return response
