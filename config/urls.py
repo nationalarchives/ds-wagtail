@@ -46,7 +46,6 @@ private_urls = [
         whatson_views.eventbrite_webhook_view,
         name="eventbrite_webhook",
     ),
-    path("feedback/", include("etna.feedback.urls")),
     path("healthcheck/", include("etna.healthcheck.urls")),
 ]
 

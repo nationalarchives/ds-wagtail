@@ -1,6 +1,0 @@
-VALID_DOMAIN = "testing.com"
-INVALID_DOMAIN = "invalid.com"
-VALID_URL = f"https://{VALID_DOMAIN}/some-url"
-INVALID_URL = "~[invalid-url]~"
-INVALID_DOMAIN_URL = f"https://{INVALID_DOMAIN}/some-url"
-VALID_COMMENT = "I am an example comment"
