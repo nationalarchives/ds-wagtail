@@ -23,7 +23,7 @@ from etna.blog.models import BlogIndexPage, BlogPage, BlogPostPage
 from etna.core.serializers.pages import DefaultPageSerializer
 from etna.core.serializers.redirects import RedirectSerializer
 from etna.whatson.models import EventPage
-from etna.whatson.utils import get_events_listings
+from etna.whatson.utils import EventbriteAPIClient
 
 from .filters import AuthorFilter, PublishedDateFilter
 
@@ -460,7 +460,7 @@ class EventsAPIViewSet(CustomPagesAPIViewSet):
         self.check_query_parameters(queryset)
         queryset = self.filter_queryset(queryset)
         eventbrite_ids = ",".join(queryset.values_list("eventbrite_id", flat=True))
-        listing_api_data = get_events_listings(
+        listing_api_data = EventbriteAPIClient().get_event_listings(
             page=request.GET.get("eventbrite_page", 1),
             page_size=request.GET.get("limit", 12),
             params={"event_ids": eventbrite_ids},
