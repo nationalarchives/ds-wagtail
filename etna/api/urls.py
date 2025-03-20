@@ -436,7 +436,8 @@ class BlogPostsAPIViewSet(CustomPagesAPIViewSet):
             path("count/", cls.as_view({"get": "count_view"}), name="count"),
             path("authors/", cls.as_view({"get": "author_view"}), name="authors"),
         ]
-    
+
+
 class EventsAPIViewSet(CustomPagesAPIViewSet):
     model = EventPage
     known_query_parameters = PagesAPIViewSet.known_query_parameters.union(
@@ -477,20 +478,32 @@ class EventsAPIViewSet(CustomPagesAPIViewSet):
             page_data["eventbrite"] = {
                 "start_date": event_data.get("start").get("local"),
                 "end_date": event_data.get("end").get("local"),
-                "location": "Online event" if event_data.get("online_event") else "Event",
-                "logo": ({
-                    "url": logo.get("url"),
-                    "width": (crop_mask.get("width")) if crop_mask else None,
-                    "height": (crop_mask.get("height")) if crop_mask else None,
-                }) if logo else None,
+                "location": (
+                    "Online event" if event_data.get("online_event") else "Event"
+                ),
+                "logo": (
+                    (
+                        {
+                            "url": logo.get("url"),
+                            "width": (crop_mask.get("width")) if crop_mask else None,
+                            "height": (crop_mask.get("height")) if crop_mask else None,
+                        }
+                    )
+                    if logo
+                    else None
+                ),
             }
         eventbrite_pagination = listing_api_data.get("pagination")
-        pagination_data = {
-            "total_count": eventbrite_pagination.get("object_count"),
-            "page_number": eventbrite_pagination.get("page_number"),
-            "page_size": eventbrite_pagination.get("page_size"),
-            "page_count": eventbrite_pagination.get("page_count")
-        } if eventbrite_pagination else {}
+        pagination_data = (
+            {
+                "total_count": eventbrite_pagination.get("object_count"),
+                "page_number": eventbrite_pagination.get("page_number"),
+                "page_size": eventbrite_pagination.get("page_size"),
+                "page_count": eventbrite_pagination.get("page_count"),
+            }
+            if eventbrite_pagination
+            else {}
+        )
         paginated_response = self.get_paginated_response(serializer.data)
         paginated_response.data["meta"].update(pagination_data)
         return paginated_response

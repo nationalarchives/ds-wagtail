@@ -249,6 +249,7 @@ class EventSpeaker(Orderable):
         FieldPanel("image"),
     ]
 
+
 class WhatsOnPage(BasePageWithRequiredIntro):
     """WhatsOnPage
 
@@ -527,7 +528,7 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithRequiredIntro):
         """
         if primary_access := self.event_access_types.first():
             return primary_access.access_type
-        
+
     promote_panels = (
         BasePageWithRequiredIntro.promote_panels
         + ArticleTagMixin.promote_panels

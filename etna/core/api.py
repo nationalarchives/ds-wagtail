@@ -1,6 +1,14 @@
-from requests import JSONDecodeError, Timeout, TooManyRedirects, get, HTTPError, RequestException
-from django.http import Http404
 from django.core.exceptions import PermissionDenied
+from django.http import Http404
+from requests import (
+    HTTPError,
+    JSONDecodeError,
+    RequestException,
+    Timeout,
+    TooManyRedirects,
+    get,
+)
+
 
 class APIClientError(Exception):
     def __init__(self, message, response=None):
@@ -12,11 +20,12 @@ class JSONAPIClient:
     """
     A client for interacting with a JSON API, which can be extended for specific APIs.
     """
+
     def __init__(self, api_url: str, params: dict = {}):
         self.api_url: str = api_url
         self.params: dict = params
 
-    def add_parameter(self, key: str, value: str|int|bool):
+    def add_parameter(self, key: str, value: str | int | bool):
         self.params[key] = value
 
     def add_parameters(self, params: dict):
@@ -50,7 +59,9 @@ class JSONAPIClient:
             elif response.status_code == 404:
                 raise Http404("Resource not found")
             else:
-                raise Exception(f"Request failed with status code {response.status_code}")
+                raise Exception(
+                    f"Request failed with status code {response.status_code}"
+                )
         except Exception as e:
             raise Exception("Request failed")
         try:
