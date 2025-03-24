@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "ds-wagtail"
-version = "25.02.25.50"
+version = "25.03.24.51"
 description = ""
 authors = ["James Biggs <james.biggs@nationalarchives.gov.uk>"]
 
