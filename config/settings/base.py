@@ -56,7 +56,6 @@ INSTALLED_APPS = [
     "etna.ciim",
     "etna.collections",
     "etna.core",
-    "etna.feedback",
     "etna.highlights",
     "etna.home",
     "etna.images",
