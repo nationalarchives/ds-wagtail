@@ -29,9 +29,6 @@ WAGTAIL_HEADLESS_PREVIEW = {
     ),
 }
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "abc123"
-
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "*").split(",")
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
@@ -44,9 +41,6 @@ FEATURE_BETA_BANNER_ENABLED = strtobool(
 )
 FEATURE_COOKIE_BANNER_ENABLED = strtobool(
     os.getenv("FEATURE_COOKIE_BANNER_ENABLED", "True")
-)
-FEATURE_FEEDBACK_MECHANISM_ENABLED = strtobool(
-    os.getenv("FEATURE_FEEDBACK_MECHANISM_ENABLED", "True")
 )
 DJANGO_SERVE_STATIC = strtobool(os.getenv("DJANGO_SERVE_STATIC", "True"))
 COOKIE_DOMAIN = "localhost"
