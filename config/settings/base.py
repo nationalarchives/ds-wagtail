@@ -60,7 +60,6 @@ INSTALLED_APPS = [
     "etna.home",
     "etna.images",
     "etna.media",
-    "etna.navigation",
     "etna.records",
     "etna.search",
     "etna.users",
