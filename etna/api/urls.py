@@ -1,4 +1,5 @@
 import logging
+import time
 
 from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
@@ -104,10 +105,16 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
             {
                 "breadcrumbs": [
                     {
-                        "text": ("Home" if page.url == "/" else page.title),
+                        "text": (
+                            "Home"
+                            if page.url == "/"
+                            else page.short_title or page.title
+                        ),
                         "href": page.url,
                     }
-                    for page in instance.get_ancestors().order_by("depth")
+                    for page in instance.get_ancestors()
+                    .order_by("depth")
+                    .specific(defer=True)
                     if page.url
                 ],
             }
