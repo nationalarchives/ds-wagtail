@@ -90,24 +90,24 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
         restrictions = instance.get_view_restrictions()
         serializer = self.get_serializer(instance)
         data = serializer.data
-        data["meta"].update(
+        breadcrumbs = [
             {
-                "breadcrumbs": [
-                    {
-                        "text": (
-                            "Home"
-                            if page.url == "/"
-                            else page.short_title or page.title
-                        ),
-                        "href": page.url,
-                    }
-                    for page in instance.get_ancestors()
-                    .order_by("depth")
-                    .specific(defer=True)
-                    if page.url
-                ],
+                "text": ("Home" if page.url == "/" else page.short_title or page.title),
+                "href": page.url,
             }
-        )
+            for page in instance.get_ancestors().order_by("depth").specific(defer=True)
+            if page.url
+        ]
+        if "meta" in data:
+            data["meta"].update(
+                {
+                    "breadcrumbs": breadcrumbs,
+                }
+            )
+        else:
+            data["meta"] = {
+                "breadcrumbs": breadcrumbs,
+            }
         if not restrictions:
             return Response(data)
         restricted_data = {
