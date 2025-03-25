@@ -59,7 +59,17 @@
         "search_image": null,
         "twitter_og_title": null,
         "twitter_og_description": null,
-        "twitter_og_image": null
+        "twitter_og_image": null,
+        "breadcrumbs": [
+            {
+                "text": "Home",
+                "href": "/"
+            },
+            {
+                "text": "people",
+                "href": "/people/"
+            }
+        ]
     },
     "title": "author",
     "short_title": null,
