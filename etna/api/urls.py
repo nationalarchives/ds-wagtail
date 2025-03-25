@@ -1,4 +1,5 @@
 import logging
+import time
 
 from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
@@ -100,6 +101,24 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
         restrictions = instance.get_view_restrictions()
         serializer = self.get_serializer(instance)
         data = serializer.data
+        data["meta"].update(
+            {
+                "breadcrumbs": [
+                    {
+                        "text": (
+                            "Home"
+                            if page.url == "/"
+                            else page.short_title or page.title
+                        ),
+                        "href": page.url,
+                    }
+                    for page in instance.get_ancestors()
+                    .order_by("depth")
+                    .specific(defer=True)
+                    if page.url
+                ],
+            }
+        )
         if not restrictions:
             return Response(data)
         restricted_data = {
@@ -226,10 +245,6 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
                     if new_path := redirects.get().redirect_page.url:
                         logger.info(f"Redirect detected: {path} ---> {new_path}")
                         path = new_path
-                # elif redirects.get().redirect_link:
-                #     if new_path := redirects.get().redirect_link:
-                #         logger.info(f"Redirect detected: {path} ---> {new_path}")
-                #         path = new_path
 
             path_components = [component for component in path.split("/") if component]
 
