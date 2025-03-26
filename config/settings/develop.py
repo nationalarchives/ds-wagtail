@@ -33,6 +33,8 @@ ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "*").split(",")
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
+SENTRY_SAMPLE_RATE = float(os.getenv("SENTRY_SAMPLE_RATE", "1.0"))
+
 IMAGE_VIEWER_REQUIRE_LOGIN = False
 RECORD_DETAIL_REQUIRE_LOGIN = False
 SEARCH_VIEWS_REQUIRE_LOGIN = False

@@ -30,3 +30,6 @@ SEARCH_VIEWS_REQUIRE_LOGIN = False
 
 CLIENT_BASE_URL = "https://kong.test/data"
 CLIENT_MEDIA_URL = "https://kong.test/media"
+
+ENVIRONMENT_NAME = "test"
+SENTRY_SAMPLE_RATE = 0

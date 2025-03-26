@@ -12,9 +12,6 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 import os
 
-import sentry_sdk
-from sentry_sdk.integrations.django import DjangoIntegration
-
 from ..versioning import get_git_sha
 from .util import strtobool
 
@@ -187,23 +184,12 @@ LOGGING = {
     },
 }
 
-SENTRY_DEBUG_URL_ENABLED = False
-if SENTRY_DSN := os.getenv("SENTRY_DSN", ""):
-    sentry_sdk.init(
-        dsn=SENTRY_DSN,
-        environment=os.getenv("SENTRY_ENVIRONMENT", ""),
-        release=get_git_sha(),
-        integrations=[DjangoIntegration()],
-        # Set traces_sample_rate to 1.0 to capture 100%
-        # of transactions for performance monitoring.
-        # We recommend adjusting this value in production.
-        traces_sample_rate=float(os.getenv("SENTRY_SAMPLE_RATE", "0.5")),
-        # If you wish to associate users to errors (assuming you are using
-        # django.contrib.auth) you may enable sending PII data.
-        send_default_pii=strtobool(os.getenv("SENTRY_SEND_USER_DATA", "False")),
-    )
+SENTRY_DSN = os.getenv("SENTRY_DSN", "")
+ENVIRONMENT_NAME = os.getenv("ENVIRONMENT_NAME", "production")
+SENTRY_SAMPLE_RATE = float(os.getenv("SENTRY_SAMPLE_RATE", "0.1"))
 
-    SENTRY_DEBUG_URL_ENABLED = strtobool(os.getenv("SENTRY_DEBUG_URL_ENABLED", "False"))
+# Generated in the CI/CD process
+BUILD_VERSION = os.getenv("BUILD_VERSION", "")
 
 
 # Database
