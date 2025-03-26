@@ -60,7 +60,6 @@ INSTALLED_APPS = [
     "etna.home",
     "etna.images",
     "etna.media",
-    "etna.navigation",
     "etna.records",
     "etna.search",
     "etna.users",
@@ -431,9 +430,6 @@ FEATURE_RECORD_LINKS_GO_TO_DISCOVERY = strtobool(
 )
 FEATURE_DOWNLOAD_RECORD_LINKS_GO_TO_DISCOVERY = strtobool(
     os.getenv("FEATURE_DOWNLOAD_RECORD_LINKS_GO_TO_DISCOVERY", "False")
-)
-FEATURE_BETA_BANNER_ENABLED = strtobool(
-    os.getenv("FEATURE_BETA_BANNER_ENABLED", "True")
 )
 FEATURE_COOKIE_BANNER_ENABLED = strtobool(
     os.getenv("FEATURE_COOKIE_BANNER_ENABLED", "True")
