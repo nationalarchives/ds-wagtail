@@ -597,9 +597,9 @@ class ClientAPI:
         response = self.session.get(url, params=params, timeout=self.timeout)
         try:  # TODO: This is a hack to prevent CIIM failures from being raised as exceptions that break the site, make this better
             self._raise_for_status(response)
-        except Exception:
+        except Exception as e:
             capture_message(
-                f"Client API request failed with status code {response.status_code}",
+                f"Client API request failed with status code {response.status_code}: {str(e)}",
                 level="error",
             )
         return response
