@@ -37,6 +37,37 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
         for restricted_page in restricted_pages:
             queryset = queryset.not_descendant_of(restricted_page, inclusive=True)
 
+        # Check if we have a specific site to look for
+        if "site" in request.GET:
+            # Optionally allow querying by port
+            if ":" in request.GET["site"]:
+                (hostname, port) = request.GET["site"].split(":", 1)
+                query = {
+                    "hostname": hostname,
+                    "port": port,
+                }
+            else:
+                query = {
+                    "hostname": request.GET["site"],
+                }
+            try:
+                site = Site.objects.get(**query)
+            except Site.MultipleObjectsReturned:
+                raise BadRequestError(
+                    "Your query returned multiple sites. Try adding a port number to your site filter."
+                )
+        else:
+            # Otherwise, find the site from the request
+            site = Site.find_for_request(self.request)
+
+        if site:
+            base_queryset = queryset
+            queryset = base_queryset.descendant_of(site.root_page, inclusive=True)
+
+        else:
+            # No sites configured
+            queryset = queryset.none()
+
         if "author" in request.GET and request.GET["author"]:
             queryset = queryset.filter(author_tags__author=request.GET["author"])
 
