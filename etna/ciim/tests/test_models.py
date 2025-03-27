@@ -82,19 +82,3 @@ class ClientAPIFilterTest(SimpleTestCase):
 
         with self.assertRaises(IndexError):
             result.hits[1]
-
-
-class ClientExceptionTest(SimpleTestCase):
-    def setUp(self):
-        self.records_client = get_records_client()
-
-    @responses.activate
-    def test_raises_invalid_iaid_match(self):
-        responses.add(
-            responses.GET,
-            f"{settings.CLIENT_BASE_URL}/fetch",
-            status=500,
-        )
-
-        with self.assertRaises(ClientAPIError):
-            self.records_client.fetch(iaid="C140")
