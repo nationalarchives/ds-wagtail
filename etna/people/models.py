@@ -116,6 +116,12 @@ class PersonPage(BasePage):
 
     research_summary = StreamField(ResearchSummaryStreamBlock, blank=True, null=True)
 
+    archived_blog_url = models.URLField(
+        blank=True,
+        null=True,
+        help_text="Link to the author's blog on the web archive",
+    )
+
     first_name = models.CharField(
         max_length=255,
     )
@@ -129,6 +135,7 @@ class PersonPage(BasePage):
         FieldPanel("summary"),
         FieldPanel("research_summary"),
         InlinePanel("shop_items", label="Shop items"),
+        FieldPanel("archived_blog_url"),
     ]
 
     promote_panels = [
@@ -176,6 +183,7 @@ class PersonPage(BasePage):
         APIField(
             "shop_items",
         ),
+        APIField("archived_blog_url"),
     ]
 
     @cached_property

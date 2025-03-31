@@ -19,6 +19,7 @@ from typing import (
 import requests
 from django.utils.functional import cached_property
 from django.utils.timezone import get_current_timezone
+from sentry_sdk import capture_message
 
 from etna.ciim.constants import Aggregation
 from etna.records.models import Record
@@ -594,7 +595,13 @@ class ClientAPI:
         """Make request to Client API."""
         params = self.prepare_request_params(params)
         response = self.session.get(url, params=params, timeout=self.timeout)
-        self._raise_for_status(response)
+        try:  # TODO: This is a hack to prevent CIIM failures from being raised as exceptions that break the site, make this better
+            self._raise_for_status(response)
+        except Exception as e:
+            capture_message(
+                f"Client API request failed with status code {response.status_code}: {str(e)}",
+                level="error",
+            )
         return response
 
     def decode_json_response(self, response):

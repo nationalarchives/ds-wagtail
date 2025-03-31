@@ -59,7 +59,13 @@
         "search_image": null,
         "twitter_og_title": null,
         "twitter_og_description": null,
-        "twitter_og_image": null
+        "twitter_og_image": null,
+        "breadcrumbs": [
+            {
+                "text": "Home",
+                "href": "/"
+            }
+        ]
     },
     "title": "article_index",
     "short_title": null,
@@ -76,6 +82,7 @@
         "short_title": null,
         "url": "/article_index/article/",
         "full_url": "http://localhost/article_index/article/",
+        "type": "articles.ArticlePage",
         "type_label": "The story of",
         "teaser_text": "Teaser text",
         "teaser_image": {
@@ -110,6 +117,7 @@
                         "short_title": null,
                         "url": "/article_index/article/",
                         "full_url": "http://localhost/article_index/article/",
+                        "type": "articles.ArticlePage",
                         "type_label": "The story of",
                         "teaser_text": "Teaser text",
                         "teaser_image": {
@@ -137,6 +145,7 @@
                         "short_title": null,
                         "url": "/article_index/focused_article/",
                         "full_url": "http://localhost/article_index/focused_article/",
+                        "type": "articles.FocusedArticlePage",
                         "type_label": "Focus on",
                         "teaser_text": "Teaser text",
                         "teaser_image": {

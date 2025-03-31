@@ -111,7 +111,7 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTestCase):
             reverse("wagtailadmin_pages:edit", args=(self.article_page.id,)),
             data,
         )
-        self.assertEqual(len(responses.calls), 3)
+        self.assertEqual(len(responses.calls), 2)
         self.assertRedirects(
             response,
             reverse("wagtailadmin_explore", args=(self.article_index_page.id,)),
@@ -126,7 +126,7 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTestCase):
         self.assertEqual(record_link["descriptive_title"], BLOCK_TITLE_OVERRIDE)
         self.assertEqual(record_link["record"].iaid, TEST_RECORD_DATA["iaid"])
 
-        self.assertEqual(len(responses.calls), 4)
+        self.assertEqual(len(responses.calls), 3)
         self.assertEqual(
             responses.calls[0].request.url,
             f"{settings.CLIENT_BASE_URL}/fetch?metadataId=C123456",
@@ -169,7 +169,7 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTestCase):
         self.article_page.save()
 
         # Wagtail's reference index population will cause the body to be evaluated
-        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(len(responses.calls), 0)
 
         # Check the edit view first
         response = self.client.get(
@@ -178,7 +178,7 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTestCase):
         self.assertContains(response, BLOCK_TITLE_OVERRIDE)
 
         # The record details are requested again to display for the field value
-        self.assertEqual(len(responses.calls), 2)
+        self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
             f"{settings.CLIENT_BASE_URL}/fetchAll?metadataIds=C123456",
@@ -191,7 +191,7 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTestCase):
             response,
             'href="/catalogue/id/' + TEST_RECORD_DATA["iaid"] + '/"',
         )
-        self.assertEqual(len(responses.calls), 3)
+        self.assertEqual(len(responses.calls), 2)
         self.assertEqual(
             responses.calls[1].request.url,
             f"{settings.CLIENT_BASE_URL}/fetchAll?metadataIds=C123456",
