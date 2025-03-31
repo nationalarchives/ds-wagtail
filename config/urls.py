@@ -46,21 +46,6 @@ private_urls = [
 # Public URLs that are meant to be cached.
 public_urls = [
     path(
-        r"catalogue/id/<iaid:iaid>/",
-        setting_controlled_login_required(
-            records_views.record_detail_view, "RECORD_DETAIL_REQUIRE_LOGIN"
-        ),
-        name="details-page-machine-readable",
-    ),
-    path(
-        r"catalogue/ref/<reference_number:reference_number>/",
-        setting_controlled_login_required(
-            records_views.record_disambiguation_view,
-            "RECORD_DETAIL_REQUIRE_LOGIN",
-        ),
-        name="details-page-human-readable",
-    ),
-    path(
         "records/image/<path:location>",
         records_views.image_serve,
         name="image-serve",

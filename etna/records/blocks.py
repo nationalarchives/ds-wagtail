@@ -50,9 +50,9 @@ class RecordChooserBlock(blocks.ChooserBlock):
     @cached_property
     def widget(self):
         """Widget used to select a Record"""
-        from .widgets import RecordChooser
+        from .views.choosers import BaseRecordChooserWidget
 
-        return RecordChooser()
+        return BaseRecordChooserWidget()
 
     def get_prep_value(self, value):
         """Convert Record to IAID for persistance"""

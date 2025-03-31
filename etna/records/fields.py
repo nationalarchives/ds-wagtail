@@ -11,6 +11,7 @@ from etna.ciim.exceptions import DoesNotExist
 from .api import records_client
 from .models import Record
 from .widgets import RecordChooser
+from .views.choosers import BaseRecordChooserWidget
 
 
 class LazyRecord(SimpleLazyObject):
@@ -51,7 +52,7 @@ class RecordChoiceField(CharField):
     the selected record's ``iaid`` value.
     """
 
-    widget = RecordChooser
+    widget = BaseRecordChooserWidget
 
     def validate(self, value: Any) -> None:
         super().validate(value)
