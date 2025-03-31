@@ -12,9 +12,6 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 import os
 
-import sentry_sdk
-from sentry_sdk.integrations.django import DjangoIntegration
-
 from ..versioning import get_git_sha
 from .util import strtobool
 
@@ -40,6 +37,7 @@ DEBUG = strtobool(os.getenv("DEBUG", "False"))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
+SECRET_KEY = os.getenv("SECRET_KEY", "")
 
 # Application definition
 
@@ -55,12 +53,10 @@ INSTALLED_APPS = [
     "etna.ciim",
     "etna.collections",
     "etna.core",
-    "etna.feedback",
     "etna.highlights",
     "etna.home",
     "etna.images",
     "etna.media",
-    "etna.navigation",
     "etna.records",
     "etna.search",
     "etna.users",
@@ -188,23 +184,12 @@ LOGGING = {
     },
 }
 
-SENTRY_DEBUG_URL_ENABLED = False
-if SENTRY_DSN := os.getenv("SENTRY_DSN", ""):
-    sentry_sdk.init(
-        dsn=SENTRY_DSN,
-        environment=os.getenv("SENTRY_ENVIRONMENT", ""),
-        release=get_git_sha(),
-        integrations=[DjangoIntegration()],
-        # Set traces_sample_rate to 1.0 to capture 100%
-        # of transactions for performance monitoring.
-        # We recommend adjusting this value in production.
-        traces_sample_rate=float(os.getenv("SENTRY_SAMPLE_RATE", "0.5")),
-        # If you wish to associate users to errors (assuming you are using
-        # django.contrib.auth) you may enable sending PII data.
-        send_default_pii=strtobool(os.getenv("SENTRY_SEND_USER_DATA", "False")),
-    )
+SENTRY_DSN = os.getenv("SENTRY_DSN", "")
+ENVIRONMENT_NAME = os.getenv("ENVIRONMENT_NAME", "production")
+SENTRY_SAMPLE_RATE = float(os.getenv("SENTRY_SAMPLE_RATE", "0.1"))
 
-    SENTRY_DEBUG_URL_ENABLED = strtobool(os.getenv("SENTRY_DEBUG_URL_ENABLED", "False"))
+# Generated in the CI/CD process
+BUILD_VERSION = os.getenv("BUILD_VERSION", "")
 
 
 # Database
@@ -212,12 +197,12 @@ if SENTRY_DSN := os.getenv("SENTRY_DSN", ""):
 
 DATABASES = {
     "default": {
-        "ENGINE": os.getenv("DATABASE_ENGINE", "django.db.backends.sqlite3"),
-        "NAME": os.getenv("DATABASE_NAME", "db.sqlite3"),
+        "ENGINE": os.getenv("DATABASE_ENGINE", "django.db.backends.postgresql"),
+        "NAME": os.getenv("DATABASE_NAME"),
         "USER": os.getenv("DATABASE_USER"),
         "PASSWORD": os.getenv("DATABASE_PASSWORD"),
         "HOST": os.getenv("DATABASE_HOST"),
-        "PORT": os.getenv("DATABASE_PORT"),
+        "PORT": os.getenv("DATABASE_PORT", "5432"),
     }
 }
 
@@ -432,16 +417,10 @@ FEATURE_RECORD_LINKS_GO_TO_DISCOVERY = strtobool(
 FEATURE_DOWNLOAD_RECORD_LINKS_GO_TO_DISCOVERY = strtobool(
     os.getenv("FEATURE_DOWNLOAD_RECORD_LINKS_GO_TO_DISCOVERY", "False")
 )
-FEATURE_BETA_BANNER_ENABLED = strtobool(
-    os.getenv("FEATURE_BETA_BANNER_ENABLED", "True")
-)
 FEATURE_COOKIE_BANNER_ENABLED = strtobool(
     os.getenv("FEATURE_COOKIE_BANNER_ENABLED", "True")
 )
 FEATURE_PLATFORM_ENVIRONMENT_TYPE = os.getenv("PLATFORM_ENVIRONMENT_TYPE", "production")
-FEATURE_FEEDBACK_MECHANISM_ENABLED = strtobool(
-    os.getenv("FEATURE_FEEDBACK_MECHANISM_ENABLED", "False")
-)
 FEATURE_DISABLE_JS_WHATS_ON_LISTING = strtobool(
     os.getenv("FEATURE_DISABLE_JS_WHATS_ON_LISTING", "False")
 )

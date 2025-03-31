@@ -86,10 +86,6 @@
             {% include 'includes/header.html' %}
         {% endblock %}
 
-        {% if show_beta_banner %}
-            {% include 'includes/beta-banner.html' %}
-        {% endif %}
-
         {% block breadcrumb %}
         <div class="tna-breadcrumb-wrapper">
             <div class="tna-container">
@@ -121,9 +117,6 @@
         <script src="{% static 'scripts/feedback_tracking.js' %}"></script>
         {% if show_cookie_notice %}
             <script src="{% static 'scripts/cookie_consent.js' %}"></script>
-        {% endif %}
-        {% if show_beta_banner %}
-            <script src="{% static 'scripts/beta_banner.js' %}"></script>
         {% endif %}
     </body>
 </html>

@@ -45,7 +45,7 @@
             <div class="tna-container">
                 <div class="tna-column tna-column--width-3-4 tna-column--width-2-3-medium tna-column--full-small tna-column--full-tiny">
                     <div class="article-container__main">
-                        {% if page.display_content_warning %}
+                        {% if page.custom_warning_text %}
                             {% include "includes/content-warning.html" with custom_warning_text=page.custom_warning_text classes="content-warning--short content-warning--normalise-article-margin" %}
                         {% endif %}
 

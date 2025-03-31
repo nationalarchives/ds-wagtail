@@ -13,7 +13,7 @@
         </div>
 
         <div class="article-container__main tna-column tna-column--width-3-4 tna-column--full-small tna-column--full-tiny">
-            {% if page.display_content_warning %}
+            {% if page.custom_warning_text %}
                 {% include "includes/content-warning.html" with custom_warning_text=page.custom_warning_text classes="content-warning--short content-warning--normalise-article-margin" %}
             {% endif %}
             {% for block in page.body %}

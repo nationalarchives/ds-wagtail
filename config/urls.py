@@ -24,12 +24,6 @@ register_converter(converters.ReferenceNumberConverter, "reference_number")
 register_converter(converters.IAIDConverter, "iaid")
 
 
-# Used by /sentry-debug/
-def trigger_error(request):
-    # Raise a ZeroDivisionError
-    return 1 / 0
-
-
 handler404 = "etna.errors.views.custom_404_error_view"
 handler500 = "etna.errors.views.custom_500_error_view"
 handler503 = "etna.errors.views.custom_503_error_view"
@@ -46,13 +40,8 @@ private_urls = [
         whatson_views.eventbrite_webhook_view,
         name="eventbrite_webhook",
     ),
-    path("feedback/", include("etna.feedback.urls")),
     path("healthcheck/", include("etna.healthcheck.urls")),
 ]
-
-if settings.SENTRY_DEBUG_URL_ENABLED:
-    # url is toggled via the SENTRY_DEBUG_URL_ENABLED .env var
-    private_urls.append(path("sentry-debug/", trigger_error))
 
 # Public URLs that are meant to be cached.
 public_urls = [
