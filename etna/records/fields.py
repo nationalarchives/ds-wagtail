@@ -54,18 +54,6 @@ class RecordChoiceField(CharField):
 
     widget = BaseRecordChooserWidget
 
-    def validate(self, value: Any) -> None:
-        super().validate(value)
-        if value in self.empty_values:
-            return None
-        try:
-            records_client.fetch(iaid=value)
-        except HTTPError:
-            raise ValidationError(
-                f"Record data could not be retrieved using iaid '{value}'.",
-                code="invalid",
-            )
-
 
 class RecordField(Field):
     """
@@ -103,49 +91,3 @@ class RecordField(Field):
 
     def get_internal_type(self):
         return "CharField"
-
-    @classmethod
-    def _convert_to_record_instance(cls, value):
-        if isinstance(value, (Record, LazyRecord)):
-            return value
-        if value in cls.empty_values:
-            return None
-        return LazyRecord(iaid=value)
-
-    @classmethod
-    def _extract_record_iaid(cls, value):
-        if isinstance(value, (Record, LazyRecord)):
-            return value.iaid
-        if value in cls.empty_values:
-            return None
-        return value
-
-    def to_python(self, value):
-        """
-        Return ``None`` if the value is empty. Otherwise, create and return a
-        ``LazyRecord`` from the stored "iaid" value.
-        """
-        return self._convert_to_record_instance(value)
-
-    def from_db_value(self, value, expression, connection):
-        """
-        Return ``None`` if the value is empty. Otherwise, create and return a
-        ``LazyRecord`` from the stored "iaid" value.
-        """
-        return self._convert_to_record_instance(value)
-
-    def get_prep_value(self, value):
-        """
-        If the value is a ``Record`` or ``LazyRecord`` instance, extract the
-        "iaid" string to store in the DB for this field.
-        """
-        return self._extract_record_iaid(value)
-
-    def value_to_string(self, model_instance):
-        """
-        Overrides ``Field.value_to_string`` to ensure the "iaid" string
-        value is used for serialization (e.g. when converting field values
-        into JSON for Wagtail revision content, or surfacing in a REST api).
-        """
-        value = getattr(model_instance, self.get_attname(), None)
-        return self._extract_record_iaid(value)

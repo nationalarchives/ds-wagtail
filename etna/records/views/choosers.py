@@ -80,24 +80,33 @@ class BaseRecordChooseView(BaseChooseView):
     def columns(self):
         return [
             TitleColumn(
-                "title",
-                label="Title",
-                accessor='@template.details.summaryTitle',
-                id_accessor='@template.details.summaryTitle',
+                "iaid",
+                label="IAID",
+                accessor='@template.details.iaid',
+                id_accessor='@template.details.iaid',
                 url_name=self.chosen_url_name,
                 link_attrs={"data-chooser-modal-choice": True},
             ),
             Column(
-                "iaid", label="IAID", accessor="@template.details.iaid"
+                "title", label="Title", accessor="@template.details.summaryTitle"
             )
         ]
 
     def get_object_list(self):
-        r = requests.get(f"{settings.CLIENT_BASE_URL}/search?q=*")
+        RESULTS_PER_PAGE = 10
+        page = 1
+        params = {
+            "q": "*",
+            "size": RESULTS_PER_PAGE,
+            "from": (page - 1) * RESULTS_PER_PAGE,
+            "sort": "",
+            "sortOrder": "asc",
+        }
+
+        r = requests.get(f"{settings.CLIENT_BASE_URL}/search", params=params)
         r.raise_for_status()
         results = r.json()
         results = results.get("data", [])
-        print(results)
         return results
 
     def apply_object_list_ordering(self, objects):
@@ -116,14 +125,16 @@ class RecordChosenViewMixin(ChosenViewMixin):
     def get_object(self, pk):
         r = requests.get(f"{settings.CLIENT_BASE_URL}/get?id={pk}")
         r.raise_for_status()
-        return r.json()
+        result = r.json()
+        result = result.get("data", [])[0].get("@template", {}).get("details", {})
+        return result
 
 
 class RecordChosenResponseMixin(ChosenResponseMixin):
     def get_chosen_response_data(self, item):
         return {
-            "id": item["iaid"],
-            "title": item["summaryTitle"],
+            "id": item.get("iaid"),
+            "title": f"{item["summaryTitle"]} ({item["iaid"]})",
         }
 
 
@@ -138,21 +149,22 @@ class BaseRecordChooserWidget(BaseChooser):
         elif isinstance(value, dict):
             return value
         else:
-            r = requests.get(f"{settings.CLIENT_BASE_URL}/search?q={value}")
-            print(r.json())
-            return r.json()
+            r = requests.get(f"{settings.CLIENT_BASE_URL}/get?id={value}")
+            result = r.json()
+            result = result.get("data", [])[0].get("@template", {}).get("details", {})
+            return result
 
     def get_value_data_from_instance(self, instance):
         return {
-            "iaid": instance["@template.details.iaid"],
-            "title": instance["@template.details.summaryTitle"],
+            "id": instance["iaid"],
+            "title": f"{instance["summaryTitle"]} ({instance["iaid"]})",
         }
     
     chooser_modal_url_name = "record_chooser:choose"
 
 
 class RecordChooserViewSet(ChooserViewSet):
-    icon = "record"
+    icon = "form"
     choose_one_text = "Choose a record"
     choose_another_text = "Choose another record"
     edit_item_text = "Edit this record"
