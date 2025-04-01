@@ -166,10 +166,11 @@ class BaseRecordChooseView(BaseChooseView):
         r = requests.get(f"{settings.CLIENT_BASE_URL}/search", params=params)
         r.raise_for_status()
         result = r.json()
-        paginator = APIPaginator(result['stats']['total'] / self.per_page, self.per_page)
+        paginator = APIPaginator(result['stats']['total'], self.per_page)
         page = Page(result.get("data", []), page_number, paginator)
-        return page
+        print(r.url)
 
+        return page
 
 class RecordChooseView(ChooseViewMixin, CreationFormMixin, BaseRecordChooseView):
     pass
