@@ -100,7 +100,6 @@ class APIFilterForm(BaseFilterForm):
     
     def filter(self, objects):
         search_query = self.cleaned_data.get("q")
-        print(search_query)
         if search_query:
             objects = BaseRecordChooseView.get_results_page(self, query=search_query)
         else:
@@ -146,13 +145,11 @@ class BaseRecordChooseView(BaseChooseView):
         return objects
     
     def get_results_page(self, request, query="*"):
-        print("get_results_page")
         try:
             page_number = int(request.GET.get('p', 1))
         except ValueError:
             page_number = 1
 
-        print("PRE-REQUEST", query)
         query = request.GET.get('q', query)
 
         params = {
@@ -168,7 +165,6 @@ class BaseRecordChooseView(BaseChooseView):
         result = r.json()
         paginator = APIPaginator(result['stats']['total'], self.per_page)
         page = Page(result.get("data", []), page_number, paginator)
-        print(r.url)
 
         return page
 
