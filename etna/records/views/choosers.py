@@ -73,9 +73,43 @@ from wagtail.admin.views.generic.chooser import (
 )
 from wagtail.admin.viewsets.chooser import ChooserViewSet
 from wagtail.admin.widgets import BaseChooser
+from wagtail.admin.forms.choosers import BaseFilterForm
+from django import forms
+from django.core.paginator import Page, Paginator
 
+class APIPaginator(Paginator):
+    """
+    Customisation of Django's Paginator class for use when we don't want it to handle
+    slicing on the result set, but still want it to generate the page numbering based
+    on a known result count.
+    """
+    def __init__(self, count, per_page, **kwargs):
+        self._count = int(count)
+        super().__init__([], per_page, **kwargs)
+
+    @property
+    def count(self):
+        return self._count
+
+class APIFilterForm(BaseFilterForm):
+    q = forms.CharField(
+        label="Search",
+        required=False,
+        widget=forms.TextInput(attrs={"placeholder": "Search"}),
+    )
+    
+    def filter(self, objects):
+        search_query = self.cleaned_data.get("q")
+        print(search_query)
+        if search_query:
+            objects = BaseRecordChooseView.get_results_page(self, query=search_query)
+        else:
+            objects = BaseRecordChooseView.get_results_page(self)
+        return objects
 
 class BaseRecordChooseView(BaseChooseView):
+    filter_form_class = APIFilterForm
+
     @property
     def columns(self):
         return [
@@ -92,13 +126,12 @@ class BaseRecordChooseView(BaseChooseView):
             )
         ]
 
-    def get_object_list(self):
-        RESULTS_PER_PAGE = 10
+    def get_object_list(self, query="*"):
         page = 1
         params = {
-            "q": "*",
-            "size": RESULTS_PER_PAGE,
-            "from": (page - 1) * RESULTS_PER_PAGE,
+            "q": query,
+            "size": self.per_page,
+            "from": (page - 1) * self.per_page,
             "sort": "",
             "sortOrder": "asc",
         }
@@ -111,6 +144,31 @@ class BaseRecordChooseView(BaseChooseView):
 
     def apply_object_list_ordering(self, objects):
         return objects
+    
+    def get_results_page(self, request, query="*"):
+        print("get_results_page")
+        try:
+            page_number = int(request.GET.get('p', 1))
+        except ValueError:
+            page_number = 1
+
+        print("PRE-REQUEST", query)
+        query = request.GET.get('q', query)
+
+        params = {
+            "q": query,
+            "from": (page_number - 1) * self.per_page,
+            "sort": "",
+            "sortOrder": "asc",
+            "size": self.per_page,
+        }
+
+        r = requests.get(f"{settings.CLIENT_BASE_URL}/search", params=params)
+        r.raise_for_status()
+        result = r.json()
+        paginator = APIPaginator(result['stats']['total'] / self.per_page, self.per_page)
+        page = Page(result.get("data", []), page_number, paginator)
+        return page
 
 
 class RecordChooseView(ChooseViewMixin, CreationFormMixin, BaseRecordChooseView):
