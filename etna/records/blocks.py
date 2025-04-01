@@ -49,6 +49,9 @@ class RecordChooserBlock(FieldBlock):
     
     def value_from_form(self, value):
         return value
+    
+    class Meta:
+        icon = "archive"
 
 # class RecordChooserBlock(blocks.ChooserBlock):
 #     """Custom chooser block for an externally-held record.
