@@ -15,4 +15,3 @@ class APIPaginator(Paginator):
     @property
     def count(self):
         return self._count
-

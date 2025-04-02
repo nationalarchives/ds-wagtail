@@ -1,7 +1,5 @@
 import requests
-
 from django.conf import settings
-
 from wagtail.admin.widgets import BaseChooser
 
 

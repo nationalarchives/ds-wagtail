@@ -1,6 +1,7 @@
 from django import forms
 from wagtail.admin.forms.choosers import BaseFilterForm
 
+
 class APIFilterForm(BaseFilterForm):
     q = forms.CharField(
         label="Search",

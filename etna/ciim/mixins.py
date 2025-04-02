@@ -1,11 +1,10 @@
 import requests
-
 from django.conf import settings
-
 from wagtail.admin.views.generic.chooser import (
     ChosenResponseMixin,
     ChosenViewMixin,
 )
+
 
 class RecordChosenViewMixin(ChosenViewMixin):
     def get_object(self, pk):

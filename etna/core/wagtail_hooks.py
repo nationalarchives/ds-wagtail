@@ -30,6 +30,7 @@ def global_admin_css():
         return "<style> @media (prefers-color-scheme: light) { :root {--w-color-primary: #00623B; --w-color-primary-200: #003c1e;} } @media (prefers-color-scheme: dark) { :root {--w-color-surface-menus: #002510; --w-color-surface-menu-item-active: #001810;} }</style>"
     return ""
 
+
 @hooks.register("register_icons")
 def register_icons(icons):
     return icons + [

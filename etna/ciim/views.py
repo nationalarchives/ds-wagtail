@@ -1,9 +1,7 @@
 import requests
-
 from django.conf import settings
 from django.core.paginator import Page
 from django.views.generic.base import View
-
 from wagtail.admin.ui.tables import Column, TitleColumn
 from wagtail.admin.views.generic.chooser import (
     BaseChooseView,
@@ -14,12 +12,13 @@ from wagtail.admin.views.generic.chooser import (
 from wagtail.admin.viewsets.chooser import ChooserViewSet
 
 from .forms import APIFilterForm
-from .pagination import APIPaginator
 from .mixins import (
     RecordChosenResponseMixin,
     RecordChosenViewMixin,
 )
+from .pagination import APIPaginator
 from .widgets import BaseRecordChooserWidget
+
 
 class BaseRecordChooseView(BaseChooseView):
     filter_form_class = APIFilterForm

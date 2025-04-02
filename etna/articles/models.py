@@ -24,6 +24,8 @@ from wagtail.models import Orderable, Page
 from wagtail.search import index
 from wagtail.snippets.models import register_snippet
 
+from etna.ciim.fields import RecordField
+from etna.ciim.serializers import RecordSerializer
 from etna.collections.models import TopicalPageMixin
 from etna.core.blocks import AuthorPromotedPagesBlock, FeaturedCollectionBlock
 from etna.core.models import (
@@ -42,8 +44,6 @@ from etna.core.serializers import (
 )
 from etna.core.utils import skos_id_from_text
 from etna.people.models import AuthorPageMixin
-from etna.ciim.fields import RecordField
-from etna.ciim.serializers import RecordSerializer
 
 from .blocks import ArticlePageStreamBlock
 
