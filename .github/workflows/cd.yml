@@ -3,6 +3,9 @@ name: Build and deploy
 on:
   workflow_dispatch:
   push:
+    branches:
+      - main
+      - feature/*
 
 concurrency:
   group: cd-${{ github.ref }}
