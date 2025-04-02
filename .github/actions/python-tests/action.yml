@@ -8,14 +8,6 @@ inputs:
 
 runs:
   using: "composite"
-  env:
-    DJANGO_SETTINGS_MODULE: config.settings.test
-    DATABASE_ENGINE: django.db.backends.postgresql
-    DATABASE_NAME: postgres
-    DATABASE_USER: postgres
-    DATABASE_PASSWORD: postgres
-    DATABASE_HOST: localhost
-    DATABASE_PORT: 5432
   steps:
     - uses: actions/setup-python@v5
     - run: pip install flake8 isort black
