@@ -1,12 +1,8 @@
 import logging
 
-from generic_chooser.widgets import AdminChooser
-from django.urls import reverse
 from wagtail.admin.widgets import BaseChooser
-from wagtail.admin.admin_url_finder import AdminURLFinder
 
 from .api import records_client
-from .models import Record
 
 logger = logging.getLogger(__name__)
 

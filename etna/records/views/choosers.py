@@ -1,5 +1,4 @@
 from django.core.paginator import Page
-from generic_chooser.views import ChooserViewSet
 from django.conf import settings
 
 from django.views.generic.base import View
