@@ -16,16 +16,6 @@ runs:
     DATABASE_PASSWORD: postgres
     DATABASE_HOST: localhost
     DATABASE_PORT: 5432
-  services:
-    postgres:
-      image: postgres:16.0
-      env:
-        POSTGRES_USER: ${{ env.DATABASE_USER }}
-        POSTGRES_PASSWORD: ${{ env.DATABASE_PASSWORD }}
-        POSTGRES_DB: ${{ env.DATABASE_NAME }}
-      ports:
-        - 5432:5432
-      options: --health-cmd pg_isready --health-interval 1s --health-timeout 3s --health-retries 10
   steps:
     - uses: actions/setup-python@v5
     - run: pip install flake8 isort black
