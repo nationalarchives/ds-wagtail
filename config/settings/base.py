@@ -340,45 +340,6 @@ EXPANDED_RICH_TEXT_FEATURES = RESTRICTED_RICH_TEXT_FEATURES + [
     "h3",
 ]
 
-# Analytics
-AVAILABILITY_CONDITION_CATEGORIES = {
-    "AcademicSubscription": "Academic Subscription",
-    "AccessUnderReview": "Not Viewable online",
-    "AV_Media": "Viewable online",
-    "ClosedFOIReview": "Not viewable online",
-    "ClosedRetainedDeptKnown": "Not viewable online",
-    "ClosedRetainedDeptUnKnown": "Not viewable online",
-    "CollectionCare": "Not viewable online",
-    "DigitizedAvailableButNotDownloadableAtItemLevel": "Not viewable online",
-    "DigitizedAvailableButNotDownloadableAtPieceLevel": "Not viewable online",
-    "DigitizedDiscovery - Free": "Viewable online",
-    "DigitizedDiscovery - Charged": "Viewable online",
-    "DigitizedDiscovery - Charged (+LIAs)": "Viewable online & via 3rd party",
-    "DigitizedLIA": "Viewable via 3rd party",
-    "DigitizedOther": "Viewable online",
-    "DigitizedPartiallyOpened": "Not used",
-    "DisplayAtMuseum": "Not viewable online",
-    "FileAuthority": "Not viewable online",
-    "GovtWebArchive": "Viewable via 3rd party",
-    "ImageLibrary": "Viewable via 3rd party",
-    "InUse": "Not viewable online",
-    "InvigilationSafeRoom": "Not viewable online",
-    "LocalArchive": "Not viewable online",
-    "MissingLost": "Not viewable online",
-    "MouldTreatment": "Not viewable online",
-    "Offsite": "Not viewable online",
-    "Onloan": "Not viewable online",
-    "OrderException": "Error",
-    "OrderOriginal": "Not viewable online",
-    "PaidSearch": "Not viewable online",
-    "Surrogate": "Not viewable online",
-    "TooLargeToCopyOffsite": "Not viewable online",
-    "TooLargeToCopyOriginal": "Not viewable online",
-    "TooLargeToCopySurrogate": "Not viewable online",
-    "Unavailable": "Not viewable online",
-    "Unfit": "Not viewable online",
-}
-
 # Don't anonymise data by default, so we don't accidentally lose production data
 BIRDBATH_REQUIRED = False
 BIRDBATH_PROCESSORS = ["etna.users.anonymisation.UserAnonymiser"]
