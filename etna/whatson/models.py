@@ -913,6 +913,12 @@ class ExhibitionPage(
         null=True,
     )
 
+    event_description = RichTextField(
+        blank=True,
+        help_text=_("The description to display for the events section."),
+        features=settings.INLINE_RICH_TEXT_FEATURES,
+    )
+
     event_links = StreamField(
         [
             (
@@ -1001,6 +1007,7 @@ class ExhibitionPage(
                 FieldPanel("featured_page"),
                 FieldPanel("related_pages"),
                 FieldPanel("event_title"),
+                FieldPanel("event_description"),
                 FieldPanel("event_links"),
                 FieldPanel("shop"),
             ],
@@ -1096,6 +1103,7 @@ class ExhibitionPage(
             APIField("featured_page", serializer=DefaultPageSerializer()),
             APIField("related_pages"),
             APIField("event_title"),
+            APIField("event_description", serializer=RichTextSerializer()),
             APIField("event_links"),
             APIField("shop"),
             APIField("plan_your_visit_title"),
