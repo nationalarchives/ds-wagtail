@@ -48,8 +48,13 @@ def check_migration_file(file):
     current data type. For example, changing a CharField to an
     IntegerField will result in a loss of data.
     """
-    with open(file) as f:
-        contents = f.read()
+    try:
+        with open(file) as f:
+            contents = f.read()
+    except FileNotFoundError:
+        print(f"Migration file {file} not found - likely deleted, skipping.")
+        return True
+
 
     keywords = ["DeleteModel", "RenameModel", "RemoveField", "AlterField"]
     for keyword in keywords:
