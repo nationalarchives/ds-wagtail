@@ -42,8 +42,8 @@ from etna.core.serializers import (
 )
 from etna.core.utils import skos_id_from_text
 from etna.people.models import AuthorPageMixin
-from etna.records.fields import RecordField
-from etna.records.serializers import RecordSerializer
+from etna.ciim.fields import RecordField
+from etna.ciim.serializers import RecordSerializer
 
 from .blocks import ArticlePageStreamBlock
 

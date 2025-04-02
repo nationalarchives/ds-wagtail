@@ -1,7 +1,7 @@
 from django.db.models.fields import Field
 from django.forms import CharField
 
-from .views.choosers import BaseRecordChooserWidget
+from .widgets import BaseRecordChooserWidget
 
 
 class RecordChoiceField(CharField):

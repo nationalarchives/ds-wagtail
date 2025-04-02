@@ -1,3 +1,0 @@
-from .choosers import (
-    RecordChooserViewSet,
-)

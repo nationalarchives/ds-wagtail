@@ -1,53 +1,25 @@
 import requests
-from django import forms
+
 from django.conf import settings
-from django.core.paginator import Page, Paginator
+from django.core.paginator import Page
 from django.views.generic.base import View
-from wagtail.admin.forms.choosers import BaseFilterForm
+
 from wagtail.admin.ui.tables import Column, TitleColumn
 from wagtail.admin.views.generic.chooser import (
     BaseChooseView,
     ChooseResultsViewMixin,
     ChooseViewMixin,
-    ChosenResponseMixin,
-    ChosenViewMixin,
     CreationFormMixin,
 )
 from wagtail.admin.viewsets.chooser import ChooserViewSet
-from wagtail.admin.widgets import BaseChooser
 
-
-class APIPaginator(Paginator):
-    """
-    Customisation of Django's Paginator class for use when we don't want it to handle
-    slicing on the result set, but still want it to generate the page numbering based
-    on a known result count.
-    """
-
-    def __init__(self, count, per_page, **kwargs):
-        self._count = int(count)
-        super().__init__([], per_page, **kwargs)
-
-    @property
-    def count(self):
-        return self._count
-
-
-class APIFilterForm(BaseFilterForm):
-    q = forms.CharField(
-        label="Search",
-        required=False,
-        widget=forms.TextInput(attrs={"placeholder": "Search"}),
-    )
-
-    def filter(self, objects):
-        search_query = self.cleaned_data.get("q")
-        if search_query:
-            objects = BaseRecordChooseView.get_results_page(self, query=search_query)
-        else:
-            objects = BaseRecordChooseView.get_results_page(self)
-        return objects
-
+from .forms import APIFilterForm
+from .pagination import APIPaginator
+from .mixins import (
+    RecordChosenResponseMixin,
+    RecordChosenViewMixin,
+)
+from .widgets import BaseRecordChooserWidget
 
 class BaseRecordChooseView(BaseChooseView):
     filter_form_class = APIFilterForm
@@ -120,46 +92,8 @@ class RecordChooseResultsView(
     pass
 
 
-class RecordChosenViewMixin(ChosenViewMixin):
-    def get_object(self, pk):
-        r = requests.get(f"{settings.CLIENT_BASE_URL}/get?id={pk}")
-        r.raise_for_status()
-        result = r.json()
-        result = result.get("data", [])[0].get("@template", {}).get("details", {})
-        return result
-
-
-class RecordChosenResponseMixin(ChosenResponseMixin):
-    def get_chosen_response_data(self, item):
-        return {
-            "id": item.get("iaid"),
-            "title": f"{item["summaryTitle"]} ({item["iaid"]})",
-        }
-
-
 class RecordChosenView(RecordChosenViewMixin, RecordChosenResponseMixin, View):
     pass
-
-
-class BaseRecordChooserWidget(BaseChooser):
-    def get_instance(self, value):
-        if value is None:
-            return None
-        elif isinstance(value, dict):
-            return value
-        else:
-            r = requests.get(f"{settings.CLIENT_BASE_URL}/get?id={value}")
-            result = r.json()
-            result = result.get("data", [])[0].get("@template", {}).get("details", {})
-            return result
-
-    def get_value_data_from_instance(self, instance):
-        return {
-            "id": instance["iaid"],
-            "title": f"{instance["summaryTitle"]} ({instance["iaid"]})",
-        }
-
-    chooser_modal_url_name = "record_chooser:choose"
 
 
 class RecordChooserViewSet(ChooserViewSet):

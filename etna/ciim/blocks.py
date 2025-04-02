@@ -6,7 +6,7 @@ from wagtail.blocks.field_block import FieldBlock
 from etna.core.blocks.image import APIImageChooserBlock
 
 from .fields import RecordChoiceField
-from .views.choosers import BaseRecordChooserWidget
+from .widgets import BaseRecordChooserWidget
 
 
 class RecordChooserBlock(FieldBlock):

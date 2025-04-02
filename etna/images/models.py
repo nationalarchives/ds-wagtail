@@ -8,8 +8,8 @@ from wagtail.images.models import AbstractImage, AbstractRendition
 from wagtail.search import index
 
 from etna.core.serializers import RichTextSerializer
-from etna.records.fields import RecordField
-from etna.records.serializers import RecordSerializer
+from etna.ciim.fields import RecordField
+from etna.ciim.serializers import RecordSerializer
 
 DEFAULT_SENSITIVE_IMAGE_WARNING = (
     "This image contains content which some people may find offensive or distressing."

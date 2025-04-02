@@ -6,7 +6,7 @@ import etna.analytics.mixins
 import etna.core.blocks.page_list
 import etna.articles.blocks
 import etna.media.blocks
-import etna.records.blocks
+import etna.ciim.blocks
 import etna.core.blocks.page_list
 import wagtail.blocks
 import wagtail.fields
@@ -250,7 +250,7 @@ class Migration(migrations.Migration):
                                                         ),
                                                         (
                                                             "record",
-                                                            etna.records.blocks.RecordChooserBlock(),
+                                                            etna.ciim.blocks.RecordChooserBlock(),
                                                         ),
                                                         (
                                                             "image",

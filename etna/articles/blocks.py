@@ -15,7 +15,7 @@ from etna.core.blocks import (
     YouTubeBlock,
 )
 from etna.media.blocks import MediaBlock
-from etna.records.blocks import RecordLinksBlock
+from etna.ciim.blocks import RecordLinksBlock
 
 
 class SectionContentBlock(blocks.StreamBlock):
