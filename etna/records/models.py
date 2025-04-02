@@ -102,7 +102,7 @@ class Record(DataLayerMixin, APIModel):
             # check it before returning it as one
             return candidate
         return ""
-    
+
     @property
     def pk(self):
         return self.iaid

@@ -12,8 +12,8 @@ class RecordChooser(BaseChooser):
     choose_another_text = "Choose another record"
     link_to_chosen_text = "Edit this record"
     chooser_modal_url_name = "record_chooser:choose"
-    show_edit_link=False
-    icon="doc-full"
+    show_edit_link = False
+    icon = "doc-full"
 
     def get_instance(self, pk):
         """Fetch related instance on edit form."""
@@ -22,7 +22,7 @@ class RecordChooser(BaseChooser):
         except Exception:
             logger.exception(f"Error fetching Record '{pk}'.")
             return None
-        
+
     def get_value_data_from_instance(self, instance):
         return {
             "id": instance.pk,

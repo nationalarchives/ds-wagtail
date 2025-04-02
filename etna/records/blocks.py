@@ -1,12 +1,13 @@
 from django.utils.translation import gettext_lazy as _
 from wagtail import blocks
 from wagtail.api import APIField
+from wagtail.blocks.field_block import FieldBlock
 
 from etna.core.blocks.image import APIImageChooserBlock
 
 from .fields import RecordChoiceField
 from .views.choosers import BaseRecordChooserWidget
-from wagtail.blocks.field_block import FieldBlock
+
 
 class RecordChooserBlock(FieldBlock):
     """
