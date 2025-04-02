@@ -7,9 +7,28 @@ on:
       - synchronize
 
 jobs:
-  ci:
-    name: Tests
-    uses: ./.github/workflows/_tests.yml
-    with:
-      python-version: ${{ vars.CI_PYTHON_VERSION }}
-      poetry-version: ${{ vars.CI_POETRY_VERSION }}
+  check-dependencies:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+      - uses: snok/install-poetry@v1
+      - name: Check Poetry dependencies
+        run: poetry show -o
+
+  check-migrations:
+    name: Check Migrations
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run tests
+        uses: ./.github/actions/check-migrations
+
+  test-python:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run tests
+        uses: ./.github/actions/python-tests
+        with:
+          codecov-token: ${{ secrets.CODECOV_TOKEN }}
