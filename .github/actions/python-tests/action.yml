@@ -11,6 +11,7 @@ runs:
   steps:
     - uses: actions/setup-python@v5
     - run: pip install flake8 isort black
+      shell: bash
     - name: Check compliance with isort
       run: isort -c .
       shell: bash
