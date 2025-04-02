@@ -16,7 +16,6 @@ from etna.core.cache_control import (
 from etna.errors import views as errors_view
 from etna.whatson import views as whatson_views
 
-
 handler404 = "etna.errors.views.custom_404_error_view"
 handler500 = "etna.errors.views.custom_500_error_view"
 handler503 = "etna.errors.views.custom_503_error_view"
