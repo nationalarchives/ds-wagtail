@@ -913,6 +913,12 @@ class ExhibitionPage(
         null=True,
     )
 
+    event_description = RichTextField(
+        blank=True,
+        help_text=_("The description to display for the events section."),
+        features=settings.INLINE_RICH_TEXT_FEATURES,
+    )
+
     event_links = StreamField(
         [
             (
