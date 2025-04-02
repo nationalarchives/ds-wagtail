@@ -55,7 +55,6 @@ def check_migration_file(file):
         print(f"Migration file {file} not found - likely deleted, skipping.")
         return False
 
-
     keywords = ["DeleteModel", "RenameModel", "RemoveField", "AlterField"]
     for keyword in keywords:
         if keyword in contents and f"# etna:allow{keyword}" not in contents:
