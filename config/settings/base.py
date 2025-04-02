@@ -153,12 +153,6 @@ ACCOUNT_SESSION_REMEMBER = False  # True|False disables "Remember me?" checkbox"
 LOGIN_URL = "/accounts/login"
 LOGIN_REDIRECT_URL = "/"
 WAGTAIL_FRONTEND_LOGIN_URL = LOGIN_URL
-# View access control
-IMAGE_VIEWER_REQUIRE_LOGIN = strtobool(os.getenv("IMAGE_VIEWER_REQUIRE_LOGIN", "True"))
-RECORD_DETAIL_REQUIRE_LOGIN = strtobool(
-    os.getenv("RECORD_DETAIL_REQUIRE_LOGIN", "True")
-)
-SEARCH_VIEWS_REQUIRE_LOGIN = strtobool(os.getenv("SEARCH_VIEWS_REQUIRE_LOGIN", "True"))
 # Custom adapter to prevent self-signup
 ACCOUNT_ADAPTER = "etna.users.adapters.NoSelfSignupAccountAdapter"
 ACCOUNT_FORMS = {"login": "etna.users.forms.EtnaLoginForm"}
@@ -370,12 +364,6 @@ CACHE_CONTROL_STALE_WHILE_REVALIDATE = int(
 # injected into template contexts using a custom context processor - allowing
 # conditional logic to be added to both Python and template code
 
-FEATURE_RECORD_LINKS_GO_TO_DISCOVERY = strtobool(
-    os.getenv("FEATURE_RECORD_LINKS_GO_TO_DISCOVERY", "False")
-)
-FEATURE_DOWNLOAD_RECORD_LINKS_GO_TO_DISCOVERY = strtobool(
-    os.getenv("FEATURE_DOWNLOAD_RECORD_LINKS_GO_TO_DISCOVERY", "False")
-)
 FEATURE_COOKIE_BANNER_ENABLED = strtobool(
     os.getenv("FEATURE_COOKIE_BANNER_ENABLED", "True")
 )
