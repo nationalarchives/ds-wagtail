@@ -14,11 +14,7 @@ from etna.core.cache_control import (
     apply_default_vary_headers,
 )
 from etna.errors import views as errors_view
-from etna.records import converters
 from etna.whatson import views as whatson_views
-
-register_converter(converters.ReferenceNumberConverter, "reference_number")
-register_converter(converters.IAIDConverter, "iaid")
 
 
 handler404 = "etna.errors.views.custom_404_error_view"
