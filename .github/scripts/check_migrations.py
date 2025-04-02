@@ -53,7 +53,7 @@ def check_migration_file(file):
             contents = f.read()
     except FileNotFoundError:
         print(f"Migration file {file} not found - likely deleted, skipping.")
-        return True
+        return False
 
 
     keywords = ["DeleteModel", "RenameModel", "RemoveField", "AlterField"]
