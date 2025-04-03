@@ -56,7 +56,7 @@ class BaseRecordChooseView(BaseChooseView):
             "size": self.per_page,
         }
 
-        client = CIIMClient(api_url=settings.CLIENT_BASE_URL, params=params)
+        client = CIIMClient(params=params)
         results, pagination = client.get_record_list()
         paginator = APIPaginator(pagination, self.per_page)
         return Page(results, page_number, paginator)

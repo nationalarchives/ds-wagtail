@@ -1,3 +1,5 @@
+from django.conf import settings
+
 from etna.core.api import JSONAPIClient
 
 
@@ -5,6 +7,10 @@ class CIIMClient(JSONAPIClient):
     """
     Client for interacting with the CIIM API.
     """
+
+    def __init__(self, api_url: str = settings.CLIENT_BASE_URL, params: dict = {}):
+        self.api_url: str = api_url
+        self.params: dict = params
 
     def get_record_instance(self, path: str = "/get"):
         """
@@ -23,10 +29,23 @@ class CIIMClient(JSONAPIClient):
         Get a list of records from the CIIM API.
         """
         response = self.get(path=path, headers={})
-        
+
         try:
             results = response.get("data", [])
             total = response.get("stats", {}).get("total", 0)
             return results, total
         except Exception as e:
             return {"error": str(e)}
+
+    def get_serialized_record(self):
+        """
+        Get a standardised serialized record from the CIIM API for the Wagtail API.
+        """
+        instance = self.get_record_instance()
+
+        if instance:
+            return {
+                "title": instance.get("summaryTitle", None),
+                "iaid": instance.get("iaid", None),
+                "reference_number": instance.get("referenceNumber", None),
+            }

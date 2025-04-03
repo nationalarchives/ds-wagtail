@@ -5,6 +5,7 @@ from wagtail.blocks.field_block import FieldBlock
 
 from etna.core.blocks.image import APIImageChooserBlock
 
+from .client import CIIMClient
 from .fields import RecordChoiceField
 from .widgets import BaseRecordChooserWidget
 
@@ -25,6 +26,14 @@ class RecordChooserBlock(FieldBlock):
 
     def get_form_state(self, value):
         return self.widget.get_value_data(value)
+
+    def get_api_representation(self, value, context=None):
+        params = {
+            "id": value,
+        }
+        client = CIIMClient(params=params)
+
+        return client.get_serialized_record()
 
     class Meta:
         icon = "archive"

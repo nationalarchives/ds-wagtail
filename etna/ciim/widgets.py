@@ -9,7 +9,7 @@ class BaseRecordChooserWidget(BaseChooser):
     Widget that extends Wagtail's BaseChooser widget
     for use on choosers that query the CIIM API.
     """
-    
+
     def get_instance(self, value):
         if value is None:
             return None
@@ -19,7 +19,7 @@ class BaseRecordChooserWidget(BaseChooser):
             params = {
                 "id": value,
             }
-            client = CIIMClient(api_url=settings.CLIENT_BASE_URL, params=params)
+            client = CIIMClient(params=params)
             return client.get_record_instance()
 
     def get_value_data_from_instance(self, instance):
