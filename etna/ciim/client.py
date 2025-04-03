@@ -12,7 +12,7 @@ class CIIMClient(JSONAPIClient):
         self.api_url: str = api_url
         self.params: dict = params
 
-    def get_record_instance(self, path: str = "/get"):
+    def get_record_instance(self, path: str = "/get") -> dict:
         """
         Get a single record instance from the CIIM API.
         """
@@ -28,7 +28,7 @@ class CIIMClient(JSONAPIClient):
             result = {"referenceNumber": None, "summaryTitle": "CLIENT ERROR", "iaid": self.params.get("id")}
         return result
 
-    def get_record_list(self, path: str = "/search"):
+    def get_record_list(self, path: str = "/search") -> tuple:
         """
         Get a list of records from the CIIM API.
         """
@@ -42,7 +42,7 @@ class CIIMClient(JSONAPIClient):
         total = response.get("stats", {}).get("total", 0)
         return results, total
 
-    def get_serialized_record(self):
+    def get_serialized_record(self) -> dict:
         """
         Get a standardised serialized record from the CIIM API for the Wagtail API.
         """
