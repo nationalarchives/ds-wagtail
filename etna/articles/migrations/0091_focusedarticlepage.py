@@ -6,7 +6,7 @@ import etna.analytics.mixins
 import etna.articles.blocks
 import etna.collections.models
 import etna.media.blocks
-import etna.records.blocks
+import etna.ciim.blocks
 import uuid
 import wagtail.blocks
 import wagtail.fields
@@ -269,7 +269,7 @@ class Migration(migrations.Migration):
                                                                 ),
                                                                 (
                                                                     "record",
-                                                                    etna.records.blocks.RecordChooserBlock(),
+                                                                    etna.ciim.blocks.RecordChooserBlock(),
                                                                 ),
                                                                 (
                                                                     "image",
@@ -532,7 +532,7 @@ class Migration(migrations.Migration):
                                                                 (
                                                                     "items",
                                                                     wagtail.blocks.ListBlock(
-                                                                        etna.records.blocks.RecordLinkBlock,
+                                                                        etna.ciim.blocks.RecordLinkBlock,
                                                                         label="Items",
                                                                     ),
                                                                 )
