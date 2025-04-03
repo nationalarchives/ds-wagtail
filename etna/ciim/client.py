@@ -1,7 +1,8 @@
 from django.conf import settings
+from sentry_sdk import capture_message
 
 from etna.core.api import JSONAPIClient
-from sentry_sdk import capture_message
+
 
 class CIIMClient(JSONAPIClient):
     """
@@ -25,7 +26,11 @@ class CIIMClient(JSONAPIClient):
         try:
             result = response.get("data", [])[0].get("@template", {}).get("details", {})
         except IndexError:
-            result = {"referenceNumber": None, "summaryTitle": "CLIENT ERROR", "iaid": self.params.get("id")}
+            result = {
+                "referenceNumber": None,
+                "summaryTitle": "CLIENT ERROR",
+                "iaid": self.params.get("id"),
+            }
         return result
 
     def get_record_list(self, path: str = "/search") -> tuple:

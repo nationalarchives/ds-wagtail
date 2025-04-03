@@ -44,7 +44,7 @@ class JSONAPIClient:
             response = get(
                 url,
                 params=self.params,
-                # headers=headers,
+                headers=headers,
             )
             response.raise_for_status()
         except (ConnectionError, Timeout, TooManyRedirects) as e:
