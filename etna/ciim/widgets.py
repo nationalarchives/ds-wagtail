@@ -24,8 +24,8 @@ class BaseRecordChooserWidget(BaseChooser):
 
     def get_value_data_from_instance(self, instance):
         return {
-            "id": instance["iaid"],
-            "title": f"{instance["summaryTitle"]} ({instance["iaid"]})",
+            "id": instance.get("iaid"),
+            "title": f"{instance.get("summaryTitle")} ({instance.get("iaid")})",
         }
 
     chooser_modal_url_name = "record_chooser:choose"

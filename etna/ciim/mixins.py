@@ -19,5 +19,5 @@ class RecordChosenResponseMixin(ChosenResponseMixin):
     def get_chosen_response_data(self, item):
         return {
             "id": item.get("iaid"),
-            "title": f"{item["summaryTitle"]} ({item["iaid"]})",
+            "title": f"{item.get("summaryTitle")} ({item.get("iaid")})",
         }
