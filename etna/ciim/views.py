@@ -1,4 +1,3 @@
-import requests
 from django.conf import settings
 from django.core.paginator import Page
 from django.views.generic.base import View
@@ -11,6 +10,7 @@ from wagtail.admin.views.generic.chooser import (
 )
 from wagtail.admin.viewsets.chooser import ChooserViewSet
 
+from .client import CIIMClient
 from .forms import APIFilterForm
 from .mixins import (
     RecordChosenResponseMixin,
@@ -18,7 +18,7 @@ from .mixins import (
 )
 from .pagination import APIPaginator
 from .widgets import BaseRecordChooserWidget
-from .client import CIIMClient
+
 
 class BaseRecordChooseView(BaseChooseView):
     filter_form_class = APIFilterForm
@@ -36,21 +36,6 @@ class BaseRecordChooseView(BaseChooseView):
             ),
             Column("title", label="Title", accessor="@template.details.summaryTitle"),
         ]
-
-    def get_object_list(self, query="*"):
-        page = 1
-        params = {
-            "q": query,
-            "size": self.per_page,
-            "from": (page - 1) * self.per_page,
-            "sort": "",
-            "sortOrder": "asc",
-        }
-        
-        client = CIIMClient(api_url=settings.CLIENT_BASE_URL, params=params)
-        results = client.get_record_list()
-        results = results.get("data", [])
-        return results
 
     def apply_object_list_ordering(self, objects):
         return objects
@@ -72,11 +57,9 @@ class BaseRecordChooseView(BaseChooseView):
         }
 
         client = CIIMClient(api_url=settings.CLIENT_BASE_URL, params=params)
-        results = client.get_record_list()
-        paginator = APIPaginator(results["stats"]["total"], self.per_page)
-        page = Page(results.get("data", []), page_number, paginator)
-
-        return page
+        results, pagination = client.get_record_list()
+        paginator = APIPaginator(pagination, self.per_page)
+        return Page(results, page_number, paginator)
 
 
 class RecordChooseView(ChooseViewMixin, CreationFormMixin, BaseRecordChooseView):

@@ -3,9 +3,9 @@ from django.core.paginator import Paginator
 
 class APIPaginator(Paginator):
     """
-    Customisation of Django's Paginator class for use when we don't want it to handle
-    slicing on the result set, but still want it to generate the page numbering based
-    on a known result count.
+    Customisation of Django's Paginator class to take in the
+    total number of results, number of results per page,
+    and return the _count value as our total value
     """
 
     def __init__(self, count, per_page, **kwargs):

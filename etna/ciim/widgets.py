@@ -1,9 +1,15 @@
-from .client import CIIMClient
 from django.conf import settings
 from wagtail.admin.widgets import BaseChooser
 
+from .client import CIIMClient
+
 
 class BaseRecordChooserWidget(BaseChooser):
+    """
+    Widget that extends Wagtail's BaseChooser widget
+    for use on choosers that query the CIIM API.
+    """
+    
     def get_instance(self, value):
         if value is None:
             return None
@@ -14,9 +20,7 @@ class BaseRecordChooserWidget(BaseChooser):
                 "id": value,
             }
             client = CIIMClient(api_url=settings.CLIENT_BASE_URL, params=params)
-            result = client.get_record_instance()
-            result = result.get("data", [])[0].get("@template", {}).get("details", {})
-            return result
+            return client.get_record_instance()
 
     def get_value_data_from_instance(self, instance):
         return {
