@@ -1,4 +1,4 @@
-import requests
+from .client import CIIMClient
 from django.conf import settings
 from wagtail.admin.widgets import BaseChooser
 
@@ -10,8 +10,11 @@ class BaseRecordChooserWidget(BaseChooser):
         elif isinstance(value, dict):
             return value
         else:
-            r = requests.get(f"{settings.CLIENT_BASE_URL}/get?id={value}")
-            result = r.json()
+            params = {
+                "id": value,
+            }
+            client = CIIMClient(api_url=settings.CLIENT_BASE_URL, params=params)
+            result = client.get_record_instance()
             result = result.get("data", [])[0].get("@template", {}).get("details", {})
             return result
 

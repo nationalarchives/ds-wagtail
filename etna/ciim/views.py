@@ -18,7 +18,7 @@ from .mixins import (
 )
 from .pagination import APIPaginator
 from .widgets import BaseRecordChooserWidget
-
+from .client import CIIMClient
 
 class BaseRecordChooseView(BaseChooseView):
     filter_form_class = APIFilterForm
@@ -46,10 +46,9 @@ class BaseRecordChooseView(BaseChooseView):
             "sort": "",
             "sortOrder": "asc",
         }
-
-        r = requests.get(f"{settings.CLIENT_BASE_URL}/search", params=params)
-        r.raise_for_status()
-        results = r.json()
+        
+        client = CIIMClient(api_url=settings.CLIENT_BASE_URL, params=params)
+        results = client.get_record_list()
         results = results.get("data", [])
         return results
 
@@ -72,11 +71,10 @@ class BaseRecordChooseView(BaseChooseView):
             "size": self.per_page,
         }
 
-        r = requests.get(f"{settings.CLIENT_BASE_URL}/search", params=params)
-        r.raise_for_status()
-        result = r.json()
-        paginator = APIPaginator(result["stats"]["total"], self.per_page)
-        page = Page(result.get("data", []), page_number, paginator)
+        client = CIIMClient(api_url=settings.CLIENT_BASE_URL, params=params)
+        results = client.get_record_list()
+        paginator = APIPaginator(results["stats"]["total"], self.per_page)
+        page = Page(results.get("data", []), page_number, paginator)
 
         return page
 
