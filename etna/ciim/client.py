@@ -27,8 +27,8 @@ class CIIMClient(JSONAPIClient):
             result = response.get("data", [])[0].get("@template", {}).get("details", {})
         except IndexError:
             result = {
-                "referenceNumber": None,
-                "summaryTitle": "CLIENT ERROR",
+                "referenceNumber": "[unknown]",
+                "summaryTitle": "[unknown]",
                 "iaid": self.params.get("id"),
             }
         return result
