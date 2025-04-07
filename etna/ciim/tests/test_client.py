@@ -1,5 +1,6 @@
 import unittest
 from unittest.mock import patch
+
 from etna.ciim.client import CIIMClient
 
 
@@ -25,11 +26,14 @@ class TestCIIMClient(unittest.TestCase):
         }
 
         result = self.client.get_record_instance()
-        self.assertEqual(result, {
-            "summaryTitle": "Test Title",
-            "iaid": "C1234",
-            "referenceNumber": "KV 1/2/3",
-        })
+        self.assertEqual(
+            result,
+            {
+                "summaryTitle": "Test Title",
+                "iaid": "C1234",
+                "referenceNumber": "KV 1/2/3",
+            },
+        )
 
     @patch("etna.ciim.client.CIIMClient.get")
     def test_get_record_instance_empty_data(self, mock_get):
@@ -37,11 +41,14 @@ class TestCIIMClient(unittest.TestCase):
         mock_get.return_value = {"data": []}
 
         result = self.client.get_record_instance()
-        self.assertEqual(result, {
-            "referenceNumber": "[unknown]",
-            "summaryTitle": "[unknown]",
-            "iaid": None,
-        })
+        self.assertEqual(
+            result,
+            {
+                "referenceNumber": "[unknown]",
+                "summaryTitle": "[unknown]",
+                "iaid": None,
+            },
+        )
 
     @patch("etna.ciim.client.CIIMClient.get")
     def test_get_record_list_success(self, mock_get):
@@ -74,11 +81,14 @@ class TestCIIMClient(unittest.TestCase):
         }
 
         result = self.client.get_serialized_record()
-        self.assertEqual(result, {
-            "title": "Record Title",
-            "iaid": "C123",
-            "reference_number": "WO 1/2/3",
-        })
+        self.assertEqual(
+            result,
+            {
+                "title": "Record Title",
+                "iaid": "C123",
+                "reference_number": "WO 1/2/3",
+            },
+        )
 
     @patch("etna.ciim.client.CIIMClient.get_record_instance")
     def test_get_serialized_record_empty(self, mock_get_record_instance):

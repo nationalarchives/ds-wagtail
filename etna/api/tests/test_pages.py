@@ -259,23 +259,23 @@ class APIResponseTest(WagtailPageTestCase):
                             },
                         },
                         {
-                          "id": "48f967ae-4cc6-4f13-bb12-6c648e747ec3",
-                          "type": "record_links",
-                          "value": {
-                            "items": [
-                              {
-                                "id": "acacaa55-924f-4594-bc0b-9f5cb2303ea9",
-                                "type": "item",
-                                "value": {
-                                  "record": "D7376859",
-                                  "record_dates": "12 April 2021",
-                                  "thumbnail_image": cls.test_image.id,
-                                  "descriptive_title": "Record title"
-                                }
-                              }
-                            ]
-                          }
-                        }
+                            "id": "48f967ae-4cc6-4f13-bb12-6c648e747ec3",
+                            "type": "record_links",
+                            "value": {
+                                "items": [
+                                    {
+                                        "id": "acacaa55-924f-4594-bc0b-9f5cb2303ea9",
+                                        "type": "item",
+                                        "value": {
+                                            "record": "D7376859",
+                                            "record_dates": "12 April 2021",
+                                            "thumbnail_image": cls.test_image.id,
+                                            "descriptive_title": "Record title",
+                                        },
+                                    }
+                                ]
+                            },
+                        },
                     ],
                     "heading": "Heading text",
                 },
@@ -318,8 +318,6 @@ class APIResponseTest(WagtailPageTestCase):
         cls.article_index.featured_article = cls.article
         cls.article_index.featured_pages = cls.FEATURED_PAGES_JSON
         cls.article_index.save()
-
-        
 
         cls.highlight_gallery = HighlightGalleryPageFactory(
             parent=cls.arts,

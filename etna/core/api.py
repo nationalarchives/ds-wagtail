@@ -62,7 +62,7 @@ class JSONAPIClient:
                 raise Exception(
                     f"Request failed with status code {response.status_code}"
                 )
-        except Exception :
+        except Exception:
             raise Exception("Request failed")
         try:
             return response.json()
