@@ -12,6 +12,7 @@ from etna.articles.factories import (
     ArticleIndexPageFactory,
     ArticlePageFactory,
     FocusedArticlePageFactory,
+    RecordArticlePageFactory,
 )
 from etna.articles.models import ArticleTag
 from etna.collections.factories import (
@@ -158,6 +159,15 @@ class APIResponseTest(WagtailPageTestCase):
             published_date=DATE_2,
         )
 
+        cls.record_article = RecordArticlePageFactory(
+            parent=cls.article_index,
+            title="record_article",
+            page_topics=[PageTopic(topic=cls.arts)],
+            page_time_periods=[PageTimePeriod(time_period=cls.early_modern)],
+            first_published_at=DATE_3,
+            published_date=DATE_3,
+        )
+
         cls.BODY_JSON = [
             {
                 "id": "9da308ae-afea-4177-b200-bd3d50aae884",
@@ -206,8 +216,8 @@ class APIResponseTest(WagtailPageTestCase):
                             "id": "b505f636-f3d1-4d4b-b368-69183e324e6e",
                             "type": "featured_record_article",
                             "value": {
-                                "page": 3
-                            },  # TODO: Set to cls.record_article.id when we can serialize records
+                                "page": cls.record_article.id,
+                            },
                         },
                         {
                             "id": "a48ac0b2-be83-4b01-ae23-4fd1fa525322",
@@ -248,24 +258,24 @@ class APIResponseTest(WagtailPageTestCase):
                                 ],
                             },
                         },
-                        # { TODO: Uncomment when we can serialize records
-                        #   "id": "48f967ae-4cc6-4f13-bb12-6c648e747ec3",
-                        #   "type": "record_links",
-                        #   "value": {
-                        #     "items": [
-                        #       {
-                        #         "id": "acacaa55-924f-4594-bc0b-9f5cb2303ea9",
-                        #         "type": "item",
-                        #         "value": {
-                        #           "record": "D7376859",
-                        #           "record_dates": "12 April 2021",
-                        #           "thumbnail_image": cls.test_image.id,
-                        #           "descriptive_title": "Record title"
-                        #         }
-                        #       }
-                        #     ]
-                        #   }
-                        # }
+                        {
+                          "id": "48f967ae-4cc6-4f13-bb12-6c648e747ec3",
+                          "type": "record_links",
+                          "value": {
+                            "items": [
+                              {
+                                "id": "acacaa55-924f-4594-bc0b-9f5cb2303ea9",
+                                "type": "item",
+                                "value": {
+                                  "record": "D7376859",
+                                  "record_dates": "12 April 2021",
+                                  "thumbnail_image": cls.test_image.id,
+                                  "descriptive_title": "Record title"
+                                }
+                              }
+                            ]
+                          }
+                        }
                     ],
                     "heading": "Heading text",
                 },
@@ -309,13 +319,7 @@ class APIResponseTest(WagtailPageTestCase):
         cls.article_index.featured_pages = cls.FEATURED_PAGES_JSON
         cls.article_index.save()
 
-        # cls.record_article = RecordArticlePageFactory(
-        #     parent=cls.article_index,
-        #     title="record_article",
-        #     page_topics=[PageTopic(topic=cls.arts)],
-        #     page_time_periods=[PageTimePeriod(time_period=cls.early_modern)],
-        #     first_published_at=DEFAULT_DATE,
-        # ) TODO: Uncomment when we can serialize records
+        
 
         cls.highlight_gallery = HighlightGalleryPageFactory(
             parent=cls.arts,
@@ -347,6 +351,7 @@ class APIResponseTest(WagtailPageTestCase):
             "ARTICLE_ID": str(self.article.id),
             "ALERT_UID": str(self.alert.uid),
             "FOCUSED_ID": str(self.focused_article.id),
+            "RECORD_ID": str(self.record_article.id),
             "ARTS_ID": str(self.arts.id),
             "EARLY_MODERN_ID": str(self.early_modern.id),
             "POSTWAR_ID": str(self.postwar.id),
@@ -391,6 +396,7 @@ class APIResponseTest(WagtailPageTestCase):
         for page in (
             self.article,
             self.focused_article,
+            self.record_article,
             self.postwar,
             self.arts,
             self.early_modern,
