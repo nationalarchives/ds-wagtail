@@ -49,7 +49,7 @@ class JSONAPIClient:
             response.raise_for_status()
         except (ConnectionError, Timeout, TooManyRedirects) as e:
             raise RequestException(str(e))
-        except HTTPError as e:
+        except HTTPError:
             if response.status_code == 400:
                 raise APIClientError("Bad request", response=response)
             elif response.status_code == 401:
@@ -62,7 +62,7 @@ class JSONAPIClient:
                 raise Exception(
                     f"Request failed with status code {response.status_code}"
                 )
-        except Exception as e:
+        except Exception :
             raise Exception("Request failed")
         try:
             return response.json()
