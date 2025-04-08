@@ -2,7 +2,7 @@
 
 from django.db import migrations, models
 import django.db.models.deletion
-import etna.records.fields
+import etna.ciim.fields
 import wagtail.fields
 
 
@@ -29,7 +29,7 @@ class Migration(migrations.Migration):
                 ("title", models.CharField(max_length=255, null=True)),
                 (
                     "record",
-                    etna.records.fields.RecordField(verbose_name="record"),
+                    etna.ciim.fields.RecordField(verbose_name="record"),
                 ),
                 (
                     "date_text",

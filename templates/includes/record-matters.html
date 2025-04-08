@@ -12,7 +12,7 @@
                 <dt>Catalogue reference</dt>
                 <dd>
                     <a class="record-matters__text record-matters__text--bold"
-href="{% record_url record is_editorial=True %}" data-component-name="Record article body" data-link-type="Link" data-link="{{ record.reference_number }}">{{ record.reference_number }}</a>
+href="{% record_url record %}" data-component-name="Record article body" data-link-type="Link" data-link="{{ record.reference_number }}">{{ record.reference_number }}</a>
                 </dd>
             </dl>
             -->
@@ -24,7 +24,7 @@ href="{% record_url record is_editorial=True %}" data-component-name="Record art
             {% if record.reference_number %}
                 <p class="tna-!--no-margin-bottom">
                     Catalogue reference: <a class="record-matters__text record-matters__text--bold"
-href="{% record_url record is_editorial=True %}" data-component-name="Record article body" data-link-type="Link" data-link="{{ record.reference_number }}">{{ record.reference_number }}</a>
+href="{% record_url record %}" data-component-name="Record article body" data-link-type="Link" data-link="{{ record.reference_number }}">{{ record.reference_number }}</a>
                 </p>
             {% endif %}
 
@@ -38,7 +38,7 @@ href="{% record_url record is_editorial=True %}" data-component-name="Record art
                 <div class="tna-button-group tna-button-group--full tna-!--margin-top-l">
                 {% if record %}
                     <a class="tna-button tna-button--accent"
-                        href="{% record_url record is_editorial=True %}"
+                        href="{% record_url record %}"
                         rel="noopener noreferrer"
                         data-component-name="Record article body"
                         data-link-type="Button"

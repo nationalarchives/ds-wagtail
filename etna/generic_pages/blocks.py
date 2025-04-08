@@ -1,6 +1,7 @@
 from django.core.exceptions import ValidationError
 from wagtail import blocks
 
+from etna.ciim.blocks import RecordLinksBlock
 from etna.core.blocks import (
     AccordionsBlock,
     ButtonBlock,
@@ -27,7 +28,6 @@ from etna.core.blocks import (
     YouTubeBlock,
 )
 from etna.media.blocks import MediaBlock
-from etna.records.blocks import RecordLinksBlock
 
 
 class SectionContentBlock(blocks.StreamBlock):

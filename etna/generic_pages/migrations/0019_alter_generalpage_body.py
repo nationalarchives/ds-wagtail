@@ -5,7 +5,7 @@ import etna.core.blocks.image
 import etna.core.blocks.page_chooser
 import etna.core.blocks.paragraph
 import etna.media.blocks
-import etna.records.blocks
+import etna.ciim.blocks
 import wagtail.blocks
 import wagtail.documents.blocks
 import wagtail.fields
@@ -530,7 +530,7 @@ class Migration(migrations.Migration):
                                                         (
                                                             "items",
                                                             wagtail.blocks.ListBlock(
-                                                                etna.records.blocks.RecordLinkBlock,
+                                                                etna.ciim.blocks.RecordLinkBlock,
                                                                 label="Items",
                                                             ),
                                                         )
