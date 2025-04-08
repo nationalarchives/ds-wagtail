@@ -1,7 +1,12 @@
 import unittest
 from unittest.mock import patch
 
-from etna.ciim.client import CIIMClient
+from etna.ciim.client import (
+    DEFAULT_IAID,
+    DEFAULT_REFERENCE_NUMBER,
+    DEFAULT_SUMMARY_TITLE,
+    CIIMClient,
+)
 
 
 class TestCIIMClient(unittest.TestCase):
@@ -44,9 +49,9 @@ class TestCIIMClient(unittest.TestCase):
         self.assertEqual(
             result,
             {
-                "referenceNumber": "[unknown]",
-                "summaryTitle": "[unknown]",
-                "iaid": None,
+                "referenceNumber": DEFAULT_REFERENCE_NUMBER,
+                "summaryTitle": DEFAULT_SUMMARY_TITLE,
+                "iaid": DEFAULT_IAID,
             },
         )
 

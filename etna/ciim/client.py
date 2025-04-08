@@ -3,6 +3,10 @@ from sentry_sdk import capture_message
 
 from etna.core.api import JSONAPIClient
 
+DEFAULT_REFERENCE_NUMBER = "[unknown]"
+DEFAULT_SUMMARY_TITLE = "[unknown]"
+DEFAULT_IAID = None
+
 
 class CIIMClient(JSONAPIClient):
     """
@@ -13,23 +17,29 @@ class CIIMClient(JSONAPIClient):
         self.api_url: str = api_url
         self.params: dict = params
 
+    def get(self, path: str = "/", headers: dict = None) -> dict:
+        try:
+            return super().get(path=path, headers=headers)
+        except Exception:
+            capture_message(
+                "CIIMClient.get: Failed to fetch data from CIIM API", level="error"
+            )
+            return {"data": []}
+
     def get_record_instance(self, path: str = "/get") -> dict:
         """
         Get a single record instance from the CIIM API.
         """
-        try:
-            response = self.get(path=path, headers={})
-        except Exception as e:
-            capture_message(f"CIIMClient.get_record_instance: {e}", level="error")
-            response = {"data": []}
+
+        response = self.get(path=path, headers={})
 
         try:
             result = response.get("data", [])[0].get("@template", {}).get("details", {})
         except IndexError:
             result = {
-                "referenceNumber": "[unknown]",
-                "summaryTitle": "[unknown]",
-                "iaid": self.params.get("id"),
+                "referenceNumber": DEFAULT_REFERENCE_NUMBER,
+                "summaryTitle": DEFAULT_SUMMARY_TITLE,
+                "iaid": self.params.get("id", DEFAULT_IAID),
             }
         return result
 
@@ -37,11 +47,8 @@ class CIIMClient(JSONAPIClient):
         """
         Get a list of records from the CIIM API.
         """
-        try:
-            response = self.get(path=path, headers={})
-        except Exception as e:
-            capture_message(f"CIIMClient.get_record_list: {e}", level="error")
-            response = {"data": []}
+
+        response = self.get(path=path, headers={})
 
         results = response.get("data", [])
         total = response.get("stats", {}).get("total", 0)
@@ -55,7 +62,9 @@ class CIIMClient(JSONAPIClient):
 
         if instance:
             return {
-                "title": instance.get("summaryTitle", None),
-                "iaid": instance.get("iaid", None),
-                "reference_number": instance.get("referenceNumber", None),
+                "title": instance.get("summaryTitle", DEFAULT_SUMMARY_TITLE),
+                "iaid": instance.get("iaid", DEFAULT_IAID),
+                "reference_number": instance.get(
+                    "referenceNumber", DEFAULT_REFERENCE_NUMBER
+                ),
             }
