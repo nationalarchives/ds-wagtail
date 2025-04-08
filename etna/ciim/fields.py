@@ -17,9 +17,8 @@ class RecordChoiceField(CharField):
 class RecordField(Field):
     """
     A model field that presents editors with a ``RecordChooser`` widget
-    to allow selection of a record from CIIM, stores the ``iaid`` of
-    that record in the database, then converts it into a ``LazyRecord``
-    when the model instance is retrieved again from the database.
+    to allow selection of a record from CIIM, and then stores the ``iaid`` of
+    that record in the database.
     """
 
     empty_values = (None, "")
