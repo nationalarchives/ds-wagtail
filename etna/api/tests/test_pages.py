@@ -1,6 +1,7 @@
 import os
 import re
 from datetime import datetime, timezone
+from unittest.mock import patch
 
 from django.conf import settings
 from wagtail.models import Site
@@ -405,3 +406,22 @@ class APIResponseTest(WagtailPageTestCase):
         ):
             with self.subTest(page.title):
                 self.compare_json(str(page.id), page.title)
+
+    @patch("etna.ciim.client.CIIMClient.get")
+    def test_record_article_serializer(self, mock_record):
+        mock_record.return_value = {
+            "data": [
+                {
+                    "@template": {
+                        "details": {
+                            "summaryTitle": "Test record title",
+                            "iaid": "C4761957",
+                            "referenceNumber": "TEST 1/2/3",
+                        }
+                    }
+                }
+            ]
+        }
+        self.compare_json(
+            str(self.record_article.id), f"{self.record_article.title}_serialized"
+        )
