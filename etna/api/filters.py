@@ -67,28 +67,40 @@ class AuthorFilter(BaseFilterBackend):
             queryset = queryset.filter(**{"author_tags__author__slug": author})
         return queryset
 
-class FilterDateFromTo(BaseFilterBackend):
-    def filter_queryset(self, request, queryset, view):
-        if "from" in request.GET:
-            try:
-                from_date = request.GET["from"]
-                if not from_date:
-                    raise ValueError()
-            except ValueError:
-                raise BadRequestError("you cannot provide a blank 'from' date")
-            queryset = queryset.filter(**{"sessions__start__gte": from_date}).order_by(
-                "sessions__start"
-            )
 
-        if "to" in request.GET:
-            try:
-                to_date = request.GET["to"]
-                if not to_date:
-                    raise ValueError()
-            except ValueError:
-                raise BadRequestError("you cannot provide a blank 'to' date")
-            queryset = queryset.filter(**{"sessions__start__lte": to_date}).order_by(
-                "sessions__start"
-            )
+class FilterDateFromTo(BaseFilterBackend):
+    """ 
+    Set `field_name` to the field you want to filter by.
+    For example, if you want to filter by `published_date`, set it to 'published_date'
+    """
+    field_name = ""
+
+    def filter_queryset(self, request, queryset, view):
+        from_date = request.GET.get("from")
+        to_date = request.GET.get("to")
+
+        if not from_date and not to_date:
+            # Default date range, today to 1 year later
+            today = datetime.date.today()
+            year_later = today + datetime.timedelta(days=365)
+            return queryset.filter(
+                **{f"{self.field_name}__range": [today, year_later]}
+            ).order_by(f"{self.field_name}")
+        
+        if from_date and to_date:
+            queryset = queryset.filter(
+                **{f"{self.field_name}__range": [from_date, to_date]}
+            ).order_by(f"{self.field_name}")
+        elif from_date:
+            queryset = queryset.filter(
+                **{f"{self.field_name}__gte": from_date}
+            ).order_by(f"{self.field_name}")
+        elif to_date:
+            queryset = queryset.filter(
+                **{f"{self.field_name}__lte": to_date}
+            ).order_by(f"{self.field_name}")
         
         return queryset
+    
+class FilterDateFromToSessionStart(FilterDateFromTo):
+    field_name = "sessions__start"

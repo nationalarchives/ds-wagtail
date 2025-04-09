@@ -1,10 +1,10 @@
 from .pages import CustomPagesAPIViewSet
-from ..filters import FilterDateFromTo
+from ..filters import FilterDateFromToSessionStart
 from etna.whatson.models import EventPage
 
 class EventPagesAPIViewSet(CustomPagesAPIViewSet):
     filter_backends = [
-        FilterDateFromTo
+        FilterDateFromToSessionStart
     ] + CustomPagesAPIViewSet.filter_backends
 
     known_query_parameters = CustomPagesAPIViewSet.known_query_parameters.union(
