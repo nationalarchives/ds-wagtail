@@ -66,3 +66,29 @@ class AuthorFilter(BaseFilterBackend):
                 raise BadRequestError("you must provide an author name")
             queryset = queryset.filter(**{"author_tags__author__slug": author})
         return queryset
+
+class FilterDateFromTo(BaseFilterBackend):
+    def filter_queryset(self, request, queryset, view):
+        if "from" in request.GET:
+            try:
+                from_date = request.GET["from"]
+                if not from_date:
+                    raise ValueError()
+            except ValueError:
+                raise BadRequestError("you cannot provide a blank 'from' date")
+            queryset = queryset.filter(**{"sessions__start__gte": from_date}).order_by(
+                "sessions__start"
+            )
+
+        if "to" in request.GET:
+            try:
+                to_date = request.GET["to"]
+                if not to_date:
+                    raise ValueError()
+            except ValueError:
+                raise BadRequestError("you cannot provide a blank 'to' date")
+            queryset = queryset.filter(**{"sessions__start__lte": to_date}).order_by(
+                "sessions__start"
+            )
+        
+        return queryset
