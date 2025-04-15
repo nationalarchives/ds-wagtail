@@ -3,11 +3,11 @@ from wagtailmedia.api.views import MediaAPIViewSet
 
 from .blog_posts import BlogPostsAPIViewSet
 from .blogs import BlogsAPIViewSet
+from .events import EventPagesAPIViewSet
 from .images import CustomImagesAPIViewSet
 from .page_preview import PagePreviewAPIViewSet
 from .pages import CustomPagesAPIViewSet
 from .redirects import RedirectsAPIViewSet
-from .events import EventPagesAPIViewSet
 
 api_router = WagtailAPIRouter("wagtailapi")
 api_router.register_endpoint("pages", CustomPagesAPIViewSet)

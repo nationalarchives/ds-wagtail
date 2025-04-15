@@ -69,10 +69,11 @@ class AuthorFilter(BaseFilterBackend):
 
 
 class FilterDateFromTo(BaseFilterBackend):
-    """ 
+    """
     Set `field_name` to the field you want to filter by.
     For example, if you want to filter by `published_date`, set it to 'published_date'
     """
+
     field_name = ""
 
     def filter_queryset(self, request, queryset, view):
@@ -86,7 +87,7 @@ class FilterDateFromTo(BaseFilterBackend):
             return queryset.filter(
                 **{f"{self.field_name}__range": [today, year_later]}
             ).order_by(f"{self.field_name}")
-        
+
         if from_date and to_date:
             queryset = queryset.filter(
                 **{f"{self.field_name}__range": [from_date, to_date]}
@@ -96,11 +97,12 @@ class FilterDateFromTo(BaseFilterBackend):
                 **{f"{self.field_name}__gte": from_date}
             ).order_by(f"{self.field_name}")
         elif to_date:
-            queryset = queryset.filter(
-                **{f"{self.field_name}__lte": to_date}
-            ).order_by(f"{self.field_name}")
-        
+            queryset = queryset.filter(**{f"{self.field_name}__lte": to_date}).order_by(
+                f"{self.field_name}"
+            )
+
         return queryset
-    
+
+
 class FilterDateFromToSessionStart(FilterDateFromTo):
     field_name = "sessions__start"
