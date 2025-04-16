@@ -12,9 +12,24 @@ class PublishedDateFilter(BaseFilterBackend):
     contain blog posts that were published in the specified year/month/day.
     """
 
-    # TODO: Reduce cyclomatic complexity from 14 to 12 or below
-    # flake8: noqa: C901
     def filter_queryset(self, request, queryset, view):
+        self.validate_date_filters(request)
+
+        if "year" in request.GET:
+            year = self.get_year(request)
+            queryset = queryset.filter(**{"published_date__year": year})
+
+            if "month" in request.GET:
+                month = self.get_month(request)
+                queryset = queryset.filter(**{"published_date__month": month})
+
+                if "day" in request.GET:
+                    day = self.get_day(request, year, month)
+                    queryset = queryset.filter(**{"published_date__day": day})
+
+        return queryset
+
+    def validate_date_filters(self, request):
         if "day" in request.GET and (
             "year" not in request.GET or "month" not in request.GET
         ):
@@ -24,37 +39,31 @@ class PublishedDateFilter(BaseFilterBackend):
         if "month" in request.GET and "year" not in request.GET:
             raise BadRequestError("cannot use month filter without a year filter")
 
-        if "year" in request.GET:
-            try:
-                year = int(request.GET["year"])
-                if year < 0:
-                    raise ValueError()
-            except ValueError:
-                raise BadRequestError("year must be a positive integer")
-            queryset = queryset.filter(**{"published_date__year": year})
+    def get_year(self, request):
+        try:
+            year = int(request.GET["year"])
+            if year < 0:
+                raise ValueError()
+        except ValueError:
+            raise BadRequestError("year must be a positive integer")
+        return year
 
-            if "month" in request.GET:
-                try:
-                    month = int(request.GET["month"])
-                    if month < 0 or month > 12:
-                        raise ValueError()
-                except ValueError:
-                    raise BadRequestError(
-                        "month must be a positive integer between 1-12"
-                    )
-                queryset = queryset.filter(**{"published_date__month": month})
+    def get_month(self, request):
+        try:
+            month = int(request.GET["month"])
+            if month < 1 or month > 12:
+                raise ValueError()
+        except ValueError:
+            raise BadRequestError("month must be a positive integer between 1-12")
+        return month
 
-                if "day" in request.GET:
-                    try:
-                        day = int(request.GET["day"])
-                        datetime.datetime(year, month, day)
-                    except ValueError:
-                        raise BadRequestError(
-                            f"{year}-{month}-{day} is not a valid date"
-                        )
-                    queryset = queryset.filter(**{"published_date__day": day})
-
-        return queryset
+    def get_day(self, request, year, month):
+        try:
+            day = int(request.GET["day"])
+            datetime.datetime(year, month, day)
+        except ValueError:
+            raise BadRequestError(f"{year}-{month}-{day} is not a valid date")
+        return day
 
 
 class AuthorFilter(BaseFilterBackend):
