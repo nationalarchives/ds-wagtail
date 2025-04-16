@@ -2,6 +2,8 @@ import datetime
 
 from rest_framework.filters import BaseFilterBackend
 from wagtail.api.v2.utils import BadRequestError
+from wagtail.models import Site
+from wagtail.search.backends.database.postgres.postgres import PostgresSearchResults
 
 
 class PublishedDateFilter(BaseFilterBackend):
@@ -65,4 +67,86 @@ class AuthorFilter(BaseFilterBackend):
             except ValueError:
                 raise BadRequestError("you must provide an author name")
             queryset = queryset.filter(**{"author_tags__author__slug": author})
+        return queryset
+
+
+class AliasFilter(BaseFilterBackend):
+    """
+    Filter to remove aliases from the queryset.
+    This needs to go after all other filters, and before the SearchFilter, as
+    SearchResults querysets are not filterable.
+    """
+
+    def filter_queryset(self, request, queryset, view):
+        if "include_aliases" not in request.GET:
+            if not isinstance(queryset, PostgresSearchResults):
+                alias_pages = queryset.filter(alias_of_id__isnull=False).values(
+                    "id", "alias_of_id"
+                )
+                original_ids = set(
+                    queryset.filter(alias_of_id__isnull=True).values_list(
+                        "id", flat=True
+                    )
+                )
+                alias_ids = set(page["id"] for page in alias_pages)
+                alias_of_ids = alias_pages.values_list("alias_of_id", flat=True)
+
+                # Exclude any pages with matching alias_of_ids - aliases of the same original page
+                for alias_of_id in alias_of_ids:
+                    alias_pages_with_same_id = alias_pages.filter(
+                        alias_of_id=alias_of_id
+                    )
+                    if alias_pages_with_same_id.count() > 1:
+                        first_page_id = alias_pages_with_same_id.order_by(
+                            "depth"
+                        ).first()["id"]
+                        queryset = queryset.exclude(
+                            id__in=alias_pages_with_same_id.values_list(
+                                "id", flat=True
+                            ).exclude(id=first_page_id)
+                        )
+
+                # Exclude any pages that are aliases of pages in the current queryset
+                for page in alias_pages:
+                    if (
+                        page["alias_of_id"] in original_ids
+                        or page["alias_of_id"] in alias_ids
+                    ):
+                        queryset = queryset.exclude(id=page["id"])
+        return queryset
+
+
+class SiteFilter(BaseFilterBackend):
+    def filter_queryset(self, request, queryset, view):
+        # Check if we have a specific site to look for
+        if "site" in request.GET:
+            # Optionally allow querying by port
+            if ":" in request.GET["site"]:
+                (hostname, port) = request.GET["site"].split(":", 1)
+                query = {
+                    "hostname": hostname,
+                    "port": port,
+                }
+            else:
+                query = {
+                    "hostname": request.GET["site"],
+                }
+            try:
+                site = Site.objects.get(**query)
+            except Site.MultipleObjectsReturned:
+                raise BadRequestError(
+                    "Your query returned multiple sites. Try adding a port number to your site filter."
+                )
+        else:
+            # Otherwise, find the site from the request
+            site = Site.find_for_request(request)
+
+        if site:
+            base_queryset = queryset
+            queryset = base_queryset.descendant_of(site.root_page, inclusive=True)
+
+        else:
+            # No sites configured
+            queryset = queryset.none()
+
         return queryset
