@@ -10,7 +10,7 @@ from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
 from wagtail.api import APIField
 from wagtail.fields import RichTextField, StreamField
 from wagtail.images import get_image_model_string
-from wagtail.models import Page
+from wagtail.models import Page, Orderable
 
 from etna.core.models import BasePage
 from etna.core.serializers import (
@@ -37,7 +37,7 @@ class PeopleIndexPage(BasePage):
     """
 
     max_count = 1
-    subpage_types = ["people.PersonPage"]
+    subpage_types = ["people.PersonPage", "people.PeopleCategoryPage"]
 
     parent_page_types = ["home.HomePage"]
 
@@ -94,7 +94,70 @@ class ShopItem(models.Model):
     ]
 
 
-class PersonPage(BasePage):
+class PeopleCategoryPage(BasePage):
+    """
+    A page that allows editors to group people by category,
+    e.g. "Exec Team".
+    """
+
+    parent_page_types = ["people.PeopleIndexPage"]
+    subpage_types = []
+
+class PersonCategory(Orderable):
+    """
+    This model allows any page type to be associated with one or more topics
+    in a way that retains the order of topics selected.
+
+    The ``sort_order`` field value from ``Orderable`` can be used to pull out
+    the 'first' topic to treat as the 'primary topic' for a page, and can also
+    used to prioritise items for a list of 'pages related to a topic'.
+
+    Just add `InlinePanel("person_categories")` to a page type's panel
+    configuration to use it!
+    """
+
+    page = ParentalKey(Page, on_delete=models.CASCADE, related_name="person_categories")
+    category = models.ForeignKey(
+        PeopleCategoryPage,
+        verbose_name="person category",
+        related_name="person_category_pages",
+        on_delete=models.CASCADE,
+    )
+
+class PersonCategoryPageMixin:
+    """
+    A mixin for pages that use the ``PageTopic`` and ``PageTimePeriod`` models
+    in order to be associated with one or many topics/time periods. It simply
+    adds a few properies to support robust, efficient access the related topic
+    and time period pages.
+    """
+
+    api_fields = [
+        APIField(
+            "categories",
+            serializer=DefaultPageSerializer(
+                required_api_fields=["teaser_image"], many=True
+            ),
+        ),
+    ]
+
+    @classmethod
+    def get_person_category_inlinepanel(cls) -> InlinePanel:
+        return InlinePanel(
+            "person_categories",
+            heading="Person categories",
+        )
+    
+    @cached_property
+    def categories(self):
+        return tuple(
+            item.category
+            for item in self.person_categories.select_related("category").filter(
+                category__live=True
+            )
+        )
+
+class PersonPage(BasePage, PersonCategoryPageMixin):
     """Person page
 
     This page is to be used for a profile page, where
@@ -136,6 +199,7 @@ class PersonPage(BasePage):
         FieldPanel("research_summary"),
         InlinePanel("shop_items", label="Shop items"),
         FieldPanel("archived_blog_url"),
+        PersonCategoryPageMixin.get_person_category_inlinepanel(),
     ]
 
     promote_panels = [
@@ -168,7 +232,7 @@ class PersonPage(BasePage):
         APIField("slug"),
     ]
 
-    api_fields = BasePage.api_fields + [
+    api_fields = BasePage.api_fields + PersonCategoryPageMixin.api_fields + [
         APIField("first_name"),
         APIField("last_name"),
         APIField("role"),
