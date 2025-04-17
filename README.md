@@ -7,9 +7,7 @@
 cp .env.example .env
 
 # Set .env values for:
-#   - KONG_CLIENT_BASE_URL
-#   - KONG_IMAGE_PREVIEW_BASE_URL
-#   - KONG_CLIENT_KEY
+#   - ROSETTA_API_URL
 #   - PLATFORMSH_CLI_TOKEN
 
 # Build and start the containers

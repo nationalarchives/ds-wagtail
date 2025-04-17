@@ -1,5 +1,6 @@
 from wagtail import blocks
 
+from etna.ciim.blocks import RecordLinksBlock
 from etna.core.blocks import (
     CallToActionBlock,
     ContactBlock,
@@ -17,7 +18,6 @@ from etna.core.blocks import (
     YouTubeBlock,
 )
 from etna.media.blocks import MediaBlock
-from etna.records.blocks import RecordLinksBlock
 
 
 class SectionContentBlock(blocks.StreamBlock):

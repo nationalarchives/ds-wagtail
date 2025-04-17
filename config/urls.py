@@ -13,16 +13,8 @@ from etna.core.cache_control import (
     apply_default_cache_control,
     apply_default_vary_headers,
 )
-from etna.core.decorators import setting_controlled_login_required
 from etna.errors import views as errors_view
-from etna.records import converters
-from etna.records import views as records_views
-from etna.search import views as search_views
 from etna.whatson import views as whatson_views
-
-register_converter(converters.ReferenceNumberConverter, "reference_number")
-register_converter(converters.IAIDConverter, "iaid")
-
 
 handler404 = "etna.errors.views.custom_404_error_view"
 handler500 = "etna.errors.views.custom_500_error_view"
@@ -44,90 +36,7 @@ private_urls = [
 ]
 
 # Public URLs that are meant to be cached.
-public_urls = [
-    path(
-        r"catalogue/id/<iaid:iaid>/",
-        setting_controlled_login_required(
-            records_views.record_detail_view, "RECORD_DETAIL_REQUIRE_LOGIN"
-        ),
-        name="details-page-machine-readable",
-    ),
-    path(
-        r"catalogue/ref/<reference_number:reference_number>/",
-        setting_controlled_login_required(
-            records_views.record_disambiguation_view,
-            "RECORD_DETAIL_REQUIRE_LOGIN",
-        ),
-        name="details-page-human-readable",
-    ),
-    path(
-        "records/image/<path:location>",
-        records_views.image_serve,
-        name="image-serve",
-    ),
-    path(
-        r"records/images/<iaid:iaid>/<str:sort>/",
-        setting_controlled_login_required(
-            records_views.image_viewer, "IMAGE_VIEWER_REQUIRE_LOGIN"
-        ),
-        name="image-viewer",
-    ),
-    path(
-        r"records/images/<iaid:iaid>/",
-        setting_controlled_login_required(
-            records_views.image_browse, "IMAGE_VIEWER_REQUIRE_LOGIN"
-        ),
-        name="image-browse",
-    ),
-    path(
-        r"search/",
-        setting_controlled_login_required(
-            search_views.SearchLandingView.as_view(),
-            "SEARCH_VIEWS_REQUIRE_LOGIN",
-        ),
-        name="search",
-    ),
-    path(
-        r"search/featured/",
-        setting_controlled_login_required(
-            search_views.FeaturedSearchView.as_view(),
-            "SEARCH_VIEWS_REQUIRE_LOGIN",
-        ),
-        name="search-featured",
-    ),
-    path(
-        r"search/catalogue/",
-        setting_controlled_login_required(
-            search_views.CatalogueSearchView.as_view(),
-            "SEARCH_VIEWS_REQUIRE_LOGIN",
-        ),
-        name="search-catalogue",
-    ),
-    path(
-        r"search/website/",
-        setting_controlled_login_required(
-            search_views.NativeWebsiteSearchView.as_view(),
-            "SEARCH_VIEWS_REQUIRE_LOGIN",
-        ),
-        name="search-website",
-    ),
-    path(
-        r"search/catalogue/long-filter-chooser/<str:field_name>/",
-        setting_controlled_login_required(
-            search_views.CatalogueSearchLongFilterView.as_view(),
-            "SEARCH_VIEWS_REQUIRE_LOGIN",
-        ),
-        name="search-catalogue-long-filter-chooser",
-    ),
-    path(
-        r"search/website/long-filter-chooser/<str:field_name>/",
-        setting_controlled_login_required(
-            search_views.WebsiteSearchLongFilterView.as_view(),
-            "SEARCH_VIEWS_REQUIRE_LOGIN",
-        ),
-        name="search-website-long-filter-chooser",
-    ),
-]
+public_urls = []
 
 if settings.DEBUG or settings.DJANGO_SERVE_STATIC:
     from django.conf.urls.static import static

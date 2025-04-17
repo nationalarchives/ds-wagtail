@@ -1,7 +1,7 @@
 # Search and record data
 
-To fetch data from the Client API during development, a valid API key
-needs to be added to `.env` (`KONG_CLIENT_KEY`). This will allow your container
+To fetch data from the Client API during development, a valid Rosetta API URL
+needs to be added to `.env` (`ROSETTA_API_URL`). This will allow your container
 to fetch the external data required to render explorer result and details
 pages.
 
