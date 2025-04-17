@@ -31,7 +31,6 @@ services:
       - DJANGO_SUPERUSER_PASSWORD=admin
       - DJANGO_SUPERUSER_USERNAME=admin
       - DJANGO_SUPERUSER_EMAIL=admin@tna.dev
-      - KONG_CLIENT_VERIFY_CERTIFICATES=False
       - KEEP_ALIVE=30
       - WAGTAILAPI_BASE_URL=http://host.docker.internal:8000
       - REDIS_URL=redis://:redis@redis:6379

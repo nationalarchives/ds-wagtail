@@ -1,7 +1,7 @@
 from django.conf import settings
 from sentry_sdk import capture_message
 
-from etna.core.api import JSONAPIClient
+from etna.core.json_api_client import JSONAPIClient
 
 DEFAULT_REFERENCE_NUMBER = "[unknown]"
 DEFAULT_SUMMARY_TITLE = "[unknown]"
@@ -13,7 +13,7 @@ class CIIMClient(JSONAPIClient):
     Client for interacting with the CIIM API.
     """
 
-    def __init__(self, api_url: str = f"{settings.CLIENT_BASE_URL}", params: dict = {}):
+    def __init__(self, api_url: str = f"{settings.ROSETTA_API_URL}", params: dict = {}):
         self.api_url: str = api_url
         self.params: dict = params
 
@@ -26,12 +26,12 @@ class CIIMClient(JSONAPIClient):
             )
             return {"data": []}
 
-    def get_record_instance(self, path: str = "/get") -> dict:
+    def get_record_instance(self) -> dict:
         """
         Get a single record instance from the CIIM API.
         """
 
-        response = self.get(path=path, headers={})
+        response = self.get(path="/get", headers={})
 
         try:
             result = response.get("data", [])[0].get("@template", {}).get("details", {})
@@ -43,12 +43,12 @@ class CIIMClient(JSONAPIClient):
             }
         return result
 
-    def get_record_list(self, path: str = "/search") -> tuple:
+    def get_record_list(self) -> tuple:
         """
         Get a list of records from the CIIM API.
         """
 
-        response = self.get(path=path, headers={})
+        response = self.get(path="/search", headers={})
 
         results = response.get("data", [])
         total = response.get("stats", {}).get("total", 0)

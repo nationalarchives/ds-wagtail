@@ -8,7 +8,7 @@ from wagtail.admin.views.generic.chooser import (
 
 class RecordChosenViewMixin(ChosenViewMixin):
     def get_object(self, pk):
-        r = requests.get(f"{settings.CLIENT_BASE_URL}/get?id={pk}")
+        r = requests.get(f"{settings.ROSETTA_API_URL}/get?id={pk}")
         r.raise_for_status()
         result = r.json()
         result = result.get("data", [])[0].get("@template", {}).get("details", {})

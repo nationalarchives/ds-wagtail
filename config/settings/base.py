@@ -308,14 +308,9 @@ EVENTBRITE_SECRET = os.getenv("EVENTBRITE_SECRET")
 EVENTBRITE_PRIVATE_TOKEN = os.getenv("EVENTBRITE_PRIVATE_TOKEN")
 EVENTBRITE_PUBLIC_TOKEN = os.getenv("EVENTBRITE_PUBLIC_TOKEN")
 
-# API Client
+# CIIM API Client
 
-CLIENT_BASE_URL = os.getenv("ROSETTA_DEV_CLIENT_BASE_URL")
-CLIENT_KEY = os.getenv("KONG_CLIENT_KEY")
-CLIENT_VERIFY_CERTIFICATES = strtobool(
-    os.getenv("KONG_CLIENT_VERIFY_CERTIFICATES", "True")
-)
-IMAGE_PREVIEW_BASE_URL = os.getenv("KONG_IMAGE_PREVIEW_BASE_URL")
+ROSETTA_API_URL = os.getenv("ROSETTA_API_URL")
 
 # Rich Text Features
 # https://docs.wagtail.io/en/stable/advanced_topics/customisation/page_editing_interface.html#limiting-features-in-a-rich-text-field

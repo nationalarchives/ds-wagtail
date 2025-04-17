@@ -24,8 +24,7 @@ INSTALLED_APPS.remove("birdbath")
 # See https://docs.djangoproject.com/en/3.1/ref/contrib/staticfiles/#staticfilesstorage
 STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
 
-CLIENT_BASE_URL = "https://kong.test/data"
-CLIENT_MEDIA_URL = "https://kong.test/media"
+ROSETTA_API_URL = "https://rosetta.test/data"
 
 ENVIRONMENT_NAME = "test"
 SENTRY_SAMPLE_RATE = 0
