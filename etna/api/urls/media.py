@@ -6,6 +6,7 @@ class CustomMediaAPIViewSet(MediaAPIViewSet):
         "title",
         "file",
         "tags",
+        "thumbnail",
         "date",
         "created_at",
         "duration",
