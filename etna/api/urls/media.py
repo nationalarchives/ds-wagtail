@@ -7,6 +7,7 @@ class CustomMediaAPIViewSet(MediaAPIViewSet):
         "file",
         "tags",
         "date",
+        "created_at",
         "duration",
         "subtitles_file",
         "subtitles_file_full_url",
