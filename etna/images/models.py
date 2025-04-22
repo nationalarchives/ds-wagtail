@@ -15,6 +15,7 @@ from wagtail.images.models import (
     AbstractRendition,
     Filter,
 )
+from wagtail.search import index
 
 from etna.core.serializers import RichTextSerializer
 from etna.records.fields import RecordField
