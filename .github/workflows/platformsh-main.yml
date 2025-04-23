@@ -3,6 +3,9 @@ name: Deploy to Platform.sh main
 on:
   workflow_dispatch:
 
+concurrency:
+  group: cd-psh-${{ github.ref }}
+
 jobs:
   check-migrations:
     runs-on: ubuntu-latest

@@ -6,6 +6,9 @@ on:
       - main
       - develop  # TODO: Remove this when develop branch is removed
 
+concurrency:
+  group: cd-psh-dev-${{ github.ref }}
+
 jobs:
   check-migrations:
     runs-on: ubuntu-latest
