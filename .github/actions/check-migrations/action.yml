@@ -1,0 +1,8 @@
+name: Check migrations
+
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/setup-python@v5
+    - run: python .github/scripts/check_migrations.py
+      shell: bash
