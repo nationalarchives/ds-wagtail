@@ -9,6 +9,13 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - name: Set globals
+      id: globals
+      shell: bash
+      run: |
+        echo "DJANGO_SETTINGS_MODULE=config.settings.test" >> $GITHUB_ENV
+        echo "DATABASE_ENGINE=django.db.backends.sqlite3" >> $GITHUB_ENV
+        echo "TEST_DATABASE_PREFIX=test" >> $GITHUB_ENV
     - run: echo "DJANGO_SETTINGS_MODULE = $DJANGO_SETTINGS_MODULE"
       shell: bash
     - uses: actions/setup-python@v5

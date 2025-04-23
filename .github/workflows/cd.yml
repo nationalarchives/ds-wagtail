@@ -29,9 +29,6 @@ jobs:
 
   test-python:
     runs-on: ubuntu-latest
-    env:
-      DJANGO_SETTINGS_MODULE: config.settings.test
-      DATABASE_ENGINE: django.db.backends.sqlite3
     steps:
       - uses: actions/checkout@v4
       - name: Run tests

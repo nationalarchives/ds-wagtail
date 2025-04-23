@@ -4,6 +4,5 @@ runs:
   using: "composite"
   steps:
     - uses: actions/setup-python@v5
-    - name: Check migrations
-      run: python .github/scripts/check_migrations.py
+    - run: python .github/scripts/check_migrations.py
       shell: bash
