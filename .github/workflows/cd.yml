@@ -99,9 +99,9 @@ jobs:
       - name: Install jq
         run: sudo apt-get install jq
       - name: Update config
-        run: jq --indent 4 '(.services.cms.version|="${{ needs.version.outputs.version }}")' config/develop.json > tmp.$$.json && mv tmp.$$.json config/develop.json
+        run: jq --indent 4 '(.services.wagtail.version|="${{ needs.version.outputs.version }}")' config/develop.json > tmp.$$.json && mv tmp.$$.json config/develop.json
       - name: Push new version
         run: |
           git add config/develop.json
-          git commit -m "Update cms to v${{ needs.version.outputs.version }}"
+          git commit -m "Update wagtail to v${{ needs.version.outputs.version }}"
           git push origin main
