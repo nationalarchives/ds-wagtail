@@ -43,7 +43,7 @@ runs:
       shell: bash
     - name: Run test suite
       # run: poetry run coverage run manage.py test etna
-      run: poetry run manage.py test etna
+      run: poetry run python manage.py test etna
       shell: bash
     - name: Check for missing migrations
       run: poetry run python manage.py makemigrations --check --noinput
