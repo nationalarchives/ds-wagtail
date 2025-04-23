@@ -1,10 +1,10 @@
 name: Deploy to Platform.sh develop
 
 on:
-  workflow_dispatch:
   push:
     branches:
       - main
+      - develop  # TODO: Remove this when develop branch is removed
 
 jobs:
   check-dependencies:
@@ -42,16 +42,13 @@ jobs:
       - check-dependencies
     steps:
       - uses: actions/checkout@v4
-      - name: Extract branch name
-        run: echo "BRANCH=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
-        id: extract_branch
       - uses: axelerant/platformsh-deploy-action@v1
         with:
           project-id: ${{ secrets.PLATFORM_PROJECT_ID }}
           cli-token: ${{ secrets.PLATFORM_CLI_TOKEN }}
           ssh-private-key: ${{ secrets.PLATFORM_SSH_KEY }}
           force-push: true
-          environment-name: ${{ steps.extract_branch.outputs.BRANCH }}
+          environment-name: develop
 
   notify-slack:
     runs-on: ubuntu-latest
