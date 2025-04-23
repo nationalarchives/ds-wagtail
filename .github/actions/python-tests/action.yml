@@ -9,10 +9,7 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Set globals
-      id: globals
-      shell: bash
-      run: |
+    - run: |
         echo "DJANGO_SETTINGS_MODULE=config.settings.test" >> $GITHUB_ENV
         echo "DATABASE_ENGINE=django.db.backends.postgresql" >> $GITHUB_ENV
         echo "DATABASE_NAME=postgres" >> $GITHUB_ENV
@@ -20,7 +17,6 @@ runs:
         echo "DATABASE_PASSWORD=postgres" >> $GITHUB_ENV
         echo "DATABASE_HOST=localhost" >> $GITHUB_ENV
         echo "DATABASE_PORT=5432" >> $GITHUB_ENV
-    - run: echo "DJANGO_SETTINGS_MODULE = $DJANGO_SETTINGS_MODULE"
       shell: bash
     - uses: actions/setup-python@v5
     - run: pip install flake8 isort black
@@ -51,12 +47,12 @@ runs:
     - name: Check for missing migrations
       run: poetry run python manage.py makemigrations --check --noinput
       shell: bash
-    - name: Prepare coverage report
-      run: poetry run coverage xml
-      shell: bash
-    - name: Upload coverage report to Codecov
-      uses: codecov/codecov-action@v3
-      with:
-        token: ${{ inputs.codecov-token }}
-        fail_ci_if_error: true
-        move_coverage_to_trash: true
+    # - name: Prepare coverage report
+    #   run: poetry run coverage xml
+    #   shell: bash
+    # - name: Upload coverage report to Codecov
+    #   uses: codecov/codecov-action@v3
+    #   with:
+    #     token: ${{ inputs.codecov-token }}
+    #     fail_ci_if_error: true
+    #     move_coverage_to_trash: true
