@@ -14,8 +14,12 @@ runs:
       shell: bash
       run: |
         echo "DJANGO_SETTINGS_MODULE=config.settings.test" >> $GITHUB_ENV
-        echo "DATABASE_ENGINE=django.db.backends.sqlite3" >> $GITHUB_ENV
-        echo "TEST_DATABASE_PREFIX=test" >> $GITHUB_ENV
+        echo "DATABASE_ENGINE=django.db.backends.postgresql" >> $GITHUB_ENV
+        echo "DATABASE_NAME=postgres" >> $GITHUB_ENV
+        echo "DATABASE_USER=postgres" >> $GITHUB_ENV
+        echo "DATABASE_PASSWORD=postgres" >> $GITHUB_ENV
+        echo "DATABASE_HOST=localhost" >> $GITHUB_ENV
+        echo "DATABASE_PORT=5432" >> $GITHUB_ENV
     - run: echo "DJANGO_SETTINGS_MODULE = $DJANGO_SETTINGS_MODULE"
       shell: bash
     - uses: actions/setup-python@v5

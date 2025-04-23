@@ -16,7 +16,6 @@ jobs:
         run: poetry show -o
 
   check-migrations:
-    name: Check Migrations
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -27,6 +26,16 @@ jobs:
 
   test-python:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16.0
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: postgres
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 1s --health-timeout 3s --health-retries 10
     steps:
       - uses: actions/checkout@v4
         with:
