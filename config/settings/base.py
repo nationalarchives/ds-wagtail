@@ -39,6 +39,8 @@ DEBUG = strtobool(os.getenv("DEBUG", "False"))
 
 SECRET_KEY = os.getenv("SECRET_KEY", "")
 
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
 # Application definition
 
 INSTALLED_APPS = [

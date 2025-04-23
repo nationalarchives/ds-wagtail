@@ -21,7 +21,7 @@ services:
     env_file:
       - .env
     environment:
-      - ENVIRONMENT=develop
+      - RUNTIME=develop
       - DJANGO_SETTINGS_MODULE=config.settings.develop
       - SECRET_KEY=abc123
       - DATABASE_HOST=db
@@ -31,7 +31,7 @@ services:
       - DJANGO_SUPERUSER_PASSWORD=admin
       - DJANGO_SUPERUSER_USERNAME=admin
       - DJANGO_SUPERUSER_EMAIL=admin@tna.dev
-      - KEEP_ALIVE=30
+      - KONG_CLIENT_VERIFY_CERTIFICATES=False
       - WAGTAILAPI_BASE_URL=http://host.docker.internal:8000
       - REDIS_URL=redis://:redis@redis:6379
 
