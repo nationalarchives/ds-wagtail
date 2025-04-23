@@ -1,16 +1,11 @@
 import subprocess
 import sys
 
-DEV_BRANCH = "develop"
-LIVE_BRANCH = "main"
-
 
 def get_diff():
     """
     Gets the file diff between the current branch (your branch) and the
-    develop branch. If there are no changes, it gets the diff between
-    the current branch and the main branch - this will be the case for
-    merging develop into the main branch.
+    main working branch.
     """
     subprocess.run(
         ["git", "fetch", "origin"],
@@ -20,20 +15,11 @@ def get_diff():
     output = [
         f"./{file_path}"
         for file_path in subprocess.check_output(
-            ["git", "diff", "--name-only", f"origin/{DEV_BRANCH}"]
+            ["git", "diff", "--name-only", "origin/main"]
         )
         .decode()
         .splitlines()
     ]
-    if not output:
-        output = [
-            f"./{file_path}"
-            for file_path in subprocess.check_output(
-                ["git", "diff", "--name-only", f"origin/{LIVE_BRANCH}"]
-            )
-            .decode()
-            .splitlines()
-        ]
     return output
 
 
