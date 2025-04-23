@@ -9,6 +9,8 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - run: echo "DJANGO_SETTINGS_MODULE = $DJANGO_SETTINGS_MODULE"
+      shell: bash
     - uses: actions/setup-python@v5
     - run: pip install flake8 isort black
       shell: bash
