@@ -4,17 +4,6 @@ on:
   workflow_dispatch:
 
 jobs:
-  check-dependencies:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: main
-      - uses: actions/setup-python@v5
-      - uses: snok/install-poetry@v1
-      - name: Check Poetry dependencies
-        run: poetry show -o
-
   check-migrations:
     runs-on: ubuntu-latest
     steps:
@@ -51,7 +40,6 @@ jobs:
     needs:
       - test-python
       - check-migrations
-      - check-dependencies
     steps:
       - uses: actions/checkout@v4
         with:
