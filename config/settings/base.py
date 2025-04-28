@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 import os
 
-from ..versioning import get_git_sha
 from .util import strtobool
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)

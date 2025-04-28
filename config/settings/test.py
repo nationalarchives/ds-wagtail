@@ -1,10 +1,5 @@
 from .base import *  # noqa: F401
 
-try:
-    from .local import *  # noqa: F401
-except ImportError:
-    pass
-
 SECRET_KEY = "abc123"
 
 ALLOWED_HOSTS = ["*"]
