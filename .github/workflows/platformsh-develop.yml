@@ -4,18 +4,15 @@ on:
   push:
     branches:
       - main
-      - develop  # TODO: Remove this when develop branch is removed
+      - develop # TODO: Remove this when develop branch is removed
+
+concurrency:
+  group: cd-psh-dev-${{ github.ref }}
+
+permissions:
+  contents: read
 
 jobs:
-  check-dependencies:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-      - uses: snok/install-poetry@v1
-      - name: Check Poetry dependencies
-        run: poetry show -o
-
   check-migrations:
     runs-on: ubuntu-latest
     steps:
@@ -48,7 +45,6 @@ jobs:
     needs:
       - test-python
       - check-migrations
-      - check-dependencies
     steps:
       - uses: actions/checkout@v4
       - uses: axelerant/platformsh-deploy-action@v1
