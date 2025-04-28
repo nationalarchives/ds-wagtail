@@ -1,8 +1,9 @@
 [tool.poetry]
 name = "ds-wagtail"
-version = "25.03.28.52"
+version = "0.1.0"
 description = ""
 authors = ["James Biggs <james.biggs@nationalarchives.gov.uk>"]
+readme = "README.md"
 
 [tool.poetry.dependencies]
 Django = "~5.1"
