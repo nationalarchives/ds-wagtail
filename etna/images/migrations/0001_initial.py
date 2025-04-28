@@ -3,7 +3,7 @@
 from django.conf import settings
 from django.db import migrations, models
 import django.db.models.deletion
-import etna.records.fields
+import etna.ciim.fields
 import taggit.managers
 import wagtail.fields
 import wagtail.images.models
@@ -70,7 +70,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "record",
-                    etna.records.fields.RecordField(
+                    etna.ciim.fields.RecordField(
                         blank=True,
                         db_index=True,
                         help_text="If the image relates to a specific record, select that record here.",

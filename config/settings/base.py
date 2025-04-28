@@ -59,8 +59,6 @@ INSTALLED_APPS = [
     "etna.home",
     "etna.images",
     "etna.media",
-    "etna.records",
-    "etna.search",
     "etna.users",
     "etna.whatson",
     "wagtail.contrib.forms",
@@ -78,7 +76,6 @@ INSTALLED_APPS = [
     "wagtailfontawesomesvg",
     "wagtailmedia",
     "wagtail.contrib.settings",
-    "generic_chooser",
     "wagtailmetadata",  # TODO: Remove this package when we reset migrations and remove the dependency from the pyproject.toml
     "modelcluster",
     "taggit",
@@ -156,12 +153,6 @@ ACCOUNT_SESSION_REMEMBER = False  # True|False disables "Remember me?" checkbox"
 LOGIN_URL = "/accounts/login"
 LOGIN_REDIRECT_URL = "/"
 WAGTAIL_FRONTEND_LOGIN_URL = LOGIN_URL
-# View access control
-IMAGE_VIEWER_REQUIRE_LOGIN = strtobool(os.getenv("IMAGE_VIEWER_REQUIRE_LOGIN", "True"))
-RECORD_DETAIL_REQUIRE_LOGIN = strtobool(
-    os.getenv("RECORD_DETAIL_REQUIRE_LOGIN", "True")
-)
-SEARCH_VIEWS_REQUIRE_LOGIN = strtobool(os.getenv("SEARCH_VIEWS_REQUIRE_LOGIN", "True"))
 # Custom adapter to prevent self-signup
 ACCOUNT_ADAPTER = "etna.users.adapters.NoSelfSignupAccountAdapter"
 ACCOUNT_FORMS = {"login": "etna.users.forms.EtnaLoginForm"}
@@ -309,14 +300,9 @@ EVENTBRITE_SECRET = os.getenv("EVENTBRITE_SECRET")
 EVENTBRITE_PRIVATE_TOKEN = os.getenv("EVENTBRITE_PRIVATE_TOKEN")
 EVENTBRITE_PUBLIC_TOKEN = os.getenv("EVENTBRITE_PUBLIC_TOKEN")
 
-# API Client
+# CIIM API Client
 
-CLIENT_BASE_URL = os.getenv("KONG_CLIENT_BASE_URL")
-CLIENT_KEY = os.getenv("KONG_CLIENT_KEY")
-CLIENT_VERIFY_CERTIFICATES = strtobool(
-    os.getenv("KONG_CLIENT_VERIFY_CERTIFICATES", "True")
-)
-IMAGE_PREVIEW_BASE_URL = os.getenv("KONG_IMAGE_PREVIEW_BASE_URL")
+ROSETTA_API_URL = os.getenv("ROSETTA_API_URL")
 
 # Rich Text Features
 # https://docs.wagtail.io/en/stable/advanced_topics/customisation/page_editing_interface.html#limiting-features-in-a-rich-text-field
@@ -333,45 +319,6 @@ EXPANDED_RICH_TEXT_FEATURES = RESTRICTED_RICH_TEXT_FEATURES + [
     "h2",
     "h3",
 ]
-
-# Analytics
-AVAILABILITY_CONDITION_CATEGORIES = {
-    "AcademicSubscription": "Academic Subscription",
-    "AccessUnderReview": "Not Viewable online",
-    "AV_Media": "Viewable online",
-    "ClosedFOIReview": "Not viewable online",
-    "ClosedRetainedDeptKnown": "Not viewable online",
-    "ClosedRetainedDeptUnKnown": "Not viewable online",
-    "CollectionCare": "Not viewable online",
-    "DigitizedAvailableButNotDownloadableAtItemLevel": "Not viewable online",
-    "DigitizedAvailableButNotDownloadableAtPieceLevel": "Not viewable online",
-    "DigitizedDiscovery - Free": "Viewable online",
-    "DigitizedDiscovery - Charged": "Viewable online",
-    "DigitizedDiscovery - Charged (+LIAs)": "Viewable online & via 3rd party",
-    "DigitizedLIA": "Viewable via 3rd party",
-    "DigitizedOther": "Viewable online",
-    "DigitizedPartiallyOpened": "Not used",
-    "DisplayAtMuseum": "Not viewable online",
-    "FileAuthority": "Not viewable online",
-    "GovtWebArchive": "Viewable via 3rd party",
-    "ImageLibrary": "Viewable via 3rd party",
-    "InUse": "Not viewable online",
-    "InvigilationSafeRoom": "Not viewable online",
-    "LocalArchive": "Not viewable online",
-    "MissingLost": "Not viewable online",
-    "MouldTreatment": "Not viewable online",
-    "Offsite": "Not viewable online",
-    "Onloan": "Not viewable online",
-    "OrderException": "Error",
-    "OrderOriginal": "Not viewable online",
-    "PaidSearch": "Not viewable online",
-    "Surrogate": "Not viewable online",
-    "TooLargeToCopyOffsite": "Not viewable online",
-    "TooLargeToCopyOriginal": "Not viewable online",
-    "TooLargeToCopySurrogate": "Not viewable online",
-    "Unavailable": "Not viewable online",
-    "Unfit": "Not viewable online",
-}
 
 # Don't anonymise data by default, so we don't accidentally lose production data
 BIRDBATH_REQUIRED = False
@@ -403,12 +350,6 @@ CACHE_CONTROL_STALE_WHILE_REVALIDATE = int(
 # injected into template contexts using a custom context processor - allowing
 # conditional logic to be added to both Python and template code
 
-FEATURE_RECORD_LINKS_GO_TO_DISCOVERY = strtobool(
-    os.getenv("FEATURE_RECORD_LINKS_GO_TO_DISCOVERY", "False")
-)
-FEATURE_DOWNLOAD_RECORD_LINKS_GO_TO_DISCOVERY = strtobool(
-    os.getenv("FEATURE_DOWNLOAD_RECORD_LINKS_GO_TO_DISCOVERY", "False")
-)
 FEATURE_COOKIE_BANNER_ENABLED = strtobool(
     os.getenv("FEATURE_COOKIE_BANNER_ENABLED", "True")
 )
