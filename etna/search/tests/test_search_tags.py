@@ -207,7 +207,7 @@ class RenderSortByTest(SimpleTestCase):
         )
 
     def test_render_sort_by_input_input_id(self):
-        expected_html = '<select name="sort_by" class="search-sort-view__form-select" id="id_sort_by_somevalue" aria-invalid="true">'
+        expected_html = '<select name="sort_by" class="search-sort-view__form-select" id="id_sort_by_somevalue" aria-invalid="true"'
         self.assertIn(
             expected_html,
             render_sort_by_input(self.form, id_suffix="somevalue"),

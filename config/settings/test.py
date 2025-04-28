@@ -5,16 +5,19 @@ try:
 except ImportError:
     pass
 
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = "abc123"
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": "mydatabase",
+    }
+}
+
+ALLOWED_HOSTS = ["*"]
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
-PASSWORD_HASHERS = [
-    "django.contrib.auth.hashers.MD5PasswordHasher",
-]
 
 # Disable birdbath completely when testing
 INSTALLED_APPS = INSTALLED_APPS.copy()  # noqa: F405

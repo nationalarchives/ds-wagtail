@@ -13,6 +13,7 @@ services:
     volumes:
       - ./:/app
       - media:/media
+      - static:/static
     depends_on:
       - db
       - redis
@@ -45,11 +46,13 @@ services:
   dev:
     image: ghcr.io/nationalarchives/tna-python-dev:preview
     environment:
+      - DJANGO_SETTINGS_MODULE=config.settings.test
       - PLATFORMSH_CLI_TOKEN=${PLATFORMSH_CLI_TOKEN}
       - PLATFORM_PROJECT_ID=rasrzs7pi6sd4
-      - POSTGRES_DB=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - DATABASE_HOST=db
+      - DATABASE_NAME=postgres
+      - DATABASE_USER=postgres
+      - DATABASE_PASSWORD=postgres
     volumes:
       - ./:/app
       - ./dev:/home/app/.local/bin/tasks
@@ -62,3 +65,4 @@ services:
 
 volumes:
   media:
+  static:

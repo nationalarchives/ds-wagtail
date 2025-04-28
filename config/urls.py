@@ -1,6 +1,5 @@
 from django.apps import apps
 from django.conf import settings
-from django.contrib import admin
 from django.urls import include, path, register_converter
 from django.views.decorators.cache import never_cache
 from wagtail import urls as wagtail_urls
@@ -18,7 +17,6 @@ from etna.errors import views as errors_view
 from etna.records import converters
 from etna.records import views as records_views
 from etna.search import views as search_views
-from etna.whatson import views as whatson_views
 
 register_converter(converters.ReferenceNumberConverter, "reference_number")
 register_converter(converters.IAIDConverter, "iaid")
@@ -30,17 +28,11 @@ handler503 = "etna.errors.views.custom_503_error_view"
 
 # Private URLs that are not meant to be cached.
 private_urls = [
+    path("healthcheck/", include("etna.healthcheck.urls")),
     path("api/v2/", api_router.urls),
-    path("django-admin/", admin.site.urls),
     path("admin/", include(wagtailadmin_urls)),
     path("accounts/", include("allauth.urls")),
     path("documents/", include(wagtaildocs_urls)),
-    path(
-        "webhook/eventbrite/",
-        whatson_views.eventbrite_webhook_view,
-        name="eventbrite_webhook",
-    ),
-    path("healthcheck/", include("etna.healthcheck.urls")),
 ]
 
 # Public URLs that are meant to be cached.
@@ -129,7 +121,8 @@ public_urls = [
     ),
 ]
 
-if settings.DEBUG or settings.DJANGO_SERVE_STATIC:
+# TODO: Remove this whole block when the frontend is removed
+if settings.DEBUG:
     from django.conf.urls.static import static
     from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 

@@ -10,6 +10,8 @@ DEBUG_TOOLBAR_ENABLED = strtobool(  # noqa: F405
     os.getenv("DEBUG_TOOLBAR_ENABLED", "False")  # noqa: F405
 )
 
+STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
+
 WAGTAILADMIN_BASE_URL = os.getenv("WAGTAILADMIN_BASE_URL", "http://localhost:8000")
 WAGTAIL_HEADLESS_PREVIEW = {
     "CLIENT_URLS": {
@@ -41,10 +43,7 @@ SEARCH_VIEWS_REQUIRE_LOGIN = False
 FEATURE_COOKIE_BANNER_ENABLED = strtobool(
     os.getenv("FEATURE_COOKIE_BANNER_ENABLED", "True")
 )
-DJANGO_SERVE_STATIC = strtobool(os.getenv("DJANGO_SERVE_STATIC", "True"))
 COOKIE_DOMAIN = "localhost"
-
-MEDIA_ROOT = "/media"
 
 # Silence noisy localization messages/warnings when initializing faker
 logging.getLogger("faker").setLevel(logging.ERROR)
@@ -58,9 +57,6 @@ if DEBUG:
     from .base import LOGGING
 
     LOGGING["root"]["level"] = "DEBUG"
-
-if not DEBUG and DJANGO_SERVE_STATIC:
-    STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
 
 if DEBUG and DEBUG_TOOLBAR_ENABLED:
     from .base import INSTALLED_APPS, MIDDLEWARE

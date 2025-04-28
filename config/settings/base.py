@@ -149,10 +149,9 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 # django-allauth configuration
-ACCOUNT_AUTHENTICATION_METHOD = "email"
-ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_LOGIN_METHODS = {"email"}
+ACCOUNT_SIGNUP_FIELDS = ["email*", "password1*", "password2*"]
 ACCOUNT_LOGOUT_ON_GET = False  # Bypass logout confirmation form
-ACCOUNT_USERNAME_REQUIRED = False  # Register using email only
 ACCOUNT_SESSION_REMEMBER = False  # True|False disables "Remember me?" checkbox"
 LOGIN_URL = "/accounts/login"
 LOGIN_REDIRECT_URL = "/"
@@ -246,25 +245,16 @@ STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.FileSystemFinder",
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
 ]
-
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "templates", "static"),
 ]
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
-# ManifestStaticFilesStorage is recommended in production, to prevent outdated
-# JavaScript / CSS assets being served from cache (e.g. after a Wagtail upgrade).
-# See https://docs.djangoproject.com/en/3.1/ref/contrib/staticfiles/#manifeststaticfilesstorage
-STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
-
-STATIC_ROOT = os.path.join(BASE_DIR, "static")
+STATIC_ROOT = "/static"
 STATIC_URL = "static/"
 
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
-MEDIA_URL = "/media/"
-
-# Should always be False in production. Can be set to True in local environments
-# to serve static files even when DEBUG is False
-DJANGO_SERVE_STATIC = False
+MEDIA_ROOT = "/media"
+MEDIA_URL = "media/"
 
 WAGTAILMEDIA = {
     "MEDIA_MODEL": "media.EtnaMedia",
