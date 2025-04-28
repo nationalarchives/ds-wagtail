@@ -6,6 +6,9 @@ on:
 concurrency:
   group: cd-psh-${{ github.ref }}
 
+permissions:
+  contents: read
+
 jobs:
   check-migrations:
     runs-on: ubuntu-latest
