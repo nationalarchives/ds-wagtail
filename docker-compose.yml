@@ -50,7 +50,7 @@ services:
       - PLATFORMSH_CLI_TOKEN=${PLATFORMSH_CLI_TOKEN}
       - PLATFORM_PROJECT_ID=rasrzs7pi6sd4
       - DATABASE_HOST=db
-      - DATABASE_NAME=postgres
+      - DATABASE_NAME=test
       - DATABASE_USER=postgres
       - DATABASE_PASSWORD=postgres
     volumes:
