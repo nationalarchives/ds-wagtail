@@ -11,7 +11,6 @@ runs:
   steps:
     - run: |
         echo "DJANGO_SETTINGS_MODULE=config.settings.test" >> $GITHUB_ENV
-        echo "DATABASE_ENGINE=django.db.backends.postgresql" >> $GITHUB_ENV
         echo "DATABASE_NAME=postgres" >> $GITHUB_ENV
         echo "DATABASE_USER=postgres" >> $GITHUB_ENV
         echo "DATABASE_PASSWORD=postgres" >> $GITHUB_ENV
@@ -45,7 +44,7 @@ runs:
       shell: bash
     - name: Run test suite
       # run: poetry run coverage run manage.py test etna
-      run: poetry run python manage.py test etna
+      run: poetry run python manage.py test
       shell: bash
     - name: Check for missing migrations
       run: poetry run python manage.py makemigrations --check --noinput

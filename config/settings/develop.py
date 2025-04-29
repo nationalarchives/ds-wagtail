@@ -4,11 +4,10 @@ import os
 from .base import *  # noqa: F401
 from .util import strtobool
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = strtobool(os.getenv("DEBUG", "True"))  # noqa: F405
-DEBUG_TOOLBAR_ENABLED = strtobool(  # noqa: F405
-    os.getenv("DEBUG_TOOLBAR_ENABLED", "False")  # noqa: F405
-)
+DEBUG = strtobool(os.getenv("DEBUG", "True"))
+DEBUG_TOOLBAR_ENABLED = strtobool(os.getenv("DEBUG_TOOLBAR_ENABLED", "False"))
+
+STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
 
 WAGTAILADMIN_BASE_URL = os.getenv("WAGTAILADMIN_BASE_URL", "http://localhost:8000")
 WAGTAIL_HEADLESS_PREVIEW = {
@@ -38,10 +37,7 @@ SENTRY_SAMPLE_RATE = float(os.getenv("SENTRY_SAMPLE_RATE", "1.0"))
 FEATURE_COOKIE_BANNER_ENABLED = strtobool(
     os.getenv("FEATURE_COOKIE_BANNER_ENABLED", "True")
 )
-DJANGO_SERVE_STATIC = strtobool(os.getenv("DJANGO_SERVE_STATIC", "True"))
 COOKIE_DOMAIN = "localhost"
-
-MEDIA_ROOT = "/media"
 
 # Silence noisy localization messages/warnings when initializing faker
 logging.getLogger("faker").setLevel(logging.ERROR)
@@ -56,9 +52,6 @@ if DEBUG:
 
     LOGGING["root"]["level"] = "DEBUG"
 
-if not DEBUG and DJANGO_SERVE_STATIC:
-    STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
-
 if DEBUG and DEBUG_TOOLBAR_ENABLED:
     from .base import INSTALLED_APPS, MIDDLEWARE
 
@@ -69,10 +62,3 @@ if DEBUG and DEBUG_TOOLBAR_ENABLED:
     MIDDLEWARE += [
         "debug_toolbar.middleware.DebugToolbarMiddleware",
     ]
-
-    def show_toolbar(request) -> bool:
-        return strtobool(os.getenv("DEBUG_TOOLBAR", "False"))
-
-    DEBUG_TOOLBAR_CONFIG = {
-        "SHOW_TOOLBAR_CALLBACK": show_toolbar,
-    }
