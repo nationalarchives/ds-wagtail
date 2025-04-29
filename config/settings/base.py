@@ -25,12 +25,6 @@ WAGTAIL_HEADLESS_PREVIEW = {
         "default": os.getenv("WAGTAIL_HEADLESS_PREVIEW_URL", "{SITE_ROOT_URL}"),
     },
     "SERVE_BASE_URL": None,
-    "REDIRECT_ON_PREVIEW": strtobool(
-        os.getenv("WAGTAIL_HEADLESS_REDIRECT_ON_PREVIEW", "False")
-    ),
-    "ENFORCE_TRAILING_SLASH": strtobool(
-        os.getenv("WAGTAIL_HEADLESS_ENFORCE_TRAILING_SLASH", "True")
-    ),
 }
 
 DEBUG = strtobool(os.getenv("DEBUG", "False"))
