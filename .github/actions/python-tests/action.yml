@@ -17,8 +17,6 @@ runs:
         echo "DATABASE_HOST=localhost" >> $GITHUB_ENV
         echo "DATABASE_PORT=5432" >> $GITHUB_ENV
       shell: bash
-    - run: mkdir /media
-      shell: bash
     - uses: actions/setup-python@v5
       with:
         python-version: 3.13

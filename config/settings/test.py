@@ -13,6 +13,7 @@ INSTALLED_APPS.remove("birdbath")
 # Allow integration tests to run without needing to collectstatic
 # See https://docs.djangoproject.com/en/3.1/ref/contrib/staticfiles/#staticfilesstorage
 STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 ROSETTA_API_URL = "https://rosetta.test/data"
 
