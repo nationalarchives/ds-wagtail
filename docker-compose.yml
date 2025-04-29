@@ -52,6 +52,9 @@ services:
       - DATABASE_NAME=test
       - DATABASE_USER=postgres
       - DATABASE_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
     volumes:
       - ./:/app
       - ./dev:/home/app/.local/bin/tasks
