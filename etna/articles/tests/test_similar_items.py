@@ -97,7 +97,7 @@ class TestArticlePageSimilarItems(TestCase):
 
     def test_search_prevented_if_no_tag_matches_identified(self):
         test_page = ArticlePage.objects.get(id=self.different_tags_page.id)
-        with self.assertNumQueries(4):
+        with self.assertNumQueries(3):
             self.assertFalse(test_page.similar_items)
 
 
