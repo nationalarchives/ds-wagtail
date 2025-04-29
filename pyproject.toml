@@ -34,9 +34,14 @@ optional = true
 
 [tool.poetry.group.dev.dependencies]
 coverage = "~7.6"
-django-debug-toolbar = "~5.0"
 django-extensions = "~3.2"
 responses = "~0.25"
+
+[tool.poetry.group.root]
+optional = true
+
+[tool.poetry.group.root.dependencies]
+django-debug-toolbar = "~5.0"
 
 [build-system]
 requires = ["poetry-core"]
