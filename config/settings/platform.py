@@ -10,6 +10,9 @@ config = Config()
 
 SECRET_KEY = config.projectEntropy
 
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+MEDIA_URL = "/media/"
+
 try:
     ALLOWED_HOSTS = ["*"]
 except BuildTimeVariableAccessException:
