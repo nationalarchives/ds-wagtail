@@ -24,7 +24,7 @@ WAGTAIL_HEADLESS_PREVIEW = {
     "CLIENT_URLS": {
         "default": os.getenv("WAGTAIL_HEADLESS_PREVIEW_URL", "{SITE_ROOT_URL}"),
     },
-    "SERVE_BASE_URL": os.getenv("WAGTAILAPI_BASE_URL", None),
+    "SERVE_BASE_URL": None,
     "REDIRECT_ON_PREVIEW": strtobool(
         os.getenv("WAGTAIL_HEADLESS_REDIRECT_ON_PREVIEW", "False")
     ),
