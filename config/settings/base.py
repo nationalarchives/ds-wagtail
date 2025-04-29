@@ -18,7 +18,9 @@ from .util import strtobool
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR = os.path.dirname(PROJECT_DIR)
 
-WAGTAILADMIN_BASE_URL = os.getenv("WAGTAILADMIN_BASE_URL", "")
+WAGTAILADMIN_BASE_URL = os.getenv(
+    "WAGTAILADMIN_BASE_URL", "https://nationalarchives.gov.uk"
+)
 WAGTAILAPI_BASE_URL = os.getenv("WAGTAILAPI_BASE_URL", WAGTAILADMIN_BASE_URL)
 WAGTAIL_HEADLESS_PREVIEW = {
     "CLIENT_URLS": {
@@ -246,13 +248,7 @@ WAGTAILMEDIA = {
 
 # Wagtail settings
 
-WAGTAIL_SITE_NAME = "etna"
-
-# Base URL to use when referring to full URLs within the Wagtail admin backend -
-# e.g. in notification emails. Don't include '/admin' or a trailing slash
-WAGTAILADMIN_BASE_URL = os.getenv(
-    "WAGTAILADMIN_BASE_URL", "https://nationalarchives.gov.uk"
-)
+WAGTAIL_SITE_NAME = "National Archives"
 
 CSRF_TRUSTED_ORIGINS = [
     os.getenv("CSRF_TRUSTED_ORIGIN", "https://nationalarchives.gov.uk")
@@ -284,13 +280,6 @@ WAGTAILIMAGES_IMAGE_MODEL = "images.CustomImage"
 # Custom password template for private pages
 
 WAGTAIL_PASSWORD_REQUIRED_TEMPLATE = "password_pages/password_required.html"
-
-# Eventbrite client
-
-EVENTBRITE_KEY = os.getenv("EVENTBRITE_KEY")
-EVENTBRITE_SECRET = os.getenv("EVENTBRITE_SECRET")
-EVENTBRITE_PRIVATE_TOKEN = os.getenv("EVENTBRITE_PRIVATE_TOKEN")
-EVENTBRITE_PUBLIC_TOKEN = os.getenv("EVENTBRITE_PUBLIC_TOKEN")
 
 # CIIM API Client
 
