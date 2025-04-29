@@ -13,7 +13,6 @@ services:
     volumes:
       - ./:/app
       - media:/media
-      - static:/app/static
     depends_on:
       - db
       - redis
@@ -62,7 +61,6 @@ services:
       - ./dev:/home/app/.local/bin/tasks
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - media:/media
-      - static:/app/static
 
   redis:
     image: redis:latest
@@ -70,4 +68,3 @@ services:
 
 volumes:
   media:
-  static:
