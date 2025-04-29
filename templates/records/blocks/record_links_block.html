@@ -7,11 +7,11 @@
         {% image item.thumbnail_image fill-200x200 alt="" class="tna-records-list__image" %}
         {% endif %}
         <dl class="tna-records-list__details">
-            <dt class="tna-records-list__collection-label tna-chip tna-chip--plain">From our collection</dt>
-            <dd class="tna-records-list__collection-description tna-chip tna-chip--plain">{{ item.record.reference_number }}</dd>
+            <!-- <dt class="tna-records-list__collection-label tna-chip tna-chip--plain">From our collection</dt>
+            <dd class="tna-records-list__collection-description tna-chip tna-chip--plain">{{ item.record.reference_number }}</dd> -->
             <dt class="tna-records-list__title-label">Title</dt>
             <dd class="tna-records-list__title-description">
-                <a href="{% record_url item.record is_editorial=True %}" data-component-name="{{ value.block.label }}" data-link-type="Link list" data-position="{{ forloop.counter0 }}" data-link="{{ item.descriptive_title }}">{{ item.descriptive_title }}</a>
+                <a href="{% record_url item.record %}" data-component-name="{{ value.block.label }}" data-link-type="Link list" data-position="{{ forloop.counter0 }}" data-link="{{ item.descriptive_title }}">{{ item.descriptive_title }}</a>
             </dd>
             <dt class="tna-records-list__date-label">Date</dt>
             <dd class="tna-records-list__date-description">{{ item.record_dates }}</dd>

@@ -2,7 +2,7 @@
 
 <li class="col-sm-12 col-md-6 col-lg-4">
     <div class="card-group-record-summary">
-        <a href="{% if url %}{{ url }}{% else %}{% record_url record is_editorial=True %}{% endif %}" class="card-group-record-summary__link" data-link="{{ record.summary_title }}" data-position="{{ forloop.counter0 }}" heldBy="{% if record.held_by %}{{ record.held_by }}{% else %}None{% endif %}" {% if FEATURE_RECORD_LINKS_GO_TO_DISCOVERY %} target="_blank"{% endif %}>
+        <a href="{% if url %}{{ url }}{% else %}{% record_url record %}{% endif %}" class="card-group-record-summary__link" data-link="{{ record.summary_title }}" data-position="{{ forloop.counter0 }}" heldBy="{% if record.held_by %}{{ record.held_by }}{% else %}None{% endif %}" target="_blank">
             <p class="card-group-record-summary__heading">
                 {% if record.reference_number %}
                     <span class="sr-only">
@@ -11,7 +11,7 @@
                 {% endif %}
                 {# default_if_none for those template calls that do not share description_override #}
                 {% firstof description_override|default_if_none:""|safe record.summary_title|striptags %}
-                {% if FEATURE_RECORD_LINKS_GO_TO_DISCOVERY %}<span class="sr-only">(link opens in a new window)</span>{% endif %}
+                <span class="sr-only">(link opens in a new window)</span>
             </p>
         </a>
     </div>

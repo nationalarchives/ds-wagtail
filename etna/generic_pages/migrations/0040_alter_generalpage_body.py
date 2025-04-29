@@ -2,7 +2,7 @@
 # etna:allowAlterField
 
 import django.core.validators
-import etna.records.blocks
+import etna.ciim.blocks
 import wagtail.fields
 from django.db import migrations
 
@@ -440,7 +440,7 @@ class Migration(migrations.Migration):
                     ),
                     71: (
                         "wagtail.blocks.ListBlock",
-                        (etna.records.blocks.RecordLinkBlock,),
+                        (etna.ciim.blocks.RecordLinkBlock,),
                         {"label": "Items"},
                     ),
                     72: ("wagtail.blocks.StructBlock", [[("items", 71)]], {}),
