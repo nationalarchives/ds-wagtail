@@ -30,7 +30,6 @@ private_urls = [
 # Public URLs that are meant to be cached.
 public_urls = []
 
-# TODO: Remove this whole block when the frontend is removed
 if settings.DEBUG:
     from django.conf.urls.static import static
     from django.contrib.staticfiles.urls import staticfiles_urlpatterns
