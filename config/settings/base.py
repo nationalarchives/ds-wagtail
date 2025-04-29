@@ -17,17 +17,19 @@ from .util import strtobool
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR = os.path.dirname(PROJECT_DIR)
-WAGTAILAPI_BASE_URL = os.getenv("WAGTAILAPI_BASE_URL", "")
+
+WAGTAILADMIN_BASE_URL = os.getenv("WAGTAILADMIN_BASE_URL", "")
+WAGTAILAPI_BASE_URL = os.getenv("WAGTAILAPI_BASE_URL", WAGTAILADMIN_BASE_URL)
 WAGTAIL_HEADLESS_PREVIEW = {
     "CLIENT_URLS": {
-        "default": os.getenv("WAGTAILADMIN_HEADLESS_PREVIEW_URL", "{SITE_ROOT_URL}"),
+        "default": os.getenv("WAGTAIL_HEADLESS_PREVIEW_URL", "{SITE_ROOT_URL}"),
     },
-    "SERVE_BASE_URL": os.getenv("WAGTAILADMIN_HEADLESS_BASE_URL", None),
+    "SERVE_BASE_URL": os.getenv("WAGTAILAPI_BASE_URL", None),
     "REDIRECT_ON_PREVIEW": strtobool(
-        os.getenv("WAGTAILADMIN_HEADLESS_REDIRECT_ON_PREVIEW", "False")
+        os.getenv("WAGTAIL_HEADLESS_REDIRECT_ON_PREVIEW", "False")
     ),
     "ENFORCE_TRAILING_SLASH": strtobool(
-        os.getenv("WAGTAILADMIN_HEADLESS_ENFORCE_TRAILING_SLASH", "True")
+        os.getenv("WAGTAIL_HEADLESS_ENFORCE_TRAILING_SLASH", "True")
     ),
 }
 
