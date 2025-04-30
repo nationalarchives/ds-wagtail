@@ -251,7 +251,7 @@ WAGTAILMEDIA = {
 WAGTAIL_SITE_NAME = "National Archives"
 
 CSRF_TRUSTED_ORIGINS = [
-    os.getenv("CSRF_TRUSTED_ORIGIN", "https://nationalarchives.gov.uk")
+    os.getenv("CSRF_TRUSTED_ORIGINS", "https://www.nationalarchives.gov.uk")
 ]
 
 # For search results within Wagtail itself
