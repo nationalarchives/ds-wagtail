@@ -11,9 +11,9 @@ def forwards_func(apps, schema_editor):
     db_alias = schema_editor.connection.alias
 
     to_create = [
-        tag(name=v, slug=slugify(v))
-        for v in (
-            "Americas",
+        tag(name=v, slug=slugify(v), skos_id=f"{v[:97]}_{i}")
+        for i, v in enumerate(
+            ["Americas",
             "Ancient Monuments and Historical Buildings",
             "Archives and libraries",
             "Armed Forces (General Administration)",
@@ -144,7 +144,7 @@ def forwards_func(apps, schema_editor):
             "Weapons",
             "Welfare",
             "Wills and probate",
-            "Witchcraft",
+            "Witchcraft",]
         )
     ]
     tag.objects.bulk_create(to_create)
