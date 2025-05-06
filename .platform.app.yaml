@@ -112,6 +112,11 @@ crons:
     spec: "*/30 * * * *"
     cmd: poetry run python manage.py publish_scheduled
 
+  # Clear sessions at 4am every morning
+  clear_sessions:
+    spec: "0 4 * * *"
+    cmd: poetry run python manage.py clearsessions
+
   # Take snapshot at 5am every morning
   # https://docs.platform.sh/administration/snapshot-and-restore.html#automated-snapshots
   snapshot:

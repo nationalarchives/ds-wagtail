@@ -1,3 +1,5 @@
+import os
+
 from platformshconfig import Config
 from platformshconfig.config import (
     BuildTimeVariableAccessException,
@@ -9,6 +11,9 @@ from .base import *  # noqa: F401
 config = Config()
 
 SECRET_KEY = config.projectEntropy
+
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")  # noqa: F405
+MEDIA_URL = "/media/"
 
 try:
     ALLOWED_HOSTS = ["*"]

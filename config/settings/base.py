@@ -12,24 +12,21 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 import os
 
-from ..versioning import get_git_sha
 from .util import strtobool
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR = os.path.dirname(PROJECT_DIR)
-WAGTAILAPI_BASE_URL = os.getenv("WAGTAILAPI_BASE_URL", "")
+
+WAGTAILADMIN_BASE_URL = os.getenv(
+    "WAGTAILADMIN_BASE_URL", "https://nationalarchives.gov.uk"
+)
+WAGTAILAPI_BASE_URL = os.getenv("WAGTAILAPI_BASE_URL", WAGTAILADMIN_BASE_URL)
 WAGTAIL_HEADLESS_PREVIEW = {
     "CLIENT_URLS": {
-        "default": os.getenv("WAGTAILADMIN_HEADLESS_PREVIEW_URL", "{SITE_ROOT_URL}"),
+        "default": os.getenv("WAGTAIL_HEADLESS_PREVIEW_URL", "{SITE_ROOT_URL}"),
     },
-    "SERVE_BASE_URL": os.getenv("WAGTAILADMIN_HEADLESS_BASE_URL", None),
-    "REDIRECT_ON_PREVIEW": strtobool(
-        os.getenv("WAGTAILADMIN_HEADLESS_REDIRECT_ON_PREVIEW", "False")
-    ),
-    "ENFORCE_TRAILING_SLASH": strtobool(
-        os.getenv("WAGTAILADMIN_HEADLESS_ENFORCE_TRAILING_SLASH", "True")
-    ),
+    "SERVE_BASE_URL": None,
 }
 
 DEBUG = strtobool(os.getenv("DEBUG", "False"))
@@ -146,10 +143,9 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 # django-allauth configuration
-ACCOUNT_AUTHENTICATION_METHOD = "email"
-ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_LOGIN_METHODS = {"email"}
+ACCOUNT_SIGNUP_FIELDS = ["email*", "password1*", "password2*"]
 ACCOUNT_LOGOUT_ON_GET = False  # Bypass logout confirmation form
-ACCOUNT_USERNAME_REQUIRED = False  # Register using email only
 ACCOUNT_SESSION_REMEMBER = False  # True|False disables "Remember me?" checkbox"
 LOGIN_URL = "/accounts/login"
 LOGIN_REDIRECT_URL = "/"
@@ -232,30 +228,18 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
-
 STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.FileSystemFinder",
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
 ]
-
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "templates", "static"),
 ]
-
-# ManifestStaticFilesStorage is recommended in production, to prevent outdated
-# JavaScript / CSS assets being served from cache (e.g. after a Wagtail upgrade).
-# See https://docs.djangoproject.com/en/3.1/ref/contrib/staticfiles/#manifeststaticfilesstorage
-STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
-
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 STATIC_URL = "static/"
-
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
-MEDIA_URL = "/media/"
-
-# Should always be False in production. Can be set to True in local environments
-# to serve static files even when DEBUG is False
-DJANGO_SERVE_STATIC = False
+MEDIA_ROOT = "/media"
+MEDIA_URL = "media/"
 
 WAGTAILMEDIA = {
     "MEDIA_MODEL": "media.EtnaMedia",
@@ -264,16 +248,10 @@ WAGTAILMEDIA = {
 
 # Wagtail settings
 
-WAGTAIL_SITE_NAME = "etna"
-
-# Base URL to use when referring to full URLs within the Wagtail admin backend -
-# e.g. in notification emails. Don't include '/admin' or a trailing slash
-WAGTAILADMIN_BASE_URL = os.getenv(
-    "WAGTAILADMIN_BASE_URL", "https://nationalarchives.gov.uk"
-)
+WAGTAIL_SITE_NAME = "National Archives"
 
 CSRF_TRUSTED_ORIGINS = [
-    os.getenv("CSRF_TRUSTED_ORIGIN", "https://nationalarchives.gov.uk")
+    os.getenv("CSRF_TRUSTED_ORIGINS", "https://www.nationalarchives.gov.uk")
 ]
 
 # For search results within Wagtail itself
@@ -302,13 +280,6 @@ WAGTAILIMAGES_IMAGE_MODEL = "images.CustomImage"
 # Custom password template for private pages
 
 WAGTAIL_PASSWORD_REQUIRED_TEMPLATE = "password_pages/password_required.html"
-
-# Eventbrite client
-
-EVENTBRITE_KEY = os.getenv("EVENTBRITE_KEY")
-EVENTBRITE_SECRET = os.getenv("EVENTBRITE_SECRET")
-EVENTBRITE_PRIVATE_TOKEN = os.getenv("EVENTBRITE_PRIVATE_TOKEN")
-EVENTBRITE_PUBLIC_TOKEN = os.getenv("EVENTBRITE_PUBLIC_TOKEN")
 
 # CIIM API Client
 
