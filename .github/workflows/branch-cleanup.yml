@@ -3,6 +3,10 @@ name: Clean up feature branch
 on:
   delete:
 
+permissions:
+  contents: read
+  packages: write
+
 jobs:
   delete:
     if: github.event.ref_type == 'branch' && github.event.ref != 'main'

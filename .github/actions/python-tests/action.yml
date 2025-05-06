@@ -11,7 +11,6 @@ runs:
   steps:
     - run: |
         echo "DJANGO_SETTINGS_MODULE=config.settings.test" >> $GITHUB_ENV
-        echo "DATABASE_ENGINE=django.db.backends.postgresql" >> $GITHUB_ENV
         echo "DATABASE_NAME=postgres" >> $GITHUB_ENV
         echo "DATABASE_USER=postgres" >> $GITHUB_ENV
         echo "DATABASE_PASSWORD=postgres" >> $GITHUB_ENV
@@ -19,6 +18,8 @@ runs:
         echo "DATABASE_PORT=5432" >> $GITHUB_ENV
       shell: bash
     - uses: actions/setup-python@v5
+      with:
+        python-version: 3.13
     - run: pip install flake8 isort black
       shell: bash
     - name: Check compliance with isort
@@ -43,7 +44,7 @@ runs:
       shell: bash
     - name: Run test suite
       # run: poetry run coverage run manage.py test etna
-      run: poetry run python manage.py test etna
+      run: poetry run python manage.py test
       shell: bash
     - name: Check for missing migrations
       run: poetry run python manage.py makemigrations --check --noinput

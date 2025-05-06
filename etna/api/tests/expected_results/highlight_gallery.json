@@ -25,7 +25,7 @@
         "depth": 4,
         "teaser_text": "Teaser text",
         "teaser_image": {
-            "id": 16,
+            "id": 18,
             "title": "An image",
             "jpeg": {
                 "url": "/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
@@ -41,7 +41,7 @@
             }
         },
         "teaser_image_square": {
-            "id": 16,
+            "id": 18,
             "title": "An image",
             "jpeg": {
                 "url": "/media/images/example.2e16d0ba.fill-512x512.format-jpeg.jpegquality-60.bgcolor-fff.jpg",

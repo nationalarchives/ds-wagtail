@@ -20,7 +20,7 @@ class ArticlePageFactory(BasePageFactory):
 
 class RecordArticlePageFactory(BasePageFactory):
     intro_image = factory.SubFactory(ImageFactory)
-    record = "C4761957"  # Dramatic and Musical; Representations and Performances; registration
+    record = "C4761957"
     date_text = "Date text"
     about = "<p>About this record</p>"
     gallery_heading = "Gallery heading"

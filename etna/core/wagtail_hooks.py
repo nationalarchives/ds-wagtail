@@ -29,3 +29,23 @@ def global_admin_css():
     if settings.FEATURE_PLATFORM_ENVIRONMENT_TYPE != "production":
         return "<style> @media (prefers-color-scheme: light) { :root {--w-color-primary: #00623B; --w-color-primary-200: #003c1e;} } @media (prefers-color-scheme: dark) { :root {--w-color-surface-menus: #002510; --w-color-surface-menu-item-active: #001810;} }</style>"
     return ""
+
+
+@hooks.register("register_icons")
+def register_icons(icons):
+    return icons + [
+        "wagtailfontawesomesvg/solid/star.svg",
+        "wagtailfontawesomesvg/solid/box-archive.svg",
+        "wagtailfontawesomesvg/solid/indent.svg",
+        "wagtailfontawesomesvg/solid/list.svg",
+        "wagtailfontawesomesvg/solid/up-right-from-square.svg",
+        "wagtailfontawesomesvg/solid/play.svg",
+        "wagtailfontawesomesvg/solid/paragraph.svg",
+        "wagtailfontawesomesvg/solid/heading.svg",
+        "wagtailfontawesomesvg/solid/circle-user.svg",
+        "wagtailfontawesomesvg/solid/table-cells.svg",
+        "wagtailfontawesomesvg/solid/arrow-up.svg",
+        "wagtailfontawesomesvg/solid/table-cells-large.svg",
+        "wagtailfontawesomesvg/solid/terminal.svg",
+        "wagtailfontawesomesvg/solid/shop.svg",
+    ]

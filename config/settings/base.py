@@ -12,24 +12,21 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 import os
 
-from ..versioning import get_git_sha
 from .util import strtobool
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR = os.path.dirname(PROJECT_DIR)
-WAGTAILAPI_BASE_URL = os.getenv("WAGTAILAPI_BASE_URL", "")
+
+WAGTAILADMIN_BASE_URL = os.getenv(
+    "WAGTAILADMIN_BASE_URL", "https://nationalarchives.gov.uk"
+)
+WAGTAILAPI_BASE_URL = os.getenv("WAGTAILAPI_BASE_URL", WAGTAILADMIN_BASE_URL)
 WAGTAIL_HEADLESS_PREVIEW = {
     "CLIENT_URLS": {
-        "default": os.getenv("WAGTAILADMIN_HEADLESS_PREVIEW_URL", "{SITE_ROOT_URL}"),
+        "default": os.getenv("WAGTAIL_HEADLESS_PREVIEW_URL", "{SITE_ROOT_URL}"),
     },
-    "SERVE_BASE_URL": os.getenv("WAGTAILADMIN_HEADLESS_BASE_URL", None),
-    "REDIRECT_ON_PREVIEW": strtobool(
-        os.getenv("WAGTAILADMIN_HEADLESS_REDIRECT_ON_PREVIEW", "False")
-    ),
-    "ENFORCE_TRAILING_SLASH": strtobool(
-        os.getenv("WAGTAILADMIN_HEADLESS_ENFORCE_TRAILING_SLASH", "True")
-    ),
+    "SERVE_BASE_URL": None,
 }
 
 DEBUG = strtobool(os.getenv("DEBUG", "False"))
@@ -59,8 +56,6 @@ INSTALLED_APPS = [
     "etna.home",
     "etna.images",
     "etna.media",
-    "etna.records",
-    "etna.search",
     "etna.users",
     "etna.whatson",
     "wagtail.contrib.forms",
@@ -78,7 +73,6 @@ INSTALLED_APPS = [
     "wagtailfontawesomesvg",
     "wagtailmedia",
     "wagtail.contrib.settings",
-    "generic_chooser",
     "wagtailmetadata",  # TODO: Remove this package when we reset migrations and remove the dependency from the pyproject.toml
     "modelcluster",
     "taggit",
@@ -149,20 +143,13 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 # django-allauth configuration
-ACCOUNT_AUTHENTICATION_METHOD = "email"
-ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_LOGIN_METHODS = {"email"}
+ACCOUNT_SIGNUP_FIELDS = ["email*", "password1*", "password2*"]
 ACCOUNT_LOGOUT_ON_GET = False  # Bypass logout confirmation form
-ACCOUNT_USERNAME_REQUIRED = False  # Register using email only
 ACCOUNT_SESSION_REMEMBER = False  # True|False disables "Remember me?" checkbox"
 LOGIN_URL = "/accounts/login"
 LOGIN_REDIRECT_URL = "/"
 WAGTAIL_FRONTEND_LOGIN_URL = LOGIN_URL
-# View access control
-IMAGE_VIEWER_REQUIRE_LOGIN = strtobool(os.getenv("IMAGE_VIEWER_REQUIRE_LOGIN", "True"))
-RECORD_DETAIL_REQUIRE_LOGIN = strtobool(
-    os.getenv("RECORD_DETAIL_REQUIRE_LOGIN", "True")
-)
-SEARCH_VIEWS_REQUIRE_LOGIN = strtobool(os.getenv("SEARCH_VIEWS_REQUIRE_LOGIN", "True"))
 # Custom adapter to prevent self-signup
 ACCOUNT_ADAPTER = "etna.users.adapters.NoSelfSignupAccountAdapter"
 ACCOUNT_FORMS = {"login": "etna.users.forms.EtnaLoginForm"}
@@ -241,30 +228,18 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
-
 STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.FileSystemFinder",
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
 ]
-
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "templates", "static"),
 ]
-
-# ManifestStaticFilesStorage is recommended in production, to prevent outdated
-# JavaScript / CSS assets being served from cache (e.g. after a Wagtail upgrade).
-# See https://docs.djangoproject.com/en/3.1/ref/contrib/staticfiles/#manifeststaticfilesstorage
-STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
-
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 STATIC_URL = "static/"
-
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
-MEDIA_URL = "/media/"
-
-# Should always be False in production. Can be set to True in local environments
-# to serve static files even when DEBUG is False
-DJANGO_SERVE_STATIC = False
+MEDIA_ROOT = "/media"
+MEDIA_URL = "media/"
 
 WAGTAILMEDIA = {
     "MEDIA_MODEL": "media.EtnaMedia",
@@ -273,16 +248,10 @@ WAGTAILMEDIA = {
 
 # Wagtail settings
 
-WAGTAIL_SITE_NAME = "etna"
-
-# Base URL to use when referring to full URLs within the Wagtail admin backend -
-# e.g. in notification emails. Don't include '/admin' or a trailing slash
-WAGTAILADMIN_BASE_URL = os.getenv(
-    "WAGTAILADMIN_BASE_URL", "https://nationalarchives.gov.uk"
-)
+WAGTAIL_SITE_NAME = "National Archives"
 
 CSRF_TRUSTED_ORIGINS = [
-    os.getenv("CSRF_TRUSTED_ORIGIN", "https://nationalarchives.gov.uk")
+    os.getenv("CSRF_TRUSTED_ORIGINS", "https://www.nationalarchives.gov.uk")
 ]
 
 # For search results within Wagtail itself
@@ -312,21 +281,9 @@ WAGTAILIMAGES_IMAGE_MODEL = "images.CustomImage"
 
 WAGTAIL_PASSWORD_REQUIRED_TEMPLATE = "password_pages/password_required.html"
 
-# Eventbrite client
+# CIIM API Client
 
-EVENTBRITE_KEY = os.getenv("EVENTBRITE_KEY")
-EVENTBRITE_SECRET = os.getenv("EVENTBRITE_SECRET")
-EVENTBRITE_PRIVATE_TOKEN = os.getenv("EVENTBRITE_PRIVATE_TOKEN")
-EVENTBRITE_PUBLIC_TOKEN = os.getenv("EVENTBRITE_PUBLIC_TOKEN")
-
-# API Client
-
-CLIENT_BASE_URL = os.getenv("KONG_CLIENT_BASE_URL")
-CLIENT_KEY = os.getenv("KONG_CLIENT_KEY")
-CLIENT_VERIFY_CERTIFICATES = strtobool(
-    os.getenv("KONG_CLIENT_VERIFY_CERTIFICATES", "True")
-)
-IMAGE_PREVIEW_BASE_URL = os.getenv("KONG_IMAGE_PREVIEW_BASE_URL")
+ROSETTA_API_URL = os.getenv("ROSETTA_API_URL")
 
 # Rich Text Features
 # https://docs.wagtail.io/en/stable/advanced_topics/customisation/page_editing_interface.html#limiting-features-in-a-rich-text-field
@@ -343,45 +300,6 @@ EXPANDED_RICH_TEXT_FEATURES = RESTRICTED_RICH_TEXT_FEATURES + [
     "h2",
     "h3",
 ]
-
-# Analytics
-AVAILABILITY_CONDITION_CATEGORIES = {
-    "AcademicSubscription": "Academic Subscription",
-    "AccessUnderReview": "Not Viewable online",
-    "AV_Media": "Viewable online",
-    "ClosedFOIReview": "Not viewable online",
-    "ClosedRetainedDeptKnown": "Not viewable online",
-    "ClosedRetainedDeptUnKnown": "Not viewable online",
-    "CollectionCare": "Not viewable online",
-    "DigitizedAvailableButNotDownloadableAtItemLevel": "Not viewable online",
-    "DigitizedAvailableButNotDownloadableAtPieceLevel": "Not viewable online",
-    "DigitizedDiscovery - Free": "Viewable online",
-    "DigitizedDiscovery - Charged": "Viewable online",
-    "DigitizedDiscovery - Charged (+LIAs)": "Viewable online & via 3rd party",
-    "DigitizedLIA": "Viewable via 3rd party",
-    "DigitizedOther": "Viewable online",
-    "DigitizedPartiallyOpened": "Not used",
-    "DisplayAtMuseum": "Not viewable online",
-    "FileAuthority": "Not viewable online",
-    "GovtWebArchive": "Viewable via 3rd party",
-    "ImageLibrary": "Viewable via 3rd party",
-    "InUse": "Not viewable online",
-    "InvigilationSafeRoom": "Not viewable online",
-    "LocalArchive": "Not viewable online",
-    "MissingLost": "Not viewable online",
-    "MouldTreatment": "Not viewable online",
-    "Offsite": "Not viewable online",
-    "Onloan": "Not viewable online",
-    "OrderException": "Error",
-    "OrderOriginal": "Not viewable online",
-    "PaidSearch": "Not viewable online",
-    "Surrogate": "Not viewable online",
-    "TooLargeToCopyOffsite": "Not viewable online",
-    "TooLargeToCopyOriginal": "Not viewable online",
-    "TooLargeToCopySurrogate": "Not viewable online",
-    "Unavailable": "Not viewable online",
-    "Unfit": "Not viewable online",
-}
 
 # Don't anonymise data by default, so we don't accidentally lose production data
 BIRDBATH_REQUIRED = False
@@ -413,12 +331,6 @@ CACHE_CONTROL_STALE_WHILE_REVALIDATE = int(
 # injected into template contexts using a custom context processor - allowing
 # conditional logic to be added to both Python and template code
 
-FEATURE_RECORD_LINKS_GO_TO_DISCOVERY = strtobool(
-    os.getenv("FEATURE_RECORD_LINKS_GO_TO_DISCOVERY", "False")
-)
-FEATURE_DOWNLOAD_RECORD_LINKS_GO_TO_DISCOVERY = strtobool(
-    os.getenv("FEATURE_DOWNLOAD_RECORD_LINKS_GO_TO_DISCOVERY", "False")
-)
 FEATURE_COOKIE_BANNER_ENABLED = strtobool(
     os.getenv("FEATURE_COOKIE_BANNER_ENABLED", "True")
 )

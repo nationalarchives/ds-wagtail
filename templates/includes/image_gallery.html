@@ -62,7 +62,7 @@
                                     id="item-{{ forloop.counter }}-caption">
                             {{ item.caption|richtext }}
                             {% if item.image.record %}
-                                Image library ref: <a href="{% record_url item.image.record is_editorial=True %}">{{ item.image.record }}</a>
+                                Image library ref: <a href="{% record_url item.image.record %}">{{ item.image.record }}</a>
                             {% endif %}
                     </figcaption>
                 </figure>

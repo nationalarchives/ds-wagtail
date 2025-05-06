@@ -17,9 +17,9 @@ from wagtail.images.models import (
 )
 from wagtail.search import index
 
+from etna.ciim.fields import RecordField
+from etna.ciim.serializers import RecordSerializer
 from etna.core.serializers import RichTextSerializer
-from etna.records.fields import RecordField
-from etna.records.serializers import RecordSerializer
 
 logger = logging.getLogger(__name__)
 
