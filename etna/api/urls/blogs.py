@@ -14,22 +14,30 @@ class BlogsAPIViewSet(CustomPagesAPIViewSet):
         queryset = self.get_queryset()
         restricted_pages = [
             restriction.page
-            for restriction in PageViewRestriction.objects.all().select_related("page")
+            for restriction in PageViewRestriction.objects.all().select_related(
+                "page"
+            )
             if not restriction.accept_request(self.request)
         ]
         for restricted_page in restricted_pages:
-            queryset = queryset.not_descendant_of(restricted_page, inclusive=True)
+            queryset = queryset.not_descendant_of(
+                restricted_page, inclusive=True
+            )
         blog_post_counts = {}
         for blog in queryset:
             # Ignore all "sub-blogs" (BlogPages which are children of other BlogPages)
             queryset = queryset.not_descendant_of(blog, inclusive=False)
-            blog_posts = BlogPostPage.objects.all().live().descendant_of(blog).count()
+            blog_posts = (
+                BlogPostPage.objects.all().live().descendant_of(blog).count()
+            )
             blog_post_counts[blog.id] = blog_posts
         serializer = DefaultPageSerializer(
             queryset, required_api_fields=["custom_type_label"], many=True
         )
         blogs = sorted(serializer.data, key=lambda x: x["title"])
-        blogs = [blog | {"posts": blog_post_counts[blog["id"]]} for blog in blogs]
+        blogs = [
+            blog | {"posts": blog_post_counts[blog["id"]]} for blog in blogs
+        ]
         top_level_queryset = BlogIndexPage.objects.all().live()
         top_level = DefaultPageSerializer(top_level_queryset, many=True)
         blogs = top_level.data + blogs

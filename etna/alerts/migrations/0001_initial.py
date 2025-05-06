@@ -8,21 +8,57 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Alert',
+            name="Alert",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(help_text='The name of the alert to display in the CMS, for easier identification.', max_length=100)),
-                ('title', models.CharField(help_text="The short title of your alert which will show in bold at the top of the notification banner. E.g. 'Please note' or 'Important information'", max_length=50)),
-                ('message', wagtail.fields.RichTextField()),
-                ('active', models.BooleanField(default=False)),
-                ('cascade', models.BooleanField(default=False, verbose_name='Show on current and all child pages')),
-                ('alert_level', models.CharField(choices=[('low', 'Low'), ('medium', 'Medium'), ('high', 'High')], default='low', max_length=6)),
-                ('uid', models.BigIntegerField(blank=True, editable=False)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "name",
+                    models.CharField(
+                        help_text="The name of the alert to display in the CMS, for easier identification.",
+                        max_length=100,
+                    ),
+                ),
+                (
+                    "title",
+                    models.CharField(
+                        help_text="The short title of your alert which will show in bold at the top of the notification banner. E.g. 'Please note' or 'Important information'",
+                        max_length=50,
+                    ),
+                ),
+                ("message", wagtail.fields.RichTextField()),
+                ("active", models.BooleanField(default=False)),
+                (
+                    "cascade",
+                    models.BooleanField(
+                        default=False,
+                        verbose_name="Show on current and all child pages",
+                    ),
+                ),
+                (
+                    "alert_level",
+                    models.CharField(
+                        choices=[
+                            ("low", "Low"),
+                            ("medium", "Medium"),
+                            ("high", "High"),
+                        ],
+                        default="low",
+                        max_length=6,
+                    ),
+                ),
+                ("uid", models.BigIntegerField(blank=True, editable=False)),
             ],
         ),
     ]

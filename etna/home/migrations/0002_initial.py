@@ -4,35 +4,107 @@ import django.db.models.deletion
 import modelcluster.fields
 from django.db import migrations, models
 
+
+def create_homepage(apps, schema_editor):
+    # Get models
+    ContentType = apps.get_model("contenttypes.ContentType")
+    Page = apps.get_model("wagtailcore.Page")
+    Site = apps.get_model("wagtailcore.Site")
+    HomePage = apps.get_model("home.HomePage")
+
+    # Delete the default homepage
+    # If migration is run multiple times, it may have already been deleted
+    Page.objects.filter(id=2).delete()
+
+    # Create content type for homepage model
+    homepage_content_type, __ = ContentType.objects.get_or_create(
+        model="homepage", app_label="home"
+    )
+
+    # Create a new homepage
+    homepage = HomePage.objects.create(
+        title="Home",
+        slug="",
+        content_type=homepage_content_type,
+        path="00010001",
+        depth=2,
+        numchild=0,
+        url_path="/",
+        locale_id=1,
+    )
+
+    # Create a site with the new homepage set as the root
+    Site.objects.create(
+        hostname="localhost", root_page=homepage, is_default_site=True
+    )
+
+
+def remove_homepage(apps, schema_editor):
+    # Get models
+    HomePage = apps.get_model("home.HomePage")
+
+    # Delete the default homepage
+    # Page and Site objects CASCADE
+    HomePage.objects.filter(slug="home", depth=2).delete()
+
+
 class Migration(migrations.Migration):
 
     initial = True
 
     dependencies = [
-        ('home', '0001_initial'),
-        ('images', '0001_initial'),
-        ('wagtailcore', '0094_alter_page_locale'),
+        ("home", "0001_initial"),
+        ("images", "0001_initial"),
+        ("wagtailcore", "0094_alter_page_locale"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='homepage',
-            name='search_image',
-            field=models.ForeignKey(blank=True, help_text='Image that will appear when this page is shared on social media. This will default to the teaser image if left blank.', null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to='images.customimage', verbose_name='OpenGraph image'),
+            model_name="homepage",
+            name="search_image",
+            field=models.ForeignKey(
+                blank=True,
+                help_text="Image that will appear when this page is shared on social media. This will default to the teaser image if left blank.",
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                related_name="+",
+                to="images.customimage",
+                verbose_name="OpenGraph image",
+            ),
         ),
         migrations.AddField(
-            model_name='homepage',
-            name='teaser_image',
-            field=models.ForeignKey(blank=True, help_text='Image that will appear on thumbnails and promos around the site.', null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to='images.customimage'),
+            model_name="homepage",
+            name="teaser_image",
+            field=models.ForeignKey(
+                blank=True,
+                help_text="Image that will appear on thumbnails and promos around the site.",
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                related_name="+",
+                to="images.customimage",
+            ),
         ),
         migrations.AddField(
-            model_name='homepage',
-            name='twitter_og_image',
-            field=models.ForeignKey(blank=True, help_text='If left blank, the OpenGraph image will be used.', null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to='images.customimage', verbose_name='Twitter OpenGraph image'),
+            model_name="homepage",
+            name="twitter_og_image",
+            field=models.ForeignKey(
+                blank=True,
+                help_text="If left blank, the OpenGraph image will be used.",
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                related_name="+",
+                to="images.customimage",
+                verbose_name="Twitter OpenGraph image",
+            ),
         ),
         migrations.AddField(
-            model_name='mourningnotice',
-            name='page',
-            field=modelcluster.fields.ParentalKey(on_delete=django.db.models.deletion.CASCADE, related_name='mourning', to='wagtailcore.page'),
+            model_name="mourningnotice",
+            name="page",
+            field=modelcluster.fields.ParentalKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="mourning",
+                to="wagtailcore.page",
+            ),
         ),
+        migrations.RunPython(create_homepage, remove_homepage),
     ]

@@ -13,11 +13,11 @@
         "parent": {
             "id": HOME_PAGE_ID,
             "meta": {
-                "type": "home.HomePage",
+                "type": "wagtailcore.Page",
                 "detail_url": "WAGTAILAPI_BASE_URL/api/v2/pages/HOME_PAGE_ID/",
                 "html_url": "http://localhost/"
             },
-            "title": "Home"
+            "title": "Welcome to your new Wagtail site!"
         },
         "privacy": "public",
         "last_published_at": "2000-01-01T00:00:00Z",

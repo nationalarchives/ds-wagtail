@@ -11,13 +11,13 @@
         "first_published_at": "2000-01-01T00:00:00Z",
         "alias_of": null,
         "parent": {
-            "id": 3,
+            "id": 2,
             "meta": {
-                "type": "home.HomePage",
-                "detail_url": "WAGTAILAPI_BASE_URL/api/v2/pages/3/",
+                "type": "wagtailcore.Page",
+                "detail_url": "WAGTAILAPI_BASE_URL/api/v2/pages/2/",
                 "html_url": "http://localhost/"
             },
-            "title": "Home"
+            "title": "Welcome to your new Wagtail site!"
         },
         "privacy": "public",
         "last_published_at": null,

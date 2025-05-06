@@ -313,7 +313,9 @@ BIRDBATH_PROCESSORS = ["etna.users.anonymisation.UserAnonymiser"]
 # See core.cache_control.get_default_cache_control_kwargs()
 # The default value is 3 hours.
 try:
-    CACHE_CONTROL_S_MAXAGE = int(os.getenv("CACHE_CONTROL_S_MAXAGE", 60 * 60 * 3))
+    CACHE_CONTROL_S_MAXAGE = int(
+        os.getenv("CACHE_CONTROL_S_MAXAGE", 60 * 60 * 3)
+    )
 except ValueError:
     pass
 
@@ -334,7 +336,9 @@ CACHE_CONTROL_STALE_WHILE_REVALIDATE = int(
 FEATURE_COOKIE_BANNER_ENABLED = strtobool(
     os.getenv("FEATURE_COOKIE_BANNER_ENABLED", "True")
 )
-FEATURE_PLATFORM_ENVIRONMENT_TYPE = os.getenv("PLATFORM_ENVIRONMENT_TYPE", "production")
+FEATURE_PLATFORM_ENVIRONMENT_TYPE = os.getenv(
+    "PLATFORM_ENVIRONMENT_TYPE", "production"
+)
 FEATURE_DISABLE_JS_WHATS_ON_LISTING = strtobool(
     os.getenv("FEATURE_DISABLE_JS_WHATS_ON_LISTING", "False")
 )

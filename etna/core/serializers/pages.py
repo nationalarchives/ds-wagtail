@@ -14,9 +14,11 @@ def get_api_fields(object, required_api_fields: list = []) -> list:
     `default_api_fields` attribute of the page model.
     """
     fields = []
-    if default_api_fields := object.default_api_fields:
+    if hasattr(object, "default_api_fields") and object.default_api_fields:
+        default_api_fields = object.default_api_fields
         fields.extend(default_api_fields)
-    if api_fields := object.api_fields:
+    if hasattr(object, "api_fields") and object.api_fields:
+        api_fields = object.api_fields
         for field in required_api_fields:
             for api_field in api_fields:
                 if field == api_field.name:
@@ -34,7 +36,9 @@ def get_field_data(object, field) -> any:
         field_data = getattr(object, field.name, None)
         if serializer := field.serializer:
             if source := serializer.source:
-                field_data = serializer.to_representation(getattr(object, source, None))
+                field_data = serializer.to_representation(
+                    getattr(object, source, None)
+                )
             else:
                 field_data = serializer.to_representation(field_data)
         if callable(field_data):
@@ -66,12 +70,16 @@ def get_api_data(object, required_api_fields: list = []) -> dict:
 
 
 class DefaultPageSerializer(serializers.Serializer):
-    def __init__(self, instance=None, data=empty, required_api_fields=[], **kwargs):
+    def __init__(
+        self, instance=None, data=empty, required_api_fields=[], **kwargs
+    ):
         self.required_api_fields = required_api_fields
         super().__init__(instance=instance, data=data, **kwargs)
 
     def to_representation(self, instance):
-        return get_api_data(instance, required_api_fields=self.required_api_fields)
+        return get_api_data(
+            instance, required_api_fields=self.required_api_fields
+        )
 
 
 class SimplePageSerializer(serializers.Serializer):

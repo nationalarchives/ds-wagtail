@@ -48,7 +48,9 @@ class BlogPostsAPIViewSet(CustomPagesAPIViewSet):
                         )
                     )
                 ],
-                "posts": queryset.filter(**{"published_date__year": year}).count(),
+                "posts": queryset.filter(
+                    **{"published_date__year": year}
+                ).count(),
             }
             for year in sorted(years)
         ]
@@ -73,10 +75,14 @@ class BlogPostsAPIViewSet(CustomPagesAPIViewSet):
                 authors_count.append(
                     {
                         "author": serializer.to_representation(author_item),
-                        "posts": queryset.filter(author_tags__author=author).count(),
+                        "posts": queryset.filter(
+                            author_tags__author=author
+                        ).count(),
                     }
                 )
-        return Response(sorted(authors_count, key=lambda x: x["posts"], reverse=True))
+        return Response(
+            sorted(authors_count, key=lambda x: x["posts"], reverse=True)
+        )
 
     @classmethod
     def get_urlpatterns(cls):
@@ -86,5 +92,7 @@ class BlogPostsAPIViewSet(CustomPagesAPIViewSet):
         return [
             path("", cls.as_view({"get": "listing_view"}), name="listing"),
             path("count/", cls.as_view({"get": "count_view"}), name="count"),
-            path("authors/", cls.as_view({"get": "author_view"}), name="authors"),
+            path(
+                "authors/", cls.as_view({"get": "author_view"}), name="authors"
+            ),
         ]

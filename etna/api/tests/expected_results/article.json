@@ -79,7 +79,7 @@
         "title": "Test title",
         "message": "<p>Test message</p>"
     },
-    "intro": "<p>This is an article with <a href=\"/\">a link to a page</a><page>",
+    "intro": "<p>This is an article with <a href=\"/arts/\">a link to a page</a><page>",
     "hero_image_caption": "<p>Hero image caption</p>",
     "hero_image": {
         "id": 13,
@@ -254,7 +254,7 @@
                         "type": "featured_record_article",
                         "value": {
                             "page": {
-                                "id": 12,
+                                "id": 11,
                                 "title": "record_article",
                                 "short_title": null,
                                 "url": "/article_index/record_article/",
@@ -326,7 +326,7 @@
                                 "decorative": false,
                                 "alt_text": "Image alt text"
                             },
-                            "description": "<p data-block-key=\"upl5w\">Description with <a href=\"/\">a link to a page</a></p>"
+                            "description": "<p data-block-key=\"upl5w\">Description with <a href=\"/arts/\">a link to a page</a></p>"
                         },
                         "id": "a48ac0b2-be83-4b01-ae23-4fd1fa525322"
                     },
@@ -426,7 +426,7 @@
     ],
     "latest_items": [
         {
-            "id": 12,
+            "id": 11,
             "title": "record_article",
             "short_title": null,
             "url": "/article_index/record_article/",

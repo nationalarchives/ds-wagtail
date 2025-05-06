@@ -48,7 +48,8 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.black]
-line-length = 88
+line-length = 80
+include = '\.pyi?$'
 exclude = '''
 /(
   | \.eggs
@@ -61,6 +62,5 @@ exclude = '''
   | docs
   | venv
   | node_modules
-  | migrations
 )/
 '''

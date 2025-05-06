@@ -59,7 +59,8 @@ class TestArticlePageSimilarItems(TestCase):
         self.two_matches_page.save()
 
         self.single_match_page.tagged_items = [
-            TaggedArticle(tag=t) for t in ArticleTag.objects.filter(slug="americas")
+            TaggedArticle(tag=t)
+            for t in ArticleTag.objects.filter(slug="americas")
         ]
         self.single_match_page.save()
 
@@ -156,7 +157,8 @@ class TestFocusedArticlePageSimilarItems(TestCase):
         self.two_matches_page.save()
 
         self.single_match_page.tagged_items = [
-            TaggedArticle(tag=t) for t in ArticleTag.objects.filter(slug="americas")
+            TaggedArticle(tag=t)
+            for t in ArticleTag.objects.filter(slug="americas")
         ]
         self.single_match_page.save()
 
@@ -193,7 +195,9 @@ class TestFocusedArticlePageSimilarItems(TestCase):
             self.assertFalse(test_page.similar_items)
 
     def test_search_prevented_if_no_tag_matches_identified(self):
-        test_page = FocusedArticlePage.objects.get(id=self.different_tags_page.id)
+        test_page = FocusedArticlePage.objects.get(
+            id=self.different_tags_page.id
+        )
         with self.assertNumQueries(3):
             # TODO: This is 3 queries in GitHub Actions but 4 locally
 

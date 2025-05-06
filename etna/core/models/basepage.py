@@ -47,7 +47,9 @@ options.DEFAULT_NAMES = options.DEFAULT_NAMES + ("verbose_name_public",)
 
 @method_decorator(apply_default_vary_headers, name="serve")
 @method_decorator(apply_default_cache_control, name="serve")
-class BasePage(AlertMixin, SocialMixin, DataLayerMixin, HeadlessPreviewMixin, Page):
+class BasePage(
+    AlertMixin, SocialMixin, DataLayerMixin, HeadlessPreviewMixin, Page
+):
     """
     An abstract base model that is used for all Page models within
     the project. Any common fields, Wagtail overrides or custom
@@ -78,7 +80,9 @@ class BasePage(AlertMixin, SocialMixin, DataLayerMixin, HeadlessPreviewMixin, Pa
         blank=True,
         on_delete=models.SET_NULL,
         related_name="+",
-        help_text=_("Image that will appear on thumbnails and promos around the site."),
+        help_text=_(
+            "Image that will appear on thumbnails and promos around the site."
+        ),
     )
 
     # DataLayerMixin overrides
@@ -111,7 +115,11 @@ class BasePage(AlertMixin, SocialMixin, DataLayerMixin, HeadlessPreviewMixin, Pa
     def clean(self, *args, **kwargs):
         if self.short_title and len(self.short_title) > len(self.title):
             raise ValidationError(
-                {"short_title": ["The short title must not be longer than the title."]}
+                {
+                    "short_title": [
+                        "The short title must not be longer than the title."
+                    ]
+                }
             )
         return super().clean(*args, **kwargs)
 

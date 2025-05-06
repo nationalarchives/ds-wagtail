@@ -11,7 +11,9 @@ from wagtail.api.v2.utils import BadRequestError, get_object_detail_url
 from wagtail.api.v2.views import PagesAPIViewSet
 from wagtail.contrib.redirects.models import Redirect
 from wagtail.models import Page, PageViewRestriction, Site
-from wagtail.search.backends.database.postgres.postgres import PostgresSearchResults
+from wagtail.search.backends.database.postgres.postgres import (
+    PostgresSearchResults,
+)
 
 from etna.core.serializers.pages import DefaultPageSerializer
 
@@ -31,13 +33,17 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
         # Exclude pages that the user doesn't have access to
         restricted_pages = [
             restriction.page
-            for restriction in PageViewRestriction.objects.all().select_related("page")
+            for restriction in PageViewRestriction.objects.all().select_related(
+                "page"
+            )
             if not restriction.accept_request(self.request)
         ]
 
         # Exclude the restricted pages and their descendants from the queryset
         for restricted_page in restricted_pages:
-            queryset = queryset.not_descendant_of(restricted_page, inclusive=True)
+            queryset = queryset.not_descendant_of(
+                restricted_page, inclusive=True
+            )
 
         # Check if we have a specific site to look for
         if "site" in request.GET:
@@ -64,14 +70,18 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
 
         if site:
             base_queryset = queryset
-            queryset = base_queryset.descendant_of(site.root_page, inclusive=True)
+            queryset = base_queryset.descendant_of(
+                site.root_page, inclusive=True
+            )
 
         else:
             # No sites configured
             queryset = queryset.none()
 
         if "author" in request.GET and request.GET["author"]:
-            queryset = queryset.filter(author_tags__author=request.GET["author"])
+            queryset = queryset.filter(
+                author_tags__author=request.GET["author"]
+            )
 
         self.check_query_parameters(queryset)
         queryset = self.filter_queryset(queryset)
@@ -125,10 +135,16 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
         data = serializer.data
         breadcrumbs = [
             {
-                "text": ("Home" if page.url == "/" else page.short_title or page.title),
+                "text": (
+                    "Home"
+                    if page.url == "/"
+                    else page.short_title or page.title
+                ),
                 "href": page.url,
             }
-            for page in instance.get_ancestors().order_by("depth").specific(defer=True)
+            for page in instance.get_ancestors()
+            .order_by("depth")
+            .specific(defer=True)
             if page.url
         ]
         if "meta" in data:
@@ -155,7 +171,9 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
                     ):
                         return Response(data)
                     else:
-                        data = restricted_data | {"message": "Incorrect password."}
+                        data = restricted_data | {
+                            "message": "Incorrect password."
+                        }
                         return Response(data)
                 else:
                     data = restricted_data | {
@@ -229,12 +247,16 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
 
         if site:
             base_queryset = queryset
-            queryset = base_queryset.descendant_of(site.root_page, inclusive=True)
+            queryset = base_queryset.descendant_of(
+                site.root_page, inclusive=True
+            )
 
             # If internationalisation is enabled, include pages from other language trees
             if getattr(settings, "WAGTAIL_I18N_ENABLED", False):
                 for translation in site.root_page.get_translations():
-                    queryset |= base_queryset.descendant_of(translation, inclusive=True)
+                    queryset |= base_queryset.descendant_of(
+                        translation, inclusive=True
+                    )
 
         else:
             # No sites configured
@@ -265,13 +287,19 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
             if redirects.exists():
                 if redirects.get().redirect_page:
                     if new_path := redirects.get().redirect_page.url:
-                        logger.info(f"Redirect detected: {path} ---> {new_path}")
+                        logger.info(
+                            f"Redirect detected: {path} ---> {new_path}"
+                        )
                         path = new_path
 
-            path_components = [component for component in path.split("/") if component]
+            path_components = [
+                component for component in path.split("/") if component
+            ]
 
             try:
-                page, _, _ = site.root_page.specific.route(request, path_components)
+                page, _, _ = site.root_page.specific.route(
+                    request, path_components
+                )
             except Http404:
                 return
 

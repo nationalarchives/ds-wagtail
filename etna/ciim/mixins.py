@@ -11,7 +11,9 @@ class RecordChosenViewMixin(ChosenViewMixin):
         r = requests.get(f"{settings.ROSETTA_API_URL}/get?id={pk}")
         r.raise_for_status()
         result = r.json()
-        result = result.get("data", [])[0].get("@template", {}).get("details", {})
+        result = (
+            result.get("data", [])[0].get("@template", {}).get("details", {})
+        )
         return result
 
 

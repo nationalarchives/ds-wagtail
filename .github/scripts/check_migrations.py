@@ -44,7 +44,9 @@ def check_migration_file(file):
     keywords = ["DeleteModel", "RenameModel", "RemoveField", "AlterField"]
     for keyword in keywords:
         if keyword in contents and f"# etna:allow{keyword}" not in contents:
-            print(f"Warning: {file} contains a migration that may cause data loss.")
+            print(
+                f"Warning: {file} contains a migration that may cause data loss."
+            )
             return True
 
 
@@ -57,7 +59,9 @@ def main():
             if check_migration_file(file):
                 migration_alert = True
     if migration_alert:
-        print("Please review the migrations before pushing, to ensure no loss of data.")
+        print(
+            "Please review the migrations before pushing, to ensure no loss of data."
+        )
         sys.exit(1)
 
 

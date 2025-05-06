@@ -34,7 +34,11 @@ class BaseRecordChooseView(BaseChooseView):
                 url_name=self.chosen_url_name,
                 link_attrs={"data-chooser-modal-choice": True},
             ),
-            Column("title", label="Title", accessor="@template.details.summaryTitle"),
+            Column(
+                "title",
+                label="Title",
+                accessor="@template.details.summaryTitle",
+            ),
         ]
 
     def apply_object_list_ordering(self, objects):
@@ -62,7 +66,9 @@ class BaseRecordChooseView(BaseChooseView):
         return Page(results, page_number, paginator)
 
 
-class RecordChooseView(ChooseViewMixin, CreationFormMixin, BaseRecordChooseView):
+class RecordChooseView(
+    ChooseViewMixin, CreationFormMixin, BaseRecordChooseView
+):
     pass
 
 

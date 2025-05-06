@@ -52,7 +52,9 @@ class InterpretCookiesMiddleware:
         if cookies_policy := request.COOKIES.get("cookies_policy", None):
             try:
                 # Permit cookies if user has agreed
-                cookies_permitted = json.loads(unquote(cookies_policy))["usage"] is True
+                cookies_permitted = (
+                    json.loads(unquote(cookies_policy))["usage"] is True
+                )
             except (
                 json.decoder.JSONDecodeError,  # value is not valid json
                 TypeError,  # decoded json isn't a dict

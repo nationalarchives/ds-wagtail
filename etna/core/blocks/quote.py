@@ -26,7 +26,9 @@ class ReviewBlock(blocks.StructBlock):
     a newspaper, that has given us a review. A quote block with stars.
     """
 
-    quote = APIRichTextBlock(required=True, features=settings.INLINE_RICH_TEXT_FEATURES)
+    quote = APIRichTextBlock(
+        required=True, features=settings.INLINE_RICH_TEXT_FEATURES
+    )
     attribution = blocks.CharBlock(required=True, max_length=100)
     stars = blocks.ChoiceBlock(
         choices=[

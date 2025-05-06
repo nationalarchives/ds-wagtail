@@ -3,15 +3,16 @@
 import django.core.validators
 import django.db.models.deletion
 import django.utils.timezone
+import wagtail.fields
+import wagtail_headless_preview.models
+from django.db import migrations, models
+
 import etna.analytics.mixins
 import etna.ciim.blocks
 import etna.ciim.fields
 import etna.collections.models
 import etna.core.blocks.promoted_links
 import etna.people.models
-import wagtail.fields
-import wagtail_headless_preview.models
-from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
@@ -19,132 +20,1609 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('alerts', '0001_initial'),
-        ('wagtailcore', '0094_alter_page_locale'),
+        ("alerts", "0001_initial"),
+        ("wagtailcore", "0094_alter_page_locale"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='ArticlePage',
+            name="ArticlePage",
             fields=[
-                ('page_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='wagtailcore.page')),
-                ('custom_warning_text', wagtail.fields.RichTextField(blank=True, help_text='If specified, will be used for the content warning.', verbose_name='custom content warning text (optional)')),
-                ('published_date', models.DateTimeField(default=django.utils.timezone.now, help_text='The date the page was published to the public.', verbose_name='Published date')),
-                ('hero_image_caption', wagtail.fields.RichTextField(blank=True, help_text='An optional caption for hero images. This could be used for image sources or for other useful metadata.', verbose_name='hero image caption (optional)')),
-                ('twitter_og_title', models.CharField(blank=True, help_text='If left blank, the OpenGraph title will be used.', max_length=255, null=True, verbose_name='Twitter OpenGraph title')),
-                ('twitter_og_description', models.TextField(blank=True, help_text='If left blank, the OpenGraph description will be used.', null=True, verbose_name='Twitter OpenGraph description')),
-                ('short_title', models.CharField(blank=True, help_text='A shorter title for use in breadcrumbs and other navigational elements, where applicable.', max_length=30, null=True, verbose_name='short title')),
-                ('teaser_text', models.TextField(help_text='A short, enticing description of this page. This will appear in promos and under thumbnails around the site.', max_length=160, verbose_name='teaser text')),
-                ('intro', wagtail.fields.RichTextField(help_text='1-2 sentences introducing the subject of the page, and explaining why a user should read on.', max_length=300, verbose_name='introductory text')),
-                ('article_tag_names', models.TextField(editable=False, null=True)),
-                ('body', wagtail.fields.StreamField([('content_section', 58)], blank=True, block_lookup={0: ('wagtail.blocks.CharBlock', (), {'label': 'Heading', 'max_length': 100}), 1: ('wagtail.blocks.CharBlock', (), {'label': 'Title', 'max_length': 100}), 2: ('wagtail.blocks.CharBlock', (), {'label': 'Description'}), 3: ('wagtail.blocks.URLBlock', (), {'label': 'URL'}), 4: ('etna.core.blocks.image.APIImageChooserBlock', (), {'label': 'Image', 'required': False}), 5: ('wagtail.blocks.StructBlock', [[('title', 1), ('description', 2), ('url', 3), ('image', 4)]], {}), 6: ('etna.core.blocks.page_chooser.APIPageChooserBlock', (), {'label': 'Page', 'page_type': ['wagtailcore.Page'], 'required': True}), 7: ('wagtail.blocks.CharBlock', (), {'help_text': 'Optional override for the teaser text', 'label': 'Teaser text override', 'required': False}), 8: ('wagtail.blocks.StructBlock', [[('page', 6), ('teaser_text', 7)]], {}), 9: ('etna.core.blocks.page_chooser.APIPageChooserBlock', (), {'label': 'Page', 'page_type': ['articles.RecordArticlePage'], 'required_api_fields': ['teaser_image']}), 10: ('wagtail.blocks.StructBlock', [[('page', 9)]], {}), 11: ('etna.core.blocks.image.APIImageChooserBlock', (), {'rendition_size': 'max-900x900', 'required': True}), 12: ('wagtail.blocks.CharBlock', (), {'help_text': 'Alternative (alt) text describes images when they fail to load, and is read aloud by assistive technologies. Use a maximum of 100 characters to describe your image. <a href="https://html.spec.whatwg.org/multipage/images.html#alt" target="_blank">Check the guidance for tips on writing alt text</a>.', 'label': 'Alternative text', 'max_length': 100}), 13: ('etna.core.blocks.paragraph.APIRichTextBlock', (), {'features': ['bold', 'italic', 'link'], 'help_text': 'If provided, displays directly below the image. Can be used to specify sources, transcripts or other useful metadata.', 'label': 'Caption (optional)', 'required': False}), 14: ('wagtail.blocks.StructBlock', [[('image', 11), ('alt_text', 12), ('caption', 13)]], {}), 15: ('wagtail.blocks.CharBlock', (), {'required': False}), 16: ('etna.core.blocks.paragraph.APIRichTextBlock', (), {'features': ['bold', 'italic', 'link'], 'required': False}), 17: ('wagtail.blocks.ListBlock', (14,), {}), 18: ('wagtail.blocks.StructBlock', [[('title', 15), ('description', 16), ('images', 17)]], {}), 19: ('wagtail.blocks.CharBlock', (), {'help_text': 'A descriptive title for the media block', 'required': True}), 20: ('etna.core.blocks.image.APIImageChooserBlock', (), {'help_text': 'A thumbnail image for the media block', 'rendition_size': 'fill-960x540', 'required': False}), 21: ('etna.media.blocks.MediaChooserBlock', (), {}), 22: ('wagtail.blocks.StructBlock', [[('title', 19), ('thumbnail', 20), ('media', 21)]], {}), 23: ('etna.core.blocks.paragraph.APIRichTextBlock', (), {'features': ['bold', 'italic', 'link', 'ol', 'ul']}), 24: ('wagtail.blocks.StructBlock', [[('text', 23)]], {}), 25: ('wagtail.blocks.CharBlock', (), {'help_text': 'Title of the promoted page', 'label': 'Title', 'max_length': 100}), 26: ('wagtail.blocks.ChoiceBlock', [], {'choices': [('blog', 'Blog post'), ('podcast', 'Podcast'), ('video', 'Video'), ('video-external', 'External video'), ('external-link', 'External link')], 'label': 'Category'}), 27: ('wagtail.blocks.CharBlock', (), {'help_text': 'This is a free text field. Please enter date as per agreed format: 14 April 2021', 'required': False}), 28: ('wagtail.blocks.CharBlock', (), {'help_text': 'Podcast or video duration.', 'label': 'Duration', 'max_length': 50, 'required': False}), 29: ('wagtail.blocks.URLBlock', (), {'help_text': 'URL for the external page', 'label': 'External URL'}), 30: ('wagtail.blocks.BooleanBlock', (), {'label': "Should this URL open in a new tab? <p style='font-size: 11px;'>Tick the box if 'yes'</p>", 'required': False}), 31: ('wagtail.blocks.CharBlock', (), {'help_text': "The text displayed on the button for your URL. If your URL links to an external site, please add the name of the site users will land on, and what they will find on this page. For example 'Watch our short film  <strong>about Shakespeare on YouTube</strong>'.", 'label': 'Call to action label', 'max_length': 50}), 32: ('wagtail.blocks.BooleanBlock', (), {'default': False, 'help_text': 'Decorative images are used for visual effect and do not add information to the content of a page. <a href="https://www.w3.org/WAI/tutorials/images/decorative/" target="_blank">"Check the guidance to see if your image is decorative</a>.', 'label': "Is this image decorative? <p class='field-title__subheading'>Tick the box if 'yes'</p>", 'required': False}), 33: ('wagtail.blocks.CharBlock', (), {'help_text': 'Alternative (alt) text describes images when they fail to load, and is read aloud by assistive technologies. Use a maximum of 100 characters to describe your image. Decorative images do not require alt text. <a href="https://html.spec.whatwg.org/multipage/images.html#alt" target="_blank">Check the guidance for tips on writing alt text</a>.', 'label': 'Image alternative text', 'max_length': 100, 'required': False}), 34: ('wagtail.blocks.StructBlock', [[('image', 11), ('decorative', 32), ('alt_text', 33)]], {'label': 'Teaser image', 'template': 'articles/blocks/images/blog-embed__image-container.html'}), 35: ('etna.core.blocks.paragraph.APIRichTextBlock', (), {'features': ['bold', 'italic', 'link'], 'help_text': 'A description of the promoted page'}), 36: ('wagtail.blocks.StructBlock', [[('title', 25), ('category', 26), ('publication_date', 27), ('author', 15), ('duration', 28), ('url', 29), ('target_blank', 30), ('cta_label', 31), ('image', 34), ('description', 35)]], {}), 37: ('wagtail.snippets.blocks.SnippetChooserBlock', ('categories.Category',), {}), 38: ('wagtail.blocks.CharBlock', (), {'help_text': 'The title of the target page', 'max_length': 100, 'required': True}), 39: ('etna.core.blocks.paragraph.APIRichTextBlock', (), {'features': ['bold', 'italic', 'link'], 'help_text': 'A description of the target page', 'required': False}), 40: ('wagtail.blocks.URLBlock', (), {'required': True}), 41: ('wagtail.blocks.StructBlock', [[('title', 38), ('description', 39), ('url', 40)]], {}), 42: ('wagtail.blocks.ListBlock', (41,), {}), 43: ('wagtail.blocks.StructBlock', [[('category', 37), ('summary', 16), ('promoted_items', 42)]], {}), 44: ('etna.core.blocks.paragraph.APIRichTextBlock', (), {'features': ['bold', 'italic', 'link', 'ol', 'ul'], 'required': True}), 45: ('wagtail.blocks.CharBlock', (), {'max_length': 100, 'required': False}), 46: ('wagtail.blocks.StructBlock', [[('quote', 44), ('attribution', 45)]], {}), 47: ('wagtail.blocks.ListBlock', (etna.ciim.blocks.RecordLinkBlock,), {'label': 'Items'}), 48: ('wagtail.blocks.StructBlock', [[('items', 47)]], {}), 49: ('wagtail.blocks.CharBlock', (), {'label': 'Sub-heading', 'max_length': 100}), 50: ('wagtail.blocks.StructBlock', [[('heading', 49)]], {}), 51: ('wagtail.blocks.CharBlock', (), {'label': 'Title', 'max_length': 100, 'required': True}), 52: ('wagtail.blocks.CharBlock', (), {'label': 'YouTube Video ID', 'max_length': 11, 'required': True, 'validators': [django.core.validators.RegexValidator(message='Invalid YouTube Video ID', regex='^[a-zA-Z0-9_-]{11}$')]}), 53: ('etna.core.blocks.image.APIImageChooserBlock', (), {'label': 'Preview Image', 'rendition_size': 'fill-640x360', 'required': True}), 54: ('wagtail.blocks.RichTextBlock', (), {'label': 'Transcript', 'required': False}), 55: ('wagtail.blocks.BooleanBlock', (), {'help_text': 'Tick if the video has captions on YouTube', 'label': 'Captions available', 'required': False}), 56: ('wagtail.blocks.StructBlock', [[('title', 51), ('video_id', 52), ('preview_image', 53), ('transcript', 54), ('captions_available', 55)]], {}), 57: ('wagtail.blocks.StreamBlock', [[('featured_external_link', 5), ('featured_page', 8), ('featured_record_article', 10), ('image', 14), ('image_gallery', 18), ('media', 22), ('paragraph', 24), ('promoted_item', 36), ('promoted_list', 43), ('quote', 46), ('record_links', 48), ('sub_heading', 50), ('youtube_video', 56)]], {'required': False}), 58: ('wagtail.blocks.StructBlock', [[('heading', 0), ('content', 57)]], {})}, null=True)),
+                (
+                    "page_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="wagtailcore.page",
+                    ),
+                ),
+                (
+                    "custom_warning_text",
+                    wagtail.fields.RichTextField(
+                        blank=True,
+                        help_text="If specified, will be used for the content warning.",
+                        verbose_name="custom content warning text (optional)",
+                    ),
+                ),
+                (
+                    "published_date",
+                    models.DateTimeField(
+                        default=django.utils.timezone.now,
+                        help_text="The date the page was published to the public.",
+                        verbose_name="Published date",
+                    ),
+                ),
+                (
+                    "hero_image_caption",
+                    wagtail.fields.RichTextField(
+                        blank=True,
+                        help_text="An optional caption for hero images. This could be used for image sources or for other useful metadata.",
+                        verbose_name="hero image caption (optional)",
+                    ),
+                ),
+                (
+                    "twitter_og_title",
+                    models.CharField(
+                        blank=True,
+                        help_text="If left blank, the OpenGraph title will be used.",
+                        max_length=255,
+                        null=True,
+                        verbose_name="Twitter OpenGraph title",
+                    ),
+                ),
+                (
+                    "twitter_og_description",
+                    models.TextField(
+                        blank=True,
+                        help_text="If left blank, the OpenGraph description will be used.",
+                        null=True,
+                        verbose_name="Twitter OpenGraph description",
+                    ),
+                ),
+                (
+                    "short_title",
+                    models.CharField(
+                        blank=True,
+                        help_text="A shorter title for use in breadcrumbs and other navigational elements, where applicable.",
+                        max_length=30,
+                        null=True,
+                        verbose_name="short title",
+                    ),
+                ),
+                (
+                    "teaser_text",
+                    models.TextField(
+                        help_text="A short, enticing description of this page. This will appear in promos and under thumbnails around the site.",
+                        max_length=160,
+                        verbose_name="teaser text",
+                    ),
+                ),
+                (
+                    "intro",
+                    wagtail.fields.RichTextField(
+                        help_text="1-2 sentences introducing the subject of the page, and explaining why a user should read on.",
+                        max_length=300,
+                        verbose_name="introductory text",
+                    ),
+                ),
+                (
+                    "article_tag_names",
+                    models.TextField(editable=False, null=True),
+                ),
+                (
+                    "body",
+                    wagtail.fields.StreamField(
+                        [("content_section", 58)],
+                        blank=True,
+                        block_lookup={
+                            0: (
+                                "wagtail.blocks.CharBlock",
+                                (),
+                                {"label": "Heading", "max_length": 100},
+                            ),
+                            1: (
+                                "wagtail.blocks.CharBlock",
+                                (),
+                                {"label": "Title", "max_length": 100},
+                            ),
+                            2: (
+                                "wagtail.blocks.CharBlock",
+                                (),
+                                {"label": "Description"},
+                            ),
+                            3: (
+                                "wagtail.blocks.URLBlock",
+                                (),
+                                {"label": "URL"},
+                            ),
+                            4: (
+                                "etna.core.blocks.image.APIImageChooserBlock",
+                                (),
+                                {"label": "Image", "required": False},
+                            ),
+                            5: (
+                                "wagtail.blocks.StructBlock",
+                                [
+                                    [
+                                        ("title", 1),
+                                        ("description", 2),
+                                        ("url", 3),
+                                        ("image", 4),
+                                    ]
+                                ],
+                                {},
+                            ),
+                            6: (
+                                "etna.core.blocks.page_chooser.APIPageChooserBlock",
+                                (),
+                                {
+                                    "label": "Page",
+                                    "page_type": ["wagtailcore.Page"],
+                                    "required": True,
+                                },
+                            ),
+                            7: (
+                                "wagtail.blocks.CharBlock",
+                                (),
+                                {
+                                    "help_text": "Optional override for the teaser text",
+                                    "label": "Teaser text override",
+                                    "required": False,
+                                },
+                            ),
+                            8: (
+                                "wagtail.blocks.StructBlock",
+                                [[("page", 6), ("teaser_text", 7)]],
+                                {},
+                            ),
+                            9: (
+                                "etna.core.blocks.page_chooser.APIPageChooserBlock",
+                                (),
+                                {
+                                    "label": "Page",
+                                    "page_type": ["articles.RecordArticlePage"],
+                                    "required_api_fields": ["teaser_image"],
+                                },
+                            ),
+                            10: (
+                                "wagtail.blocks.StructBlock",
+                                [[("page", 9)]],
+                                {},
+                            ),
+                            11: (
+                                "etna.core.blocks.image.APIImageChooserBlock",
+                                (),
+                                {
+                                    "rendition_size": "max-900x900",
+                                    "required": True,
+                                },
+                            ),
+                            12: (
+                                "wagtail.blocks.CharBlock",
+                                (),
+                                {
+                                    "help_text": 'Alternative (alt) text describes images when they fail to load, and is read aloud by assistive technologies. Use a maximum of 100 characters to describe your image. <a href="https://html.spec.whatwg.org/multipage/images.html#alt" target="_blank">Check the guidance for tips on writing alt text</a>.',
+                                    "label": "Alternative text",
+                                    "max_length": 100,
+                                },
+                            ),
+                            13: (
+                                "etna.core.blocks.paragraph.APIRichTextBlock",
+                                (),
+                                {
+                                    "features": ["bold", "italic", "link"],
+                                    "help_text": "If provided, displays directly below the image. Can be used to specify sources, transcripts or other useful metadata.",
+                                    "label": "Caption (optional)",
+                                    "required": False,
+                                },
+                            ),
+                            14: (
+                                "wagtail.blocks.StructBlock",
+                                [
+                                    [
+                                        ("image", 11),
+                                        ("alt_text", 12),
+                                        ("caption", 13),
+                                    ]
+                                ],
+                                {},
+                            ),
+                            15: (
+                                "wagtail.blocks.CharBlock",
+                                (),
+                                {"required": False},
+                            ),
+                            16: (
+                                "etna.core.blocks.paragraph.APIRichTextBlock",
+                                (),
+                                {
+                                    "features": ["bold", "italic", "link"],
+                                    "required": False,
+                                },
+                            ),
+                            17: ("wagtail.blocks.ListBlock", (14,), {}),
+                            18: (
+                                "wagtail.blocks.StructBlock",
+                                [
+                                    [
+                                        ("title", 15),
+                                        ("description", 16),
+                                        ("images", 17),
+                                    ]
+                                ],
+                                {},
+                            ),
+                            19: (
+                                "wagtail.blocks.CharBlock",
+                                (),
+                                {
+                                    "help_text": "A descriptive title for the media block",
+                                    "required": True,
+                                },
+                            ),
+                            20: (
+                                "etna.core.blocks.image.APIImageChooserBlock",
+                                (),
+                                {
+                                    "help_text": "A thumbnail image for the media block",
+                                    "rendition_size": "fill-960x540",
+                                    "required": False,
+                                },
+                            ),
+                            21: ("etna.media.blocks.MediaChooserBlock", (), {}),
+                            22: (
+                                "wagtail.blocks.StructBlock",
+                                [
+                                    [
+                                        ("title", 19),
+                                        ("thumbnail", 20),
+                                        ("media", 21),
+                                    ]
+                                ],
+                                {},
+                            ),
+                            23: (
+                                "etna.core.blocks.paragraph.APIRichTextBlock",
+                                (),
+                                {
+                                    "features": [
+                                        "bold",
+                                        "italic",
+                                        "link",
+                                        "ol",
+                                        "ul",
+                                    ]
+                                },
+                            ),
+                            24: (
+                                "wagtail.blocks.StructBlock",
+                                [[("text", 23)]],
+                                {},
+                            ),
+                            25: (
+                                "wagtail.blocks.CharBlock",
+                                (),
+                                {
+                                    "help_text": "Title of the promoted page",
+                                    "label": "Title",
+                                    "max_length": 100,
+                                },
+                            ),
+                            26: (
+                                "wagtail.blocks.ChoiceBlock",
+                                [],
+                                {
+                                    "choices": [
+                                        ("blog", "Blog post"),
+                                        ("podcast", "Podcast"),
+                                        ("video", "Video"),
+                                        ("video-external", "External video"),
+                                        ("external-link", "External link"),
+                                    ],
+                                    "label": "Category",
+                                },
+                            ),
+                            27: (
+                                "wagtail.blocks.CharBlock",
+                                (),
+                                {
+                                    "help_text": "This is a free text field. Please enter date as per agreed format: 14 April 2021",
+                                    "required": False,
+                                },
+                            ),
+                            28: (
+                                "wagtail.blocks.CharBlock",
+                                (),
+                                {
+                                    "help_text": "Podcast or video duration.",
+                                    "label": "Duration",
+                                    "max_length": 50,
+                                    "required": False,
+                                },
+                            ),
+                            29: (
+                                "wagtail.blocks.URLBlock",
+                                (),
+                                {
+                                    "help_text": "URL for the external page",
+                                    "label": "External URL",
+                                },
+                            ),
+                            30: (
+                                "wagtail.blocks.BooleanBlock",
+                                (),
+                                {
+                                    "label": "Should this URL open in a new tab? <p style='font-size: 11px;'>Tick the box if 'yes'</p>",
+                                    "required": False,
+                                },
+                            ),
+                            31: (
+                                "wagtail.blocks.CharBlock",
+                                (),
+                                {
+                                    "help_text": "The text displayed on the button for your URL. If your URL links to an external site, please add the name of the site users will land on, and what they will find on this page. For example 'Watch our short film  <strong>about Shakespeare on YouTube</strong>'.",
+                                    "label": "Call to action label",
+                                    "max_length": 50,
+                                },
+                            ),
+                            32: (
+                                "wagtail.blocks.BooleanBlock",
+                                (),
+                                {
+                                    "default": False,
+                                    "help_text": 'Decorative images are used for visual effect and do not add information to the content of a page. <a href="https://www.w3.org/WAI/tutorials/images/decorative/" target="_blank">"Check the guidance to see if your image is decorative</a>.',
+                                    "label": "Is this image decorative? <p class='field-title__subheading'>Tick the box if 'yes'</p>",
+                                    "required": False,
+                                },
+                            ),
+                            33: (
+                                "wagtail.blocks.CharBlock",
+                                (),
+                                {
+                                    "help_text": 'Alternative (alt) text describes images when they fail to load, and is read aloud by assistive technologies. Use a maximum of 100 characters to describe your image. Decorative images do not require alt text. <a href="https://html.spec.whatwg.org/multipage/images.html#alt" target="_blank">Check the guidance for tips on writing alt text</a>.',
+                                    "label": "Image alternative text",
+                                    "max_length": 100,
+                                    "required": False,
+                                },
+                            ),
+                            34: (
+                                "wagtail.blocks.StructBlock",
+                                [
+                                    [
+                                        ("image", 11),
+                                        ("decorative", 32),
+                                        ("alt_text", 33),
+                                    ]
+                                ],
+                                {
+                                    "label": "Teaser image",
+                                    "template": "articles/blocks/images/blog-embed__image-container.html",
+                                },
+                            ),
+                            35: (
+                                "etna.core.blocks.paragraph.APIRichTextBlock",
+                                (),
+                                {
+                                    "features": ["bold", "italic", "link"],
+                                    "help_text": "A description of the promoted page",
+                                },
+                            ),
+                            36: (
+                                "wagtail.blocks.StructBlock",
+                                [
+                                    [
+                                        ("title", 25),
+                                        ("category", 26),
+                                        ("publication_date", 27),
+                                        ("author", 15),
+                                        ("duration", 28),
+                                        ("url", 29),
+                                        ("target_blank", 30),
+                                        ("cta_label", 31),
+                                        ("image", 34),
+                                        ("description", 35),
+                                    ]
+                                ],
+                                {},
+                            ),
+                            37: (
+                                "wagtail.snippets.blocks.SnippetChooserBlock",
+                                ("categories.Category",),
+                                {},
+                            ),
+                            38: (
+                                "wagtail.blocks.CharBlock",
+                                (),
+                                {
+                                    "help_text": "The title of the target page",
+                                    "max_length": 100,
+                                    "required": True,
+                                },
+                            ),
+                            39: (
+                                "etna.core.blocks.paragraph.APIRichTextBlock",
+                                (),
+                                {
+                                    "features": ["bold", "italic", "link"],
+                                    "help_text": "A description of the target page",
+                                    "required": False,
+                                },
+                            ),
+                            40: (
+                                "wagtail.blocks.URLBlock",
+                                (),
+                                {"required": True},
+                            ),
+                            41: (
+                                "wagtail.blocks.StructBlock",
+                                [
+                                    [
+                                        ("title", 38),
+                                        ("description", 39),
+                                        ("url", 40),
+                                    ]
+                                ],
+                                {},
+                            ),
+                            42: ("wagtail.blocks.ListBlock", (41,), {}),
+                            43: (
+                                "wagtail.blocks.StructBlock",
+                                [
+                                    [
+                                        ("category", 37),
+                                        ("summary", 16),
+                                        ("promoted_items", 42),
+                                    ]
+                                ],
+                                {},
+                            ),
+                            44: (
+                                "etna.core.blocks.paragraph.APIRichTextBlock",
+                                (),
+                                {
+                                    "features": [
+                                        "bold",
+                                        "italic",
+                                        "link",
+                                        "ol",
+                                        "ul",
+                                    ],
+                                    "required": True,
+                                },
+                            ),
+                            45: (
+                                "wagtail.blocks.CharBlock",
+                                (),
+                                {"max_length": 100, "required": False},
+                            ),
+                            46: (
+                                "wagtail.blocks.StructBlock",
+                                [[("quote", 44), ("attribution", 45)]],
+                                {},
+                            ),
+                            47: (
+                                "wagtail.blocks.ListBlock",
+                                (etna.ciim.blocks.RecordLinkBlock,),
+                                {"label": "Items"},
+                            ),
+                            48: (
+                                "wagtail.blocks.StructBlock",
+                                [[("items", 47)]],
+                                {},
+                            ),
+                            49: (
+                                "wagtail.blocks.CharBlock",
+                                (),
+                                {"label": "Sub-heading", "max_length": 100},
+                            ),
+                            50: (
+                                "wagtail.blocks.StructBlock",
+                                [[("heading", 49)]],
+                                {},
+                            ),
+                            51: (
+                                "wagtail.blocks.CharBlock",
+                                (),
+                                {
+                                    "label": "Title",
+                                    "max_length": 100,
+                                    "required": True,
+                                },
+                            ),
+                            52: (
+                                "wagtail.blocks.CharBlock",
+                                (),
+                                {
+                                    "label": "YouTube Video ID",
+                                    "max_length": 11,
+                                    "required": True,
+                                    "validators": [
+                                        django.core.validators.RegexValidator(
+                                            message="Invalid YouTube Video ID",
+                                            regex="^[a-zA-Z0-9_-]{11}$",
+                                        )
+                                    ],
+                                },
+                            ),
+                            53: (
+                                "etna.core.blocks.image.APIImageChooserBlock",
+                                (),
+                                {
+                                    "label": "Preview Image",
+                                    "rendition_size": "fill-640x360",
+                                    "required": True,
+                                },
+                            ),
+                            54: (
+                                "wagtail.blocks.RichTextBlock",
+                                (),
+                                {"label": "Transcript", "required": False},
+                            ),
+                            55: (
+                                "wagtail.blocks.BooleanBlock",
+                                (),
+                                {
+                                    "help_text": "Tick if the video has captions on YouTube",
+                                    "label": "Captions available",
+                                    "required": False,
+                                },
+                            ),
+                            56: (
+                                "wagtail.blocks.StructBlock",
+                                [
+                                    [
+                                        ("title", 51),
+                                        ("video_id", 52),
+                                        ("preview_image", 53),
+                                        ("transcript", 54),
+                                        ("captions_available", 55),
+                                    ]
+                                ],
+                                {},
+                            ),
+                            57: (
+                                "wagtail.blocks.StreamBlock",
+                                [
+                                    [
+                                        ("featured_external_link", 5),
+                                        ("featured_page", 8),
+                                        ("featured_record_article", 10),
+                                        ("image", 14),
+                                        ("image_gallery", 18),
+                                        ("media", 22),
+                                        ("paragraph", 24),
+                                        ("promoted_item", 36),
+                                        ("promoted_list", 43),
+                                        ("quote", 46),
+                                        ("record_links", 48),
+                                        ("sub_heading", 50),
+                                        ("youtube_video", 56),
+                                    ]
+                                ],
+                                {"required": False},
+                            ),
+                            58: (
+                                "wagtail.blocks.StructBlock",
+                                [[("heading", 0), ("content", 57)]],
+                                {},
+                            ),
+                        },
+                        null=True,
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'article',
-                'verbose_name_plural': 'articles',
+                "verbose_name": "article",
+                "verbose_name_plural": "articles",
             },
-            bases=(etna.collections.models.TopicalPageMixin, etna.analytics.mixins.DataLayerMixin, wagtail_headless_preview.models.HeadlessPreviewMixin, 'wagtailcore.page', models.Model),
+            bases=(
+                etna.collections.models.TopicalPageMixin,
+                etna.analytics.mixins.DataLayerMixin,
+                wagtail_headless_preview.models.HeadlessPreviewMixin,
+                "wagtailcore.page",
+                models.Model,
+            ),
         ),
         migrations.CreateModel(
-            name='ArticleTag',
+            name="ArticleTag",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=100, unique=True, verbose_name='name')),
-                ('slug', models.SlugField(allow_unicode=True, max_length=100, unique=True, verbose_name='slug')),
-                ('skos_id', models.CharField(blank=True, db_index=True, help_text='Used as the identifier for this tag when sending page metatdata to the CIIM API.', max_length=100, unique=True, verbose_name='SKOS identifier')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "name",
+                    models.CharField(
+                        max_length=100, unique=True, verbose_name="name"
+                    ),
+                ),
+                (
+                    "slug",
+                    models.SlugField(
+                        allow_unicode=True,
+                        max_length=100,
+                        unique=True,
+                        verbose_name="slug",
+                    ),
+                ),
+                (
+                    "skos_id",
+                    models.CharField(
+                        blank=True,
+                        db_index=True,
+                        help_text="Used as the identifier for this tag when sending page metatdata to the CIIM API.",
+                        max_length=100,
+                        unique=True,
+                        verbose_name="SKOS identifier",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'article tag',
-                'verbose_name_plural': 'article tags',
+                "verbose_name": "article tag",
+                "verbose_name_plural": "article tags",
             },
         ),
         migrations.CreateModel(
-            name='FocusedArticlePage',
+            name="FocusedArticlePage",
             fields=[
-                ('page_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='wagtailcore.page')),
-                ('custom_warning_text', wagtail.fields.RichTextField(blank=True, help_text='If specified, will be used for the content warning.', verbose_name='custom content warning text (optional)')),
-                ('published_date', models.DateTimeField(default=django.utils.timezone.now, help_text='The date the page was published to the public.', verbose_name='Published date')),
-                ('hero_image_caption', wagtail.fields.RichTextField(blank=True, help_text='An optional caption for hero images. This could be used for image sources or for other useful metadata.', verbose_name='hero image caption (optional)')),
-                ('twitter_og_title', models.CharField(blank=True, help_text='If left blank, the OpenGraph title will be used.', max_length=255, null=True, verbose_name='Twitter OpenGraph title')),
-                ('twitter_og_description', models.TextField(blank=True, help_text='If left blank, the OpenGraph description will be used.', null=True, verbose_name='Twitter OpenGraph description')),
-                ('short_title', models.CharField(blank=True, help_text='A shorter title for use in breadcrumbs and other navigational elements, where applicable.', max_length=30, null=True, verbose_name='short title')),
-                ('teaser_text', models.TextField(help_text='A short, enticing description of this page. This will appear in promos and under thumbnails around the site.', max_length=160, verbose_name='teaser text')),
-                ('intro', wagtail.fields.RichTextField(help_text='1-2 sentences introducing the subject of the page, and explaining why a user should read on.', max_length=300, verbose_name='introductory text')),
-                ('article_tag_names', models.TextField(editable=False, null=True)),
-                ('body', wagtail.fields.StreamField([('content_section', 58)], blank=True, block_lookup={0: ('wagtail.blocks.CharBlock', (), {'label': 'Heading', 'max_length': 100}), 1: ('wagtail.blocks.CharBlock', (), {'label': 'Title', 'max_length': 100}), 2: ('wagtail.blocks.CharBlock', (), {'label': 'Description'}), 3: ('wagtail.blocks.URLBlock', (), {'label': 'URL'}), 4: ('etna.core.blocks.image.APIImageChooserBlock', (), {'label': 'Image', 'required': False}), 5: ('wagtail.blocks.StructBlock', [[('title', 1), ('description', 2), ('url', 3), ('image', 4)]], {}), 6: ('etna.core.blocks.page_chooser.APIPageChooserBlock', (), {'label': 'Page', 'page_type': ['wagtailcore.Page'], 'required': True}), 7: ('wagtail.blocks.CharBlock', (), {'help_text': 'Optional override for the teaser text', 'label': 'Teaser text override', 'required': False}), 8: ('wagtail.blocks.StructBlock', [[('page', 6), ('teaser_text', 7)]], {}), 9: ('etna.core.blocks.page_chooser.APIPageChooserBlock', (), {'label': 'Page', 'page_type': ['articles.RecordArticlePage'], 'required_api_fields': ['teaser_image']}), 10: ('wagtail.blocks.StructBlock', [[('page', 9)]], {}), 11: ('etna.core.blocks.image.APIImageChooserBlock', (), {'rendition_size': 'max-900x900', 'required': True}), 12: ('wagtail.blocks.CharBlock', (), {'help_text': 'Alternative (alt) text describes images when they fail to load, and is read aloud by assistive technologies. Use a maximum of 100 characters to describe your image. <a href="https://html.spec.whatwg.org/multipage/images.html#alt" target="_blank">Check the guidance for tips on writing alt text</a>.', 'label': 'Alternative text', 'max_length': 100}), 13: ('etna.core.blocks.paragraph.APIRichTextBlock', (), {'features': ['bold', 'italic', 'link'], 'help_text': 'If provided, displays directly below the image. Can be used to specify sources, transcripts or other useful metadata.', 'label': 'Caption (optional)', 'required': False}), 14: ('wagtail.blocks.StructBlock', [[('image', 11), ('alt_text', 12), ('caption', 13)]], {}), 15: ('wagtail.blocks.CharBlock', (), {'required': False}), 16: ('etna.core.blocks.paragraph.APIRichTextBlock', (), {'features': ['bold', 'italic', 'link'], 'required': False}), 17: ('wagtail.blocks.ListBlock', (14,), {}), 18: ('wagtail.blocks.StructBlock', [[('title', 15), ('description', 16), ('images', 17)]], {}), 19: ('wagtail.blocks.CharBlock', (), {'help_text': 'A descriptive title for the media block', 'required': True}), 20: ('etna.core.blocks.image.APIImageChooserBlock', (), {'help_text': 'A thumbnail image for the media block', 'rendition_size': 'fill-960x540', 'required': False}), 21: ('etna.media.blocks.MediaChooserBlock', (), {}), 22: ('wagtail.blocks.StructBlock', [[('title', 19), ('thumbnail', 20), ('media', 21)]], {}), 23: ('etna.core.blocks.paragraph.APIRichTextBlock', (), {'features': ['bold', 'italic', 'link', 'ol', 'ul']}), 24: ('wagtail.blocks.StructBlock', [[('text', 23)]], {}), 25: ('wagtail.blocks.CharBlock', (), {'help_text': 'Title of the promoted page', 'label': 'Title', 'max_length': 100}), 26: ('wagtail.blocks.ChoiceBlock', [], {'choices': [('blog', 'Blog post'), ('podcast', 'Podcast'), ('video', 'Video'), ('video-external', 'External video'), ('external-link', 'External link')], 'label': 'Category'}), 27: ('wagtail.blocks.CharBlock', (), {'help_text': 'This is a free text field. Please enter date as per agreed format: 14 April 2021', 'required': False}), 28: ('wagtail.blocks.CharBlock', (), {'help_text': 'Podcast or video duration.', 'label': 'Duration', 'max_length': 50, 'required': False}), 29: ('wagtail.blocks.URLBlock', (), {'help_text': 'URL for the external page', 'label': 'External URL'}), 30: ('wagtail.blocks.BooleanBlock', (), {'label': "Should this URL open in a new tab? <p style='font-size: 11px;'>Tick the box if 'yes'</p>", 'required': False}), 31: ('wagtail.blocks.CharBlock', (), {'help_text': "The text displayed on the button for your URL. If your URL links to an external site, please add the name of the site users will land on, and what they will find on this page. For example 'Watch our short film  <strong>about Shakespeare on YouTube</strong>'.", 'label': 'Call to action label', 'max_length': 50}), 32: ('wagtail.blocks.BooleanBlock', (), {'default': False, 'help_text': 'Decorative images are used for visual effect and do not add information to the content of a page. <a href="https://www.w3.org/WAI/tutorials/images/decorative/" target="_blank">"Check the guidance to see if your image is decorative</a>.', 'label': "Is this image decorative? <p class='field-title__subheading'>Tick the box if 'yes'</p>", 'required': False}), 33: ('wagtail.blocks.CharBlock', (), {'help_text': 'Alternative (alt) text describes images when they fail to load, and is read aloud by assistive technologies. Use a maximum of 100 characters to describe your image. Decorative images do not require alt text. <a href="https://html.spec.whatwg.org/multipage/images.html#alt" target="_blank">Check the guidance for tips on writing alt text</a>.', 'label': 'Image alternative text', 'max_length': 100, 'required': False}), 34: ('wagtail.blocks.StructBlock', [[('image', 11), ('decorative', 32), ('alt_text', 33)]], {'label': 'Teaser image', 'template': 'articles/blocks/images/blog-embed__image-container.html'}), 35: ('etna.core.blocks.paragraph.APIRichTextBlock', (), {'features': ['bold', 'italic', 'link'], 'help_text': 'A description of the promoted page'}), 36: ('wagtail.blocks.StructBlock', [[('title', 25), ('category', 26), ('publication_date', 27), ('author', 15), ('duration', 28), ('url', 29), ('target_blank', 30), ('cta_label', 31), ('image', 34), ('description', 35)]], {}), 37: ('wagtail.snippets.blocks.SnippetChooserBlock', ('categories.Category',), {}), 38: ('wagtail.blocks.CharBlock', (), {'help_text': 'The title of the target page', 'max_length': 100, 'required': True}), 39: ('etna.core.blocks.paragraph.APIRichTextBlock', (), {'features': ['bold', 'italic', 'link'], 'help_text': 'A description of the target page', 'required': False}), 40: ('wagtail.blocks.URLBlock', (), {'required': True}), 41: ('wagtail.blocks.StructBlock', [[('title', 38), ('description', 39), ('url', 40)]], {}), 42: ('wagtail.blocks.ListBlock', (41,), {}), 43: ('wagtail.blocks.StructBlock', [[('category', 37), ('summary', 16), ('promoted_items', 42)]], {}), 44: ('etna.core.blocks.paragraph.APIRichTextBlock', (), {'features': ['bold', 'italic', 'link', 'ol', 'ul'], 'required': True}), 45: ('wagtail.blocks.CharBlock', (), {'max_length': 100, 'required': False}), 46: ('wagtail.blocks.StructBlock', [[('quote', 44), ('attribution', 45)]], {}), 47: ('wagtail.blocks.ListBlock', (etna.ciim.blocks.RecordLinkBlock,), {'label': 'Items'}), 48: ('wagtail.blocks.StructBlock', [[('items', 47)]], {}), 49: ('wagtail.blocks.CharBlock', (), {'label': 'Sub-heading', 'max_length': 100}), 50: ('wagtail.blocks.StructBlock', [[('heading', 49)]], {}), 51: ('wagtail.blocks.CharBlock', (), {'label': 'Title', 'max_length': 100, 'required': True}), 52: ('wagtail.blocks.CharBlock', (), {'label': 'YouTube Video ID', 'max_length': 11, 'required': True, 'validators': [django.core.validators.RegexValidator(message='Invalid YouTube Video ID', regex='^[a-zA-Z0-9_-]{11}$')]}), 53: ('etna.core.blocks.image.APIImageChooserBlock', (), {'label': 'Preview Image', 'rendition_size': 'fill-640x360', 'required': True}), 54: ('wagtail.blocks.RichTextBlock', (), {'label': 'Transcript', 'required': False}), 55: ('wagtail.blocks.BooleanBlock', (), {'help_text': 'Tick if the video has captions on YouTube', 'label': 'Captions available', 'required': False}), 56: ('wagtail.blocks.StructBlock', [[('title', 51), ('video_id', 52), ('preview_image', 53), ('transcript', 54), ('captions_available', 55)]], {}), 57: ('wagtail.blocks.StreamBlock', [[('featured_external_link', 5), ('featured_page', 8), ('featured_record_article', 10), ('image', 14), ('image_gallery', 18), ('media', 22), ('paragraph', 24), ('promoted_item', 36), ('promoted_list', 43), ('quote', 46), ('record_links', 48), ('sub_heading', 50), ('youtube_video', 56)]], {'required': False}), 58: ('wagtail.blocks.StructBlock', [[('heading', 0), ('content', 57)]], {})}, null=True)),
+                (
+                    "page_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="wagtailcore.page",
+                    ),
+                ),
+                (
+                    "custom_warning_text",
+                    wagtail.fields.RichTextField(
+                        blank=True,
+                        help_text="If specified, will be used for the content warning.",
+                        verbose_name="custom content warning text (optional)",
+                    ),
+                ),
+                (
+                    "published_date",
+                    models.DateTimeField(
+                        default=django.utils.timezone.now,
+                        help_text="The date the page was published to the public.",
+                        verbose_name="Published date",
+                    ),
+                ),
+                (
+                    "hero_image_caption",
+                    wagtail.fields.RichTextField(
+                        blank=True,
+                        help_text="An optional caption for hero images. This could be used for image sources or for other useful metadata.",
+                        verbose_name="hero image caption (optional)",
+                    ),
+                ),
+                (
+                    "twitter_og_title",
+                    models.CharField(
+                        blank=True,
+                        help_text="If left blank, the OpenGraph title will be used.",
+                        max_length=255,
+                        null=True,
+                        verbose_name="Twitter OpenGraph title",
+                    ),
+                ),
+                (
+                    "twitter_og_description",
+                    models.TextField(
+                        blank=True,
+                        help_text="If left blank, the OpenGraph description will be used.",
+                        null=True,
+                        verbose_name="Twitter OpenGraph description",
+                    ),
+                ),
+                (
+                    "short_title",
+                    models.CharField(
+                        blank=True,
+                        help_text="A shorter title for use in breadcrumbs and other navigational elements, where applicable.",
+                        max_length=30,
+                        null=True,
+                        verbose_name="short title",
+                    ),
+                ),
+                (
+                    "teaser_text",
+                    models.TextField(
+                        help_text="A short, enticing description of this page. This will appear in promos and under thumbnails around the site.",
+                        max_length=160,
+                        verbose_name="teaser text",
+                    ),
+                ),
+                (
+                    "intro",
+                    wagtail.fields.RichTextField(
+                        help_text="1-2 sentences introducing the subject of the page, and explaining why a user should read on.",
+                        max_length=300,
+                        verbose_name="introductory text",
+                    ),
+                ),
+                (
+                    "article_tag_names",
+                    models.TextField(editable=False, null=True),
+                ),
+                (
+                    "body",
+                    wagtail.fields.StreamField(
+                        [("content_section", 58)],
+                        blank=True,
+                        block_lookup={
+                            0: (
+                                "wagtail.blocks.CharBlock",
+                                (),
+                                {"label": "Heading", "max_length": 100},
+                            ),
+                            1: (
+                                "wagtail.blocks.CharBlock",
+                                (),
+                                {"label": "Title", "max_length": 100},
+                            ),
+                            2: (
+                                "wagtail.blocks.CharBlock",
+                                (),
+                                {"label": "Description"},
+                            ),
+                            3: (
+                                "wagtail.blocks.URLBlock",
+                                (),
+                                {"label": "URL"},
+                            ),
+                            4: (
+                                "etna.core.blocks.image.APIImageChooserBlock",
+                                (),
+                                {"label": "Image", "required": False},
+                            ),
+                            5: (
+                                "wagtail.blocks.StructBlock",
+                                [
+                                    [
+                                        ("title", 1),
+                                        ("description", 2),
+                                        ("url", 3),
+                                        ("image", 4),
+                                    ]
+                                ],
+                                {},
+                            ),
+                            6: (
+                                "etna.core.blocks.page_chooser.APIPageChooserBlock",
+                                (),
+                                {
+                                    "label": "Page",
+                                    "page_type": ["wagtailcore.Page"],
+                                    "required": True,
+                                },
+                            ),
+                            7: (
+                                "wagtail.blocks.CharBlock",
+                                (),
+                                {
+                                    "help_text": "Optional override for the teaser text",
+                                    "label": "Teaser text override",
+                                    "required": False,
+                                },
+                            ),
+                            8: (
+                                "wagtail.blocks.StructBlock",
+                                [[("page", 6), ("teaser_text", 7)]],
+                                {},
+                            ),
+                            9: (
+                                "etna.core.blocks.page_chooser.APIPageChooserBlock",
+                                (),
+                                {
+                                    "label": "Page",
+                                    "page_type": ["articles.RecordArticlePage"],
+                                    "required_api_fields": ["teaser_image"],
+                                },
+                            ),
+                            10: (
+                                "wagtail.blocks.StructBlock",
+                                [[("page", 9)]],
+                                {},
+                            ),
+                            11: (
+                                "etna.core.blocks.image.APIImageChooserBlock",
+                                (),
+                                {
+                                    "rendition_size": "max-900x900",
+                                    "required": True,
+                                },
+                            ),
+                            12: (
+                                "wagtail.blocks.CharBlock",
+                                (),
+                                {
+                                    "help_text": 'Alternative (alt) text describes images when they fail to load, and is read aloud by assistive technologies. Use a maximum of 100 characters to describe your image. <a href="https://html.spec.whatwg.org/multipage/images.html#alt" target="_blank">Check the guidance for tips on writing alt text</a>.',
+                                    "label": "Alternative text",
+                                    "max_length": 100,
+                                },
+                            ),
+                            13: (
+                                "etna.core.blocks.paragraph.APIRichTextBlock",
+                                (),
+                                {
+                                    "features": ["bold", "italic", "link"],
+                                    "help_text": "If provided, displays directly below the image. Can be used to specify sources, transcripts or other useful metadata.",
+                                    "label": "Caption (optional)",
+                                    "required": False,
+                                },
+                            ),
+                            14: (
+                                "wagtail.blocks.StructBlock",
+                                [
+                                    [
+                                        ("image", 11),
+                                        ("alt_text", 12),
+                                        ("caption", 13),
+                                    ]
+                                ],
+                                {},
+                            ),
+                            15: (
+                                "wagtail.blocks.CharBlock",
+                                (),
+                                {"required": False},
+                            ),
+                            16: (
+                                "etna.core.blocks.paragraph.APIRichTextBlock",
+                                (),
+                                {
+                                    "features": ["bold", "italic", "link"],
+                                    "required": False,
+                                },
+                            ),
+                            17: ("wagtail.blocks.ListBlock", (14,), {}),
+                            18: (
+                                "wagtail.blocks.StructBlock",
+                                [
+                                    [
+                                        ("title", 15),
+                                        ("description", 16),
+                                        ("images", 17),
+                                    ]
+                                ],
+                                {},
+                            ),
+                            19: (
+                                "wagtail.blocks.CharBlock",
+                                (),
+                                {
+                                    "help_text": "A descriptive title for the media block",
+                                    "required": True,
+                                },
+                            ),
+                            20: (
+                                "etna.core.blocks.image.APIImageChooserBlock",
+                                (),
+                                {
+                                    "help_text": "A thumbnail image for the media block",
+                                    "rendition_size": "fill-960x540",
+                                    "required": False,
+                                },
+                            ),
+                            21: ("etna.media.blocks.MediaChooserBlock", (), {}),
+                            22: (
+                                "wagtail.blocks.StructBlock",
+                                [
+                                    [
+                                        ("title", 19),
+                                        ("thumbnail", 20),
+                                        ("media", 21),
+                                    ]
+                                ],
+                                {},
+                            ),
+                            23: (
+                                "etna.core.blocks.paragraph.APIRichTextBlock",
+                                (),
+                                {
+                                    "features": [
+                                        "bold",
+                                        "italic",
+                                        "link",
+                                        "ol",
+                                        "ul",
+                                    ]
+                                },
+                            ),
+                            24: (
+                                "wagtail.blocks.StructBlock",
+                                [[("text", 23)]],
+                                {},
+                            ),
+                            25: (
+                                "wagtail.blocks.CharBlock",
+                                (),
+                                {
+                                    "help_text": "Title of the promoted page",
+                                    "label": "Title",
+                                    "max_length": 100,
+                                },
+                            ),
+                            26: (
+                                "wagtail.blocks.ChoiceBlock",
+                                [],
+                                {
+                                    "choices": [
+                                        ("blog", "Blog post"),
+                                        ("podcast", "Podcast"),
+                                        ("video", "Video"),
+                                        ("video-external", "External video"),
+                                        ("external-link", "External link"),
+                                    ],
+                                    "label": "Category",
+                                },
+                            ),
+                            27: (
+                                "wagtail.blocks.CharBlock",
+                                (),
+                                {
+                                    "help_text": "This is a free text field. Please enter date as per agreed format: 14 April 2021",
+                                    "required": False,
+                                },
+                            ),
+                            28: (
+                                "wagtail.blocks.CharBlock",
+                                (),
+                                {
+                                    "help_text": "Podcast or video duration.",
+                                    "label": "Duration",
+                                    "max_length": 50,
+                                    "required": False,
+                                },
+                            ),
+                            29: (
+                                "wagtail.blocks.URLBlock",
+                                (),
+                                {
+                                    "help_text": "URL for the external page",
+                                    "label": "External URL",
+                                },
+                            ),
+                            30: (
+                                "wagtail.blocks.BooleanBlock",
+                                (),
+                                {
+                                    "label": "Should this URL open in a new tab? <p style='font-size: 11px;'>Tick the box if 'yes'</p>",
+                                    "required": False,
+                                },
+                            ),
+                            31: (
+                                "wagtail.blocks.CharBlock",
+                                (),
+                                {
+                                    "help_text": "The text displayed on the button for your URL. If your URL links to an external site, please add the name of the site users will land on, and what they will find on this page. For example 'Watch our short film  <strong>about Shakespeare on YouTube</strong>'.",
+                                    "label": "Call to action label",
+                                    "max_length": 50,
+                                },
+                            ),
+                            32: (
+                                "wagtail.blocks.BooleanBlock",
+                                (),
+                                {
+                                    "default": False,
+                                    "help_text": 'Decorative images are used for visual effect and do not add information to the content of a page. <a href="https://www.w3.org/WAI/tutorials/images/decorative/" target="_blank">"Check the guidance to see if your image is decorative</a>.',
+                                    "label": "Is this image decorative? <p class='field-title__subheading'>Tick the box if 'yes'</p>",
+                                    "required": False,
+                                },
+                            ),
+                            33: (
+                                "wagtail.blocks.CharBlock",
+                                (),
+                                {
+                                    "help_text": 'Alternative (alt) text describes images when they fail to load, and is read aloud by assistive technologies. Use a maximum of 100 characters to describe your image. Decorative images do not require alt text. <a href="https://html.spec.whatwg.org/multipage/images.html#alt" target="_blank">Check the guidance for tips on writing alt text</a>.',
+                                    "label": "Image alternative text",
+                                    "max_length": 100,
+                                    "required": False,
+                                },
+                            ),
+                            34: (
+                                "wagtail.blocks.StructBlock",
+                                [
+                                    [
+                                        ("image", 11),
+                                        ("decorative", 32),
+                                        ("alt_text", 33),
+                                    ]
+                                ],
+                                {
+                                    "label": "Teaser image",
+                                    "template": "articles/blocks/images/blog-embed__image-container.html",
+                                },
+                            ),
+                            35: (
+                                "etna.core.blocks.paragraph.APIRichTextBlock",
+                                (),
+                                {
+                                    "features": ["bold", "italic", "link"],
+                                    "help_text": "A description of the promoted page",
+                                },
+                            ),
+                            36: (
+                                "wagtail.blocks.StructBlock",
+                                [
+                                    [
+                                        ("title", 25),
+                                        ("category", 26),
+                                        ("publication_date", 27),
+                                        ("author", 15),
+                                        ("duration", 28),
+                                        ("url", 29),
+                                        ("target_blank", 30),
+                                        ("cta_label", 31),
+                                        ("image", 34),
+                                        ("description", 35),
+                                    ]
+                                ],
+                                {},
+                            ),
+                            37: (
+                                "wagtail.snippets.blocks.SnippetChooserBlock",
+                                ("categories.Category",),
+                                {},
+                            ),
+                            38: (
+                                "wagtail.blocks.CharBlock",
+                                (),
+                                {
+                                    "help_text": "The title of the target page",
+                                    "max_length": 100,
+                                    "required": True,
+                                },
+                            ),
+                            39: (
+                                "etna.core.blocks.paragraph.APIRichTextBlock",
+                                (),
+                                {
+                                    "features": ["bold", "italic", "link"],
+                                    "help_text": "A description of the target page",
+                                    "required": False,
+                                },
+                            ),
+                            40: (
+                                "wagtail.blocks.URLBlock",
+                                (),
+                                {"required": True},
+                            ),
+                            41: (
+                                "wagtail.blocks.StructBlock",
+                                [
+                                    [
+                                        ("title", 38),
+                                        ("description", 39),
+                                        ("url", 40),
+                                    ]
+                                ],
+                                {},
+                            ),
+                            42: ("wagtail.blocks.ListBlock", (41,), {}),
+                            43: (
+                                "wagtail.blocks.StructBlock",
+                                [
+                                    [
+                                        ("category", 37),
+                                        ("summary", 16),
+                                        ("promoted_items", 42),
+                                    ]
+                                ],
+                                {},
+                            ),
+                            44: (
+                                "etna.core.blocks.paragraph.APIRichTextBlock",
+                                (),
+                                {
+                                    "features": [
+                                        "bold",
+                                        "italic",
+                                        "link",
+                                        "ol",
+                                        "ul",
+                                    ],
+                                    "required": True,
+                                },
+                            ),
+                            45: (
+                                "wagtail.blocks.CharBlock",
+                                (),
+                                {"max_length": 100, "required": False},
+                            ),
+                            46: (
+                                "wagtail.blocks.StructBlock",
+                                [[("quote", 44), ("attribution", 45)]],
+                                {},
+                            ),
+                            47: (
+                                "wagtail.blocks.ListBlock",
+                                (etna.ciim.blocks.RecordLinkBlock,),
+                                {"label": "Items"},
+                            ),
+                            48: (
+                                "wagtail.blocks.StructBlock",
+                                [[("items", 47)]],
+                                {},
+                            ),
+                            49: (
+                                "wagtail.blocks.CharBlock",
+                                (),
+                                {"label": "Sub-heading", "max_length": 100},
+                            ),
+                            50: (
+                                "wagtail.blocks.StructBlock",
+                                [[("heading", 49)]],
+                                {},
+                            ),
+                            51: (
+                                "wagtail.blocks.CharBlock",
+                                (),
+                                {
+                                    "label": "Title",
+                                    "max_length": 100,
+                                    "required": True,
+                                },
+                            ),
+                            52: (
+                                "wagtail.blocks.CharBlock",
+                                (),
+                                {
+                                    "label": "YouTube Video ID",
+                                    "max_length": 11,
+                                    "required": True,
+                                    "validators": [
+                                        django.core.validators.RegexValidator(
+                                            message="Invalid YouTube Video ID",
+                                            regex="^[a-zA-Z0-9_-]{11}$",
+                                        )
+                                    ],
+                                },
+                            ),
+                            53: (
+                                "etna.core.blocks.image.APIImageChooserBlock",
+                                (),
+                                {
+                                    "label": "Preview Image",
+                                    "rendition_size": "fill-640x360",
+                                    "required": True,
+                                },
+                            ),
+                            54: (
+                                "wagtail.blocks.RichTextBlock",
+                                (),
+                                {"label": "Transcript", "required": False},
+                            ),
+                            55: (
+                                "wagtail.blocks.BooleanBlock",
+                                (),
+                                {
+                                    "help_text": "Tick if the video has captions on YouTube",
+                                    "label": "Captions available",
+                                    "required": False,
+                                },
+                            ),
+                            56: (
+                                "wagtail.blocks.StructBlock",
+                                [
+                                    [
+                                        ("title", 51),
+                                        ("video_id", 52),
+                                        ("preview_image", 53),
+                                        ("transcript", 54),
+                                        ("captions_available", 55),
+                                    ]
+                                ],
+                                {},
+                            ),
+                            57: (
+                                "wagtail.blocks.StreamBlock",
+                                [
+                                    [
+                                        ("featured_external_link", 5),
+                                        ("featured_page", 8),
+                                        ("featured_record_article", 10),
+                                        ("image", 14),
+                                        ("image_gallery", 18),
+                                        ("media", 22),
+                                        ("paragraph", 24),
+                                        ("promoted_item", 36),
+                                        ("promoted_list", 43),
+                                        ("quote", 46),
+                                        ("record_links", 48),
+                                        ("sub_heading", 50),
+                                        ("youtube_video", 56),
+                                    ]
+                                ],
+                                {"required": False},
+                            ),
+                            58: (
+                                "wagtail.blocks.StructBlock",
+                                [[("heading", 0), ("content", 57)]],
+                                {},
+                            ),
+                        },
+                        null=True,
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'focused article',
-                'verbose_name_plural': 'focused articles',
+                "verbose_name": "focused article",
+                "verbose_name_plural": "focused articles",
             },
-            bases=(etna.collections.models.TopicalPageMixin, etna.people.models.AuthorPageMixin, etna.analytics.mixins.DataLayerMixin, wagtail_headless_preview.models.HeadlessPreviewMixin, 'wagtailcore.page', models.Model),
+            bases=(
+                etna.collections.models.TopicalPageMixin,
+                etna.people.models.AuthorPageMixin,
+                etna.analytics.mixins.DataLayerMixin,
+                wagtail_headless_preview.models.HeadlessPreviewMixin,
+                "wagtailcore.page",
+                models.Model,
+            ),
         ),
         migrations.CreateModel(
-            name='PageGalleryImage',
+            name="PageGalleryImage",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('sort_order', models.IntegerField(blank=True, editable=False, null=True)),
-                ('alt_text', models.CharField(help_text='Alternative (alt) text describes images when they fail to load, and is read aloud by assistive technologies. Use a maximum of 100 characters to describe your image. <a href="https://html.spec.whatwg.org/multipage/images.html#alt" target="_blank">Check the guidance for tips on writing alt text</a>.', max_length=100, verbose_name='alternative text')),
-                ('caption', wagtail.fields.RichTextField(blank=True, help_text='An optional caption, which will be displayed directly below the image. This could be used for image sources or for other useful metadata.')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "sort_order",
+                    models.IntegerField(blank=True, editable=False, null=True),
+                ),
+                (
+                    "alt_text",
+                    models.CharField(
+                        help_text='Alternative (alt) text describes images when they fail to load, and is read aloud by assistive technologies. Use a maximum of 100 characters to describe your image. <a href="https://html.spec.whatwg.org/multipage/images.html#alt" target="_blank">Check the guidance for tips on writing alt text</a>.',
+                        max_length=100,
+                        verbose_name="alternative text",
+                    ),
+                ),
+                (
+                    "caption",
+                    wagtail.fields.RichTextField(
+                        blank=True,
+                        help_text="An optional caption, which will be displayed directly below the image. This could be used for image sources or for other useful metadata.",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'gallery image',
-                'verbose_name_plural': 'gallery images',
-                'ordering': ['sort_order'],
-                'abstract': False,
+                "verbose_name": "gallery image",
+                "verbose_name_plural": "gallery images",
+                "ordering": ["sort_order"],
+                "abstract": False,
             },
         ),
         migrations.CreateModel(
-            name='RecordArticlePage',
+            name="RecordArticlePage",
             fields=[
-                ('page_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='wagtailcore.page')),
-                ('custom_warning_text', wagtail.fields.RichTextField(blank=True, help_text='If specified, will be used for the content warning.', verbose_name='custom content warning text (optional)')),
-                ('published_date', models.DateTimeField(default=django.utils.timezone.now, help_text='The date the page was published to the public.', verbose_name='Published date')),
-                ('twitter_og_title', models.CharField(blank=True, help_text='If left blank, the OpenGraph title will be used.', max_length=255, null=True, verbose_name='Twitter OpenGraph title')),
-                ('twitter_og_description', models.TextField(blank=True, help_text='If left blank, the OpenGraph description will be used.', null=True, verbose_name='Twitter OpenGraph description')),
-                ('short_title', models.CharField(blank=True, help_text='A shorter title for use in breadcrumbs and other navigational elements, where applicable.', max_length=30, null=True, verbose_name='short title')),
-                ('teaser_text', models.TextField(help_text='A short, enticing description of this page. This will appear in promos and under thumbnails around the site.', max_length=160, verbose_name='teaser text')),
-                ('intro', wagtail.fields.RichTextField(help_text='1-2 sentences introducing the subject of the page, and explaining why a user should read on.', max_length=300, verbose_name='introductory text')),
-                ('article_tag_names', models.TextField(editable=False, null=True)),
-                ('record', etna.ciim.fields.RecordField(db_index=True, verbose_name='record')),
-                ('date_text', models.CharField(help_text='Date(s) related to the record (max. character length: 100)', max_length=100, verbose_name='date text')),
-                ('about', wagtail.fields.RichTextField(verbose_name='why this record matters')),
-                ('image_library_link', models.URLField(blank=True, help_text='Link to an external image library', verbose_name='Image library link')),
-                ('print_on_demand_link', models.URLField(blank=True, help_text='Link to an external print on demand service', verbose_name='Print on demand link')),
-                ('gallery_heading', models.CharField(blank=True, help_text='Optional heading for the gallery', max_length=250, null=True, verbose_name='gallery heading')),
-                ('promoted_links', wagtail.fields.StreamField([('promoted_link', 2)], blank=True, block_lookup={0: ('wagtail.blocks.CharBlock', (), {'max_length': 100}), 1: ('wagtail.blocks.ListBlock', (etna.core.blocks.promoted_links.AuthorPromotedLinkBlock,), {'max_num': 3}), 2: ('wagtail.blocks.StructBlock', [[('heading', 0), ('promoted_items', 1)]], {})}, null=True)),
+                (
+                    "page_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="wagtailcore.page",
+                    ),
+                ),
+                (
+                    "custom_warning_text",
+                    wagtail.fields.RichTextField(
+                        blank=True,
+                        help_text="If specified, will be used for the content warning.",
+                        verbose_name="custom content warning text (optional)",
+                    ),
+                ),
+                (
+                    "published_date",
+                    models.DateTimeField(
+                        default=django.utils.timezone.now,
+                        help_text="The date the page was published to the public.",
+                        verbose_name="Published date",
+                    ),
+                ),
+                (
+                    "twitter_og_title",
+                    models.CharField(
+                        blank=True,
+                        help_text="If left blank, the OpenGraph title will be used.",
+                        max_length=255,
+                        null=True,
+                        verbose_name="Twitter OpenGraph title",
+                    ),
+                ),
+                (
+                    "twitter_og_description",
+                    models.TextField(
+                        blank=True,
+                        help_text="If left blank, the OpenGraph description will be used.",
+                        null=True,
+                        verbose_name="Twitter OpenGraph description",
+                    ),
+                ),
+                (
+                    "short_title",
+                    models.CharField(
+                        blank=True,
+                        help_text="A shorter title for use in breadcrumbs and other navigational elements, where applicable.",
+                        max_length=30,
+                        null=True,
+                        verbose_name="short title",
+                    ),
+                ),
+                (
+                    "teaser_text",
+                    models.TextField(
+                        help_text="A short, enticing description of this page. This will appear in promos and under thumbnails around the site.",
+                        max_length=160,
+                        verbose_name="teaser text",
+                    ),
+                ),
+                (
+                    "intro",
+                    wagtail.fields.RichTextField(
+                        help_text="1-2 sentences introducing the subject of the page, and explaining why a user should read on.",
+                        max_length=300,
+                        verbose_name="introductory text",
+                    ),
+                ),
+                (
+                    "article_tag_names",
+                    models.TextField(editable=False, null=True),
+                ),
+                (
+                    "record",
+                    etna.ciim.fields.RecordField(
+                        db_index=True, verbose_name="record"
+                    ),
+                ),
+                (
+                    "date_text",
+                    models.CharField(
+                        help_text="Date(s) related to the record (max. character length: 100)",
+                        max_length=100,
+                        verbose_name="date text",
+                    ),
+                ),
+                (
+                    "about",
+                    wagtail.fields.RichTextField(
+                        verbose_name="why this record matters"
+                    ),
+                ),
+                (
+                    "image_library_link",
+                    models.URLField(
+                        blank=True,
+                        help_text="Link to an external image library",
+                        verbose_name="Image library link",
+                    ),
+                ),
+                (
+                    "print_on_demand_link",
+                    models.URLField(
+                        blank=True,
+                        help_text="Link to an external print on demand service",
+                        verbose_name="Print on demand link",
+                    ),
+                ),
+                (
+                    "gallery_heading",
+                    models.CharField(
+                        blank=True,
+                        help_text="Optional heading for the gallery",
+                        max_length=250,
+                        null=True,
+                        verbose_name="gallery heading",
+                    ),
+                ),
+                (
+                    "promoted_links",
+                    wagtail.fields.StreamField(
+                        [("promoted_link", 2)],
+                        blank=True,
+                        block_lookup={
+                            0: (
+                                "wagtail.blocks.CharBlock",
+                                (),
+                                {"max_length": 100},
+                            ),
+                            1: (
+                                "wagtail.blocks.ListBlock",
+                                (
+                                    etna.core.blocks.promoted_links.AuthorPromotedLinkBlock,
+                                ),
+                                {"max_num": 3},
+                            ),
+                            2: (
+                                "wagtail.blocks.StructBlock",
+                                [[("heading", 0), ("promoted_items", 1)]],
+                                {},
+                            ),
+                        },
+                        null=True,
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'record article',
-                'verbose_name_plural': 'record articles',
+                "verbose_name": "record article",
+                "verbose_name_plural": "record articles",
             },
-            bases=(etna.collections.models.TopicalPageMixin, etna.analytics.mixins.DataLayerMixin, wagtail_headless_preview.models.HeadlessPreviewMixin, 'wagtailcore.page', models.Model),
+            bases=(
+                etna.collections.models.TopicalPageMixin,
+                etna.analytics.mixins.DataLayerMixin,
+                wagtail_headless_preview.models.HeadlessPreviewMixin,
+                "wagtailcore.page",
+                models.Model,
+            ),
         ),
         migrations.CreateModel(
-            name='TaggedArticle',
+            name="TaggedArticle",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
             ],
             options={
-                'abstract': False,
+                "abstract": False,
             },
         ),
         migrations.CreateModel(
-            name='ArticleIndexPage',
+            name="ArticleIndexPage",
             fields=[
-                ('page_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='wagtailcore.page')),
-                ('twitter_og_title', models.CharField(blank=True, help_text='If left blank, the OpenGraph title will be used.', max_length=255, null=True, verbose_name='Twitter OpenGraph title')),
-                ('twitter_og_description', models.TextField(blank=True, help_text='If left blank, the OpenGraph description will be used.', null=True, verbose_name='Twitter OpenGraph description')),
-                ('short_title', models.CharField(blank=True, help_text='A shorter title for use in breadcrumbs and other navigational elements, where applicable.', max_length=30, null=True, verbose_name='short title')),
-                ('teaser_text', models.TextField(help_text='A short, enticing description of this page. This will appear in promos and under thumbnails around the site.', max_length=160, verbose_name='teaser text')),
-                ('intro', wagtail.fields.RichTextField(help_text='1-2 sentences introducing the subject of the page, and explaining why a user should read on.', max_length=300, verbose_name='introductory text')),
-                ('featured_pages', wagtail.fields.StreamField([('featuredpages', 3)], blank=True, block_lookup={0: ('wagtail.blocks.CharBlock', (), {'max_length': 100}), 1: ('wagtail.blocks.TextBlock', (), {'max_length': 200}), 2: ('etna.core.blocks.page_list.PageListBlock', ('articles.ArticlePage', 'articles.RecordArticlePage', 'articles.FocusedArticlePage'), {'max_num': 9, 'min_num': 3}), 3: ('wagtail.blocks.StructBlock', [[('heading', 0), ('description', 1), ('items', 2)]], {})}, null=True)),
-                ('alert', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to='alerts.alert')),
-                ('featured_article', models.ForeignKey(blank=True, help_text='Select a page to display in the featured area. This can be an Article, Focused Article or Record Article.', null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to='wagtailcore.page', verbose_name='featured article')),
+                (
+                    "page_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="wagtailcore.page",
+                    ),
+                ),
+                (
+                    "twitter_og_title",
+                    models.CharField(
+                        blank=True,
+                        help_text="If left blank, the OpenGraph title will be used.",
+                        max_length=255,
+                        null=True,
+                        verbose_name="Twitter OpenGraph title",
+                    ),
+                ),
+                (
+                    "twitter_og_description",
+                    models.TextField(
+                        blank=True,
+                        help_text="If left blank, the OpenGraph description will be used.",
+                        null=True,
+                        verbose_name="Twitter OpenGraph description",
+                    ),
+                ),
+                (
+                    "short_title",
+                    models.CharField(
+                        blank=True,
+                        help_text="A shorter title for use in breadcrumbs and other navigational elements, where applicable.",
+                        max_length=30,
+                        null=True,
+                        verbose_name="short title",
+                    ),
+                ),
+                (
+                    "teaser_text",
+                    models.TextField(
+                        help_text="A short, enticing description of this page. This will appear in promos and under thumbnails around the site.",
+                        max_length=160,
+                        verbose_name="teaser text",
+                    ),
+                ),
+                (
+                    "intro",
+                    wagtail.fields.RichTextField(
+                        help_text="1-2 sentences introducing the subject of the page, and explaining why a user should read on.",
+                        max_length=300,
+                        verbose_name="introductory text",
+                    ),
+                ),
+                (
+                    "featured_pages",
+                    wagtail.fields.StreamField(
+                        [("featuredpages", 3)],
+                        blank=True,
+                        block_lookup={
+                            0: (
+                                "wagtail.blocks.CharBlock",
+                                (),
+                                {"max_length": 100},
+                            ),
+                            1: (
+                                "wagtail.blocks.TextBlock",
+                                (),
+                                {"max_length": 200},
+                            ),
+                            2: (
+                                "etna.core.blocks.page_list.PageListBlock",
+                                (
+                                    "articles.ArticlePage",
+                                    "articles.RecordArticlePage",
+                                    "articles.FocusedArticlePage",
+                                ),
+                                {"max_num": 9, "min_num": 3},
+                            ),
+                            3: (
+                                "wagtail.blocks.StructBlock",
+                                [
+                                    [
+                                        ("heading", 0),
+                                        ("description", 1),
+                                        ("items", 2),
+                                    ]
+                                ],
+                                {},
+                            ),
+                        },
+                        null=True,
+                    ),
+                ),
+                (
+                    "alert",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="+",
+                        to="alerts.alert",
+                    ),
+                ),
+                (
+                    "featured_article",
+                    models.ForeignKey(
+                        blank=True,
+                        help_text="Select a page to display in the featured area. This can be an Article, Focused Article or Record Article.",
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="+",
+                        to="wagtailcore.page",
+                        verbose_name="featured article",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'article index page',
+                "verbose_name": "article index page",
             },
-            bases=(etna.analytics.mixins.DataLayerMixin, wagtail_headless_preview.models.HeadlessPreviewMixin, 'wagtailcore.page', models.Model),
+            bases=(
+                etna.analytics.mixins.DataLayerMixin,
+                wagtail_headless_preview.models.HeadlessPreviewMixin,
+                "wagtailcore.page",
+                models.Model,
+            ),
         ),
     ]

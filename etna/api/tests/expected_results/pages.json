@@ -5,11 +5,11 @@
     "items": [
         {
             "id": HOME_PAGE_ID,
-            "title": "Home",
+            "title": "Welcome to your new Wagtail site!",
             "short_title": null,
             "url": "/",
             "full_url": "http://localhost/",
-            "type": "home.HomePage",
+            "type": "wagtailcore.Page",
             "type_label": null,
             "teaser_text": "",
             "teaser_image": null,

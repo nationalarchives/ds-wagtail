@@ -13,7 +13,9 @@ class CIIMClient(JSONAPIClient):
     Client for interacting with the CIIM API.
     """
 
-    def __init__(self, api_url: str = f"{settings.ROSETTA_API_URL}", params: dict = {}):
+    def __init__(
+        self, api_url: str = f"{settings.ROSETTA_API_URL}", params: dict = {}
+    ):
         self.api_url: str = api_url
         self.params: dict = params
 
@@ -22,7 +24,8 @@ class CIIMClient(JSONAPIClient):
             return super().get(path=path, headers=headers)
         except Exception:
             capture_message(
-                "CIIMClient.get: Failed to fetch data from CIIM API", level="error"
+                "CIIMClient.get: Failed to fetch data from CIIM API",
+                level="error",
             )
             return {"data": []}
 
@@ -34,7 +37,11 @@ class CIIMClient(JSONAPIClient):
         response = self.get(path="/get", headers={})
 
         try:
-            result = response.get("data", [])[0].get("@template", {}).get("details", {})
+            result = (
+                response.get("data", [])[0]
+                .get("@template", {})
+                .get("details", {})
+            )
         except IndexError:
             result = {
                 "referenceNumber": DEFAULT_REFERENCE_NUMBER,

@@ -7,7 +7,9 @@ if settings.SENTRY_DSN:
         dsn=settings.SENTRY_DSN,
         environment=settings.ENVIRONMENT_NAME,
         release=(
-            f"ds-wagtail@{settings.BUILD_VERSION}" if settings.BUILD_VERSION else ""
+            f"ds-wagtail@{settings.BUILD_VERSION}"
+            if settings.BUILD_VERSION
+            else ""
         ),
         integrations=[DjangoIntegration()],
         sample_rate=settings.SENTRY_SAMPLE_RATE,

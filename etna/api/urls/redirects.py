@@ -1,4 +1,6 @@
-from wagtail.contrib.redirects.api import RedirectsAPIViewSet as BaseRedirectsAPIViewSet
+from wagtail.contrib.redirects.api import (
+    RedirectsAPIViewSet as BaseRedirectsAPIViewSet,
+)
 
 
 class RedirectsAPIViewSet(BaseRedirectsAPIViewSet):

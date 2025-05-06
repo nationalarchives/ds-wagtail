@@ -44,7 +44,9 @@ class ImageSerializer(Serializer):
     def to_representation(self, value):
         if value:
             background_colour_rendition = (
-                f"|bgcolor-{self.background_colour}" if self.background_colour else ""
+                f"|bgcolor-{self.background_colour}"
+                if self.background_colour
+                else ""
             )
             jpeg_image = value.get_rendition(
                 f"{self.rendition_size}|format-jpeg|jpegquality-{self.jpeg_quality}{background_colour_rendition}"
