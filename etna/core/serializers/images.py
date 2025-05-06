@@ -1,5 +1,7 @@
 from rest_framework.serializers import Serializer
 
+from etna.ciim.client import CIIMClient
+
 
 class ImageSerializer(Serializer):
     """
@@ -139,18 +141,14 @@ class HighlightImageSerializer(DetailedImageSerializer):
     def to_representation(self, value):
         representation = super().to_representation(value)
         if representation:
+            record = None
+            if value.record:
+                client = CIIMClient(params = {"id": value.record})
+                record = client.get_serialized_record()
             representation.update(
                 {
                     "description": value.description,
-                    "record": (
-                        {
-                            "title": value.record.summary_title,
-                            "iaid": value.record.iaid,
-                            "reference_number": value.record.reference_number,
-                        }
-                        if value.record
-                        else None
-                    ),
+                    "record": record,
                     "record_dates": value.record_dates,
                 }
             )
