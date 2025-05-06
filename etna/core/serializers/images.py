@@ -143,10 +143,7 @@ class HighlightImageSerializer(DetailedImageSerializer):
         if representation:
             record = None
             if value.record:
-                params = {
-                    "id": value.record,
-                }
-                client = CIIMClient(params=params)
+                client = CIIMClient(params = {"id": value.record})
                 record = client.get_serialized_record()
             representation.update(
                 {
