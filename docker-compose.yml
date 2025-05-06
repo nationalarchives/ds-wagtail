@@ -1,9 +1,4 @@
 services:
-  db:
-    image: postgres:16.0
-    environment:
-      - POSTGRES_PASSWORD=postgres
-
   app:
     build:
       context: .
@@ -13,7 +8,6 @@ services:
     volumes:
       - ./:/app
       - media:/media
-      - static:/app/static
     depends_on:
       - db
       - redis
@@ -32,16 +26,25 @@ services:
       - DJANGO_SUPERUSER_PASSWORD=admin
       - DJANGO_SUPERUSER_USERNAME=admin
       - DJANGO_SUPERUSER_EMAIL=admin@tna.dev
-      - KONG_CLIENT_VERIFY_CERTIFICATES=False
+      - WAGTAILADMIN_BASE_URL=http://localhost:8000
       - WAGTAILAPI_BASE_URL=http://host.docker.internal:8000
+      - WAGTAIL_HEADLESS_PREVIEW_URL=http://localhost:65535/preview/
       - REDIS_URL=redis://:redis@redis:6379
 
-  docs:
-    image: squidfunk/mkdocs-material
-    volumes:
-      - .:/docs
+  db:
+    image: postgres:16.0
+    environment:
+      - POSTGRES_PASSWORD=postgres
+
+  redis:
+    image: redis:latest
+    command: /bin/sh -c "redis-server --requirepass redis"
+
+  adminer:
+    image: adminer
+    restart: always
     ports:
-      - 8001:8000
+      - 8002:8080
 
   dev:
     image: ghcr.io/nationalarchives/tna-python-dev:preview
@@ -61,12 +64,13 @@ services:
       - ./dev:/home/app/.local/bin/tasks
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - media:/media
-      - static:/app/static
 
-  redis:
-    image: redis:latest
-    command: /bin/sh -c "redis-server --requirepass redis"
+  docs:
+    image: squidfunk/mkdocs-material
+    volumes:
+      - .:/docs
+    ports:
+      - 8001:8000
 
 volumes:
   media:
-  static:
