@@ -16,6 +16,8 @@ class TestCIIMClient(unittest.TestCase):
     @patch("etna.ciim.client.CIIMClient.get")
     def test_get_record_instance_success(self, mock_get):
         # Mock API response
+        self.client.params = {"id": "C1234"}
+
         mock_get.return_value = {
             "data": [
                 {
@@ -43,6 +45,19 @@ class TestCIIMClient(unittest.TestCase):
     @patch("etna.ciim.client.CIIMClient.get")
     def test_get_record_instance_empty_data(self, mock_get):
         # Mock API response with empty data
+        self.client.params = {"id": ""}
+
+        mock_get.return_value = {"data": []}
+
+        result = self.client.get_record_instance()
+        self.assertEqual(result, None)
+
+    @patch("etna.ciim.client.CIIMClient.get")
+    def test_get_record_instance_failed_data(self, mock_get):
+        # Mock API response with bad data
+        DUMMY_ID = "A_BAD_ID"
+        self.client.params = {"id": DUMMY_ID}
+
         mock_get.return_value = {"data": []}
 
         result = self.client.get_record_instance()
@@ -51,7 +66,7 @@ class TestCIIMClient(unittest.TestCase):
             {
                 "referenceNumber": DEFAULT_REFERENCE_NUMBER,
                 "summaryTitle": DEFAULT_SUMMARY_TITLE,
-                "iaid": DEFAULT_IAID,
+                "iaid": DUMMY_ID,
             },
         )
 

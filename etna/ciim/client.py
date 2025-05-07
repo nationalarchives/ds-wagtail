@@ -31,6 +31,9 @@ class CIIMClient(JSONAPIClient):
         Get a single record instance from the CIIM API.
         """
 
+        if not self.params.get("id"):
+            return None
+
         response = self.get(path="/get", headers={})
 
         try:
