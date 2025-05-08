@@ -51,7 +51,7 @@ def global_admin_css():
                 --w-color-surface-menu-item-active: #003c1e;
             }
         }
-        @media (prefers-color-scheme: dark) { 
+        @media (prefers-color-scheme: dark) {
             :root {
                 --w-color-surface-menus: #002510;
                 --w-color-surface-menu-item-active: #001810;
