@@ -33,9 +33,10 @@ def global_admin_css():
         @media (prefers-color-scheme: light) {
             :root {
                 --w-color-surface-menus: #8f3415;
-                --w-color-surface-menu-item-active: #7a2b10;} 
+                --w-color-surface-menu-item-active: #7a2b10;
             }
-        @media (prefers-color-scheme: dark) { 
+        }
+        @media (prefers-color-scheme: dark) {
             :root {
                 --w-color-surface-menus: #5c1f0b;
                 --w-color-surface-menu-item-active: #471909;
@@ -47,8 +48,9 @@ def global_admin_css():
         @media (prefers-color-scheme: light) {
             :root {
                 --w-color-surface-menus: #00623B;
-                --w-color-surface-menu-item-active: #003c1e;} 
+                --w-color-surface-menu-item-active: #003c1e;
             }
+        }
         @media (prefers-color-scheme: dark) { 
             :root {
                 --w-color-surface-menus: #002510;
