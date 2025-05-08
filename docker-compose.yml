@@ -17,6 +17,7 @@ services:
       - .env
     environment:
       - RUNTIME=develop
+      - ENVIRONMENT_NAME=local
       - DJANGO_SETTINGS_MODULE=config.settings.develop
       - SECRET_KEY=abc123
       - DATABASE_HOST=db
