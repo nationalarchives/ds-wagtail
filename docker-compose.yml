@@ -30,7 +30,7 @@ services:
       - WAGTAILADMIN_BASE_URL=http://localhost:8000
       - WAGTAILAPI_BASE_URL=http://host.docker.internal:8000
       - WAGTAIL_HEADLESS_PREVIEW_URL=http://localhost:65535/preview/
-      - REDIS_URL=redis://:redis@redis:6379
+      - REDIS_URL=redis://redis:6379/0
 
   db:
     image: postgres:16.0
@@ -39,7 +39,6 @@ services:
 
   redis:
     image: redis:latest
-    command: /bin/sh -c "redis-server --requirepass redis"
 
   adminer:
     image: adminer
