@@ -26,9 +26,53 @@ def global_admin_js():
 
 @hooks.register("insert_global_admin_css")
 def global_admin_css():
-    if settings.FEATURE_PLATFORM_ENVIRONMENT_TYPE != "production":
-        return "<style> @media (prefers-color-scheme: light) { :root {--w-color-primary: #00623B; --w-color-primary-200: #003c1e;} } @media (prefers-color-scheme: dark) { :root {--w-color-surface-menus: #002510; --w-color-surface-menu-item-active: #001810;} }</style>"
-    return ""
+    static = """
+        :root {
+            --w-color-surface-menu-item-active: var(--w-color-surface-page);
+        }
+        @media (prefers-color-scheme: light) {
+            :root {
+                --w-color-text-label-menus-active: #010101;
+            }
+        }
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --w-color-text-label-menus-active: #fff;
+            }
+        }
+        .sidebar-menu-item--active,
+        .sidebar-menu-item__link:focus,
+        .sidebar-menu-item__link:hover {
+            text-shadow: none;
+        }
+        .sidebar-menu-item__link:focus,
+        .sidebar-menu-item__link:hover {
+            color: #fff;
+        }
+        .sidebar-menu-item--active .sidebar-menu-item__link:focus,
+        .sidebar-menu-item--active .sidebar-menu-item__link:hover {
+            color: inherit;
+        }
+    """
+    environment_colours = ""
+
+    if settings.ENVIRONMENT_NAME == "production":
+        environment_colours = """
+        :root {
+            --w-color-surface-menus: #8f3415;
+        }"""
+    elif settings.ENVIRONMENT_NAME == "staging":
+        environment_colours = """
+        :root {
+            --w-color-surface-menus: #323334;
+        }"""
+    elif settings.ENVIRONMENT_NAME == "develop":
+        environment_colours = """
+        :root {
+            --w-color-surface-menus: #00623b;
+        }"""
+
+    return f"<style>{static} {environment_colours}</style>"
 
 
 @hooks.register("register_icons")

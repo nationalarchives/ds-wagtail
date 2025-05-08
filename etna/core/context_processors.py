@@ -10,6 +10,11 @@ def feature_flags(request):
 
     return {
         "FEATURE_COOKIE_BANNER_ENABLED": settings.FEATURE_COOKIE_BANNER_ENABLED,
-        "FEATURE_PLATFORM_ENVIRONMENT_TYPE": settings.FEATURE_PLATFORM_ENVIRONMENT_TYPE,
         "FEATURE_DISABLE_JS_WHATS_ON_LISTING": settings.FEATURE_DISABLE_JS_WHATS_ON_LISTING,
+    }
+
+
+def settings_vars(request):
+    return {
+        "ENVIRONMENT_NAME": settings.ENVIRONMENT_NAME,
     }

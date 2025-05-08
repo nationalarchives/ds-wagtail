@@ -130,6 +130,7 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
                 "wagtail.contrib.settings.context_processors.settings",
                 "etna.core.context_processors.feature_flags",
+                "etna.core.context_processors.settings_vars",
             ],
         },
     },
@@ -334,7 +335,6 @@ CACHE_CONTROL_STALE_WHILE_REVALIDATE = int(
 FEATURE_COOKIE_BANNER_ENABLED = strtobool(
     os.getenv("FEATURE_COOKIE_BANNER_ENABLED", "True")
 )
-FEATURE_PLATFORM_ENVIRONMENT_TYPE = os.getenv("PLATFORM_ENVIRONMENT_TYPE", "production")
 FEATURE_DISABLE_JS_WHATS_ON_LISTING = strtobool(
     os.getenv("FEATURE_DISABLE_JS_WHATS_ON_LISTING", "False")
 )
