@@ -26,53 +26,38 @@ def global_admin_js():
 
 @hooks.register("insert_global_admin_css")
 def global_admin_css():
-    static = """
-        :root {
-            --w-color-surface-menu-item-active: var(--w-color-surface-page);
-        }
-        @media (prefers-color-scheme: light) {
-            :root {
-                --w-color-text-label-menus-active: #010101;
-            }
-        }
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --w-color-text-label-menus-active: #fff;
-            }
-        }
-        .sidebar-menu-item--active,
-        .sidebar-menu-item__link:focus,
-        .sidebar-menu-item__link:hover {
-            text-shadow: none;
-        }
-        .sidebar-menu-item__link:focus,
-        .sidebar-menu-item__link:hover {
-            color: #fff;
-        }
-        .sidebar-menu-item--active .sidebar-menu-item__link:focus,
-        .sidebar-menu-item--active .sidebar-menu-item__link:hover {
-            color: inherit;
-        }
-    """
     environment_colours = ""
 
-    if settings.ENVIRONMENT_NAME == "production":
+    if settings.ENVIRONMENT_NAME == "staging":
         environment_colours = """
-        :root {
-            --w-color-surface-menus: #8f3415;
-        }"""
-    elif settings.ENVIRONMENT_NAME == "staging":
-        environment_colours = """
-        :root {
-            --w-color-surface-menus: #323334;
-        }"""
+        @media (prefers-color-scheme: light) {
+            :root {
+                --w-color-surface-menus: #8f3415;
+                --w-color-surface-menu-item-active: #7a2b10;} 
+            }
+        @media (prefers-color-scheme: dark) { 
+            :root {
+                --w-color-surface-menus: #5c1f0b;
+                --w-color-surface-menu-item-active: #471909;
+            }
+        }
+        """
     elif settings.ENVIRONMENT_NAME == "develop":
         environment_colours = """
-        :root {
-            --w-color-surface-menus: #00623b;
-        }"""
+        @media (prefers-color-scheme: light) {
+            :root {
+                --w-color-surface-menus: #00623B;
+                --w-color-surface-menu-item-active: #003c1e;} 
+            }
+        @media (prefers-color-scheme: dark) { 
+            :root {
+                --w-color-surface-menus: #002510;
+                --w-color-surface-menu-item-active: #001810;
+            }
+        }
+        """
 
-    return f"<style>{static} {environment_colours}</style>"
+    return f"<style>{environment_colours}</style>"
 
 
 @hooks.register("register_icons")
