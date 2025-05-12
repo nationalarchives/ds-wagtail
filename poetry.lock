@@ -278,12 +278,12 @@ bcrypt = ["bcrypt"]
 
 [[package]]
 name = "django-allauth"
-version = "65.7.0"
+version = "65.8.0"
 description = "Integrated set of Django applications addressing authentication, registration, account management as well as 3rd party (social) account authentication."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "django_allauth-65.7.0.tar.gz", hash = "sha256:eb060692150f39e1529893c2de5f9b46e1dab51153ff6cca7ad72c7c125259ea"},
+    {file = "django_allauth-65.8.0.tar.gz", hash = "sha256:9da589d99d412740629333a01865a90c95c97e0fae0cde789aa45a8fda90e83b"},
 ]
 
 [package.dependencies]
@@ -1200,13 +1200,13 @@ tests = ["coverage (>=6.0.0)", "flake8", "mypy", "pytest (>=7.0.0)", "pytest-asy
 
 [[package]]
 name = "sentry-sdk"
-version = "2.27.0"
+version = "2.28.0"
 description = "Python client for Sentry (https://sentry.io)"
 optional = false
 python-versions = ">=3.6"
 files = [
-    {file = "sentry_sdk-2.27.0-py2.py3-none-any.whl", hash = "sha256:c58935bfff8af6a0856d37e8adebdbc7b3281c2b632ec823ef03cd108d216ff0"},
-    {file = "sentry_sdk-2.27.0.tar.gz", hash = "sha256:90f4f883f9eff294aff59af3d58c2d1b64e3927b28d5ada2b9b41f5aeda47daf"},
+    {file = "sentry_sdk-2.28.0-py2.py3-none-any.whl", hash = "sha256:51496e6cb3cb625b99c8e08907c67a9112360259b0ef08470e532c3ab184a232"},
+    {file = "sentry_sdk-2.28.0.tar.gz", hash = "sha256:14d2b73bc93afaf2a9412490329099e6217761cbab13b6ee8bc0e82927e1504e"},
 ]
 
 [package.dependencies]
@@ -1430,22 +1430,22 @@ wagtail = ">=5.0"
 
 [[package]]
 name = "wagtailmedia"
-version = "0.15.2"
+version = "0.16.0"
 description = "A Wagtail module for audio and video files."
 optional = false
-python-versions = ">=3.8"
+python-versions = ">=3.9"
 files = [
-    {file = "wagtailmedia-0.15.2-py3-none-any.whl", hash = "sha256:319a87114258099252205ad3596b22680f8efb1e2b4f4a4c1af9df519af4dd85"},
-    {file = "wagtailmedia-0.15.2.tar.gz", hash = "sha256:8e1406f432d159e195f5627eec187ec91b02389b9a97dc9ae214a74305592aa3"},
+    {file = "wagtailmedia-0.16.0-py3-none-any.whl", hash = "sha256:40e3adc077ed6251b9c43a7177649e8cdefa4f94828dff6f1ca3e48ba61dcdca"},
+    {file = "wagtailmedia-0.16.0.tar.gz", hash = "sha256:1f757984240822a7ddfe3eda8e58243f31a3c29935ce8014499e7e664923d4c9"},
 ]
 
 [package.dependencies]
 Django = ">=4.2"
-Wagtail = ">=5.2"
+Wagtail = ">=6.3"
 
 [package.extras]
-linting = ["pre-commit (>=3.6.0)"]
-testing = ["coverage (>=7.4.0)"]
+linting = ["pre-commit (>=4.2.0)"]
+testing = ["coverage (>=7.8.0)"]
 
 [[package]]
 name = "whitenoise"
@@ -1487,4 +1487,4 @@ wand = ["Wand (>=0.6,<1.0)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "b2326a19e1f0b6ab60de95d43cc16618e092a92fec75641d481e337758f30963"
+content-hash = "a41a144f76bd495ad8fb7c7a147eb87a2c7b50d92779608ddd3379d2d69472df"
