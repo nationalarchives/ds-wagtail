@@ -37,15 +37,3 @@ aid legibility when appearing over help text */
 
   background-color: #fff;
 }
-
-/* CSS to be applied to record chooser widget, due to
-Wagtail 4.1 upgrade changes breaking the CSS to display on hover */
-@media (hover: hover) {
-  .chooser__actions {
-    opacity: 0;
-  }
-
-  :is(.w-field--record_chooser):is(:hover, :focus-within) .chooser__actions {
-    opacity: 1;
-  }
-}
