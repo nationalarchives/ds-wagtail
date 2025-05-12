@@ -275,6 +275,7 @@ WAGTAILDOCS_EXTENSIONS = [
     "txt",
     "csv",
 ]
+WAGTAILDOCS_INLINE_CONTENT_TYPES = []
 
 WAGTAILIMAGES_IMAGE_MODEL = "images.CustomImage"
 
