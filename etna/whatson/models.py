@@ -45,7 +45,6 @@ from etna.core.models import (
 from etna.core.serializers import DefaultPageSerializer, RichTextSerializer
 
 from .blocks import ExhibitionPageStreamBlock, WhatsOnPromotedLinksBlock
-from .forms import EventPageForm
 
 
 class VenueType(models.TextChoices):
@@ -365,6 +364,16 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, RequiredHeroImageMixin, BaseP
         default=0,
     )
 
+    location = models.ForeignKey(
+        "core.Location",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        verbose_name=_("location"),
+        help_text=_("The location of the event."),
+    )
+
     """
     We will use this field to hold the event ID from Eventbrite,
     or if it is the parent page of an Event Series, it will hold
@@ -412,6 +421,7 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, RequiredHeroImageMixin, BaseP
             heading=_("Sessions"),
             min_num=1,
         ),
+        FieldPanel("location"),
         MultiFieldPanel(
             [
                 FieldPanel("audience_heading"),
@@ -432,6 +442,23 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, RequiredHeroImageMixin, BaseP
     promote_panels = BasePageWithRequiredIntro.promote_panels + ArticleTagMixin.promote_panels + [
         TopicalPageMixin.get_topics_inlinepanel(),
         TopicalPageMixin.get_time_periods_inlinepanel(),
+    ]
+
+    api_fields = BasePageWithRequiredIntro.api_fields + RequiredHeroImageMixin.api_fields + [
+        APIField("location"),
+        APIField("event_type"),
+        APIField("start_date"),
+        APIField("end_date"),
+        APIField("description", serializer=RichTextSerializer()),
+        APIField("audience_heading"),
+        APIField("audience_detail"),
+        APIField("booking_details", serializer=RichTextSerializer()),
+        APIField("min_price"),
+        APIField("max_price"),
+        APIField("price_range"),
+        APIField("eventbrite_id"),
+        APIField("event_status"),
+        APIField("date_time_range"),
     ]
 
 
@@ -486,44 +513,6 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, RequiredHeroImageMixin, BaseP
         # Eg. 1 January 2024 to 5 January 2024
         if not dates_same:
             return f"{self.start_date.strftime(format_date_only)} to {self.end_date.strftime(format_date_only)}"
-
-    def clean(self):
-        """
-        Check that the venue address and video conference information are
-        provided for the correct venue type.
-        """
-
-        if self.venue_type:
-            if self.venue_type == VenueType.HYBRID and (
-                not self.venue_address or not self.video_conference_info
-            ):
-                raise ValidationError(
-                    {
-                        "venue_address": _(
-                            "The venue address is required for hybrid events."
-                        ),
-                        "video_conference_info": _(
-                            "The video conference information is required for hybrid events."
-                        ),
-                    }
-                )
-            elif self.venue_type == VenueType.IN_PERSON and not self.venue_address:
-                raise ValidationError(
-                    {
-                        "venue_address": _(
-                            "The venue address is required for in person events."
-                        ),
-                    }
-                )
-            elif self.venue_type == VenueType.ONLINE and not self.video_conference_info:
-                raise ValidationError(
-                    {
-                        "video_conference_info": _(
-                            "The video conference information is required for online events."
-                        ),
-                    }
-                )
-        return super().clean()
 
     def serializable_data(self):
         # Keep aggregated field values out of revision content
@@ -586,8 +575,6 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, RequiredHeroImageMixin, BaseP
         "whatson.WhatsOnPage",
     ]
     subpage_types = []
-
-    base_form_class = EventPageForm
 
 
 class ExhibitionPage(

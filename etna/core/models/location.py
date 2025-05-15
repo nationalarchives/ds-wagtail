@@ -41,8 +41,14 @@ class Location(models.Model):
 
     panels = [
         TitleFieldPanel("space_name"),
-        FieldPanel("address", serializer=RichTextSerializer()),
+        FieldPanel("address"),
         FieldPanel("details"),
+    ]
+
+    api_fields = [
+        APIField("space_name"),
+        APIField("address", serializer=RichTextSerializer()),
+        APIField("details"),
     ]
 
     def __str__(self):
