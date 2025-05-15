@@ -131,51 +131,6 @@ class EventAudienceType(Orderable):
     )
 
 
-@register_snippet
-class AccessType(models.Model):
-    """
-    This snippet model is used so that editors can add access types,
-    which we use via the AccessTypeOrderable to add multiple access
-    types to event pages.
-    """
-
-    name = models.CharField(
-        max_length=255,
-        verbose_name=_("name"),
-    )
-
-    slug = models.SlugField(
-        max_length=255,
-        verbose_name=_("slug"),
-        unique=True,
-    )
-
-    class Meta:
-        verbose_name = _("Access type")
-        verbose_name_plural = _("Access types")
-
-    def __str__(self):
-        return self.name
-
-
-class EventAccessType(Orderable):
-    """
-    This model is used to add multiple access types to event pages.
-    """
-
-    page = ParentalKey(
-        "wagtailcore.Page",
-        on_delete=models.CASCADE,
-        related_name="event_access_types",
-    )
-
-    access_type = models.ForeignKey(
-        "whatson.AccessType",
-        on_delete=models.CASCADE,
-        related_name="event_access_types",
-    )
-
-
 class EventHost(Orderable):
     """
     This model is used to add host information to event pages.
@@ -345,20 +300,11 @@ class WhatsOnPage(BasePageWithRequiredIntro):
     ]
 
 
-class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithRequiredIntro):
+class EventPage(ArticleTagMixin, TopicalPageMixin, RequiredHeroImageMixin, BasePageWithRequiredIntro):
     """EventPage
 
     A page for an event.
     """
-
-    # Content
-    lead_image = models.ForeignKey(
-        get_image_model_string(),
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="+",
-    )
 
     # Event information
     event_type = models.ForeignKey(
@@ -387,93 +333,36 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithRequiredIntro):
         help_text=_("A description of the event."),
     )
 
-    useful_info = RichTextField(
-        verbose_name=_("need to know"),
+    audience_heading = models.CharField(
+        max_length=40,
+        verbose_name=_("audience heading"),
         blank=True,
-        help_text=_("Useful information about the event."),
+        help_text=_("The heading for the audience detail section."),
     )
 
-    # Text for need to know button
-    need_to_know_button_text = models.CharField(
-        verbose_name=_("need to know button text"),
-        max_length=30,
+    audience_detail = models.CharField(
+        max_length=40,
+        verbose_name=_("audience detail"),
         blank=True,
-        help_text=_("The text of the need to know button."),
+        help_text=_("The text for the audience detail section."),
     )
 
-    need_to_know_button_link = models.URLField(
-        max_length=255,
-        verbose_name=_("need to know link"),
-        blank=True,
-        help_text=_("The website for need to know info."),
-    )
-
-    target_audience = RichTextField(
-        verbose_name=_("who it's for"),
-        blank=True,
-        help_text=_("Info about the target audience for the event."),
-    )
-
-    # Venue information
-    venue_type = models.CharField(
-        verbose_name=_("venue type"),
-        choices=VenueType.choices,
-        default=VenueType.IN_PERSON,
-        blank=True,
-        max_length=30,
-    )
-
-    venue_website = models.URLField(
-        max_length=255,
-        verbose_name=_("venue website"),
-        blank=True,
-        help_text=_("The website for the venue."),
-    )
-
-    venue_address = RichTextField(
-        verbose_name=_("venue address"),
-        blank=True,
-        help_text=_("The address of the venue."),
-    )
-
-    venue_space_name = models.CharField(
-        max_length=255,
-        verbose_name=_("venue space name"),
-        blank=True,
-        help_text=_("The name of the venue space."),
-    )
-
-    venue_directions = models.URLField(
-        max_length=255,
-        verbose_name=_("venue directions"),
+    booking_details = RichTextField(
+        max_length=40,
         null=True,
-        blank=True,
-        help_text=_("A link to the venue's 'How to find us' page."),
+        verbose_name=_("booking details"),
+        help_text=_("Information about how to book tickets for the exhibition."),
+        features=["link"],
     )
 
-    video_conference_info = RichTextField(
-        verbose_name=_("video conference info"),
-        blank=True,
-        help_text=_("Useful information about the video conference."),
-    )
-
-    # Booking information
-    registration_url = models.URLField(
-        max_length=255,
-        verbose_name=_("registration url"),
-        editable=False,
-    )
-
-    min_price = models.IntegerField(
+    min_price = models.FloatField(
         verbose_name=_("minimum price"),
         default=0,
-        editable=False,
     )
 
-    max_price = models.IntegerField(
+    max_price = models.FloatField(
         verbose_name=_("maximum price"),
         default=0,
-        editable=False,
     )
 
     """
@@ -488,21 +377,6 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithRequiredIntro):
         null=True,
         editable=False,
     )
-    # The booking info fields above will be brought in from the API when we have it.
-
-    registration_info = RichTextField(
-        verbose_name=_("registration info"),
-        blank=True,
-        help_text=_("Additional information about how to register for the event."),
-        features=settings.RESTRICTED_RICH_TEXT_FEATURES,
-    )
-
-    contact_info = RichTextField(
-        verbose_name=_("contact info"),
-        blank=True,
-        help_text=_("Information about who to contact regarding the event."),
-        features=settings.RESTRICTED_RICH_TEXT_FEATURES,
-    )
 
     # DataLayerMixin overrides
     gtm_content_group = "What's On"
@@ -510,76 +384,56 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithRequiredIntro):
     class Meta:
         verbose_name = _("event page")
 
-    content_panels = BasePageWithRequiredIntro.content_panels + [
-        FieldPanel("lead_image"),
+    content_panels = BasePageWithRequiredIntro.content_panels + RequiredHeroImageMixin.content_panels + [
         MultiFieldPanel(
             [
-                FieldPanel("event_type"),
-                FieldPanel("start_date", read_only=True),
-                FieldPanel("end_date", read_only=True),
-                InlinePanel(
-                    "sessions",
-                    heading=_("Sessions"),
-                    min_num=1,
-                ),
-                FieldPanel("description"),
-                FieldPanel("useful_info"),
-                FieldPanel("need_to_know_button_text"),
-                FieldPanel("need_to_know_button_link"),
-                FieldPanel("target_audience"),
-                InlinePanel(
-                    "event_access_types",
-                    heading=_("Access types"),
-                    help_text=_(
-                        "If the event has more than one access type, please add these in order of relevance from most to least."
-                    ),
-                ),
-                InlinePanel(
-                    "event_audience_types",
-                    heading=_("Audience types"),
-                    help_text=_(
-                        "If the event has more than one audience type, please add these in order of relevance from most to least."
-                    ),
-                ),
-                InlinePanel(
-                    "hosts",
-                    heading=_("Host information"),
-                    help_text=_(
-                        "If the event has more than one host, please add these in order of relevance from most to least."
-                    ),
-                ),
-                InlinePanel(
-                    "speakers",
-                    heading=_("Speaker information"),
-                    help_text=_(
-                        "If the event has more than one speaker, please add these in order of relevance from most to least."
-                    ),
-                ),
+                FieldPanel("description"),                
             ],
             heading=_("Event information"),
         ),
+    ]
+
+    key_details_panels = [
+        FieldPanel("event_type"),
         MultiFieldPanel(
             [
-                FieldPanel("venue_type"),
-                FieldPanel("venue_website"),
-                FieldPanel("venue_address"),
-                FieldPanel("venue_space_name"),
-                FieldPanel("venue_directions"),
-                FieldPanel("video_conference_info"),
+                FieldPanel("booking_details"),
+                FieldRowPanel(
+                    [
+                        FieldPanel("min_price"),
+                        FieldPanel("max_price"),
+                    ],
+                ),
             ],
-            heading=_("Venue information"),
+            heading=_("Price details"),
+        ),
+        InlinePanel(
+            "sessions",
+            heading=_("Sessions"),
+            min_num=1,
         ),
         MultiFieldPanel(
             [
-                FieldPanel("registration_url", read_only=True),
-                FieldPanel("min_price", read_only=True),
-                FieldPanel("max_price", read_only=True),
-                FieldPanel("registration_info"),
-                FieldPanel("contact_info"),
+                FieldPanel("audience_heading"),
+                FieldPanel("audience_detail"),
             ],
-            heading=_("Booking information"),
+            heading=_("Audience details"),
+        ),
+        # TODO: LOCATION FIELD PANEL (FOREIGNKEY TO LOCATION MODEL)
+        InlinePanel(
+            "speakers",
+            heading=_("Speaker information"),
+            help_text=_(
+                "If the event has more than one speaker, please add these in order of relevance from most to least."
+            ),
         ),
     ]
+
+    promote_panels = BasePageWithRequiredIntro.promote_panels + ArticleTagMixin.promote_panels + [
+        TopicalPageMixin.get_topics_inlinepanel(),
+        TopicalPageMixin.get_time_periods_inlinepanel(),
+    ]
+
 
     @cached_property
     def price_range(self):
@@ -604,14 +458,6 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithRequiredIntro):
             timezone.now().date() + timezone.timedelta(days=5)
         ):
             return "Last chance"
-
-    @cached_property
-    def primary_access_type(self):
-        """
-        Returns the primary access type for the event.
-        """
-        if primary_access := self.event_access_types.first():
-            return primary_access.access_type
 
     @cached_property
     def date_time_range(self):
@@ -717,21 +563,22 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithRequiredIntro):
 
         super().save(*args, **kwargs)
 
-    promote_panels = (
-        BasePageWithRequiredIntro.promote_panels
-        + ArticleTagMixin.promote_panels
-        + [
-            TopicalPageMixin.get_topics_inlinepanel(),
-            TopicalPageMixin.get_time_periods_inlinepanel(),
-        ]
-    )
-
     search_fields = (
         BasePageWithRequiredIntro.search_fields
         + ArticleTagMixin.search_fields
         + [
             index.SearchField("topic_names", boost=1),
             index.SearchField("time_period_names", boost=1),
+        ]
+    )
+
+    edit_handler = TabbedInterface(
+        [
+            ObjectList(content_panels, heading="Content"),
+            ObjectList(key_details_panels, heading="Key details"),
+            # ObjectList(design_panels, heading="Design"),
+            ObjectList(promote_panels, heading="Promote"),
+            ObjectList(BasePageWithRequiredIntro.settings_panels, heading="Settings"),
         ]
     )
 
