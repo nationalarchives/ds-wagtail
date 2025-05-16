@@ -7,13 +7,24 @@ from django.shortcuts import redirect
 from django.utils.crypto import constant_time_compare
 from rest_framework import status
 from rest_framework.response import Response
+from wagtail.api.v2.filters import (
+    AncestorOfFilter,
+    ChildOfFilter,
+    DescendantOfFilter,
+    FieldsFilter,
+    LocaleFilter,
+    OrderingFilter,
+    SearchFilter,
+    TranslationOfFilter,
+)
 from wagtail.api.v2.utils import BadRequestError, get_object_detail_url
 from wagtail.api.v2.views import PagesAPIViewSet
 from wagtail.contrib.redirects.models import Redirect
 from wagtail.models import Page, PageViewRestriction, Site
-from wagtail.search.backends.database.postgres.postgres import PostgresSearchResults
 
 from etna.core.serializers.pages import DefaultPageSerializer
+
+from ..filters import AliasFilter, SiteFilter
 
 logger = logging.getLogger(__name__)
 
@@ -23,8 +34,21 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
         ["password", "author", "include_aliases"]
     )
 
-    # TODO: Reduce cyclomatic complexity from 14 to 12 or below
-    # flake8: noqa: C901
+    # Copied from wagtail.api.v2.views.PagesAPIViewSet
+    # to allow insertion of AliasFilter before SearchFilter
+    filter_backends = [
+        FieldsFilter,
+        ChildOfFilter,
+        AncestorOfFilter,
+        DescendantOfFilter,
+        OrderingFilter,
+        TranslationOfFilter,
+        LocaleFilter,
+        SiteFilter,
+        AliasFilter,  # Needs to come before SearchFilter
+        SearchFilter,  # Needs to be last, as SearchResults querysets cannot be filtered further
+    ]
+
     def listing_view(self, request):
         queryset = self.get_queryset()
 
@@ -39,81 +63,11 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
         for restricted_page in restricted_pages:
             queryset = queryset.not_descendant_of(restricted_page, inclusive=True)
 
-        # Check if we have a specific site to look for
-        if "site" in request.GET:
-            # Optionally allow querying by port
-            if ":" in request.GET["site"]:
-                (hostname, port) = request.GET["site"].split(":", 1)
-                query = {
-                    "hostname": hostname,
-                    "port": port,
-                }
-            else:
-                query = {
-                    "hostname": request.GET["site"],
-                }
-            try:
-                site = Site.objects.get(**query)
-            except Site.MultipleObjectsReturned:
-                raise BadRequestError(
-                    "Your query returned multiple sites. Try adding a port number to your site filter."
-                )
-        else:
-            # Otherwise, find the site from the request
-            site = Site.find_for_request(self.request)
-
-        if site:
-            base_queryset = queryset
-            queryset = base_queryset.descendant_of(site.root_page, inclusive=True)
-
-        else:
-            # No sites configured
-            queryset = queryset.none()
-
         if "author" in request.GET and request.GET["author"]:
             queryset = queryset.filter(author_tags__author=request.GET["author"])
 
         self.check_query_parameters(queryset)
         queryset = self.filter_queryset(queryset)
-
-        # TODO: Investigate a way to not use PostgresSearchResults here
-        # when using the `?search` parameter (currently throws error)
-        if "include_aliases" not in request.GET:
-            if not isinstance(queryset, PostgresSearchResults):
-                alias_pages = queryset.filter(alias_of_id__isnull=False).values(
-                    "id", "alias_of_id"
-                )
-                original_ids = set(
-                    queryset.filter(alias_of_id__isnull=True).values_list(
-                        "id", flat=True
-                    )
-                )
-                alias_ids = set(page["id"] for page in alias_pages)
-                alias_of_ids = alias_pages.values_list("alias_of_id", flat=True)
-
-                # Exclude any pages with matching alias_of_ids - aliases of the same original page
-                for alias_of_id in alias_of_ids:
-                    alias_pages_with_same_id = alias_pages.filter(
-                        alias_of_id=alias_of_id
-                    )
-                    if alias_pages_with_same_id.count() > 1:
-                        first_page_id = alias_pages_with_same_id.order_by(
-                            "depth"
-                        ).first()["id"]
-                        queryset = queryset.exclude(
-                            id__in=alias_pages_with_same_id.values_list(
-                                "id", flat=True
-                            ).exclude(id=first_page_id)
-                        )
-
-                # Exclude any pages that are aliases of pages in the current queryset
-                for page in alias_pages:
-                    if (
-                        page["alias_of_id"] in original_ids
-                        or page["alias_of_id"] in alias_ids
-                    ):
-                        queryset = queryset.exclude(id=page["id"])
-
         queryset = self.paginate_queryset(queryset)
         serializer = DefaultPageSerializer(queryset, many=True)
         return self.get_paginated_response(serializer.data)

@@ -58,11 +58,13 @@ class BlogPostsAPIViewSet(CustomPagesAPIViewSet):
         queryset = self.get_queryset()
         self.check_query_parameters(queryset)
         queryset = self.filter_queryset(queryset)
-        authors = set(queryset.values_list("author_tags__author"))
+        authors = set(
+            queryset.values_list("author_tags__author", "author_tags__author__live")
+        )
         serializer = DefaultPageSerializer()
         authors_count = []
         for author in authors:
-            if author[0] is not None:
+            if author[0] is not None and author[1]:
                 author_item = (
                     queryset.filter(author_tags__author=author)
                     .first()
