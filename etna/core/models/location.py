@@ -1,4 +1,3 @@
-from django.conf import settings
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from wagtail import blocks
@@ -13,7 +12,8 @@ from wagtail.snippets.models import register_snippet
 from etna.core.blocks import (
     SimplifiedAccordionBlock,
 )
-from etna.core.serializers import DefaultPageSerializer, RichTextSerializer
+from etna.core.serializers import RichTextSerializer
+
 
 @register_snippet
 class Location(models.Model):

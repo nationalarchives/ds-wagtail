@@ -130,43 +130,6 @@ class EventAudienceType(Orderable):
     )
 
 
-class EventHost(Orderable):
-    """
-    This model is used to add host information to event pages.
-    """
-
-    page = ParentalKey(
-        "wagtailcore.Page",
-        on_delete=models.CASCADE,
-        related_name="hosts",
-    )
-
-    name = models.CharField(
-        max_length=100,
-        verbose_name=_("name"),
-    )
-
-    description = models.CharField(
-        max_length=200,
-        verbose_name=_("description"),
-        blank=True,
-    )
-
-    image = models.ForeignKey(
-        get_image_model_string(),
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="+",
-    )
-
-    panels = [
-        FieldPanel("name"),
-        FieldPanel("description"),
-        FieldPanel("image"),
-    ]
-
-
 class EventSpeaker(Orderable):
     """
     This model is used to add speaker information to event pages.
@@ -208,28 +171,12 @@ class EventSession(models.Model):
     """
     This model is used to add sessions to an event
     e.g. 28th September @ 9:00, 29th September @ 10:30, 30th September @ 12:00.
-    These will link to the Eventbrite page.
     """
 
     page = ParentalKey(
         "wagtailcore.Page",
         on_delete=models.CASCADE,
         related_name="sessions",
-    )
-
-    """
-    Session ID will be used to hold the Eventbrite "event ID"
-    in Event Series pages, for each occurrence of the event.
-    For single events, it will be blank. We will also leave
-    it blank for editor created events, as we won't have an
-    Eventbrite event ID for these.
-    """
-    session_id = models.CharField(
-        verbose_name=_("session ID"),
-        null=True,
-        blank=True,
-        editable=False,
-        max_length=35,
     )
 
     start = models.DateTimeField(
