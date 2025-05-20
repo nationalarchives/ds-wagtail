@@ -5,6 +5,7 @@ from django.utils import timezone
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
 from modelcluster.fields import ParentalKey
+from rest_framework import serializers
 from wagtail import blocks
 from wagtail.admin.panels import (
     FieldPanel,
@@ -43,7 +44,7 @@ from etna.core.models import (
     LocationSerializer,
     RequiredHeroImageMixin,
 )
-from etna.core.serializers import DefaultPageSerializer, RichTextSerializer
+from etna.core.serializers import DefaultPageSerializer, ImageSerializer, RichTextSerializer
 
 from .blocks import ExhibitionPageStreamBlock, WhatsOnPromotedLinksBlock
 
@@ -142,6 +143,18 @@ class EventSpeaker(Orderable):
         FieldPanel("image"),
     ]
 
+class SpeakerSerializer(serializers.ModelSerializer):
+    """Serializer for the EventSpeaker model."""
+
+    biography = RichTextSerializer()
+    image = ImageSerializer()
+    person_page = DefaultPageSerializer()
+
+    class Meta:
+        model = EventSpeaker
+        fields = ("name", "role", "biography", "image", "person_page")
+
+
 
 class EventSession(models.Model):
     """
@@ -172,6 +185,14 @@ class EventSession(models.Model):
         verbose_name = _("session")
         verbose_name_plural = _("sessions")
         ordering = ["start"]
+
+
+class SessionSerializer(serializers.ModelSerializer):
+    """Serializer for the EventSession model."""
+
+    class Meta:
+        model = EventSession
+        fields = ("start", "end")
 
 
 class WhatsOnPage(BasePageWithRequiredIntro):
@@ -405,8 +426,8 @@ class EventPage(
             APIField("eventbrite_id"),
             APIField("event_status"),
             APIField("date_time_range"),
-            APIField("speakers"),
-            APIField("sessions"),
+            APIField("speakers", serializer=SpeakerSerializer(many=True)),
+            APIField("sessions", serializer=SessionSerializer(many=True)),
         ]
     )
 
