@@ -13,6 +13,7 @@
             "type_label": null,
             "teaser_text": "",
             "teaser_image": null,
+            "first_published_at": null,
             "last_published_at": null
         },
         {
@@ -40,6 +41,7 @@
                     "height": 68
                 }
             },
+            "first_published_at": "2000-01-01T00:00:00Z",
             "last_published_at": "2000-01-01T00:00:00Z"
         },
         {
@@ -67,6 +69,7 @@
                     "height": 68
                 }
             },
+            "first_published_at": "2000-01-03T00:00:00Z",
             "last_published_at": "2000-01-03T00:00:00Z",
             "highlight_image_count": 1
         },
@@ -95,6 +98,7 @@
                     "height": 68
                 }
             },
+            "first_published_at": "2000-01-01T00:00:00Z",
             "last_published_at": "2000-01-01T00:00:00Z"
         },
         {
@@ -122,6 +126,7 @@
                     "height": 68
                 }
             },
+            "first_published_at": "2000-01-01T00:00:00Z",
             "last_published_at": "2000-01-01T00:00:00Z"
         },
         {
@@ -149,6 +154,7 @@
                     "height": 68
                 }
             },
+            "first_published_at": "2000-01-01T00:00:00Z",
             "last_published_at": null
         },
         {
@@ -176,6 +182,7 @@
                     "height": 68
                 }
             },
+            "first_published_at": "2000-01-01T00:00:00Z",
             "last_published_at": "2000-01-01T00:00:00Z",
             "role": "Test Author",
             "image": {
@@ -245,6 +252,7 @@
                     "height": 68
                 }
             },
+            "first_published_at": "2000-01-01T00:00:00Z",
             "last_published_at": "2000-01-01T00:00:00Z"
         },
         {
@@ -272,6 +280,7 @@
                     "height": 68
                 }
             },
+            "first_published_at": "2000-01-01T00:00:00Z",
             "last_published_at": "2000-01-01T00:00:00Z",
             "is_newly_published": false
         },
@@ -300,6 +309,7 @@
                     "height": 68
                 }
             },
+            "first_published_at": "2000-01-02T00:00:00Z",
             "last_published_at": "2000-01-02T00:00:00Z",
             "is_newly_published": false
         },
@@ -328,6 +338,7 @@
                     "height": 68
                 }
             },
+            "first_published_at": "2000-01-03T00:00:00Z",
             "last_published_at": "2000-01-03T00:00:00Z",
             "is_newly_published": false
         }
