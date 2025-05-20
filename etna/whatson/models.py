@@ -40,6 +40,7 @@ from etna.core.models import (
     BasePageWithRequiredIntro,
     HeroLayoutMixin,
     HeroStyleMixin,
+    LocationSerializer,
     RequiredHeroImageMixin,
 )
 from etna.core.serializers import DefaultPageSerializer, RichTextSerializer
@@ -85,51 +86,6 @@ class EventType(models.Model):
         return self.name
 
 
-@register_snippet
-class AudienceType(models.Model):
-    """
-    This snippet model is used so that editors can add audience types,
-    which we use via the audience_type ForeignKey to add audience types
-    to event pages.
-    """
-
-    name = models.CharField(
-        max_length=255,
-        verbose_name=_("name"),
-    )
-
-    slug = models.SlugField(
-        max_length=255,
-        verbose_name=_("slug"),
-        unique=True,
-    )
-
-    class Meta:
-        verbose_name = _("Audience type")
-        verbose_name_plural = _("Audience types")
-
-    def __str__(self):
-        return self.name
-
-
-class EventAudienceType(Orderable):
-    """
-    This model is used to add multiple audience types to event pages.
-    """
-
-    page = ParentalKey(
-        "wagtailcore.Page",
-        on_delete=models.CASCADE,
-        related_name="event_audience_types",
-    )
-
-    audience_type = models.ForeignKey(
-        "whatson.AudienceType",
-        on_delete=models.CASCADE,
-        related_name="event_audience_types",
-    )
-
-
 class EventSpeaker(Orderable):
     """
     This model is used to add speaker information to event pages.
@@ -141,15 +97,33 @@ class EventSpeaker(Orderable):
         related_name="speakers",
     )
 
+    person_page = models.ForeignKey(
+        "people.PersonPage",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+
     name = models.CharField(
         max_length=100,
         verbose_name=_("name"),
+        help_text=_("The name of the speaker."),
+        blank=True,
     )
 
-    description = models.CharField(
+    role = models.CharField(
         max_length=200,
-        verbose_name=_("description"),
+        verbose_name=_("role"),
+        help_text=_("The role of the speaker."),
         blank=True,
+    )
+
+    biography = RichTextField(
+        verbose_name=_("biography"),
+        help_text=_("A short biography of the speaker."),
+        blank=True,
+        features=settings.INLINE_RICH_TEXT_FEATURES,
     )
 
     image = models.ForeignKey(
@@ -161,8 +135,10 @@ class EventSpeaker(Orderable):
     )
 
     panels = [
+        FieldPanel("person_page"),
         FieldPanel("name"),
-        FieldPanel("description"),
+        FieldPanel("role"),
+        FieldPanel("biography"),
         FieldPanel("image"),
     ]
 
@@ -246,7 +222,9 @@ class WhatsOnPage(BasePageWithRequiredIntro):
     ]
 
 
-class EventPage(ArticleTagMixin, TopicalPageMixin, RequiredHeroImageMixin, BasePageWithRequiredIntro):
+class EventPage(
+    ArticleTagMixin, TopicalPageMixin, RequiredHeroImageMixin, BasePageWithRequiredIntro
+):
     """EventPage
 
     A page for an event.
@@ -340,14 +318,18 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, RequiredHeroImageMixin, BaseP
     class Meta:
         verbose_name = _("event page")
 
-    content_panels = BasePageWithRequiredIntro.content_panels + RequiredHeroImageMixin.content_panels + [
-        MultiFieldPanel(
-            [
-                FieldPanel("description"),                
-            ],
-            heading=_("Event information"),
-        ),
-    ]
+    content_panels = (
+        BasePageWithRequiredIntro.content_panels
+        + RequiredHeroImageMixin.content_panels
+        + [
+            MultiFieldPanel(
+                [
+                    FieldPanel("description"),
+                ],
+                heading=_("Event information"),
+            ),
+        ]
+    )
 
     key_details_panels = [
         FieldPanel("event_type"),
@@ -363,10 +345,21 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, RequiredHeroImageMixin, BaseP
             ],
             heading=_("Price details"),
         ),
-        InlinePanel(
-            "sessions",
-            heading=_("Sessions"),
-            min_num=1,
+        MultiFieldPanel(
+            [
+                FieldRowPanel(
+                    [
+                        FieldPanel("start_date", read_only=True),
+                        FieldPanel("end_date", read_only=True),
+                    ],
+                ),
+                InlinePanel(
+                    "sessions",
+                    heading=_("Sessions"),
+                    min_num=1,
+                ),
+            ],
+            heading=_("Date details"),
         ),
         FieldPanel("location"),
         MultiFieldPanel(
@@ -376,7 +369,6 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, RequiredHeroImageMixin, BaseP
             ],
             heading=_("Audience details"),
         ),
-        # TODO: LOCATION FIELD PANEL (FOREIGNKEY TO LOCATION MODEL)
         InlinePanel(
             "speakers",
             heading=_("Speaker information"),
@@ -386,28 +378,37 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, RequiredHeroImageMixin, BaseP
         ),
     ]
 
-    promote_panels = BasePageWithRequiredIntro.promote_panels + ArticleTagMixin.promote_panels + [
-        TopicalPageMixin.get_topics_inlinepanel(),
-        TopicalPageMixin.get_time_periods_inlinepanel(),
-    ]
+    promote_panels = (
+        BasePageWithRequiredIntro.promote_panels
+        + ArticleTagMixin.promote_panels
+        + [
+            TopicalPageMixin.get_topics_inlinepanel(),
+            TopicalPageMixin.get_time_periods_inlinepanel(),
+        ]
+    )
 
-    api_fields = BasePageWithRequiredIntro.api_fields + RequiredHeroImageMixin.api_fields + [
-        APIField("location"),
-        APIField("event_type"),
-        APIField("start_date"),
-        APIField("end_date"),
-        APIField("description", serializer=RichTextSerializer()),
-        APIField("audience_heading"),
-        APIField("audience_detail"),
-        APIField("booking_details", serializer=RichTextSerializer()),
-        APIField("min_price"),
-        APIField("max_price"),
-        APIField("price_range"),
-        APIField("eventbrite_id"),
-        APIField("event_status"),
-        APIField("date_time_range"),
-    ]
-
+    api_fields = (
+        BasePageWithRequiredIntro.api_fields
+        + RequiredHeroImageMixin.api_fields
+        + [
+            APIField("location", serializer=LocationSerializer()),
+            APIField("event_type"),
+            APIField("start_date"),
+            APIField("end_date"),
+            APIField("description", serializer=RichTextSerializer()),
+            APIField("audience_heading"),
+            APIField("audience_detail"),
+            APIField("booking_details", serializer=RichTextSerializer()),
+            APIField("min_price"),
+            APIField("max_price"),
+            APIField("price_range"),
+            APIField("eventbrite_id"),
+            APIField("event_status"),
+            APIField("date_time_range"),
+            APIField("speakers"),
+            APIField("sessions"),
+        ]
+    )
 
     @cached_property
     def price_range(self):
