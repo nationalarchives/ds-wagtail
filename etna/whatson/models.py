@@ -44,7 +44,11 @@ from etna.core.models import (
     LocationSerializer,
     RequiredHeroImageMixin,
 )
-from etna.core.serializers import DefaultPageSerializer, ImageSerializer, RichTextSerializer
+from etna.core.serializers import (
+    DefaultPageSerializer,
+    ImageSerializer,
+    RichTextSerializer,
+)
 
 from .blocks import ExhibitionPageStreamBlock, WhatsOnPromotedLinksBlock
 
@@ -85,6 +89,14 @@ class EventType(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class EventTypeSerializer(serializers.ModelSerializer):
+    """Serializer for the EventType model."""
+
+    class Meta:
+        model = EventType
+        fields = ("name", "slug")
 
 
 class EventSpeaker(Orderable):
@@ -143,6 +155,7 @@ class EventSpeaker(Orderable):
         FieldPanel("image"),
     ]
 
+
 class SpeakerSerializer(serializers.ModelSerializer):
     """Serializer for the EventSpeaker model."""
 
@@ -153,7 +166,6 @@ class SpeakerSerializer(serializers.ModelSerializer):
     class Meta:
         model = EventSpeaker
         fields = ("name", "role", "biography", "image", "person_page")
-
 
 
 class EventSession(models.Model):
@@ -243,9 +255,7 @@ class WhatsOnPage(BasePageWithRequiredIntro):
     ]
 
 
-class EventPage(
-    ArticleTagMixin, TopicalPageMixin, RequiredHeroImageMixin, BasePageWithRequiredIntro
-):
+class EventPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
     """EventPage
 
     A page for an event.
@@ -399,21 +409,12 @@ class EventPage(
         ),
     ]
 
-    promote_panels = (
-        BasePageWithRequiredIntro.promote_panels
-        + ArticleTagMixin.promote_panels
-        + [
-            TopicalPageMixin.get_topics_inlinepanel(),
-            TopicalPageMixin.get_time_periods_inlinepanel(),
-        ]
-    )
-
     api_fields = (
         BasePageWithRequiredIntro.api_fields
         + RequiredHeroImageMixin.api_fields
         + [
             APIField("location", serializer=LocationSerializer()),
-            APIField("event_type"),
+            APIField("event_type", serializer=EventTypeSerializer()),
             APIField("start_date"),
             APIField("end_date"),
             APIField("description", serializer=RichTextSerializer()),
@@ -521,21 +522,12 @@ class EventPage(
 
         super().save(*args, **kwargs)
 
-    search_fields = (
-        BasePageWithRequiredIntro.search_fields
-        + ArticleTagMixin.search_fields
-        + [
-            index.SearchField("topic_names", boost=1),
-            index.SearchField("time_period_names", boost=1),
-        ]
-    )
-
     edit_handler = TabbedInterface(
         [
             ObjectList(content_panels, heading="Content"),
             ObjectList(key_details_panels, heading="Key details"),
             # ObjectList(design_panels, heading="Design"),
-            ObjectList(promote_panels, heading="Promote"),
+            ObjectList(BasePageWithRequiredIntro.promote_panels, heading="Promote"),
             ObjectList(BasePageWithRequiredIntro.settings_panels, heading="Settings"),
         ]
     )
