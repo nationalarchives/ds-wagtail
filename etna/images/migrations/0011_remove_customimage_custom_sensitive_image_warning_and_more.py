@@ -49,11 +49,10 @@ def migrate_alt_text_to_custom_image(apps, schema_editor):
                         image.save()
                 if block["type"] == "image_gallery":
                     for image in block["value"]["images"]:
-                        print(image["value"])
-                        # if image["image"] and image["alt_text"]:
-                        #     image_instance = CustomImage.objects.get(id=image["image"])
-                        #     image_instance.description = image["alt_text"]
-                        #     image_instance.save()
+                        if image["value"]["image"] and image["value"]["alt_text"]:
+                            image_instance = CustomImage.objects.get(id=image["value"]["image"])
+                            image_instance.description = image["value"]["alt_text"]
+                            image_instance.save()
                 
 
 class Migration(migrations.Migration):
