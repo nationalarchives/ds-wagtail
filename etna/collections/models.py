@@ -16,25 +16,25 @@ from wagtail.admin.panels import (
     PageChooserPanel,
 )
 from wagtail.api import APIField
-from wagtail.fields import StreamField, RichTextField
+from wagtail.fields import RichTextField, StreamField
 from wagtail.images import get_image_model_string
 from wagtail.models import Orderable, Page
 from wagtail.search import index
 
+from etna.ciim.fields import RecordField
+from etna.ciim.serializers import RecordSerializer
 from etna.core.models import (
     BasePage,
     BasePageWithRequiredIntro,
     ContentWarningMixin,
     RequiredHeroImageMixin,
 )
-from etna.ciim.fields import RecordField
 from etna.core.serializers import (
     DefaultPageSerializer,
     DetailedImageSerializer,
     ImageSerializer,
     RichTextSerializer,
 )
-from etna.ciim.serializers import RecordSerializer
 from etna.core.utils import skos_id_from_text
 
 from .blocks import (
@@ -67,7 +67,7 @@ class Highlight(Orderable):
             "The descriptive name of the image. If this image features in a highlights gallery, this title will be visible on the page."
         ),
     )
-    
+
     record = RecordField(
         verbose_name=_("related record"),
         db_index=True,
@@ -805,13 +805,7 @@ class HighlightSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Highlight
-        fields = (
-            "title",
-            "image",
-            "description",
-            "record",
-            "record_dates"
-        )
+        fields = ("title", "image", "description", "record", "record_dates")
 
 
 class HighlightCardSerializer(serializers.Serializer):

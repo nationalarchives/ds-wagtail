@@ -93,7 +93,7 @@ class CustomImage(ClusterableModel, AbstractImage):
         APIField("transcription_heading"),
         APIField("transcription", serializer=RichTextSerializer()),
         APIField("translation_heading"),
-        APIField("translation", serializer=RichTextSerializer())
+        APIField("translation", serializer=RichTextSerializer()),
     ]
 
     @property

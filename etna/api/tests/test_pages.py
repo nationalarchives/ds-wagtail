@@ -323,7 +323,13 @@ class APIResponseTest(WagtailPageTestCase):
             parent=cls.arts,
             title="highlight_gallery",
             featured_article=cls.article,
-            page_highlights=[Highlight(image=cls.test_image, record="C123", description="<p>Test description</p>", )],
+            page_highlights=[
+                Highlight(
+                    image=cls.test_image,
+                    record="C123",
+                    description="<p>Test description</p>",
+                )
+            ],
             page_topics=[PageTopic(topic=cls.arts)],
             page_time_periods=[PageTimePeriod(time_period=cls.early_modern)],
             first_published_at=DATE_3,
