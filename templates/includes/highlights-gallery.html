@@ -9,16 +9,16 @@
                         <div class="highlight-gallery__content">
                             <h2 class="tna-heading-l highlight-gallery__heading">{{ highlight.image.title }}</h2>
                             <div class="highlight-gallery__intro">
-                                {% if highlight.image.record_dates %}<p>Date: {{ highlight.image.record_dates }}</p>{% endif %}
-                                {% if highlight.image.record %}
+                                {% if highlight.record_dates %}<p>Date: {{ highlight.record_dates }}</p>{% endif %}
+                                {% if highlight.record %}
                                     <p>
-                                        Catalogue reference: <a class="highlight-gallery__link" href="{% record_url highlight.image.record %}"><span class="sr-only">View the record </span>{{ highlight.image.record.reference_number|default:"N/A" }} <span class="sr-only"> in the catalogue</span></a>
+                                        Catalogue reference: <a class="highlight-gallery__link" href="{% record_url highlight.record %}"><span class="sr-only">View the record </span>{{ highlight.record.reference_number|default:"N/A" }} <span class="sr-only"> in the catalogue</span></a>
                                     </p>
                                 </div>
                             {% endif %}
-                            <div class="highlight-gallery__richtext">{{ highlight.image.description|richtext }}</div>
-                            {% if highlight.image.record %}
-                                <a class="highlight-gallery__link" href="{% record_url highlight.image.record %}" data-component-name="Highlight Gallery: {{ page.title }}" data-link-type="Link" data-position="{{ forloop.counter0 }}" data-link="View record details">View record details {% include "static/images/fontawesome-svgs/chevron-right.svg" %}</a>
+                            <div class="highlight-gallery__richtext">{{ highlight.description|richtext }}</div>
+                            {% if highlight.record %}
+                                <a class="highlight-gallery__link" href="{% record_url highlight.record %}" data-component-name="Highlight Gallery: {{ page.title }}" data-link-type="Link" data-position="{{ forloop.counter0 }}" data-link="View record details">View record details {% include "static/images/fontawesome-svgs/chevron-right.svg" %}</a>
                             {% endif %}
                         </div>
                         <div id="highlight{{ forloop.counter0 }}" class="highlight-gallery__image-container">

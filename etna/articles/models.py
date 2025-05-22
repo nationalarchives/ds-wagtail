@@ -37,7 +37,7 @@ from etna.core.models import (
 )
 from etna.core.serializers import (
     DefaultPageSerializer,
-    HighlightImageSerializer,
+    DetailedImageSerializer,
     ImageSerializer,
     RichTextSerializer,
     TaggableSerializer,
@@ -557,7 +557,7 @@ class PageGalleryImage(Orderable):
 
 
 class GallerySerializer(serializers.ModelSerializer):
-    image = HighlightImageSerializer(
+    image = DetailedImageSerializer(
         rendition_size="max-1024x1024", background_colour=None
     )
     caption = RichTextSerializer()
@@ -566,7 +566,6 @@ class GallerySerializer(serializers.ModelSerializer):
         model = PageGalleryImage
         fields = (
             "image",
-            "alt_text",
             "caption",
         )
 

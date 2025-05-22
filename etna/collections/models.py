@@ -30,9 +30,11 @@ from etna.core.models import (
 from etna.ciim.fields import RecordField
 from etna.core.serializers import (
     DefaultPageSerializer,
-    HighlightImageSerializer,
+    DetailedImageSerializer,
     ImageSerializer,
+    RichTextSerializer,
 )
+from etna.ciim.serializers import RecordSerializer
 from etna.core.utils import skos_id_from_text
 
 from .blocks import (
@@ -107,24 +109,13 @@ class Highlight(Orderable):
     )
 
     panels = [
+        FieldPanel("title"),
         FieldPanel("image"),
         FieldPanel("record"),
         FieldPanel("record_dates"),
         FieldPanel("description"),
         FieldPanel("alt_text"),
     ]
-
-    def clean(self) -> None:
-        if self.image:
-            if not self.image.record or not self.image.description:
-                raise ValidationError(
-                    {
-                        "image": [
-                            "Only images with a 'record' and a 'description' specified can be used for highlights."
-                        ]
-                    }
-                )
-        return super().clean()
 
 
 class ExplorerIndexPage(BasePageWithRequiredIntro):
@@ -806,15 +797,20 @@ class TopicalPageMixin:
 
 
 class HighlightSerializer(serializers.ModelSerializer):
-    image = HighlightImageSerializer(
+    image = DetailedImageSerializer(
         rendition_size="max-1024x1024", background_colour=None
     )
+    description = RichTextSerializer()
+    record = RecordSerializer()
 
     class Meta:
         model = Highlight
         fields = (
+            "title",
             "image",
-            "alt_text",
+            "description",
+            "record",
+            "record_dates"
         )
 
 
@@ -944,7 +940,7 @@ class HighlightGalleryPage(
         """
         strings = []
         for item in self.highlights:
-            strings.extend([item.image.title, item.image.description])
+            strings.extend([item.image.title, item.description])
         return " | ".join(strings)
 
     def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
