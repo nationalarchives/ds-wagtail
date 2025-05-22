@@ -17,7 +17,7 @@ def migrate_image_data_to_highlight(apps, schema_editor):
             obj.record_dates = img.record_dates
             obj.description = img.description
             obj.title = img.title
-        obj.save()
+            obj.save()
 
 def migrate_alt_text_to_custom_image(apps, schema_editor):
     for obj in PageGalleryImage.objects.all():
@@ -42,6 +42,18 @@ def migrate_alt_text_to_custom_image(apps, schema_editor):
                                 image = CustomImage.objects.get(id=sub_block["value"]["image"])
                                 image.description = sub_block["value"]["alt_text"]
                                 image.save()
+                        if sub_block["type"] == "image_gallery":
+                            for image in sub_block["value"]["images"]:
+                                if image["value"]["image"] and image["value"]["alt_text"]:
+                                    image_instance = CustomImage.objects.get(id=image["value"]["image"])
+                                    image_instance.description = image["value"]["alt_text"]
+                                    image_instance.save()
+                        if sub_block["type"] == "promoted_item":
+                            if image := sub_block["value"]["image"]:
+                                if image["image"] and image["alt_text"] and image["decorative"] is False:
+                                    image_instance = CustomImage.objects.get(id=image["image"])
+                                    image_instance.description = image["alt_text"]
+                                    image_instance.save()
                 if block["type"] == "image":
                     if block["value"]["image"] and block["value"]["alt_text"]:
                         image = CustomImage.objects.get(id=block["value"]["image"])
@@ -52,6 +64,12 @@ def migrate_alt_text_to_custom_image(apps, schema_editor):
                         if image["value"]["image"] and image["value"]["alt_text"]:
                             image_instance = CustomImage.objects.get(id=image["value"]["image"])
                             image_instance.description = image["value"]["alt_text"]
+                            image_instance.save()
+                if block["type"] == "promoted_item":
+                    if image := sub_block["value"]["image"]:
+                        if image["image"] and image["alt_text"] and image["decorative"] is False:
+                            image_instance = CustomImage.objects.get(id=image["image"])
+                            image_instance.description = image["alt_text"]
                             image_instance.save()
                 
 
