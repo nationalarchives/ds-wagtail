@@ -1,5 +1,6 @@
 from typing import Any, Dict, List, Optional, Tuple, Union
 
+from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.http import HttpRequest
@@ -15,7 +16,7 @@ from wagtail.admin.panels import (
     PageChooserPanel,
 )
 from wagtail.api import APIField
-from wagtail.fields import StreamField
+from wagtail.fields import StreamField, RichTextField
 from wagtail.images import get_image_model_string
 from wagtail.models import Orderable, Page
 from wagtail.search import index
@@ -26,6 +27,7 @@ from etna.core.models import (
     ContentWarningMixin,
     RequiredHeroImageMixin,
 )
+from etna.ciim.fields import RecordField
 from etna.core.serializers import (
     DefaultPageSerializer,
     HighlightImageSerializer,
@@ -48,11 +50,51 @@ class Highlight(Orderable):
         on_delete=models.CASCADE,
         related_name="page_highlights",
     )
+
     image = models.ForeignKey(
         get_image_model_string(),
         null=True,
         on_delete=models.SET_NULL,
         verbose_name=_("image"),
+    )
+
+    title = models.CharField(
+        max_length=255,
+        verbose_name=_("title"),
+        help_text=_(
+            "The descriptive name of the image. If this image features in a highlights gallery, this title will be visible on the page."
+        ),
+    )
+    
+    record = RecordField(
+        verbose_name=_("related record"),
+        db_index=True,
+        blank=False,
+        null=False,
+        help_text=_(
+            "If the image relates to a specific record, select that record here."
+        ),
+    )
+    record.wagtail_reference_index_ignore = True
+
+    record_dates = models.CharField(
+        verbose_name=_("record date(s)"),
+        max_length=100,
+        blank=False,
+        null=False,
+        help_text=_("Date(s) related to the selected record (max length: 100 chars)."),
+    )
+
+    description = RichTextField(
+        verbose_name=_("description"),
+        help_text=(
+            "This text will appear in highlights galleries. A 100-300 word "
+            "description of the story of the record and why it is significant."
+        ),
+        blank=False,
+        null=False,
+        features=settings.RESTRICTED_RICH_TEXT_FEATURES,
+        max_length=900,
     )
 
     alt_text = models.CharField(
@@ -66,6 +108,9 @@ class Highlight(Orderable):
 
     panels = [
         FieldPanel("image"),
+        FieldPanel("record"),
+        FieldPanel("record_dates"),
+        FieldPanel("description"),
         FieldPanel("alt_text"),
     ]
 
