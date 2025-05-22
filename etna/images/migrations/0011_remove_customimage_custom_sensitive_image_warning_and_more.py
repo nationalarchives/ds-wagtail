@@ -19,58 +19,51 @@ def migrate_image_data_to_highlight(apps, schema_editor):
             obj.title = img.title
             obj.save()
 
+def set_image_description(image_id, alt_text):
+    if image_id and alt_text:
+        try:
+            image = CustomImage.objects.get(id=image_id)
+            image.description = alt_text
+            image.save()
+        except CustomImage.DoesNotExist:
+            pass
+
+def handle_block(block):
+    if block["type"] == "image":
+        set_image_description(
+            block["value"].get("image"),
+            block["value"].get("alt_text"),
+        )
+    elif block["type"] == "image_gallery":
+        for img in block["value"].get("images", []):
+            set_image_description(
+                img["value"].get("image"),
+                img["value"].get("alt_text"),
+            )
+    elif block["type"] == "promoted_item":
+        image = block["value"].get("image")
+        if image and image.get("image") and image.get("alt_text") and not image.get("decorative"):
+            set_image_description(
+                image.get("image"),
+                image.get("alt_text"),
+            )
+    elif block["type"] == "content_section":
+        for sub_block in block["value"].get("content", []):
+            handle_block(sub_block)
+
 def migrate_alt_text_to_custom_image(apps, schema_editor):
     for obj in PageGalleryImage.objects.all():
         if obj.image and obj.alt_text:
-            image = CustomImage.objects.get(id=obj.image.id)
-            image.description = obj.alt_text
-            image.save()
-    
+            set_image_description(obj.image.id, obj.alt_text)
+
     for obj in Highlight.objects.all():
         if obj.image and obj.alt_text:
-            image = CustomImage.objects.get(id=obj.image.id)
-            image.description = obj.alt_text
-            image.save()
-    
+            set_image_description(obj.image.id, obj.alt_text)
+
     for page in Page.objects.type(ArticlePage, FocusedArticlePage, BlogPostPage):
-        if body := page.specific.body:
-            for block in body._raw_data:
-                if block["type"] == "content_section":
-                    for sub_block in block["value"]["content"]:
-                        if sub_block["type"] == "image":
-                            if sub_block["value"]["image"] and sub_block["value"]["alt_text"]:
-                                image = CustomImage.objects.get(id=sub_block["value"]["image"])
-                                image.description = sub_block["value"]["alt_text"]
-                                image.save()
-                        if sub_block["type"] == "image_gallery":
-                            for image in sub_block["value"]["images"]:
-                                if image["value"]["image"] and image["value"]["alt_text"]:
-                                    image_instance = CustomImage.objects.get(id=image["value"]["image"])
-                                    image_instance.description = image["value"]["alt_text"]
-                                    image_instance.save()
-                        if sub_block["type"] == "promoted_item":
-                            if image := sub_block["value"]["image"]:
-                                if image["image"] and image["alt_text"] and image["decorative"] is False:
-                                    image_instance = CustomImage.objects.get(id=image["image"])
-                                    image_instance.description = image["alt_text"]
-                                    image_instance.save()
-                if block["type"] == "image":
-                    if block["value"]["image"] and block["value"]["alt_text"]:
-                        image = CustomImage.objects.get(id=block["value"]["image"])
-                        image.description = block["value"]["alt_text"]
-                        image.save()
-                if block["type"] == "image_gallery":
-                    for image in block["value"]["images"]:
-                        if image["value"]["image"] and image["value"]["alt_text"]:
-                            image_instance = CustomImage.objects.get(id=image["value"]["image"])
-                            image_instance.description = image["value"]["alt_text"]
-                            image_instance.save()
-                if block["type"] == "promoted_item":
-                    if image := sub_block["value"]["image"]:
-                        if image["image"] and image["alt_text"] and image["decorative"] is False:
-                            image_instance = CustomImage.objects.get(id=image["image"])
-                            image_instance.description = image["alt_text"]
-                            image_instance.save()
+        if body := getattr(page.specific, "body", None):
+            for block in getattr(body, "_raw_data", []):
+                handle_block(block)
                 
 
 class Migration(migrations.Migration):
