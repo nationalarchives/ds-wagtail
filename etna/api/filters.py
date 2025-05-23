@@ -2,7 +2,7 @@ import datetime
 
 from rest_framework.filters import BaseFilterBackend
 from wagtail.api.v2.utils import BadRequestError
-from wagtail.models import Site
+from wagtail.models import Page, Site
 from wagtail.search.backends.database.postgres.postgres import PostgresSearchResults
 
 
@@ -157,5 +157,42 @@ class SiteFilter(BaseFilterBackend):
         else:
             # No sites configured
             queryset = queryset.none()
+
+        return queryset
+
+
+class DescendantOfPathFilter(BaseFilterBackend):
+    """
+    Implements the ?descendant_of filter which limits the set of pages to a
+    particular branch of the page tree.
+    """
+
+    def filter_queryset(self, request, queryset, view):
+        if "descendant_of_path" in request.GET:
+            if hasattr(queryset, "_filtered_by_child_of"):
+                raise BadRequestError(
+                    "filtering by descendant_of_path with child_of is not supported"
+                )
+            try:
+                parent_page_path = request.GET["descendant_of_path"]
+                if parent_page_path == "/":
+                    parent_page = view.get_root_page()
+                else:
+                    path_components = [
+                        component
+                        for component in parent_page_path.split("/")
+                        if component
+                    ]
+                    site = Site.find_for_request(request)
+                    try:
+                        parent_page, _, _ = site.root_page.specific.route(
+                            request, path_components
+                        )
+                    except Exception:
+                        raise BadRequestError("ancestor page doesn't exist")
+            except Page.DoesNotExist:
+                raise BadRequestError("ancestor page doesn't exist")
+
+            queryset = queryset.descendant_of(parent_page)
 
         return queryset

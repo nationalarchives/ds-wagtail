@@ -24,14 +24,14 @@ from wagtail.models import Page, PageViewRestriction, Site
 
 from etna.core.serializers.pages import DefaultPageSerializer
 
-from ..filters import AliasFilter, SiteFilter
+from ..filters import AliasFilter, DescendantOfPathFilter, SiteFilter
 
 logger = logging.getLogger(__name__)
 
 
 class CustomPagesAPIViewSet(PagesAPIViewSet):
     known_query_parameters = PagesAPIViewSet.known_query_parameters.union(
-        ["password", "author", "include_aliases"]
+        ["password", "author", "include_aliases", "descendant_of_path"]
     )
 
     # Copied from wagtail.api.v2.views.PagesAPIViewSet
@@ -41,6 +41,7 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
         ChildOfFilter,
         AncestorOfFilter,
         DescendantOfFilter,
+        DescendantOfPathFilter,
         OrderingFilter,
         TranslationOfFilter,
         LocaleFilter,
