@@ -30,11 +30,13 @@ wagtail-headless-preview = "0.8.0"
 whitenoise = "~6.9.0"
 
 [tool.poetry.group.dev]
-optional = true
+optional = false # TODO: Make true when we can have optional dev dependencies on our local machines
 
 [tool.poetry.group.dev.dependencies]
 coverage = "~7.6"
 django-extensions = "~3.2"
+debugpy = "~1.8"
+pydevd-pycharm = "~252.16512"
 responses = "~0.25"
 
 [tool.poetry.group.root]
