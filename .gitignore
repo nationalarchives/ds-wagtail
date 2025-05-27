@@ -31,7 +31,6 @@ templates/static
 # Editor configuration files
 *.code-workspace
 .idea/
-.vscode/
 
 # SASS
 .sass-cache
