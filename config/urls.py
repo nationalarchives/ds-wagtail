@@ -1,6 +1,9 @@
+from urllib.parse import urljoin
+
 from django.apps import apps
 from django.conf import settings
-from django.urls import include, path
+from django.http import HttpResponseRedirect
+from django.urls import include, path, re_path
 from django.views.decorators.cache import never_cache
 from wagtail import urls as wagtail_urls
 from wagtail.admin import urls as wagtailadmin_urls
@@ -25,6 +28,18 @@ private_urls = [
     path("admin/", include(wagtailadmin_urls)),
     path("accounts/", include("allauth.urls")),
     path("documents/", include(wagtaildocs_urls)),
+]
+
+
+def redirectToLiveSite(request):
+    new_url = urljoin("https://www.nationalarchives.gov.uk", request.path)
+    return HttpResponseRedirect(new_url)
+
+
+# Redirect URLs from the beta subdomain to the main domain.
+redirect_urls = [
+    re_path(r"^explore-the-collection/.*$", redirectToLiveSite),
+    re_path(r"^people/.*$", redirectToLiveSite),
 ]
 
 # Public URLs that are meant to be cached.
@@ -61,6 +76,7 @@ private_urls = decorate_urlpatterns(private_urls, never_cache)
 # Join private and public URLs.
 urlpatterns = (
     private_urls
+    + redirect_urls
     + public_urls
     + [
         # Wagtail URLs are added at the end.
