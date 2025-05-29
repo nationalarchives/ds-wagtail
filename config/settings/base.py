@@ -245,6 +245,28 @@ MEDIA_URL = "media/"
 WAGTAILMEDIA = {
     "MEDIA_MODEL": "media.EtnaMedia",
     "MEDIA_FORM_BASE": "etna.media.forms.BaseMediaForm",
+    "AUDIO_EXTENSIONS": [
+        # "aac",
+        # "aiff",
+        # "flac",
+        # "m4a",
+        # "m4b",
+        "mp3",
+        # "ogg",
+        # "wav",
+    ],
+    "VIDEO_EXTENSIONS": [
+        # "avi",
+        # "h264",
+        # "m4v",
+        # "mkv",
+        # "mov",
+        "mp4",
+        # "mpeg",
+        # "mpg",
+        # "ogv",
+        # "webm",
+    ],
 }
 
 # Wagtail settings
