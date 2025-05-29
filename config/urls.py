@@ -4,6 +4,7 @@ from django.apps import apps
 from django.conf import settings
 from django.http import HttpResponseRedirect
 from django.urls import include, path, re_path
+from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.decorators.cache import never_cache
 from wagtail import urls as wagtail_urls
 from wagtail.admin import urls as wagtailadmin_urls
@@ -32,8 +33,12 @@ private_urls = [
 
 
 def redirectToLiveSite(request):
-    new_url = urljoin("https://www.nationalarchives.gov.uk", request.path)
-    return HttpResponseRedirect(new_url)
+    if url_has_allowed_host_and_scheme(
+        request.path, allowed_hosts=["www.nationalarchives.gov.uk"]
+    ):
+        new_url = urljoin("https://www.nationalarchives.gov.uk", request.path)
+        return HttpResponseRedirect(new_url)
+    return HttpResponseRedirect("https://www.nationalarchives.gov.uk")
 
 
 # Redirect URLs from the beta subdomain to the main domain.
