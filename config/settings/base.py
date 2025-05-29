@@ -30,6 +30,8 @@ WAGTAIL_HEADLESS_PREVIEW = {
 }
 
 DEBUG = strtobool(os.getenv("DEBUG", "False"))
+VSC_DEBUGGER = strtobool(os.getenv("VSC_DEBUGGER", "False"))
+PYC_DEBUGGER = strtobool(os.getenv("PYC_DEBUGGER", "False"))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
