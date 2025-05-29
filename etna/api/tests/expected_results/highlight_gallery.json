@@ -140,10 +140,9 @@
                     "heading": "Translation",
                     "text": "<p>Translation</p>"
                 },
-                "copyright": "Copyrighted by someone",
-                "record": null,
-                "record_dates": "1900-2000"
+                "copyright": "Copyrighted by someone"
             },
+            "description": "<p>Test description</p>",
             "record": {
                 "title": "[unknown]",
                 "iaid": "C123",
