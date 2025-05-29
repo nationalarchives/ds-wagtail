@@ -30,7 +30,6 @@ from etna.core.blocks import (
     FeaturedExternalLinkBlock,
     FeaturedPagesBlock,
     ImageGalleryBlock,
-    LargeCardLinksBlock,
     MixedMediaBlock,
     ReviewBlock,
     ShopCollectionBlock,
@@ -50,7 +49,161 @@ from etna.core.serializers import (
     RichTextSerializer,
 )
 
-from .blocks import ExhibitionPageStreamBlock, WhatsOnPromotedLinksBlock
+from .blocks import ExhibitionPageStreamBlock
+
+class SeriesTag(models.Model):
+    """
+    This model is used to tag series pages.
+    """
+
+    page = ParentalKey(
+        "wagtailcore.Page",
+        on_delete=models.CASCADE,
+        related_name="page_series_tags",
+    )
+
+    series = models.ForeignKey(
+        "whatson.WhatsOnSeriesPage",
+        on_delete=models.CASCADE,
+        related_name="series_pages",
+        verbose_name=_("series"),
+        help_text=_("The series to include the page in."),
+        null=False,
+        blank=False,
+    )
+    
+    class Meta:
+        verbose_name = _("series")
+        verbose_name_plural = _("series")
+
+    def __str__(self):
+        return f"{self.page.title}: {self.series.title}"
+
+class WhatsOnSeriesPage(BasePageWithRequiredIntro):
+    """WhatsOnSeriesPage
+
+    A page for creating a series/grouping of events.
+    """
+
+    # DataLayerMixin overrides
+    gtm_content_group = "What's On"
+
+    class Meta:
+        verbose_name = _("What's On series page")
+
+    parent_page_types = [
+        "whatson.WhatsOnPage",
+    ]
+    subpage_types = [
+
+    ]
+
+    content_panels = BasePageWithRequiredIntro.content_panels + [
+        
+    ]
+
+    @cached_property
+    def latest_listings(self):
+        """
+        Returns the live event pages that are children of this series page.
+        """
+        for series in self.page_series_tags.all():
+            print(series.series)
+
+        return self.page_series_tags.all()
+
+    api_fields = (
+        BasePageWithRequiredIntro.api_fields + [
+            APIField("latest_listings"),
+            APIField("page_series_tags", serializer=DefaultPageSerializer(many=True)),
+        ]
+    )
+
+class CategoryListing(Orderable):
+    """
+    This model is used to list categories on the WhatsOnPage.
+    """
+
+    page = ParentalKey(
+        "wagtailcore.Page",
+        on_delete=models.CASCADE,
+        related_name="category_listings",
+    )
+
+    category = models.ForeignKey(
+        "whatson.WhatsOnSeriesPage",
+        on_delete=models.CASCADE,
+        related_name="listing_categories",
+        verbose_name=_("category"),
+        help_text=_("The category to list on the What's On page."),
+        null=False,
+        blank=False,
+    )
+
+    @cached_property
+    def latest_listings(self):
+        """
+        Returns the 3 latest listings in the selected category.
+        """
+        return self.category.get_children().live().order_by("-start_date")[:3]
+
+    class Meta:
+        verbose_name = _("category listing")
+        verbose_name_plural = _("category listings")
+
+    def __str__(self):
+        return f"{self.page.title}: {self.category.title}"
+
+
+class WhatsOnPage(BasePageWithRequiredIntro):
+    """WhatsOnPage
+
+    A page for listing events.
+    """
+
+    # DataLayerMixin overrides
+    gtm_content_group = "What's On"
+
+    class Meta:
+        verbose_name = _("What's On page")
+
+    parent_page_types = [
+        "home.HomePage",
+    ]
+    subpage_types = [
+        "whatson.EventPage",
+        "whatson.ExhibitionPage",
+        "whatson.WhatsOnSeriesPage",
+    ]
+
+    @cached_property
+    def latest_listings(self):
+        """
+        Returns the live event pages that are children of this series page.
+        """
+        print(self.category_listings.all())
+        for category in self.category_listings.all():
+            print(category.category)
+
+        return self.get_children().live().type(WhatsOnPage)
+
+    max_count = 1
+
+    content_panels = BasePageWithRequiredIntro.content_panels + [
+        InlinePanel(
+            "category_listings",
+            heading=_("Category listings"),
+            max_num=5,
+        ),
+    ]
+
+    api_fields = (
+        BasePageWithRequiredIntro.api_fields
+        + [
+            APIField("latest_listings"),
+            APIField("category_listings"),
+        ]
+    )
 
 
 class VenueType(models.TextChoices):
@@ -207,54 +360,6 @@ class SessionSerializer(serializers.ModelSerializer):
         fields = ("start", "end")
 
 
-class WhatsOnPage(BasePageWithRequiredIntro):
-    """WhatsOnPage
-
-    A page for listing events.
-    """
-
-    featured_event = models.ForeignKey(
-        "whatson.EventPage",
-        null=True,
-        blank=True,
-        verbose_name=_("featured event"),
-        on_delete=models.SET_NULL,
-        related_name="+",
-    )
-    promoted_links = StreamField(
-        [("promoted_links", WhatsOnPromotedLinksBlock())],
-        blank=True,
-        max_num=1,
-    )
-    large_card_links = StreamField(
-        [("large_card_links", LargeCardLinksBlock())],
-        blank=True,
-        max_num=1,
-    )
-
-    # DataLayerMixin overrides
-    gtm_content_group = "What's On"
-
-    class Meta:
-        verbose_name = _("What's On page")
-
-    parent_page_types = [
-        "home.HomePage",
-    ]
-    subpage_types = [
-        "whatson.EventPage",
-        "whatson.ExhibitionPage",
-    ]
-
-    max_count = 1
-
-    content_panels = BasePageWithRequiredIntro.content_panels + [
-        FieldPanel("featured_event"),
-        FieldPanel("promoted_links"),
-        FieldPanel("large_card_links"),
-    ]
-
-
 class EventPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
     """EventPage
 
@@ -409,6 +514,24 @@ class EventPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
         ),
     ]
 
+    promote_panels = (
+        BasePageWithRequiredIntro.promote_panels
+        + [
+            InlinePanel(
+                "page_series_tags",
+                heading=_("Series"),
+                max_num=3,
+            ),
+        ]
+    )
+
+    @cached_property
+    def series(self):
+        """
+        Returns the series this event page belongs to, if any.
+        """
+        return [tag.series for tag in self.page_series_tags.all() if tag.series]
+
     api_fields = (
         BasePageWithRequiredIntro.api_fields
         + RequiredHeroImageMixin.api_fields
@@ -429,6 +552,7 @@ class EventPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
             APIField("date_time_range"),
             APIField("speakers", serializer=SpeakerSerializer(many=True)),
             APIField("sessions", serializer=SessionSerializer(many=True)),
+            APIField("series", serializer=DefaultPageSerializer(many=True)),
         ]
     )
 
@@ -527,7 +651,7 @@ class EventPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
             ObjectList(content_panels, heading="Content"),
             ObjectList(key_details_panels, heading="Key details"),
             # ObjectList(design_panels, heading="Design"),
-            ObjectList(BasePageWithRequiredIntro.promote_panels, heading="Promote"),
+            ObjectList(promote_panels, heading="Promote"),
             ObjectList(BasePageWithRequiredIntro.settings_panels, heading="Settings"),
         ]
     )
