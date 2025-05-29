@@ -144,7 +144,12 @@
                 "record": null,
                 "record_dates": "1900-2000"
             },
-            "alt_text": "Alt text"
+            "record": {
+                "title": "[unknown]",
+                "iaid": "C123",
+                "reference_number": "[unknown]"
+            },
+            "record_dates": ""
         }
     ],
     "highlight_cards": [
