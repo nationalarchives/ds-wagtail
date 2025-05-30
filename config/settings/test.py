@@ -6,8 +6,6 @@ SECRET_KEY = "abc123"
 
 ALLOWED_HOSTS = ["*"]
 
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-
 # Disable birdbath completely when testing
 INSTALLED_APPS = INSTALLED_APPS.copy()  # noqa: F405
 INSTALLED_APPS.remove("birdbath")

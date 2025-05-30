@@ -20,6 +20,8 @@ services:
       - ENVIRONMENT_NAME=local
       - DJANGO_SETTINGS_MODULE=config.settings.develop
       - SECRET_KEY=abc123
+      - ALLOWED_HOSTS=localhost
+      - DEBUG=True
       - DATABASE_HOST=db
       - DATABASE_NAME=postgres
       - DATABASE_USER=postgres

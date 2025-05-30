@@ -29,12 +29,11 @@ WAGTAIL_HEADLESS_PREVIEW = {
 
 DEBUG = strtobool(os.getenv("DEBUG", "False"))
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
-
 SECRET_KEY = os.getenv("SECRET_KEY", "")
 
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 # Application definition
 
