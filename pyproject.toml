@@ -27,7 +27,6 @@ wagtail-font-awesome-svg = "~1.0"
 wagtailmedia = "~0.15"
 wagtail-metadata = "~5.0"
 wagtail-headless-preview = "0.8.0"
-whitenoise = "~6.9.0"
 
 [tool.poetry.group.dev]
 optional = true
