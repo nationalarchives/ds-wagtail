@@ -4,8 +4,6 @@ import os
 from .base import *  # noqa: F401
 from .util import strtobool
 
-# ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "*").split(",")
-
 SENTRY_SAMPLE_RATE = float(os.getenv("SENTRY_SAMPLE_RATE", "1.0"))
 
 if DEBUG:  # noqa: F405
