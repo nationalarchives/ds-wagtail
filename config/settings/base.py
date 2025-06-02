@@ -18,9 +18,7 @@ from .util import strtobool
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR = os.path.dirname(PROJECT_DIR)
 
-WAGTAILADMIN_BASE_URL = os.getenv(
-    "WAGTAILADMIN_BASE_URL", "https://nationalarchives.gov.uk"
-)
+WAGTAILADMIN_BASE_URL = os.getenv("WAGTAILADMIN_BASE_URL", "")
 WAGTAILAPI_BASE_URL = os.getenv("WAGTAILAPI_BASE_URL", WAGTAILADMIN_BASE_URL)
 WAGTAIL_HEADLESS_PREVIEW = {
     "CLIENT_URLS": {
@@ -31,12 +29,11 @@ WAGTAIL_HEADLESS_PREVIEW = {
 
 DEBUG = strtobool(os.getenv("DEBUG", "False"))
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
-
 SECRET_KEY = os.getenv("SECRET_KEY", "")
 
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 # Application definition
 
@@ -236,7 +233,6 @@ STATICFILES_FINDERS = [
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "templates", "static"),
 ]
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 STATIC_URL = "static/"
 MEDIA_ROOT = "/media"

@@ -16,9 +16,9 @@ echo "Creating a database dump..."
 platform db:dump -e "$ENVIRONMENT" -p "$PLATFORM_PROJECT_ID" -f "$DB_DUMP" -d "$DB_DUMP_DIR"
 
 echo "Replacing values in the database dump..."
-sed -i -r -e 's/(dev-|staging-)?www.nationalarchives.gov.uk([[:space:]])443/localhost\265535/g' "$DB_DUMP_DIR/$DB_DUMP"
-sed -i -r -e 's/(dev-|staging-)?beta.nationalarchives.gov.uk([[:space:]])443/localhost\265535/g' "$DB_DUMP_DIR/$DB_DUMP"
-sed -i -r -e 's/(develop.)?tna.dblclk.dev([[:space:]])443/localhost\265535/g' "$DB_DUMP_DIR/$DB_DUMP"
+sed -i -r -e 's/(dev-|staging-)?www.nationalarchives.gov.uk([[:space:]])443/localhost\2443/g' "$DB_DUMP_DIR/$DB_DUMP"
+sed -i -r -e 's/(dev-|staging-)?beta.nationalarchives.gov.uk([[:space:]])443/localhost\2443/g' "$DB_DUMP_DIR/$DB_DUMP"
+sed -i -r -e 's/(develop.)?tna.dblclk.dev([[:space:]])443/localhost\2443/g' "$DB_DUMP_DIR/$DB_DUMP"
 
 echo "Starting the db container..."
 docker compose -p ds-wagtail up db -d
