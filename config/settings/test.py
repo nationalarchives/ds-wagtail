@@ -20,5 +20,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")  # noqa: F405
 
 ROSETTA_API_URL = "https://rosetta.test/data"
 
+CIIM_RECORD_DETAILS_CACHE_DURATION = 0
+
 ENVIRONMENT_NAME = "test"
 SENTRY_SAMPLE_RATE = 0

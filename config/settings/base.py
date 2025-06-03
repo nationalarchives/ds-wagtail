@@ -359,11 +359,20 @@ FEATURE_DISABLE_JS_WHATS_ON_LISTING = strtobool(
     os.getenv("FEATURE_DISABLE_JS_WHATS_ON_LISTING", "False")
 )
 
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.filebased.FileBasedCache",
+        "LOCATION": "/var/tmp/django_cache",
+        "TIMEOUT": int(os.getenv("CACHE_DEFAULT_TIMEOUT", "900")),
+    }
+}
+
 if redis_url := os.getenv("REDIS_URL"):
     CACHES = {
         "default": {
             "BACKEND": "django_redis.cache.RedisCache",
             "LOCATION": redis_url,
+            "TIMEOUT": int(os.getenv("CACHE_DEFAULT_TIMEOUT", "900")),
             "OPTIONS": {
                 "CLIENT_CLASS": "django_redis.client.DefaultClient",
             },
@@ -374,5 +383,9 @@ if redis_url := os.getenv("REDIS_URL"):
             "KEY_PREFIX": "renditions",
         },
     }
+
+CIIM_RECORD_DETAILS_CACHE_DURATION = int(
+    os.getenv("CIIM_RECORD_DETAILS_CACHE_DURATION", "2592000")  # 30 days
+)
 
 WAGTAILAPI_LIMIT_MAX = int(os.getenv("WAGTAILAPI_LIMIT_MAX", "0")) or None

@@ -1,7 +1,12 @@
+import logging
+
 from django.conf import settings
+from django.core.cache import caches
 from sentry_sdk import capture_message
 
 from etna.core.json_api_client import JSONAPIClient
+
+logger = logging.getLogger(__name__)
 
 DEFAULT_REFERENCE_NUMBER = "[unknown]"
 DEFAULT_SUMMARY_TITLE = "[unknown]"
@@ -61,13 +66,29 @@ class CIIMClient(JSONAPIClient):
         """
         Get a standardised serialized record from the CIIM API for the Wagtail API.
         """
-        instance = self.get_record_instance()
 
-        if instance:
-            return {
+        cache = caches["default"]
+        if cached_record := cache.get(f"record_details_{self.params.get("id")}", None):
+            logger.info(
+                f"Using cached record for \"{self.params.get('id')}\"",
+            )
+            return cached_record
+
+        logger.debug(
+            f"Getting record instance from CIIM API for ID \"{self.params.get('id')}\"",
+        )
+
+        if instance := self.get_record_instance():
+            details = {
                 "title": instance.get("summaryTitle", DEFAULT_SUMMARY_TITLE),
                 "iaid": instance.get("iaid", DEFAULT_IAID),
                 "reference_number": instance.get(
                     "referenceNumber", DEFAULT_REFERENCE_NUMBER
                 ),
             }
+            cache.set(
+                f"record_details_{self.params.get("id")}",
+                details,
+                settings.CIIM_RECORD_DETAILS_CACHE_DURATION,
+            )
+            return details
