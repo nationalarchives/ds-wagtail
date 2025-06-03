@@ -4,9 +4,10 @@ from .base import *  # noqa: F401
 
 SECRET_KEY = "abc123"
 
-ALLOWED_HOSTS = ["*"]
+WAGTAILADMIN_BASE_URL = "https://www.nationalarchives.gov.uk"
+WAGTAILAPI_IMAGES_BASE_URL = "https://www.nationalarchives.gov.uk"
 
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+ALLOWED_HOSTS = ["*"]
 
 # Disable birdbath completely when testing
 INSTALLED_APPS = INSTALLED_APPS.copy()  # noqa: F405

@@ -126,5 +126,18 @@ class CustomImageRendition(AbstractRendition):
         CustomImage, on_delete=models.CASCADE, related_name="renditions"
     )
 
+    @property
+    def full_url(self):
+        url = self.url
+        if url.startswith("/"):
+            if (
+                hasattr(settings, "WAGTAILAPI_IMAGES_BASE_URL")
+                and settings.WAGTAILAPI_IMAGES_BASE_URL
+            ):
+                url = settings.WAGTAILAPI_IMAGES_BASE_URL + url
+            elif hasattr(settings, "WAGTAILADMIN_BASE_URL"):
+                url = settings.WAGTAILADMIN_BASE_URL + url
+        return url
+
     class Meta:
         unique_together = (("image", "filter_spec", "focal_point_key"),)

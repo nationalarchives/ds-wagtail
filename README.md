@@ -8,7 +8,6 @@ cp .env.example .env
 
 # Set .env values for:
 #   - ROSETTA_API_URL
-#   - PLATFORMSH_CLI_TOKEN
 
 # Build and start the containers
 docker compose up -d
