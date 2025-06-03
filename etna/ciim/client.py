@@ -89,6 +89,6 @@ class CIIMClient(JSONAPIClient):
             cache.set(
                 f"record_details_{self.params.get("id")}",
                 details,
-                settings.CIIM_RECORD_DETAILS_CACHE_DURATION,
+                settings.RECORD_DETAILS_CACHE_DURATION,
             )
             return details

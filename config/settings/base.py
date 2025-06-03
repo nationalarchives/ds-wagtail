@@ -384,8 +384,8 @@ if redis_url := os.getenv("REDIS_URL"):
         },
     }
 
-CIIM_RECORD_DETAILS_CACHE_DURATION = int(
-    os.getenv("CIIM_RECORD_DETAILS_CACHE_DURATION", "2592000")  # 30 days
+RECORD_DETAILS_CACHE_DURATION = int(
+    os.getenv("RECORD_DETAILS_CACHE_DURATION", "2592000")  # 30 days
 )
 
 WAGTAILAPI_LIMIT_MAX = int(os.getenv("WAGTAILAPI_LIMIT_MAX", "0")) or None
