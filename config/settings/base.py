@@ -359,14 +359,6 @@ FEATURE_DISABLE_JS_WHATS_ON_LISTING = strtobool(
     os.getenv("FEATURE_DISABLE_JS_WHATS_ON_LISTING", "False")
 )
 
-CACHES = {
-    "default": {
-        "BACKEND": "django.core.cache.backends.filebased.FileBasedCache",
-        "LOCATION": "/var/tmp/django_cache",
-        "TIMEOUT": int(os.getenv("CACHE_DEFAULT_TIMEOUT", "900")),
-    }
-}
-
 if redis_url := os.getenv("REDIS_URL"):
     CACHES = {
         "default": {
