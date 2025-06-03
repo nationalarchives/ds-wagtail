@@ -19,6 +19,7 @@ PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR = os.path.dirname(PROJECT_DIR)
 
 WAGTAILADMIN_BASE_URL = os.getenv("WAGTAILADMIN_BASE_URL", "")
+WAGTAILAPI_IMAGES_BASE_URL = os.getenv("WAGTAILAPI_IMAGES_BASE_URL", "")
 WAGTAILAPI_BASE_URL = os.getenv("WAGTAILAPI_BASE_URL", WAGTAILADMIN_BASE_URL)
 WAGTAIL_HEADLESS_PREVIEW = {
     "CLIENT_URLS": {
