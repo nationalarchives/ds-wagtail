@@ -5,6 +5,7 @@ from .base import *  # noqa: F401
 SECRET_KEY = "abc123"
 
 WAGTAILADMIN_BASE_URL = "https://www.nationalarchives.gov.uk"
+WAGTAILAPI_IMAGES_BASE_URL = "https://www.nationalarchives.gov.uk"
 
 ALLOWED_HOSTS = ["*"]
 
