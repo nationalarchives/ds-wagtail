@@ -31,7 +31,7 @@ services:
       - DJANGO_SUPERUSER_EMAIL=admin@tna.dev
       - WAGTAILADMIN_BASE_URL=http://localhost:8000
       - WAGTAILAPI_BASE_URL=http://host.docker.internal:8000
-      - WAGTAILAPI_IMAGES_BASE_URL=http://localhost
+      - WAGTAILAPI_IMAGES_BASE_URL=https://localhost
       - WAGTAIL_HEADLESS_PREVIEW_URL=http://localhost:65535/preview/
       - REDIS_URL=redis://redis:6379/0
 
