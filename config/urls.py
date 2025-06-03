@@ -2,7 +2,7 @@ from urllib.parse import urljoin
 
 from django.apps import apps
 from django.conf import settings
-from django.http import HttpResponseRedirect
+from django.http import HttpResponsePermanentRedirect
 from django.urls import include, path, re_path
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.decorators.cache import never_cache
@@ -37,8 +37,8 @@ def redirectToLiveSite(request):
         request.path, allowed_hosts=["www.nationalarchives.gov.uk"]
     ):
         new_url = urljoin("https://www.nationalarchives.gov.uk", request.path)
-        return HttpResponseRedirect(new_url)
-    return HttpResponseRedirect("https://www.nationalarchives.gov.uk")
+        return HttpResponsePermanentRedirect(new_url)
+    return HttpResponsePermanentRedirect("https://www.nationalarchives.gov.uk")
 
 
 # Redirect URLs from the beta subdomain to the main domain.
