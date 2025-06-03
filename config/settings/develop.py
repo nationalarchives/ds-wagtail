@@ -5,10 +5,12 @@ from .util import strtobool
 
 SENTRY_SAMPLE_RATE = float(os.getenv("SENTRY_SAMPLE_RATE", "1.0"))
 
-if CACHES:  # noqa: F405
+try:
     CACHES["default"]["TIMEOUT"] = int(  # noqa: F405
         os.getenv("CACHE_DEFAULT_TIMEOUT", "1")
     )
+except NameError:
+    pass
 
 if DEBUG and strtobool(os.getenv("DEBUG_TOOLBAR_ENABLED", "False")):  # noqa: F405
     from .base import INSTALLED_APPS, MIDDLEWARE
