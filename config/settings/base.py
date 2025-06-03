@@ -364,6 +364,7 @@ if redis_url := os.getenv("REDIS_URL"):
         "default": {
             "BACKEND": "django_redis.cache.RedisCache",
             "LOCATION": redis_url,
+            "TIMEOUT": int(os.getenv("CACHE_DEFAULT_TIMEOUT", "900")),
             "OPTIONS": {
                 "CLIENT_CLASS": "django_redis.client.DefaultClient",
             },
@@ -374,5 +375,9 @@ if redis_url := os.getenv("REDIS_URL"):
             "KEY_PREFIX": "renditions",
         },
     }
+
+RECORD_DETAILS_CACHE_TIMEOUT = int(
+    os.getenv("RECORD_DETAILS_CACHE_TIMEOUT", "2592000")  # 30 days
+)
 
 WAGTAILAPI_LIMIT_MAX = int(os.getenv("WAGTAILAPI_LIMIT_MAX", "0")) or None
