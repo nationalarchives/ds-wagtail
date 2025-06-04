@@ -27,6 +27,7 @@
         "teaser_image": {
             "id": 6,
             "title": "An image",
+            "description": "",
             "jpeg": {
                 "url": "/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
                 "full_url": "https://www.nationalarchives.gov.uk/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
@@ -43,6 +44,7 @@
         "teaser_image_square": {
             "id": 6,
             "title": "An image",
+            "description": "",
             "jpeg": {
                 "url": "/media/images/example.2e16d0ba.fill-512x512.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
                 "full_url": "https://www.nationalarchives.gov.uk/media/images/example.2e16d0ba.fill-512x512.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
@@ -80,6 +82,7 @@
     "hero_image": {
         "id": 7,
         "title": "An image",
+        "description": "",
         "jpeg": {
             "url": "/media/images/exampl.2e16d0ba.fill-1200x480.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
             "full_url": "https://www.nationalarchives.gov.uk/media/images/exampl.2e16d0ba.fill-1200x480.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
@@ -94,13 +97,12 @@
         },
         "transcript": null,
         "translation": null,
-        "copyright": null,
-        "is_sensitive": false,
-        "custom_sensitive_image_warning": null
+        "copyright": null
     },
     "hero_image_small": {
         "id": 7,
         "title": "An image",
+        "description": "",
         "jpeg": {
             "url": "/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
             "full_url": "https://www.nationalarchives.gov.uk/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
@@ -115,9 +117,7 @@
         },
         "transcript": null,
         "translation": null,
-        "copyright": null,
-        "is_sensitive": false,
-        "custom_sensitive_image_warning": null
+        "copyright": null
     },
     "body": [],
     "featured_article": null,
@@ -134,6 +134,7 @@
             "teaser_image": {
                 "id": 12,
                 "title": "An image",
+                "description": "",
                 "jpeg": {
                     "url": "/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
                     "full_url": "https://www.nationalarchives.gov.uk/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",

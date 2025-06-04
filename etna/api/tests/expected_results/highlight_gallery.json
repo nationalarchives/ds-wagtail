@@ -27,6 +27,7 @@
         "teaser_image": {
             "id": 18,
             "title": "An image",
+            "description": "",
             "jpeg": {
                 "url": "/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
                 "full_url": "https://www.nationalarchives.gov.uk/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
@@ -43,6 +44,7 @@
         "teaser_image_square": {
             "id": 18,
             "title": "An image",
+            "description": "",
             "jpeg": {
                 "url": "/media/images/example.2e16d0ba.fill-512x512.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
                 "full_url": "https://www.nationalarchives.gov.uk/media/images/example.2e16d0ba.fill-512x512.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
@@ -93,6 +95,7 @@
         "teaser_image": {
             "id": 12,
             "title": "An image",
+            "description": "",
             "jpeg": {
                 "url": "/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
                 "full_url": "https://www.nationalarchives.gov.uk/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
@@ -112,9 +115,11 @@
     },
     "highlights": [
         {
+            "title": "",
             "image": {
                 "id": 1,
                 "title": "An image",
+                "description": "Some alt text",
                 "jpeg": {
                     "url": "/media/images/example_E1PUN8.max-1024x1024.format-jpeg.jpegquality-60.jpg",
                     "full_url": "https://www.nationalarchives.gov.uk/media/images/example_E1PUN8.max-1024x1024.format-jpeg.jpegquality-60.jpg",
@@ -135,14 +140,15 @@
                     "heading": "Translation",
                     "text": "<p>Translation</p>"
                 },
-                "copyright": "Copyrighted by someone",
-                "is_sensitive": false,
-                "custom_sensitive_image_warning": null,
-                "description": "<p>Description</p>",
-                "record": null,
-                "record_dates": "1900-2000"
+                "copyright": "Copyrighted by someone"
             },
-            "alt_text": "Alt text"
+            "description": "<p>Test description</p>",
+            "record": {
+                "title": "[unknown]",
+                "iaid": "C123",
+                "reference_number": "[unknown]"
+            },
+            "record_dates": ""
         }
     ],
     "highlight_cards": [
@@ -150,6 +156,7 @@
             "image": {
                 "id": 1,
                 "title": "An image",
+                "description": "Some alt text",
                 "jpeg": {
                     "url": "/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
                     "full_url": "https://www.nationalarchives.gov.uk/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
@@ -163,7 +170,7 @@
                     "height": 68
                 }
             },
-            "alt_text": "Alt text"
+            "alt_text": null
         }
     ],
     "topics": [
@@ -179,6 +186,7 @@
             "teaser_image": {
                 "id": 2,
                 "title": "An image",
+                "description": "",
                 "jpeg": {
                     "url": "/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
                     "full_url": "https://www.nationalarchives.gov.uk/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
@@ -209,6 +217,7 @@
             "teaser_image": {
                 "id": 4,
                 "title": "An image",
+                "description": "",
                 "jpeg": {
                     "url": "/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
                     "full_url": "https://www.nationalarchives.gov.uk/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
