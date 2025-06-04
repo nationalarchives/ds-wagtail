@@ -94,133 +94,21 @@ class WhatsOnSeriesPage(BasePageWithRequiredIntro):
     parent_page_types = [
         "whatson.WhatsOnPage",
     ]
-    subpage_types = [
-
-    ]
+    subpage_types = []
 
     content_panels = BasePageWithRequiredIntro.content_panels + [
         
     ]
 
-    @cached_property
-    def latest_listings(self):
-        """
-        Returns the live event pages that are children of this series page.
-        """
-        for series in self.page_series_tags.all():
-            print(series.series)
-
-        return self.page_series_tags.all()
-
-    api_fields = (
-        BasePageWithRequiredIntro.api_fields + [
-            APIField("latest_listings"),
-            APIField("page_series_tags", serializer=DefaultPageSerializer(many=True)),
-        ]
-    )
-
-class CategoryListing(Orderable):
-    """
-    This model is used to list categories on the WhatsOnPage.
-    """
-
-    page = ParentalKey(
-        "wagtailcore.Page",
-        on_delete=models.CASCADE,
-        related_name="category_listings",
-    )
-
-    category = models.ForeignKey(
-        "whatson.WhatsOnSeriesPage",
-        on_delete=models.CASCADE,
-        related_name="listing_categories",
-        verbose_name=_("category"),
-        help_text=_("The category to list on the What's On page."),
-        null=False,
-        blank=False,
-    )
-
-    @cached_property
-    def latest_listings(self):
-        """
-        Returns the 3 latest listings in the selected category.
-        """
-        return self.category.get_children().live().order_by("-start_date")[:3]
-
-    class Meta:
-        verbose_name = _("category listing")
-        verbose_name_plural = _("category listings")
-
-    def __str__(self):
-        return f"{self.page.title}: {self.category.title}"
-
-
-class WhatsOnPage(BasePageWithRequiredIntro):
-    """WhatsOnPage
-
-    A page for listing events.
-    """
-
-    # DataLayerMixin overrides
-    gtm_content_group = "What's On"
-
-    class Meta:
-        verbose_name = _("What's On page")
-
-    parent_page_types = [
-        "home.HomePage",
-    ]
-    subpage_types = [
-        "whatson.EventPage",
-        "whatson.ExhibitionPage",
-        "whatson.WhatsOnSeriesPage",
-    ]
-
-    @cached_property
-    def latest_listings(self):
-        """
-        Returns the live event pages that are children of this series page.
-        """
-        print(self.category_listings.all())
-        for category in self.category_listings.all():
-            print(category.category)
-
-        return self.get_children().live().type(WhatsOnPage)
-
-    max_count = 1
-
-    content_panels = BasePageWithRequiredIntro.content_panels + [
-        InlinePanel(
-            "category_listings",
-            heading=_("Category listings"),
-            max_num=5,
-        ),
-    ]
-
     api_fields = (
         BasePageWithRequiredIntro.api_fields
-        + [
-            APIField("latest_listings"),
-            APIField("category_listings"),
-        ]
     )
 
-
-class VenueType(models.TextChoices):
-    """
-    This model is used to add venue types to event pages.
-    """
-
-    ONLINE = "online", _("Online")
-    IN_PERSON = "in_person", _("In person")
-    HYBRID = "hybrid", _("In person and online")
-
-
 @register_snippet
-class EventType(models.Model):
+class EventCategory(models.Model):
     """
-    This snippet model is used so that editors can add event types,
-    which we use via the event_type ForeignKey to add event types
+    This snippet model is used so that editors can add event categories,
+    which we use via the event_category ForeignKey to add event categories
     to event pages.
     """
 
@@ -244,12 +132,103 @@ class EventType(models.Model):
         return self.name
 
 
-class EventTypeSerializer(serializers.ModelSerializer):
-    """Serializer for the EventType model."""
+class EventCategorySerializer(serializers.ModelSerializer):
+    """Serializer for the EventCategory model."""
 
     class Meta:
-        model = EventType
+        model = EventCategory
         fields = ("name", "slug")
+
+
+class CategorySelection(models.Model):
+    page = ParentalKey(
+        "wagtailcore.Page",
+        on_delete=models.CASCADE,
+        related_name="category_pages",
+    )
+    category = models.ForeignKey(
+        "whatson.EventCategory",
+        on_delete=models.CASCADE,
+        related_name="selected_category",
+        verbose_name=_("category"),
+        help_text=_("The category of events to display on the Category page."),
+        null=False,
+        blank=False,
+    )
+
+
+class WhatsOnCategoryPage(BasePageWithRequiredIntro):
+    """WhatsOnCategoryPage
+
+    A page for displaying a category of events.
+    """
+
+    # DataLayerMixin overrides
+    gtm_content_group = "What's On"
+
+    class Meta:
+        verbose_name = _("What's On category page")
+
+    parent_page_types = [
+        "whatson.WhatsOnPage",
+    ]
+    subpage_types = []
+
+    content_panels = BasePageWithRequiredIntro.content_panels + [
+        InlinePanel(
+            "category_pages",
+            heading=_("Category selection"),
+        ),
+    ]
+
+    @cached_property
+    def categories(self) -> tuple:
+        """
+        Returns the categories selected for this category page.
+        """
+        return tuple(
+            item.category
+            for item in self.category_pages.select_related("category")
+        )
+
+    api_fields = BasePageWithRequiredIntro.api_fields + [
+        APIField("categories", serializer=EventCategorySerializer(many=True)),
+    ]
+
+
+class WhatsOnPage(BasePageWithRequiredIntro):
+    """WhatsOnPage
+
+    A page for listing events.
+    """
+
+    # DataLayerMixin overrides
+    gtm_content_group = "What's On"
+
+    class Meta:
+        verbose_name = _("What's On page")
+
+    parent_page_types = [
+        "home.HomePage",
+    ]
+    subpage_types = [
+        "whatson.EventPage",
+        "whatson.ExhibitionPage",
+        "whatson.WhatsOnSeriesPage",
+        "whatson.WhatsOnCategoryPage",
+    ]
+
+    max_count = 1
+
+    content_panels = BasePageWithRequiredIntro.content_panels + [
+    ]
+
+    api_fields = (
+        BasePageWithRequiredIntro.api_fields
+        + [
+            APIField("latest_listings"),
+        ]
+    )
 
 
 class EventSpeaker(Orderable):
@@ -367,8 +346,8 @@ class EventPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
     """
 
     # Event information
-    event_type = models.ForeignKey(
-        EventType,
+    event_category = models.ForeignKey(
+        EventCategory,
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
@@ -468,7 +447,7 @@ class EventPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
     )
 
     key_details_panels = [
-        FieldPanel("event_type"),
+        FieldPanel("event_category"),
         MultiFieldPanel(
             [
                 FieldPanel("booking_details"),
@@ -537,7 +516,7 @@ class EventPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
         + RequiredHeroImageMixin.api_fields
         + [
             APIField("location", serializer=LocationSerializer()),
-            APIField("event_type", serializer=EventTypeSerializer()),
+            APIField("event_category", serializer=EventCategorySerializer()),
             APIField("start_date"),
             APIField("end_date"),
             APIField("description", serializer=RichTextSerializer()),
