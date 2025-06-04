@@ -86,6 +86,7 @@ INSTALLED_APPS = [
     "allauth.account",
     "birdbath",
     "wagtail.api.v2",
+    "wagtail.contrib.frontend_cache",
     "rest_framework",
     "wagtail_headless_preview",
 ]
@@ -379,5 +380,15 @@ if redis_url := os.getenv("REDIS_URL"):
 RECORD_DETAILS_CACHE_TIMEOUT = int(
     os.getenv("RECORD_DETAILS_CACHE_TIMEOUT", "2592000")  # 30 days
 )
+
+WAGTAILFRONTENDCACHE = {
+    "cloudfront": {
+        "BACKEND": "wagtail.contrib.frontend_cache.backends.CloudfrontBackend",
+        "DISTRIBUTION_ID": os.getenv("FRONTEND_CACHE_AWS_DISTRIBUTION_ID", ""),
+        "AWS_ACCESS_KEY_ID": os.getenv("FRONTEND_CACHE_AWS_ACCESS_KEY_ID", ""),
+        "AWS_SECRET_ACCESS_KEY": os.getenv("FRONTEND_CACHE_AWS_SECRET_ACCESS_KEY", ""),
+        "AWS_SESSION_TOKEN": os.getenv("FRONTEND_CACHE_AWS_SESSION_TOKEN", ""),
+    },
+}
 
 WAGTAILAPI_LIMIT_MAX = int(os.getenv("WAGTAILAPI_LIMIT_MAX", "0")) or None
