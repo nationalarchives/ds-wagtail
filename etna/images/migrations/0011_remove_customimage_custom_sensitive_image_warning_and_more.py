@@ -9,6 +9,7 @@ from wagtail.models import Page
 from etna.images.models import CustomImage
 from etna.articles.models import ArticlePage, FocusedArticlePage
 from etna.blog.models import BlogPostPage
+from etna.whatson.models import ExhibitionPage
 
 def migrate_image_data_to_highlight(apps, schema_editor):
     Highlight = apps.get_model("collections", "Highlight")
@@ -36,7 +37,7 @@ def handle_block(block):
             block["value"].get("image"),
             block["value"].get("alt_text"),
         )
-    elif block["type"] == "image_gallery":
+    elif block["type"] == "image_gallery" or block["type"] == "exhibition_highlights":
         for img in block["value"].get("images", []):
             set_image_description(
                 img["value"].get("image"),
@@ -64,6 +65,11 @@ def migrate_alt_text_to_custom_image(apps, schema_editor):
 
     for page in Page.objects.type(ArticlePage, FocusedArticlePage, BlogPostPage):
         if body := getattr(page.specific, "body", None):
+            for block in getattr(body, "_raw_data", []):
+                handle_block(block)
+    
+    for page in Page.objects.type(ExhibitionPage):
+        if body := getattr(page.specific, "exhibition_highlights", None):
             for block in getattr(body, "_raw_data", []):
                 handle_block(block)
                 
