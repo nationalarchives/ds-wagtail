@@ -18,9 +18,8 @@ from .util import strtobool
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR = os.path.dirname(PROJECT_DIR)
 
-WAGTAILADMIN_BASE_URL = os.getenv(
-    "WAGTAILADMIN_BASE_URL", "https://nationalarchives.gov.uk"
-)
+WAGTAILADMIN_BASE_URL = os.getenv("WAGTAILADMIN_BASE_URL", "")
+WAGTAILAPI_IMAGES_BASE_URL = os.getenv("WAGTAILAPI_IMAGES_BASE_URL", "")
 WAGTAILAPI_BASE_URL = os.getenv("WAGTAILAPI_BASE_URL", WAGTAILADMIN_BASE_URL)
 WAGTAIL_HEADLESS_PREVIEW = {
     "CLIENT_URLS": {
@@ -31,12 +30,11 @@ WAGTAIL_HEADLESS_PREVIEW = {
 
 DEBUG = strtobool(os.getenv("DEBUG", "False"))
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
-
 SECRET_KEY = os.getenv("SECRET_KEY", "")
 
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 # Application definition
 
@@ -236,7 +234,6 @@ STATICFILES_FINDERS = [
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "templates", "static"),
 ]
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 STATIC_URL = "static/"
 MEDIA_ROOT = "/media"
@@ -245,6 +242,28 @@ MEDIA_URL = "media/"
 WAGTAILMEDIA = {
     "MEDIA_MODEL": "media.EtnaMedia",
     "MEDIA_FORM_BASE": "etna.media.forms.BaseMediaForm",
+    "AUDIO_EXTENSIONS": [
+        # "aac",
+        # "aiff",
+        # "flac",
+        # "m4a",
+        # "m4b",
+        "mp3",
+        # "ogg",
+        # "wav",
+    ],
+    "VIDEO_EXTENSIONS": [
+        # "avi",
+        # "h264",
+        # "m4v",
+        # "mkv",
+        # "mov",
+        "mp4",
+        # "mpeg",
+        # "mpg",
+        # "ogv",
+        # "webm",
+    ],
 }
 
 # Wagtail settings
@@ -345,6 +364,7 @@ if redis_url := os.getenv("REDIS_URL"):
         "default": {
             "BACKEND": "django_redis.cache.RedisCache",
             "LOCATION": redis_url,
+            "TIMEOUT": int(os.getenv("CACHE_DEFAULT_TIMEOUT", "900")),
             "OPTIONS": {
                 "CLIENT_CLASS": "django_redis.client.DefaultClient",
             },
@@ -355,5 +375,9 @@ if redis_url := os.getenv("REDIS_URL"):
             "KEY_PREFIX": "renditions",
         },
     }
+
+RECORD_DETAILS_CACHE_TIMEOUT = int(
+    os.getenv("RECORD_DETAILS_CACHE_TIMEOUT", "2592000")  # 30 days
+)
 
 WAGTAILAPI_LIMIT_MAX = int(os.getenv("WAGTAILAPI_LIMIT_MAX", "0")) or None
