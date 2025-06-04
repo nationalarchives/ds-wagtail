@@ -629,7 +629,6 @@ class EventPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
         [
             ObjectList(content_panels, heading="Content"),
             ObjectList(key_details_panels, heading="Key details"),
-            # ObjectList(design_panels, heading="Design"),
             ObjectList(promote_panels, heading="Promote"),
             ObjectList(BasePageWithRequiredIntro.settings_panels, heading="Settings"),
         ]
