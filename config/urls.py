@@ -43,6 +43,7 @@ def redirectToLiveSite(request):
 
 # Redirect URLs from the beta subdomain to the main domain.
 redirect_urls = [
+    path("", redirectToLiveSite),
     re_path(r"^explore-the-collection/.*$", redirectToLiveSite),
     re_path(r"^people/.*$", redirectToLiveSite),
 ]
