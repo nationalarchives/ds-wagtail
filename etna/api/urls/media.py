@@ -25,8 +25,10 @@ class CustomMediaItemSerializer(MediaItemSerializer):
 class CustomMediaAPIViewSet(MediaAPIViewSet):
     base_serializer_class = CustomMediaItemSerializer
     body_fields = MediaAPIViewSet.body_fields + [
+        "uuid",
         "title",
         "file",
+        "audio_described_file",
         "tags",
         "thumbnail",
         "date",

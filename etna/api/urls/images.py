@@ -33,6 +33,7 @@ class ViewSetImageSerializer(ImageSerializer):
 class CustomImagesAPIViewSet(ImagesAPIViewSet):
     base_serializer_class = ViewSetImageSerializer
     body_fields = ImagesAPIViewSet.body_fields + [
+        "uuid",
         "title",
         "file",
         "copyright",

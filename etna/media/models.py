@@ -1,4 +1,5 @@
 import mimetypes
+import uuid
 
 from django.conf import settings
 from django.core.validators import FileExtensionValidator, MinValueValidator
@@ -31,6 +32,18 @@ class EtnaMedia(AbstractMedia):
     Extend wagtailmedia model.
     """
 
+    uuid = models.UUIDField(
+        default=uuid.uuid4,
+        editable=False,
+        unique=True,
+        verbose_name="UUID",
+    )
+    audio_described_file = models.FileField(
+        blank=True,
+        null=True,
+        upload_to="media",
+        verbose_name="audio described file",
+    )
     date = models.DateField(blank=True, null=True)
     description = RichTextField(
         blank=True, null=True, features=settings.INLINE_RICH_TEXT_FEATURES
@@ -91,6 +104,7 @@ class EtnaMedia(AbstractMedia):
         "title",
         "date",
         "file",
+        "audio_described_file",
         "chapters",
         "collection",
         "description",

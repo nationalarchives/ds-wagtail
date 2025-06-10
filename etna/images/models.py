@@ -1,3 +1,5 @@
+import uuid
+
 from django.conf import settings
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -27,6 +29,13 @@ class TranslationHeadingChoices(models.TextChoices):
 
 
 class CustomImage(ClusterableModel, AbstractImage):
+    uuid = models.UUIDField(
+        default=uuid.uuid4,
+        editable=False,
+        unique=True,
+        verbose_name="UUID",
+    )
+
     title = models.CharField(
         max_length=255,
         verbose_name=_("title"),
@@ -137,6 +146,7 @@ class CustomImage(ClusterableModel, AbstractImage):
     ]
 
     api_fields = [
+        APIField("uuid"),
         APIField("title"),
         APIField("copyright"),
         APIField("description", serializer=RichTextSerializer()),
