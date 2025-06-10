@@ -414,17 +414,11 @@ class EventPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
         help_text=_("The location of the event."),
     )
 
-    """
-    We will use this field to hold the event ID from Eventbrite,
-    or if it is the parent page of an Event Series, it will hold
-    the "series_id" from Eventbrite. For editor created events,
-    it will be blank.
-    """
-    eventbrite_id = models.CharField(
-        max_length=255,
-        verbose_name=_("eventbrite ID"),
+    booking_link = models.URLField(
         null=True,
-        editable=False,
+        blank=True,
+        help_text="Link to booking page",
+        verbose_name="Booking link",
     )
 
     # DataLayerMixin overrides
@@ -450,6 +444,7 @@ class EventPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
         FieldPanel("event_category"),
         MultiFieldPanel(
             [
+                FieldPanel("booking_link"),
                 FieldPanel("booking_details"),
                 FieldRowPanel(
                     [
@@ -526,7 +521,7 @@ class EventPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
             APIField("min_price"),
             APIField("max_price"),
             APIField("price_range"),
-            APIField("eventbrite_id"),
+            APIField("booking_link"),
             APIField("event_status"),
             APIField("date_time_range"),
             APIField("speakers", serializer=SpeakerSerializer(many=True)),
