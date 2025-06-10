@@ -196,6 +196,25 @@ class WhatsOnCategoryPage(BasePageWithRequiredIntro):
     ]
 
 
+class WhatsOnEventsPage(BasePageWithRequiredIntro):
+    pass
+
+    max_count = 1
+
+    parent_page_types = [
+        "whatson.WhatsOnPage",
+    ]
+    subpage_types = [
+        "whatson.EventPage"
+    ]
+
+class WhatsOnExhibitionsPage(BasePageWithRequiredIntro):
+    pass
+
+    max_count = 1
+
+
+
 class WhatsOnPage(BasePageWithRequiredIntro):
     """WhatsOnPage
 
@@ -349,7 +368,7 @@ class EventPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
     event_category = models.ForeignKey(
         EventCategory,
         null=True,
-        blank=True,
+        blank=False,
         on_delete=models.SET_NULL,
         related_name="+",
     )
@@ -389,6 +408,7 @@ class EventPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
     booking_details = RichTextField(
         max_length=40,
         null=True,
+        blank=True,
         verbose_name=_("booking details"),
         help_text=_("Information about how to book tickets for the exhibition."),
         features=["link"],
@@ -407,7 +427,7 @@ class EventPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
     location = models.ForeignKey(
         "core.Location",
         null=True,
-        blank=True,
+        blank=False,
         on_delete=models.SET_NULL,
         related_name="+",
         verbose_name=_("location"),
