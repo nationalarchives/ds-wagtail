@@ -556,8 +556,7 @@ class EventPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
     default_api_fields = BasePageWithRequiredIntro.default_api_fields + [
         APIField("start_date"),
         APIField("end_date"),
-        APIField("min_price"),
-        APIField("max_price"),
+        APIField("price_range"),
         APIField("short_location"),
     ]
 
@@ -625,11 +624,11 @@ class EventPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
         if self.max_price == 0:
             return "Free"
         elif self.min_price == self.max_price:
-            return f"{self.min_price}"
+            return f"£{self.min_price:.2f}"
         else:
             if self.min_price == 0:
-                return f"Free - {self.max_price}"
-            return f"{self.min_price} - {self.max_price}"
+                return f"Free - £{self.max_price:.2f}"
+            return f"£{self.min_price:.2f} - {self.max_price:.2f}"
 
     @cached_property
     def sold_out(self) -> bool:
