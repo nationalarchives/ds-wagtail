@@ -1,12 +1,9 @@
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 from wagtail import blocks
-from wagtail.admin.panels import (
-    FieldPanel,
-    TitleFieldPanel,
-    MultiFieldPanel
-)
+from wagtail.admin.panels import FieldPanel, MultiFieldPanel, TitleFieldPanel
 from wagtail.api import APIField
 from wagtail.api.v2.serializers import StreamField as StreamFieldSerializer
 from wagtail.fields import StreamField
@@ -15,7 +12,7 @@ from wagtail.snippets.models import register_snippet
 from etna.core.blocks import (
     SimplifiedAccordionBlock,
 )
-from django.core.exceptions import ValidationError
+
 
 @register_snippet
 class Location(models.Model):
@@ -109,7 +106,6 @@ class Location(models.Model):
             ],
             heading=_("Key details"),
         ),
-        
     ]
 
     api_fields = [
@@ -125,14 +121,26 @@ class Location(models.Model):
     ]
 
     def clean(self):
-        if self.online and (self.at_tna or self.first_line or self.second_line or self.postcode):
+        if self.online and (
+            self.at_tna or self.first_line or self.second_line or self.postcode
+        ):
             raise ValidationError("A location cannot be online and have an address.")
         if self.at_tna and (self.first_line or self.second_line or self.postcode):
-            raise ValidationError("Please do not enter an address for a location if it is at The National Archives.")
-        if not self.online and not self.at_tna and not (self.first_line or self.second_line or self.postcode):
-            raise ValidationError("Please enter an address for a location that is not online or at The National Archives.")
+            raise ValidationError(
+                "Please do not enter an address for a location if it is at The National Archives."
+            )
+        if (
+            not self.online
+            and not self.at_tna
+            and not (self.first_line or self.second_line or self.postcode)
+        ):
+            raise ValidationError(
+                "Please enter an address for a location that is not online or at The National Archives."
+            )
         if self.online_detail and not self.online:
-            raise ValidationError("Online detail can only be provided for online venues.")
+            raise ValidationError(
+                "Online detail can only be provided for online venues."
+            )
         return super().clean()
 
     @property
@@ -144,8 +152,12 @@ class Location(models.Model):
             return "The National Archives, Kew, Richmond, TW9 4DU"
         if self.online:
             return f"Online, {self.space_name}"
-        
-        return f"{self.first_line}, {self.second_line}, {self.postcode}" if self.first_line or self.second_line or self.postcode else ""
+
+        return (
+            f"{self.first_line}, {self.second_line}, {self.postcode}"
+            if self.first_line or self.second_line or self.postcode
+            else ""
+        )
 
     def __str__(self):
         if self.at_tna:

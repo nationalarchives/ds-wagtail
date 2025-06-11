@@ -51,6 +51,7 @@ from etna.core.serializers import (
 
 from .blocks import ExhibitionPageStreamBlock
 
+
 class SeriesTag(models.Model):
     """
     This model is used to tag series pages.
@@ -71,13 +72,14 @@ class SeriesTag(models.Model):
         null=False,
         blank=False,
     )
-    
+
     class Meta:
         verbose_name = _("series")
         verbose_name_plural = _("series")
 
     def __str__(self):
         return f"{self.page.title}: {self.series.title}"
+
 
 class WhatsOnSeriesPage(BasePageWithRequiredIntro):
     """
@@ -95,13 +97,10 @@ class WhatsOnSeriesPage(BasePageWithRequiredIntro):
     ]
     subpage_types = []
 
-    content_panels = BasePageWithRequiredIntro.content_panels + [
-        
-    ]
+    content_panels = BasePageWithRequiredIntro.content_panels + []
 
-    api_fields = (
-        BasePageWithRequiredIntro.api_fields
-    )
+    api_fields = BasePageWithRequiredIntro.api_fields
+
 
 @register_snippet
 class EventCategory(models.Model):
@@ -137,6 +136,7 @@ class EventCategorySerializer(serializers.Serializer):
         if instance:
             return instance.name
         return None
+
 
 class CategorySelection(models.Model):
     page = ParentalKey(
@@ -184,8 +184,7 @@ class WhatsOnCategoryPage(BasePageWithRequiredIntro):
         Returns the categories selected for this category page.
         """
         return tuple(
-            item.category
-            for item in self.category_pages.select_related("category")
+            item.category for item in self.category_pages.select_related("category")
         )
 
     api_fields = BasePageWithRequiredIntro.api_fields + [
@@ -197,19 +196,20 @@ class EventsListingPage(BasePageWithRequiredIntro):
     """
     A page for listing/storing all events.
     """
+
     max_count = 1
 
     parent_page_types = [
         "whatson.WhatsOnPage",
     ]
-    subpage_types = [
-        "whatson.EventPage"
-    ]
+    subpage_types = ["whatson.EventPage"]
+
 
 class ExhibitionsListingPage(BasePageWithRequiredIntro):
     """
     A page for listing/storing all displays/exhibitions.
     """
+
     max_count = 1
 
     parent_page_types = [
@@ -244,15 +244,11 @@ class WhatsOnPage(BasePageWithRequiredIntro):
 
     max_count = 1
 
-    content_panels = BasePageWithRequiredIntro.content_panels + [
-    ]
+    content_panels = BasePageWithRequiredIntro.content_panels + []
 
-    api_fields = (
-        BasePageWithRequiredIntro.api_fields
-        + [
-            APIField("latest_listings"),
-        ]
-    )
+    api_fields = BasePageWithRequiredIntro.api_fields + [
+        APIField("latest_listings"),
+    ]
 
 
 class EventSpeaker(Orderable):
@@ -314,11 +310,19 @@ class EventSpeaker(Orderable):
     def clean(self):
         if not (self.name and self.role) and not self.person_page:
             raise ValidationError(
-                _("You must provide either a person's name and role or a person page for the speaker.")
+                _(
+                    "You must provide either a person's name and role or a person page for the speaker."
+                )
             )
-        if (self.person_page and self.name) or (self.person_page and self.role) or (self.person_page and self.image):
+        if (
+            (self.person_page and self.name)
+            or (self.person_page and self.role)
+            or (self.person_page and self.image)
+        ):
             raise ValidationError(
-                _("You cannot provide both a person's details and a person page for the speaker.")
+                _(
+                    "You cannot provide both a person's details and a person page for the speaker."
+                )
             )
         return super().clean()
 
@@ -329,8 +333,12 @@ class SpeakerSerializer(serializers.Serializer):
     def to_representation(self, instance):
         if instance:
             if instance.person_page:
-                representation = DefaultPageSerializer().to_representation(instance.person_page)
-                representation["biography"] = RichTextSerializer().to_representation(instance.biography)
+                representation = DefaultPageSerializer().to_representation(
+                    instance.person_page
+                )
+                representation["biography"] = RichTextSerializer().to_representation(
+                    instance.biography
+                )
                 return representation
             return {
                 "name": instance.name,
@@ -339,6 +347,7 @@ class SpeakerSerializer(serializers.Serializer):
                 "image": ImageSerializer().to_representation(instance.image),
             }
         return None
+
 
 class EventSession(models.Model):
     """
@@ -536,21 +545,27 @@ class EventPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
         ),
     ]
 
-    promote_panels = (
-        BasePageWithRequiredIntro.promote_panels
-        + [
-            InlinePanel(
-                "page_series_tags",
-                heading=_("Series"),
-                max_num=3,
-            ),
-        ]
-    )
+    promote_panels = BasePageWithRequiredIntro.promote_panels + [
+        InlinePanel(
+            "page_series_tags",
+            heading=_("Series"),
+            max_num=3,
+        ),
+    ]
+
+    default_api_fields = BasePageWithRequiredIntro.default_api_fields + [
+        APIField("start_date"),
+        APIField("end_date"),
+        APIField("min_price"),
+        APIField("max_price"),
+        APIField("short_location"),
+    ]
 
     api_fields = (
         BasePageWithRequiredIntro.api_fields
         + RequiredHeroImageMixin.api_fields
         + [
+            APIField("short_location"),
             APIField("location", serializer=LocationSerializer()),
             APIField("event_category", serializer=EventCategorySerializer()),
             APIField("start_date"),
@@ -573,12 +588,25 @@ class EventPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
     )
 
     @cached_property
+    def short_location(self) -> str:
+        """
+        Returns a short version of the location name.
+        """
+        if location := self.location:
+            if location.online:
+                return "Online"
+            elif location.at_tna:
+                return "At The National Archives, Kew"
+            else:
+                return location.first_line or location.space_name or "In-person"
+
+    @cached_property
     def series(self):
         """
         Returns the series this event page belongs to, if any.
         """
         return [tag.series for tag in self.page_series_tags.all() if tag.series]
-    
+
     @cached_property
     def type_label(cls) -> str:
         """
@@ -602,7 +630,7 @@ class EventPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
             if self.min_price == 0:
                 return f"Free - {self.max_price}"
             return f"{self.min_price} - {self.max_price}"
-    
+
     @cached_property
     def sold_out(self) -> bool:
         """
@@ -696,7 +724,7 @@ class EventPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
     )
 
     parent_page_types = [
-        "whatson.WhatsOnPage",
+        "whatson.EventsListingPage",
     ]
     subpage_types = []
 
@@ -1092,7 +1120,7 @@ class ExhibitionPage(
     )
 
     parent_page_types = [
-        "home.HomePage",
+        "whatson.ExhibitionsListingPage",
     ]
     subpage_types = []
 
