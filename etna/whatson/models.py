@@ -5,6 +5,7 @@ from django.utils import timezone
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
 from modelcluster.fields import ParentalKey
+from rest_framework import serializers
 from wagtail import blocks
 from wagtail.admin.panels import (
     FieldPanel,
@@ -29,7 +30,6 @@ from etna.core.blocks import (
     FeaturedExternalLinkBlock,
     FeaturedPagesBlock,
     ImageGalleryBlock,
-    LargeCardLinksBlock,
     MixedMediaBlock,
     ReviewBlock,
     ShopCollectionBlock,
@@ -40,29 +40,73 @@ from etna.core.models import (
     BasePageWithRequiredIntro,
     HeroLayoutMixin,
     HeroStyleMixin,
+    LocationSerializer,
     RequiredHeroImageMixin,
 )
-from etna.core.serializers import DefaultPageSerializer, RichTextSerializer
+from etna.core.serializers import (
+    DefaultPageSerializer,
+    ImageSerializer,
+    RichTextSerializer,
+)
 
-from .blocks import ExhibitionPageStreamBlock, WhatsOnPromotedLinksBlock
-from .forms import EventPageForm
+from .blocks import ExhibitionPageStreamBlock
 
 
-class VenueType(models.TextChoices):
+class SeriesTag(models.Model):
     """
-    This model is used to add venue types to event pages.
+    This model is used to tag series pages.
     """
 
-    ONLINE = "online", _("Online")
-    IN_PERSON = "in_person", _("In person")
-    HYBRID = "hybrid", _("In person and online")
+    page = ParentalKey(
+        "wagtailcore.Page",
+        on_delete=models.CASCADE,
+        related_name="page_series_tags",
+    )
+
+    series = models.ForeignKey(
+        "whatson.WhatsOnSeriesPage",
+        on_delete=models.CASCADE,
+        related_name="series_pages",
+        verbose_name=_("series"),
+        help_text=_("The series to include the page in."),
+        null=False,
+        blank=False,
+    )
+
+    class Meta:
+        verbose_name = _("series")
+        verbose_name_plural = _("series")
+
+    def __str__(self):
+        return f"{self.page.title}: {self.series.title}"
+
+
+class WhatsOnSeriesPage(BasePageWithRequiredIntro):
+    """
+    A page for creating a series/grouping of events.
+    """
+
+    # DataLayerMixin overrides
+    gtm_content_group = "What's On"
+
+    class Meta:
+        verbose_name = _("What's On series page")
+
+    parent_page_types = [
+        "whatson.WhatsOnPage",
+    ]
+    subpage_types = []
+
+    content_panels = BasePageWithRequiredIntro.content_panels + []
+
+    api_fields = BasePageWithRequiredIntro.api_fields
 
 
 @register_snippet
-class EventType(models.Model):
+class EventCategory(models.Model):
     """
-    This snippet model is used so that editors can add event types,
-    which we use via the event_type ForeignKey to add event types
+    This snippet model is used so that editors can add event categories,
+    which we use via the event_category ForeignKey to add event categories
     to event pages.
     """
 
@@ -78,138 +122,132 @@ class EventType(models.Model):
     )
 
     class Meta:
-        verbose_name = _("event type")
-        verbose_name_plural = _("event types")
-        verbose_name_public = _("event")
+        verbose_name = _("event category")
+        verbose_name_plural = _("event categories")
 
     def __str__(self):
         return self.name
 
 
-@register_snippet
-class AudienceType(models.Model):
-    """
-    This snippet model is used so that editors can add audience types,
-    which we use via the audience_type ForeignKey to add audience types
-    to event pages.
-    """
+class EventCategorySerializer(serializers.Serializer):
+    """Serializer for the EventCategory model."""
 
-    name = models.CharField(
-        max_length=255,
-        verbose_name=_("name"),
+    def to_representation(self, instance):
+        if instance:
+            return instance.name
+        return None
+
+
+class CategorySelection(models.Model):
+    page = ParentalKey(
+        "wagtailcore.Page",
+        on_delete=models.CASCADE,
+        related_name="category_pages",
+    )
+    category = models.ForeignKey(
+        "whatson.EventCategory",
+        on_delete=models.CASCADE,
+        related_name="selected_category",
+        verbose_name=_("category"),
+        help_text=_("The category of events to display on the Category page."),
+        null=False,
+        blank=False,
     )
 
-    slug = models.SlugField(
-        max_length=255,
-        verbose_name=_("slug"),
-        unique=True,
-    )
+
+class WhatsOnCategoryPage(BasePageWithRequiredIntro):
+    """
+    A page for displaying a category of events.
+    """
+
+    # DataLayerMixin overrides
+    gtm_content_group = "What's On"
 
     class Meta:
-        verbose_name = _("Audience type")
-        verbose_name_plural = _("Audience types")
+        verbose_name = _("What's On category page")
 
-    def __str__(self):
-        return self.name
+    parent_page_types = [
+        "whatson.WhatsOnPage",
+    ]
+    subpage_types = []
+
+    content_panels = BasePageWithRequiredIntro.content_panels + [
+        InlinePanel(
+            "category_pages",
+            heading=_("Category selection"),
+        ),
+    ]
+
+    @cached_property
+    def categories(self) -> tuple:
+        """
+        Returns the categories selected for this category page.
+        """
+        return tuple(
+            item.category for item in self.category_pages.select_related("category")
+        )
+
+    api_fields = BasePageWithRequiredIntro.api_fields + [
+        APIField("categories", serializer=EventCategorySerializer(many=True)),
+    ]
 
 
-class EventAudienceType(Orderable):
+class EventsListingPage(BasePageWithRequiredIntro):
     """
-    This model is used to add multiple audience types to event pages.
+    A page for listing/storing all events.
     """
 
-    page = ParentalKey(
-        "wagtailcore.Page",
-        on_delete=models.CASCADE,
-        related_name="event_audience_types",
-    )
+    max_count = 1
 
-    audience_type = models.ForeignKey(
-        "whatson.AudienceType",
-        on_delete=models.CASCADE,
-        related_name="event_audience_types",
-    )
+    parent_page_types = [
+        "whatson.WhatsOnPage",
+    ]
+    subpage_types = ["whatson.EventPage"]
 
 
-@register_snippet
-class AccessType(models.Model):
+class ExhibitionsListingPage(BasePageWithRequiredIntro):
     """
-    This snippet model is used so that editors can add access types,
-    which we use via the AccessTypeOrderable to add multiple access
-    types to event pages.
+    A page for listing/storing all displays/exhibitions.
     """
 
-    name = models.CharField(
-        max_length=255,
-        verbose_name=_("name"),
-    )
+    max_count = 1
 
-    slug = models.SlugField(
-        max_length=255,
-        verbose_name=_("slug"),
-        unique=True,
-    )
+    parent_page_types = [
+        "whatson.WhatsOnPage",
+    ]
+    subpage_types = [
+        "whatson.ExhibitionPage",
+        # "whatson.DisplayPage"
+    ]
+
+
+class WhatsOnPage(BasePageWithRequiredIntro):
+    """
+    A page for listing events.
+    """
+
+    # DataLayerMixin overrides
+    gtm_content_group = "What's On"
 
     class Meta:
-        verbose_name = _("Access type")
-        verbose_name_plural = _("Access types")
+        verbose_name = _("What's On page")
 
-    def __str__(self):
-        return self.name
+    parent_page_types = [
+        "home.HomePage",
+    ]
+    subpage_types = [
+        "whatson.EventsListingPage",
+        "whatson.ExhibitionsListingPage",
+        "whatson.WhatsOnSeriesPage",
+        "whatson.WhatsOnCategoryPage",
+    ]
 
+    max_count = 1
 
-class EventAccessType(Orderable):
-    """
-    This model is used to add multiple access types to event pages.
-    """
+    content_panels = BasePageWithRequiredIntro.content_panels + []
 
-    page = ParentalKey(
-        "wagtailcore.Page",
-        on_delete=models.CASCADE,
-        related_name="event_access_types",
-    )
-
-    access_type = models.ForeignKey(
-        "whatson.AccessType",
-        on_delete=models.CASCADE,
-        related_name="event_access_types",
-    )
-
-
-class EventHost(Orderable):
-    """
-    This model is used to add host information to event pages.
-    """
-
-    page = ParentalKey(
-        "wagtailcore.Page",
-        on_delete=models.CASCADE,
-        related_name="hosts",
-    )
-
-    name = models.CharField(
-        max_length=100,
-        verbose_name=_("name"),
-    )
-
-    description = models.CharField(
-        max_length=200,
-        verbose_name=_("description"),
-        blank=True,
-    )
-
-    image = models.ForeignKey(
-        get_image_model_string(),
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="+",
-    )
-
-    panels = [
-        FieldPanel("name"),
-        FieldPanel("description"),
-        FieldPanel("image"),
+    api_fields = BasePageWithRequiredIntro.api_fields + [
+        APIField("latest_listings"),
     ]
 
 
@@ -224,15 +262,33 @@ class EventSpeaker(Orderable):
         related_name="speakers",
     )
 
+    person_page = models.ForeignKey(
+        "people.PersonPage",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+
     name = models.CharField(
         max_length=100,
         verbose_name=_("name"),
+        help_text=_("The name of the speaker."),
+        blank=True,
     )
 
-    description = models.CharField(
+    role = models.CharField(
         max_length=200,
-        verbose_name=_("description"),
+        verbose_name=_("role"),
+        help_text=_("The role of the speaker."),
         blank=True,
+    )
+
+    biography = RichTextField(
+        verbose_name=_("biography"),
+        help_text=_("A short biography of the speaker."),
+        blank=True,
+        features=settings.INLINE_RICH_TEXT_FEATURES,
     )
 
     image = models.ForeignKey(
@@ -244,38 +300,65 @@ class EventSpeaker(Orderable):
     )
 
     panels = [
+        FieldPanel("person_page"),
         FieldPanel("name"),
-        FieldPanel("description"),
+        FieldPanel("role"),
+        FieldPanel("biography"),
         FieldPanel("image"),
     ]
+
+    def clean(self):
+        if not (self.name and self.role) and not self.person_page:
+            raise ValidationError(
+                _(
+                    "You must provide either a person's name and role or a person page for the speaker."
+                )
+            )
+        if (
+            (self.person_page and self.name)
+            or (self.person_page and self.role)
+            or (self.person_page and self.image)
+        ):
+            raise ValidationError(
+                _(
+                    "You cannot provide both a person's details and a person page for the speaker."
+                )
+            )
+        return super().clean()
+
+
+class SpeakerSerializer(serializers.Serializer):
+    """Serializer for the EventSpeaker model."""
+
+    def to_representation(self, instance):
+        if instance:
+            if instance.person_page:
+                representation = DefaultPageSerializer().to_representation(
+                    instance.person_page
+                )
+                representation["biography"] = RichTextSerializer().to_representation(
+                    instance.biography
+                )
+                return representation
+            return {
+                "name": instance.name,
+                "role": instance.role,
+                "biography": RichTextSerializer().to_representation(instance.biography),
+                "image": ImageSerializer().to_representation(instance.image),
+            }
+        return None
 
 
 class EventSession(models.Model):
     """
     This model is used to add sessions to an event
     e.g. 28th September @ 9:00, 29th September @ 10:30, 30th September @ 12:00.
-    These will link to the Eventbrite page.
     """
 
     page = ParentalKey(
         "wagtailcore.Page",
         on_delete=models.CASCADE,
         related_name="sessions",
-    )
-
-    """
-    Session ID will be used to hold the Eventbrite "event ID"
-    in Event Series pages, for each occurrence of the event.
-    For single events, it will be blank. We will also leave
-    it blank for editor created events, as we won't have an
-    Eventbrite event ID for these.
-    """
-    session_id = models.CharField(
-        verbose_name=_("session ID"),
-        null=True,
-        blank=True,
-        editable=False,
-        max_length=35,
     )
 
     start = models.DateTimeField(
@@ -286,9 +369,16 @@ class EventSession(models.Model):
         verbose_name=_("ends at"),
     )
 
+    sold_out = models.BooleanField(
+        verbose_name=_("sold out"),
+        default=False,
+        help_text=_("Check this box if the session is sold out."),
+    )
+
     panels = [
         FieldPanel("start"),
         FieldPanel("end"),
+        FieldPanel("sold_out"),
     ]
 
     class Meta:
@@ -297,74 +387,25 @@ class EventSession(models.Model):
         ordering = ["start"]
 
 
-class WhatsOnPage(BasePageWithRequiredIntro):
-    """WhatsOnPage
-
-    A page for listing events.
-    """
-
-    featured_event = models.ForeignKey(
-        "whatson.EventPage",
-        null=True,
-        blank=True,
-        verbose_name=_("featured event"),
-        on_delete=models.SET_NULL,
-        related_name="+",
-    )
-    promoted_links = StreamField(
-        [("promoted_links", WhatsOnPromotedLinksBlock())],
-        blank=True,
-        max_num=1,
-    )
-    large_card_links = StreamField(
-        [("large_card_links", LargeCardLinksBlock())],
-        blank=True,
-        max_num=1,
-    )
-
-    # DataLayerMixin overrides
-    gtm_content_group = "What's On"
+class SessionSerializer(serializers.ModelSerializer):
+    """Serializer for the EventSession model."""
 
     class Meta:
-        verbose_name = _("What's On page")
-
-    parent_page_types = [
-        "home.HomePage",
-    ]
-    subpage_types = [
-        "whatson.EventPage",
-        "whatson.ExhibitionPage",
-    ]
-
-    max_count = 1
-
-    content_panels = BasePageWithRequiredIntro.content_panels + [
-        FieldPanel("featured_event"),
-        FieldPanel("promoted_links"),
-        FieldPanel("large_card_links"),
-    ]
+        model = EventSession
+        fields = ("start", "end", "sold_out")
 
 
-class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithRequiredIntro):
+class EventPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
     """EventPage
 
     A page for an event.
     """
 
-    # Content
-    lead_image = models.ForeignKey(
-        get_image_model_string(),
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="+",
-    )
-
     # Event information
-    event_type = models.ForeignKey(
-        EventType,
+    event_category = models.ForeignKey(
+        EventCategory,
         null=True,
-        blank=True,
+        blank=False,
         on_delete=models.SET_NULL,
         related_name="+",
     )
@@ -387,121 +428,54 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithRequiredIntro):
         help_text=_("A description of the event."),
     )
 
-    useful_info = RichTextField(
-        verbose_name=_("need to know"),
+    audience_heading = models.CharField(
+        max_length=40,
+        verbose_name=_("audience heading"),
         blank=True,
-        help_text=_("Useful information about the event."),
+        help_text=_("The heading for the audience detail section."),
     )
 
-    # Text for need to know button
-    need_to_know_button_text = models.CharField(
-        verbose_name=_("need to know button text"),
-        max_length=30,
+    audience_detail = models.CharField(
+        max_length=40,
+        verbose_name=_("audience detail"),
         blank=True,
-        help_text=_("The text of the need to know button."),
+        help_text=_("The text for the audience detail section."),
     )
 
-    need_to_know_button_link = models.URLField(
-        max_length=255,
-        verbose_name=_("need to know link"),
-        blank=True,
-        help_text=_("The website for need to know info."),
-    )
-
-    target_audience = RichTextField(
-        verbose_name=_("who it's for"),
-        blank=True,
-        help_text=_("Info about the target audience for the event."),
-    )
-
-    # Venue information
-    venue_type = models.CharField(
-        verbose_name=_("venue type"),
-        choices=VenueType.choices,
-        default=VenueType.IN_PERSON,
-        blank=True,
-        max_length=30,
-    )
-
-    venue_website = models.URLField(
-        max_length=255,
-        verbose_name=_("venue website"),
-        blank=True,
-        help_text=_("The website for the venue."),
-    )
-
-    venue_address = RichTextField(
-        verbose_name=_("venue address"),
-        blank=True,
-        help_text=_("The address of the venue."),
-    )
-
-    venue_space_name = models.CharField(
-        max_length=255,
-        verbose_name=_("venue space name"),
-        blank=True,
-        help_text=_("The name of the venue space."),
-    )
-
-    venue_directions = models.URLField(
-        max_length=255,
-        verbose_name=_("venue directions"),
+    booking_details = RichTextField(
+        max_length=40,
         null=True,
         blank=True,
-        help_text=_("A link to the venue's 'How to find us' page."),
+        verbose_name=_("booking details"),
+        help_text=_("Information about how to book tickets for the exhibition."),
+        features=["link"],
     )
 
-    video_conference_info = RichTextField(
-        verbose_name=_("video conference info"),
-        blank=True,
-        help_text=_("Useful information about the video conference."),
-    )
-
-    # Booking information
-    registration_url = models.URLField(
-        max_length=255,
-        verbose_name=_("registration url"),
-        editable=False,
-    )
-
-    min_price = models.IntegerField(
+    min_price = models.FloatField(
         verbose_name=_("minimum price"),
         default=0,
-        editable=False,
     )
 
-    max_price = models.IntegerField(
+    max_price = models.FloatField(
         verbose_name=_("maximum price"),
         default=0,
-        editable=False,
     )
 
-    """
-    We will use this field to hold the event ID from Eventbrite,
-    or if it is the parent page of an Event Series, it will hold
-    the "series_id" from Eventbrite. For editor created events,
-    it will be blank.
-    """
-    eventbrite_id = models.CharField(
-        max_length=255,
-        verbose_name=_("eventbrite ID"),
+    location = models.ForeignKey(
+        "core.Location",
         null=True,
-        editable=False,
-    )
-    # The booking info fields above will be brought in from the API when we have it.
-
-    registration_info = RichTextField(
-        verbose_name=_("registration info"),
-        blank=True,
-        help_text=_("Additional information about how to register for the event."),
-        features=settings.RESTRICTED_RICH_TEXT_FEATURES,
+        blank=False,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        verbose_name=_("location"),
+        help_text=_("The location of the event."),
     )
 
-    contact_info = RichTextField(
-        verbose_name=_("contact info"),
+    booking_link = models.URLField(
+        null=True,
         blank=True,
-        help_text=_("Information about who to contact regarding the event."),
-        features=settings.RESTRICTED_RICH_TEXT_FEATURES,
+        help_text="Link to booking page",
+        verbose_name="Booking link",
     )
 
     # DataLayerMixin overrides
@@ -510,93 +484,161 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithRequiredIntro):
     class Meta:
         verbose_name = _("event page")
 
-    content_panels = BasePageWithRequiredIntro.content_panels + [
-        FieldPanel("lead_image"),
+    content_panels = (
+        BasePageWithRequiredIntro.content_panels
+        + RequiredHeroImageMixin.content_panels
+        + [
+            MultiFieldPanel(
+                [
+                    FieldPanel("description"),
+                ],
+                heading=_("Event information"),
+            ),
+        ]
+    )
+
+    key_details_panels = [
+        FieldPanel("event_category"),
         MultiFieldPanel(
             [
-                FieldPanel("event_type"),
-                FieldPanel("start_date", read_only=True),
-                FieldPanel("end_date", read_only=True),
+                FieldPanel("booking_link"),
+                FieldPanel("booking_details"),
+                FieldRowPanel(
+                    [
+                        FieldPanel("min_price"),
+                        FieldPanel("max_price"),
+                    ],
+                ),
+            ],
+            heading=_("Price details"),
+        ),
+        MultiFieldPanel(
+            [
+                FieldRowPanel(
+                    [
+                        FieldPanel("start_date", read_only=True),
+                        FieldPanel("end_date", read_only=True),
+                    ],
+                ),
                 InlinePanel(
                     "sessions",
                     heading=_("Sessions"),
                     min_num=1,
                 ),
-                FieldPanel("description"),
-                FieldPanel("useful_info"),
-                FieldPanel("need_to_know_button_text"),
-                FieldPanel("need_to_know_button_link"),
-                FieldPanel("target_audience"),
-                InlinePanel(
-                    "event_access_types",
-                    heading=_("Access types"),
-                    help_text=_(
-                        "If the event has more than one access type, please add these in order of relevance from most to least."
-                    ),
-                ),
-                InlinePanel(
-                    "event_audience_types",
-                    heading=_("Audience types"),
-                    help_text=_(
-                        "If the event has more than one audience type, please add these in order of relevance from most to least."
-                    ),
-                ),
-                InlinePanel(
-                    "hosts",
-                    heading=_("Host information"),
-                    help_text=_(
-                        "If the event has more than one host, please add these in order of relevance from most to least."
-                    ),
-                ),
-                InlinePanel(
-                    "speakers",
-                    heading=_("Speaker information"),
-                    help_text=_(
-                        "If the event has more than one speaker, please add these in order of relevance from most to least."
-                    ),
-                ),
             ],
-            heading=_("Event information"),
+            heading=_("Date details"),
         ),
+        FieldPanel("location"),
         MultiFieldPanel(
             [
-                FieldPanel("venue_type"),
-                FieldPanel("venue_website"),
-                FieldPanel("venue_address"),
-                FieldPanel("venue_space_name"),
-                FieldPanel("venue_directions"),
-                FieldPanel("video_conference_info"),
+                FieldPanel("audience_heading"),
+                FieldPanel("audience_detail"),
             ],
-            heading=_("Venue information"),
+            heading=_("Audience details"),
         ),
-        MultiFieldPanel(
-            [
-                FieldPanel("registration_url", read_only=True),
-                FieldPanel("min_price", read_only=True),
-                FieldPanel("max_price", read_only=True),
-                FieldPanel("registration_info"),
-                FieldPanel("contact_info"),
-            ],
-            heading=_("Booking information"),
+        InlinePanel(
+            "speakers",
+            heading=_("Speaker information"),
+            help_text=_(
+                "If the event has more than one speaker, please add these in order of relevance from most to least."
+            ),
         ),
     ]
 
+    promote_panels = BasePageWithRequiredIntro.promote_panels + [
+        InlinePanel(
+            "page_series_tags",
+            heading=_("Series"),
+            max_num=3,
+        ),
+    ]
+
+    default_api_fields = BasePageWithRequiredIntro.default_api_fields + [
+        APIField("start_date"),
+        APIField("end_date"),
+        APIField("price_range"),
+        APIField("short_location"),
+    ]
+
+    api_fields = (
+        BasePageWithRequiredIntro.api_fields
+        + RequiredHeroImageMixin.api_fields
+        + [
+            APIField("short_location"),
+            APIField("location", serializer=LocationSerializer()),
+            APIField("event_category", serializer=EventCategorySerializer()),
+            APIField("start_date"),
+            APIField("end_date"),
+            APIField("description", serializer=RichTextSerializer()),
+            APIField("audience_heading"),
+            APIField("audience_detail"),
+            APIField("booking_details", serializer=RichTextSerializer()),
+            APIField("sold_out"),
+            APIField("min_price"),
+            APIField("max_price"),
+            APIField("price_range"),
+            APIField("booking_link"),
+            APIField("event_status"),
+            APIField("date_time_range"),
+            APIField("speakers", serializer=SpeakerSerializer(many=True)),
+            APIField("sessions", serializer=SessionSerializer(many=True)),
+            APIField("series", serializer=DefaultPageSerializer(many=True)),
+        ]
+    )
+
     @cached_property
-    def price_range(self):
+    def short_location(self) -> str:
+        """
+        Returns a short version of the location name.
+        """
+        if location := self.location:
+            if location.online:
+                return "Online"
+            elif location.at_tna:
+                return "At The National Archives, Kew"
+            else:
+                return location.first_line or location.space_name or "In-person"
+
+    @cached_property
+    def series(self):
+        """
+        Returns the series this event page belongs to, if any.
+        """
+        return [tag.series for tag in self.page_series_tags.all() if tag.series]
+
+    @cached_property
+    def type_label(cls) -> str:
+        """
+        Overrides the type_label method from BasePage, to return the correct
+        type label for the event page which will be the event category name.
+        """
+        if cls.event_category:
+            return cls.event_category.name
+        return "Event"
+
+    @cached_property
+    def price_range(self) -> str:
         """
         Returns the price range for the event.
         """
         if self.max_price == 0:
             return "Free"
         elif self.min_price == self.max_price:
-            return f"{self.min_price}"
+            return f"£{self.min_price:.2f}"
         else:
             if self.min_price == 0:
-                return f"Free - {self.max_price}"
-            return f"{self.min_price} - {self.max_price}"
+                return f"Free - £{self.max_price:.2f}"
+            return f"£{self.min_price:.2f} - {self.max_price:.2f}"
+
+    @cached_property
+    def sold_out(self) -> bool:
+        """
+        Returns True if all sessions of an event is sold out, otherwise False.
+        """
+        return all(session.sold_out for session in self.sessions.all())
 
     @property
-    def event_status(self):
+    def event_status(self) -> str | None:
         """
         Returns the event status based on different conditions.
         """
@@ -606,15 +648,7 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithRequiredIntro):
             return "Last chance"
 
     @cached_property
-    def primary_access_type(self):
-        """
-        Returns the primary access type for the event.
-        """
-        if primary_access := self.event_access_types.first():
-            return primary_access.access_type
-
-    @cached_property
-    def date_time_range(self):
+    def date_time_range(self) -> str | None:
         format_day_date_and_time = "%A %-d %B %Y, %H:%M"
         format_date_only = "%-d %B %Y"
         format_time_only = "%H:%M"
@@ -640,44 +674,6 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithRequiredIntro):
         # Eg. 1 January 2024 to 5 January 2024
         if not dates_same:
             return f"{self.start_date.strftime(format_date_only)} to {self.end_date.strftime(format_date_only)}"
-
-    def clean(self):
-        """
-        Check that the venue address and video conference information are
-        provided for the correct venue type.
-        """
-
-        if self.venue_type:
-            if self.venue_type == VenueType.HYBRID and (
-                not self.venue_address or not self.video_conference_info
-            ):
-                raise ValidationError(
-                    {
-                        "venue_address": _(
-                            "The venue address is required for hybrid events."
-                        ),
-                        "video_conference_info": _(
-                            "The video conference information is required for hybrid events."
-                        ),
-                    }
-                )
-            elif self.venue_type == VenueType.IN_PERSON and not self.venue_address:
-                raise ValidationError(
-                    {
-                        "venue_address": _(
-                            "The venue address is required for in person events."
-                        ),
-                    }
-                )
-            elif self.venue_type == VenueType.ONLINE and not self.video_conference_info:
-                raise ValidationError(
-                    {
-                        "video_conference_info": _(
-                            "The video conference information is required for online events."
-                        ),
-                    }
-                )
-        return super().clean()
 
     def serializable_data(self):
         # Keep aggregated field values out of revision content
@@ -717,30 +713,19 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithRequiredIntro):
 
         super().save(*args, **kwargs)
 
-    promote_panels = (
-        BasePageWithRequiredIntro.promote_panels
-        + ArticleTagMixin.promote_panels
-        + [
-            TopicalPageMixin.get_topics_inlinepanel(),
-            TopicalPageMixin.get_time_periods_inlinepanel(),
-        ]
-    )
-
-    search_fields = (
-        BasePageWithRequiredIntro.search_fields
-        + ArticleTagMixin.search_fields
-        + [
-            index.SearchField("topic_names", boost=1),
-            index.SearchField("time_period_names", boost=1),
+    edit_handler = TabbedInterface(
+        [
+            ObjectList(content_panels, heading="Content"),
+            ObjectList(key_details_panels, heading="Key details"),
+            ObjectList(promote_panels, heading="Promote"),
+            ObjectList(BasePageWithRequiredIntro.settings_panels, heading="Settings"),
         ]
     )
 
     parent_page_types = [
-        "whatson.WhatsOnPage",
+        "whatson.EventsListingPage",
     ]
     subpage_types = []
-
-    base_form_class = EventPageForm
 
 
 class ExhibitionPage(
@@ -1134,7 +1119,7 @@ class ExhibitionPage(
     )
 
     parent_page_types = [
-        "home.HomePage",
+        "whatson.ExhibitionsListingPage",
     ]
     subpage_types = []
 
