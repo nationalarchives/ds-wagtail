@@ -80,8 +80,7 @@ class SeriesTag(models.Model):
         return f"{self.page.title}: {self.series.title}"
 
 class WhatsOnSeriesPage(BasePageWithRequiredIntro):
-    """WhatsOnSeriesPage
-
+    """
     A page for creating a series/grouping of events.
     """
 
@@ -131,13 +130,13 @@ class EventCategory(models.Model):
         return self.name
 
 
-class EventCategorySerializer(serializers.ModelSerializer):
+class EventCategorySerializer(serializers.Serializer):
     """Serializer for the EventCategory model."""
 
-    class Meta:
-        model = EventCategory
-        fields = ("name", "slug")
-
+    def to_representation(self, instance):
+        if instance:
+            return instance.name
+        return None
 
 class CategorySelection(models.Model):
     page = ParentalKey(
@@ -157,8 +156,7 @@ class CategorySelection(models.Model):
 
 
 class WhatsOnCategoryPage(BasePageWithRequiredIntro):
-    """WhatsOnCategoryPage
-
+    """
     A page for displaying a category of events.
     """
 
@@ -196,8 +194,9 @@ class WhatsOnCategoryPage(BasePageWithRequiredIntro):
 
 
 class EventsListingPage(BasePageWithRequiredIntro):
-    pass
-
+    """
+    A page for listing/storing all events.
+    """
     max_count = 1
 
     parent_page_types = [
@@ -208,8 +207,9 @@ class EventsListingPage(BasePageWithRequiredIntro):
     ]
 
 class ExhibitionsListingPage(BasePageWithRequiredIntro):
-    pass
-
+    """
+    A page for listing/storing all displays/exhibitions.
+    """
     max_count = 1
 
     parent_page_types = [
@@ -222,8 +222,7 @@ class ExhibitionsListingPage(BasePageWithRequiredIntro):
 
 
 class WhatsOnPage(BasePageWithRequiredIntro):
-    """WhatsOnPage
-
+    """
     A page for listing events.
     """
 
@@ -311,6 +310,17 @@ class EventSpeaker(Orderable):
         FieldPanel("biography"),
         FieldPanel("image"),
     ]
+
+    def clean(self):
+        if not (self.name and self.role) and not self.person_page:
+            raise ValidationError(
+                _("You must provide either a person's name and role or a person page for the speaker.")
+            )
+        if (self.person_page and self.name) or (self.person_page and self.role) or (self.person_page and self.image):
+            raise ValidationError(
+                _("You cannot provide both a person's details and a person page for the speaker.")
+            )
+        return super().clean()
 
 
 class SpeakerSerializer(serializers.ModelSerializer):
