@@ -323,17 +323,22 @@ class EventSpeaker(Orderable):
         return super().clean()
 
 
-class SpeakerSerializer(serializers.ModelSerializer):
+class SpeakerSerializer(serializers.Serializer):
     """Serializer for the EventSpeaker model."""
 
-    biography = RichTextSerializer()
-    image = ImageSerializer()
-    person_page = DefaultPageSerializer()
-
-    class Meta:
-        model = EventSpeaker
-        fields = ("name", "role", "biography", "image", "person_page")
-
+    def to_representation(self, instance):
+        if instance:
+            if instance.person_page:
+                representation = DefaultPageSerializer().to_representation(instance.person_page)
+                representation["biography"] = RichTextSerializer().to_representation(instance.biography)
+                return representation
+            return {
+                "name": instance.name,
+                "role": instance.role,
+                "biography": RichTextSerializer().to_representation(instance.biography),
+                "image": ImageSerializer().to_representation(instance.image),
+            }
+        return None
 
 class EventSession(models.Model):
     """
