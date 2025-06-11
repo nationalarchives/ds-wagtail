@@ -345,9 +345,16 @@ class EventSession(models.Model):
         verbose_name=_("ends at"),
     )
 
+    sold_out = models.BooleanField(
+        verbose_name=_("sold out"),
+        default=False,
+        help_text=_("Check this box if the session is sold out."),
+    )
+
     panels = [
         FieldPanel("start"),
         FieldPanel("end"),
+        FieldPanel("sold_out"),
     ]
 
     class Meta:
@@ -361,7 +368,7 @@ class SessionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = EventSession
-        fields = ("start", "end")
+        fields = ("start", "end", "sold_out")
 
 
 class EventPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
@@ -525,13 +532,6 @@ class EventPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
         ]
     )
 
-    @cached_property
-    def series(self):
-        """
-        Returns the series this event page belongs to, if any.
-        """
-        return [tag.series for tag in self.page_series_tags.all() if tag.series]
-
     api_fields = (
         BasePageWithRequiredIntro.api_fields
         + RequiredHeroImageMixin.api_fields
@@ -544,6 +544,7 @@ class EventPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
             APIField("audience_heading"),
             APIField("audience_detail"),
             APIField("booking_details", serializer=RichTextSerializer()),
+            APIField("sold_out"),
             APIField("min_price"),
             APIField("max_price"),
             APIField("price_range"),
@@ -556,6 +557,13 @@ class EventPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
         ]
     )
 
+    @cached_property
+    def series(self):
+        """
+        Returns the series this event page belongs to, if any.
+        """
+        return [tag.series for tag in self.page_series_tags.all() if tag.series]
+    
     @cached_property
     def type_label(cls) -> str:
         """
@@ -579,6 +587,13 @@ class EventPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
             if self.min_price == 0:
                 return f"Free - {self.max_price}"
             return f"{self.min_price} - {self.max_price}"
+    
+    @cached_property
+    def sold_out(self) -> bool:
+        """
+        Returns True if all sessions of an event is sold out, otherwise False.
+        """
+        return all(session.sold_out for session in self.sessions.all())
 
     @property
     def event_status(self) -> str | None:
