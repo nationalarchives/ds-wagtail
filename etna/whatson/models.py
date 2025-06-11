@@ -124,9 +124,8 @@ class EventCategory(models.Model):
     )
 
     class Meta:
-        verbose_name = _("event type")
-        verbose_name_plural = _("event types")
-        verbose_name_public = _("event")
+        verbose_name = _("event category")
+        verbose_name_plural = _("event categories")
 
     def __str__(self):
         return self.name
@@ -196,7 +195,7 @@ class WhatsOnCategoryPage(BasePageWithRequiredIntro):
     ]
 
 
-class WhatsOnEventsPage(BasePageWithRequiredIntro):
+class EventsListingPage(BasePageWithRequiredIntro):
     pass
 
     max_count = 1
@@ -208,11 +207,18 @@ class WhatsOnEventsPage(BasePageWithRequiredIntro):
         "whatson.EventPage"
     ]
 
-class WhatsOnExhibitionsPage(BasePageWithRequiredIntro):
+class ExhibitionsListingPage(BasePageWithRequiredIntro):
     pass
 
     max_count = 1
 
+    parent_page_types = [
+        "whatson.WhatsOnPage",
+    ]
+    subpage_types = [
+        "whatson.ExhibitionPage",
+        # "whatson.DisplayPage"
+    ]
 
 
 class WhatsOnPage(BasePageWithRequiredIntro):
@@ -231,8 +237,8 @@ class WhatsOnPage(BasePageWithRequiredIntro):
         "home.HomePage",
     ]
     subpage_types = [
-        "whatson.EventPage",
-        "whatson.ExhibitionPage",
+        "whatson.EventsListingPage",
+        "whatson.ExhibitionsListingPage",
         "whatson.WhatsOnSeriesPage",
         "whatson.WhatsOnCategoryPage",
     ]
@@ -551,7 +557,17 @@ class EventPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
     )
 
     @cached_property
-    def price_range(self):
+    def type_label(cls) -> str:
+        """
+        Overrides the type_label method from BasePage, to return the correct
+        type label for the event page which will be the event category name.
+        """
+        if cls.event_category:
+            return cls.event_category.name
+        return "Event"
+
+    @cached_property
+    def price_range(self) -> str:
         """
         Returns the price range for the event.
         """
@@ -565,7 +581,7 @@ class EventPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
             return f"{self.min_price} - {self.max_price}"
 
     @property
-    def event_status(self):
+    def event_status(self) -> str | None:
         """
         Returns the event status based on different conditions.
         """
@@ -575,7 +591,7 @@ class EventPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
             return "Last chance"
 
     @cached_property
-    def date_time_range(self):
+    def date_time_range(self) -> str | None:
         format_day_date_and_time = "%A %-d %B %Y, %H:%M"
         format_date_only = "%-d %B %Y"
         format_time_only = "%H:%M"
