@@ -33,7 +33,8 @@ class CustomMediaAPIViewSet(MediaAPIViewSet):
     body_fields = MediaAPIViewSet.body_fields + [
         "uuid",
         "title",
-        "file",
+        "url",
+        "full_url",
         "audio_described_file",
         "tags",
         "thumbnail",
@@ -46,6 +47,7 @@ class CustomMediaAPIViewSet(MediaAPIViewSet):
         "chapters_file",
         "chapters_file_full_url",
     ]
+    meta_fields.remove("download_url")
     meta_fields.remove("detail_url")
 
     def find_object(self, queryset, request):

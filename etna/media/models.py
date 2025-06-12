@@ -85,10 +85,19 @@ class EtnaMedia(AbstractMedia):
             validate = FileExtensionValidator(["vtt"])
             validate(self.chapters_file)
 
-    # Added full_url to be sent to the frontend via the Wagtail API
     @property
     def full_url(self):
-        return settings.WAGTAILADMIN_BASE_URL + self.file.url
+        url = self.url
+        print("url", url)
+        if url.startswith("/"):
+            if (
+                hasattr(settings, "WAGTAILAPI_MEDIA_BASE_URL")
+                and settings.WAGTAILAPI_MEDIA_BASE_URL
+            ):
+                url = settings.WAGTAILAPI_MEDIA_BASE_URL + url
+            elif hasattr(settings, "WAGTAILADMIN_BASE_URL"):
+                url = settings.WAGTAILADMIN_BASE_URL + url
+        return url
 
     @property
     def subtitles_file_url(self):
