@@ -113,6 +113,7 @@ class ImageSerializer(Serializer):
 
             return {
                 "id": value.id,
+                "uuid": value.uuid,
                 "title": value.title,
                 "description": value.description,
                 **(image_data),
