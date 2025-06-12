@@ -14,7 +14,7 @@ def gen_uuids(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('images', '0010_alter_customimage_copyright'),
+        ('images', '0011_remove_customimage_custom_sensitive_image_warning_and_more'),
     ]
 
     operations = [
