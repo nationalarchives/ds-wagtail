@@ -114,6 +114,7 @@ class ImageSerializer(Serializer):
             return {
                 "id": value.id,
                 "title": value.title,
+                "description": value.description,
                 **(image_data),
             }
         return None
@@ -149,35 +150,6 @@ class DetailedImageSerializer(ImageSerializer):
                         else None
                     ),
                     "copyright": value.copyright if value.copyright else None,
-                    "is_sensitive": value.is_sensitive,
-                    "custom_sensitive_image_warning": (
-                        value.custom_sensitive_image_warning
-                        if value.custom_sensitive_image_warning
-                        else None
-                    ),
-                }
-            )
-        return representation
-
-
-class HighlightImageSerializer(DetailedImageSerializer):
-    """
-    This serializer extends `DetailedImageSerializer` to display details on
-    an image that are used for `Highlights`.
-    """
-
-    def to_representation(self, value):
-        representation = super().to_representation(value)
-        if representation:
-            record = None
-            if value.record:
-                client = CIIMClient(params={"id": value.record})
-                record = client.get_serialized_record()
-            representation.update(
-                {
-                    "description": value.description,
-                    "record": record,
-                    "record_dates": value.record_dates,
                 }
             )
         return representation
