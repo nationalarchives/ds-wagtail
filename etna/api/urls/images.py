@@ -40,7 +40,6 @@ class CustomImagesAPIViewSet(ImagesAPIViewSet):
     body_fields = ImagesAPIViewSet.body_fields + [
         "uuid",
         "title",
-        "file",
         "copyright",
         "tags",
         "transcription_heading",
