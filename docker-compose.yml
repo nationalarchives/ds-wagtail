@@ -32,6 +32,7 @@ services:
       - WAGTAILADMIN_BASE_URL=http://localhost:8000
       - WAGTAILAPI_BASE_URL=http://host.docker.internal:8000
       - WAGTAILAPI_IMAGES_BASE_URL=https://localhost
+      - WAGTAILAPI_MEDIA_BASE_URL=https://localhost
       - WAGTAIL_HEADLESS_PREVIEW_URL=https://localhost/preview/
       - REDIS_URL=redis://redis:6379/0
 
