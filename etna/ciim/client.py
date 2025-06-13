@@ -18,9 +18,9 @@ class CIIMClient(JSONAPIClient):
     Client for interacting with the CIIM API.
     """
 
-    def __init__(self, api_url: str = f"{settings.ROSETTA_API_URL}", params: dict = {}):
-        self.api_url: str = api_url
-        self.params: dict = params
+    def __init__(self, api_url: str = settings.ROSETTA_API_URL, params: dict = {}):
+        super().__init__(api_url, params=params)
+        self.add_parameter("filter", "@datatype.base:record")
 
     def get(self, path: str = "/", headers: dict = None) -> dict:
         try:
