@@ -39,11 +39,11 @@ from etna.core.blocks import (
 from etna.core.models import (
     AccentColourMixin,
     BasePageWithRequiredIntro,
+    ContentWarningMixin,
     HeroLayoutMixin,
     HeroStyleMixin,
     LocationSerializer,
     RequiredHeroImageMixin,
-    ContentWarningMixin,
 )
 from etna.core.serializers import (
     DefaultPageSerializer,
@@ -109,19 +109,24 @@ class WhatsOnSeriesPage(BasePageWithRequiredIntro):
 
     @cached_property
     def related_page_pks(self) -> tuple[int]:
-        return tuple(
-            self.series_pages.values_list("page_id", flat=True)
-        )
+        return tuple(self.series_pages.values_list("page_id", flat=True))
 
     @cached_property
     def event_listings(self) -> list:
         """
         Returns a list of event pages that belong to this series.
         """
-        return [page for page in EventPage.objects.live().public().filter(
-            pk__in=self.related_page_pks,
-        ).order_by("start_date") if page.end_date >= timezone.now()]
-    
+        return [
+            page
+            for page in EventPage.objects.live()
+            .public()
+            .filter(
+                pk__in=self.related_page_pks,
+            )
+            .order_by("start_date")
+            if page.end_date >= timezone.now()
+        ]
+
     @cached_property
     def exhibition_listings(self) -> list:
         """
@@ -139,7 +144,7 @@ class WhatsOnSeriesPage(BasePageWithRequiredIntro):
             )
 
         return page_list
-    
+
     @cached_property
     def latest_listings(self) -> list:
         """
@@ -147,16 +152,19 @@ class WhatsOnSeriesPage(BasePageWithRequiredIntro):
         selected for this category page.
         """
         return [
-            page for page in self.event_listings[:3]
+            page
+            for page in self.event_listings[:3]
             if page.start_date >= timezone.now()
         ]
 
     content_panels = BasePageWithRequiredIntro.content_panels + [
         PageChooserPanel(
             "featured_page",
-            page_type=["whatson.EventPage",
-                        "whatson.ExhibitionPage",
-                        "whatson.DisplayPage"],
+            page_type=[
+                "whatson.EventPage",
+                "whatson.ExhibitionPage",
+                "whatson.DisplayPage",
+            ],
         )
     ]
 
@@ -252,7 +260,7 @@ class WhatsOnCategoryPage(BasePageWithRequiredIntro):
         PageChooserPanel(
             "featured_page",
             page_type="whatson.EventPage",
-        )
+        ),
     ]
 
     @cached_property
@@ -270,10 +278,17 @@ class WhatsOnCategoryPage(BasePageWithRequiredIntro):
         Returns a list of event pages that belong to the categories selected
         for this category page.
         """
-        return [page for page in EventPage.objects.live().public().filter(
-            event_category__in=self.categories,
-        ).order_by("start_date") if page.end_date >= timezone.now()]
-    
+        return [
+            page
+            for page in EventPage.objects.live()
+            .public()
+            .filter(
+                event_category__in=self.categories,
+            )
+            .order_by("start_date")
+            if page.end_date >= timezone.now()
+        ]
+
     @cached_property
     def latest_listings(self) -> list:
         """
@@ -281,7 +296,8 @@ class WhatsOnCategoryPage(BasePageWithRequiredIntro):
         selected for this category page.
         """
         return [
-            page for page in self.event_listings[:3]
+            page
+            for page in self.event_listings[:3]
             if page.start_date >= timezone.now()
         ]
 
@@ -318,10 +334,7 @@ class ExhibitionsListingPage(BasePageWithRequiredIntro):
     parent_page_types = [
         "whatson.WhatsOnPage",
     ]
-    subpage_types = [
-        "whatson.ExhibitionPage",
-        "whatson.DisplayPage"
-    ]
+    subpage_types = ["whatson.ExhibitionPage", "whatson.DisplayPage"]
 
 
 class WhatsOnPage(BasePageWithRequiredIntro):
@@ -849,6 +862,7 @@ class EventPage(RequiredHeroImageMixin, ContentWarningMixin, BasePageWithRequire
     ]
     subpage_types = []
 
+
 class DisplayPage(
     ArticleTagMixin,
     RequiredHeroImageMixin,
@@ -986,26 +1000,31 @@ class DisplayPage(
         verbose_name_plural = _("display pages")
         verbose_name_public = _("display")
 
-    content_panels = BasePageWithRequiredIntro.content_panels + RequiredHeroImageMixin.content_panels + ContentWarningMixin.content_panels + [
-        MultiFieldPanel(
-            [
-                FieldPanel("body"),
-                FieldPanel("display_highlights_title"),
-                FieldPanel("display_highlights"),
-            ],
-            heading=_("Content"),
-        ),
-        MultiFieldPanel(
-            [
-                FieldPanel("related_pages_title"),
-                FieldPanel("related_pages_description"),
-                FieldPanel("featured_page"),
-                FieldPanel("related_pages"),
-                FieldPanel("shop"),
-            ],
-            heading=_("Related content"),
-        ),
-    ]
+    content_panels = (
+        BasePageWithRequiredIntro.content_panels
+        + RequiredHeroImageMixin.content_panels
+        + ContentWarningMixin.content_panels
+        + [
+            MultiFieldPanel(
+                [
+                    FieldPanel("body"),
+                    FieldPanel("display_highlights_title"),
+                    FieldPanel("display_highlights"),
+                ],
+                heading=_("Content"),
+            ),
+            MultiFieldPanel(
+                [
+                    FieldPanel("related_pages_title"),
+                    FieldPanel("related_pages_description"),
+                    FieldPanel("featured_page"),
+                    FieldPanel("related_pages"),
+                    FieldPanel("shop"),
+                ],
+                heading=_("Related content"),
+            ),
+        ]
+    )
 
     key_details_panels = [
         MultiFieldPanel(
@@ -1122,6 +1141,7 @@ class DisplayPage(
                         "end_date": _("The end date must be after the start date."),
                     }
                 )
+
 
 class ExhibitionPage(
     ArticleTagMixin,
