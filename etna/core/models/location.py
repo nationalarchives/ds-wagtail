@@ -12,6 +12,7 @@ from wagtail.snippets.models import register_snippet
 from etna.core.blocks import (
     SimplifiedAccordionBlock,
 )
+from etna.core.serializers import ImageSerializer
 
 
 @register_snippet
@@ -67,6 +68,16 @@ class Location(models.Model):
         help_text=_("Additional detail for online venues, if applicable."),
     )
 
+    image = models.ForeignKey(
+        "wagtailimages.Image",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        verbose_name=_("Image"),
+        help_text=_("An image representing the location, if applicable."),
+    )
+
     details_title = models.CharField(
         max_length=100,
         blank=True,
@@ -101,6 +112,7 @@ class Location(models.Model):
         ),
         MultiFieldPanel(
             [
+                FieldPanel("image"),
                 FieldPanel("details_title"),
                 FieldPanel("details"),
             ],
@@ -112,10 +124,12 @@ class Location(models.Model):
         APIField("space_name"),
         APIField("at_tna"),
         APIField("online"),
+        APIField("online_detail"),
         APIField("first_line"),
         APIField("second_line"),
         APIField("postcode"),
         APIField("full_address"),
+        APIField("image", serializer=ImageSerializer()),
         APIField("details_title"),
         APIField("details"),
     ]
@@ -135,7 +149,7 @@ class Location(models.Model):
             and not (self.first_line or self.second_line or self.postcode)
         ):
             raise ValidationError(
-                "Please enter an address for a location that is not online or at The National Archives."
+                "Please enter an address. A location must either be at The National Archives, online, or have a physical address."
             )
         if self.online_detail and not self.online:
             raise ValidationError(

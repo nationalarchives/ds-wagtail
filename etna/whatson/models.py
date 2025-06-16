@@ -13,6 +13,7 @@ from wagtail.admin.panels import (
     InlinePanel,
     MultiFieldPanel,
     ObjectList,
+    PageChooserPanel,
     TabbedInterface,
     TitleFieldPanel,
 )
@@ -42,6 +43,7 @@ from etna.core.models import (
     HeroStyleMixin,
     LocationSerializer,
     RequiredHeroImageMixin,
+    ContentWarningMixin,
 )
 from etna.core.serializers import (
     DefaultPageSerializer,
@@ -86,8 +88,15 @@ class WhatsOnSeriesPage(BasePageWithRequiredIntro):
     A page for creating a series/grouping of events.
     """
 
-    # DataLayerMixin overrides
-    gtm_content_group = "What's On"
+    featured_page = models.ForeignKey(
+        "wagtailcore.Page",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        verbose_name=_("featured page"),
+        help_text=_("The page to feature on the series page."),
+    )
 
     class Meta:
         verbose_name = _("What's On series page")
@@ -95,11 +104,67 @@ class WhatsOnSeriesPage(BasePageWithRequiredIntro):
     parent_page_types = [
         "whatson.WhatsOnPage",
     ]
+
     subpage_types = []
 
-    content_panels = BasePageWithRequiredIntro.content_panels + []
+    @cached_property
+    def related_page_pks(self) -> tuple[int]:
+        return tuple(
+            self.series_pages.values_list("page_id", flat=True)
+        )
 
-    api_fields = BasePageWithRequiredIntro.api_fields
+    @cached_property
+    def event_listings(self) -> list:
+        """
+        Returns a list of event pages that belong to this series.
+        """
+        return [page for page in EventPage.objects.live().public().filter(
+            pk__in=self.related_page_pks,
+        ).order_by("start_date") if page.end_date >= timezone.now()]
+    
+    @cached_property
+    def exhibition_listings(self) -> list:
+        """
+        Returns a list of exhibition and display pages that belong to this series.
+        """
+        page_list = []
+
+        for page_type in [ExhibitionPage, DisplayPage]:
+            page_list.extend(
+                page_type.objects.exclude(pk=self.featured_page_id)
+                .filter(pk__in=self.related_page_pks)
+                .live()
+                .public()
+                .order_by("start_date")
+            )
+
+        return page_list
+    
+    @cached_property
+    def latest_listings(self) -> list:
+        """
+        Returns a list of the latest event pages that belong to the categories
+        selected for this category page.
+        """
+        return [
+            page for page in self.event_listings[:3]
+            if page.start_date >= timezone.now()
+        ]
+
+    content_panels = BasePageWithRequiredIntro.content_panels + [
+        PageChooserPanel(
+            "featured_page",
+            page_type=["whatson.EventPage",
+                        "whatson.ExhibitionPage",
+                        "whatson.DisplayPage"],
+        )
+    ]
+
+    api_fields = BasePageWithRequiredIntro.api_fields + [
+        APIField("event_listings", serializer=DefaultPageSerializer(many=True)),
+        APIField("latest_listings", serializer=DefaultPageSerializer(many=True)),
+        # APIField("exhibition_listings", serializer=DefaultPageSerializer(many=True)),
+    ]
 
 
 @register_snippet
@@ -160,8 +225,15 @@ class WhatsOnCategoryPage(BasePageWithRequiredIntro):
     A page for displaying a category of events.
     """
 
-    # DataLayerMixin overrides
-    gtm_content_group = "What's On"
+    featured_page = models.ForeignKey(
+        "wagtailcore.Page",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        verbose_name=_("featured page"),
+        help_text=_("The page to feature on the category page."),
+    )
 
     class Meta:
         verbose_name = _("What's On category page")
@@ -169,6 +241,7 @@ class WhatsOnCategoryPage(BasePageWithRequiredIntro):
     parent_page_types = [
         "whatson.WhatsOnPage",
     ]
+
     subpage_types = []
 
     content_panels = BasePageWithRequiredIntro.content_panels + [
@@ -176,6 +249,10 @@ class WhatsOnCategoryPage(BasePageWithRequiredIntro):
             "category_pages",
             heading=_("Category selection"),
         ),
+        PageChooserPanel(
+            "featured_page",
+            page_type="whatson.EventPage",
+        )
     ]
 
     @cached_property
@@ -187,8 +264,34 @@ class WhatsOnCategoryPage(BasePageWithRequiredIntro):
             item.category for item in self.category_pages.select_related("category")
         )
 
+    @cached_property
+    def event_listings(self) -> list:
+        """
+        Returns a list of event pages that belong to the categories selected
+        for this category page.
+        """
+        return [page for page in EventPage.objects.live().public().filter(
+            event_category__in=self.categories,
+        ).order_by("start_date") if page.end_date >= timezone.now()]
+    
+    @cached_property
+    def latest_listings(self) -> list:
+        """
+        Returns a list of the latest event pages that belong to the categories
+        selected for this category page.
+        """
+        return [
+            page for page in self.event_listings[:3]
+            if page.start_date >= timezone.now()
+        ]
+
     api_fields = BasePageWithRequiredIntro.api_fields + [
+        APIField("featured_page", serializer=DefaultPageSerializer()),
         APIField("categories", serializer=EventCategorySerializer(many=True)),
+        APIField(
+            "event_listings",
+            serializer=DefaultPageSerializer(many=True),
+        ),
     ]
 
 
@@ -217,7 +320,7 @@ class ExhibitionsListingPage(BasePageWithRequiredIntro):
     ]
     subpage_types = [
         "whatson.ExhibitionPage",
-        # "whatson.DisplayPage"
+        "whatson.DisplayPage"
     ]
 
 
@@ -395,7 +498,7 @@ class SessionSerializer(serializers.ModelSerializer):
         fields = ("start", "end", "sold_out")
 
 
-class EventPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
+class EventPage(RequiredHeroImageMixin, ContentWarningMixin, BasePageWithRequiredIntro):
     """EventPage
 
     A page for an event.
@@ -478,8 +581,18 @@ class EventPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
         verbose_name="Booking link",
     )
 
-    # DataLayerMixin overrides
-    gtm_content_group = "What's On"
+    event_highlights_title = models.CharField(
+        max_length=100,
+        verbose_name=_("event highlights title"),
+        blank=True,
+        help_text=_("Leave blank to default to 'Event highlights'."),
+    )
+
+    event_highlights = StreamField(
+        [("event_highlights", ImageGalleryBlock())],
+        blank=True,
+        max_num=1,
+    )
 
     class Meta:
         verbose_name = _("event page")
@@ -487,12 +600,20 @@ class EventPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
     content_panels = (
         BasePageWithRequiredIntro.content_panels
         + RequiredHeroImageMixin.content_panels
+        + ContentWarningMixin.content_panels
         + [
             MultiFieldPanel(
                 [
                     FieldPanel("description"),
                 ],
                 heading=_("Event information"),
+            ),
+            MultiFieldPanel(
+                [
+                    FieldPanel("event_highlights_title"),
+                    FieldPanel("event_highlights"),
+                ],
+                heading=_("Event highlights"),
             ),
         ]
     )
@@ -563,6 +684,7 @@ class EventPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
     api_fields = (
         BasePageWithRequiredIntro.api_fields
         + RequiredHeroImageMixin.api_fields
+        + ContentWarningMixin.api_fields
         + [
             APIField("short_location"),
             APIField("location", serializer=LocationSerializer()),
@@ -727,6 +849,279 @@ class EventPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
     ]
     subpage_types = []
 
+class DisplayPage(
+    ArticleTagMixin,
+    RequiredHeroImageMixin,
+    TopicalPageMixin,
+    ContentWarningMixin,
+    BasePageWithRequiredIntro,
+):
+    """
+    A page where editors can create displays. Displays do not come
+    from Eventbrite - they are internal TNA displays.
+    """
+
+    # Key details section
+    start_date = models.DateField(
+        verbose_name=_("start date"),
+        null=True,
+        blank=True,
+    )
+
+    end_date = models.DateField(
+        verbose_name=_("end date"),
+        null=True,
+        blank=True,
+    )
+
+    exclude_days = models.BooleanField(
+        verbose_name=_("exclude days"),
+        default=False,
+        help_text=_(
+            "Check this box to show only the month and year on the exhibition."
+        ),
+    )
+
+    price = models.FloatField(
+        verbose_name=_("price"),
+        default=0,
+    )
+
+    booking_details = RichTextField(
+        max_length=40,
+        null=True,
+        verbose_name=_("booking details"),
+        help_text=_("Information about how to book tickets for the exhibition."),
+        features=["link"],
+    )
+
+    open_days = models.CharField(
+        max_length=255,
+        verbose_name=_("open days"),
+        blank=True,
+        help_text=_("The days the exhibition is open, e.g. Tuesday to Sunday."),
+    )
+
+    audience_heading = models.CharField(
+        max_length=40,
+        verbose_name=_("audience heading"),
+        blank=True,
+        help_text=_("The heading for the audience detail section."),
+    )
+
+    audience_detail = models.CharField(
+        max_length=40,
+        verbose_name=_("audience detail"),
+        blank=True,
+        help_text=_("The text for the audience detail section."),
+    )
+
+    location = models.ForeignKey(
+        "core.Location",
+        null=True,
+        blank=False,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        verbose_name=_("location"),
+        help_text=_("The location of the display."),
+    )
+
+    # Body section
+    body = StreamField(ExhibitionPageStreamBlock, blank=True, null=True)
+
+    display_highlights_title = models.CharField(
+        max_length=100,
+        verbose_name=_("display highlights title"),
+        blank=True,
+        help_text=_("Leave blank to default to 'Display highlights'."),
+    )
+
+    display_highlights = StreamField(
+        [("display_highlights", ImageGalleryBlock())],
+        blank=True,
+        max_num=1,
+    )
+
+    # Related content section
+    related_pages_title = models.CharField(
+        max_length=255,
+        blank=True,
+        help_text=_("The title to display for the related content section."),
+    )
+
+    related_pages_description = RichTextField(
+        blank=True,
+        help_text=_("The description to display for the related content section."),
+        features=settings.INLINE_RICH_TEXT_FEATURES,
+    )
+
+    featured_page = models.ForeignKey(
+        "wagtailcore.Page",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+
+    related_pages = StreamField(FeaturedPagesBlock(), blank=True, null=True)
+
+    shop = StreamField(
+        [("shop", ShopCollectionBlock())],
+        blank=True,
+        max_num=1,
+    )
+
+    @cached_property
+    def type_label(cls) -> str:
+        """
+        Overrides the type_label method from BasePage, to return the correct
+        type label for the display page.
+        """
+        if cls.end_date < timezone.now().date():
+            return "Past display"
+        return "Display"
+
+    class Meta:
+        verbose_name = _("display page")
+        verbose_name_plural = _("display pages")
+        verbose_name_public = _("display")
+
+    content_panels = BasePageWithRequiredIntro.content_panels + RequiredHeroImageMixin.content_panels + ContentWarningMixin.content_panels + [
+        MultiFieldPanel(
+            [
+                FieldPanel("body"),
+                FieldPanel("display_highlights_title"),
+                FieldPanel("display_highlights"),
+            ],
+            heading=_("Content"),
+        ),
+        MultiFieldPanel(
+            [
+                FieldPanel("related_pages_title"),
+                FieldPanel("related_pages_description"),
+                FieldPanel("featured_page"),
+                FieldPanel("related_pages"),
+                FieldPanel("shop"),
+            ],
+            heading=_("Related content"),
+        ),
+    ]
+
+    key_details_panels = [
+        MultiFieldPanel(
+            [
+                FieldRowPanel(
+                    [
+                        FieldPanel("start_date"),
+                        FieldPanel("end_date"),
+                    ],
+                ),
+                FieldPanel("exclude_days"),
+            ],
+            heading=_("Date details"),
+        ),
+        MultiFieldPanel(
+            [
+                FieldPanel("price"),
+                FieldPanel("booking_details"),
+            ],
+            heading=_("Price details"),
+        ),
+        FieldPanel("open_days"),
+        MultiFieldPanel(
+            [
+                FieldPanel("audience_heading"),
+                FieldPanel("audience_detail"),
+            ],
+            heading=_("Audience details"),
+        ),
+        MultiFieldPanel(
+            [
+                FieldPanel("location"),
+            ],
+            heading=_("Location details"),
+        ),
+    ]
+
+    promote_panels = (
+        BasePageWithRequiredIntro.promote_panels
+        + ArticleTagMixin.promote_panels
+        + [
+            TopicalPageMixin.get_topics_inlinepanel(),
+            TopicalPageMixin.get_time_periods_inlinepanel(),
+            InlinePanel(
+                "page_series_tags",
+                heading=_("Series"),
+                max_num=3,
+            ),
+        ]
+    )
+
+    api_fields = (
+        BasePageWithRequiredIntro.api_fields
+        + RequiredHeroImageMixin.api_fields
+        + ContentWarningMixin.api_fields
+        + [
+            APIField("subtitle"),
+            APIField("start_date"),
+            APIField("end_date"),
+            APIField("exclude_days"),
+            APIField("price"),
+            APIField("open_days"),
+            APIField("booking_details", serializer=RichTextSerializer()),
+            APIField("audience_heading"),
+            APIField("audience_detail"),
+            APIField("location", serializer=LocationSerializer()),
+            APIField("body"),
+            APIField("display_highlights_title"),
+            APIField("display_highlights"),
+            APIField("related_pages_title"),
+            APIField("related_pages_description", serializer=RichTextSerializer()),
+            APIField("featured_page", serializer=DefaultPageSerializer()),
+            APIField("related_pages"),
+            APIField("shop"),
+        ]
+        + TopicalPageMixin.api_fields
+        + ArticleTagMixin.api_fields
+    )
+
+    edit_handler = TabbedInterface(
+        [
+            ObjectList(content_panels, heading="Content"),
+            ObjectList(key_details_panels, heading="Key details"),
+            ObjectList(promote_panels, heading="Promote"),
+            ObjectList(BasePageWithRequiredIntro.settings_panels, heading="Settings"),
+        ]
+    )
+
+    search_fields = (
+        BasePageWithRequiredIntro.search_fields
+        + ArticleTagMixin.search_fields
+        + [
+            index.SearchField("topic_names", boost=1),
+            index.SearchField("time_period_names", boost=1),
+        ]
+    )
+
+    parent_page_types = [
+        "whatson.ExhibitionsListingPage",
+    ]
+    subpage_types = []
+
+    def clean(self):
+        """
+        Check that the venue address and video conference information are
+        provided for the correct venue type.
+        """
+
+        if self.start_date and self.end_date:
+            if self.start_date > self.end_date:
+                raise ValidationError(
+                    {
+                        "start_date": _("The start date must be before the end date."),
+                        "end_date": _("The end date must be after the start date."),
+                    }
+                )
 
 class ExhibitionPage(
     ArticleTagMixin,
@@ -735,6 +1130,7 @@ class ExhibitionPage(
     HeroLayoutMixin,
     RequiredHeroImageMixin,
     TopicalPageMixin,
+    ContentWarningMixin,
     BasePageWithRequiredIntro,
 ):
     """ExhibitionPage
@@ -963,6 +1359,7 @@ class ExhibitionPage(
     content_panels = [
         TitleFieldPanel("title"),
         FieldPanel("subtitle"),
+        FieldPanel("custom_warning_text"),
         MultiFieldPanel(
             [
                 FieldPanel("hero_image"),
@@ -1055,6 +1452,11 @@ class ExhibitionPage(
         + [
             TopicalPageMixin.get_topics_inlinepanel(),
             TopicalPageMixin.get_time_periods_inlinepanel(),
+            InlinePanel(
+                "page_series_tags",
+                heading=_("Series"),
+                max_num=3,
+            ),
         ]
     )
 
@@ -1064,6 +1466,7 @@ class ExhibitionPage(
         + HeroStyleMixin.api_fields
         + HeroLayoutMixin.api_fields
         + AccentColourMixin.api_fields
+        + ContentWarningMixin.api_fields
         + [
             APIField("subtitle"),
             APIField("start_date"),
