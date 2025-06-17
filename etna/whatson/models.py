@@ -653,7 +653,9 @@ class EventPage(RequiredHeroImageMixin, ContentWarningMixin, BasePageWithRequire
                         FieldPanel("start_date", read_only=True),
                         FieldPanel("end_date", read_only=True),
                     ],
-                    help_text=_("These dates are automatically set based on the sessions added.")
+                    help_text=_(
+                        "These dates are automatically set based on the sessions added."
+                    ),
                 ),
                 InlinePanel(
                     "sessions",
@@ -890,9 +892,7 @@ class DisplayPage(
     exclude_days = models.BooleanField(
         verbose_name=_("exclude days"),
         default=False,
-        help_text=_(
-            "Check this box to show only the month and year on the display."
-        ),
+        help_text=_("Check this box to show only the month and year on the display."),
     )
 
     price = models.FloatField(
@@ -1061,16 +1061,13 @@ class DisplayPage(
         ),
     ]
 
-    promote_panels = (
-        BasePageWithRequiredIntro.promote_panels
-        + [
-            InlinePanel(
-                "page_series_tags",
-                heading=_("Series"),
-                max_num=3,
-            ),
-        ]
-    )
+    promote_panels = BasePageWithRequiredIntro.promote_panels + [
+        InlinePanel(
+            "page_series_tags",
+            heading=_("Series"),
+            max_num=3,
+        ),
+    ]
 
     api_fields = (
         BasePageWithRequiredIntro.api_fields
