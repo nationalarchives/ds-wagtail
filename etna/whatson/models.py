@@ -563,7 +563,7 @@ class EventPage(RequiredHeroImageMixin, ContentWarningMixin, BasePageWithRequire
         null=True,
         blank=True,
         verbose_name=_("booking details"),
-        help_text=_("Information about how to book tickets for the exhibition."),
+        help_text=_("Information about how to book tickets for the event."),
         features=["link"],
     )
 
@@ -891,7 +891,7 @@ class DisplayPage(
         verbose_name=_("exclude days"),
         default=False,
         help_text=_(
-            "Check this box to show only the month and year on the exhibition."
+            "Check this box to show only the month and year on the display."
         ),
     )
 
@@ -904,7 +904,7 @@ class DisplayPage(
         max_length=40,
         null=True,
         verbose_name=_("booking details"),
-        help_text=_("Information about how to book tickets for the exhibition."),
+        help_text=_("Information about how to book tickets for the display."),
         features=["link"],
     )
 
@@ -912,7 +912,7 @@ class DisplayPage(
         max_length=255,
         verbose_name=_("open days"),
         blank=True,
-        help_text=_("The days the exhibition is open, e.g. Tuesday to Sunday."),
+        help_text=_("The days the display is open, e.g. Tuesday to Sunday."),
     )
 
     audience_heading = models.CharField(
