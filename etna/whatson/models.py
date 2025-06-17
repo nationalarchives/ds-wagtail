@@ -653,6 +653,7 @@ class EventPage(RequiredHeroImageMixin, ContentWarningMixin, BasePageWithRequire
                         FieldPanel("start_date", read_only=True),
                         FieldPanel("end_date", read_only=True),
                     ],
+                    help_text=_("These dates are automatically set based on the sessions added.")
                 ),
                 InlinePanel(
                     "sessions",
@@ -864,9 +865,7 @@ class EventPage(RequiredHeroImageMixin, ContentWarningMixin, BasePageWithRequire
 
 
 class DisplayPage(
-    ArticleTagMixin,
     RequiredHeroImageMixin,
-    TopicalPageMixin,
     ContentWarningMixin,
     BasePageWithRequiredIntro,
 ):
@@ -1064,10 +1063,7 @@ class DisplayPage(
 
     promote_panels = (
         BasePageWithRequiredIntro.promote_panels
-        + ArticleTagMixin.promote_panels
         + [
-            TopicalPageMixin.get_topics_inlinepanel(),
-            TopicalPageMixin.get_time_periods_inlinepanel(),
             InlinePanel(
                 "page_series_tags",
                 heading=_("Series"),
@@ -1100,8 +1096,6 @@ class DisplayPage(
             APIField("related_pages"),
             APIField("shop"),
         ]
-        + TopicalPageMixin.api_fields
-        + ArticleTagMixin.api_fields
     )
 
     edit_handler = TabbedInterface(
@@ -1110,15 +1104,6 @@ class DisplayPage(
             ObjectList(key_details_panels, heading="Key details"),
             ObjectList(promote_panels, heading="Promote"),
             ObjectList(BasePageWithRequiredIntro.settings_panels, heading="Settings"),
-        ]
-    )
-
-    search_fields = (
-        BasePageWithRequiredIntro.search_fields
-        + ArticleTagMixin.search_fields
-        + [
-            index.SearchField("topic_names", boost=1),
-            index.SearchField("time_period_names", boost=1),
         ]
     )
 
