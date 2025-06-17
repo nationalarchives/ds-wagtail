@@ -36,7 +36,7 @@ class Location(models.Model):
     )
 
     # Address fields
-    first_line = models.CharField(
+    address_line_1 = models.CharField(
         max_length=255,
         blank=True,
         null=True,
@@ -44,7 +44,7 @@ class Location(models.Model):
         help_text=_("First line of address for the location, if applicable."),
     )
 
-    second_line = models.CharField(
+    address_line_2 = models.CharField(
         max_length=255,
         blank=True,
         null=True,
@@ -69,7 +69,7 @@ class Location(models.Model):
     )
 
     image = models.ForeignKey(
-        "wagtailimages.Image",
+        "images.CustomImage",
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
@@ -103,8 +103,8 @@ class Location(models.Model):
         MultiFieldPanel(
             [
                 FieldPanel("at_tna"),
-                FieldPanel("first_line"),
-                FieldPanel("second_line"),
+                FieldPanel("address_line_1"),
+                FieldPanel("address_line_2"),
                 FieldPanel("postcode"),
             ],
             heading=_("Physical address"),
@@ -125,8 +125,8 @@ class Location(models.Model):
         APIField("at_tna"),
         APIField("online"),
         APIField("online_detail"),
-        APIField("first_line"),
-        APIField("second_line"),
+        APIField("address_line_1"),
+        APIField("address_line_2"),
         APIField("postcode"),
         APIField("full_address"),
         APIField("image", serializer=ImageSerializer()),
@@ -136,17 +136,19 @@ class Location(models.Model):
 
     def clean(self):
         if self.online and (
-            self.at_tna or self.first_line or self.second_line or self.postcode
+            self.at_tna or self.address_line_1 or self.address_line_2 or self.postcode
         ):
             raise ValidationError("A location cannot be online and have an address.")
-        if self.at_tna and (self.first_line or self.second_line or self.postcode):
+        if self.at_tna and (
+            self.address_line_1 or self.address_line_2 or self.postcode
+        ):
             raise ValidationError(
                 "Please do not enter an address for a location if it is at The National Archives."
             )
         if (
             not self.online
             and not self.at_tna
-            and not (self.first_line or self.second_line or self.postcode)
+            and not (self.address_line_1 or self.address_line_2 or self.postcode)
         ):
             raise ValidationError(
                 "Please enter an address. A location must either be at The National Archives, online, or have a physical address."
@@ -168,8 +170,8 @@ class Location(models.Model):
             return f"Online, {self.space_name}"
 
         return (
-            f"{self.first_line}, {self.second_line}, {self.postcode}"
-            if self.first_line or self.second_line or self.postcode
+            f"{self.address_line_1}, {self.address_line_2}, {self.postcode}"
+            if self.address_line_1 or self.address_line_2 or self.postcode
             else ""
         )
 
@@ -178,8 +180,8 @@ class Location(models.Model):
             return f"{self.space_name} - The National Archives"
         elif self.online:
             return f"{self.space_name} - Online"
-        elif self.first_line:
-            return f"{self.space_name} - {self.first_line}"
+        elif self.address_line_1:
+            return f"{self.space_name} - {self.address_line_1}"
         return f"{self.space_name}"
 
     class Meta:
@@ -200,8 +202,8 @@ class LocationSerializer(serializers.ModelSerializer):
             "space_name",
             "at_tna",
             "online",
-            "first_line",
-            "second_line",
+            "address_line_1",
+            "address_line_2",
             "postcode",
             "full_address",
             "details_title",

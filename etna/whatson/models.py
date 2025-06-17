@@ -735,7 +735,7 @@ class EventPage(RequiredHeroImageMixin, ContentWarningMixin, BasePageWithRequire
             elif location.at_tna:
                 return "At The National Archives, Kew"
             else:
-                return location.first_line or location.space_name or "In-person"
+                return location.address_line_1 or location.space_name or "In-person"
 
     @cached_property
     def series(self):

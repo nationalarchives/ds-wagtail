@@ -206,7 +206,7 @@ class LocationFilter(BaseFilterBackend):
 
     def filter_queryset(self, request, queryset, view):
         if "online" in request.GET:
-            queryset = queryset.filter(location__online=True)
+            return queryset.filter(location__online=True)
         elif "at_tna" in request.GET:
-            queryset = queryset.filter(location__at_tna=True)
+            return queryset.filter(location__at_tna=True)
         return queryset
