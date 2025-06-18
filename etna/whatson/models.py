@@ -1,3 +1,5 @@
+import datetime
+
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
@@ -153,7 +155,6 @@ class WhatsOnSeriesPage(BasePageWithRequiredIntro):
         Returns a list of the latest event pages that belong to the categories
         selected for this category page.
         """
-        import datetime
 
         def get_start_date(obj):
             value = obj.start_date
@@ -169,7 +170,7 @@ class WhatsOnSeriesPage(BasePageWithRequiredIntro):
             self.event_listings + self.exhibition_listings,
             key=get_start_date,
             reverse=True,
-        )
+        )[:3]
 
     content_panels = BasePageWithRequiredIntro.content_panels + [
         PageChooserPanel(
@@ -1215,7 +1216,6 @@ class DisplayPage(
         + RequiredHeroImageMixin.api_fields
         + ContentWarningMixin.api_fields
         + [
-            APIField("subtitle"),
             APIField("start_date"),
             APIField("end_date"),
             APIField("exclude_days"),
