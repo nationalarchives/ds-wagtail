@@ -138,6 +138,7 @@ class WhatsOnSeriesPage(BasePageWithRequiredIntro):
             page_list.extend(
                 page_type.objects.exclude(pk=self.featured_page_id)
                 .filter(pk__in=self.related_page_pks)
+                .filter(end_date__gt=timezone.now())
                 .live()
                 .public()
                 .order_by("start_date")
@@ -151,11 +152,19 @@ class WhatsOnSeriesPage(BasePageWithRequiredIntro):
         Returns a list of the latest event pages that belong to the categories
         selected for this category page.
         """
-        return [
-            page
-            for page in self.event_listings[:3]
-            if page.start_date >= timezone.now()
-        ]
+        import datetime
+
+        def get_start_date(obj):
+            value = obj.start_date
+            if isinstance(value, datetime.date) and not isinstance(value, datetime.datetime):
+                return datetime.datetime.combine(value, datetime.time.min, tzinfo=timezone.get_current_timezone())
+            return value
+        
+        return sorted(
+        self.event_listings + self.exhibition_listings,
+        key=get_start_date,
+        reverse=True
+    )
 
     content_panels = BasePageWithRequiredIntro.content_panels + [
         PageChooserPanel(
@@ -168,10 +177,13 @@ class WhatsOnSeriesPage(BasePageWithRequiredIntro):
         )
     ]
 
+    default_api_fields = BasePageWithRequiredIntro.default_api_fields + [
+        APIField("latest_listings", serializer=DefaultPageSerializer(many=True)),
+    ]
+
     api_fields = BasePageWithRequiredIntro.api_fields + [
         APIField("event_listings", serializer=DefaultPageSerializer(many=True)),
-        APIField("latest_listings", serializer=DefaultPageSerializer(many=True)),
-        # APIField("exhibition_listings", serializer=DefaultPageSerializer(many=True)),
+        APIField("exhibition_listings", serializer=DefaultPageSerializer(many=True)),
     ]
 
 
@@ -295,11 +307,11 @@ class WhatsOnCategoryPage(BasePageWithRequiredIntro):
         Returns a list of the latest event pages that belong to the categories
         selected for this category page.
         """
-        return [
-            page
-            for page in self.event_listings[:3]
-            if page.start_date >= timezone.now()
-        ]
+        return self.event_listings[:3]
+    
+    default_api_fields = BasePageWithRequiredIntro.default_api_fields + [
+        APIField("latest_listings", serializer=DefaultPageSerializer(many=True)),
+    ]
 
     api_fields = BasePageWithRequiredIntro.api_fields + [
         APIField("featured_page", serializer=DefaultPageSerializer()),
@@ -323,11 +335,72 @@ class EventsListingPage(BasePageWithRequiredIntro):
     ]
     subpage_types = ["whatson.EventPage"]
 
+    @cached_property
+    def event_listings(self) -> list:
+        """
+        Returns a list of event pages.
+        """
+        return EventPage.objects.live().public().filter(
+            end_date__gte=timezone.now(),
+        ).order_by("start_date")
+    
+    @cached_property
+    def latest_listings(self) -> list:
+        """
+        Returns a list of the latest event pages.
+        """
+        return self.event_listings[:3]
+    
+    default_api_fields = BasePageWithRequiredIntro.default_api_fields + [
+        APIField("latest_listings", serializer=DefaultPageSerializer(many=True)),
+    ]
+    
+    api_fields = BasePageWithRequiredIntro.api_fields + [
+        APIField(
+            "event_listings",
+            serializer=DefaultPageSerializer(many=True),
+        ),
+    ]
+
+
 
 class ExhibitionsListingPage(BasePageWithRequiredIntro):
     """
     A page for listing/storing all displays/exhibitions.
     """
+
+    @cached_property
+    def exhibition_listings(self) -> list:
+        """
+        Returns a list of exhibition and display pages.
+        """
+        children = [
+            page
+            for page in self.get_children().live().public().specific()
+            if isinstance(page, (ExhibitionPage, DisplayPage))
+            and page.end_date >= timezone.now().date()
+        ]
+        return sorted(children, key=lambda x: x.start_date)
+    
+    @cached_property
+    def latest_listings(self) -> list:
+        """
+        Returns a list of the latest exhibition and display pages.
+        """
+        return self.exhibition_listings[:3]
+    
+    @cached_property
+    def past_exhibition_listings(self) -> list:
+        """
+        Returns a list of past exhibition and display pages.
+        """
+        children = [
+            page
+            for page in self.get_children().live().public().specific()
+            if isinstance(page, (ExhibitionPage, DisplayPage))
+            and page.end_date < timezone.now().date()
+        ]
+        return sorted(children, key=lambda x: x.start_date)
 
     max_count = 1
 
@@ -336,14 +409,92 @@ class ExhibitionsListingPage(BasePageWithRequiredIntro):
     ]
     subpage_types = ["whatson.ExhibitionPage", "whatson.DisplayPage"]
 
+    default_api_fields = BasePageWithRequiredIntro.default_api_fields + [
+        APIField(
+            "latest_listings",
+            serializer=DefaultPageSerializer(many=True),
+        ),
+    ]
+
+    api_fields = BasePageWithRequiredIntro.api_fields + [
+        APIField(
+            "exhibition_listings",
+            serializer=DefaultPageSerializer(many=True),
+        ),
+        APIField(
+            "past_exhibition_listings",
+            serializer=DefaultPageSerializer(many=True),
+        ),
+    ]
+
+class WhatsOnPageSelection(models.Model):
+    """
+    This model is used to select a page to display on the What's On page.
+    """
+
+    page = ParentalKey(
+        "wagtailcore.Page",
+        on_delete=models.CASCADE,
+        related_name="whats_on_page_selections",
+    )
+
+    featured_page = models.ForeignKey(
+        "wagtailcore.Page",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        verbose_name=_("featured page"),
+        help_text=_("The page to feature on the What's On page."),
+    )
+
+    selected_page = models.ForeignKey(
+        "wagtailcore.Page",
+        on_delete=models.CASCADE,
+        related_name="+",
+        verbose_name=_("selected page"),
+        help_text=_("The page to display on the What's On page."),
+    )
+
+    panels = [
+        PageChooserPanel(
+            "featured_page",
+            page_type=[
+                "whatson.EventPage",
+                "whatson.ExhibitionPage",
+                "whatson.DisplayPage",
+            ],
+        ),
+        PageChooserPanel("selected_page", page_type=[
+            "whatson.ExhibitionsListingPage",
+            "whatson.EventsListingPage",
+            "whatson.WhatsOnSeriesPage",
+            "whatson.WhatsOnCategoryPage",
+        ]),
+    ]
+
+    class Meta:
+        verbose_name = _("selection")
+
+class WhatsOnPageSelectionSerializer(serializers.Serializer):
+    """Serializer for the WhatsOnPageSelection model."""
+
+    def to_representation(self, instance):
+        if instance:
+            return {
+                "featured_page": DefaultPageSerializer().to_representation(
+                    instance.featured_page
+                ),
+                "selected_page": DefaultPageSerializer().to_representation(
+                    instance.selected_page
+                ),
+            }
+        return None
 
 class WhatsOnPage(BasePageWithRequiredIntro):
     """
     A page for listing events.
     """
-
-    # DataLayerMixin overrides
-    gtm_content_group = "What's On"
 
     class Meta:
         verbose_name = _("What's On page")
@@ -360,10 +511,16 @@ class WhatsOnPage(BasePageWithRequiredIntro):
 
     max_count = 1
 
-    content_panels = BasePageWithRequiredIntro.content_panels + []
+    content_panels = BasePageWithRequiredIntro.content_panels + [
+        InlinePanel(
+            "whats_on_page_selections",
+            heading=_("Page selections"),
+            help_text=_("Select pages to display on the What's On page."),
+        ),
+    ]
 
     api_fields = BasePageWithRequiredIntro.api_fields + [
-        APIField("latest_listings"),
+        APIField("whats_on_page_selections", serializer=WhatsOnPageSelectionSerializer(many=True)),
     ]
 
 
@@ -990,9 +1147,23 @@ class DisplayPage(
         Overrides the type_label method from BasePage, to return the correct
         type label for the display page.
         """
-        if cls.end_date < timezone.now().date():
-            return "Past display"
+        if cls.end_date:
+            if cls.end_date < timezone.now().date():
+                return "Past display"
         return "Display"
+    
+    @cached_property
+    def short_location(self) -> str:
+        """
+        Returns a short version of the location name.
+        """
+        if location := self.location:
+            if location.online:
+                return "Online"
+            elif location.at_tna:
+                return "At The National Archives, Kew"
+            else:
+                return location.address_line_1 or location.space_name or "In-person"
 
     class Meta:
         verbose_name = _("display page")
@@ -1067,6 +1238,13 @@ class DisplayPage(
             heading=_("Series"),
             max_num=3,
         ),
+    ]
+
+    default_api_fields = BasePageWithRequiredIntro.default_api_fields + [
+        APIField("start_date"),
+        APIField("end_date"),
+        APIField("price"),
+        APIField("short_location"),
     ]
 
     api_fields = (
@@ -1340,17 +1518,15 @@ class ExhibitionPage(
         max_num=1,
     )
 
-    # DataLayerMixin overrides
-    gtm_content_group = "What's On"
-
     @cached_property
     def type_label(cls) -> str:
         """
         Overrides the type_label method from BasePage, to return the correct
         type label for the exhibition page.
         """
-        if cls.end_date < timezone.now().date():
-            return "Past exhibition"
+        if cls.end_date:
+            if cls.end_date < timezone.now().date():
+                return "Past exhibition"
         return "Exhibition"
 
     class Meta:
@@ -1461,6 +1637,12 @@ class ExhibitionPage(
             ),
         ]
     )
+
+    default_api_fields = BasePageWithRequiredIntro.default_api_fields + [
+        APIField("start_date"),
+        APIField("end_date"),
+        APIField("price"),
+    ]
 
     api_fields = (
         BasePageWithRequiredIntro.api_fields
