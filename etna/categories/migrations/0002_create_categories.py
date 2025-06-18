@@ -4,7 +4,8 @@ from django.db import migrations
 
 
 CATEGORIES = (
-    ("", "")
+    ("", ""),
+    ("", ""),
 )
 
 
