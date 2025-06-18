@@ -1,7 +1,6 @@
 from django.conf import settings
 from django.utils.html import format_html
 from wagtail import blocks
-from wagtail.snippets.blocks import SnippetChooserBlock
 
 from etna.core.blocks.image import APIImageChooserBlock
 from etna.core.blocks.page_chooser import APIPageChooserBlock
@@ -131,7 +130,6 @@ class PromotedListBlock(blocks.StructBlock):
     Streamfield for collating a series of links for research or interesting pages.
     """
 
-    category = SnippetChooserBlock("categories.Category")
     summary = APIRichTextBlock(
         required=False, features=settings.INLINE_RICH_TEXT_FEATURES
     )

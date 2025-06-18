@@ -2,14 +2,9 @@
 
 from django.db import migrations
 
-from ..models import CATEGORIES_ICON_PATH
 
 CATEGORIES = (
-    ("Discover our records", f"{CATEGORIES_ICON_PATH}/search-white.svg"),
-    ("Podcasts", f"{CATEGORIES_ICON_PATH}/headphones-white.svg"),
-    ("Research", f"{CATEGORIES_ICON_PATH}/book-open-white.svg"),
-    ("Blog", f"{CATEGORIES_ICON_PATH}/comment-white.svg"),
-    ("Video", f"{CATEGORIES_ICON_PATH}/video-white.svg"),
+    ("", "")
 )
 
 
