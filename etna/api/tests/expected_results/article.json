@@ -438,7 +438,6 @@
     "latest_items": [
         {
             "id": 12,
-            "uuid": "00000000-0000-0000-0000-000000000000",
             "title": "record_article",
             "short_title": null,
             "url": "/article_index/record_article/",
@@ -448,6 +447,7 @@
             "teaser_text": "Teaser text",
             "teaser_image": {
                 "id": 16,
+                "uuid": "00000000-0000-0000-0000-000000000000",
                 "title": "An image",
                 "description": "",
                 "jpeg": {
