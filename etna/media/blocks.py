@@ -33,6 +33,7 @@ class MediaChooserBlock(AbstractMediaChooserBlock):
         ]
         return {
             "id": value.id,
+            "uuid": value.uuid,
             "file": value.url,
             "full_url": value.full_url,
             "type": value.type,

@@ -26,6 +26,7 @@
         "teaser_text": "Teaser text",
         "teaser_image": {
             "id": 6,
+            "uuid": "00000000-0000-0000-0000-000000000000",
             "title": "An image",
             "description": "",
             "jpeg": {
@@ -43,6 +44,7 @@
         },
         "teaser_image_square": {
             "id": 6,
+            "uuid": "00000000-0000-0000-0000-000000000000",
             "title": "An image",
             "description": "",
             "jpeg": {
@@ -81,6 +83,7 @@
     "hero_image_caption": "<p>Hero image caption</p>",
     "hero_image": {
         "id": 7,
+        "uuid": "00000000-0000-0000-0000-000000000000",
         "title": "An image",
         "description": "",
         "jpeg": {
@@ -101,6 +104,7 @@
     },
     "hero_image_small": {
         "id": 7,
+        "uuid": "00000000-0000-0000-0000-000000000000",
         "title": "An image",
         "description": "",
         "jpeg": {
@@ -133,6 +137,7 @@
             "teaser_text": "Teaser text",
             "teaser_image": {
                 "id": 12,
+                "uuid": "00000000-0000-0000-0000-000000000000",
                 "title": "An image",
                 "description": "",
                 "jpeg": {

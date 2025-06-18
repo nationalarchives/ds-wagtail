@@ -391,6 +391,10 @@ class APIResponseTest(WagtailPageTestCase):
                 expected_data = re.sub(regex_end, regex_replace_end, expected_data)
                 api_data = re.sub(regex_end, regex_replace_end, api_data)
 
+                # Remove random generated UUIDs from the JSON for images and media
+                expected_data = re.sub(r'"uuid": "[a-f0-9\-]+"', '"uuid": "00000000-0000-0000-0000-000000000000"', expected_data)
+                api_data = re.sub(r'"uuid": "[a-f0-9\-]+"', '"uuid": "00000000-0000-0000-0000-000000000000"', api_data)
+
                 self.assertEqual(expected_data, api_data)
 
     def test_pages_route(self):

@@ -26,6 +26,7 @@
         "teaser_text": "Teaser text",
         "teaser_image": {
             "id": 4,
+            "uuid": "00000000-0000-0000-0000-000000000000",
             "title": "An image",
             "description": "",
             "jpeg": {
@@ -43,6 +44,7 @@
         },
         "teaser_image_square": {
             "id": 4,
+            "uuid": "00000000-0000-0000-0000-000000000000",
             "title": "An image",
             "description": "",
             "jpeg": {
@@ -81,6 +83,7 @@
     "hero_image_caption": "<p>Hero image caption</p>",
     "hero_image": {
         "id": 5,
+        "uuid": "00000000-0000-0000-0000-000000000000",
         "title": "An image",
         "description": "",
         "jpeg": {
@@ -101,6 +104,7 @@
     },
     "hero_image_small": {
         "id": 5,
+        "uuid": "00000000-0000-0000-0000-000000000000",
         "title": "An image",
         "description": "",
         "jpeg": {
@@ -133,6 +137,7 @@
             "teaser_text": "Teaser text",
             "teaser_image": {
                 "id": 16,
+                "uuid": "00000000-0000-0000-0000-000000000000",
                 "title": "An image",
                 "description": "",
                 "jpeg": {
@@ -163,6 +168,7 @@
             "teaser_text": "Teaser text",
             "teaser_image": {
                 "id": 14,
+                "uuid": "00000000-0000-0000-0000-000000000000",
                 "title": "An image",
                 "description": "",
                 "jpeg": {
@@ -193,6 +199,7 @@
             "teaser_text": "Teaser text",
             "teaser_image": {
                 "id": 12,
+                "uuid": "00000000-0000-0000-0000-000000000000",
                 "title": "An image",
                 "description": "",
                 "jpeg": {
@@ -225,6 +232,7 @@
             "teaser_text": "Teaser text",
             "teaser_image": {
                 "id": 18,
+                "uuid": "00000000-0000-0000-0000-000000000000",
                 "title": "An image",
                 "description": "",
                 "jpeg": {

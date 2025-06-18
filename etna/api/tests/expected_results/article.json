@@ -26,6 +26,7 @@
         "teaser_text": "Teaser text",
         "teaser_image": {
             "id": 12,
+            "uuid": "00000000-0000-0000-0000-000000000000",
             "title": "An image",
             "description": "",
             "jpeg": {
@@ -43,6 +44,7 @@
         },
         "teaser_image_square": {
             "id": 12,
+            "uuid": "00000000-0000-0000-0000-000000000000",
             "title": "An image",
             "description": "",
             "jpeg": {
@@ -85,6 +87,7 @@
     "hero_image_caption": "<p>Hero image caption</p>",
     "hero_image": {
         "id": 13,
+        "uuid": "00000000-0000-0000-0000-000000000000",
         "title": "An image",
         "description": "",
         "jpeg": {
@@ -105,6 +108,7 @@
     },
     "hero_image_small": {
         "id": 13,
+        "uuid": "00000000-0000-0000-0000-000000000000",
         "title": "An image",
         "description": "",
         "jpeg": {
@@ -167,6 +171,7 @@
                         "value": {
                             "image": {
                                 "id": 1,
+                                "uuid": "00000000-0000-0000-0000-000000000000",
                                 "title": "An image",
                                 "description": "Some alt text",
                                 "jpeg": {
@@ -202,6 +207,7 @@
                             "title": "Media title",
                             "thumbnail": {
                                 "id": 1,
+                                "uuid": "00000000-0000-0000-0000-000000000000",
                                 "title": "An image",
                                 "description": "Some alt text",
                                 "jpeg": {
@@ -228,6 +234,7 @@
                             },
                             "media": {
                                 "id": 1,
+                                "uuid": "00000000-0000-0000-0000-000000000000",
                                 "file": "/media/media/test.mp4",
                                 "full_url": "https://www.nationalarchives.gov.uk/media/media/test.mp4",
                                 "type": "video",
@@ -262,6 +269,7 @@
                                 "teaser_text": "Teaser text",
                                 "teaser_image": {
                                     "id": 16,
+                                    "uuid": "00000000-0000-0000-0000-000000000000",
                                     "title": "An image",
                                     "description": "",
                                     "jpeg": {
@@ -298,6 +306,7 @@
                             "image": {
                                 "image": {
                                     "id": 1,
+                                    "uuid": "00000000-0000-0000-0000-000000000000",
                                     "title": "An image",
                                     "description": "Some alt text",
                                     "jpeg": {
@@ -358,6 +367,7 @@
                                     "record_dates": "12 April 2021",
                                     "thumbnail_image": {
                                         "id": 1,
+                                        "uuid": "00000000-0000-0000-0000-000000000000",
                                         "title": "An image",
                                         "description": "Some alt text",
                                         "jpeg": {
@@ -404,6 +414,7 @@
             "teaser_text": "Teaser text",
             "teaser_image": {
                 "id": 14,
+                "uuid": "00000000-0000-0000-0000-000000000000",
                 "title": "An image",
                 "description": "",
                 "jpeg": {
@@ -436,6 +447,7 @@
             "teaser_text": "Teaser text",
             "teaser_image": {
                 "id": 16,
+                "uuid": "00000000-0000-0000-0000-000000000000",
                 "title": "An image",
                 "description": "",
                 "jpeg": {
@@ -468,6 +480,7 @@
             "teaser_text": "Teaser text",
             "teaser_image": {
                 "id": 2,
+                "uuid": "00000000-0000-0000-0000-000000000000",
                 "title": "An image",
                 "description": "",
                 "jpeg": {
@@ -499,6 +512,7 @@
             "teaser_text": "Teaser text",
             "teaser_image": {
                 "id": 4,
+                "uuid": "00000000-0000-0000-0000-000000000000",
                 "title": "An image",
                 "description": "",
                 "jpeg": {
@@ -528,6 +542,7 @@
             "teaser_text": "Teaser text",
             "teaser_image": {
                 "id": 6,
+                "uuid": "00000000-0000-0000-0000-000000000000",
                 "title": "An image",
                 "description": "",
                 "jpeg": {
