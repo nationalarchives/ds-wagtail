@@ -156,15 +156,19 @@ class WhatsOnSeriesPage(BasePageWithRequiredIntro):
 
         def get_start_date(obj):
             value = obj.start_date
-            if isinstance(value, datetime.date) and not isinstance(value, datetime.datetime):
-                return datetime.datetime.combine(value, datetime.time.min, tzinfo=timezone.get_current_timezone())
+            if isinstance(value, datetime.date) and not isinstance(
+                value, datetime.datetime
+            ):
+                return datetime.datetime.combine(
+                    value, datetime.time.min, tzinfo=timezone.get_current_timezone()
+                )
             return value
-        
+
         return sorted(
-        self.event_listings + self.exhibition_listings,
-        key=get_start_date,
-        reverse=True
-    )
+            self.event_listings + self.exhibition_listings,
+            key=get_start_date,
+            reverse=True,
+        )
 
     content_panels = BasePageWithRequiredIntro.content_panels + [
         PageChooserPanel(
@@ -308,7 +312,7 @@ class WhatsOnCategoryPage(BasePageWithRequiredIntro):
         selected for this category page.
         """
         return self.event_listings[:3]
-    
+
     default_api_fields = BasePageWithRequiredIntro.default_api_fields + [
         APIField("latest_listings", serializer=DefaultPageSerializer(many=True)),
     ]
@@ -340,28 +344,32 @@ class EventsListingPage(BasePageWithRequiredIntro):
         """
         Returns a list of event pages.
         """
-        return EventPage.objects.live().public().filter(
-            end_date__gte=timezone.now(),
-        ).order_by("start_date")
-    
+        return (
+            EventPage.objects.live()
+            .public()
+            .filter(
+                end_date__gte=timezone.now(),
+            )
+            .order_by("start_date")
+        )
+
     @cached_property
     def latest_listings(self) -> list:
         """
         Returns a list of the latest event pages.
         """
         return self.event_listings[:3]
-    
+
     default_api_fields = BasePageWithRequiredIntro.default_api_fields + [
         APIField("latest_listings", serializer=DefaultPageSerializer(many=True)),
     ]
-    
+
     api_fields = BasePageWithRequiredIntro.api_fields + [
         APIField(
             "event_listings",
             serializer=DefaultPageSerializer(many=True),
         ),
     ]
-
 
 
 class ExhibitionsListingPage(BasePageWithRequiredIntro):
@@ -381,14 +389,14 @@ class ExhibitionsListingPage(BasePageWithRequiredIntro):
             and page.end_date >= timezone.now().date()
         ]
         return sorted(children, key=lambda x: x.start_date)
-    
+
     @cached_property
     def latest_listings(self) -> list:
         """
         Returns a list of the latest exhibition and display pages.
         """
         return self.exhibition_listings[:3]
-    
+
     @cached_property
     def past_exhibition_listings(self) -> list:
         """
@@ -426,6 +434,7 @@ class ExhibitionsListingPage(BasePageWithRequiredIntro):
             serializer=DefaultPageSerializer(many=True),
         ),
     ]
+
 
 class WhatsOnPageSelection(models.Model):
     """
@@ -465,16 +474,20 @@ class WhatsOnPageSelection(models.Model):
                 "whatson.DisplayPage",
             ],
         ),
-        PageChooserPanel("selected_page", page_type=[
-            "whatson.ExhibitionsListingPage",
-            "whatson.EventsListingPage",
-            "whatson.WhatsOnSeriesPage",
-            "whatson.WhatsOnCategoryPage",
-        ]),
+        PageChooserPanel(
+            "selected_page",
+            page_type=[
+                "whatson.ExhibitionsListingPage",
+                "whatson.EventsListingPage",
+                "whatson.WhatsOnSeriesPage",
+                "whatson.WhatsOnCategoryPage",
+            ],
+        ),
     ]
 
     class Meta:
         verbose_name = _("selection")
+
 
 class WhatsOnPageSelectionSerializer(serializers.Serializer):
     """Serializer for the WhatsOnPageSelection model."""
@@ -490,6 +503,7 @@ class WhatsOnPageSelectionSerializer(serializers.Serializer):
                 ),
             }
         return None
+
 
 class WhatsOnPage(BasePageWithRequiredIntro):
     """
@@ -520,7 +534,10 @@ class WhatsOnPage(BasePageWithRequiredIntro):
     ]
 
     api_fields = BasePageWithRequiredIntro.api_fields + [
-        APIField("whats_on_page_selections", serializer=WhatsOnPageSelectionSerializer(many=True)),
+        APIField(
+            "whats_on_page_selections",
+            serializer=WhatsOnPageSelectionSerializer(many=True),
+        ),
     ]
 
 
@@ -1151,7 +1168,7 @@ class DisplayPage(
             if cls.end_date < timezone.now().date():
                 return "Past display"
         return "Display"
-    
+
     @cached_property
     def short_location(self) -> str:
         """
