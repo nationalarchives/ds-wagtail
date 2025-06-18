@@ -5,7 +5,6 @@ from django.utils import timezone
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
 from modelcluster.fields import ParentalKey
-from rest_framework import serializers
 from wagtail import blocks
 from wagtail.admin.panels import (
     FieldPanel,
@@ -21,11 +20,8 @@ from wagtail.api import APIField
 from wagtail.fields import RichTextField, StreamField
 from wagtail.images import get_image_model_string
 from wagtail.models import Orderable
-from wagtail.search import index
 from wagtail.snippets.models import register_snippet
 
-from etna.articles.models import ArticleTagMixin
-from etna.collections.models import TopicalPageMixin
 from etna.core.blocks import (
     ContentImageBlock,
     FeaturedExternalLinkBlock,
@@ -47,11 +43,16 @@ from etna.core.models import (
 )
 from etna.core.serializers import (
     DefaultPageSerializer,
-    ImageSerializer,
     RichTextSerializer,
 )
 
 from .blocks import ExhibitionPageStreamBlock
+from .serializers import (
+    EventCategorySerializer,
+    SessionSerializer,
+    SpeakerSerializer,
+    WhatsOnPageSelectionSerializer,
+)
 
 
 class SeriesTag(models.Model):
@@ -216,15 +217,6 @@ class EventCategory(models.Model):
 
     def __str__(self):
         return self.name
-
-
-class EventCategorySerializer(serializers.Serializer):
-    """Serializer for the EventCategory model."""
-
-    def to_representation(self, instance):
-        if instance:
-            return instance.name
-        return None
 
 
 class CategorySelection(models.Model):
@@ -489,22 +481,6 @@ class WhatsOnPageSelection(models.Model):
         verbose_name = _("selection")
 
 
-class WhatsOnPageSelectionSerializer(serializers.Serializer):
-    """Serializer for the WhatsOnPageSelection model."""
-
-    def to_representation(self, instance):
-        if instance:
-            return {
-                "featured_page": DefaultPageSerializer().to_representation(
-                    instance.featured_page
-                ),
-                "selected_page": DefaultPageSerializer().to_representation(
-                    instance.selected_page
-                ),
-            }
-        return None
-
-
 class WhatsOnPage(BasePageWithRequiredIntro):
     """
     A page for listing events.
@@ -617,28 +593,6 @@ class EventSpeaker(Orderable):
         return super().clean()
 
 
-class SpeakerSerializer(serializers.Serializer):
-    """Serializer for the EventSpeaker model."""
-
-    def to_representation(self, instance):
-        if instance:
-            if instance.person_page:
-                representation = DefaultPageSerializer().to_representation(
-                    instance.person_page
-                )
-                representation["biography"] = RichTextSerializer().to_representation(
-                    instance.biography
-                )
-                return representation
-            return {
-                "name": instance.name,
-                "role": instance.role,
-                "biography": RichTextSerializer().to_representation(instance.biography),
-                "image": ImageSerializer().to_representation(instance.image),
-            }
-        return None
-
-
 class EventSession(models.Model):
     """
     This model is used to add sessions to an event
@@ -675,14 +629,6 @@ class EventSession(models.Model):
         verbose_name = _("session")
         verbose_name_plural = _("sessions")
         ordering = ["start"]
-
-
-class SessionSerializer(serializers.ModelSerializer):
-    """Serializer for the EventSession model."""
-
-    class Meta:
-        model = EventSession
-        fields = ("start", "end", "sold_out")
 
 
 class EventPage(RequiredHeroImageMixin, ContentWarningMixin, BasePageWithRequiredIntro):
@@ -1539,6 +1485,19 @@ class ExhibitionPage(
                 return "Past exhibition"
         return "Exhibition"
 
+    @cached_property
+    def short_location(self) -> str:
+        """
+        Returns a short version of the location name.
+        """
+        if location := self.location:
+            if location.online:
+                return "Online"
+            elif location.at_tna:
+                return "At The National Archives, Kew"
+            else:
+                return location.address_line_1 or location.space_name or "In-person"
+
     class Meta:
         verbose_name = _("exhibition page")
         verbose_name_plural = _("exhibition pages")
@@ -1620,21 +1579,19 @@ class ExhibitionPage(
         FieldPanel("accent_colour"),
     ]
 
-    promote_panels = (
-        BasePageWithRequiredIntro.promote_panels
-        + [
-            InlinePanel(
-                "page_series_tags",
-                heading=_("Series"),
-                max_num=3,
-            ),
-        ]
-    )
+    promote_panels = BasePageWithRequiredIntro.promote_panels + [
+        InlinePanel(
+            "page_series_tags",
+            heading=_("Series"),
+            max_num=3,
+        ),
+    ]
 
     default_api_fields = BasePageWithRequiredIntro.default_api_fields + [
         APIField("start_date"),
         APIField("end_date"),
         APIField("price"),
+        APIField("short_location"),
     ]
 
     api_fields = (
@@ -1645,6 +1602,7 @@ class ExhibitionPage(
         + AccentColourMixin.api_fields
         + ContentWarningMixin.api_fields
         + [
+            APIField("short_location"),
             APIField("subtitle"),
             APIField("start_date"),
             APIField("end_date"),

@@ -1,0 +1,66 @@
+from rest_framework import serializers
+
+from etna.core.serializers import (
+    DefaultPageSerializer,
+    ImageSerializer,
+    RichTextSerializer,
+)
+
+
+class EventCategorySerializer(serializers.Serializer):
+    """Serializer for the EventCategory model."""
+
+    def to_representation(self, instance):
+        if instance:
+            return instance.name
+        return None
+
+
+class WhatsOnPageSelectionSerializer(serializers.Serializer):
+    """Serializer for the WhatsOnPageSelection model."""
+
+    def to_representation(self, instance):
+        if instance:
+            return {
+                "featured_page": DefaultPageSerializer().to_representation(
+                    instance.featured_page
+                ),
+                "selected_page": DefaultPageSerializer().to_representation(
+                    instance.selected_page
+                ),
+            }
+        return None
+
+
+class SpeakerSerializer(serializers.Serializer):
+    """Serializer for the EventSpeaker model."""
+
+    def to_representation(self, instance):
+        if instance:
+            if instance.person_page:
+                representation = DefaultPageSerializer().to_representation(
+                    instance.person_page
+                )
+                representation["biography"] = RichTextSerializer().to_representation(
+                    instance.biography
+                )
+                return representation
+            return {
+                "name": instance.name,
+                "role": instance.role,
+                "biography": RichTextSerializer().to_representation(instance.biography),
+                "image": ImageSerializer().to_representation(instance.image),
+            }
+        return None
+
+
+class SessionSerializer(serializers.Serializer):
+    """Serializer for the EventSession model."""
+
+    def to_representation(self, instance):
+        if instance:
+            return {
+                "start": instance.start.isoformat() if instance.start else None,
+                "end": instance.end.isoformat() if instance.end else None,
+                "sold_out": instance.sold_out,
+            }
