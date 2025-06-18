@@ -196,3 +196,17 @@ class DescendantOfPathFilter(BaseFilterBackend):
             queryset = queryset.descendant_of(parent_page)
 
         return queryset
+
+
+class LocationFilter(BaseFilterBackend):
+    """
+    Implements the ?online and ?at_tna filter which limits the set of pages to a
+    particular location.
+    """
+
+    def filter_queryset(self, request, queryset, view):
+        if "online" in request.GET:
+            return queryset.filter(location__online=True)
+        elif "at_tna" in request.GET:
+            return queryset.filter(location__at_tna=True)
+        return queryset
