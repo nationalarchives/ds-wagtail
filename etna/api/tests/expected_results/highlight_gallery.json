@@ -26,6 +26,7 @@
         "teaser_text": "Teaser text",
         "teaser_image": {
             "id": 18,
+            "uuid": "00000000-0000-0000-0000-000000000000",
             "title": "An image",
             "description": "",
             "jpeg": {
@@ -43,6 +44,7 @@
         },
         "teaser_image_square": {
             "id": 18,
+            "uuid": "00000000-0000-0000-0000-000000000000",
             "title": "An image",
             "description": "",
             "jpeg": {
@@ -94,6 +96,7 @@
         "teaser_text": "Teaser text",
         "teaser_image": {
             "id": 12,
+            "uuid": "00000000-0000-0000-0000-000000000000",
             "title": "An image",
             "description": "",
             "jpeg": {
@@ -118,6 +121,7 @@
             "title": "",
             "image": {
                 "id": 1,
+                "uuid": "00000000-0000-0000-0000-000000000000",
                 "title": "An image",
                 "description": "Some alt text",
                 "jpeg": {
@@ -155,6 +159,7 @@
         {
             "image": {
                 "id": 1,
+                "uuid": "00000000-0000-0000-0000-000000000000",
                 "title": "An image",
                 "description": "Some alt text",
                 "jpeg": {
@@ -185,6 +190,7 @@
             "teaser_text": "Teaser text",
             "teaser_image": {
                 "id": 2,
+                "uuid": "00000000-0000-0000-0000-000000000000",
                 "title": "An image",
                 "description": "",
                 "jpeg": {
@@ -216,6 +222,7 @@
             "teaser_text": "Teaser text",
             "teaser_image": {
                 "id": 4,
+                "uuid": "00000000-0000-0000-0000-000000000000",
                 "title": "An image",
                 "description": "",
                 "jpeg": {
