@@ -1321,12 +1321,10 @@ class DisplayPage(
 
 
 class ExhibitionPage(
-    ArticleTagMixin,
     AccentColourMixin,
     HeroStyleMixin,
     HeroLayoutMixin,
     RequiredHeroImageMixin,
-    TopicalPageMixin,
     ContentWarningMixin,
     BasePageWithRequiredIntro,
 ):
@@ -1398,19 +1396,14 @@ class ExhibitionPage(
         help_text=_("The text for the audience detail section."),
     )
 
-    location_space_name = models.CharField(
-        max_length=40,
-        verbose_name=_("location space name"),
+    location = models.ForeignKey(
+        "core.Location",
         null=True,
-        help_text=_("The location of the exhibition within the venue."),
-    )
-
-    location_address = RichTextField(
-        verbose_name=_("location address"),
-        null=True,
-        blank=True,
-        help_text=_("Leave blank to default to TNA address."),
-        features=["link"],
+        blank=False,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        verbose_name=_("location"),
+        help_text=_("The location of the exhibition."),
     )
 
     # Body section
@@ -1590,14 +1583,6 @@ class ExhibitionPage(
             ],
             heading=_("Related content"),
         ),
-        MultiFieldPanel(
-            [
-                FieldPanel("plan_your_visit_title"),
-                FieldPanel("plan_your_visit_image"),
-                FieldPanel("plan_your_visit"),
-            ],
-            heading=_("Plan your visit"),
-        ),
     ]
 
     key_details_panels = [
@@ -1628,13 +1613,7 @@ class ExhibitionPage(
             ],
             heading=_("Audience details"),
         ),
-        MultiFieldPanel(
-            [
-                FieldPanel("location_space_name"),
-                FieldPanel("location_address"),
-            ],
-            heading=_("Location details"),
-        ),
+        FieldPanel("location"),
     ]
 
     design_panels = [
@@ -1643,10 +1622,7 @@ class ExhibitionPage(
 
     promote_panels = (
         BasePageWithRequiredIntro.promote_panels
-        + ArticleTagMixin.promote_panels
         + [
-            TopicalPageMixin.get_topics_inlinepanel(),
-            TopicalPageMixin.get_time_periods_inlinepanel(),
             InlinePanel(
                 "page_series_tags",
                 heading=_("Series"),
@@ -1678,8 +1654,7 @@ class ExhibitionPage(
             APIField("booking_details", serializer=RichTextSerializer()),
             APIField("audience_heading"),
             APIField("audience_detail"),
-            APIField("location_space_name"),
-            APIField("location_address", serializer=RichTextSerializer()),
+            APIField("location", serializer=LocationSerializer()),
             APIField("intro_title"),
             APIField("body"),
             APIField("exhibition_highlights_title"),
@@ -1695,12 +1670,7 @@ class ExhibitionPage(
             APIField("event_description", serializer=RichTextSerializer()),
             APIField("event_links"),
             APIField("shop"),
-            APIField("plan_your_visit_title"),
-            APIField("plan_your_visit_image"),
-            APIField("plan_your_visit"),
         ]
-        + TopicalPageMixin.api_fields
-        + ArticleTagMixin.api_fields
     )
 
     edit_handler = TabbedInterface(
@@ -1710,15 +1680,6 @@ class ExhibitionPage(
             ObjectList(design_panels, heading="Design"),
             ObjectList(promote_panels, heading="Promote"),
             ObjectList(BasePageWithRequiredIntro.settings_panels, heading="Settings"),
-        ]
-    )
-
-    search_fields = (
-        BasePageWithRequiredIntro.search_fields
-        + ArticleTagMixin.search_fields
-        + [
-            index.SearchField("topic_names", boost=1),
-            index.SearchField("time_period_names", boost=1),
         ]
     )
 
