@@ -49,7 +49,12 @@ class SpeakerSerializer(serializers.Serializer):
                 "name": instance.name,
                 "role": instance.role,
                 "biography": RichTextSerializer().to_representation(instance.biography),
-                "image": ImageSerializer().to_representation(instance.image),
+                "image": ImageSerializer(
+                    rendition_size="fill-400x400"
+                ).to_representation(instance.image),
+                "image_small": ImageSerializer(
+                    rendition_size="fill-128x128"
+                ).to_representation(instance.image),
             }
         return None
 

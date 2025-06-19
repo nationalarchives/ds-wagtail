@@ -169,10 +169,10 @@ class Location(models.Model):
         if self.online:
             return f"Online, {self.space_name}"
 
-        return (
-            f"{self.address_line_1}, {self.address_line_2}, {self.postcode}"
-            if self.address_line_1 or self.address_line_2 or self.postcode
-            else ""
+        return ", ".join(
+            value
+            for value in [self.address_line_1, self.address_line_2, self.postcode]
+            if value
         )
 
     def __str__(self):
@@ -189,23 +189,26 @@ class Location(models.Model):
         verbose_name_plural = _("Locations")
 
 
-class LocationSerializer(serializers.ModelSerializer):
+class LocationSerializer(serializers.Serializer):
     """
     Serializer for the Location model.
     """
 
-    details = StreamFieldSerializer()
-
-    class Meta:
-        model = Location
-        fields = (
-            "space_name",
-            "at_tna",
-            "online",
-            "address_line_1",
-            "address_line_2",
-            "postcode",
-            "full_address",
-            "details_title",
-            "details",
-        )
+    def to_representation(self, instance):
+        if instance:
+            return {
+                "space_name": instance.space_name,
+                "at_tna": instance.at_tna,
+                "online": instance.online,
+                "online_detail": instance.online_detail,
+                "address_line_1": instance.address_line_1,
+                "address_line_2": instance.address_line_2,
+                "postcode": instance.postcode,
+                "full_address": instance.full_address,
+                "details_title": instance.details_title,
+                "details": StreamFieldSerializer().to_representation(
+                    instance.details
+                ),
+                "image": ImageSerializer().to_representation(instance.image),
+            }
+        return None
