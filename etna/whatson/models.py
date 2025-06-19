@@ -829,6 +829,8 @@ class EventPage(RequiredHeroImageMixin, ContentWarningMixin, BasePageWithRequire
             APIField("start_date"),
             APIField("end_date"),
             APIField("description", serializer=RichTextSerializer()),
+            APIField("event_highlights_title"),
+            APIField("event_highlights"),
             APIField("audience_heading"),
             APIField("audience_detail"),
             APIField("booking_details", serializer=RichTextSerializer()),
@@ -837,8 +839,6 @@ class EventPage(RequiredHeroImageMixin, ContentWarningMixin, BasePageWithRequire
             APIField("max_price"),
             APIField("price_range"),
             APIField("booking_link"),
-            APIField("event_status"),
-            APIField("date_time_range"),
             APIField("speakers", serializer=SpeakerSerializer(many=True)),
             APIField("sessions", serializer=SessionSerializer(many=True)),
             APIField("series", serializer=DefaultPageSerializer(many=True)),
@@ -895,44 +895,6 @@ class EventPage(RequiredHeroImageMixin, ContentWarningMixin, BasePageWithRequire
         Returns True if all sessions of an event is sold out, otherwise False.
         """
         return all(session.sold_out for session in self.sessions.all())
-
-    @property
-    def event_status(self) -> str | None:
-        """
-        Returns the event status based on different conditions.
-        """
-        if self.start_date.date() <= (
-            timezone.now().date() + timezone.timedelta(days=5)
-        ):
-            return "Last chance"
-
-    @cached_property
-    def date_time_range(self) -> str | None:
-        format_day_date_and_time = "%A %-d %B %Y, %H:%M"
-        format_date_only = "%-d %B %Y"
-        format_time_only = "%H:%M"
-        format_day_and_date = "%A %-d %B %Y"
-        # One session on one date where start and end times are the same
-        # return eg. Monday 1 January 2024, 19:00
-        if (self.start_date == self.end_date) and (len(self.sessions.all()) == 1):
-            return self.start_date.strftime(format_day_date_and_time)
-        # One session on one date where there are values for both start time and end time
-        # eg. Monday 1 January 2024, 19:00–20:00 (note this uses an en dash)
-        dates_same = self.start_date.date() == self.end_date.date()
-        if (
-            dates_same
-            and (self.start_date.time() != self.end_date.time())
-            and (len(self.sessions.all()) == 1)
-        ):
-            return f"{self.start_date.strftime(format_day_date_and_time)}–{self.end_date.strftime(format_time_only)}"
-        # Multiple sessions on one date
-        # Eg. Monday 1 January 2024
-        if dates_same and len(self.sessions.all()) > 1:
-            return self.start_date.strftime(format_day_and_date)
-        # Event has multiple dates
-        # Eg. 1 January 2024 to 5 January 2024
-        if not dates_same:
-            return f"{self.start_date.strftime(format_date_only)} to {self.end_date.strftime(format_date_only)}"
 
     def serializable_data(self):
         # Keep aggregated field values out of revision content
