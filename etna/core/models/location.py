@@ -206,9 +206,7 @@ class LocationSerializer(serializers.Serializer):
                 "postcode": instance.postcode,
                 "full_address": instance.full_address,
                 "details_title": instance.details_title,
-                "details": StreamFieldSerializer().to_representation(
-                    instance.details
-                ),
+                "details": StreamFieldSerializer().to_representation(instance.details),
                 "image": ImageSerializer().to_representation(instance.image),
             }
         return None
