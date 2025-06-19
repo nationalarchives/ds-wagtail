@@ -244,7 +244,6 @@ class APIResponseTest(WagtailPageTestCase):
                             "type": "promoted_list",
                             "value": {
                                 "summary": '<p data-block-key="9rpsq">Summary</p>',
-                                "category": 1,
                                 "promoted_items": [
                                     {
                                         "id": "b244621d-72e4-491a-a168-499e7f3c382c",
