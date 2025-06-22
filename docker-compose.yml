@@ -13,6 +13,7 @@ services:
       - redis
     ports:
       - 8000:8080
+      - 5678:5678
     env_file:
       - .env
     environment:

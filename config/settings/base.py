@@ -30,6 +30,8 @@ WAGTAIL_HEADLESS_PREVIEW = {
 }
 
 DEBUG = strtobool(os.getenv("DEBUG", "False"))
+VSC_DEBUGGER = strtobool(os.getenv("VSC_DEBUGGER", "False"))
+PYC_DEBUGGER = strtobool(os.getenv("PYC_DEBUGGER", "False"))
 
 SECRET_KEY = os.getenv("SECRET_KEY", "")
 
