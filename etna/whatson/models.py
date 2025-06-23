@@ -172,6 +172,10 @@ class WhatsOnSeriesPage(BasePageWithRequiredIntro):
             reverse=True,
         )[:3]
 
+    @cached_property
+    def type_label(cls) -> str:
+        return "What's On"
+
     content_panels = BasePageWithRequiredIntro.content_panels + [
         PageChooserPanel(
             "featured_page",
@@ -306,6 +310,10 @@ class WhatsOnCategoryPage(BasePageWithRequiredIntro):
         """
         return self.event_listings[:3]
 
+    @cached_property
+    def type_label(cls) -> str:
+        return "What's On"
+
     default_api_fields = BasePageWithRequiredIntro.default_api_fields + [
         APIField("latest_listings", serializer=DefaultPageSerializer(many=True)),
     ]
@@ -352,6 +360,10 @@ class EventsListingPage(BasePageWithRequiredIntro):
         Returns a list of the latest event pages.
         """
         return self.event_listings[:3]
+
+    @cached_property
+    def type_label(cls) -> str:
+        return "What's On"
 
     default_api_fields = BasePageWithRequiredIntro.default_api_fields + [
         APIField("latest_listings", serializer=DefaultPageSerializer(many=True)),
@@ -403,11 +415,16 @@ class ExhibitionsListingPage(BasePageWithRequiredIntro):
         ]
         return sorted(children, key=lambda x: x.start_date)
 
+    @cached_property
+    def type_label(cls) -> str:
+        return "What's On"
+
     max_count = 1
 
     parent_page_types = [
         "whatson.WhatsOnPage",
     ]
+
     subpage_types = ["whatson.ExhibitionPage", "whatson.DisplayPage"]
 
     default_api_fields = BasePageWithRequiredIntro.default_api_fields + [
@@ -486,6 +503,10 @@ class WhatsOnPage(BasePageWithRequiredIntro):
     """
     A page for listing events.
     """
+
+    @cached_property
+    def type_label(cls) -> str:
+        return "What's On"
 
     class Meta:
         verbose_name = _("What's On page")
@@ -854,7 +875,7 @@ class EventPage(RequiredHeroImageMixin, ContentWarningMixin, BasePageWithRequire
             if location.online:
                 return "Online"
             elif location.at_tna:
-                return "At The National Archives, Kew"
+                return "The National Archives, Kew"
             else:
                 return location.address_line_1 or location.space_name or "In-person"
 
@@ -1087,7 +1108,7 @@ class DisplayPage(
             if location.online:
                 return "Online"
             elif location.at_tna:
-                return "At The National Archives, Kew"
+                return "The National Archives, Kew"
             else:
                 return location.address_line_1 or location.space_name or "In-person"
 
@@ -1456,7 +1477,7 @@ class ExhibitionPage(
             if location.online:
                 return "Online"
             elif location.at_tna:
-                return "At The National Archives, Kew"
+                return "The National Archives, Kew"
             else:
                 return location.address_line_1 or location.space_name or "In-person"
 
