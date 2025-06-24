@@ -25,14 +25,12 @@ from wagtail.models import Orderable
 from wagtail.snippets.models import register_snippet
 
 from etna.core.blocks import (
-    ContentImageBlock,
     FeaturedExternalLinkBlock,
     FeaturedPagesBlock,
     ImageGalleryBlock,
     MixedMediaBlock,
     ReviewBlock,
     ShopCollectionBlock,
-    SimplifiedAccordionBlock,
 )
 from etna.core.models import (
     AccentColourMixin,
@@ -50,7 +48,7 @@ from etna.core.serializers import (
 
 from .blocks import ExhibitionPageStreamBlock
 from .serializers import (
-    EventCategorySerializer,
+    EventTypeSerializer,
     SessionSerializer,
     SpeakerSerializer,
     WhatsOnPageSelectionSerializer,
@@ -119,10 +117,15 @@ class WhatsOnSeriesPage(BasePageWithRequiredIntro):
         """
         Returns a list of event pages that belong to this series.
         """
-        return EventPage.objects.live().public().filter(
+        return (
+            EventPage.objects.live()
+            .public()
+            .filter(
                 pk__in=self.related_page_pks,
                 end_date__gte=timezone.now(),
-            ).order_by("start_date")
+            )
+            .order_by("start_date")
+        )
 
     @cached_property
     def exhibition_listings(self) -> list:
@@ -191,10 +194,10 @@ class WhatsOnSeriesPage(BasePageWithRequiredIntro):
 
 
 @register_snippet
-class EventCategory(models.Model):
+class EventType(models.Model):
     """
     This snippet model is used so that editors can add event categories,
-    which we use via the event_category ForeignKey to add event categories
+    which we use via the event_type ForeignKey to add event categories
     to event pages.
     """
 
@@ -210,7 +213,7 @@ class EventCategory(models.Model):
     )
 
     class Meta:
-        verbose_name = _("event category")
+        verbose_name = _("event type")
         verbose_name_plural = _("event categories")
 
     def __str__(self):
@@ -224,7 +227,7 @@ class CategorySelection(models.Model):
         related_name="category_pages",
     )
     category = models.ForeignKey(
-        "whatson.EventCategory",
+        "whatson.EventType",
         on_delete=models.CASCADE,
         related_name="selected_category",
         verbose_name=_("category"),
@@ -284,10 +287,15 @@ class WhatsOnCategoryPage(BasePageWithRequiredIntro):
         Returns a list of event pages that belong to the categories selected
         for this category page.
         """
-        return EventPage.objects.live().public().filter(
-                event_category__in=self.categories,
+        return (
+            EventPage.objects.live()
+            .public()
+            .filter(
+                event_type__in=self.categories,
                 end_date__gte=timezone.now(),
-            ).order_by("start_date")
+            )
+            .order_by("start_date")
+        )
 
     @cached_property
     def latest_listings(self) -> list:
@@ -307,7 +315,7 @@ class WhatsOnCategoryPage(BasePageWithRequiredIntro):
 
     api_fields = BasePageWithRequiredIntro.api_fields + [
         APIField("featured_page", serializer=DefaultPageSerializer()),
-        APIField("categories", serializer=EventCategorySerializer(many=True)),
+        APIField("categories", serializer=EventTypeSerializer(many=True)),
         APIField(
             "event_listings",
             serializer=DefaultPageSerializer(many=True),
@@ -459,8 +467,16 @@ class EventsLocationListingPage(BasePageWithRequiredIntro):
         """
         Returns a list of event pages that are happening at The National Archives or online.
         """
-        return EventPage.objects.filter(location__at_tna=self.at_tna, location__online=self.online, end_date__gte=timezone.now()).live().public()
-    
+        return (
+            EventPage.objects.filter(
+                location__at_tna=self.at_tna,
+                location__online=self.online,
+                end_date__gte=timezone.now(),
+            )
+            .live()
+            .public()
+        )
+
     @cached_property
     def exhibition_listings(self) -> list:
         """
@@ -470,15 +486,18 @@ class EventsLocationListingPage(BasePageWithRequiredIntro):
 
         for page_type in [ExhibitionPage, DisplayPage]:
             page_list.extend(
-                page_type.objects
-                .filter(location___at_tna=self.at_tna, location__online=self.online, end_date__gte=timezone.now())
+                page_type.objects.filter(
+                    location___at_tna=self.at_tna,
+                    location__online=self.online,
+                    end_date__gte=timezone.now(),
+                )
                 .live()
                 .public()
                 .order_by("start_date")
             )
 
         return page_list
-    
+
     content_panels = BasePageWithRequiredIntro.content_panels + [
         FieldPanel(
             "at_tna",
@@ -500,7 +519,7 @@ class EventsLocationListingPage(BasePageWithRequiredIntro):
             serializer=DefaultPageSerializer(many=True),
         ),
     ]
-    
+
     max_count = 2
 
     subpage_types = []
@@ -529,8 +548,16 @@ class EventsDateListingPage(BasePageWithRequiredIntro):
         """
         now = timezone.now()
         future = now + datetime.timedelta(days=self.days)
-        
-        return EventPage.objects.filter(sessions__start__gte=now, sessions__start__lte=future).live().public().distinct().order_by("start_date")
+
+        return (
+            EventPage.objects.filter(
+                sessions__start__gte=now, sessions__start__lte=future
+            )
+            .live()
+            .public()
+            .distinct()
+            .order_by("start_date")
+        )
 
     @cached_property
     def exhibition_listings(self) -> list:
@@ -555,7 +582,7 @@ class EventsDateListingPage(BasePageWithRequiredIntro):
     @cached_property
     def type_label(cls) -> str:
         return "What's On"
-    
+
     content_panels = BasePageWithRequiredIntro.content_panels + [
         FieldPanel(
             "days",
@@ -573,7 +600,7 @@ class EventsDateListingPage(BasePageWithRequiredIntro):
             serializer=DefaultPageSerializer(many=True),
         ),
     ]
-    
+
     subpage_types = []
 
     parent_page_types = [
@@ -797,8 +824,8 @@ class EventPage(RequiredHeroImageMixin, ContentWarningMixin, BasePageWithRequire
     """
 
     # Event information
-    event_category = models.ForeignKey(
-        EventCategory,
+    event_type = models.ForeignKey(
+        EventType,
         null=True,
         blank=False,
         on_delete=models.SET_NULL,
@@ -911,7 +938,7 @@ class EventPage(RequiredHeroImageMixin, ContentWarningMixin, BasePageWithRequire
     )
 
     key_details_panels = [
-        FieldPanel("event_category"),
+        FieldPanel("event_type"),
         MultiFieldPanel(
             [
                 FieldPanel("booking_link"),
@@ -983,7 +1010,7 @@ class EventPage(RequiredHeroImageMixin, ContentWarningMixin, BasePageWithRequire
         + [
             APIField("short_location"),
             APIField("location", serializer=LocationSerializer()),
-            APIField("event_category", serializer=EventCategorySerializer()),
+            APIField("event_type", serializer=EventTypeSerializer()),
             APIField("start_date"),
             APIField("end_date"),
             APIField("description", serializer=RichTextSerializer()),
@@ -1027,10 +1054,10 @@ class EventPage(RequiredHeroImageMixin, ContentWarningMixin, BasePageWithRequire
     def type_label(cls) -> str:
         """
         Overrides the type_label method from BasePage, to return the correct
-        type label for the event page which will be the event category name.
+        type label for the event page which will be the event type name.
         """
-        if cls.event_category:
-            return cls.event_category.name
+        if cls.event_type:
+            return cls.event_type.name
         return "Event"
 
     @cached_property
