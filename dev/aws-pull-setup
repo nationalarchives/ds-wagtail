@@ -1,0 +1,14 @@
+#!/bin/bash
+
+set -e
+
+if [ -z "$1" ]
+then
+    export ENVIRONMENT=develop
+else
+    export ENVIRONMENT="$1"
+fi
+
+export DB_DUMP_DIR=/home/app/database_dumps
+export DB_DUMP="$TIMESTAMP.psql"
+export TIMESTAMP=$(date +%s)
