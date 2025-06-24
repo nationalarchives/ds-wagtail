@@ -151,22 +151,7 @@ class WhatsOnSeriesPage(BasePageWithRequiredIntro):
         Returns a list of the latest event pages that belong to the categories
         selected for this category page.
         """
-
-        def get_start_date(obj):
-            value = obj.start_date
-            if isinstance(value, datetime.date) and not isinstance(
-                value, datetime.datetime
-            ):
-                return datetime.datetime.combine(
-                    value, datetime.time.min, tzinfo=timezone.get_current_timezone()
-                )
-            return value
-
-        return sorted(
-            self.event_listings + self.exhibition_listings,
-            key=get_start_date,
-            reverse=True,
-        )[:3]
+        return self.event_listings[:3]
 
     @cached_property
     def type_label(cls) -> str:
@@ -196,8 +181,8 @@ class WhatsOnSeriesPage(BasePageWithRequiredIntro):
 @register_snippet
 class EventType(models.Model):
     """
-    This snippet model is used so that editors can add event categories,
-    which we use via the event_type ForeignKey to add event categories
+    This snippet model is used so that editors can add event types,
+    which we use via the event_type ForeignKey to add event types
     to event pages.
     """
 
@@ -214,7 +199,7 @@ class EventType(models.Model):
 
     class Meta:
         verbose_name = _("event type")
-        verbose_name_plural = _("event categories")
+        verbose_name_plural = _("event types")
 
     def __str__(self):
         return self.name
@@ -487,7 +472,7 @@ class EventsLocationListingPage(BasePageWithRequiredIntro):
         for page_type in [ExhibitionPage, DisplayPage]:
             page_list.extend(
                 page_type.objects.filter(
-                    location___at_tna=self.at_tna,
+                    location__at_tna=self.at_tna,
                     location__online=self.online,
                     end_date__gte=timezone.now(),
                 )

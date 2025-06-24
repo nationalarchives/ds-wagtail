@@ -26,7 +26,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AlterModelOptions(
             name='eventtype',
-            options={'verbose_name': 'event type', 'verbose_name_plural': 'event categories'},
+            options={'verbose_name': 'event type', 'verbose_name_plural': 'event types'},
         ),
         migrations.RenameField(
             model_name='eventpage',
