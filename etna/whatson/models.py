@@ -291,16 +291,11 @@ class WhatsOnCategoryPage(BasePageWithRequiredIntro):
         Returns a list of event pages that belong to the categories selected
         for this category page.
         """
-        return [
-            page
-            for page in EventPage.objects.live()
-            .public()
-            .filter(
+        return EventPage.objects.live().public().filter(
                 event_category__in=self.categories,
-            )
-            .order_by("start_date")
-            if page.end_date >= timezone.now()
-        ]
+            ).filter(
+                end_date__gte=timezone.now(),
+            ).order_by("start_date")
 
     @cached_property
     def latest_listings(self) -> list:
@@ -444,6 +439,103 @@ class ExhibitionsListingPage(BasePageWithRequiredIntro):
             serializer=DefaultPageSerializer(many=True),
         ),
     ]
+
+
+class EventsLocationListingPage(BasePageWithRequiredIntro):
+    """
+    A page for listing events and exhibitions online or at TNA.
+    """
+
+    at_tna = models.BooleanField(
+        default=False,
+        verbose_name=_("at The National Archives"),
+        help_text=_("Check this box to display events at The National Archives."),
+    )
+
+    online = models.BooleanField(
+        default=False,
+        verbose_name=_("online"),
+        help_text=_("Check this box to display online events."),
+    )
+
+    @cached_property
+    def type_label(cls) -> str:
+        return "What's On"
+
+    @cached_property
+    def event_listings(self) -> list:
+        """
+        Returns a list of event pages that are happening at The National Archives or online.
+        """
+        return EventPage.objects.filter(location__at_tna=self.at_tna, location__online=self.online, end_date__gte=timezone.now()).live().public()
+    
+    @cached_property
+    def exhibition_listings(self) -> list:
+        """
+        Returns a list of exhibition and display pages that are happening at The National Archives or online.
+        """
+        page_list = []
+
+        for page_type in [ExhibitionPage, DisplayPage]:
+            page_list.extend(
+                page_type.objects.exclude(pk=self.featured_page_id)
+                .filter(location___at_tna=self.at_tna, location__online=self.online, end_date__gte=timezone.now())
+                .live()
+                .public()
+                .order_by("start_date")
+            )
+
+        return page_list
+    
+    max_count = 2
+
+
+class EventsDateListingPage(BasePageWithRequiredIntro):
+    """
+    A page for listing events/exhibitions within a certain date.
+    """
+
+    days = models.PositiveIntegerField(
+        default=1,
+        verbose_name=_("number of days"),
+        help_text=_("The number of days in the future to list events/exhibitions."),
+    )
+
+    @cached_property
+    def event_listings(self) -> list:
+        """
+        Returns a list of event pages that are happening between today and the date in `days`
+        amount of days.
+        """
+        now = timezone.now()
+        future = now + datetime.timedelta(days=self.days)
+        
+        return EventPage.objects.filter(sessions__start__gte=now, sessions__start__lte=future).live().public().order_by("start_date")
+
+    @cached_property
+    def exhibition_listings(self) -> list:
+        """
+        Returns a list of exhibition and display pages that are happening between today and the date in `days`
+        amount of days.
+        """
+        now = timezone.now()
+        future = now + datetime.timedelta(days=self.days)
+        page_list = []
+
+        for page_type in [ExhibitionPage, DisplayPage]:
+            page_list.extend(
+                page_type.objects.exclude(pk=self.featured_page_id)
+                .filter(end_date__gte=now, start_date__lte=future)
+                .live()
+                .public()
+                .order_by("start_date")
+            )
+
+        return page_list
+
+    @cached_property
+    def type_label(cls) -> str:
+        return "What's On"
 
 
 class WhatsOnPageSelection(models.Model):
@@ -1433,26 +1525,6 @@ class ExhibitionPage(
 
     shop = StreamField(
         [("shop", ShopCollectionBlock())],
-        blank=True,
-        max_num=1,
-    )
-
-    # Plan your visit section
-    plan_your_visit_title = models.CharField(
-        max_length=100,
-        blank=True,
-        help_text=_("Leave blank to default to 'Plan your visit'."),
-    )
-
-    plan_your_visit_image = StreamField(
-        [("image", ContentImageBlock())],
-        blank=True,
-        null=True,
-        max_num=1,
-    )
-
-    plan_your_visit = StreamField(
-        [("plan_your_visit", blocks.ListBlock(SimplifiedAccordionBlock()))],
         blank=True,
         max_num=1,
     )
