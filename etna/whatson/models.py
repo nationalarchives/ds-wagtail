@@ -99,9 +99,6 @@ class WhatsOnSeriesPage(BasePageWithRequiredIntro):
         help_text=_("The page to feature on the series page."),
     )
 
-    class Meta:
-        verbose_name = _("What's On series page")
-
     parent_page_types = [
         "whatson.WhatsOnPage",
     ]
@@ -177,6 +174,10 @@ class WhatsOnSeriesPage(BasePageWithRequiredIntro):
         APIField("exhibition_listings", serializer=DefaultPageSerializer(many=True)),
     ]
 
+    class Meta:
+        verbose_name = _("Series listing page")
+        verbose_name_plural = _("Series listing pages")
+
 
 @register_snippet
 class EventType(models.Model):
@@ -236,9 +237,6 @@ class WhatsOnCategoryPage(BasePageWithRequiredIntro):
         verbose_name=_("featured page"),
         help_text=_("The page to feature on the category page."),
     )
-
-    class Meta:
-        verbose_name = _("What's On category page")
 
     parent_page_types = [
         "whatson.WhatsOnPage",
@@ -306,6 +304,10 @@ class WhatsOnCategoryPage(BasePageWithRequiredIntro):
             serializer=DefaultPageSerializer(many=True),
         ),
     ]
+
+    class Meta:
+        verbose_name = _("Category listing page")
+        verbose_name_plural = _("Category listing pages")
 
 
 class EventsListingPage(BasePageWithRequiredIntro):
@@ -426,7 +428,7 @@ class ExhibitionsListingPage(BasePageWithRequiredIntro):
     ]
 
 
-class EventsLocationListingPage(BasePageWithRequiredIntro):
+class WhatsOnLocationListingPage(BasePageWithRequiredIntro):
     """
     A page for listing events and exhibitions online or at TNA.
     """
@@ -513,8 +515,12 @@ class EventsLocationListingPage(BasePageWithRequiredIntro):
         "whatson.WhatsOnPage",
     ]
 
+    class Meta:
+        verbose_name = _("Location listing page")
+        verbose_name_plural = _("Location listing pages")
 
-class EventsDateListingPage(BasePageWithRequiredIntro):
+
+class WhatsOnDateListingPage(BasePageWithRequiredIntro):
     """
     A page for listing events/exhibitions within a certain date.
     """
@@ -592,6 +598,10 @@ class EventsDateListingPage(BasePageWithRequiredIntro):
         "whatson.WhatsOnPage",
     ]
 
+    class Meta:
+        verbose_name = _("Date listing page")
+        verbose_name_plural = _("Date listing pages")
+
 
 class WhatsOnPageSelection(models.Model):
     """
@@ -666,8 +676,8 @@ class WhatsOnPage(BasePageWithRequiredIntro):
         "whatson.ExhibitionsListingPage",
         "whatson.WhatsOnSeriesPage",
         "whatson.WhatsOnCategoryPage",
-        "whatson.EventsLocationListingPage",
-        "whatson.EventsDateListingPage",
+        "whatson.WhatsOnLocationListingPage",
+        "whatson.WhatsOnDateListingPage",
     ]
 
     max_count = 1
