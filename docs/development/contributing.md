@@ -15,7 +15,6 @@ Before contributing code, please familiarise yourself with the [Project conventi
 2. Head to https://github.com/nationalarchives/ds-wagtail/pulls and create a pull request from your branch.
 
    For the PR Title:
-
    - For ticketed features or ticketed bugs, use the naming convention: `DF-XXX: Short description`
    - For housekeeping tasks or other unticketed work, use the convention: `CHORE: Short description`
 
