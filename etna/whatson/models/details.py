@@ -1,5 +1,3 @@
-import datetime
-
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
@@ -14,7 +12,6 @@ from wagtail.admin.panels import (
     InlinePanel,
     MultiFieldPanel,
     ObjectList,
-    PageChooserPanel,
     TabbedInterface,
     TitleFieldPanel,
 )
@@ -25,14 +22,12 @@ from wagtail.models import Orderable
 from wagtail.snippets.models import register_snippet
 
 from etna.core.blocks import (
-    ContentImageBlock,
     FeaturedExternalLinkBlock,
     FeaturedPagesBlock,
     ImageGalleryBlock,
     MixedMediaBlock,
     ReviewBlock,
     ShopCollectionBlock,
-    SimplifiedAccordionBlock,
 )
 from etna.core.models import (
     AccentColourMixin,
@@ -48,12 +43,11 @@ from etna.core.serializers import (
     RichTextSerializer,
 )
 
-from .blocks import ExhibitionPageStreamBlock
-from .serializers import (
-    EventCategorySerializer,
+from ..blocks import ExhibitionPageStreamBlock
+from ..serializers import (
+    EventTypeSerializer,
     SessionSerializer,
     SpeakerSerializer,
-    WhatsOnPageSelectionSerializer,
 )
 
 
@@ -86,118 +80,11 @@ class SeriesTag(models.Model):
         return f"{self.page.title}: {self.series.title}"
 
 
-class WhatsOnSeriesPage(BasePageWithRequiredIntro):
-    """
-    A page for creating a series/grouping of events.
-    """
-
-    featured_page = models.ForeignKey(
-        "wagtailcore.Page",
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="+",
-        verbose_name=_("featured page"),
-        help_text=_("The page to feature on the series page."),
-    )
-
-    class Meta:
-        verbose_name = _("What's On series page")
-
-    parent_page_types = [
-        "whatson.WhatsOnPage",
-    ]
-
-    subpage_types = []
-
-    @cached_property
-    def related_page_pks(self) -> tuple[int]:
-        return tuple(self.series_pages.values_list("page_id", flat=True))
-
-    @cached_property
-    def event_listings(self) -> list:
-        """
-        Returns a list of event pages that belong to this series.
-        """
-        return [
-            page
-            for page in EventPage.objects.live()
-            .public()
-            .filter(
-                pk__in=self.related_page_pks,
-            )
-            .order_by("start_date")
-            if page.end_date >= timezone.now()
-        ]
-
-    @cached_property
-    def exhibition_listings(self) -> list:
-        """
-        Returns a list of exhibition and display pages that belong to this series.
-        """
-        page_list = []
-
-        for page_type in [ExhibitionPage, DisplayPage]:
-            page_list.extend(
-                page_type.objects.exclude(pk=self.featured_page_id)
-                .filter(pk__in=self.related_page_pks)
-                .filter(end_date__gt=timezone.now())
-                .live()
-                .public()
-                .order_by("start_date")
-            )
-
-        return page_list
-
-    @cached_property
-    def latest_listings(self) -> list:
-        """
-        Returns a list of the latest event pages that belong to the categories
-        selected for this category page.
-        """
-
-        def get_start_date(obj):
-            value = obj.start_date
-            if isinstance(value, datetime.date) and not isinstance(
-                value, datetime.datetime
-            ):
-                return datetime.datetime.combine(
-                    value, datetime.time.min, tzinfo=timezone.get_current_timezone()
-                )
-            return value
-
-        return sorted(
-            self.event_listings + self.exhibition_listings,
-            key=get_start_date,
-            reverse=True,
-        )[:3]
-
-    content_panels = BasePageWithRequiredIntro.content_panels + [
-        PageChooserPanel(
-            "featured_page",
-            page_type=[
-                "whatson.EventPage",
-                "whatson.ExhibitionPage",
-                "whatson.DisplayPage",
-            ],
-        )
-    ]
-
-    default_api_fields = BasePageWithRequiredIntro.default_api_fields + [
-        APIField("latest_listings", serializer=DefaultPageSerializer(many=True)),
-    ]
-
-    api_fields = BasePageWithRequiredIntro.api_fields + [
-        APIField("event_listings", serializer=DefaultPageSerializer(many=True)),
-        APIField("exhibition_listings", serializer=DefaultPageSerializer(many=True)),
-    ]
-
-
 @register_snippet
-class EventCategory(models.Model):
+class EventType(models.Model):
     """
-    This snippet model is used so that editors can add event categories,
-    which we use via the event_category ForeignKey to add event categories
+    This snippet model is used so that editors can add event types,
+    which we use via the event_type ForeignKey to add event types
     to event pages.
     """
 
@@ -213,309 +100,11 @@ class EventCategory(models.Model):
     )
 
     class Meta:
-        verbose_name = _("event category")
-        verbose_name_plural = _("event categories")
+        verbose_name = _("event type")
+        verbose_name_plural = _("event types")
 
     def __str__(self):
         return self.name
-
-
-class CategorySelection(models.Model):
-    page = ParentalKey(
-        "wagtailcore.Page",
-        on_delete=models.CASCADE,
-        related_name="category_pages",
-    )
-    category = models.ForeignKey(
-        "whatson.EventCategory",
-        on_delete=models.CASCADE,
-        related_name="selected_category",
-        verbose_name=_("category"),
-        help_text=_("The category of events to display on the Category page."),
-        null=False,
-        blank=False,
-    )
-
-
-class WhatsOnCategoryPage(BasePageWithRequiredIntro):
-    """
-    A page for displaying a category of events.
-    """
-
-    featured_page = models.ForeignKey(
-        "wagtailcore.Page",
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="+",
-        verbose_name=_("featured page"),
-        help_text=_("The page to feature on the category page."),
-    )
-
-    class Meta:
-        verbose_name = _("What's On category page")
-
-    parent_page_types = [
-        "whatson.WhatsOnPage",
-    ]
-
-    subpage_types = []
-
-    content_panels = BasePageWithRequiredIntro.content_panels + [
-        InlinePanel(
-            "category_pages",
-            heading=_("Category selection"),
-        ),
-        PageChooserPanel(
-            "featured_page",
-            page_type="whatson.EventPage",
-        ),
-    ]
-
-    @cached_property
-    def categories(self) -> tuple:
-        """
-        Returns the categories selected for this category page.
-        """
-        return tuple(
-            item.category for item in self.category_pages.select_related("category")
-        )
-
-    @cached_property
-    def event_listings(self) -> list:
-        """
-        Returns a list of event pages that belong to the categories selected
-        for this category page.
-        """
-        return [
-            page
-            for page in EventPage.objects.live()
-            .public()
-            .filter(
-                event_category__in=self.categories,
-            )
-            .order_by("start_date")
-            if page.end_date >= timezone.now()
-        ]
-
-    @cached_property
-    def latest_listings(self) -> list:
-        """
-        Returns a list of the latest event pages that belong to the categories
-        selected for this category page.
-        """
-        return self.event_listings[:3]
-
-    default_api_fields = BasePageWithRequiredIntro.default_api_fields + [
-        APIField("latest_listings", serializer=DefaultPageSerializer(many=True)),
-    ]
-
-    api_fields = BasePageWithRequiredIntro.api_fields + [
-        APIField("featured_page", serializer=DefaultPageSerializer()),
-        APIField("categories", serializer=EventCategorySerializer(many=True)),
-        APIField(
-            "event_listings",
-            serializer=DefaultPageSerializer(many=True),
-        ),
-    ]
-
-
-class EventsListingPage(BasePageWithRequiredIntro):
-    """
-    A page for listing/storing all events.
-    """
-
-    max_count = 1
-
-    parent_page_types = [
-        "whatson.WhatsOnPage",
-    ]
-    subpage_types = ["whatson.EventPage"]
-
-    @cached_property
-    def event_listings(self) -> list:
-        """
-        Returns a list of event pages.
-        """
-        return (
-            EventPage.objects.live()
-            .public()
-            .filter(
-                end_date__gte=timezone.now(),
-            )
-            .order_by("start_date")
-        )
-
-    @cached_property
-    def latest_listings(self) -> list:
-        """
-        Returns a list of the latest event pages.
-        """
-        return self.event_listings[:3]
-
-    default_api_fields = BasePageWithRequiredIntro.default_api_fields + [
-        APIField("latest_listings", serializer=DefaultPageSerializer(many=True)),
-    ]
-
-    api_fields = BasePageWithRequiredIntro.api_fields + [
-        APIField(
-            "event_listings",
-            serializer=DefaultPageSerializer(many=True),
-        ),
-    ]
-
-
-class ExhibitionsListingPage(BasePageWithRequiredIntro):
-    """
-    A page for listing/storing all displays/exhibitions.
-    """
-
-    @cached_property
-    def exhibition_listings(self) -> list:
-        """
-        Returns a list of exhibition and display pages.
-        """
-        children = [
-            page
-            for page in self.get_children().live().public().specific()
-            if isinstance(page, (ExhibitionPage, DisplayPage))
-            and page.end_date >= timezone.now().date()
-        ]
-        return sorted(children, key=lambda x: x.start_date)
-
-    @cached_property
-    def latest_listings(self) -> list:
-        """
-        Returns a list of the latest exhibition and display pages.
-        """
-        return self.exhibition_listings[:3]
-
-    @cached_property
-    def past_exhibition_listings(self) -> list:
-        """
-        Returns a list of past exhibition and display pages.
-        """
-        children = [
-            page
-            for page in self.get_children().live().public().specific()
-            if isinstance(page, (ExhibitionPage, DisplayPage))
-            and page.end_date < timezone.now().date()
-        ]
-        return sorted(children, key=lambda x: x.start_date)
-
-    max_count = 1
-
-    parent_page_types = [
-        "whatson.WhatsOnPage",
-    ]
-    subpage_types = ["whatson.ExhibitionPage", "whatson.DisplayPage"]
-
-    default_api_fields = BasePageWithRequiredIntro.default_api_fields + [
-        APIField(
-            "latest_listings",
-            serializer=DefaultPageSerializer(many=True),
-        ),
-    ]
-
-    api_fields = BasePageWithRequiredIntro.api_fields + [
-        APIField(
-            "exhibition_listings",
-            serializer=DefaultPageSerializer(many=True),
-        ),
-        APIField(
-            "past_exhibition_listings",
-            serializer=DefaultPageSerializer(many=True),
-        ),
-    ]
-
-
-class WhatsOnPageSelection(models.Model):
-    """
-    This model is used to select a page to display on the What's On page.
-    """
-
-    page = ParentalKey(
-        "wagtailcore.Page",
-        on_delete=models.CASCADE,
-        related_name="whats_on_page_selections",
-    )
-
-    featured_page = models.ForeignKey(
-        "wagtailcore.Page",
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="+",
-        verbose_name=_("featured page"),
-        help_text=_("The page to feature on the What's On page."),
-    )
-
-    selected_page = models.ForeignKey(
-        "wagtailcore.Page",
-        on_delete=models.CASCADE,
-        related_name="+",
-        verbose_name=_("selected page"),
-        help_text=_("The page to display on the What's On page."),
-    )
-
-    panels = [
-        PageChooserPanel(
-            "featured_page",
-            page_type=[
-                "whatson.EventPage",
-                "whatson.ExhibitionPage",
-                "whatson.DisplayPage",
-            ],
-        ),
-        PageChooserPanel(
-            "selected_page",
-            page_type=[
-                "whatson.ExhibitionsListingPage",
-                "whatson.EventsListingPage",
-                "whatson.WhatsOnSeriesPage",
-                "whatson.WhatsOnCategoryPage",
-            ],
-        ),
-    ]
-
-    class Meta:
-        verbose_name = _("selection")
-
-
-class WhatsOnPage(BasePageWithRequiredIntro):
-    """
-    A page for listing events.
-    """
-
-    class Meta:
-        verbose_name = _("What's On page")
-
-    parent_page_types = [
-        "home.HomePage",
-    ]
-    subpage_types = [
-        "whatson.EventsListingPage",
-        "whatson.ExhibitionsListingPage",
-        "whatson.WhatsOnSeriesPage",
-        "whatson.WhatsOnCategoryPage",
-    ]
-
-    max_count = 1
-
-    content_panels = BasePageWithRequiredIntro.content_panels + [
-        InlinePanel(
-            "whats_on_page_selections",
-            heading=_("Page selections"),
-            help_text=_("Select pages to display on the What's On page."),
-        ),
-    ]
-
-    api_fields = BasePageWithRequiredIntro.api_fields + [
-        APIField(
-            "whats_on_page_selections",
-            serializer=WhatsOnPageSelectionSerializer(many=True),
-        ),
-    ]
 
 
 class EventSpeaker(Orderable):
@@ -639,8 +228,8 @@ class EventPage(RequiredHeroImageMixin, ContentWarningMixin, BasePageWithRequire
     """
 
     # Event information
-    event_category = models.ForeignKey(
-        EventCategory,
+    event_type = models.ForeignKey(
+        EventType,
         null=True,
         blank=False,
         on_delete=models.SET_NULL,
@@ -753,7 +342,7 @@ class EventPage(RequiredHeroImageMixin, ContentWarningMixin, BasePageWithRequire
     )
 
     key_details_panels = [
-        FieldPanel("event_category"),
+        FieldPanel("event_type"),
         MultiFieldPanel(
             [
                 FieldPanel("booking_link"),
@@ -825,7 +414,7 @@ class EventPage(RequiredHeroImageMixin, ContentWarningMixin, BasePageWithRequire
         + [
             APIField("short_location"),
             APIField("location", serializer=LocationSerializer()),
-            APIField("event_category", serializer=EventCategorySerializer()),
+            APIField("event_type", serializer=EventTypeSerializer()),
             APIField("start_date"),
             APIField("end_date"),
             APIField("description", serializer=RichTextSerializer()),
@@ -854,7 +443,7 @@ class EventPage(RequiredHeroImageMixin, ContentWarningMixin, BasePageWithRequire
             if location.online:
                 return "Online"
             elif location.at_tna:
-                return "At The National Archives, Kew"
+                return "The National Archives, Kew"
             else:
                 return location.address_line_1 or location.space_name or "In-person"
 
@@ -869,10 +458,10 @@ class EventPage(RequiredHeroImageMixin, ContentWarningMixin, BasePageWithRequire
     def type_label(cls) -> str:
         """
         Overrides the type_label method from BasePage, to return the correct
-        type label for the event page which will be the event category name.
+        type label for the event page which will be the event type name.
         """
-        if cls.event_category:
-            return cls.event_category.name
+        if cls.event_type:
+            return cls.event_type.name
         return "Event"
 
     @cached_property
@@ -1087,7 +676,7 @@ class DisplayPage(
             if location.online:
                 return "Online"
             elif location.at_tna:
-                return "At The National Archives, Kew"
+                return "The National Archives, Kew"
             else:
                 return location.address_line_1 or location.space_name or "In-person"
 
@@ -1416,26 +1005,6 @@ class ExhibitionPage(
         max_num=1,
     )
 
-    # Plan your visit section
-    plan_your_visit_title = models.CharField(
-        max_length=100,
-        blank=True,
-        help_text=_("Leave blank to default to 'Plan your visit'."),
-    )
-
-    plan_your_visit_image = StreamField(
-        [("image", ContentImageBlock())],
-        blank=True,
-        null=True,
-        max_num=1,
-    )
-
-    plan_your_visit = StreamField(
-        [("plan_your_visit", blocks.ListBlock(SimplifiedAccordionBlock()))],
-        blank=True,
-        max_num=1,
-    )
-
     @cached_property
     def type_label(cls) -> str:
         """
@@ -1456,7 +1025,7 @@ class ExhibitionPage(
             if location.online:
                 return "Online"
             elif location.at_tna:
-                return "At The National Archives, Kew"
+                return "The National Archives, Kew"
             else:
                 return location.address_line_1 or location.space_name or "In-person"
 

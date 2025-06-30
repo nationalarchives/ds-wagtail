@@ -7,8 +7,8 @@ from etna.core.serializers import (
 )
 
 
-class EventCategorySerializer(serializers.Serializer):
-    """Serializer for the EventCategory model."""
+class EventTypeSerializer(serializers.Serializer):
+    """Serializer for the EventType model."""
 
     def to_representation(self, instance):
         if instance:
