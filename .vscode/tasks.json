@@ -10,17 +10,9 @@
       }
     },
     {
-      "label": "Pull staging",
+      "label": "Pull from development",
       "type": "shell",
       "command": "docker compose exec dev pull",
-      "presentation": {
-        "close": true
-      }
-    },
-    {
-      "label": "Pull production",
-      "type": "shell",
-      "command": "docker compose exec dev pull main",
       "presentation": {
         "close": true
       }
