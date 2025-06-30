@@ -4,10 +4,74 @@ set -e
 
 if [ -z "$1" ]
 then
-    export ENVIRONMENT=develop
+    export ENVIRONMENT=dev
 else
     export ENVIRONMENT="$1"
 fi
 
-pull-data "$ENVIRONMENT"
-pull-media "$ENVIRONMENT"
+export DUMP_DIR=/home/app/dumps
+export MEDIA_DUMP="$ENVIRONMENT-$(date +%s).zip"
+# export DATABASE_DUMP_FILENAME=db.sql
+
+echo "Pulling from $ENVIRONMENT..."
+if [ ! -d "$DUMP_DIR" ];
+then
+    echo "Creating a directory for dumps..."
+    mkdir $DUMP_DIR
+fi
+
+
+
+
+
+
+
+
+
+# echo "Replacing values in the database dump..."
+# sed -i -r -e 's/(dev-|staging-)?www.nationalarchives.gov.uk([[:space:]])443/localhost\2443/g' $DUMP_DIR/$MEDIA_DUMP/$DATABASE_DUMP_FILENAME
+
+# echo "Starting the db container..."
+# docker compose -p ds-wagtail up db -d
+
+# echo "Stopping the app container..."
+# docker compose -p ds-wagtail stop app
+
+# echo "Dropping the old database..."
+# psql "postgresql://$POSTGRES_USER:$POSTGRES_PASSWORD@db/$POSTGRES_DB" -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public;"
+
+# echo "Dumping the database..."
+# psql "postgresql://$POSTGRES_USER:$POSTGRES_PASSWORD@db/$POSTGRES_DB" < $DUMP_DIR/$MEDIA_DUMP/$DATABASE_DUMP_FILENAME
+
+# echo "Starting the app container..."
+# docker compose -p ds-wagtail restart app
+
+# # echo "Wait for application container to be healthy..."
+# # for c in {1..30}; do sleep 1 && curl -s -w '%{http_code}' -o /dev/null http://host.docker.internal:8000/healthcheck/live/ | grep -o "200" && break; done
+
+# # echo "Running migrations..."
+# # docker compose -p ds-wagtail exec app poetry run python manage.py migrate
+
+# echo "Running birdbath..."
+# docker compose -p ds-wagtail exec app poetry run python manage.py run_birdbath
+
+# echo "Creating a superuser..."
+# docker compose -p ds-wagtail exec app poetry run python manage.py createsuperuser --no-input
+
+
+
+
+
+
+
+echo "Downloading zipped media..."
+aws s3 cp s3://ds-$ENVIRONMENT-deployment-source/wagtail-content/$(aws s3 ls s3://ds-$ENVIRONMENT-deployment-source/wagtail-content/ | sort | tail -n 1 | awk '{print $4}') $DUMP_DIR/$MEDIA_DUMP
+
+echo "Unzipping media..."
+unzip -o $DUMP_DIR/$MEDIA_DUMP -d /
+
+echo "Setting media permissions..."
+docker compose -p ds-wagtail exec app chmod -fR 777 /media
+
+echo "Removing media ZIP archive..."
+rm $DUMP_DIR/$MEDIA_DUMP

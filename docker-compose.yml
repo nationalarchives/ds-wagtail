@@ -51,11 +51,9 @@ services:
       - 8002:8080
 
   dev:
-    image: ghcr.io/nationalarchives/tna-python-dev:dev-aws-cli
+    image: ghcr.io/nationalarchives/tna-python-dev:preview
     environment:
       - DJANGO_SETTINGS_MODULE=config.settings.test
-      - PLATFORMSH_CLI_TOKEN=${PLATFORMSH_CLI_TOKEN}
-      - PLATFORM_PROJECT_ID=rasrzs7pi6sd4
       - DATABASE_HOST=db
       - DATABASE_NAME=test
       - DATABASE_USER=postgres
