@@ -59,6 +59,4 @@ config/settings/local.py
 .npm
 .nvm
 
-media/images
-media/original_images
 coverage.xml
