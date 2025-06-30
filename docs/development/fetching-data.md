@@ -17,26 +17,9 @@ Developers from external agencies may not be able to register for a platform.sh 
 
 ## Download from development
 
+Set up the AWS CLI as described in: https://national-archives.atlassian.net/wiki/spaces/TW/pages/775028742/Local+development#AWS-CLI-setup
+
 ```sh
 # Pull all data and media from the development server
 docker compose exec dev pull
-
-# Pull just the data from the development server
-docker compose exec dev pull-data
-
-# Pull just the media from the development server
-docker compose exec dev pull-media
-```
-
-### Download from production
-
-```sh
-# Pull all data and media from the production server
-docker compose exec dev pull main
-
-# Pull just the data from the production server
-docker compose exec dev pull-data main
-
-# Pull just the media from the production server
-docker compose exec dev pull-media main
 ```
