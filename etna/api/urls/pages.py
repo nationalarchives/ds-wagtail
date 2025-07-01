@@ -34,6 +34,13 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
         ["password", "author", "include_aliases", "descendant_of_path"]
     )
 
+    # TODO: Remove this when Wagtail is updated
+    # https://github.com/wagtail/wagtail/pull/12141
+    find_query_parameters = [
+        "id",
+        "html_path",
+    ]
+
     # Copied from wagtail.api.v2.views.PagesAPIViewSet
     # to allow insertion of AliasFilter before SearchFilter
     filter_backends = [
@@ -122,6 +129,8 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
         }
         return Response(data, status=status.HTTP_403_FORBIDDEN)
 
+    # TODO: Can be removed when Wagtail is updated
+    # https://github.com/wagtail/wagtail/pull/12141
     def find_view(self, request):
         queryset = self.get_queryset()
 
@@ -143,15 +152,18 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
                 )
             )
 
-        if "fields" in request.GET:
-            url = url + "?fields=" + request.GET["fields"]
+        # Retain all query parameters except ones only used to find the object
+        query = request.GET.copy()
+        for param in self.find_query_parameters:
+            query.pop(param, None)
 
-        return redirect(url)
+        return redirect(f"{url}?{query.urlencode()}")
 
     def get_base_queryset(self):
         """
         Copy of https://github.com/wagtail/wagtail/blob/f5552c40442b0ed6a0316ee899c7f28a0b1ed4e5/wagtail/api/v2/views.py#L491
-        that doesn't remove restricted pages
+        that doesn't remove restricted pages - we use this to expose all pages which
+        allows us to render password-protected pages in the frontend.
         """
 
         request = self.request
@@ -205,7 +217,26 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
     ]
 
     def find_object(self, queryset, request):
-        site = Site.find_for_request(request)
+        if "site" in request.GET:
+            if ":" in request.GET["site"]:
+                (hostname, port) = request.GET["site"].split(":", 1)
+                query = {
+                    "hostname": hostname,
+                    "port": port,
+                }
+            else:
+                query = {
+                    "hostname": request.GET["site"],
+                }
+            try:
+                site = Site.objects.get(**query)
+            except Site.MultipleObjectsReturned:
+                raise BadRequestError(
+                    "Your query returned multiple sites. Try adding a port number to your site filter."
+                )
+        else:
+            site = Site.find_for_request(self.request)
+
         if "html_path" in request.GET and site is not None:
             path = request.GET["html_path"]
 
