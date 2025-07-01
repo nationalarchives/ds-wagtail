@@ -162,11 +162,27 @@ class BasePage(AlertMixin, SocialMixin, DataLayerMixin, HeadlessPreviewMixin, Pa
     def type(self):
         return self._meta.label
 
+    def get_page_path(self):
+        """
+        This always returns the relative path to the page without the base site
+        URL, regardless of how many sites are configured. It is currently only
+        used for the data in the API.
+        """
+        url_parts = self.get_url_parts()
+
+        if url_parts is None or url_parts[1] is None and url_parts[2] is None:
+            # page is not routable
+            return
+
+        return url_parts[2]
+
+    page_path = property(get_page_path)
+
     default_api_fields = [
         APIField("id"),
         APIField("title"),
         APIField("short_title"),
-        APIField("url"),
+        APIField("page_path"),
         APIField("full_url"),
         APIField("type"),
         APIField("type_label"),
@@ -189,6 +205,7 @@ class BasePage(AlertMixin, SocialMixin, DataLayerMixin, HeadlessPreviewMixin, Pa
     )
 
     api_meta_fields = [
+        APIField("page_path"),
         APIField("teaser_text"),
         APIField(
             "teaser_image",

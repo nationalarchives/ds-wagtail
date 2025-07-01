@@ -80,7 +80,7 @@ class SimplePageSerializer(serializers.Serializer):
             "id": instance.id,
             "title": instance.title,
             "teaser_text": instance.teaser_text,
-            "url": instance.url,
+            "page_path": instance.page_path,
             "full_url": instance.full_url,
         }
 
@@ -94,5 +94,5 @@ class AliasOfSerializer(serializers.Serializer):
     def to_representation(self, instance):
         return {
             "id": instance.id,
-            "url": instance.url,
+            "page_path": instance.page_path,
         }
