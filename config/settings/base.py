@@ -40,23 +40,23 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 # Application definition
 
 INSTALLED_APPS = [
-    "etna.generic_pages",
-    "etna.alerts",
-    "etna.analytics",
-    "etna.articles",
-    "etna.blog",
-    "etna.people",
-    "etna.cookies",
-    "etna.categories",
-    "etna.ciim",
-    "etna.collections",
-    "etna.core",
-    "etna.highlights",
-    "etna.home",
-    "etna.images",
-    "etna.media",
-    "etna.users",
-    "etna.whatson",
+    "app.generic_pages",
+    "app.alerts",
+    "app.analytics",
+    "app.articles",
+    "app.blog",
+    "app.people",
+    "app.cookies",
+    "app.categories",
+    "app.ciim",
+    "app.collections",
+    "app.core",
+    "app.highlights",
+    "app.home",
+    "app.images",
+    "app.media",
+    "app.users",
+    "app.whatson",
     "wagtail.contrib.forms",
     "wagtail.contrib.redirects",
     "wagtail.contrib.table_block",
@@ -105,7 +105,7 @@ MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "wagtail.contrib.redirects.middleware.RedirectMiddleware",
-    "etna.core.middleware.InterpretCookiesMiddleware",
+    "app.core.middleware.InterpretCookiesMiddleware",
 ]
 
 COOKIE_DOMAIN = os.getenv("COOKIE_DOMAIN", "nationalarchives.gov.uk")
@@ -129,8 +129,8 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "wagtail.contrib.settings.context_processors.settings",
-                "etna.core.context_processors.feature_flags",
-                "etna.core.context_processors.settings_vars",
+                "app.core.context_processors.feature_flags",
+                "app.core.context_processors.settings_vars",
             ],
         },
     },
@@ -152,8 +152,8 @@ LOGIN_URL = "/accounts/login"
 LOGIN_REDIRECT_URL = "/"
 WAGTAIL_FRONTEND_LOGIN_URL = LOGIN_URL
 # Custom adapter to prevent self-signup
-ACCOUNT_ADAPTER = "etna.users.adapters.NoSelfSignupAccountAdapter"
-ACCOUNT_FORMS = {"login": "etna.users.forms.EtnaLoginForm"}
+ACCOUNT_ADAPTER = "app.users.adapters.NoSelfSignupAccountAdapter"
+ACCOUNT_FORMS = {"login": "app.users.forms.EtnaLoginForm"}
 
 WSGI_APPLICATION = "config.wsgi.application"
 
@@ -227,23 +227,16 @@ USE_L10N = True
 
 USE_TZ = True
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.1/howto/static-files/
-STATICFILES_FINDERS = [
-    "django.contrib.staticfiles.finders.FileSystemFinder",
-    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
-]
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "templates", "static"),
-]
-STATIC_ROOT = os.path.join(BASE_DIR, "static")
 STATIC_URL = "static/"
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
 MEDIA_ROOT = "/media"
 MEDIA_URL = "media/"
 
 WAGTAILMEDIA = {
     "MEDIA_MODEL": "media.EtnaMedia",
-    "MEDIA_FORM_BASE": "etna.media.forms.BaseMediaForm",
+    "MEDIA_FORM_BASE": "app.media.forms.BaseMediaForm",
     "AUDIO_EXTENSIONS": [
         # "aac",
         # "aiff",
@@ -326,7 +319,7 @@ EXPANDED_RICH_TEXT_FEATURES = RESTRICTED_RICH_TEXT_FEATURES + [
 
 # Don't anonymise data by default, so we don't accidentally lose production data
 BIRDBATH_REQUIRED = False
-BIRDBATH_PROCESSORS = ["etna.users.anonymisation.UserAnonymiser"]
+BIRDBATH_PROCESSORS = ["app.users.anonymisation.UserAnonymiser"]
 
 # -----------------------------------------------------------------------------
 # Default cache-control settings
