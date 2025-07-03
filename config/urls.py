@@ -3,10 +3,9 @@ from urllib.parse import urljoin
 from django.apps import apps
 from django.conf import settings
 from django.http import HttpResponsePermanentRedirect
-from django.urls import include, path, re_path
+from django.urls import include, path
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.decorators.cache import never_cache
-from wagtail import urls as wagtail_urls
 from wagtail.admin import urls as wagtailadmin_urls
 from wagtail.documents import urls as wagtaildocs_urls
 from wagtail.utils.urlpatterns import decorate_urlpatterns
@@ -29,9 +28,9 @@ def redirect_to_live_site(request):
 
 # Redirect URLs from the beta subdomain to the main domain.
 redirect_urls = [
-    path("", redirect_to_live_site),
-    re_path(r"^explore-the-collection/.*$", redirect_to_live_site),
-    re_path(r"^people/.*$", redirect_to_live_site),
+    # path("", redirect_to_live_site),
+    # re_path(r"^explore-the-collection/.*$", redirect_to_live_site),
+    # re_path(r"^people/.*$", redirect_to_live_site),
 ]
 
 # Public URLs that are meant to be cached.
@@ -58,9 +57,7 @@ private_urls = [
 private_urls = decorate_urlpatterns(private_urls, never_cache)
 
 # Join private and public URLs.
-urlpatterns = (
-    private_urls + redirect_urls + public_urls + [path("", include(wagtail_urls))]
-)
+urlpatterns = private_urls + redirect_urls + public_urls
 
 if apps.is_installed("debug_toolbar"):
     urlpatterns = [

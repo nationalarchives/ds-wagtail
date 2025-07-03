@@ -1,9 +1,0 @@
-{% load wagtailimages_tags %}
-
-{% image link_page.teaser_image fill-800x450 as card_image %}
-
-<li class="tna-column tna-column--width-1-3 tna-column--width-1-2-medium tna-column--width-1-2-small tna-column--full-tiny tna-!--margin-bottom-l">
-
-    {% include "../components/card.html" with horizontal=true title=link_page.title href=link_page.url imageSrc=card_image.url imageWidth=800 imageHeight=450 text=link_page.teaser_text headingSize="s" headingLevel=3 label=link_page.is_newly_published|yesno:"New," index=forloop.counter0 heading=heading %}
-
-</li>

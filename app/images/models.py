@@ -9,8 +9,6 @@ from wagtail.fields import RichTextField
 from wagtail.images.models import AbstractImage, AbstractRendition
 from wagtail.search import index
 
-from app.ciim.fields import RecordField
-from app.ciim.serializers import RecordSerializer
 from app.core.serializers import RichTextSerializer
 
 DEFAULT_SENSITIVE_IMAGE_WARNING = (
