@@ -403,7 +403,8 @@ class EventPage(RequiredHeroImageMixin, ContentWarningMixin, BasePageWithRequire
     default_api_fields = BasePageWithRequiredIntro.default_api_fields + [
         APIField("start_date"),
         APIField("end_date"),
-        APIField("price_range"),
+        APIField("min_price"),
+        APIField("max_price"),
         APIField("short_location"),
     ]
 
@@ -426,7 +427,6 @@ class EventPage(RequiredHeroImageMixin, ContentWarningMixin, BasePageWithRequire
             APIField("sold_out"),
             APIField("min_price"),
             APIField("max_price"),
-            APIField("price_range"),
             APIField("booking_link"),
             APIField("speakers", serializer=SpeakerSerializer(many=True)),
             APIField("sessions", serializer=SessionSerializer(many=True)),
@@ -463,20 +463,6 @@ class EventPage(RequiredHeroImageMixin, ContentWarningMixin, BasePageWithRequire
         if cls.event_type:
             return cls.event_type.name
         return "Event"
-
-    @cached_property
-    def price_range(self) -> str:
-        """
-        Returns the price range for the event.
-        """
-        if self.max_price == 0:
-            return "Free"
-        elif self.min_price == self.max_price:
-            return f"£{self.min_price:.2f}"
-        else:
-            if self.min_price == 0:
-                return f"Free - £{self.max_price:.2f}"
-            return f"£{self.min_price:.2f} - {self.max_price:.2f}"
 
     @cached_property
     def sold_out(self) -> bool:
