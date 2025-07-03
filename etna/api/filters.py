@@ -215,7 +215,7 @@ class LocationFilter(BaseFilterBackend):
 class EventDateFilter(BaseFilterBackend):
     """
     Implements the ?from and ?to filters to filter events by their start and/or end dates.
-    
+
     The dates are inclusive, meaning that events starting or ending on the specified dates will be included.
 
     The filtering logic is as follows:
@@ -272,9 +272,8 @@ class EventDateFilter(BaseFilterBackend):
         else:
             to_date = None
 
-        if from_date and to_date:
-            if from_date > to_date:
-                raise BadRequestError("'from' date cannot be after 'to' date.")
+        if from_date and to_date and from_date > to_date:
+            raise BadRequestError("'from' date cannot be after 'to' date.")
 
         if from_date:
             queryset = queryset.filter(end_date__gte=from_date)
