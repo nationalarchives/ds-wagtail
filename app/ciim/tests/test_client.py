@@ -2,7 +2,6 @@ import unittest
 from unittest.mock import patch
 
 from app.ciim.client import (
-    DEFAULT_IAID,
     DEFAULT_REFERENCE_NUMBER,
     DEFAULT_SUMMARY_TITLE,
     CIIMClient,

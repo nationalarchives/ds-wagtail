@@ -1,7 +1,6 @@
 from typing import Any, Dict, List, Optional, Tuple, Union
 
 from django.conf import settings
-from django.core.exceptions import ValidationError
 from django.db import models
 from django.http import HttpRequest
 from django.utils.functional import cached_property

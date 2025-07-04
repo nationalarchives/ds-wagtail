@@ -1,7 +1,5 @@
 from rest_framework.serializers import Serializer
 
-from app.ciim.client import CIIMClient
-
 
 def image_generator(
     original_image,

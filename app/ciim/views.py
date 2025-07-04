@@ -1,4 +1,3 @@
-from django.conf import settings
 from django.core.paginator import Page
 from django.views.generic.base import View
 from wagtail.admin.ui.tables import Column, TitleColumn
