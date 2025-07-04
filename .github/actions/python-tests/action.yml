@@ -26,7 +26,7 @@ runs:
       run: isort -c .
       shell: bash
     - name: Check compliance with Black
-      run: black -t py38 -t py39 -t py310 -t py311 -t py312 --line-length 88 --verbose etna config
+      run: black -t py38 -t py39 -t py310 -t py311 -t py312 --line-length 88 --verbose app config
       shell: bash
     - name: Check compliance with flake8
       run: flake8 .
@@ -43,7 +43,7 @@ runs:
       run: poetry run python manage.py check
       shell: bash
     - name: Run test suite
-      # run: poetry run coverage run manage.py test etna
+      # run: poetry run coverage run manage.py test app
       run: poetry run python manage.py test
       shell: bash
     - name: Check for missing migrations

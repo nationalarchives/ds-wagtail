@@ -12,19 +12,6 @@ __pycache__
 # macOS desktop services store.
 .DS_Store
 
-# Ignore the contents of template/static/ but keep the directory
-templates/static
-
-# Allow images within static
-!templates/static/images
-
-#Allow cookie consent
-!templates/static/cookie-consent
-
-# Ignore the contents of /static but keep the directory
-/static/*
-!/static/.gitkeep
-
 # Database backups
 /db/
 
@@ -32,9 +19,6 @@ templates/static
 *.code-workspace
 .idea/
 .vscode/
-
-# SASS
-.sass-cache
 
 # Node
 /node_modules/
@@ -50,15 +34,8 @@ templates/static
 # local config
 config/settings/local.py
 
-# CSS
-*.css
-*.css.map
-!wagtail-overrides.css
-
 # NVM/NPM
 .npm
 .nvm
 
-media/images
-media/original_images
 coverage.xml

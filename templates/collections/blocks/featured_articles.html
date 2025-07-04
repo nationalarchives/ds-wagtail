@@ -1,9 +1,0 @@
-{% load wagtailimages_tags wagtailcore_tags %}
-
-<div class="featured-articles">
-    <ul class="card-group--list-style-none">
-        {% for item in value.items %}
-            {% include 'includes/card-group-secondary-nav.html' with heading=heading link_page=item.specific card_type="Featured" show_type_label=True supertitle=item.specific.type_label %}
-        {% endfor %}
-    </ul>
-</div>
