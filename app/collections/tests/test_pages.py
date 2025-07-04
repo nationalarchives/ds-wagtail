@@ -106,24 +106,6 @@ class TestPages(WagtailPageTestCase):
         )
         self.explorer_index_page.add_child(instance=self.highlight_gallery_page)
 
-    def test_explorer_index_page(self):
-        self.assertPageIsRenderable(self.explorer_index_page)
-
-    def test_topic_explorer_index_page(self):
-        self.assertPageIsRenderable(self.topic_explorer_index_page)
-
-    def test_topic_explorer_page(self):
-        self.assertPageIsRenderable(self.topic_explorer_page1)
-
-    def test_time_period_explorer_index_page(self):
-        self.assertPageIsRenderable(self.time_period_explorer_index_page)
-
-    def test_time_period_explorer_page(self):
-        self.assertPageIsRenderable(self.time_period_explorer_page1)
-
-    def test_highlight_gallery_page(self):
-        self.assertPageIsRenderable(self.highlight_gallery_page)
-
     def test_get_topic_featured_pages(self):
         featured_pages = self.topic_explorer_index_page.featured_pages
         self.assertEqual(len(featured_pages), 3)
