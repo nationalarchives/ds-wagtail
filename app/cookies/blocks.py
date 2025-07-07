@@ -24,7 +24,6 @@ class ContentSectionBlock(SectionDepthAwareStructBlock):
 
     class Meta:
         label = "Section"
-        template = "articles/blocks/section.html"
 
 
 class CookieDetailsStreamBlock(SectionContentBlock):

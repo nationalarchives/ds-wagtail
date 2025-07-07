@@ -62,5 +62,4 @@ class RecordLinksBlock(blocks.StructBlock):
     items = blocks.ListBlock(RecordLinkBlock, label=_("Items"))
 
     class Meta:
-        template = "records/blocks/record_links_block.html"
         icon = "box-archive"

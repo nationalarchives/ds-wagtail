@@ -70,7 +70,6 @@ class MediaBlock(blocks.StructBlock):
     media = MediaChooserBlock()
 
     class Meta:
-        template = "media/blocks/media-block.html"
         help_text = "An embedded audio or video block"
         icon = "play"
         label = "Media"

@@ -121,10 +121,8 @@ class ImageBlock(blocks.StructBlock):
 
     class Meta:
         label = "Image"
-        template = "blocks/image-block-default.html"
         help_text = "An image block which allows editors to ensure accessibility is reflected on the page."
         icon = "image"
-        form_template = "form_templates/default-form-with-safe-label.html"
 
 
 class NoCaptionImageBlock(ImageBlock):
@@ -162,9 +160,8 @@ class ContentImageBlock(blocks.StructBlock):
 
     class Meta:
         label = "Image"
-        template = "blocks/content_image.html"
+
         icon = "image"
-        form_template = "form_templates/default-form-with-safe-label.html"
         value_class = ImageOrientationValue
 
 

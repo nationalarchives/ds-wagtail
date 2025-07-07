@@ -17,7 +17,6 @@ class LargeCardLinksBlock(blocks.StructBlock):
     )
 
     class Meta:
-        template = "blocks/large_links_block.html"
         icon = "th-large"
 
     def get_context(self, value, parent_context=None):

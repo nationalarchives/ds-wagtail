@@ -40,7 +40,6 @@ class ContentSectionBlock(SectionDepthAwareStructBlock):
 
     class Meta:
         label = "Section"
-        template = "articles/blocks/section.html"
 
 
 class ArticlePageStreamBlock(blocks.StreamBlock):

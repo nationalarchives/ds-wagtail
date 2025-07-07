@@ -12,7 +12,6 @@ class SectionBlock(blocks.StructBlock):
     class Meta:
         icon = "heading"
         label = "Section heading"
-        template = "blocks/section_heading.html"
 
     def get_heading_id(self, value):
         return f"h2.{slugify(value['heading'])}"
@@ -29,7 +28,6 @@ class SubHeadingBlock(SectionDepthAwareStructBlock):
     class Meta:
         icon = "heading"
         label = "Sub-heading"
-        template = "articles/blocks/sub_heading.html"
 
 
 class SubSubHeadingBlock(SectionDepthAwareStructBlock):
@@ -38,4 +36,3 @@ class SubSubHeadingBlock(SectionDepthAwareStructBlock):
     class Meta:
         icon = "heading"
         label = "Sub-sub-heading"
-        template = "articles/blocks/sub_heading.html"

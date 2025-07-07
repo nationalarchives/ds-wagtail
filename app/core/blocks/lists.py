@@ -17,7 +17,6 @@ class DoDontListBlock(blocks.StructBlock):
     class Meta:
         icon = "tasks"
         label = "Do/Don't List"
-        template = "blocks/do-dont-list.html"
 
 
 class DescriptionListItemBlock(blocks.StructBlock):

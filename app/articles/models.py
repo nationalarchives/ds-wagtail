@@ -211,8 +211,6 @@ class ArticlePage(
     # DataLayerMixin overrides
     gtm_content_group = "Explore the collection"
 
-    template = "articles/article_page.html"
-
     class Meta:
         verbose_name = _("article")
         verbose_name_plural = _("articles")
@@ -374,8 +372,6 @@ class FocusedArticlePage(
 
     # DataLayerMixin overrides
     gtm_content_group = "Explore the collection"
-
-    template = "articles/focused_article_page.html"
 
     class Meta:
         verbose_name = _("focused article")
@@ -577,7 +573,7 @@ class RecordArticlePage(
     ArticleTagMixin,
     BasePageWithRequiredIntro,
 ):
-    template = "articles/record_article_page.html"
+
     parent_page_types = ["articles.ArticleIndexPage"]
     subpage_types = []
 

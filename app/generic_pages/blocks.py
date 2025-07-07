@@ -63,7 +63,6 @@ class ContentSectionBlock(SectionDepthAwareStructBlock):
 
     class Meta:
         label = "Section"
-        template = "articles/blocks/section.html"
 
     def clean(self, value):
         clean = super().clean(value)

@@ -18,7 +18,6 @@ class FeaturedRecordArticleBlock(blocks.StructBlock):
 
     class Meta:
         icon = "doc-empty-inverse"
-        template = "blocks/featured_record_article.html"
         label = "Featured record article"
 
 
@@ -38,7 +37,6 @@ class RelatedItemBlock(SectionDepthAwareStructBlock):
     class Meta:
         icon = "link"
         help_text = "Block used promote an external page"
-        template = "articles/blocks/related_item.html"
 
 
 class FeaturedCollectionBlock(SectionDepthAwareStructBlock):
@@ -58,4 +56,3 @@ class FeaturedCollectionBlock(SectionDepthAwareStructBlock):
     class Meta:
         icon = "list"
         label = "Featured pages"
-        template = "articles/blocks/featured_collection.html"

@@ -17,7 +17,6 @@ class QuoteBlock(blocks.StructBlock):
     class Meta:
         icon = "openquote"
         label = "Quote"
-        template = "blocks/quote.html"
 
 
 class ReviewBlock(blocks.StructBlock):

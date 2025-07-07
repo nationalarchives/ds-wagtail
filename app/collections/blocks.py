@@ -9,7 +9,6 @@ class PromotedPagesBlock(blocks.StructBlock):
     promoted_items = blocks.ListBlock(PromotedLinkBlock, min=3, max=3)
 
     class Meta:
-        template = "collections/blocks/promoted_pages.html"
         help_text = "Block used to promote external pages"
         icon = "th-large"
 
@@ -65,4 +64,3 @@ class FeaturedArticlesBlock(blocks.StructBlock):
     class Meta:
         icon = "list"
         label = "Featured articles"
-        template = "collections/blocks/featured_articles.html"

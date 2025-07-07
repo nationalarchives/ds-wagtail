@@ -34,7 +34,6 @@ class AuthorPromotedPagesBlock(blocks.StructBlock):
     promoted_items = blocks.ListBlock(AuthorPromotedLinkBlock, max_num=3)
 
     class Meta:
-        template = "articles/blocks/promoted_pages.html"
         help_text = "Block used to promote external pages"
         icon = "th-large"
 
@@ -98,10 +97,9 @@ class PromotedItemBlock(SectionDepthAwareStructBlock):
 
     class Meta:
         label = "Featured link"
-        template = "articles/blocks/featured_link.html"
+
         help_text = "Block used promote an external page"
         icon = "star"
-        form_template = "form_templates/default-form-with-safe-label.html"
 
 
 class PromotedListItemBlock(SectionDepthAwareStructBlock):
@@ -138,7 +136,6 @@ class PromotedListBlock(blocks.StructBlock):
     class Meta:
         icon = "link"
         label = "Link list"
-        template = "articles/blocks/promoted_list_block.html"
 
 
 class FeaturedPageBlock(blocks.StructBlock):
