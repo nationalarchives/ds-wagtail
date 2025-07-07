@@ -561,6 +561,12 @@ class DisplayPage(
         blank=True,
     )
 
+    all_year = models.BooleanField(
+        verbose_name=_("all year"),
+        default=False,
+        help_text=_("Check this box if the display is available all year round."),
+    )
+
     exclude_days = models.BooleanField(
         verbose_name=_("exclude days"),
         default=False,
@@ -718,8 +724,10 @@ class DisplayPage(
                     [
                         FieldPanel("start_date"),
                         FieldPanel("end_date"),
+                        
                     ],
                 ),
+                FieldPanel("all_year"),
                 FieldPanel("exclude_days"),
             ],
             heading=_("Date details"),
