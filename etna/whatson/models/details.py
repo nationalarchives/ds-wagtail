@@ -236,6 +236,14 @@ class EventPage(RequiredHeroImageMixin, ContentWarningMixin, BasePageWithRequire
         related_name="+",
     )
 
+    various_dates = models.BooleanField(
+        verbose_name=_("various dates and times"),
+        default=False,
+        help_text=_(
+            "Check this box if the event has multiple sessions with different dates and times."
+        ),
+    )
+
     start_date = models.DateTimeField(
         verbose_name=_("start date"),
         null=True,
@@ -254,18 +262,11 @@ class EventPage(RequiredHeroImageMixin, ContentWarningMixin, BasePageWithRequire
         help_text=_("A description of the event."),
     )
 
-    audience_heading = models.CharField(
+    age_detail = models.CharField(
         max_length=40,
-        verbose_name=_("audience heading"),
+        verbose_name=_("age detail"),
         blank=True,
-        help_text=_("The heading for the audience detail section."),
-    )
-
-    audience_detail = models.CharField(
-        max_length=40,
-        verbose_name=_("audience detail"),
-        blank=True,
-        help_text=_("The text for the audience detail section."),
+        help_text=_("The text for the age detail section."),
     )
 
     booking_details = RichTextField(
@@ -367,6 +368,7 @@ class EventPage(RequiredHeroImageMixin, ContentWarningMixin, BasePageWithRequire
                         "These dates are automatically set based on the sessions added."
                     ),
                 ),
+                FieldPanel("various_dates"),
                 InlinePanel(
                     "sessions",
                     heading=_("Sessions"),
@@ -376,13 +378,7 @@ class EventPage(RequiredHeroImageMixin, ContentWarningMixin, BasePageWithRequire
             heading=_("Date details"),
         ),
         FieldPanel("location"),
-        MultiFieldPanel(
-            [
-                FieldPanel("audience_heading"),
-                FieldPanel("audience_detail"),
-            ],
-            heading=_("Audience details"),
-        ),
+        FieldPanel("age_detail"),
         InlinePanel(
             "speakers",
             heading=_("Speaker information"),
@@ -415,13 +411,13 @@ class EventPage(RequiredHeroImageMixin, ContentWarningMixin, BasePageWithRequire
             APIField("short_location"),
             APIField("location", serializer=LocationSerializer()),
             APIField("event_type", serializer=EventTypeSerializer()),
+            APIField("various_dates"),
             APIField("start_date"),
             APIField("end_date"),
             APIField("description", serializer=RichTextSerializer()),
             APIField("event_highlights_title"),
             APIField("event_highlights"),
-            APIField("audience_heading"),
-            APIField("audience_detail"),
+            APIField("age_detail"),
             APIField("booking_details", serializer=RichTextSerializer()),
             APIField("sold_out"),
             APIField("min_price"),
@@ -593,18 +589,11 @@ class DisplayPage(
         help_text=_("The days the display is open, e.g. Tuesday to Sunday."),
     )
 
-    audience_heading = models.CharField(
+    age_detail = models.CharField(
         max_length=40,
-        verbose_name=_("audience heading"),
+        verbose_name=_("age detail"),
         blank=True,
-        help_text=_("The heading for the audience detail section."),
-    )
-
-    audience_detail = models.CharField(
-        max_length=40,
-        verbose_name=_("audience detail"),
-        blank=True,
-        help_text=_("The text for the audience detail section."),
+        help_text=_("The text for the age detail section."),
     )
 
     location = models.ForeignKey(
@@ -740,13 +729,7 @@ class DisplayPage(
             heading=_("Price details"),
         ),
         FieldPanel("open_days"),
-        MultiFieldPanel(
-            [
-                FieldPanel("audience_heading"),
-                FieldPanel("audience_detail"),
-            ],
-            heading=_("Audience details"),
-        ),
+        FieldPanel("age_detail"),
         MultiFieldPanel(
             [
                 FieldPanel("location"),
@@ -781,8 +764,7 @@ class DisplayPage(
             APIField("price"),
             APIField("open_days"),
             APIField("booking_details", serializer=RichTextSerializer()),
-            APIField("audience_heading"),
-            APIField("audience_detail"),
+            APIField("age_detail"),
             APIField("location", serializer=LocationSerializer()),
             APIField("body"),
             APIField("display_highlights_title"),
@@ -887,18 +869,11 @@ class ExhibitionPage(
         help_text=_("The days the exhibition is open, e.g. Tuesday to Sunday."),
     )
 
-    audience_heading = models.CharField(
+    age_detail = models.CharField(
         max_length=40,
-        verbose_name=_("audience heading"),
+        verbose_name=_("age detail"),
         blank=True,
-        help_text=_("The heading for the audience detail section."),
-    )
-
-    audience_detail = models.CharField(
-        max_length=40,
-        verbose_name=_("audience detail"),
-        blank=True,
-        help_text=_("The text for the audience detail section."),
+        help_text=_("The text for the age detail section."),
     )
 
     location = models.ForeignKey(
@@ -1104,13 +1079,7 @@ class ExhibitionPage(
             heading=_("Price details"),
         ),
         FieldPanel("open_days"),
-        MultiFieldPanel(
-            [
-                FieldPanel("audience_heading"),
-                FieldPanel("audience_detail"),
-            ],
-            heading=_("Audience details"),
-        ),
+        FieldPanel("age_detail"),
         FieldPanel("location"),
     ]
 
@@ -1149,8 +1118,7 @@ class ExhibitionPage(
             APIField("price"),
             APIField("open_days"),
             APIField("booking_details", serializer=RichTextSerializer()),
-            APIField("audience_heading"),
-            APIField("audience_detail"),
+            APIField("age_detail"),
             APIField("location", serializer=LocationSerializer()),
             APIField("intro_title"),
             APIField("body"),
