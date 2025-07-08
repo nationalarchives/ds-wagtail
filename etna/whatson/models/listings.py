@@ -354,7 +354,7 @@ class WhatsOnDateListingPage(BasePageWithRequiredIntro):
             filters={
                 "sessions__start__gte": timezone.now(),
                 "sessions__start__lte": timezone.now()
-                + datetime.timedelta(days=self.days),
+                + datetime.timedelta(days=self.days-1),
             },
             order_by="start_date",
         )
@@ -368,7 +368,7 @@ class WhatsOnDateListingPage(BasePageWithRequiredIntro):
         return get_specific_listings(
             page_types=[ExhibitionPage, DisplayPage],
             filters={
-                "start_date__lte": timezone.now() + datetime.timedelta(days=self.days),
+                "start_date__lte": timezone.now() + datetime.timedelta(days=self.days-1),
                 "end_date__gte": timezone.now(),
             },
             order_by="start_date",
@@ -381,6 +381,12 @@ class WhatsOnDateListingPage(BasePageWithRequiredIntro):
     content_panels = BasePageWithRequiredIntro.content_panels + [
         FieldPanel(
             "days",
+        ),
+    ]
+
+    default_api_fields = BasePageWithRequiredIntro.default_api_fields + [
+        APIField(
+            "days"
         ),
     ]
 
