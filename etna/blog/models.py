@@ -23,7 +23,7 @@ class BlogIndexPage(BasePageWithRequiredIntro):
     display a list of blog posts, and blog pages.
     """
 
-    subpage_types = ["blog.BlogPage"]
+    subpage_types = ["blog.BlogPage", "blog.BlogFeedsPage"]
     parent_page_types = ["home.HomePage"]
 
     max_count = 1
@@ -170,3 +170,11 @@ class BlogFeedsPage(BasePage):
         help_text="Body text to appear above the list of feeds.",
         blank=True,
     )
+
+    content_panels = BasePage.content_panels + [
+        FieldPanel("body"),
+    ]
+
+    api_fields = BasePage.api_fields + [
+        APIField("body"),
+    ]
