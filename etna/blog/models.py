@@ -11,6 +11,7 @@ from etna.core.models import (
     HeroImageMixin,
     PublishedDateMixin,
 )
+from etna.core.serializers.pages import DefaultPageSerializer
 from etna.people.models import AuthorPageMixin, ExternalAuthorMixin
 
 from .blocks import BlogPostPageStreamBlock
@@ -171,10 +172,28 @@ class BlogFeedsPage(BasePage):
         blank=True,
     )
 
+    def blogs_index(self):
+        """
+        Returns the top-level blog index.
+        """
+        return BlogIndexPage.objects.all().live().first()
+
+    def blogs(self):
+        """
+        Returns the top-level blogs that are not descendants of other blogs.
+        """
+        all_blogs = BlogPage.objects.all().live()
+        for blog in all_blogs:
+            # Ignore all "sub-blogs" (BlogPages which are children of other BlogPages)
+            all_blogs = all_blogs.not_descendant_of(blog, inclusive=False)
+        return all_blogs
+
     content_panels = BasePage.content_panels + [
         FieldPanel("body"),
     ]
 
     api_fields = BasePage.api_fields + [
         APIField("body"),
+        APIField("blogs_index", serializer=DefaultPageSerializer()),
+        APIField("blogs", serializer=DefaultPageSerializer(many=True)),
     ]
