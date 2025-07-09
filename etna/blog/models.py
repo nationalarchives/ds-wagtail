@@ -68,6 +68,13 @@ class BlogPage(HeroImageMixin, BasePageWithRequiredIntro):
     ]
     subpage_types = ["blog.BlogPostPage", "blog.BlogPage"]
 
+    @cached_property
+    def blogs_feeds_page(self):
+        """
+        Returns the blogs feeds page.
+        """
+        return BlogFeedsPage.objects.all().live().first()
+
     content_panels = (
         BasePageWithRequiredIntro.content_panels + HeroImageMixin.content_panels
     )
@@ -79,7 +86,10 @@ class BlogPage(HeroImageMixin, BasePageWithRequiredIntro):
     api_fields = (
         BasePageWithRequiredIntro.api_fields
         + HeroImageMixin.api_fields
-        + [APIField("custom_type_label")]
+        + [
+            APIField("custom_type_label"),
+            APIField("blogs_feeds_page", serializer=DefaultPageSerializer()),
+        ]
     )
 
 
