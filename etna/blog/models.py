@@ -29,6 +29,17 @@ class BlogIndexPage(BasePageWithRequiredIntro):
 
     max_count = 1
 
+    @cached_property
+    def blogs_feeds_page(self):
+        """
+        Returns the blogs feeds page.
+        """
+        return BlogFeedsPage.objects.all().live().first()
+
+    api_fields = BasePageWithRequiredIntro.api_fields + [
+        APIField("blogs_feeds_page", serializer=DefaultPageSerializer()),
+    ]
+
 
 class BlogPage(HeroImageMixin, BasePageWithRequiredIntro):
     """Blog page
@@ -172,12 +183,14 @@ class BlogFeedsPage(BasePage):
         blank=True,
     )
 
+    @cached_property
     def blogs_index(self):
         """
         Returns the top-level blog index.
         """
         return BlogIndexPage.objects.all().live().first()
 
+    @cached_property
     def blogs(self):
         """
         Returns the top-level blogs that are not descendants of other blogs.
