@@ -129,11 +129,8 @@ class WhatsOnSeriesPage(BasePageWithRequiredIntro):
         )
     ]
 
-    default_api_fields = BasePageWithRequiredIntro.default_api_fields + [
-        APIField("latest_listings", serializer=DefaultPageSerializer(many=True)),
-    ]
-
     api_fields = BasePageWithRequiredIntro.api_fields + [
+        APIField("featured_page", serializer=DefaultPageSerializer()),
         APIField("event_listings", serializer=DefaultPageSerializer(many=True)),
         APIField("exhibition_listings", serializer=DefaultPageSerializer(many=True)),
     ]
@@ -227,10 +224,6 @@ class WhatsOnCategoryPage(BasePageWithRequiredIntro):
     @cached_property
     def type_label(cls) -> str:
         return "What's On"
-
-    default_api_fields = BasePageWithRequiredIntro.default_api_fields + [
-        APIField("latest_listings", serializer=DefaultPageSerializer(many=True)),
-    ]
 
     api_fields = BasePageWithRequiredIntro.api_fields + [
         APIField("featured_page", serializer=DefaultPageSerializer()),
@@ -430,6 +423,16 @@ class EventsListingPage(BasePageWithRequiredIntro):
     A page for listing/storing all events.
     """
 
+    featured_page = models.ForeignKey(
+        "whatson.EventPage",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        verbose_name=_("featured page"),
+        help_text=_("The page to feature at the top of the Events page."),
+    )
+
     max_count = 1
 
     parent_page_types = [
@@ -458,12 +461,15 @@ class EventsListingPage(BasePageWithRequiredIntro):
     @cached_property
     def type_label(cls) -> str:
         return "What's On"
-
-    default_api_fields = BasePageWithRequiredIntro.default_api_fields + [
-        APIField("latest_listings", serializer=DefaultPageSerializer(many=True)),
+    
+    content_panels = BasePageWithRequiredIntro.content_panels + [
+        FieldPanel(
+            "featured_page",
+        )
     ]
 
     api_fields = BasePageWithRequiredIntro.api_fields + [
+        APIField("featured_page", serializer=DefaultPageSerializer()),
         APIField(
             "event_listings",
             serializer=DefaultPageSerializer(many=True),
@@ -475,6 +481,16 @@ class ExhibitionsListingPage(BasePageWithRequiredIntro):
     """
     A page for listing/storing all displays/exhibitions.
     """
+
+    featured_page = models.ForeignKey(
+        "wagtailcore.Page",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        verbose_name=_("featured page"),
+        help_text=_("The page to feature at the top of the Exhibitions page."),
+    )
 
     @cached_property
     def exhibition_listings(self) -> list:
@@ -517,14 +533,18 @@ class ExhibitionsListingPage(BasePageWithRequiredIntro):
 
     subpage_types = ["whatson.ExhibitionPage", "whatson.DisplayPage"]
 
-    default_api_fields = BasePageWithRequiredIntro.default_api_fields + [
-        APIField(
-            "latest_listings",
-            serializer=DefaultPageSerializer(many=True),
-        ),
+    content_panels = BasePageWithRequiredIntro.content_panels + [
+        PageChooserPanel(
+            "featured_page",
+            page_type=[
+                "whatson.ExhibitionPage",
+                "whatson.DisplayPage",
+            ],
+        )
     ]
 
     api_fields = BasePageWithRequiredIntro.api_fields + [
+        APIField("featured_page", serializer=DefaultPageSerializer()),
         APIField(
             "exhibition_listings",
             serializer=DefaultPageSerializer(many=True),
