@@ -2,9 +2,10 @@ from django.db import models
 from django.utils.functional import cached_property
 from wagtail.admin.panels import FieldPanel
 from wagtail.api import APIField
-from wagtail.fields import StreamField
+from wagtail.fields import RichTextField, StreamField
 
 from etna.core.models import (
+    BasePage,
     BasePageWithRequiredIntro,
     ContentWarningMixin,
     HeroImageMixin,
@@ -147,3 +148,25 @@ class BlogPostPage(
         verbose_name = "Blog post page"
         verbose_name_plural = "Blog post pages"
         verbose_name_public = "Blog post"
+
+
+class BlogFeedsPage(BasePage):
+    """
+    Blog feeds page
+    """
+
+    parent_page_types = ["blog.BlogIndexPage"]
+    subpage_types = []
+
+    max_count = 1
+
+    body = RichTextField(
+        features=[
+            "bold",
+            "italic",
+            "link",
+            "ul",
+        ],
+        help_text="Body text to appear above the list of feeds.",
+        blank=True,
+    )
