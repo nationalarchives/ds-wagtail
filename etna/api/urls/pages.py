@@ -192,7 +192,10 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
                 )
         else:
             # Otherwise, find the site from the request
-            site = Site.find_for_request(self.request)
+            # site = Site.find_for_request(self.request)
+
+            # Otherwise, use the default site
+            site = Site.objects.get(is_default_site=True)
 
         if site:
             base_queryset = queryset
