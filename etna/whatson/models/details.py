@@ -43,7 +43,7 @@ from etna.core.serializers import (
     RichTextSerializer,
 )
 
-from ..blocks import ExhibitionPageStreamBlock
+from ..blocks import EventPageStreamBlock, ExhibitionPageStreamBlock
 from ..serializers import (
     EventTypeSerializer,
     SessionSerializer,
@@ -256,10 +256,12 @@ class EventPage(RequiredHeroImageMixin, ContentWarningMixin, BasePageWithRequire
         editable=False,
     )
 
-    description = RichTextField(
-        verbose_name=_("description"),
+    description = StreamField(
+        EventPageStreamBlock(),
         blank=True,
-        help_text=_("A description of the event."),
+        null=True,
+        verbose_name=_("description"),
+        help_text=_("The description of the event."),
     )
 
     age_detail = models.CharField(
@@ -414,7 +416,7 @@ class EventPage(RequiredHeroImageMixin, ContentWarningMixin, BasePageWithRequire
             APIField("various_dates"),
             APIField("start_date"),
             APIField("end_date"),
-            APIField("description", serializer=RichTextSerializer()),
+            APIField("description"),
             APIField("event_highlights_title"),
             APIField("event_highlights"),
             APIField("age_detail"),
@@ -713,7 +715,6 @@ class DisplayPage(
                     [
                         FieldPanel("start_date"),
                         FieldPanel("end_date"),
-                        
                     ],
                 ),
                 FieldPanel("all_year"),
