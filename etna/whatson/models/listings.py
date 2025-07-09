@@ -131,6 +131,7 @@ class WhatsOnSeriesPage(BasePageWithRequiredIntro):
 
     api_fields = BasePageWithRequiredIntro.api_fields + [
         APIField("featured_page", serializer=DefaultPageSerializer()),
+        APIField("latest_listings", serializer=DefaultPageSerializer(many=True)),
         APIField("event_listings", serializer=DefaultPageSerializer(many=True)),
         APIField("exhibition_listings", serializer=DefaultPageSerializer(many=True)),
     ]
@@ -228,6 +229,7 @@ class WhatsOnCategoryPage(BasePageWithRequiredIntro):
     api_fields = BasePageWithRequiredIntro.api_fields + [
         APIField("featured_page", serializer=DefaultPageSerializer()),
         APIField("categories", serializer=EventTypeSerializer(many=True)),
+        APIField("latest_listings", serializer=DefaultPageSerializer(many=True)),
         APIField(
             "event_listings",
             serializer=DefaultPageSerializer(many=True),
@@ -469,6 +471,7 @@ class EventsListingPage(BasePageWithRequiredIntro):
 
     api_fields = BasePageWithRequiredIntro.api_fields + [
         APIField("featured_page", serializer=DefaultPageSerializer()),
+        APIField("latest_listings", serializer=DefaultPageSerializer(many=True)),
         APIField(
             "event_listings",
             serializer=DefaultPageSerializer(many=True),
@@ -544,6 +547,7 @@ class ExhibitionsListingPage(BasePageWithRequiredIntro):
 
     api_fields = BasePageWithRequiredIntro.api_fields + [
         APIField("featured_page", serializer=DefaultPageSerializer()),
+        APIField("latest_listings", serializer=DefaultPageSerializer(many=True)),
         APIField(
             "exhibition_listings",
             serializer=DefaultPageSerializer(many=True),
