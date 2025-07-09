@@ -148,7 +148,10 @@ class SiteFilter(BaseFilterBackend):
                 )
         else:
             # Otherwise, find the site from the request
-            site = Site.find_for_request(request)
+            # site = Site.find_for_request(request)
+
+            # Otherwise, use the default site
+            site = Site.objects.get(is_default_site=True)
 
         if site:
             base_queryset = queryset
@@ -209,4 +212,75 @@ class LocationFilter(BaseFilterBackend):
             return queryset.filter(location__online=True)
         elif "at_tna" in request.GET:
             return queryset.filter(location__at_tna=True)
+        return queryset
+
+
+class EventDateFilter(BaseFilterBackend):
+    """
+    Implements the ?from and ?to filters to filter events by their start and/or end dates.
+
+    The dates are inclusive, meaning that events starting or ending on the specified dates will be included.
+
+    The filtering logic is as follows:
+
+    1. If both 'from' and 'to' are provided:
+
+                     FROM...............TO
+                     |                   |
+    ░░░░░EVENT░░░░░  |                   |                    Not included
+              ░░░░░EVENT░░░░░            |                    Included
+                     |  ░░░░░EVENT░░░░░  |                    Included
+                  ░░░░░░░░░░░EVENT░░░░░░░░░░░                 Included
+                     |            ░░░░░EVENT░░░░░             Included
+                     |                   |  ░░░░░EVENT░░░░░   Not included
+
+
+    2. If only 'from' is provided:
+
+                     FROM.................
+                     |
+    ░░░░░EVENT░░░░░  |                                        Not included
+              ░░░░░EVENT░░░░░                                 Included
+                     |  ░░░░░EVENT░░░░░                       Included
+
+
+    3. If only 'to' is provided:
+
+                     ...................TO
+                                         |
+                        ░░░░░EVENT░░░░░  |                    Included
+                                  ░░░░░EVENT░░░░░             Included
+                                         |  ░░░░░EVENT░░░░░   Not included
+
+    """
+
+    def filter_queryset(self, request, queryset, view):
+        if "from" in request.GET:
+            try:
+                from_date = datetime.datetime.fromisoformat(request.GET["from"])
+            except ValueError:
+                raise BadRequestError(
+                    "Invalid date format for 'from' filter. Use ISO format (YYYY-MM-DD)."
+                )
+        else:
+            from_date = None
+
+        if "to" in request.GET:
+            try:
+                to_date = datetime.datetime.fromisoformat(request.GET["to"])
+            except ValueError:
+                raise BadRequestError(
+                    "Invalid date format for 'to' filter. Use ISO format (YYYY-MM-DD)."
+                )
+        else:
+            to_date = None
+
+        if from_date and to_date and from_date > to_date:
+            raise BadRequestError("'from' date cannot be after 'to' date.")
+
+        if from_date:
+            queryset = queryset.filter(end_date__gte=from_date)
+        if to_date:
+            queryset = queryset.filter(start_date__lte=to_date)
+
         return queryset
