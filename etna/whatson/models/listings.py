@@ -349,15 +349,21 @@ class WhatsOnDateListingPage(BasePageWithRequiredIntro):
         Returns a list of event pages that are happening between today and the date in `days`
         amount of days.
         """
-        return get_specific_listings(
-            page_types=[EventPage],
-            filters={
-                "sessions__start__gte": timezone.now(),
-                "sessions__start__lte": timezone.now()
-                + datetime.timedelta(days=self.days-1),
-            },
-            order_by="start_date",
-        )
+        if self.days == 0:
+            return get_specific_listings(
+                page_types=[EventPage],
+                order_by="start_date",
+            )
+        else:
+            return get_specific_listings(
+                page_types=[EventPage],
+                filters={
+                    "sessions__start__gte": timezone.now(),
+                    "sessions__start__lte": timezone.now()
+                    + datetime.timedelta(days=self.days-1),
+                },
+                order_by="start_date",
+            )
 
     @cached_property
     def exhibition_listings(self) -> list:
@@ -365,14 +371,20 @@ class WhatsOnDateListingPage(BasePageWithRequiredIntro):
         Returns a list of exhibition and display pages that are happening between today and the date in `days`
         amount of days.
         """
-        return get_specific_listings(
-            page_types=[ExhibitionPage, DisplayPage],
-            filters={
-                "start_date__lte": timezone.now() + datetime.timedelta(days=self.days-1),
-                "end_date__gte": timezone.now(),
-            },
-            order_by="start_date",
-        )
+        if self.days == 0:
+            return get_specific_listings(
+                page_types=[ExhibitionPage, DisplayPage],
+                order_by="start_date",
+            )
+        else:
+            return get_specific_listings(
+                page_types=[ExhibitionPage, DisplayPage],
+                filters={
+                    "start_date__lte": timezone.now() + datetime.timedelta(days=self.days-1),
+                    "end_date__gte": timezone.now(),
+                },
+                order_by="start_date",
+            )
 
     @cached_property
     def type_label(cls) -> str:
