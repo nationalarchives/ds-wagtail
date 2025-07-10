@@ -122,18 +122,6 @@ class BasePage(AlertMixin, SocialMixin, HeadlessPreviewMixin, Page):
         """
         return bool(getattr(cls._meta, "verbose_name_public", None))
 
-    def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
-        """
-        Return values that should be included in the Google Analytics datalayer
-        when rendering this page.
-
-        Override this method on subclasses to add data that is relevant to a
-        specific page type.
-        """
-        data = super().get_datalayer_data(request)
-        data.update(customDimension3=self._meta.verbose_name)
-        return data
-
     @property
     def privacy(self):
         privacy = [r.restriction_type for r in self.get_view_restrictions()]
