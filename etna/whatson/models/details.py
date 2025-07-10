@@ -428,7 +428,12 @@ class EventPage(RequiredHeroImageMixin, ContentWarningMixin, BasePageWithRequire
             APIField("booking_link"),
             APIField("speakers", serializer=SpeakerSerializer(many=True)),
             APIField("sessions", serializer=SessionSerializer(many=True)),
-            APIField("primary_series", serializer=DefaultPageSerializer(required_api_fields=["featured_page", "latest_listings"])),
+            APIField(
+                "primary_series",
+                serializer=DefaultPageSerializer(
+                    required_api_fields=["featured_page", "latest_listings"]
+                ),
+            ),
             APIField("series", serializer=DefaultPageSerializer(many=True)),
         ]
     )
@@ -452,10 +457,14 @@ class EventPage(RequiredHeroImageMixin, ContentWarningMixin, BasePageWithRequire
         Returns the series this event page belongs to, if any.
         """
         return [tag.series for tag in self.page_series_tags.all() if tag.series]
-    
+
     @cached_property
     def primary_series(self):
-        return self.page_series_tags.first().series if self.page_series_tags.exists() else None
+        return (
+            self.page_series_tags.first().series
+            if self.page_series_tags.exists()
+            else None
+        )
 
     @cached_property
     def type_label(cls) -> str:
@@ -653,7 +662,11 @@ class DisplayPage(
 
     @cached_property
     def primary_series(self):
-        return self.page_series_tags.first().series if self.page_series_tags.exists() else None
+        return (
+            self.page_series_tags.first().series
+            if self.page_series_tags.exists()
+            else None
+        )
 
     @cached_property
     def type_label(cls) -> str:
@@ -779,7 +792,12 @@ class DisplayPage(
             APIField("featured_page", serializer=DefaultPageSerializer()),
             APIField("related_pages"),
             APIField("shop"),
-            APIField("primary_series", serializer=DefaultPageSerializer(required_api_fields=["featured_page", "latest_listings"])),
+            APIField(
+                "primary_series",
+                serializer=DefaultPageSerializer(
+                    required_api_fields=["featured_page", "latest_listings"]
+                ),
+            ),
             APIField("series", serializer=DefaultPageSerializer(many=True)),
         ]
     )
@@ -1001,10 +1019,14 @@ class ExhibitionPage(
         Returns the series this event page belongs to, if any.
         """
         return [tag.series for tag in self.page_series_tags.all() if tag.series]
-    
+
     @cached_property
     def primary_series(self):
-        return self.page_series_tags.first().series if self.page_series_tags.exists() else None
+        return (
+            self.page_series_tags.first().series
+            if self.page_series_tags.exists()
+            else None
+        )
 
     @cached_property
     def type_label(cls) -> str:
@@ -1153,7 +1175,12 @@ class ExhibitionPage(
             APIField("event_description", serializer=RichTextSerializer()),
             APIField("event_links"),
             APIField("shop"),
-            APIField("primary_series", serializer=DefaultPageSerializer(required_api_fields=["featured_page", "latest_listings"])),
+            APIField(
+                "primary_series",
+                serializer=DefaultPageSerializer(
+                    required_api_fields=["featured_page", "latest_listings"]
+                ),
+            ),
             APIField("series", serializer=DefaultPageSerializer(many=True)),
         ]
     )
