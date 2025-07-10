@@ -92,10 +92,12 @@ class TestCIIMClient(unittest.TestCase):
 
     @patch("app.ciim.client.CIIMClient.get_record_instance")
     def test_get_serialized_record_success(self, mock_get_record_instance):
-        # Mock the get_record_instance method
+        # Mock the get_record_instance method with some fake data so we don't get an API hit
+        self.client.params = {"id": "CD123"}
+
         mock_get_record_instance.return_value = {
             "summaryTitle": "Record Title",
-            "iaid": "C123",
+            "iaid": "CD123",
             "referenceNumber": "WO 1/2/3",
         }
 
@@ -104,7 +106,7 @@ class TestCIIMClient(unittest.TestCase):
             result,
             {
                 "title": "Record Title",
-                "iaid": "C123",
+                "iaid": "CD123",
                 "reference_number": "WO 1/2/3",
             },
         )
