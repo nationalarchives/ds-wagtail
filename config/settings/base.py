@@ -289,12 +289,7 @@ WAGTAILDOCS_INLINE_CONTENT_TYPES = []
 
 WAGTAILIMAGES_IMAGE_MODEL = "images.CustomImage"
 
-# Custom password template for private pages
-
-WAGTAIL_PASSWORD_REQUIRED_TEMPLATE = "password_pages/password_required.html"
-
 # CIIM API Client
-
 ROSETTA_API_URL = os.getenv("ROSETTA_API_URL")
 
 # Rich Text Features
@@ -318,22 +313,8 @@ BIRDBATH_REQUIRED = False
 BIRDBATH_PROCESSORS = ["app.users.anonymisation.UserAnonymiser"]
 
 # -----------------------------------------------------------------------------
-# Default cache-control settings
+# Cache settings
 # -----------------------------------------------------------------------------
-
-# Set s-max-age header that is used by reverse proxy/front end cache.
-# See core.cache_control.get_default_cache_control_kwargs()
-# The default value is 3 hours.
-try:
-    CACHE_CONTROL_S_MAXAGE = int(os.getenv("CACHE_CONTROL_S_MAXAGE", 60 * 60 * 3))
-except ValueError:
-    pass
-
-# Give front-end cache 30 second to revalidate the cache to avoid hitting the backend.
-# See core.cache_control.get_default_cache_control_kwargs()
-CACHE_CONTROL_STALE_WHILE_REVALIDATE = int(
-    os.getenv("CACHE_CONTROL_STALE_WHILE_REVALIDATE", 30)
-)
 
 if redis_url := os.getenv("REDIS_URL"):
     CACHES = {
