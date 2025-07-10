@@ -66,8 +66,8 @@ class CIIMClient(JSONAPIClient):
         """
         Get a standardised serialized record from the CIIM API for the Wagtail API.
         """
-        
-        if not self.params.get("id") or self.params.get("id") == None:
+
+        if not self.params.get("id") or self.params.get("id") is None:
             return None
         
         cache_key = f"record_details_{self.params.get('id')}"
