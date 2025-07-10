@@ -1,10 +1,7 @@
-from typing import Any, Dict
-
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import options
-from django.http import HttpRequest
 from django.utils.functional import cached_property
 from django.utils.text import capfirst
 from django.utils.translation import gettext_lazy as _
@@ -121,18 +118,6 @@ class BasePage(AlertMixin, SocialMixin, HeadlessPreviewMixin, Page):
         has been set in `Meta` for this page type.
         """
         return bool(getattr(cls._meta, "verbose_name_public", None))
-
-    def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
-        """
-        Return values that should be included in the Google Analytics datalayer
-        when rendering this page.
-
-        Override this method on subclasses to add data that is relevant to a
-        specific page type.
-        """
-        data = super().get_datalayer_data(request)
-        data.update(customDimension3=self._meta.verbose_name)
-        return data
 
     @property
     def privacy(self):
