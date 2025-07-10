@@ -10,7 +10,8 @@ runs:
   using: "composite"
   steps:
     - run: |
-        echo "PLATFORMSH_CLI_TOKEN=abc123" >> $GITHUB_ENV
+        touch .env
+        echo "PLATFORMSH_CLI_TOKEN=abc123" >> .env
       shell: bash
     - uses: actions/setup-python@v5
       with:
