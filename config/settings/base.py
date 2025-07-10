@@ -108,8 +108,6 @@ MIDDLEWARE = [
     "app.core.middleware.InterpretCookiesMiddleware",
 ]
 
-COOKIE_DOMAIN = os.getenv("COOKIE_DOMAIN", "nationalarchives.gov.uk")
-
 ROOT_URLCONF = "config.urls"
 
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "").split(",")

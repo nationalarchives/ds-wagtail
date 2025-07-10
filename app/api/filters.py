@@ -148,7 +148,10 @@ class SiteFilter(BaseFilterBackend):
                 )
         else:
             # Otherwise, find the site from the request
-            site = Site.find_for_request(request)
+            # site = Site.find_for_request(request)
+
+            # Otherwise, use the default site
+            site = Site.objects.get(is_default_site=True)
 
         if site:
             base_queryset = queryset

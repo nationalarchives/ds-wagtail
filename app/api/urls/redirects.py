@@ -39,7 +39,11 @@ class RedirectsAPIViewSet(BaseRedirectsAPIViewSet):
                     "Your query returned multiple sites. Try adding a port number to your site filter."
                 )
         else:
-            site = Site.find_for_request(self.request)
+            # Otherwise, find the site from the request
+            # site = Site.find_for_request(self.request)
+
+            # Otherwise, use the default site
+            site = Site.objects.get(is_default_site=True)
 
         if site:
             queryset = queryset.filter(Q(site=site) | Q(site=None))
