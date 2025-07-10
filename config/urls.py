@@ -12,10 +12,6 @@ from wagtail.utils.urlpatterns import decorate_urlpatterns
 
 from app.api.urls import api_router
 
-handler404 = "app.errors.views.custom_404_error_view"
-handler500 = "app.errors.views.custom_500_error_view"
-handler503 = "app.errors.views.custom_503_error_view"
-
 
 def redirect_to_live_site(request):
     if url_has_allowed_host_and_scheme(

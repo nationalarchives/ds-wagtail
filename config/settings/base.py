@@ -105,7 +105,6 @@ MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "wagtail.contrib.redirects.middleware.RedirectMiddleware",
-    "app.core.middleware.InterpretCookiesMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -127,7 +126,6 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "wagtail.contrib.settings.context_processors.settings",
-                "app.core.context_processors.feature_flags",
                 "app.core.context_processors.settings_vars",
             ],
         },
@@ -335,21 +333,6 @@ except ValueError:
 # See core.cache_control.get_default_cache_control_kwargs()
 CACHE_CONTROL_STALE_WHILE_REVALIDATE = int(
     os.getenv("CACHE_CONTROL_STALE_WHILE_REVALIDATE", 30)
-)
-
-# -----------------------------------------------------------------------------
-# Feature flags
-# -----------------------------------------------------------------------------
-
-# Special boolean settings prefixed with 'FEATURE_', that are automatically
-# injected into template contexts using a custom context processor - allowing
-# conditional logic to be added to both Python and template code
-
-FEATURE_COOKIE_BANNER_ENABLED = strtobool(
-    os.getenv("FEATURE_COOKIE_BANNER_ENABLED", "True")
-)
-FEATURE_DISABLE_JS_WHATS_ON_LISTING = strtobool(
-    os.getenv("FEATURE_DISABLE_JS_WHATS_ON_LISTING", "False")
 )
 
 if redis_url := os.getenv("REDIS_URL"):
