@@ -28,16 +28,6 @@ class WhatsOnPageSelection(models.Model):
         related_name="whats_on_page_selections",
     )
 
-    featured_page = models.ForeignKey(
-        "wagtailcore.Page",
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="+",
-        verbose_name=_("featured page"),
-        help_text=_("The page to feature on the What's On page."),
-    )
-
     selected_page = models.ForeignKey(
         "wagtailcore.Page",
         on_delete=models.CASCADE,
@@ -47,14 +37,6 @@ class WhatsOnPageSelection(models.Model):
     )
 
     panels = [
-        PageChooserPanel(
-            "featured_page",
-            page_type=[
-                "whatson.EventPage",
-                "whatson.ExhibitionPage",
-                "whatson.DisplayPage",
-            ],
-        ),
         PageChooserPanel(
             "selected_page",
             page_type=[

@@ -90,6 +90,21 @@ class Location(models.Model):
         max_num=1,
     )
 
+    venue_link = models.URLField(
+        blank=True,
+        null=True,
+        verbose_name=_("Venue link"),
+        help_text=_("A link to the venue's website or visit us page."),
+    )
+
+    venue_link_text = models.CharField(
+        max_length=50,
+        blank=True,
+        null=True,
+        verbose_name=_("Venue link text"),
+        help_text=_("Text to display for the venue link, if applicable."),
+    )
+
     panels = [
         TitleFieldPanel("space_name", placeholder="Space name"),
         MultiFieldPanel(
@@ -113,8 +128,9 @@ class Location(models.Model):
         MultiFieldPanel(
             [
                 FieldPanel("image"),
-                FieldPanel("details_title"),
                 FieldPanel("details"),
+                FieldPanel("venue_link"),
+                FieldPanel("venue_link_text"),
             ],
             heading=_("Key details"),
         ),
@@ -130,8 +146,9 @@ class Location(models.Model):
         APIField("postcode"),
         APIField("full_address"),
         APIField("image", serializer=ImageSerializer()),
-        APIField("details_title"),
         APIField("details"),
+        APIField("venue_link"),
+        APIField("venue_link_text"),
     ]
 
     def clean(self):
@@ -205,8 +222,9 @@ class LocationSerializer(serializers.Serializer):
                 "address_line_2": instance.address_line_2,
                 "postcode": instance.postcode,
                 "full_address": instance.full_address,
-                "details_title": instance.details_title,
                 "details": StreamFieldSerializer().to_representation(instance.details),
                 "image": ImageSerializer().to_representation(instance.image),
+                "venue_link": instance.venue_link,
+                "venue_link_text": instance.venue_link_text,
             }
         return None
