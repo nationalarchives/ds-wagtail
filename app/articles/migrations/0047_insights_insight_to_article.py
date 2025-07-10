@@ -6,7 +6,6 @@
 
 from django.db import migrations, models
 import django.db.models.deletion
-import app.analytics.mixins
 import app.core.blocks.page_list
 import app.articles.blocks
 import app.media.blocks

@@ -42,7 +42,6 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 INSTALLED_APPS = [
     "app.generic_pages",
     "app.alerts",
-    "app.analytics",
     "app.articles",
     "app.blog",
     "app.people",

@@ -4,7 +4,6 @@
 # etna:allowRemoveField
 
 import django.db.models.deletion
-import app.analytics.mixins
 import wagtail.fields
 import wagtail_headless_preview.models
 from django.db import migrations, models
@@ -72,7 +71,7 @@ class Migration(migrations.Migration):
                 'verbose_name': 'Date listing page',
                 'verbose_name_plural': 'Date listing pages',
             },
-            bases=(app.analytics.mixins.DataLayerMixin, wagtail_headless_preview.models.HeadlessPreviewMixin, 'wagtailcore.page', models.Model),
+            bases=(wagtail_headless_preview.models.HeadlessPreviewMixin, 'wagtailcore.page', models.Model),
         ),
         migrations.CreateModel(
             name='WhatsOnLocationListingPage',
@@ -94,6 +93,6 @@ class Migration(migrations.Migration):
                 'verbose_name': 'Location listing page',
                 'verbose_name_plural': 'Location listing pages',
             },
-            bases=(app.analytics.mixins.DataLayerMixin, wagtail_headless_preview.models.HeadlessPreviewMixin, 'wagtailcore.page', models.Model),
+            bases=(wagtail_headless_preview.models.HeadlessPreviewMixin, 'wagtailcore.page', models.Model),
         ),
     ]

@@ -4,7 +4,6 @@
 # etna:allowDeleteModel
 
 import django.db.models.deletion
-import app.analytics.mixins
 import modelcluster.fields
 import wagtail.fields
 import wagtail_headless_preview.models
@@ -300,7 +299,7 @@ class Migration(migrations.Migration):
                 'verbose_name': 'display page',
                 'verbose_name_plural': 'display pages',
             },
-            bases=(app.analytics.mixins.DataLayerMixin, wagtail_headless_preview.models.HeadlessPreviewMixin, 'wagtailcore.page', models.Model),
+            bases=(wagtail_headless_preview.models.HeadlessPreviewMixin, 'wagtailcore.page', models.Model),
         ),
         migrations.CreateModel(
             name='CategorySelection',
@@ -332,7 +331,7 @@ class Migration(migrations.Migration):
             options={
                 'abstract': False,
             },
-            bases=(app.analytics.mixins.DataLayerMixin, wagtail_headless_preview.models.HeadlessPreviewMixin, 'wagtailcore.page', models.Model),
+            bases=(wagtail_headless_preview.models.HeadlessPreviewMixin, 'wagtailcore.page', models.Model),
         ),
         migrations.CreateModel(
             name='ExhibitionsListingPage',
@@ -351,7 +350,7 @@ class Migration(migrations.Migration):
             options={
                 'abstract': False,
             },
-            bases=(app.analytics.mixins.DataLayerMixin, wagtail_headless_preview.models.HeadlessPreviewMixin, 'wagtailcore.page', models.Model),
+            bases=(wagtail_headless_preview.models.HeadlessPreviewMixin, 'wagtailcore.page', models.Model),
         ),
         migrations.CreateModel(
             name='WhatsOnCategoryPage',
@@ -371,7 +370,7 @@ class Migration(migrations.Migration):
             options={
                 'verbose_name': "What's On category page",
             },
-            bases=(app.analytics.mixins.DataLayerMixin, wagtail_headless_preview.models.HeadlessPreviewMixin, 'wagtailcore.page', models.Model),
+            bases=(wagtail_headless_preview.models.HeadlessPreviewMixin, 'wagtailcore.page', models.Model),
         ),
         migrations.CreateModel(
             name='WhatsOnPageSelection',
@@ -403,7 +402,7 @@ class Migration(migrations.Migration):
             options={
                 'verbose_name': "What's On series page",
             },
-            bases=(app.analytics.mixins.DataLayerMixin, wagtail_headless_preview.models.HeadlessPreviewMixin, 'wagtailcore.page', models.Model),
+            bases=(wagtail_headless_preview.models.HeadlessPreviewMixin, 'wagtailcore.page', models.Model),
         ),
         migrations.CreateModel(
             name='SeriesTag',

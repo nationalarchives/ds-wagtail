@@ -2,7 +2,6 @@
 
 import django.db.models.deletion
 import django.utils.timezone
-import app.analytics.mixins
 import app.people.models
 import uuid
 import wagtail.fields
@@ -147,7 +146,6 @@ class Migration(migrations.Migration):
                 "abstract": False,
             },
             bases=(
-                app.analytics.mixins.DataLayerMixin,
                 wagtail_headless_preview.models.HeadlessPreviewMixin,
                 "wagtailcore.page",
                 models.Model,
@@ -279,7 +277,6 @@ class Migration(migrations.Migration):
                 "abstract": False,
             },
             bases=(
-                app.analytics.mixins.DataLayerMixin,
                 wagtail_headless_preview.models.HeadlessPreviewMixin,
                 "wagtailcore.page",
                 models.Model,
@@ -665,7 +662,6 @@ class Migration(migrations.Migration):
             },
             bases=(
                 app.people.models.AuthorPageMixin,
-                app.analytics.mixins.DataLayerMixin,
                 wagtail_headless_preview.models.HeadlessPreviewMixin,
                 "wagtailcore.page",
                 models.Model,

@@ -149,9 +149,6 @@ class ArticleIndexPage(BasePageWithRequiredIntro):
         APIField("featured_pages"),
     ]
 
-    # DataLayerMixin overrides
-    gtm_content_group = "Explore the collection"
-
     class Meta:
         verbose_name = _("article index page")
 
@@ -207,9 +204,6 @@ class ArticlePage(
     """
 
     body = StreamField(ArticlePageStreamBlock, blank=True, null=True)
-
-    # DataLayerMixin overrides
-    gtm_content_group = "Explore the collection"
 
     class Meta:
         verbose_name = _("article")
@@ -369,9 +363,6 @@ class FocusedArticlePage(
     """
 
     body = StreamField(ArticlePageStreamBlock, blank=True, null=True)
-
-    # DataLayerMixin overrides
-    gtm_content_group = "Explore the collection"
 
     class Meta:
         verbose_name = _("focused article")
@@ -647,10 +638,7 @@ class RecordArticlePage(
         blank=True,
         null=True,
     )
-
-    # DataLayerMixin overrides
-    gtm_content_group = "Explore the collection"
-
+    
     class Meta:
         verbose_name = _("record article")
         verbose_name_plural = _("record articles")

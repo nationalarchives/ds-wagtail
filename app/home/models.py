@@ -37,9 +37,6 @@ class HomePage(BasePageWithRequiredIntro):
         InlinePanel("mourning", label="Mourning Notice", max_num=1),
     ]
 
-    # DataLayerMixin overrides
-    gtm_content_group = "Homepage"
-
     api_fields = BasePageWithRequiredIntro.api_fields + [
         APIField("body"),
     ]

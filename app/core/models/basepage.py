@@ -18,7 +18,6 @@ from wagtail.search import index
 from wagtail_headless_preview.models import HeadlessPreviewMixin
 
 from app.alerts.models import AlertMixin
-from app.analytics.mixins import DataLayerMixin
 from app.core.serializers import (
     AliasOfSerializer,
     ImageSerializer,
@@ -40,7 +39,7 @@ __all__ = [
 options.DEFAULT_NAMES = options.DEFAULT_NAMES + ("verbose_name_public",)
 
 
-class BasePage(AlertMixin, SocialMixin, DataLayerMixin, HeadlessPreviewMixin, Page):
+class BasePage(AlertMixin, SocialMixin, HeadlessPreviewMixin, Page):
     """
     An abstract base model that is used for all Page models within
     the project. Any common fields, Wagtail overrides or custom
@@ -73,9 +72,6 @@ class BasePage(AlertMixin, SocialMixin, DataLayerMixin, HeadlessPreviewMixin, Pa
         related_name="+",
         help_text=_("Image that will appear on thumbnails and promos around the site."),
     )
-
-    # DataLayerMixin overrides
-    gtm_content_group = "Page"
 
     show_publish_date_in_search_results = False
 

@@ -2,7 +2,6 @@
 
 from django.db import migrations, models
 import django.db.models.deletion
-import app.analytics.mixins
 import app.collections.models
 import modelcluster.fields
 import wagtail.fields
@@ -97,7 +96,6 @@ class Migration(migrations.Migration):
             bases=(
                 app.collections.models.TopicalPageMixin,
                 wagtailmetadata.models.WagtailImageMetadataMixin,
-                app.analytics.mixins.DataLayerMixin,
                 "wagtailcore.page",
                 models.Model,
             ),

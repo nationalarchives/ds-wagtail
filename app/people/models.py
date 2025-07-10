@@ -149,9 +149,6 @@ class PersonPage(BasePage):
         verbose_name = "Person page"
         verbose_name_plural = "People pages"
 
-    # DataLayerMixin overrides
-    gtm_content_group = "Person page"
-
     parent_page_types = ["people.PeopleIndexPage"]
     subpage_types = []
 

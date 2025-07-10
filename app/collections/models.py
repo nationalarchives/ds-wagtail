@@ -186,9 +186,6 @@ class ExplorerIndexPage(BasePageWithRequiredIntro):
         "blog.BlogPage",
     ]
 
-    # DataLayerMixin overrides
-    gtm_content_group = "Explore the collection"
-
     api_fields = BasePageWithRequiredIntro.api_fields + [
         APIField("body"),
         APIField("articles_title"),
@@ -216,9 +213,6 @@ class TopicExplorerIndexPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
             FieldPanel("body"),
         ]
     )
-
-    # DataLayerMixin overrides
-    gtm_content_group = "Explore the collection"
 
     api_fields = (
         RequiredHeroImageMixin.api_fields
@@ -318,9 +312,6 @@ class TopicExplorerPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
     )
 
     settings_panels = BasePage.settings_panels + [FieldPanel("skos_id")]
-
-    # DataLayerMixin overrides
-    gtm_content_group = "Explore the collection"
 
     parent_page_types = [
         "collections.TopicExplorerIndexPage",
@@ -455,9 +446,6 @@ class TimePeriodExplorerIndexPage(RequiredHeroImageMixin, BasePageWithRequiredIn
         ]
     )
 
-    # DataLayerMixin overrides
-    gtm_content_group = "Explore the collection"
-
     @cached_property
     def featured_pages(self):
         """Return a sample of child pages for rendering in teaser."""
@@ -573,9 +561,6 @@ class TimePeriodExplorerPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
             APIField("end_year"),
         ]
     )
-
-    # DataLayerMixin overrides
-    gtm_content_group = "Explore the collection"
 
     parent_page_types = [
         "collections.TimePeriodExplorerIndexPage",
@@ -901,8 +886,6 @@ class HighlightGalleryPage(
         index.SearchField("time_period_names"),
         index.SearchField("teaser_text"),
     ]
-
-    gtm_content_group = "Explore the collection"
 
     @cached_property
     def highlights(self):
