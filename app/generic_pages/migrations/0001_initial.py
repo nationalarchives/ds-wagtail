@@ -59,5 +59,6 @@ class Migration(migrations.Migration):
             options={
                 "abstract": False,
             },
+            bases=("wagtailcore.page",)
         ),
     ]
