@@ -7,6 +7,7 @@ from etna.core.blocks import (
     ParagraphBlock,
     QuoteBlock,
     SectionDepthAwareStructBlock,
+    SubHeadingBlock,
 )
 
 
@@ -28,6 +29,7 @@ class SectionContentBlock(blocks.StreamBlock):
     contact = ContactBlock()
     inset_text = InsetTextBlock()
     paragraph = ParagraphBlock()
+    sub_heading = SubHeadingBlock()
 
 
 class ContentSectionBlock(SectionDepthAwareStructBlock):
@@ -41,3 +43,4 @@ class ContentSectionBlock(SectionDepthAwareStructBlock):
 
 class EventPageStreamBlock(SectionContentBlock):
     content_section = ContentSectionBlock()
+    sub_heading = None
