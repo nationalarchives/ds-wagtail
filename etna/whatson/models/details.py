@@ -734,6 +734,7 @@ class DisplayPage(
     ]
 
     default_api_fields = BasePageWithRequiredIntro.default_api_fields + [
+        APIField("all_year"),
         APIField("start_date"),
         APIField("end_date"),
         APIField("price"),
@@ -747,6 +748,7 @@ class DisplayPage(
         + [
             APIField("start_date"),
             APIField("end_date"),
+            APIField("all_year"),
             APIField("exclude_days"),
             APIField("price"),
             APIField("open_days"),
