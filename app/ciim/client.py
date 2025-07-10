@@ -69,7 +69,7 @@ class CIIMClient(JSONAPIClient):
 
         if not self.params.get("id") or self.params.get("id") is None:
             return None
-        
+
         cache_key = f"record_details_{self.params.get('id')}"
         if cached_record := cache.get(cache_key, None):
             logger.info(

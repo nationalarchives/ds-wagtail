@@ -638,7 +638,7 @@ class RecordArticlePage(
         blank=True,
         null=True,
     )
-    
+
     class Meta:
         verbose_name = _("record article")
         verbose_name_plural = _("record articles")

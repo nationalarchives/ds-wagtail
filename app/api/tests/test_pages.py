@@ -53,25 +53,25 @@ class APIResponseTest(WagtailPageTestCase):
     """
 
     @classmethod
-    def setUpTestData(cls):
-        cls.root_page = Site.objects.get().root_page
-        cls.root_page.mourning = [
+    def setUpTestData(self):
+        self.root_page = Site.objects.get().root_page
+        self.root_page.mourning = [
             MourningNotice.objects.create(
                 title="Test title",
                 message="<p>Test message</p>",
-                page=cls.root_page,
-                page_id=cls.root_page.id,
+                page=self.root_page,
+                page_id=self.root_page.id,
             )
         ]
 
-        cls.test_image = ImageFactory(
+        self.test_image = ImageFactory(
             transcription="<p>Transcript</p>",
             translation="<p>Translation</p>",
             copyright="Copyrighted by someone",
             description="Some alt text",
         )
 
-        cls.alert = Alert.objects.create(
+        self.alert = Alert.objects.create(
             title="BETA",
             message="<p>Message</p>",
             active=True,
@@ -79,7 +79,7 @@ class APIResponseTest(WagtailPageTestCase):
             alert_level="high",
         )
 
-        cls.test_media = EtnaMedia.objects.create(
+        self.test_media = EtnaMedia.objects.create(
             title="Test media",
             file="media/test.mp4",
             type="video",
@@ -91,84 +91,84 @@ class APIResponseTest(WagtailPageTestCase):
             transcript="<p>Transcript</p>",
         )
 
-        cls.arts = TopicPageFactory(
+        self.arts = TopicPageFactory(
             title="arts",
-            parent=cls.root_page,
+            parent=self.root_page,
             first_published_at=DATE_1,
         )
 
-        cls.early_modern = TimePeriodPageFactory(
+        self.early_modern = TimePeriodPageFactory(
             title="early_modern",
             start_year=1485,
             end_year=1714,
-            parent=cls.root_page,
+            parent=self.root_page,
             first_published_at=DATE_1,
         )
 
-        cls.postwar = TimePeriodPageFactory(
+        self.postwar = TimePeriodPageFactory(
             title="postwar",
             start_year=1945,
             end_year=2000,
-            parent=cls.root_page,
+            parent=self.root_page,
             first_published_at=DATE_1,
         )
 
-        cls.author_index_page = PeopleIndexPageFactory(
-            parent=cls.root_page,
+        self.author_index_page = PeopleIndexPageFactory(
+            parent=self.root_page,
             title="people",
             first_published_at=DATE_1,
-            alert=cls.alert,
+            alert=self.alert,
         )
 
-        cls.author_page = PersonPageFactory(
+        self.author_page = PersonPageFactory(
             title="author",
             role="Test Author",
             summary="<p>Summary text</p>",
             first_published_at=DATE_1,
-            parent=cls.author_index_page,
+            parent=self.author_index_page,
             first_name="John",
             last_name="Smith",
         )
 
-        cls.article_index = ArticleIndexPageFactory(
-            parent=cls.root_page,
+        self.article_index = ArticleIndexPageFactory(
+            parent=self.root_page,
             title="article_index",
             first_published_at=DATE_1,
         )
 
-        cls.article = ArticlePageFactory(
-            parent=cls.article_index,
+        self.article = ArticlePageFactory(
+            parent=self.article_index,
             title="article",
             intro='<p>This is an article with <a linktype="page" id="3">a link to a page</a><page>',
-            page_topics=[PageTopic(topic=cls.arts)],
+            page_topics=[PageTopic(topic=self.arts)],
             page_time_periods=[
-                PageTimePeriod(time_period=cls.early_modern),
-                PageTimePeriod(time_period=cls.postwar),
+                PageTimePeriod(time_period=self.early_modern),
+                PageTimePeriod(time_period=self.postwar),
             ],
             first_published_at=DATE_1,
             published_date=DATE_1,
         )
 
-        cls.focused_article = FocusedArticlePageFactory(
-            parent=cls.article_index,
+        self.focused_article = FocusedArticlePageFactory(
+            parent=self.article_index,
             title="focused_article",
-            page_topics=[PageTopic(topic=cls.arts)],
-            page_time_periods=[PageTimePeriod(time_period=cls.early_modern)],
-            author_tags=[AuthorTag(author=cls.author_page)],
+            page_topics=[PageTopic(topic=self.arts)],
+            page_time_periods=[PageTimePeriod(time_period=self.early_modern)],
+            author_tags=[AuthorTag(author=self.author_page)],
             first_published_at=DATE_2,
             published_date=DATE_2,
         )
 
-        cls.record_article = RecordArticlePageFactory(
-            parent=cls.article_index,
+        self.record_article = RecordArticlePageFactory(
+            parent=self.article_index,
             title="record_article",
-            page_topics=[PageTopic(topic=cls.arts)],
-            page_time_periods=[PageTimePeriod(time_period=cls.early_modern)],
+            page_topics=[PageTopic(topic=self.arts)],
+            page_time_periods=[PageTimePeriod(time_period=self.early_modern)],
             first_published_at=DATE_3,
             published_date=DATE_3,
         )
 
-        cls.BODY_JSON = [
+        self.BODY_JSON = [
             {
                 "id": "9da308ae-afea-4177-b200-bd3d50aae884",
                 "type": "content_section",
@@ -198,7 +198,7 @@ class APIResponseTest(WagtailPageTestCase):
                             "id": "f5e76e88-7ccb-4802-8b6d-feaf5348c742",
                             "type": "image",
                             "value": {
-                                "image": cls.test_image.id,
+                                "image": self.test_image.id,
                                 "caption": '<p data-block-key="apto9">Caption text</p>',
                                 "alt_text": "Alt text",
                             },
@@ -207,16 +207,16 @@ class APIResponseTest(WagtailPageTestCase):
                             "id": "6e6816e0-6634-46cc-bf75-0c7d737a4cb2",
                             "type": "media",
                             "value": {
-                                "media": cls.test_media.id,
+                                "media": self.test_media.id,
                                 "title": "Media title",
-                                "thumbnail": cls.test_image.id,
+                                "thumbnail": self.test_image.id,
                             },
                         },
                         {
                             "id": "b505f636-f3d1-4d4b-b368-69183e324e6e",
                             "type": "featured_record_article",
                             "value": {
-                                "page": cls.record_article.id,
+                                "page": self.record_article.id,
                             },
                         },
                         {
@@ -225,7 +225,7 @@ class APIResponseTest(WagtailPageTestCase):
                             "value": {
                                 "url": "https://google.com",
                                 "image": {
-                                    "image": cls.test_image.id,
+                                    "image": self.test_image.id,
                                     "alt_text": "Image alt text",
                                     "decorative": False,
                                 },
@@ -268,7 +268,7 @@ class APIResponseTest(WagtailPageTestCase):
                                         "value": {
                                             "record": "D7376859",
                                             "record_dates": "12 April 2021",
-                                            "thumbnail_image": cls.test_image.id,
+                                            "thumbnail_image": self.test_image.id,
                                             "descriptive_title": "Record title",
                                         },
                                     }
@@ -281,7 +281,7 @@ class APIResponseTest(WagtailPageTestCase):
             }
         ]
 
-        cls.FEATURED_PAGES_JSON = [
+        self.FEATURED_PAGES_JSON = [
             {
                 "id": "f3544bb7-11e1-4894-9e9d-02ada7409600",
                 "type": "featuredpages",
@@ -290,12 +290,12 @@ class APIResponseTest(WagtailPageTestCase):
                         {
                             "id": "932d1336-7405-4935-bc3b-ddb8610ab9fa",
                             "type": "item",
-                            "value": cls.article.id,
+                            "value": self.article.id,
                         },
                         {
                             "id": "084374fe-1405-47d0-913d-ed90c3a60b69",
                             "type": "item",
-                            "value": cls.focused_article.id,
+                            "value": self.focused_article.id,
                         },
                     ],
                     "heading": "Featured pages heading",
@@ -304,33 +304,33 @@ class APIResponseTest(WagtailPageTestCase):
             }
         ]
 
-        cls.witchcraft = ArticleTag.objects.get(name="Witchcraft")
-        cls.medicine = ArticleTag.objects.get(name="Medicine")
-        cls.article.tags.add(cls.witchcraft)
-        cls.article.body = cls.BODY_JSON
-        cls.article.save()
+        self.witchcraft = ArticleTag.objects.get(name="Witchcraft")
+        self.medicine = ArticleTag.objects.get(name="Medicine")
+        self.article.tags.add(self.witchcraft)
+        self.article.body = self.BODY_JSON
+        self.article.save()
 
-        cls.focused_article.tags.add(cls.medicine)
-        cls.focused_article.tags.add(cls.witchcraft)
-        cls.focused_article.save()
+        self.focused_article.tags.add(self.medicine)
+        self.focused_article.tags.add(self.witchcraft)
+        self.focused_article.save()
 
-        cls.article_index.featured_article = cls.article
-        cls.article_index.featured_pages = cls.FEATURED_PAGES_JSON
-        cls.article_index.save()
+        self.article_index.featured_article = self.article
+        self.article_index.featured_pages = self.FEATURED_PAGES_JSON
+        self.article_index.save()
 
-        cls.highlight_gallery = HighlightGalleryPageFactory(
-            parent=cls.arts,
+        self.highlight_gallery = HighlightGalleryPageFactory(
+            parent=self.arts,
             title="highlight_gallery",
-            featured_article=cls.article,
+            featured_article=self.article,
             page_highlights=[
                 Highlight(
-                    image=cls.test_image,
+                    image=self.test_image,
                     record="C123",
                     description="<p>Test description</p>",
                 )
             ],
-            page_topics=[PageTopic(topic=cls.arts)],
-            page_time_periods=[PageTimePeriod(time_period=cls.early_modern)],
+            page_topics=[PageTopic(topic=self.arts)],
+            page_time_periods=[PageTimePeriod(time_period=self.early_modern)],
             first_published_at=DATE_3,
         )
 

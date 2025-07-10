@@ -6,6 +6,7 @@ from django.http import HttpResponsePermanentRedirect
 from django.urls import include, path
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.decorators.cache import never_cache
+from wagtail import urls as wagtail_urls
 from wagtail.admin import urls as wagtailadmin_urls
 from wagtail.documents import urls as wagtaildocs_urls
 from wagtail.utils.urlpatterns import decorate_urlpatterns
@@ -53,7 +54,14 @@ private_urls = [
 private_urls = decorate_urlpatterns(private_urls, never_cache)
 
 # Join private and public URLs.
-urlpatterns = private_urls + redirect_urls + public_urls
+urlpatterns = (
+    private_urls
+    + redirect_urls
+    + public_urls
+    + [
+        path("", include(wagtail_urls)),
+    ]
+)
 
 if apps.is_installed("debug_toolbar"):
     urlpatterns = [
