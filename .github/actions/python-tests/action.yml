@@ -28,7 +28,7 @@ runs:
       run: flake8 .
       shell: bash
     - name: Start Docker containers
-      run: docker compose up --detach --wait --wait-timeout 300
+      run: docker compose up --detach --wait --wait-timeout 300 || docker compose logs app
       shell: bash
     - name: Run check in the app Docker container
       run: docker compose exec app poetry run python /app/manage.py check
