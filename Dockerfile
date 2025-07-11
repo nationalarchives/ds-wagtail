@@ -10,10 +10,8 @@ ENV DJANGO_SETTINGS_MODULE=config.settings.production
 # Copy in the application code
 COPY --chown=app . .
 
-# Install dependencies
-RUN tna-build
-
-# Collect static files
-RUN poetry run python /app/manage.py collectstatic --no-input --clear
+# Install dependencies and collect static files
+RUN tna-build; \
+    poetry run python /app/manage.py collectstatic --no-input --clear
 
 CMD ["tna-run", "config.wsgi:application"]
