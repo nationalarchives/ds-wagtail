@@ -3,8 +3,8 @@ omit =
     config/*
     docs/*
     dev/*
-    etna/**/migrations/*
-    etna/**/tests/*
+    app/**/migrations/*
+    app/**/tests/*
     gunicorn.conf.py
     manage.py
 source = .

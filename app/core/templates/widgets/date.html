@@ -1,0 +1,15 @@
+
+<div class="date-input" id="{{ widget.attrs.id }}">
+  {% for subwidget in widget.subwidgets %}
+    <div class="tna-date-input__item">
+        <div class="tna-form-group">
+      <div>
+          <label class="input__label" for="{{ subwidget.attrs.id }}">{{ subwidget.label }}</label>
+          {% include subwidget.template_name with widget=subwidget %}
+      </div>
+        </div>
+    </div>
+  {% endfor %}
+</div>
+
+

@@ -26,8 +26,6 @@
 | `REDIS_URL`                            | ?       | `?`             | `?`             | `?`                |
 | `CSRF_TRUSTED_ORIGINS`                 | ?       | `?`             | `?`             | `?`                |
 | `ROSETTA_API_URL`                      | ?       | `?`             | `?`             | `?`                |
-| `CACHE_CONTROL_S_MAXAGE`               | ?       | `?`             | `?`             | `?`                |
-| `CACHE_CONTROL_STALE_WHILE_REVALIDATE` | ?       | `?`             | `?`             | `?`                |
 | `CACHE_DEFAULT_TIMEOUT`                | ?       | `?`             | `?`             | `?`                |
 | `SENTRY_DSN`                           | ?       | `?`             | `?`             | `?`                |
 | `SENTRY_SAMPLE_RATE`                   | ?       | `?`             | `?`             | `?`                |

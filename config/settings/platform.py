@@ -6,7 +6,7 @@ from platformshconfig.config import (
     NotValidPlatformException,
 )
 
-from .base import *  # noqa: F401
+from .base import *  # noqa: F401, F403
 
 config = Config()
 

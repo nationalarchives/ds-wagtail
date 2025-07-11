@@ -1,4 +1,0 @@
-<svg viewBox="-0.5 -0.5 101 1" xmlns="http://www.w3.org/2000/svg" {% if classes %}class="{{ classes }}"{% endif %}>
-    <line x1="0" y1="0" x2="100" y2="0" stroke="black"
-      stroke-dasharray="3.0" />
-</svg>
