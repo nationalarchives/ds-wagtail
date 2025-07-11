@@ -37,6 +37,8 @@ SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
+SITE_ID = 1
+
 # Application definition
 
 INSTALLED_APPS = [
