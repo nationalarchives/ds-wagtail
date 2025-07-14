@@ -24,7 +24,6 @@ class TestInterpretCookiesMiddleware(SimpleTestCase):
         context_data = self.response.context_data
         self.assertIs(context_data["cookies_permitted"], False)
         self.assertIs(context_data["show_cookie_notice"], True)
-        self.assertIs(context_data["show_beta_banner"], True)
 
     def test_behaviour_when_context_data_is_none(self):
         self.response.context_data = None
@@ -32,7 +31,6 @@ class TestInterpretCookiesMiddleware(SimpleTestCase):
         context_data = self.response.context_data
         self.assertIs(context_data["cookies_permitted"], False)
         self.assertIs(context_data["show_cookie_notice"], True)
-        self.assertIs(context_data["show_beta_banner"], True)
 
     def test_context_not_modified_for_excluded_paths_and_subpaths(self):
         for test_path in (
@@ -47,7 +45,6 @@ class TestInterpretCookiesMiddleware(SimpleTestCase):
             context_data = self.response.context_data
             self.assertNotIn("cookies_permitted", context_data)
             self.assertNotIn("show_cookie_notice", context_data)
-            self.assertNotIn("show_beta_banner", context_data)
 
     def test_cookies_permitted_is_true_when_usage_is_true(self):
         # set cookie value for request
@@ -101,15 +98,3 @@ class TestInterpretCookiesMiddleware(SimpleTestCase):
         self._apply_middleware()
         # check context_data
         self.assertIs(self.response.context_data["show_cookie_notice"], False)
-
-    @override_settings(FEATURE_BETA_BANNER_ENABLED=False)
-    def test_show_beta_banner_is_false_when_feature_disabled(self):
-        self._apply_middleware()
-        self.assertIs(self.response.context_data["show_beta_banner"], False)
-
-    def test_show_beta_banner_is_false_when_hide_cookie_set(self):
-        # set the 'hide cookie' value before applying
-        self.request.COOKIES["beta_banner_dismissed"] = "true"
-        self._apply_middleware()
-        # check context_data
-        self.assertIs(self.response.context_data["show_beta_banner"], False)

@@ -98,11 +98,11 @@ Below are the key env vars used to configure Sentry for each environment. See [S
 
 Default: `None`
 
-The project-specific identifier provided by Sentry. This value should remain the same accross all environments... the `SENTRY_ENVIRONMENT` env var value is used to differentiate between environments.
+The project-specific identifier provided by Sentry. This value should remain the same accross all environments... the `ENVIRONMENT_NAME` env var value is used to differentiate between environments.
 
-### `SENTRY_ENVIRONMENT`
+### `ENVIRONMENT_NAME`
 
-Default: `None`
+Default: `production`
 
 A string used to populate the `environment` value on issues and other transactions sent to Sentry from this environment. In the Sentry UI, this value can be used as a filter, allowing you to easily see which issues apply to which environment.
 

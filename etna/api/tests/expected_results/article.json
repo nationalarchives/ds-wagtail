@@ -26,32 +26,36 @@
         "teaser_text": "Teaser text",
         "teaser_image": {
             "id": 12,
+            "uuid": "00000000-0000-0000-0000-000000000000",
             "title": "An image",
+            "description": "",
             "jpeg": {
                 "url": "/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
-                "full_url": "https://nationalarchives.gov.uk/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                "full_url": "https://www.nationalarchives.gov.uk/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
                 "width": 100,
                 "height": 68
             },
             "webp": {
                 "url": "/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-60.bgcolor-fff.webp",
-                "full_url": "https://nationalarchives.gov.uk/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-60.bgcolor-fff.webp",
+                "full_url": "https://www.nationalarchives.gov.uk/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-60.bgcolor-fff.webp",
                 "width": 100,
                 "height": 68
             }
         },
         "teaser_image_square": {
             "id": 12,
+            "uuid": "00000000-0000-0000-0000-000000000000",
             "title": "An image",
+            "description": "",
             "jpeg": {
                 "url": "/media/images/example.2e16d0ba.fill-512x512.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
-                "full_url": "https://nationalarchives.gov.uk/media/images/example.2e16d0ba.fill-512x512.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                "full_url": "https://www.nationalarchives.gov.uk/media/images/example.2e16d0ba.fill-512x512.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
                 "width": 100,
                 "height": 100
             },
             "webp": {
                 "url": "/media/images/exampl.2e16d0ba.fill-512x512.format-webp.webpquality-60.bgcolor-fff.webp",
-                "full_url": "https://nationalarchives.gov.uk/media/images/exampl.2e16d0ba.fill-512x512.format-webp.webpquality-60.bgcolor-fff.webp",
+                "full_url": "https://www.nationalarchives.gov.uk/media/images/exampl.2e16d0ba.fill-512x512.format-webp.webpquality-60.bgcolor-fff.webp",
                 "width": 100,
                 "height": 100
             }
@@ -59,7 +63,17 @@
         "search_image": null,
         "twitter_og_title": null,
         "twitter_og_description": null,
-        "twitter_og_image": null
+        "twitter_og_image": null,
+        "breadcrumbs": [
+            {
+                "text": "Home",
+                "href": "/"
+            },
+            {
+                "text": "article_index",
+                "href": "/article_index/"
+            }
+        ]
     },
     "title": "article",
     "short_title": null,
@@ -73,45 +87,45 @@
     "hero_image_caption": "<p>Hero image caption</p>",
     "hero_image": {
         "id": 13,
+        "uuid": "00000000-0000-0000-0000-000000000000",
         "title": "An image",
+        "description": "",
         "jpeg": {
             "url": "/media/images/exampl.2e16d0ba.fill-1200x480.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
-            "full_url": "https://nationalarchives.gov.uk/media/images/exampl.2e16d0ba.fill-1200x480.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+            "full_url": "https://www.nationalarchives.gov.uk/media/images/exampl.2e16d0ba.fill-1200x480.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
             "width": 100,
             "height": 40
         },
         "webp": {
             "url": "/media/images/examp.2e16d0ba.fill-1200x480.format-webp.webpquality-60.bgcolor-fff.webp",
-            "full_url": "https://nationalarchives.gov.uk/media/images/examp.2e16d0ba.fill-1200x480.format-webp.webpquality-60.bgcolor-fff.webp",
+            "full_url": "https://www.nationalarchives.gov.uk/media/images/examp.2e16d0ba.fill-1200x480.format-webp.webpquality-60.bgcolor-fff.webp",
             "width": 100,
             "height": 40
         },
         "transcript": null,
         "translation": null,
-        "copyright": null,
-        "is_sensitive": false,
-        "custom_sensitive_image_warning": null
+        "copyright": null
     },
     "hero_image_small": {
         "id": 13,
+        "uuid": "00000000-0000-0000-0000-000000000000",
         "title": "An image",
+        "description": "",
         "jpeg": {
             "url": "/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
-            "full_url": "https://nationalarchives.gov.uk/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+            "full_url": "https://www.nationalarchives.gov.uk/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
             "width": 100,
             "height": 68
         },
         "webp": {
             "url": "/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-60.bgcolor-fff.webp",
-            "full_url": "https://nationalarchives.gov.uk/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-60.bgcolor-fff.webp",
+            "full_url": "https://www.nationalarchives.gov.uk/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-60.bgcolor-fff.webp",
             "width": 100,
             "height": 68
         },
         "transcript": null,
         "translation": null,
-        "copyright": null,
-        "is_sensitive": false,
-        "custom_sensitive_image_warning": null
+        "copyright": null
     },
     "custom_warning_text": "",
     "tags": [
@@ -157,16 +171,18 @@
                         "value": {
                             "image": {
                                 "id": 1,
+                                "uuid": "00000000-0000-0000-0000-000000000000",
                                 "title": "An image",
+                                "description": "Some alt text",
                                 "jpeg": {
                                     "url": "/media/images/example_0Tm3K5n.max-900x900.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
-                                    "full_url": "https://nationalarchives.gov.uk/media/images/example_0Tm3K5n.max-900x900.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                                    "full_url": "https://www.nationalarchives.gov.uk/media/images/example_0Tm3K5n.max-900x900.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
                                     "width": 100,
                                     "height": 100
                                 },
                                 "webp": {
                                     "url": "/media/images/example_0Tm3K5n.max-900x900.format-webp.webpquality-60.bgcolor-fff.webp",
-                                    "full_url": "https://nationalarchives.gov.uk/media/images/example_0Tm3K5n.max-900x900.format-webp.webpquality-60.bgcolor-fff.webp",
+                                    "full_url": "https://www.nationalarchives.gov.uk/media/images/example_0Tm3K5n.max-900x900.format-webp.webpquality-60.bgcolor-fff.webp",
                                     "width": 100,
                                     "height": 100
                                 },
@@ -178,9 +194,7 @@
                                     "heading": "Translation",
                                     "text": "<p>Translation</p>"
                                 },
-                                "copyright": "Copyrighted by someone",
-                                "is_sensitive": false,
-                                "custom_sensitive_image_warning": null
+                                "copyright": "Copyrighted by someone"
                             },
                             "alt_text": "Alt text",
                             "caption": "<p data-block-key=\"apto9\">Caption text</p>"
@@ -193,18 +207,20 @@
                             "title": "Media title",
                             "thumbnail": {
                                 "id": 1,
+                                "uuid": "00000000-0000-0000-0000-000000000000",
                                 "title": "An image",
+                                "description": "Some alt text",
                                 "jpeg": {
-                                    "url": "/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
-                                    "full_url": "https://nationalarchives.gov.uk/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                                    "url": "/media/images/example.2e16d0ba.fill-960x540.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                                    "full_url": "https://www.nationalarchives.gov.uk/media/images/example.2e16d0ba.fill-960x540.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
                                     "width": 100,
-                                    "height": 68
+                                    "height": 58
                                 },
                                 "webp": {
-                                    "url": "/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-60.bgcolor-fff.webp",
-                                    "full_url": "https://nationalarchives.gov.uk/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-60.bgcolor-fff.webp",
+                                    "url": "/media/images/exampl.2e16d0ba.fill-960x540.format-webp.webpquality-60.bgcolor-fff.webp",
+                                    "full_url": "https://www.nationalarchives.gov.uk/media/images/exampl.2e16d0ba.fill-960x540.format-webp.webpquality-60.bgcolor-fff.webp",
                                     "width": 100,
-                                    "height": 68
+                                    "height": 58
                                 },
                                 "transcript": {
                                     "heading": "Transcript",
@@ -214,14 +230,13 @@
                                     "heading": "Translation",
                                     "text": "<p>Translation</p>"
                                 },
-                                "copyright": "Copyrighted by someone",
-                                "is_sensitive": false,
-                                "custom_sensitive_image_warning": null
+                                "copyright": "Copyrighted by someone"
                             },
                             "media": {
                                 "id": 1,
+                                "uuid": "00000000-0000-0000-0000-000000000000",
                                 "file": "/media/media/test.mp4",
-                                "full_url": "https://nationalarchives.gov.uk/media/media/test.mp4",
+                                "full_url": "https://www.nationalarchives.gov.uk/media/media/test.mp4",
                                 "type": "video",
                                 "mime": "video/mp4",
                                 "title": "Test media",
@@ -243,7 +258,37 @@
                     {
                         "type": "featured_record_article",
                         "value": {
-                            "page": null
+                            "page": {
+                                "id": 12,
+                                "title": "record_article",
+                                "short_title": null,
+                                "url": "/article_index/record_article/",
+                                "full_url": "http://localhost/article_index/record_article/",
+                                "type": "articles.RecordArticlePage",
+                                "type_label": "Record revealed",
+                                "teaser_text": "Teaser text",
+                                "teaser_image": {
+                                    "id": 16,
+                                    "uuid": "00000000-0000-0000-0000-000000000000",
+                                    "title": "An image",
+                                    "description": "",
+                                    "jpeg": {
+                                        "url": "/media/images/image.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                                        "full_url": "https://www.nationalarchives.gov.uk/media/images/image.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                                        "width": 100,
+                                        "height": 68
+                                    },
+                                    "webp": {
+                                        "url": "/media/images/image.fill-600x400.format-webp.webpquality-60.bgcolor-fff.webp",
+                                        "full_url": "https://www.nationalarchives.gov.uk/media/images/image.fill-600x400.format-webp.webpquality-60.bgcolor-fff.webp",
+                                        "width": 100,
+                                        "height": 68
+                                    }
+                                },
+                                "first_published_at": "2000-01-03T00:00:00Z",
+                                "last_published_at": "2000-01-03T00:00:00Z",
+                                "is_newly_published": false
+                            }
                         },
                         "id": "b505f636-f3d1-4d4b-b368-69183e324e6e"
                     },
@@ -261,16 +306,18 @@
                             "image": {
                                 "image": {
                                     "id": 1,
+                                    "uuid": "00000000-0000-0000-0000-000000000000",
                                     "title": "An image",
+                                    "description": "Some alt text",
                                     "jpeg": {
                                         "url": "/media/images/example_0Tm3K5n.max-900x900.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
-                                        "full_url": "https://nationalarchives.gov.uk/media/images/example_0Tm3K5n.max-900x900.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                                        "full_url": "https://www.nationalarchives.gov.uk/media/images/example_0Tm3K5n.max-900x900.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
                                         "width": 100,
                                         "height": 100
                                     },
                                     "webp": {
                                         "url": "/media/images/example_0Tm3K5n.max-900x900.format-webp.webpquality-60.bgcolor-fff.webp",
-                                        "full_url": "https://nationalarchives.gov.uk/media/images/example_0Tm3K5n.max-900x900.format-webp.webpquality-60.bgcolor-fff.webp",
+                                        "full_url": "https://www.nationalarchives.gov.uk/media/images/example_0Tm3K5n.max-900x900.format-webp.webpquality-60.bgcolor-fff.webp",
                                         "width": 100,
                                         "height": 100
                                     },
@@ -282,9 +329,7 @@
                                         "heading": "Translation",
                                         "text": "<p>Translation</p>"
                                     },
-                                    "copyright": "Copyrighted by someone",
-                                    "is_sensitive": false,
-                                    "custom_sensitive_image_warning": null
+                                    "copyright": "Copyrighted by someone"
                                 },
                                 "decorative": false,
                                 "alt_text": "Image alt text"
@@ -296,7 +341,6 @@
                     {
                         "type": "promoted_list",
                         "value": {
-                            "category": 1,
                             "summary": "<p data-block-key=\"9rpsq\">Summary</p>",
                             "promoted_items": [
                                 {
@@ -307,6 +351,50 @@
                             ]
                         },
                         "id": "dc5a68fd-17b2-4722-916b-0a924bdb189a"
+                    },
+                    {
+                        "type": "record_links",
+                        "value": {
+                            "items": [
+                                {
+                                    "record": {
+                                        "title": "[unknown]",
+                                        "iaid": "D7376859",
+                                        "reference_number": "[unknown]"
+                                    },
+                                    "descriptive_title": "Record title",
+                                    "record_dates": "12 April 2021",
+                                    "thumbnail_image": {
+                                        "id": 1,
+                                        "uuid": "00000000-0000-0000-0000-000000000000",
+                                        "title": "An image",
+                                        "description": "Some alt text",
+                                        "jpeg": {
+                                            "url": "/media/images/image.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                                            "full_url": "https://www.nationalarchives.gov.uk/media/images/image.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                                            "width": 100,
+                                            "height": 68
+                                        },
+                                        "webp": {
+                                            "url": "/media/images/image.fill-600x400.format-webp.webpquality-60.bgcolor-fff.webp",
+                                            "full_url": "https://www.nationalarchives.gov.uk/media/images/image.fill-600x400.format-webp.webpquality-60.bgcolor-fff.webp",
+                                            "width": 100,
+                                            "height": 68
+                                        },
+                                        "transcript": {
+                                            "heading": "Transcript",
+                                            "text": "<p>Transcript</p>"
+                                        },
+                                        "translation": {
+                                            "heading": "Translation",
+                                            "text": "<p>Translation</p>"
+                                        },
+                                        "copyright": "Copyrighted by someone"
+                                    }
+                                }
+                            ]
+                        },
+                        "id": "48f967ae-4cc6-4f13-bb12-6c648e747ec3"
                     }
                 ]
             },
@@ -325,25 +413,60 @@
             "teaser_text": "Teaser text",
             "teaser_image": {
                 "id": 14,
+                "uuid": "00000000-0000-0000-0000-000000000000",
                 "title": "An image",
+                "description": "",
                 "jpeg": {
                     "url": "/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
-                    "full_url": "https://nationalarchives.gov.uk/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                    "full_url": "https://www.nationalarchives.gov.uk/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
                     "width": 100,
                     "height": 68
                 },
                 "webp": {
                     "url": "/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-60.bgcolor-fff.webp",
-                    "full_url": "https://nationalarchives.gov.uk/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-60.bgcolor-fff.webp",
+                    "full_url": "https://www.nationalarchives.gov.uk/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-60.bgcolor-fff.webp",
                     "width": 100,
                     "height": 68
                 }
             },
+            "first_published_at": "2000-01-02T00:00:00Z",
             "last_published_at": "2000-01-02T00:00:00Z",
             "is_newly_published": false
         }
     ],
-    "latest_items": [],
+    "latest_items": [
+        {
+            "id": 12,
+            "title": "record_article",
+            "short_title": null,
+            "url": "/article_index/record_article/",
+            "full_url": "http://localhost/article_index/record_article/",
+            "type": "articles.RecordArticlePage",
+            "type_label": "Record revealed",
+            "teaser_text": "Teaser text",
+            "teaser_image": {
+                "id": 16,
+                "uuid": "00000000-0000-0000-0000-000000000000",
+                "title": "An image",
+                "description": "",
+                "jpeg": {
+                    "url": "/media/images/image.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                    "full_url": "https://www.nationalarchives.gov.uk/media/images/image.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                    "width": 100,
+                    "height": 68
+                },
+                "webp": {
+                    "url": "/media/images/image.fill-600x400.format-webp.webpquality-60.bgcolor-fff.webp",
+                    "full_url": "https://www.nationalarchives.gov.uk/media/images/image.fill-600x400.format-webp.webpquality-60.bgcolor-fff.webp",
+                    "width": 100,
+                    "height": 68
+                }
+            },
+            "first_published_at": "2000-01-03T00:00:00Z",
+            "last_published_at": "2000-01-03T00:00:00Z",
+            "is_newly_published": false
+        }
+    ],
     "topics": [
         {
             "id": ARTS_ID,
@@ -356,20 +479,23 @@
             "teaser_text": "Teaser text",
             "teaser_image": {
                 "id": 2,
+                "uuid": "00000000-0000-0000-0000-000000000000",
                 "title": "An image",
+                "description": "",
                 "jpeg": {
                     "url": "/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
-                    "full_url": "https://nationalarchives.gov.uk/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                    "full_url": "https://www.nationalarchives.gov.uk/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
                     "width": 100,
                     "height": 68
                 },
                 "webp": {
                     "url": "/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-60.bgcolor-fff.webp",
-                    "full_url": "https://nationalarchives.gov.uk/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-60.bgcolor-fff.webp",
+                    "full_url": "https://www.nationalarchives.gov.uk/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-60.bgcolor-fff.webp",
                     "width": 100,
                     "height": 68
                 }
             },
+            "first_published_at": "2000-01-01T00:00:00Z",
             "last_published_at": "2000-01-01T00:00:00Z"
         }
     ],
@@ -385,20 +511,23 @@
             "teaser_text": "Teaser text",
             "teaser_image": {
                 "id": 4,
+                "uuid": "00000000-0000-0000-0000-000000000000",
                 "title": "An image",
+                "description": "",
                 "jpeg": {
                     "url": "/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
-                    "full_url": "https://nationalarchives.gov.uk/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                    "full_url": "https://www.nationalarchives.gov.uk/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
                     "width": 100,
                     "height": 68
                 },
                 "webp": {
                     "url": "/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-60.bgcolor-fff.webp",
-                    "full_url": "https://nationalarchives.gov.uk/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-60.bgcolor-fff.webp",
+                    "full_url": "https://www.nationalarchives.gov.uk/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-60.bgcolor-fff.webp",
                     "width": 100,
                     "height": 68
                 }
             },
+            "first_published_at": "2000-01-01T00:00:00Z",
             "last_published_at": "2000-01-01T00:00:00Z"
         },
         {
@@ -412,20 +541,23 @@
             "teaser_text": "Teaser text",
             "teaser_image": {
                 "id": 6,
+                "uuid": "00000000-0000-0000-0000-000000000000",
                 "title": "An image",
+                "description": "",
                 "jpeg": {
                     "url": "/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
-                    "full_url": "https://nationalarchives.gov.uk/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                    "full_url": "https://www.nationalarchives.gov.uk/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
                     "width": 100,
                     "height": 68
                 },
                 "webp": {
                     "url": "/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-60.bgcolor-fff.webp",
-                    "full_url": "https://nationalarchives.gov.uk/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-60.bgcolor-fff.webp",
+                    "full_url": "https://www.nationalarchives.gov.uk/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-60.bgcolor-fff.webp",
                     "width": 100,
                     "height": 68
                 }
             },
+            "first_published_at": "2000-01-01T00:00:00Z",
             "last_published_at": "2000-01-01T00:00:00Z"
         }
     ]

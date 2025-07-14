@@ -1,7 +1,10 @@
+from urllib.parse import urljoin
+
 from django.apps import apps
 from django.conf import settings
-from django.contrib import admin
-from django.urls import include, path, register_converter
+from django.http import HttpResponsePermanentRedirect
+from django.urls import include, path, re_path
+from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.decorators.cache import never_cache
 from wagtail import urls as wagtail_urls
 from wagtail.admin import urls as wagtailadmin_urls
@@ -13,22 +16,7 @@ from etna.core.cache_control import (
     apply_default_cache_control,
     apply_default_vary_headers,
 )
-from etna.core.decorators import setting_controlled_login_required
 from etna.errors import views as errors_view
-from etna.records import converters
-from etna.records import views as records_views
-from etna.search import views as search_views
-from etna.whatson import views as whatson_views
-
-register_converter(converters.ReferenceNumberConverter, "reference_number")
-register_converter(converters.IAIDConverter, "iaid")
-
-
-# Used by /sentry-debug/
-def trigger_error(request):
-    # Raise a ZeroDivisionError
-    return 1 / 0
-
 
 handler404 = "etna.errors.views.custom_404_error_view"
 handler500 = "etna.errors.views.custom_500_error_view"
@@ -36,111 +24,34 @@ handler503 = "etna.errors.views.custom_503_error_view"
 
 # Private URLs that are not meant to be cached.
 private_urls = [
+    path("healthcheck/", include("etna.healthcheck.urls")),
     path("api/v2/", api_router.urls),
-    path("django-admin/", admin.site.urls),
     path("admin/", include(wagtailadmin_urls)),
     path("accounts/", include("allauth.urls")),
     path("documents/", include(wagtaildocs_urls)),
-    path(
-        "webhook/eventbrite/",
-        whatson_views.eventbrite_webhook_view,
-        name="eventbrite_webhook",
-    ),
-    path("feedback/", include("etna.feedback.urls")),
-    path("healthcheck/", include("etna.healthcheck.urls")),
 ]
 
-if settings.SENTRY_DEBUG_URL_ENABLED:
-    # url is toggled via the SENTRY_DEBUG_URL_ENABLED .env var
-    private_urls.append(path("sentry-debug/", trigger_error))
+
+def redirectToLiveSite(request):
+    if url_has_allowed_host_and_scheme(
+        request.path, allowed_hosts=["www.nationalarchives.gov.uk"]
+    ):
+        new_url = urljoin("https://www.nationalarchives.gov.uk", request.path)
+        return HttpResponsePermanentRedirect(new_url)
+    return HttpResponsePermanentRedirect("https://www.nationalarchives.gov.uk")
+
+
+# Redirect URLs from the beta subdomain to the main domain.
+redirect_urls = [
+    path("", redirectToLiveSite),
+    re_path(r"^explore-the-collection/.*$", redirectToLiveSite),
+    re_path(r"^people/.*$", redirectToLiveSite),
+]
 
 # Public URLs that are meant to be cached.
-public_urls = [
-    path(
-        r"catalogue/id/<iaid:iaid>/",
-        setting_controlled_login_required(
-            records_views.record_detail_view, "RECORD_DETAIL_REQUIRE_LOGIN"
-        ),
-        name="details-page-machine-readable",
-    ),
-    path(
-        r"catalogue/ref/<reference_number:reference_number>/",
-        setting_controlled_login_required(
-            records_views.record_disambiguation_view,
-            "RECORD_DETAIL_REQUIRE_LOGIN",
-        ),
-        name="details-page-human-readable",
-    ),
-    path(
-        "records/image/<path:location>",
-        records_views.image_serve,
-        name="image-serve",
-    ),
-    path(
-        r"records/images/<iaid:iaid>/<str:sort>/",
-        setting_controlled_login_required(
-            records_views.image_viewer, "IMAGE_VIEWER_REQUIRE_LOGIN"
-        ),
-        name="image-viewer",
-    ),
-    path(
-        r"records/images/<iaid:iaid>/",
-        setting_controlled_login_required(
-            records_views.image_browse, "IMAGE_VIEWER_REQUIRE_LOGIN"
-        ),
-        name="image-browse",
-    ),
-    path(
-        r"search/",
-        setting_controlled_login_required(
-            search_views.SearchLandingView.as_view(),
-            "SEARCH_VIEWS_REQUIRE_LOGIN",
-        ),
-        name="search",
-    ),
-    path(
-        r"search/featured/",
-        setting_controlled_login_required(
-            search_views.FeaturedSearchView.as_view(),
-            "SEARCH_VIEWS_REQUIRE_LOGIN",
-        ),
-        name="search-featured",
-    ),
-    path(
-        r"search/catalogue/",
-        setting_controlled_login_required(
-            search_views.CatalogueSearchView.as_view(),
-            "SEARCH_VIEWS_REQUIRE_LOGIN",
-        ),
-        name="search-catalogue",
-    ),
-    path(
-        r"search/website/",
-        setting_controlled_login_required(
-            search_views.NativeWebsiteSearchView.as_view(),
-            "SEARCH_VIEWS_REQUIRE_LOGIN",
-        ),
-        name="search-website",
-    ),
-    path(
-        r"search/catalogue/long-filter-chooser/<str:field_name>/",
-        setting_controlled_login_required(
-            search_views.CatalogueSearchLongFilterView.as_view(),
-            "SEARCH_VIEWS_REQUIRE_LOGIN",
-        ),
-        name="search-catalogue-long-filter-chooser",
-    ),
-    path(
-        r"search/website/long-filter-chooser/<str:field_name>/",
-        setting_controlled_login_required(
-            search_views.WebsiteSearchLongFilterView.as_view(),
-            "SEARCH_VIEWS_REQUIRE_LOGIN",
-        ),
-        name="search-website-long-filter-chooser",
-    ),
-]
+public_urls = []
 
-if settings.DEBUG or settings.DJANGO_SERVE_STATIC:
+if settings.DEBUG:
     from django.conf.urls.static import static
     from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
@@ -171,6 +82,7 @@ private_urls = decorate_urlpatterns(private_urls, never_cache)
 # Join private and public URLs.
 urlpatterns = (
     private_urls
+    + redirect_urls
     + public_urls
     + [
         # Wagtail URLs are added at the end.

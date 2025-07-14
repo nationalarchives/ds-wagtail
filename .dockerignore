@@ -24,5 +24,4 @@ lint-requirements.txt
 media
 mkdocs.yml
 node_modules
-platformsh-cli
 setup.cfg

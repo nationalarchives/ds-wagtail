@@ -21,10 +21,6 @@ def get_context(request):
             # Swallow above errors and leave 'cookies_permitted' as False
             pass
     # Update context_data to reflect preferences
-    if_show_banner = bool(
-        settings.FEATURE_COOKIE_BANNER_ENABLED
-        and "beta_banner_dismissed" not in request.COOKIES
-    )
     if_cookie_notice = bool(
         settings.FEATURE_COOKIE_BANNER_ENABLED
         and "dontShowCookieNotice" not in request.COOKIES
@@ -32,7 +28,6 @@ def get_context(request):
     context = {
         "cookies_permitted": cookies_permitted,
         "show_cookie_notice": if_cookie_notice,
-        "show_beta_banner": if_show_banner,
     }
     return context
 

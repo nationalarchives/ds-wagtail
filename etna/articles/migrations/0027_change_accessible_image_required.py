@@ -4,7 +4,7 @@
 from django.db import migrations, models
 import etna.articles.blocks
 import etna.media.blocks
-import etna.records.blocks
+import etna.ciim.blocks
 import wagtail.blocks
 import wagtail.fields
 import wagtail.images.blocks
@@ -26,7 +26,7 @@ class Migration(migrations.Migration):
                         "featured_record",
                         wagtail.blocks.StructBlock(
                             [
-                                ("record", etna.records.blocks.RecordChooserBlock()),
+                                ("record", etna.ciim.blocks.RecordChooserBlock()),
                                 (
                                     "image",
                                     wagtail.blocks.StructBlock(
@@ -95,7 +95,7 @@ class Migration(migrations.Migration):
                                 (
                                     "records",
                                     wagtail.blocks.ListBlock(
-                                        etna.records.blocks.RecordChooserBlock
+                                        etna.ciim.blocks.RecordChooserBlock
                                     ),
                                 ),
                             ]

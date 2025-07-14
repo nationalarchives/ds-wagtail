@@ -6,10 +6,40 @@ on:
       - opened
       - synchronize
 
+permissions:
+  contents: read
+
 jobs:
-  ci:
-    name: Tests
-    uses: ./.github/workflows/_tests.yml
-    with:
-      python-version: ${{ vars.CI_PYTHON_VERSION }}
-      poetry-version: ${{ vars.CI_POETRY_VERSION }}
+  check-migrations:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run tests
+        uses: ./.github/actions/check-migrations
+
+  test-python:
+    runs-on: ubuntu-latest
+    env:
+      DJANGO_SETTINGS_MODULE: config.settings.test
+      DATABASE_ENGINE: django.db.backends.postgresql
+      DATABASE_NAME: postgres
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: postgres
+      DATABASE_HOST: localhost
+      DATABASE_PORT: 5432
+    services:
+      postgres:
+        image: postgres:16.0
+        env:
+          POSTGRES_USER: ${{ env.DATABASE_USER }}
+          POSTGRES_PASSWORD: ${{ env.DATABASE_PASSWORD }}
+          POSTGRES_DB: ${{ env.DATABASE_NAME }}
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 1s --health-timeout 3s --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run tests
+        uses: ./.github/actions/python-tests
+        with:
+          codecov-token: ${{ secrets.CODECOV_TOKEN }}

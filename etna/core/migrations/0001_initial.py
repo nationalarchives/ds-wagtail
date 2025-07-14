@@ -2,7 +2,6 @@
 
 from django.db import migrations, models
 import django.db.models.deletion
-import etna.navigation.models
 import modelcluster.fields
 
 
@@ -92,6 +91,6 @@ class Migration(migrations.Migration):
                 "ordering": ["sort_order"],
                 "abstract": False,
             },
-            bases=(etna.navigation.models.MenuItem, models.Model),
+            bases=(models.Model,), # Removed etna.navigation.models.MenuItem as it is no longer needed, no clean way to remove it otherwise
         ),
     ]

@@ -4,7 +4,7 @@
 import etna.core.blocks.image
 import etna.core.blocks.paragraph
 import etna.media.blocks
-import etna.records.blocks
+import etna.ciim.blocks
 import wagtail.blocks
 import wagtail.fields
 import wagtail.snippets.blocks
@@ -364,7 +364,7 @@ class Migration(migrations.Migration):
                                                         (
                                                             "items",
                                                             wagtail.blocks.ListBlock(
-                                                                etna.records.blocks.RecordLinkBlock,
+                                                                etna.ciim.blocks.RecordLinkBlock,
                                                                 label="Items",
                                                             ),
                                                         )
@@ -729,7 +729,7 @@ class Migration(migrations.Migration):
                                                         (
                                                             "items",
                                                             wagtail.blocks.ListBlock(
-                                                                etna.records.blocks.RecordLinkBlock,
+                                                                etna.ciim.blocks.RecordLinkBlock,
                                                                 label="Items",
                                                             ),
                                                         )

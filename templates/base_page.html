@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load alert_tags datalayer_tags wagtailimages_tags wagtailcore_tags %}
+{% load datalayer_tags wagtailimages_tags wagtailcore_tags %}
 
 {% comment %}
     Base template for rendering Wagtail page instances
@@ -27,6 +27,5 @@
 {% endblock %}
 
 {% block header %}
-    {% alerts page=page %}
     {{ block.super }}
 {% endblock %}

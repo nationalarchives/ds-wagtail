@@ -33,6 +33,7 @@ class MediaChooserBlock(AbstractMediaChooserBlock):
         ]
         return {
             "id": value.id,
+            "uuid": value.uuid,
             "file": value.url,
             "full_url": value.full_url,
             "type": value.type,
@@ -62,7 +63,9 @@ class MediaBlock(blocks.StructBlock):
         help_text="A descriptive title for the media block",
     )
     thumbnail = APIImageChooserBlock(
-        required=False, help_text="A thumbnail image for the media block"
+        rendition_size="fill-960x540",
+        required=False,
+        help_text="A thumbnail image for the media block",
     )
     media = MediaChooserBlock()
 

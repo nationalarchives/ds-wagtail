@@ -1,7 +1,5 @@
 /* -
 
-TODO: Is this still used? can't see it included or any specific- classes in use
-
 This file holds styles that are needed in very specific circumstances and will rarely be re-used (if ever).
 These are typically styles that aren't component-specific (using BEM) and aren't included in the Boostrap grid.
 When adding a style, ensure it is within the pre-pended with 'specific' class to identify it correctly and write an accompanying description in the comments to explain:
@@ -47,7 +45,6 @@ When adding a style, ensure it is within the pre-pended with 'specific' class to
     /*
 
     Purpose: Adds a grey-5 background colour
-    TODO: No longer makes sense with colour refactor - doesn't seem to be used though
     Used on: Details page - */
 
     &-bg-grey-5 {

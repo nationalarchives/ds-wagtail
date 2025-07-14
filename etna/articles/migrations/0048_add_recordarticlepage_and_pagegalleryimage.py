@@ -4,7 +4,7 @@ from django.db import migrations, models
 import django.db.models.deletion
 import etna.analytics.mixins
 import etna.collections.models
-import etna.records.fields
+import etna.ciim.fields
 import modelcluster.fields
 import wagtail.fields
 import wagtailmetadata.models
@@ -53,7 +53,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "record",
-                    etna.records.fields.RecordField(
+                    etna.ciim.fields.RecordField(
                         db_index=True, verbose_name="record"
                     ),
                 ),

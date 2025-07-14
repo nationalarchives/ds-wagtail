@@ -7,9 +7,7 @@
     {% if page.gallery_items %}
         {% include "includes/image_gallery.html" with gallery=page.gallery_items has_text=page.gallery_has_translations_transcriptions %}
     {% endif %}
-    {% if page.record %}
-        {% include "includes/record-matters.html" with record=page.record title="Why this record matters" page=page %}
-    {% endif %}
+    {% include "includes/record-matters.html" with record=page.record title="Why this record matters" page=page %}
     {% if page.featured_highlight_gallery %}
         {% include "includes/highlight_gallery_teaser.html" with title=page.featured_highlight_gallery.title cards=page.featured_highlight_gallery.page_highlights.all|slice:":5" page=page.featured_highlight_gallery %}
     {% endif %}

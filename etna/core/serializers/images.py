@@ -1,5 +1,61 @@
 from rest_framework.serializers import Serializer
 
+from etna.ciim.client import CIIMClient
+
+
+def image_generator(
+    original_image,
+    rendition_size="fill-600x400",
+    jpeg_quality=60,
+    webp_quality=60,
+    background_colour=None,
+    additional_formats=[],
+):
+    background_colour_rendition = (
+        f"|bgcolor-{background_colour}" if background_colour else ""
+    )
+    jpeg_image = original_image.get_rendition(
+        f"{rendition_size}|format-jpeg|jpegquality-{jpeg_quality}{background_colour_rendition}"
+    )
+    webp_image = original_image.get_rendition(
+        f"{rendition_size}|format-webp|webpquality-{webp_quality}{background_colour_rendition}"
+    )
+
+    additional_images = {}
+
+    if formats := additional_formats:
+        for format in formats:
+            additional_image = original_image.get_rendition(
+                f"{rendition_size}|format-{format}"
+            )
+            if additional_image:
+                additional_image = {
+                    "url": additional_image.url,
+                    "full_url": additional_image.full_url,
+                    "width": additional_image.width,
+                    "height": additional_image.height,
+                }
+                additional_images[format] = additional_image
+
+    if not jpeg_image or not webp_image:
+        return None
+
+    return {
+        "jpeg": {
+            "url": jpeg_image.url,
+            "full_url": jpeg_image.full_url,
+            "width": jpeg_image.width,
+            "height": jpeg_image.height,
+        },
+        "webp": {
+            "url": webp_image.url,
+            "full_url": webp_image.full_url,
+            "width": webp_image.width,
+            "height": webp_image.height,
+        },
+        **(additional_images),
+    }
+
 
 class ImageSerializer(Serializer):
     """
@@ -43,48 +99,24 @@ class ImageSerializer(Serializer):
 
     def to_representation(self, value):
         if value:
-            background_colour_rendition = (
-                f"|bgcolor-{self.background_colour}" if self.background_colour else ""
-            )
-            jpeg_image = value.get_rendition(
-                f"{self.rendition_size}|format-jpeg|jpegquality-{self.jpeg_quality}{background_colour_rendition}"
-            )
-            webp_image = value.get_rendition(
-                f"{self.rendition_size}|format-webp|webpquality-{self.webp_quality}{background_colour_rendition}"
+            image_data = image_generator(
+                original_image=value,
+                rendition_size=self.rendition_size,
+                jpeg_quality=self.jpeg_quality,
+                webp_quality=self.webp_quality,
+                background_colour=self.background_colour,
+                additional_formats=self.additional_formats,
             )
 
-            additional_images = {}
-
-            if formats := self.additional_formats:
-                for format in formats:
-                    additional_image = value.get_rendition(
-                        f"{self.rendition_size}|format-{format}"
-                    )
-                    if additional_image:
-                        additional_image = {
-                            "url": additional_image.url,
-                            "full_url": additional_image.full_url,
-                            "width": additional_image.width,
-                            "height": additional_image.height,
-                        }
-                        additional_images[format] = additional_image
+            if not image_data:
+                return None
 
             return {
                 "id": value.id,
+                "uuid": value.uuid,
                 "title": value.title,
-                "jpeg": {
-                    "url": jpeg_image.url,
-                    "full_url": jpeg_image.full_url,
-                    "width": jpeg_image.width,
-                    "height": jpeg_image.height,
-                },
-                "webp": {
-                    "url": webp_image.url,
-                    "full_url": webp_image.full_url,
-                    "width": webp_image.width,
-                    "height": webp_image.height,
-                },
-                **(additional_images),
+                "description": value.description,
+                **(image_data),
             }
         return None
 
@@ -119,39 +151,6 @@ class DetailedImageSerializer(ImageSerializer):
                         else None
                     ),
                     "copyright": value.copyright if value.copyright else None,
-                    "is_sensitive": value.is_sensitive,
-                    "custom_sensitive_image_warning": (
-                        value.custom_sensitive_image_warning
-                        if value.custom_sensitive_image_warning
-                        else None
-                    ),
-                }
-            )
-        return representation
-
-
-class HighlightImageSerializer(DetailedImageSerializer):
-    """
-    This serializer extends `DetailedImageSerializer` to display details on
-    an image that are used for `Highlights`.
-    """
-
-    def to_representation(self, value):
-        representation = super().to_representation(value)
-        if representation:
-            representation.update(
-                {
-                    "description": value.description,
-                    "record": (
-                        {
-                            "title": value.record.summary_title,
-                            "iaid": value.record.iaid,
-                            "reference_number": value.record.reference_number,
-                        }
-                        if value.record
-                        else None
-                    ),
-                    "record_dates": value.record_dates,
                 }
             )
         return representation

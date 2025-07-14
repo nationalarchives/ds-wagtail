@@ -73,9 +73,5 @@ class InterpretCookiesMiddleware:
                 settings.FEATURE_COOKIE_BANNER_ENABLED
                 and "dontShowCookieNotice" not in request.COOKIES
             ),
-            show_beta_banner=bool(
-                settings.FEATURE_BETA_BANNER_ENABLED
-                and "beta_banner_dismissed" not in request.COOKIES
-            ),
         )
         return response

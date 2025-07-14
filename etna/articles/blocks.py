@@ -1,19 +1,21 @@
 from wagtail import blocks
 
+from etna.ciim.blocks import RecordLinksBlock
 from etna.core.blocks import (
     ContentImageBlock,
     FeaturedExternalLinkBlock,
     FeaturedPageBlock,
     FeaturedRecordArticleBlock,
+    ImageGalleryBlock,
     ParagraphBlock,
     PromotedItemBlock,
     PromotedListBlock,
     QuoteBlock,
     SectionDepthAwareStructBlock,
     SubHeadingBlock,
+    YouTubeBlock,
 )
 from etna.media.blocks import MediaBlock
-from etna.records.blocks import RecordLinksBlock
 
 
 class SectionContentBlock(blocks.StreamBlock):
@@ -21,6 +23,7 @@ class SectionContentBlock(blocks.StreamBlock):
     featured_page = FeaturedPageBlock()
     featured_record_article = FeaturedRecordArticleBlock()
     image = ContentImageBlock()
+    image_gallery = ImageGalleryBlock()
     media = MediaBlock()
     paragraph = ParagraphBlock()
     promoted_item = PromotedItemBlock()
@@ -28,6 +31,7 @@ class SectionContentBlock(blocks.StreamBlock):
     quote = QuoteBlock()
     record_links = RecordLinksBlock()
     sub_heading = SubHeadingBlock()
+    youtube_video = YouTubeBlock()
 
 
 class ContentSectionBlock(SectionDepthAwareStructBlock):

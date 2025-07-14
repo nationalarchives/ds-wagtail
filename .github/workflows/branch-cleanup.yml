@@ -1,16 +1,19 @@
 name: Clean up feature branch
 
 on:
-  workflow_dispatch:
-  # delete:
+  delete:
+
+permissions:
+  contents: read
+  packages: write
 
 jobs:
   delete:
-    if: github.event.ref_type == 'branch' && startsWith(github.event.ref, 'feature/')
+    if: github.event.ref_type == 'branch' && github.event.ref != 'main'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Get tag
+      - name: Get tag from deleted branch
         id: version-tag
         run: echo "VERSION=$(echo "${{ github.event.ref }}" | sed -e 's,/,-,g')" >> "$GITHUB_OUTPUT"
       - name: Debug

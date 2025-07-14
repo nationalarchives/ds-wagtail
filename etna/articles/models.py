@@ -24,6 +24,8 @@ from wagtail.models import Orderable, Page
 from wagtail.search import index
 from wagtail.snippets.models import register_snippet
 
+from etna.ciim.fields import RecordField
+from etna.ciim.serializers import RecordSerializer
 from etna.collections.models import TopicalPageMixin
 from etna.core.blocks import AuthorPromotedPagesBlock, FeaturedCollectionBlock
 from etna.core.models import (
@@ -35,15 +37,13 @@ from etna.core.models import (
 )
 from etna.core.serializers import (
     DefaultPageSerializer,
-    HighlightImageSerializer,
+    DetailedImageSerializer,
     ImageSerializer,
     RichTextSerializer,
     TaggableSerializer,
 )
 from etna.core.utils import skos_id_from_text
 from etna.people.models import AuthorPageMixin
-from etna.records.fields import RecordField
-from etna.records.serializers import RecordSerializer
 
 from .blocks import ArticlePageStreamBlock
 
@@ -557,7 +557,7 @@ class PageGalleryImage(Orderable):
 
 
 class GallerySerializer(serializers.ModelSerializer):
-    image = HighlightImageSerializer(
+    image = DetailedImageSerializer(
         rendition_size="max-1024x1024", background_colour=None
     )
     caption = RichTextSerializer()
@@ -566,7 +566,6 @@ class GallerySerializer(serializers.ModelSerializer):
         model = PageGalleryImage
         fields = (
             "image",
-            "alt_text",
             "caption",
         )
 

@@ -1,6 +1,7 @@
 import os
 import re
 from datetime import datetime, timezone
+from unittest.mock import patch
 
 from django.conf import settings
 from wagtail.models import Site
@@ -12,6 +13,7 @@ from etna.articles.factories import (
     ArticleIndexPageFactory,
     ArticlePageFactory,
     FocusedArticlePageFactory,
+    RecordArticlePageFactory,
 )
 from etna.articles.models import ArticleTag
 from etna.collections.factories import (
@@ -66,8 +68,7 @@ class APIResponseTest(WagtailPageTestCase):
             transcription="<p>Transcript</p>",
             translation="<p>Translation</p>",
             copyright="Copyrighted by someone",
-            description="<p>Description</p>",
-            record_dates="1900-2000",
+            description="Some alt text",
         )
 
         cls.alert = Alert.objects.create(
@@ -158,6 +159,15 @@ class APIResponseTest(WagtailPageTestCase):
             published_date=DATE_2,
         )
 
+        cls.record_article = RecordArticlePageFactory(
+            parent=cls.article_index,
+            title="record_article",
+            page_topics=[PageTopic(topic=cls.arts)],
+            page_time_periods=[PageTimePeriod(time_period=cls.early_modern)],
+            first_published_at=DATE_3,
+            published_date=DATE_3,
+        )
+
         cls.BODY_JSON = [
             {
                 "id": "9da308ae-afea-4177-b200-bd3d50aae884",
@@ -206,8 +216,8 @@ class APIResponseTest(WagtailPageTestCase):
                             "id": "b505f636-f3d1-4d4b-b368-69183e324e6e",
                             "type": "featured_record_article",
                             "value": {
-                                "page": 3
-                            },  # TODO: Set to cls.record_article.id when we can serialize records
+                                "page": cls.record_article.id,
+                            },
                         },
                         {
                             "id": "a48ac0b2-be83-4b01-ae23-4fd1fa525322",
@@ -234,7 +244,6 @@ class APIResponseTest(WagtailPageTestCase):
                             "type": "promoted_list",
                             "value": {
                                 "summary": '<p data-block-key="9rpsq">Summary</p>',
-                                "category": 1,
                                 "promoted_items": [
                                     {
                                         "id": "b244621d-72e4-491a-a168-499e7f3c382c",
@@ -248,24 +257,24 @@ class APIResponseTest(WagtailPageTestCase):
                                 ],
                             },
                         },
-                        # { TODO: Uncomment when we can serialize records
-                        #   "id": "48f967ae-4cc6-4f13-bb12-6c648e747ec3",
-                        #   "type": "record_links",
-                        #   "value": {
-                        #     "items": [
-                        #       {
-                        #         "id": "acacaa55-924f-4594-bc0b-9f5cb2303ea9",
-                        #         "type": "item",
-                        #         "value": {
-                        #           "record": "D7376859",
-                        #           "record_dates": "12 April 2021",
-                        #           "thumbnail_image": cls.test_image.id,
-                        #           "descriptive_title": "Record title"
-                        #         }
-                        #       }
-                        #     ]
-                        #   }
-                        # }
+                        {
+                            "id": "48f967ae-4cc6-4f13-bb12-6c648e747ec3",
+                            "type": "record_links",
+                            "value": {
+                                "items": [
+                                    {
+                                        "id": "acacaa55-924f-4594-bc0b-9f5cb2303ea9",
+                                        "type": "item",
+                                        "value": {
+                                            "record": "D7376859",
+                                            "record_dates": "12 April 2021",
+                                            "thumbnail_image": cls.test_image.id,
+                                            "descriptive_title": "Record title",
+                                        },
+                                    }
+                                ]
+                            },
+                        },
                     ],
                     "heading": "Heading text",
                 },
@@ -309,19 +318,17 @@ class APIResponseTest(WagtailPageTestCase):
         cls.article_index.featured_pages = cls.FEATURED_PAGES_JSON
         cls.article_index.save()
 
-        # cls.record_article = RecordArticlePageFactory(
-        #     parent=cls.article_index,
-        #     title="record_article",
-        #     page_topics=[PageTopic(topic=cls.arts)],
-        #     page_time_periods=[PageTimePeriod(time_period=cls.early_modern)],
-        #     first_published_at=DEFAULT_DATE,
-        # ) TODO: Uncomment when we can serialize records
-
         cls.highlight_gallery = HighlightGalleryPageFactory(
             parent=cls.arts,
             title="highlight_gallery",
             featured_article=cls.article,
-            page_highlights=[Highlight(image=cls.test_image, alt_text="Alt text")],
+            page_highlights=[
+                Highlight(
+                    image=cls.test_image,
+                    record="C123",
+                    description="<p>Test description</p>",
+                )
+            ],
             page_topics=[PageTopic(topic=cls.arts)],
             page_time_periods=[PageTimePeriod(time_period=cls.early_modern)],
             first_published_at=DATE_3,
@@ -347,6 +354,7 @@ class APIResponseTest(WagtailPageTestCase):
             "ARTICLE_ID": str(self.article.id),
             "ALERT_UID": str(self.alert.uid),
             "FOCUSED_ID": str(self.focused_article.id),
+            "RECORD_ID": str(self.record_article.id),
             "ARTS_ID": str(self.arts.id),
             "EARLY_MODERN_ID": str(self.early_modern.id),
             "POSTWAR_ID": str(self.postwar.id),
@@ -382,6 +390,18 @@ class APIResponseTest(WagtailPageTestCase):
                 expected_data = re.sub(regex_end, regex_replace_end, expected_data)
                 api_data = re.sub(regex_end, regex_replace_end, api_data)
 
+                # Remove random generated UUIDs from the JSON for images and media
+                expected_data = re.sub(
+                    r'"uuid": "[a-f0-9\-]+"',
+                    '"uuid": "00000000-0000-0000-0000-000000000000"',
+                    expected_data,
+                )
+                api_data = re.sub(
+                    r'"uuid": "[a-f0-9\-]+"',
+                    '"uuid": "00000000-0000-0000-0000-000000000000"',
+                    api_data,
+                )
+
                 self.assertEqual(expected_data, api_data)
 
     def test_pages_route(self):
@@ -391,6 +411,7 @@ class APIResponseTest(WagtailPageTestCase):
         for page in (
             self.article,
             self.focused_article,
+            self.record_article,
             self.postwar,
             self.arts,
             self.early_modern,
@@ -401,3 +422,22 @@ class APIResponseTest(WagtailPageTestCase):
         ):
             with self.subTest(page.title):
                 self.compare_json(str(page.id), page.title)
+
+    @patch("etna.ciim.client.CIIMClient.get")
+    def test_record_article_serializer(self, mock_record):
+        mock_record.return_value = {
+            "data": [
+                {
+                    "@template": {
+                        "details": {
+                            "summaryTitle": "Test record title",
+                            "iaid": "C4761957",
+                            "referenceNumber": "TEST 1/2/3",
+                        }
+                    }
+                }
+            ]
+        }
+        self.compare_json(
+            str(self.record_article.id), f"{self.record_article.title}_serialized"
+        )

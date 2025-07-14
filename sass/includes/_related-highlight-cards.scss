@@ -9,7 +9,6 @@
 
         color: $color__black;
         font-family: $font__supria-sans;
-        // TODO: font sizes need updating in line with the new design guide
         font-size: 1.875rem;
     }
 
@@ -18,7 +17,6 @@
 
         color: $color__white;
         font-family: $font__body;
-        // TODO: font sizes need updating in line with the new design guide
         font-size: 1.25rem;
         font-weight: 400;
 
@@ -41,7 +39,6 @@
 
     &__card-title-link {
         color: $color__white;
-        // TODO: Consolidate link styles
 
         text-decoration-thickness: 1px;
 

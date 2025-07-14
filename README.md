@@ -7,10 +7,7 @@
 cp .env.example .env
 
 # Set .env values for:
-#   - KONG_CLIENT_BASE_URL
-#   - KONG_IMAGE_PREVIEW_BASE_URL
-#   - KONG_CLIENT_KEY
-#   - PLATFORMSH_CLI_TOKEN
+#   - ROSETTA_API_URL
 
 # Build and start the containers
 docker compose up -d

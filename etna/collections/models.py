@@ -1,5 +1,6 @@
 from typing import Any, Dict, List, Optional, Tuple, Union
 
+from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.http import HttpRequest
@@ -15,11 +16,13 @@ from wagtail.admin.panels import (
     PageChooserPanel,
 )
 from wagtail.api import APIField
-from wagtail.fields import StreamField
+from wagtail.fields import RichTextField, StreamField
 from wagtail.images import get_image_model_string
 from wagtail.models import Orderable, Page
 from wagtail.search import index
 
+from etna.ciim.fields import RecordField
+from etna.ciim.serializers import RecordSerializer
 from etna.core.models import (
     BasePage,
     BasePageWithRequiredIntro,
@@ -28,8 +31,9 @@ from etna.core.models import (
 )
 from etna.core.serializers import (
     DefaultPageSerializer,
-    HighlightImageSerializer,
+    DetailedImageSerializer,
     ImageSerializer,
+    RichTextSerializer,
 )
 from etna.core.utils import skos_id_from_text
 
@@ -48,11 +52,51 @@ class Highlight(Orderable):
         on_delete=models.CASCADE,
         related_name="page_highlights",
     )
+
     image = models.ForeignKey(
         get_image_model_string(),
         null=True,
         on_delete=models.SET_NULL,
         verbose_name=_("image"),
+    )
+
+    title = models.CharField(
+        max_length=255,
+        verbose_name=_("title"),
+        help_text=_(
+            "The descriptive name of the image. If this image features in a highlights gallery, this title will be visible on the page."
+        ),
+    )
+
+    record = RecordField(
+        verbose_name=_("related record"),
+        db_index=True,
+        blank=False,
+        null=False,
+        help_text=_(
+            "If the image relates to a specific record, select that record here."
+        ),
+    )
+    record.wagtail_reference_index_ignore = True
+
+    record_dates = models.CharField(
+        verbose_name=_("record date(s)"),
+        max_length=100,
+        blank=False,
+        null=False,
+        help_text=_("Date(s) related to the selected record (max length: 100 chars)."),
+    )
+
+    description = RichTextField(
+        verbose_name=_("description"),
+        help_text=(
+            "This text will appear in highlights galleries. A 100-300 word "
+            "description of the story of the record and why it is significant."
+        ),
+        blank=False,
+        null=False,
+        features=settings.RESTRICTED_RICH_TEXT_FEATURES,
+        max_length=900,
     )
 
     alt_text = models.CharField(
@@ -65,21 +109,13 @@ class Highlight(Orderable):
     )
 
     panels = [
+        FieldPanel("title"),
         FieldPanel("image"),
+        FieldPanel("record"),
+        FieldPanel("record_dates"),
+        FieldPanel("description"),
         FieldPanel("alt_text"),
     ]
-
-    def clean(self) -> None:
-        if self.image:
-            if not self.image.record or not self.image.description:
-                raise ValidationError(
-                    {
-                        "image": [
-                            "Only images with a 'record' and a 'description' specified can be used for highlights."
-                        ]
-                    }
-                )
-        return super().clean()
 
 
 class ExplorerIndexPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
@@ -761,16 +797,15 @@ class TopicalPageMixin:
 
 
 class HighlightSerializer(serializers.ModelSerializer):
-    image = HighlightImageSerializer(
+    image = DetailedImageSerializer(
         rendition_size="max-1024x1024", background_colour=None
     )
+    description = RichTextSerializer()
+    record = RecordSerializer()
 
     class Meta:
         model = Highlight
-        fields = (
-            "image",
-            "alt_text",
-        )
+        fields = ("title", "image", "description", "record", "record_dates")
 
 
 class HighlightCardSerializer(serializers.Serializer):
@@ -899,7 +934,7 @@ class HighlightGalleryPage(
         """
         strings = []
         for item in self.highlights:
-            strings.extend([item.image.title, item.image.description])
+            strings.extend([item.image.title, item.description])
         return " | ".join(strings)
 
     def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:

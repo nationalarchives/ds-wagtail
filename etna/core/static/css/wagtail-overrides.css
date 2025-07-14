@@ -37,22 +37,3 @@ aid legibility when appearing over help text */
 
   background-color: #fff;
 }
-
-/* CSS to be applied to record chooser widget, due to
-Wagtail 4.1 upgrade changes breaking the CSS to display on hover */
-@media (hover: hover) {
-  .chooser__actions {
-    opacity: 0;
-  }
-
-  :is(.w-field--record_chooser):is(:hover, :focus-within) .chooser__actions {
-    opacity: 1;
-  }
-}
-
-/* TODO: Remove after wagtail/wagtail-generic-chooser fix
-is released. This is a temporary fix for the record chooser
-widget, due to Wagtail 5.1 upgrade changes breaking the icons */
-.chooser__preview .icon-snippet {
-  width: 95%;
-}
