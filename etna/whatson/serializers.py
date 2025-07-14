@@ -22,12 +22,9 @@ class WhatsOnPageSelectionSerializer(serializers.Serializer):
     def to_representation(self, instance):
         if instance:
             return {
-                "featured_page": DefaultPageSerializer().to_representation(
-                    instance.featured_page
-                ),
-                "selected_page": DefaultPageSerializer().to_representation(
-                    instance.selected_page
-                ),
+                "selected_page": DefaultPageSerializer(
+                    required_api_fields=["featured_page", "latest_listings"]
+                ).to_representation(instance.selected_page),
             }
         return None
 
