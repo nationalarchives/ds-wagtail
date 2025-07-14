@@ -217,6 +217,13 @@ class EventSession(models.Model):
                     "end": _("The end time must be after the start time."),
                 }
             )
+        if self.start.date() != self.end.date():
+            raise ValidationError(
+                {
+                    "start": _("The start and end times must be on the same day."),
+                    "end": _("The start and end times must be on the same day."),
+                }
+            )
         return super().clean()
 
     panels = [
