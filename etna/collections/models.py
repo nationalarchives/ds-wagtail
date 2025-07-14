@@ -117,6 +117,68 @@ class Highlight(Orderable):
         FieldPanel("alt_text"),
     ]
 
+    
+class ExplorerIndexPageSelection(Orderable):
+    """A model to allow a list of pages to be selected for display on the Explorer Index Page."""
+    
+    page = ParentalKey(
+        "collections.ExplorerIndexPage",
+        on_delete=models.CASCADE,
+        related_name="explorer_index_page_selections",
+    )
+
+    selected_page = models.ForeignKey(
+        "wagtailcore.Page",
+        on_delete=models.CASCADE,
+        related_name="explorer_index_page_selected_pages",
+        help_text=_("Select a page to display in the Explorer Index Page."),
+    )
+
+    title = models.CharField(
+        max_length=255,
+        blank=True,
+        help_text=_("Optional title for the selected page. If left blank, the page title will be used."),
+    )
+
+    teaser_text = models.CharField(
+        max_length=255,
+        blank=True,
+        help_text=_("Optional teaser text for the selected page. If left blank, the page's teaser text will be displayed."),
+    )
+
+    teaser_image = models.ForeignKey(
+        get_image_model_string(),
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        help_text=_("Optional image to display in the teaser for the selected page. If left blank, the page's teaser image will be displayed."),
+    )
+
+    cta_label = models.CharField(
+        max_length=50,
+        blank=True,
+        help_text=_("Optional label for the call to action button. If left blank, 'Read more' will be used."),
+    )
+
+
+    panels = [
+        FieldPanel("explorer_page"),
+        MultiFieldPanel(
+            [
+                FieldPanel("selected_page"),
+                FieldPanel("title"),
+                FieldPanel("teaser_text"),
+                FieldPanel("teaser_image"),
+                FieldPanel("cta_label"),
+            ],
+            heading=_("Page link overrides"),
+        ),
+    ]
+
+    class Meta:
+        ordering = ["sort_order"]
+
 
 class ExplorerIndexPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
     """Collection Explorer landing BasePage.
