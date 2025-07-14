@@ -179,6 +179,23 @@ class ExplorerIndexPageSelection(Orderable):
     class Meta:
         ordering = ["sort_order"]
 
+class ExplorerIndexPageSelectionSerializer(serializers.Serializer):
+    """Serializer for ExplorerIndexPageSelection."""
+
+    def to_representation(self, instance):
+        if instance:
+            representation = {
+                "selected_page": DefaultPageSerializer().to_representation(instance.selected_page),
+            }
+            print("REPR", representation)
+            representation = {
+                "selected_page": DefaultPageSerializer(instance.selected_page).data,
+            }
+            print("REPR2",representation)
+            return {
+                "selected_page": DefaultPageSerializer(instance.selected_page).data,
+            }
+
 
 class ExplorerIndexPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
     """Collection Explorer landing BasePage.
