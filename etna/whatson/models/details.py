@@ -210,14 +210,14 @@ class EventSession(models.Model):
     )
 
     def clean(self):
-        if self.start >= self.end:
+        if self.start and self.end and self.start >= self.end:
             raise ValidationError(
                 {
                     "start": _("The start time must be before the end time."),
                     "end": _("The end time must be after the start time."),
                 }
             )
-        if self.start.date() != self.end.date():
+        if self.start and self.end and self.start.date() != self.end.date():
             raise ValidationError(
                 {
                     "start": _("The start and end times must be on the same day."),
