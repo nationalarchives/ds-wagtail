@@ -8,7 +8,6 @@ from app.core.blocks import (
     ImageGalleryBlock,
     ParagraphBlock,
     QuoteBlock,
-    SectionDepthAwareStructBlock,
     SubHeadingBlock,
     YouTubeBlock,
 )
@@ -28,7 +27,7 @@ class SectionContentBlock(blocks.StreamBlock):
     youtube_video = YouTubeBlock()
 
 
-class ContentSectionBlock(SectionDepthAwareStructBlock):
+class ContentSectionBlock(blocks.StructBlock):
     heading = blocks.CharBlock(max_length=100, label="Heading")
     content = SectionContentBlock(required=False)
 

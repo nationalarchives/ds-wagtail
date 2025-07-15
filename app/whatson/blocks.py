@@ -5,7 +5,6 @@ from app.core.blocks import (
     InsetTextBlock,
     ParagraphBlock,
     QuoteBlock,
-    SectionDepthAwareStructBlock,
     SubHeadingBlock,
 )
 
@@ -22,7 +21,7 @@ class SectionContentBlock(blocks.StreamBlock):
     sub_heading = SubHeadingBlock()
 
 
-class ContentSectionBlock(SectionDepthAwareStructBlock):
+class ContentSectionBlock(blocks.StructBlock):
     heading = blocks.CharBlock(max_length=100, label="Heading")
     content = SectionContentBlock(required=False)
 
