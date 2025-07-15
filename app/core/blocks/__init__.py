@@ -8,7 +8,7 @@ from .featured_content import (
     FeaturedRecordArticleBlock,
     RelatedItemBlock,
 )
-from .image import ContentImageBlock, ImageBlock, ImageGalleryBlock, NoCaptionImageBlock
+from .image import ContentImageBlock, ImageGalleryBlock
 from .lists import DescriptionListBlock, DoDontListBlock
 from .page_chooser import APIPageChooserBlock
 from .page_list import PageListBlock
@@ -19,7 +19,6 @@ from .promoted_links import (
     FeaturedExternalLinkBlock,
     FeaturedPageBlock,
     FeaturedPagesBlock,
-    PromotedItemBlock,
     PromotedLinkBlock,
     PromotedListBlock,
 )
@@ -48,16 +47,13 @@ __all__ = [
     "FeaturedCollectionBlock",
     "FeaturedPageBlock",
     "FeaturedPagesBlock",
-    "ImageBlock",
     "ImageGalleryBlock",
     "InsetTextBlock",
-    "NoCaptionImageBlock",
     "PageListBlock",
     "ParagraphBlock",
     "ParagraphWithHeading",
     "PromotedLinkBlock",
     "PromotedListBlock",
-    "PromotedItemBlock",
     "AuthorPromotedLinkBlock",
     "LargeCardLinksBlock",
     "MixedMediaBlock",

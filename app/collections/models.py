@@ -98,22 +98,12 @@ class Highlight(Orderable):
         max_length=900,
     )
 
-    alt_text = models.CharField(
-        verbose_name=_("alternative text"),
-        max_length=100,
-        null=True,
-        help_text=mark_safe(
-            'Alternative (alt) text describes images when they fail to load, and is read aloud by assistive technologies. Use a maximum of 100 characters to describe your image. <a href="https://html.spec.whatwg.org/multipage/images.html#alt" target="_blank">Check the guidance for tips on writing alt text</a>.'
-        ),
-    )
-
     panels = [
         FieldPanel("title"),
         FieldPanel("image"),
         FieldPanel("record"),
         FieldPanel("record_dates"),
         FieldPanel("description"),
-        FieldPanel("alt_text"),
     ]
 
 
@@ -371,13 +361,6 @@ class TopicExplorerPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
         obj.skos_id = self.skos_id
         return obj
 
-    def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
-        data = super().get_datalayer_data(request)
-        data.update(
-            customDimension4=self.title,
-        )
-        return data
-
     @cached_property
     def related_articles(self):
         """
@@ -570,13 +553,6 @@ class TimePeriodExplorerPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
         "collections.TimePeriodExplorerPage",
         "collections.HighlightGalleryPage",
     ]
-
-    def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
-        data = super().get_datalayer_data(request)
-        data.update(
-            customDimension7=self.title,
-        )
-        return data
 
     @cached_property
     def related_articles(self):
@@ -800,16 +776,9 @@ class HighlightCardSerializer(serializers.Serializer):
     highlights on the page.
     """
 
-    rendition_size = "fill-600x400"
-    jpeg_quality = 60
-    webp_quality = 60
-    background_colour = "fff"
-    additional_formats = []
-
     def to_representation(self, value):
         return {
-            "image": ImageSerializer.to_representation(self, value.image),
-            "alt_text": value.alt_text,
+            "image": ImageSerializer().to_representation(value.image),
         }
 
 
@@ -918,11 +887,3 @@ class HighlightGalleryPage(
         for item in self.highlights:
             strings.extend([item.image.title, item.description])
         return " | ".join(strings)
-
-    def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
-        data = super().get_datalayer_data(request)
-        data.update(
-            customDimension4="; ".join(obj.title for obj in self.topics),
-            customDimension7="; ".join(obj.title for obj in self.time_periods),
-        )
-        return data

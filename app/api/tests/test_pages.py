@@ -200,7 +200,6 @@ class APIResponseTest(WagtailPageTestCase):
                             "value": {
                                 "image": self.test_image.id,
                                 "caption": '<p data-block-key="apto9">Caption text</p>',
-                                "alt_text": "Alt text",
                             },
                         },
                         {
@@ -217,26 +216,6 @@ class APIResponseTest(WagtailPageTestCase):
                             "type": "featured_record_article",
                             "value": {
                                 "page": self.record_article.id,
-                            },
-                        },
-                        {
-                            "id": "a48ac0b2-be83-4b01-ae23-4fd1fa525322",
-                            "type": "promoted_item",
-                            "value": {
-                                "url": "https://google.com",
-                                "image": {
-                                    "image": self.test_image.id,
-                                    "alt_text": "Image alt text",
-                                    "decorative": False,
-                                },
-                                "title": "Title of Featured link",
-                                "author": "John Smith",
-                                "category": "blog",
-                                "duration": "10",
-                                "cta_label": "CTA Label",
-                                "description": '<p data-block-key="upl5w">Description with <a linktype="page" id="3">a link to a page</a></p>',
-                                "target_blank": True,
-                                "publication_date": "14 April 2021",
                             },
                         },
                         {

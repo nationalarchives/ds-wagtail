@@ -7,7 +7,6 @@ from app.core.blocks.page_chooser import APIPageChooserBlock
 from app.core.blocks.paragraph import APIRichTextBlock
 
 from .base import SectionDepthAwareStructBlock
-from .image import NoCaptionImageBlock
 
 
 class PromotedLinkBlock(blocks.StructBlock):
@@ -36,70 +35,6 @@ class AuthorPromotedPagesBlock(blocks.StructBlock):
     class Meta:
         help_text = "Block used to promote external pages"
         icon = "th-large"
-
-
-class PromotedItemBlock(SectionDepthAwareStructBlock):
-    title = blocks.CharBlock(
-        max_length=100,
-        help_text="Title of the promoted page",
-        label="Title",
-    )
-    category = blocks.ChoiceBlock(
-        label="Category",
-        choices=[
-            ("blog", "Blog post"),
-            ("podcast", "Podcast"),
-            ("video", "Video"),
-            ("video-external", "External video"),
-            ("external-link", "External link"),
-        ],
-    )
-    publication_date = blocks.CharBlock(
-        required=False,
-        help_text="This is a free text field. Please enter date as per agreed format: 14 April 2021",
-    )
-    author = blocks.CharBlock(required=False)
-    duration = blocks.CharBlock(
-        required=False,
-        max_length=50,
-        label="Duration",
-        help_text="Podcast or video duration.",
-    )
-    url = blocks.URLBlock(label="External URL", help_text="URL for the external page")
-    target_blank = blocks.BooleanBlock(
-        label=format_html(
-            "%s <p style='font-size: 11px;'>%s</p>"
-            % ("Should this URL open in a new tab?", "Tick the box if 'yes'")
-        ),
-        required=False,
-    )
-    cta_label = blocks.CharBlock(
-        label="Call to action label",
-        max_length=50,
-        help_text=format_html(
-            "%s <strong>%s</strong>'."
-            % (
-                "The text displayed on the button for your URL. If your URL links to an external site, "
-                + "please add the name of the site users will land on, and what they will find on this page. "
-                + "For example 'Watch our short film ",
-                "about Shakespeare on YouTube",
-            )
-        ),
-    )
-    image = NoCaptionImageBlock(
-        label="Teaser image",
-        template="articles/blocks/images/blog-embed__image-container.html",
-    )
-    description = APIRichTextBlock(
-        features=settings.INLINE_RICH_TEXT_FEATURES,
-        help_text="A description of the promoted page",
-    )
-
-    class Meta:
-        label = "Featured link"
-
-        help_text = "Block used promote an external page"
-        icon = "star"
 
 
 class PromotedListItemBlock(SectionDepthAwareStructBlock):

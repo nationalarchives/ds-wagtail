@@ -8,7 +8,6 @@ from app.core.blocks import (
     FeaturedRecordArticleBlock,
     ImageGalleryBlock,
     ParagraphBlock,
-    PromotedItemBlock,
     PromotedListBlock,
     QuoteBlock,
     SectionDepthAwareStructBlock,
@@ -26,7 +25,6 @@ class SectionContentBlock(blocks.StreamBlock):
     image_gallery = ImageGalleryBlock()
     media = MediaBlock()
     paragraph = ParagraphBlock()
-    promoted_item = PromotedItemBlock()
     promoted_list = PromotedListBlock()
     quote = QuoteBlock()
     record_links = RecordLinksBlock()

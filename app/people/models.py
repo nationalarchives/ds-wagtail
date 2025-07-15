@@ -234,11 +234,6 @@ class PersonPage(BasePage):
                 roles.append({"slug": role, "name": value})
         return roles
 
-    def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
-        data = super().get_datalayer_data(request)
-        data.update(customDimension3="Author page")
-        return data
-
 
 class AuthorTag(models.Model):
     """
