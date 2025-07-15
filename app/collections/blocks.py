@@ -1,16 +1,6 @@
 from wagtail import blocks
 
-from app.core.blocks import LargeCardLinksBlock, PageListBlock, PromotedLinkBlock
-
-
-class PromotedPagesBlock(blocks.StructBlock):
-    heading = blocks.CharBlock(max_length=100)
-    sub_heading = blocks.CharBlock(max_length=200)
-    promoted_items = blocks.ListBlock(PromotedLinkBlock, min=3, max=3)
-
-    class Meta:
-        help_text = "Block used to promote external pages"
-        icon = "th-large"
+from app.core.blocks import LargeCardLinksBlock, PageListBlock
 
 
 class ExplorerIndexPageStreamBlock(blocks.StreamBlock):
@@ -19,24 +9,6 @@ class ExplorerIndexPageStreamBlock(blocks.StreamBlock):
     class Meta:
         block_counts = {
             "large_card_links": {"max_num": 1},
-        }
-
-
-class TimePeriodExplorerPageStreamBlock(blocks.StreamBlock):
-    promoted_pages = PromotedPagesBlock()
-
-    class Meta:
-        block_counts = {
-            "promoted_pages": {"max_num": 1},
-        }
-
-
-class TopicExplorerPageStreamBlock(blocks.StreamBlock):
-    promoted_pages = PromotedPagesBlock()
-
-    class Meta:
-        block_counts = {
-            "promoted_pages": {"max_num": 1},
         }
 
 

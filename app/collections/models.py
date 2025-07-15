@@ -1,4 +1,4 @@
-from typing import List, Optional, Tuple, Union
+from typing import Optional, Tuple
 
 from django.conf import settings
 from django.db import models
@@ -37,8 +37,6 @@ from app.core.utils import skos_id_from_text
 from .blocks import (
     ExplorerIndexPageStreamBlock,
     FeaturedArticlesBlock,
-    TimePeriodExplorerPageStreamBlock,
-    TopicExplorerPageStreamBlock,
     TopicIndexPageStreamBlock,
 )
 
@@ -272,8 +270,6 @@ class TopicExplorerPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
         verbose_name=_("featured article"),
     )
 
-    body = StreamField(TopicExplorerPageStreamBlock, blank=True)
-
     skos_id = models.CharField(
         unique=True,
         blank=True,
@@ -295,7 +291,6 @@ class TopicExplorerPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
                     "articles.RecordArticlePage",
                 ],
             ),
-            FieldPanel("body"),
         ]
     )
 
@@ -306,7 +301,6 @@ class TopicExplorerPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
         "collections.TopicExplorerPage",
     ]
     subpage_types = [
-        "collections.TopicExplorerPage",
         "collections.HighlightGalleryPage",
     ]
 
@@ -314,7 +308,6 @@ class TopicExplorerPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
         BasePageWithRequiredIntro.api_fields
         + RequiredHeroImageMixin.api_fields
         + [
-            APIField("body"),
             APIField(
                 "featured_article",
                 serializer=DefaultPageSerializer(required_api_fields=["teaser_image"]),
@@ -496,7 +489,6 @@ class TimePeriodExplorerPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
         verbose_name=_("featured article"),
     )
 
-    body = StreamField(TimePeriodExplorerPageStreamBlock, blank=True)
     start_year = models.IntegerField(blank=False)
     end_year = models.IntegerField(blank=False)
     content_panels = (
@@ -511,7 +503,6 @@ class TimePeriodExplorerPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
                     "articles.RecordArticlePage",
                 ],
             ),
-            FieldPanel("body"),
             FieldPanel("start_year"),
             FieldPanel("end_year"),
         ]
@@ -521,7 +512,6 @@ class TimePeriodExplorerPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
         BasePageWithRequiredIntro.api_fields
         + RequiredHeroImageMixin.api_fields
         + [
-            APIField("body"),
             APIField(
                 "featured_article",
                 serializer=DefaultPageSerializer(required_api_fields=["teaser_image"]),
@@ -548,7 +538,6 @@ class TimePeriodExplorerPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
         "collections.TimePeriodExplorerPage",
     ]
     subpage_types = [
-        "collections.TimePeriodExplorerPage",
         "collections.HighlightGalleryPage",
     ]
 
@@ -694,13 +683,6 @@ class TopicalPageMixin:
         )
 
     @cached_property
-    def primary_topic(self) -> Union[TopicExplorerPage, None]:
-        try:
-            return self.topics[0]
-        except IndexError:
-            return None
-
-    @cached_property
     def topics(self) -> Tuple[TopicExplorerPage]:
         return tuple(
             item.topic
@@ -708,10 +690,6 @@ class TopicalPageMixin:
                 topic__live=True
             )
         )
-
-    @cached_property
-    def topics_alphabetical(self) -> List[TopicExplorerPage]:
-        return sorted(self.topic, key=lambda item: item.title.lower())
 
     @property
     def topic_names(self) -> str:
@@ -722,13 +700,6 @@ class TopicalPageMixin:
         return ", ".join(item.title for item in self.topics)
 
     @cached_property
-    def primary_time_period(self) -> Union[TimePeriodExplorerPage, None]:
-        try:
-            return self.time_periods[0]
-        except IndexError:
-            return None
-
-    @cached_property
     def time_periods(self) -> Tuple[TimePeriodExplorerPage]:
         return tuple(
             item.time_period
@@ -736,10 +707,6 @@ class TopicalPageMixin:
                 time_period__live=True
             )
         )
-
-    @cached_property
-    def time_periods_chronological(self) -> List[TimePeriodExplorerPage]:
-        return sorted(self.time_periods, key=lambda item: item.start_year)
 
     @property
     def time_period_names(self) -> str:

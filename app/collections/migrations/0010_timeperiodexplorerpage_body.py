@@ -58,7 +58,7 @@ class Migration(migrations.Migration):
                                 (
                                     "promoted_items",
                                     wagtail.blocks.ListBlock(
-                                        app.core.blocks.PromotedLinkBlock,
+                                        wagtail.blocks.TextBlock,
                                         max=3,
                                         min=3,
                                     ),

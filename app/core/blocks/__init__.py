@@ -16,7 +16,6 @@ from .promoted_links import (
     FeaturedExternalLinkBlock,
     FeaturedPageBlock,
     FeaturedPagesBlock,
-    PromotedLinkBlock,
 )
 from .quote import QuoteBlock, ReviewBlock
 from .section import SectionBlock, SubHeadingBlock, SubSubHeadingBlock
@@ -46,7 +45,6 @@ __all__ = [
     "PageListBlock",
     "ParagraphBlock",
     "ParagraphWithHeading",
-    "PromotedLinkBlock",
     "LargeCardLinksBlock",
     "MixedMediaBlock",
     "QuoteBlock",
