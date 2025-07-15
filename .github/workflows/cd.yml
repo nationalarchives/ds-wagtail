@@ -11,14 +11,14 @@ concurrency:
   group: cd-${{ github.ref }}
 
 jobs:
-  # check-migrations:
-  #   runs-on: ubuntu-latest
-  #   permissions:
-  #     contents: read
-  #   steps:
-  #     - uses: actions/checkout@v4
-  #     - name: Run tests
-  #       uses: ./.github/actions/check-migrations
+  check-migrations:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run tests
+        uses: ./.github/actions/check-migrations
 
   test-python:
     runs-on: ubuntu-latest
