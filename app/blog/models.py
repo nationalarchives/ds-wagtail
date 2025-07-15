@@ -11,8 +11,8 @@ from app.core.models import (
     HeroImageMixin,
     PublishedDateMixin,
 )
-from app.people.models import AuthorPageMixin, ExternalAuthorMixin
 from app.core.serializers.pages import DefaultPageSerializer
+from app.people.models import AuthorPageMixin, ExternalAuthorMixin
 
 from .blocks import BlogPostPageStreamBlock
 
