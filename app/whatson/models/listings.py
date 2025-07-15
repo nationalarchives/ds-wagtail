@@ -347,6 +347,7 @@ class WhatsOnDateListingPage(BasePageWithRequiredIntro):
         if self.days == 0:
             return get_specific_listings(
                 page_types=[EventPage],
+                filters={"end_date__gte": timezone.now()},
                 order_by="start_date",
             )
         else:
@@ -369,6 +370,7 @@ class WhatsOnDateListingPage(BasePageWithRequiredIntro):
         if self.days == 0:
             return get_specific_listings(
                 page_types=[ExhibitionPage, DisplayPage],
+                filters={"end_date__gte": timezone.now()},
                 order_by="start_date",
             )
         else:
