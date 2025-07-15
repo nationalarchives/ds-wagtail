@@ -1,8 +1,7 @@
-from typing import Any, Dict
+from typing import Dict
 
 from django.conf import settings
 from django.db import models
-from django.http import HttpRequest
 from django.utils.functional import cached_property
 from modelcluster.fields import ParentalKey
 from rest_framework import serializers

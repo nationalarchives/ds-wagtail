@@ -1,11 +1,9 @@
-from typing import Any, Dict, List, Tuple, Union
+from typing import List, Tuple, Union
 
 from django.conf import settings
 from django.db import models
 from django.db.models.functions import Coalesce
-from django.http import HttpRequest
 from django.utils.functional import cached_property
-from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 from modelcluster.contrib.taggit import ClusterTaggableManager
 from modelcluster.fields import ParentalKey

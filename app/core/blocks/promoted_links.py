@@ -4,7 +4,6 @@ from app.core.blocks.image import APIImageChooserBlock
 from app.core.blocks.page_chooser import APIPageChooserBlock
 
 
-
 class PromotedLinkBlock(blocks.StructBlock):
     url = blocks.URLBlock(label="External URL", help_text="URL for the external page")
     title = blocks.CharBlock(max_length=100, help_text="Title of the promoted page")
