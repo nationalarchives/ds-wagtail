@@ -1,12 +1,8 @@
-from django.conf import settings
-from django.utils.html import format_html
 from wagtail import blocks
 
 from app.core.blocks.image import APIImageChooserBlock
 from app.core.blocks.page_chooser import APIPageChooserBlock
-from app.core.blocks.paragraph import APIRichTextBlock
 
-from .base import SectionDepthAwareStructBlock
 
 
 class PromotedLinkBlock(blocks.StructBlock):
@@ -18,59 +14,6 @@ class PromotedLinkBlock(blocks.StructBlock):
     description = blocks.CharBlock(
         max_length=200, help_text="A description of the promoted page"
     )
-
-
-class AuthorPromotedLinkBlock(PromotedLinkBlock):
-    publication_date = blocks.CharBlock(
-        required=False,
-        help_text="This is a free text field. Please enter date as per agreed format: 14 April 2021",
-    )
-    author = blocks.CharBlock(required=False)
-
-
-class AuthorPromotedPagesBlock(blocks.StructBlock):
-    heading = blocks.CharBlock(max_length=100)
-    promoted_items = blocks.ListBlock(AuthorPromotedLinkBlock, max_num=3)
-
-    class Meta:
-        help_text = "Block used to promote external pages"
-        icon = "th-large"
-
-
-class PromotedListItemBlock(SectionDepthAwareStructBlock):
-    """
-    Items for promoted list block.
-    """
-
-    title = blocks.CharBlock(
-        required=True,
-        max_length=100,
-        help_text="The title of the target page",
-    )
-    description = APIRichTextBlock(
-        required=False,
-        features=settings.INLINE_RICH_TEXT_FEATURES,
-        help_text="A description of the target page",
-    )
-    url = blocks.URLBlock(required=True)
-
-    class Meta:
-        icon = "star"
-
-
-class PromotedListBlock(blocks.StructBlock):
-    """
-    Streamfield for collating a series of links for research or interesting pages.
-    """
-
-    summary = APIRichTextBlock(
-        required=False, features=settings.INLINE_RICH_TEXT_FEATURES
-    )
-    promoted_items = blocks.ListBlock(PromotedListItemBlock())
-
-    class Meta:
-        icon = "link"
-        label = "Link list"
 
 
 class FeaturedPageBlock(blocks.StructBlock):

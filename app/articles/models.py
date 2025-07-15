@@ -27,7 +27,7 @@ from wagtail.snippets.models import register_snippet
 from app.ciim.fields import RecordField
 from app.ciim.serializers import RecordSerializer
 from app.collections.models import TopicalPageMixin
-from app.core.blocks import AuthorPromotedPagesBlock, FeaturedCollectionBlock
+from app.core.blocks import FeaturedCollectionBlock
 from app.core.models import (
     BasePageWithRequiredIntro,
     ContentWarningMixin,
@@ -606,13 +606,6 @@ class RecordArticlePage(
         verbose_name=_("featured article"),
     )
 
-    promoted_links = StreamField(
-        [("promoted_link", AuthorPromotedPagesBlock())],
-        max_num=1,
-        blank=True,
-        null=True,
-    )
-
     class Meta:
         verbose_name = _("record article")
         verbose_name_plural = _("record articles")
@@ -658,7 +651,6 @@ class RecordArticlePage(
                     "articles.RecordArticlePage",
                 ],
             ),
-            FieldPanel("promoted_links"),
         ]
     )
 
@@ -712,7 +704,6 @@ class RecordArticlePage(
                     required_api_fields=["highlight_cards"]
                 ),
             ),
-            APIField("promoted_links"),
             APIField(
                 "intro_image",
                 serializer=ImageSerializer(

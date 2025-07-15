@@ -3,22 +3,7 @@ from wagtail import blocks
 from app.core.blocks.image import APIImageChooserBlock
 
 from .base import SectionDepthAwareStructBlock
-from .page_chooser import APIPageChooserBlock
 from .page_list import PageListBlock
-
-
-class FeaturedRecordArticleBlock(blocks.StructBlock):
-    page = APIPageChooserBlock(
-        label="Page",
-        page_type="articles.RecordArticlePage",
-        required_api_fields=[
-            "teaser_image",
-        ],
-    )
-
-    class Meta:
-        icon = "doc-empty-inverse"
-        label = "Featured record article"
 
 
 class RelatedItemBlock(SectionDepthAwareStructBlock):

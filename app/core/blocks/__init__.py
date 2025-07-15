@@ -5,7 +5,6 @@ from .cta import ButtonBlock, CallToActionBlock, LargeCardLinksBlock
 from .document import DocumentsBlock
 from .featured_content import (
     FeaturedCollectionBlock,
-    FeaturedRecordArticleBlock,
     RelatedItemBlock,
 )
 from .image import ContentImageBlock, ImageGalleryBlock
@@ -14,13 +13,10 @@ from .page_chooser import APIPageChooserBlock
 from .page_list import PageListBlock
 from .paragraph import ParagraphBlock, ParagraphWithHeading
 from .promoted_links import (
-    AuthorPromotedLinkBlock,
-    AuthorPromotedPagesBlock,
     FeaturedExternalLinkBlock,
     FeaturedPageBlock,
     FeaturedPagesBlock,
     PromotedLinkBlock,
-    PromotedListBlock,
 )
 from .quote import QuoteBlock, ReviewBlock
 from .section import SectionBlock, SubHeadingBlock, SubSubHeadingBlock
@@ -32,7 +28,6 @@ from .video import MixedMediaBlock, YouTubeBlock
 __all__ = [
     "AccordionsBlock",
     "APIPageChooserBlock",
-    "AuthorPromotedPagesBlock",
     "ButtonBlock",
     "CallToActionBlock",
     "ContactBlock",
@@ -43,7 +38,6 @@ __all__ = [
     "DocumentsBlock",
     "DoDontListBlock",
     "FeaturedExternalLinkBlock",
-    "FeaturedRecordArticleBlock",
     "FeaturedCollectionBlock",
     "FeaturedPageBlock",
     "FeaturedPagesBlock",
@@ -53,8 +47,6 @@ __all__ = [
     "ParagraphBlock",
     "ParagraphWithHeading",
     "PromotedLinkBlock",
-    "PromotedListBlock",
-    "AuthorPromotedLinkBlock",
     "LargeCardLinksBlock",
     "MixedMediaBlock",
     "QuoteBlock",

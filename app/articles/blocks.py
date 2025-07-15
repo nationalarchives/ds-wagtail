@@ -5,10 +5,8 @@ from app.core.blocks import (
     ContentImageBlock,
     FeaturedExternalLinkBlock,
     FeaturedPageBlock,
-    FeaturedRecordArticleBlock,
     ImageGalleryBlock,
     ParagraphBlock,
-    PromotedListBlock,
     QuoteBlock,
     SectionDepthAwareStructBlock,
     SubHeadingBlock,
@@ -20,12 +18,10 @@ from app.media.blocks import MediaBlock
 class SectionContentBlock(blocks.StreamBlock):
     featured_external_link = FeaturedExternalLinkBlock()
     featured_page = FeaturedPageBlock()
-    featured_record_article = FeaturedRecordArticleBlock()
     image = ContentImageBlock()
     image_gallery = ImageGalleryBlock()
     media = MediaBlock()
     paragraph = ParagraphBlock()
-    promoted_list = PromotedListBlock()
     quote = QuoteBlock()
     record_links = RecordLinksBlock()
     sub_heading = SubHeadingBlock()

@@ -15,7 +15,6 @@ from app.core.blocks import (
     DoDontListBlock,
     FeaturedExternalLinkBlock,
     FeaturedPageBlock,
-    FeaturedRecordArticleBlock,
     ImageGalleryBlock,
     InsetTextBlock,
     ParagraphBlock,
@@ -40,7 +39,6 @@ class SectionContentBlock(blocks.StreamBlock):
     do_dont_list = DoDontListBlock()
     featured_external_link = FeaturedExternalLinkBlock()
     featured_page = FeaturedPageBlock()
-    featured_record_article = FeaturedRecordArticleBlock()
     image = ContentImageBlock()
     image_gallery = ImageGalleryBlock()
     inset_text = InsetTextBlock()
