@@ -84,6 +84,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.sites",
     "django.contrib.staticfiles",
+    "allauth",
+    "allauth.account",
     "birdbath",
     "wagtail.api.v2",
     "wagtail.contrib.frontend_cache",
@@ -92,6 +94,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    "allauth.account.middleware.AccountMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -129,8 +132,17 @@ TEMPLATES = [
 ]
 
 AUTHENTICATION_BACKENDS = [
+    # Needed to login by username in Django admin, regardless of `allauth`
     "django.contrib.auth.backends.ModelBackend",
+    # `allauth` specific authentication methods, such as login by e-mail
+    "allauth.account.auth_backends.AuthenticationBackend",
 ]
+
+# django-allauth configuration
+ACCOUNT_LOGIN_METHODS = {"email"}
+ACCOUNT_SIGNUP_FIELDS = ["email*", "password1*", "password2*"]
+ACCOUNT_LOGOUT_ON_GET = False  # Bypass logout confirmation form
+ACCOUNT_SESSION_REMEMBER = False  # True|False disables "Remember me?" checkbox"
 
 WSGI_APPLICATION = "config.wsgi.application"
 
