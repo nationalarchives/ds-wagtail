@@ -1,6 +1,7 @@
 import datetime
 
 from django.db import models
+from django.db.models import Q
 from django.utils import timezone
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
@@ -32,7 +33,7 @@ from .details import (
 
 def get_specific_listings(
     page_types: list[Page] = [],
-    filters: dict = {},
+    filters: dict | Q = None,
     order_by: str = "start_date",
     exclude: dict = {},
 ) -> list:
@@ -46,15 +47,13 @@ def get_specific_listings(
     pages = []
 
     for page_type in page_types:
-        pages.extend(
-            page_type.objects.exclude(**exclude)
-            .filter(**filters)
-            .live()
-            .public()
-            .distinct()
-            .order_by(order_by)
-        )
-
+        queryset = page_type.objects.exclude(**exclude)
+        if isinstance(filters, dict) or filters is None:
+            queryset = queryset.filter(**(filters or {}))
+        else:  # Otherwise assume the filters are a Q object
+            queryset = queryset.filter(filters)
+        queryset = queryset.live().public().distinct().order_by(order_by)
+        pages.extend(queryset)
     return pages
 
 
@@ -343,6 +342,12 @@ class WhatsOnDateListingPage(BasePageWithRequiredIntro):
         """
         Returns a list of event pages that are happening between today and the date in `days`
         amount of days.
+
+        We have to filter by session dates for events with multiple sessions, but for
+        events where we have "various dates" we need to use the start and end date fields
+        for the event, rather than the session. This allows us to show events that MIGHT
+        be on that day, but we don't know the exact session times as we use "various_dates"
+        to indicate that the event has multiple sessions.
         """
         if self.days == 0:
             return get_specific_listings(
@@ -351,13 +356,20 @@ class WhatsOnDateListingPage(BasePageWithRequiredIntro):
                 order_by="start_date",
             )
         else:
+            filters = Q(
+                sessions__start__gte=timezone.now(),
+                sessions__start__lte=(
+                    timezone.now() + datetime.timedelta(days=self.days - 1)
+                ),
+            ) | Q(
+                start_date__lte=timezone.now(),
+                various_dates=True,
+                end_date__gte=timezone.now(),
+            )
+
             return get_specific_listings(
                 page_types=[EventPage],
-                filters={
-                    "sessions__start__gte": timezone.now(),
-                    "sessions__start__lte": timezone.now()
-                    + datetime.timedelta(days=self.days - 1),
-                },
+                filters=filters,
                 order_by="start_date",
             )
 
@@ -505,6 +517,7 @@ class ExhibitionsListingPage(BasePageWithRequiredIntro):
             page_types=[ExhibitionPage, DisplayPage],
             filters={"end_date__gte": timezone.now()},
             order_by="start_date",
+            exclude={"pk": self.featured_page_id},
         )
 
     @cached_property
