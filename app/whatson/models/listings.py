@@ -517,6 +517,7 @@ class ExhibitionsListingPage(BasePageWithRequiredIntro):
             page_types=[ExhibitionPage, DisplayPage],
             filters={"end_date__gte": timezone.now()},
             order_by="start_date",
+            exclude={"pk": self.featured_page_id},
         )
 
     @cached_property
