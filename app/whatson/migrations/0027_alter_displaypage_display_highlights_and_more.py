@@ -8,7 +8,7 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('whatson', '0025_seriestag_sort_order_alter_eventpage_description'),
+        ('whatson', '0026_alter_displaypage_shop_alter_exhibitionpage_shop'),
     ]
 
     operations = [
