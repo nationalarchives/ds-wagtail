@@ -42,6 +42,13 @@ class CustomImage(ClusterableModel, AbstractImage):
         ),
     )
 
+    description = models.CharField(
+        blank=True,
+        max_length=255,
+        verbose_name=_("alt text"),
+        default="",
+    )
+
     copyright = RichTextField(
         verbose_name=_("copyright"),
         blank=True,
