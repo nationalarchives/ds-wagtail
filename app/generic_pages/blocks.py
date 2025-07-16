@@ -15,13 +15,10 @@ from app.core.blocks import (
     DoDontListBlock,
     FeaturedExternalLinkBlock,
     FeaturedPageBlock,
-    FeaturedRecordArticleBlock,
     ImageGalleryBlock,
     InsetTextBlock,
     ParagraphBlock,
-    PromotedItemBlock,
     QuoteBlock,
-    SectionDepthAwareStructBlock,
     SubHeadingBlock,
     SubSubHeadingBlock,
     WarningTextBlock,
@@ -41,13 +38,11 @@ class SectionContentBlock(blocks.StreamBlock):
     do_dont_list = DoDontListBlock()
     featured_external_link = FeaturedExternalLinkBlock()
     featured_page = FeaturedPageBlock()
-    featured_record_article = FeaturedRecordArticleBlock()
     image = ContentImageBlock()
     image_gallery = ImageGalleryBlock()
     inset_text = InsetTextBlock()
     media = MediaBlock()
     paragraph = ParagraphBlock()
-    promoted_item = PromotedItemBlock()
     quote = QuoteBlock()
     record_links = RecordLinksBlock()
     sub_heading = SubHeadingBlock()
@@ -57,7 +52,7 @@ class SectionContentBlock(blocks.StreamBlock):
     youtube_video = YouTubeBlock()
 
 
-class ContentSectionBlock(SectionDepthAwareStructBlock):
+class ContentSectionBlock(blocks.StructBlock):
     heading = blocks.CharBlock(max_length=100, label="Heading")
     content = SectionContentBlock(required=False)
 

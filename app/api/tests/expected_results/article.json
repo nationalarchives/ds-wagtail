@@ -196,7 +196,6 @@
                                 },
                                 "copyright": "Copyrighted by someone"
                             },
-                            "alt_text": "Alt text",
                             "caption": "<p data-block-key=\"apto9\">Caption text</p>"
                         },
                         "id": "f5e76e88-7ccb-4802-8b6d-feaf5348c742"
@@ -254,103 +253,6 @@
                             }
                         },
                         "id": "6e6816e0-6634-46cc-bf75-0c7d737a4cb2"
-                    },
-                    {
-                        "type": "featured_record_article",
-                        "value": {
-                            "page": {
-                                "id": 12,
-                                "title": "record_article",
-                                "short_title": null,
-                                "url": "/article_index/record_article/",
-                                "full_url": "http://localhost/article_index/record_article/",
-                                "type": "articles.RecordArticlePage",
-                                "type_label": "Record revealed",
-                                "teaser_text": "Teaser text",
-                                "teaser_image": {
-                                    "id": 16,
-                                    "uuid": "00000000-0000-0000-0000-000000000000",
-                                    "title": "An image",
-                                    "description": "",
-                                    "jpeg": {
-                                        "url": "/media/images/image.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
-                                        "full_url": "https://www.nationalarchives.gov.uk/media/images/image.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
-                                        "width": 100,
-                                        "height": 68
-                                    },
-                                    "webp": {
-                                        "url": "/media/images/image.fill-600x400.format-webp.webpquality-60.bgcolor-fff.webp",
-                                        "full_url": "https://www.nationalarchives.gov.uk/media/images/image.fill-600x400.format-webp.webpquality-60.bgcolor-fff.webp",
-                                        "width": 100,
-                                        "height": 68
-                                    }
-                                },
-                                "first_published_at": "2000-01-03T00:00:00Z",
-                                "last_published_at": "2000-01-03T00:00:00Z",
-                                "is_newly_published": false
-                            }
-                        },
-                        "id": "b505f636-f3d1-4d4b-b368-69183e324e6e"
-                    },
-                    {
-                        "type": "promoted_item",
-                        "value": {
-                            "title": "Title of Featured link",
-                            "category": "blog",
-                            "publication_date": "14 April 2021",
-                            "author": "John Smith",
-                            "duration": "10",
-                            "url": "https://google.com",
-                            "target_blank": true,
-                            "cta_label": "CTA Label",
-                            "image": {
-                                "image": {
-                                    "id": 1,
-                                    "uuid": "00000000-0000-0000-0000-000000000000",
-                                    "title": "An image",
-                                    "description": "Some alt text",
-                                    "jpeg": {
-                                        "url": "/media/images/example_0Tm3K5n.max-900x900.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
-                                        "full_url": "https://www.nationalarchives.gov.uk/media/images/example_0Tm3K5n.max-900x900.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
-                                        "width": 100,
-                                        "height": 100
-                                    },
-                                    "webp": {
-                                        "url": "/media/images/example_0Tm3K5n.max-900x900.format-webp.webpquality-60.bgcolor-fff.webp",
-                                        "full_url": "https://www.nationalarchives.gov.uk/media/images/example_0Tm3K5n.max-900x900.format-webp.webpquality-60.bgcolor-fff.webp",
-                                        "width": 100,
-                                        "height": 100
-                                    },
-                                    "transcript": {
-                                        "heading": "Transcript",
-                                        "text": "<p>Transcript</p>"
-                                    },
-                                    "translation": {
-                                        "heading": "Translation",
-                                        "text": "<p>Translation</p>"
-                                    },
-                                    "copyright": "Copyrighted by someone"
-                                },
-                                "decorative": false,
-                                "alt_text": "Image alt text"
-                            },
-                            "description": "<p data-block-key=\"upl5w\">Description with <a href=\"/\">a link to a page</a></p>"
-                        },
-                        "id": "a48ac0b2-be83-4b01-ae23-4fd1fa525322"
-                    },
-                    {
-                        "type": "promoted_list",
-                        "value": {
-                            "summary": "<p data-block-key=\"9rpsq\">Summary</p>",
-                            "promoted_items": [
-                                {
-                                    "title": "Promoted title",
-                                    "description": "<p data-block-key=\"ig4c0\">Promoted description</p>",
-                                    "url": "https://google.com"
-                                }
-                            ]
-                        },
-                        "id": "dc5a68fd-17b2-4722-916b-0a924bdb189a"
                     },
                     {
                         "type": "record_links",

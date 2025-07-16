@@ -1,11 +1,9 @@
-from typing import Any, Dict, List, Tuple, Union
+from typing import List, Tuple, Union
 
 from django.conf import settings
 from django.db import models
 from django.db.models.functions import Coalesce
-from django.http import HttpRequest
 from django.utils.functional import cached_property
-from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 from modelcluster.contrib.taggit import ClusterTaggableManager
 from modelcluster.fields import ParentalKey
@@ -27,7 +25,7 @@ from wagtail.snippets.models import register_snippet
 from app.ciim.fields import RecordField
 from app.ciim.serializers import RecordSerializer
 from app.collections.models import TopicalPageMixin
-from app.core.blocks import AuthorPromotedPagesBlock, FeaturedCollectionBlock
+from app.core.blocks import FeaturedCollectionBlock
 from app.core.models import (
     BasePageWithRequiredIntro,
     ContentWarningMixin,
@@ -271,15 +269,6 @@ class ArticlePage(
         + TopicalPageMixin.api_fields
     )
 
-    def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
-        data = super().get_datalayer_data(request)
-        data.update(
-            customDimension4="; ".join(obj.title for obj in self.topics),
-            customDimension6="; ".join(self.article_tag_names.split("\n")),
-            customDimension7="; ".join(obj.title for obj in self.time_periods),
-        )
-        return data
-
     def save(self, *args, **kwargs):
         """
         Overrides Page.save() to ensure 'article_tag_names' always reflects the tags() value
@@ -445,15 +434,6 @@ class FocusedArticlePage(
             self.article_tag_names = "\n".join(t.name for t in self.tags.all())
         super().save(*args, **kwargs)
 
-    def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
-        data = super().get_datalayer_data(request)
-        data.update(
-            customDimension4="; ".join(obj.title for obj in self.topics),
-            customDimension6="; ".join(self.article_tag_names.split("\n")),
-            customDimension7="; ".join(obj.title for obj in self.time_periods),
-        )
-        return data
-
     @cached_property
     def similar_items(
         self,
@@ -519,13 +499,6 @@ class PageGalleryImage(Orderable):
         null=True,
         related_name="+",
     )
-    alt_text = models.CharField(
-        verbose_name=_("alternative text"),
-        max_length=100,
-        help_text=mark_safe(
-            'Alternative (alt) text describes images when they fail to load, and is read aloud by assistive technologies. Use a maximum of 100 characters to describe your image. <a href="https://html.spec.whatwg.org/multipage/images.html#alt" target="_blank">Check the guidance for tips on writing alt text</a>.'
-        ),
-    )
     caption = RichTextField(
         features=["bold", "italic", "link"],
         help_text="An optional caption, which will be displayed directly below the image. This could be used for image sources or for other useful metadata.",
@@ -538,7 +511,6 @@ class PageGalleryImage(Orderable):
 
     panels = [
         FieldPanel("image"),
-        FieldPanel("alt_text"),
         FieldPanel("caption"),
     ]
 
@@ -632,13 +604,6 @@ class RecordArticlePage(
         verbose_name=_("featured article"),
     )
 
-    promoted_links = StreamField(
-        [("promoted_link", AuthorPromotedPagesBlock())],
-        max_num=1,
-        blank=True,
-        null=True,
-    )
-
     class Meta:
         verbose_name = _("record article")
         verbose_name_plural = _("record articles")
@@ -684,7 +649,6 @@ class RecordArticlePage(
                     "articles.RecordArticlePage",
                 ],
             ),
-            FieldPanel("promoted_links"),
         ]
     )
 
@@ -702,7 +666,6 @@ class RecordArticlePage(
         BasePageWithRequiredIntro.search_fields
         + ArticleTagMixin.search_fields
         + [
-            index.SearchField("gallery_text"),
             index.SearchField("date_text"),
             index.SearchField("about"),
             index.SearchField("topic_names", boost=1),
@@ -739,7 +702,6 @@ class RecordArticlePage(
                     required_api_fields=["highlight_cards"]
                 ),
             ),
-            APIField("promoted_links"),
             APIField(
                 "intro_image",
                 serializer=ImageSerializer(
@@ -762,40 +724,6 @@ class RecordArticlePage(
             .select_related("image")
             .prefetch_related("image__renditions")
         )
-
-    @property
-    def gallery_text(self) -> str:
-        """
-        Returns all of the relevant text defined on this page's gallery images,
-        joined into one giant string to faciliate indexing.
-        """
-        strings = []
-        for item in self.gallery_images.all():
-            strings.extend([item.alt_text, item.caption])
-            if item.has_transcription:
-                strings.extend([item.transcription_header, item.transcription_text])
-            if item.has_translation:
-                strings.extend([item.translation_header, item.translation_text])
-        return " ".join(strings)
-
-    @cached_property
-    def gallery_has_translations_transcriptions(self):
-        """
-        Returns boolean indicating whether this page has any gallery transcriptions or translations.
-        """
-        for item in self.gallery_items.all():
-            if item.image.translation or item.image.transcription:
-                return True
-        return False
-
-    def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
-        data = super().get_datalayer_data(request)
-        data.update(
-            customDimension4="; ".join(obj.title for obj in self.topics),
-            customDimension6="; ".join(self.article_tag_names.split("\n")),
-            customDimension7="; ".join(obj.title for obj in self.time_periods),
-        )
-        return data
 
     def save(self, *args, **kwargs):
         """

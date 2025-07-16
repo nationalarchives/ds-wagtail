@@ -1,6 +1,6 @@
 from wagtail import blocks
 
-from app.core.blocks import APIPageChooserBlock, ParagraphBlock, ParagraphWithHeading
+from app.core.blocks import APIPageChooserBlock, ParagraphBlock
 from app.core.blocks.image import APIImageChooserBlock
 
 
@@ -54,4 +54,3 @@ class FeaturedItemsBlock(blocks.ListBlock):
 
 class HomePageStreamBlock(blocks.StreamBlock):
     paragraph = ParagraphBlock()
-    paragraph_with_heading = ParagraphWithHeading()

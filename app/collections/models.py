@@ -1,10 +1,8 @@
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Optional, Tuple
 
 from django.conf import settings
 from django.db import models
-from django.http import HttpRequest
 from django.utils.functional import cached_property
-from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 from modelcluster.fields import ParentalKey
 from rest_framework import serializers
@@ -39,8 +37,6 @@ from app.core.utils import skos_id_from_text
 from .blocks import (
     ExplorerIndexPageStreamBlock,
     FeaturedArticlesBlock,
-    TimePeriodExplorerPageStreamBlock,
-    TopicExplorerPageStreamBlock,
     TopicIndexPageStreamBlock,
 )
 
@@ -98,22 +94,12 @@ class Highlight(Orderable):
         max_length=900,
     )
 
-    alt_text = models.CharField(
-        verbose_name=_("alternative text"),
-        max_length=100,
-        null=True,
-        help_text=mark_safe(
-            'Alternative (alt) text describes images when they fail to load, and is read aloud by assistive technologies. Use a maximum of 100 characters to describe your image. <a href="https://html.spec.whatwg.org/multipage/images.html#alt" target="_blank">Check the guidance for tips on writing alt text</a>.'
-        ),
-    )
-
     panels = [
         FieldPanel("title"),
         FieldPanel("image"),
         FieldPanel("record"),
         FieldPanel("record_dates"),
         FieldPanel("description"),
-        FieldPanel("alt_text"),
     ]
 
 
@@ -284,8 +270,6 @@ class TopicExplorerPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
         verbose_name=_("featured article"),
     )
 
-    body = StreamField(TopicExplorerPageStreamBlock, blank=True)
-
     skos_id = models.CharField(
         unique=True,
         blank=True,
@@ -307,7 +291,6 @@ class TopicExplorerPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
                     "articles.RecordArticlePage",
                 ],
             ),
-            FieldPanel("body"),
         ]
     )
 
@@ -318,7 +301,6 @@ class TopicExplorerPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
         "collections.TopicExplorerPage",
     ]
     subpage_types = [
-        "collections.TopicExplorerPage",
         "collections.HighlightGalleryPage",
     ]
 
@@ -326,7 +308,6 @@ class TopicExplorerPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
         BasePageWithRequiredIntro.api_fields
         + RequiredHeroImageMixin.api_fields
         + [
-            APIField("body"),
             APIField(
                 "featured_article",
                 serializer=DefaultPageSerializer(required_api_fields=["teaser_image"]),
@@ -370,13 +351,6 @@ class TopicExplorerPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
         obj = super().with_content_json(content)
         obj.skos_id = self.skos_id
         return obj
-
-    def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
-        data = super().get_datalayer_data(request)
-        data.update(
-            customDimension4=self.title,
-        )
-        return data
 
     @cached_property
     def related_articles(self):
@@ -515,7 +489,6 @@ class TimePeriodExplorerPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
         verbose_name=_("featured article"),
     )
 
-    body = StreamField(TimePeriodExplorerPageStreamBlock, blank=True)
     start_year = models.IntegerField(blank=False)
     end_year = models.IntegerField(blank=False)
     content_panels = (
@@ -530,7 +503,6 @@ class TimePeriodExplorerPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
                     "articles.RecordArticlePage",
                 ],
             ),
-            FieldPanel("body"),
             FieldPanel("start_year"),
             FieldPanel("end_year"),
         ]
@@ -540,7 +512,6 @@ class TimePeriodExplorerPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
         BasePageWithRequiredIntro.api_fields
         + RequiredHeroImageMixin.api_fields
         + [
-            APIField("body"),
             APIField(
                 "featured_article",
                 serializer=DefaultPageSerializer(required_api_fields=["teaser_image"]),
@@ -567,16 +538,8 @@ class TimePeriodExplorerPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
         "collections.TimePeriodExplorerPage",
     ]
     subpage_types = [
-        "collections.TimePeriodExplorerPage",
         "collections.HighlightGalleryPage",
     ]
-
-    def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
-        data = super().get_datalayer_data(request)
-        data.update(
-            customDimension7=self.title,
-        )
-        return data
 
     @cached_property
     def related_articles(self):
@@ -720,13 +683,6 @@ class TopicalPageMixin:
         )
 
     @cached_property
-    def primary_topic(self) -> Union[TopicExplorerPage, None]:
-        try:
-            return self.topics[0]
-        except IndexError:
-            return None
-
-    @cached_property
     def topics(self) -> Tuple[TopicExplorerPage]:
         return tuple(
             item.topic
@@ -734,10 +690,6 @@ class TopicalPageMixin:
                 topic__live=True
             )
         )
-
-    @cached_property
-    def topics_alphabetical(self) -> List[TopicExplorerPage]:
-        return sorted(self.topic, key=lambda item: item.title.lower())
 
     @property
     def topic_names(self) -> str:
@@ -748,13 +700,6 @@ class TopicalPageMixin:
         return ", ".join(item.title for item in self.topics)
 
     @cached_property
-    def primary_time_period(self) -> Union[TimePeriodExplorerPage, None]:
-        try:
-            return self.time_periods[0]
-        except IndexError:
-            return None
-
-    @cached_property
     def time_periods(self) -> Tuple[TimePeriodExplorerPage]:
         return tuple(
             item.time_period
@@ -762,10 +707,6 @@ class TopicalPageMixin:
                 time_period__live=True
             )
         )
-
-    @cached_property
-    def time_periods_chronological(self) -> List[TimePeriodExplorerPage]:
-        return sorted(self.time_periods, key=lambda item: item.start_year)
 
     @property
     def time_period_names(self) -> str:
@@ -800,16 +741,9 @@ class HighlightCardSerializer(serializers.Serializer):
     highlights on the page.
     """
 
-    rendition_size = "fill-600x400"
-    jpeg_quality = 60
-    webp_quality = 60
-    background_colour = "fff"
-    additional_formats = []
-
     def to_representation(self, value):
         return {
-            "image": ImageSerializer.to_representation(self, value.image),
-            "alt_text": value.alt_text,
+            "image": ImageSerializer().to_representation(value.image),
         }
 
 
@@ -918,11 +852,3 @@ class HighlightGalleryPage(
         for item in self.highlights:
             strings.extend([item.image.title, item.description])
         return " | ".join(strings)
-
-    def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
-        data = super().get_datalayer_data(request)
-        data.update(
-            customDimension4="; ".join(obj.title for obj in self.topics),
-            customDimension7="; ".join(obj.title for obj in self.time_periods),
-        )
-        return data

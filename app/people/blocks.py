@@ -4,7 +4,6 @@ from app.core.blocks import (
     ContactBlock,
     InsetTextBlock,
     ParagraphBlock,
-    SectionDepthAwareStructBlock,
 )
 
 
@@ -14,7 +13,7 @@ class SectionContentBlock(blocks.StreamBlock):
     paragraph = ParagraphBlock()
 
 
-class ContentSectionBlock(SectionDepthAwareStructBlock):
+class ContentSectionBlock(blocks.StructBlock):
     heading = blocks.CharBlock(max_length=100, label="Heading")
     content = SectionContentBlock(required=False)
 

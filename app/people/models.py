@@ -1,8 +1,7 @@
-from typing import Any, Dict
+from typing import Dict
 
 from django.conf import settings
 from django.db import models
-from django.http import HttpRequest
 from django.utils.functional import cached_property
 from modelcluster.fields import ParentalKey
 from rest_framework import serializers
@@ -233,11 +232,6 @@ class PersonPage(BasePage):
             if getattr(self, f"is_{role}"):
                 roles.append({"slug": role, "name": value})
         return roles
-
-    def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
-        data = super().get_datalayer_data(request)
-        data.update(customDimension3="Author page")
-        return data
 
 
 class AuthorTag(models.Model):

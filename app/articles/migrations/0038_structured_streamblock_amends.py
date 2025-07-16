@@ -441,7 +441,7 @@ class Migration(migrations.Migration):
                                                         (
                                                             "related_items",
                                                             wagtail.blocks.ListBlock(
-                                                                app.core.blocks.RelatedItemBlock
+                                                                wagtail.blocks.TextBlock
                                                             ),
                                                         ),
                                                     ]
