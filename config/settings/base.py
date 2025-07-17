@@ -73,7 +73,6 @@ INSTALLED_APPS = [
     "wagtailfontawesomesvg",
     "wagtailmedia",
     "wagtail.contrib.settings",
-    "wagtailmetadata",  # TODO: Remove this package when we reset migrations and remove the dependency from the pyproject.toml
     "modelcluster",
     "taggit",
     "django.contrib.admin",
