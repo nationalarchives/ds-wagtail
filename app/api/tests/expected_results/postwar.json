@@ -23,6 +23,7 @@
         "last_published_at": "2000-01-01T00:00:00Z",
         "url": "/postwar/",
         "depth": 3,
+        "page_path": "/postwar/",
         "teaser_text": "Teaser text",
         "teaser_image": {
             "id": 6,
@@ -129,6 +130,7 @@
             "id": ARTICLE_ID,
             "title": "article",
             "short_title": null,
+            "page_path": "/article_index/article/",
             "url": "/article_index/article/",
             "full_url": "http://localhost/article_index/article/",
             "type": "articles.ArticlePage",
