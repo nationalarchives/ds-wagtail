@@ -1,0 +1,5 @@
+ignore:
+  sensitive_data:
+    BUILTIN-125:
+      /app/api/tests/expected_results/author.json:
+        reason: FALSE_POSITIVE
