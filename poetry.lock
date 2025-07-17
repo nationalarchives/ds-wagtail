@@ -52,18 +52,18 @@ lxml = ["lxml"]
 
 [[package]]
 name = "boto3"
-version = "1.39.4"
+version = "1.39.7"
 description = "The AWS SDK for Python"
 optional = false
 python-versions = ">=3.9"
 groups = ["main"]
 files = [
-    {file = "boto3-1.39.4-py3-none-any.whl", hash = "sha256:f8e9534b429121aa5c5b7c685c6a94dd33edf14f87926e9a182d5b50220ba284"},
-    {file = "boto3-1.39.4.tar.gz", hash = "sha256:6c955729a1d70181bc8368e02a7d3f350884290def63815ebca8408ee6d47571"},
+    {file = "boto3-1.39.7-py3-none-any.whl", hash = "sha256:c8c0e11fff7bb85f903b860b6bfd4f509a4d749decf38bb6a409ffe5d6eb0c91"},
+    {file = "boto3-1.39.7.tar.gz", hash = "sha256:28daeb005e3381808e0e12995056ee8951056ddd43506c07482a15b40ae785b0"},
 ]
 
 [package.dependencies]
-botocore = ">=1.39.4,<1.40.0"
+botocore = ">=1.39.7,<1.40.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.13.0,<0.14.0"
 
@@ -72,14 +72,14 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.39.4"
+version = "1.39.7"
 description = "Low-level, data-driven core of boto 3."
 optional = false
 python-versions = ">=3.9"
 groups = ["main"]
 files = [
-    {file = "botocore-1.39.4-py3-none-any.whl", hash = "sha256:c41e167ce01cfd1973c3fa9856ef5244a51ddf9c82cb131120d8617913b6812a"},
-    {file = "botocore-1.39.4.tar.gz", hash = "sha256:e662ac35c681f7942a93f2ec7b4cde8f8b56dd399da47a79fa3e370338521a56"},
+    {file = "botocore-1.39.7-py3-none-any.whl", hash = "sha256:1d11ba9f3cb46856bb541ed010db160093201a224d21ef854249513ae3af7e77"},
+    {file = "botocore-1.39.7.tar.gz", hash = "sha256:431e342ef97ecb387cea9df1ae8c4e0edc1b0c9c50d2e121cca77699f24f8dc1"},
 ]
 
 [package.dependencies]
@@ -617,14 +617,14 @@ doc = ["Sphinx", "sphinx-rtd-theme", "sphinxcontrib-spelling"]
 
 [[package]]
 name = "faker"
-version = "37.4.0"
+version = "37.4.2"
 description = "Faker is a Python package that generates fake data for you."
 optional = false
 python-versions = ">=3.9"
 groups = ["main"]
 files = [
-    {file = "faker-37.4.0-py3-none-any.whl", hash = "sha256:cb81c09ebe06c32a10971d1bbdb264bb0e22b59af59548f011ac4809556ce533"},
-    {file = "faker-37.4.0.tar.gz", hash = "sha256:7f69d579588c23d5ce671f3fa872654ede0e67047820255f43a4aa1925b89780"},
+    {file = "faker-37.4.2-py3-none-any.whl", hash = "sha256:b70ed1af57bfe988cbcd0afd95f4768c51eaf4e1ce8a30962e127ac5c139c93f"},
+    {file = "faker-37.4.2.tar.gz", hash = "sha256:8e281bbaea30e5658895b8bea21cc50d27aaf3a43db3f2694409ca5701c56b0a"},
 ]
 
 [package.dependencies]
@@ -1470,14 +1470,14 @@ zstd = ["zstandard (>=0.18.0)"]
 
 [[package]]
 name = "wagtail"
-version = "6.4.1"
+version = "6.4.2"
 description = "A Django content management system."
 optional = false
 python-versions = ">=3.9"
 groups = ["main"]
 files = [
-    {file = "wagtail-6.4.1-py3-none-any.whl", hash = "sha256:85206f86b04876d5596190e042d30de0430fdb5cdd71b6005748c8a0d45066ec"},
-    {file = "wagtail-6.4.1.tar.gz", hash = "sha256:cec3e6d4920a6d178fa1eb6f4af80b370fdd5570ed924b979104e157f10ca097"},
+    {file = "wagtail-6.4.2-py3-none-any.whl", hash = "sha256:1ceff33a6edae02668d8cd08ea77fc7c1d9835986cb1b75a8fa1b353535ddd90"},
+    {file = "wagtail-6.4.2.tar.gz", hash = "sha256:fcf39430e5fb856674c0cfa3cda67591b44214cc5a99c9308019140eb26ddb42"},
 ]
 
 [package.dependencies]
@@ -1491,16 +1491,16 @@ django-taggit = ">=5.0,<7"
 django-tasks = ">=0.6.1,<0.7"
 django-treebeard = ">=4.5.1,<5.0"
 djangorestframework = ">=3.15.1,<4.0"
-draftjs-exporter = ">=2.1.5,<6.0"
+draftjs_exporter = ">=2.1.5,<6.0"
 laces = ">=0.1,<0.2"
 openpyxl = ">=3.0.10,<4.0"
 Pillow = ">=9.1.0,<12.0.0"
 requests = ">=2.11.1,<3.0"
 telepath = ">=0.3.1,<1"
-Willow = {version = ">=1.8.0,<2", extras = ["heif"]}
+Willow = {version = ">=1.10.0,<2", extras = ["heif"]}
 
 [package.extras]
-docs = ["Sphinx (>=7.3)", "myst-parser (==2.0.0)", "pyenchant (>=3.1.1,<4)", "sphinx-autobuild (>=0.6.0)", "sphinx-wagtail-theme (==6.5.0)", "sphinxcontrib-spelling (>=7,<8)"]
+docs = ["Sphinx (>=7.3)", "myst_parser (==2.0.0)", "pyenchant (>=3.1.1,<4)", "sphinx-autobuild (>=0.6.0)", "sphinx-wagtail-theme (==6.5.0)", "sphinxcontrib-spelling (>=7,<8)"]
 testing = ["Jinja2 (>=3.0,<3.2)", "azure-mgmt-cdn (>=12.0,<13.0)", "azure-mgmt-frontdoor (>=1.0,<1.1)", "boto3 (>=1.28,<2)", "coverage (>=3.7.0)", "curlylint (==0.13.1)", "django-pattern-library (>=0.7)", "djhtml (==3.0.6)", "doc8 (==0.8.1)", "factory-boy (>=3.2)", "freezegun (>=0.3.8)", "polib (>=1.1,<2.0)", "python-dateutil (>=2.7)", "ruff (==0.1.5)", "semgrep (==1.40.0)", "tblib (>=2.0,<3.0)"]
 
 [[package]]
@@ -1554,21 +1554,6 @@ Wagtail = ">=4.1"
 testing = ["coverage[toml] (>=7.0,<8.0)", "django-cors-headers", "tox (>=4)"]
 
 [[package]]
-name = "wagtail-metadata"
-version = "5.0.0"
-description = "A tool to assist with metadata for social media."
-optional = false
-python-versions = ">=3"
-groups = ["main"]
-files = [
-    {file = "wagtail-metadata-5.0.0.tar.gz", hash = "sha256:3b9109928bad53306b21b64cf9205d84cbb88fc625bac0a38305bebb9c26e64a"},
-    {file = "wagtail_metadata-5.0.0-py2.py3-none-any.whl", hash = "sha256:fcc2bbb71e83b353ceef05d69a4cde3f2fbe645c9e5035e46f7829fc234a6405"},
-]
-
-[package.dependencies]
-wagtail = ">=5.0"
-
-[[package]]
 name = "wagtailmedia"
 version = "0.15.2"
 description = "A Wagtail module for audio and video files."
@@ -1605,29 +1590,29 @@ brotli = ["brotli"]
 
 [[package]]
 name = "willow"
-version = "1.9.0"
+version = "1.11.0"
 description = "A Python image library that sits on top of Pillow, Wand and OpenCV"
 optional = false
 python-versions = ">=3.9"
 groups = ["main"]
 files = [
-    {file = "willow-1.9.0-py3-none-any.whl", hash = "sha256:11a13097cffe501898cd434bb5761fb6cdbdb774a7853094cb56a4ba57cbbff7"},
-    {file = "willow-1.9.0.tar.gz", hash = "sha256:ffac1406275ae30b60e7c6cbd1245f0bc359d1b5731002b18a712aaf424a5102"},
+    {file = "willow-1.11.0-py3-none-any.whl", hash = "sha256:0a4388dbf18726eef8f27449659047689c39b7023045ca5a8a75410d3864ee6f"},
+    {file = "willow-1.11.0.tar.gz", hash = "sha256:70292b2d0cd2d5bb4076f0b3d61308aeaa0b225f3970d00752f08a8fd386c3d1"},
 ]
 
 [package.dependencies]
 defusedxml = ">=0.7,<1.0"
 filetype = ">=1.0.10,<1.1.0 || >1.1.0"
-pillow-heif = {version = ">=0.13.0,<1.0.0", optional = true, markers = "extra == \"heif\" and python_version >= \"3.12\""}
+pillow-heif = {version = ">=0.13.0", optional = true, markers = "extra == \"heif\" and python_version >= \"3.12\""}
 
 [package.extras]
 docs = ["Sphinx (>=7.0)", "sphinx-wagtail-theme (>=6.1.1,<7.0)", "sphinx_copybutton (>=0.5)", "sphinxcontrib-spelling (>=8.0,<9.0)"]
-heif = ["pillow-heif (>=0.10.0,<1.0.0) ; python_version < \"3.12\"", "pillow-heif (>=0.13.0,<1.0.0) ; python_version >= \"3.12\""]
-pillow = ["Pillow (>=9.1.0,<12.0.0)"]
+heif = ["pillow-heif (>=0.10.0) ; python_version < \"3.12\"", "pillow-heif (>=0.13.0) ; python_version >= \"3.12\""]
+pillow = ["Pillow (>=11.3.0,<12.0.0)"]
 testing = ["coverage[toml] (>=7.2.7,<8.0)", "pre-commit (>=3.4.0)", "willow[heif,pillow,wand]"]
 wand = ["Wand (>=0.6,<1.0)"]
 
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.12"
-content-hash = "4f079300e10eb8f5310b976c48c8557e30c08a81a58a63ccf38ccb46b62be67f"
+content-hash = "879767dab988bb12d10bf428998383f03e835b95a2edc52fdbafe938bfd9014e"
