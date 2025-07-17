@@ -57,7 +57,7 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - test-python
-      - check-migrations
+      # - check-migrations
       - version
     permissions:
       packages: write

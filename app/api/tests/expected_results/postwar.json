@@ -1,0 +1,163 @@
+{
+    "id": POSTWAR_ID,
+    "meta": {
+        "type": "collections.TimePeriodExplorerPage",
+        "detail_url": "WAGTAILAPI_BASE_URL/api/v2/pages/POSTWAR_ID/",
+        "html_url": "http://localhost/postwar/",
+        "slug": "postwar",
+        "show_in_menus": false,
+        "seo_title": "",
+        "search_description": "",
+        "first_published_at": "2000-01-01T00:00:00Z",
+        "alias_of": null,
+        "parent": {
+            "id": 3,
+            "meta": {
+                "type": "home.HomePage",
+                "detail_url": "WAGTAILAPI_BASE_URL/api/v2/pages/3/",
+                "html_url": "http://localhost/"
+            },
+            "title": "Home"
+        },
+        "privacy": "public",
+        "last_published_at": "2000-01-01T00:00:00Z",
+        "url": "/postwar/",
+        "depth": 3,
+        "teaser_text": "Teaser text",
+        "teaser_image": {
+            "id": 6,
+            "uuid": "00000000-0000-0000-0000-000000000000",
+            "title": "An image",
+            "description": "",
+            "jpeg": {
+                "url": "/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                "full_url": "https://www.nationalarchives.gov.uk/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                "width": 100,
+                "height": 68
+            },
+            "webp": {
+                "url": "/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-60.bgcolor-fff.webp",
+                "full_url": "https://www.nationalarchives.gov.uk/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-60.bgcolor-fff.webp",
+                "width": 100,
+                "height": 68
+            }
+        },
+        "teaser_image_square": {
+            "id": 6,
+            "uuid": "00000000-0000-0000-0000-000000000000",
+            "title": "An image",
+            "description": "",
+            "jpeg": {
+                "url": "/media/images/example.2e16d0ba.fill-512x512.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                "full_url": "https://www.nationalarchives.gov.uk/media/images/example.2e16d0ba.fill-512x512.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                "width": 100,
+                "height": 100
+            },
+            "webp": {
+                "url": "/media/images/exampl.2e16d0ba.fill-512x512.format-webp.webpquality-60.bgcolor-fff.webp",
+                "full_url": "https://www.nationalarchives.gov.uk/media/images/exampl.2e16d0ba.fill-512x512.format-webp.webpquality-60.bgcolor-fff.webp",
+                "width": 100,
+                "height": 100
+            }
+        },
+        "search_image": null,
+        "twitter_og_title": null,
+        "twitter_og_description": null,
+        "twitter_og_image": null,
+        "breadcrumbs": [
+            {
+                "text": "Home",
+                "href": "/"
+            }
+        ]
+    },
+    "title": "postwar",
+    "short_title": null,
+    "global_alert": null,
+    "type_label": "Explore the collection",
+    "mourning_notice": {
+        "title": "Test title",
+        "message": "<p>Test message</p>"
+    },
+    "intro": "<p>Intro text</p>",
+    "hero_image_caption": "<p>Hero image caption</p>",
+    "hero_image": {
+        "id": 7,
+        "uuid": "00000000-0000-0000-0000-000000000000",
+        "title": "An image",
+        "description": "",
+        "jpeg": {
+            "url": "/media/images/exampl.2e16d0ba.fill-1200x480.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+            "full_url": "https://www.nationalarchives.gov.uk/media/images/exampl.2e16d0ba.fill-1200x480.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+            "width": 100,
+            "height": 40
+        },
+        "webp": {
+            "url": "/media/images/examp.2e16d0ba.fill-1200x480.format-webp.webpquality-60.bgcolor-fff.webp",
+            "full_url": "https://www.nationalarchives.gov.uk/media/images/examp.2e16d0ba.fill-1200x480.format-webp.webpquality-60.bgcolor-fff.webp",
+            "width": 100,
+            "height": 40
+        },
+        "transcript": null,
+        "translation": null,
+        "copyright": null
+    },
+    "hero_image_small": {
+        "id": 7,
+        "uuid": "00000000-0000-0000-0000-000000000000",
+        "title": "An image",
+        "description": "",
+        "jpeg": {
+            "url": "/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+            "full_url": "https://www.nationalarchives.gov.uk/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+            "width": 100,
+            "height": 68
+        },
+        "webp": {
+            "url": "/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-60.bgcolor-fff.webp",
+            "full_url": "https://www.nationalarchives.gov.uk/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-60.bgcolor-fff.webp",
+            "width": 100,
+            "height": 68
+        },
+        "transcript": null,
+        "translation": null,
+        "copyright": null
+    },
+    "featured_article": null,
+    "related_articles": [
+        {
+            "id": ARTICLE_ID,
+            "title": "article",
+            "short_title": null,
+            "url": "/article_index/article/",
+            "full_url": "http://localhost/article_index/article/",
+            "type": "articles.ArticlePage",
+            "type_label": "The story of",
+            "teaser_text": "Teaser text",
+            "teaser_image": {
+                "id": 12,
+                "uuid": "00000000-0000-0000-0000-000000000000",
+                "title": "An image",
+                "description": "",
+                "jpeg": {
+                    "url": "/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                    "full_url": "https://www.nationalarchives.gov.uk/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                    "width": 100,
+                    "height": 68
+                },
+                "webp": {
+                    "url": "/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-60.bgcolor-fff.webp",
+                    "full_url": "https://www.nationalarchives.gov.uk/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-60.bgcolor-fff.webp",
+                    "width": 100,
+                    "height": 68
+                }
+            },
+            "first_published_at": "2000-01-01T00:00:00Z",
+            "last_published_at": "2000-01-01T00:00:00Z",
+            "is_newly_published": false
+        }
+    ],
+    "related_highlight_gallery_pages": [],
+    "start_year": 1945,
+    "end_year": 2000
+}
