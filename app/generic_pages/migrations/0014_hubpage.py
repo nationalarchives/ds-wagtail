@@ -3,7 +3,6 @@
 import django.db.models.deletion
 import uuid
 import wagtail_headless_preview.models
-import wagtailmetadata.models
 from django.db import migrations, models
 
 
@@ -74,7 +73,6 @@ class Migration(migrations.Migration):
                 "abstract": False,
             },
             bases=(
-                wagtailmetadata.models.WagtailImageMetadataMixin,
                 wagtail_headless_preview.models.HeadlessPreviewMixin,
                 "wagtailcore.page",
                 models.Model,

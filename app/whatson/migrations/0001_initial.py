@@ -7,7 +7,6 @@ import modelcluster.contrib.taggit
 import modelcluster.fields
 import uuid
 import wagtail.fields
-import wagtailmetadata.models
 
 
 class Migration(migrations.Migration):
@@ -155,7 +154,6 @@ class Migration(migrations.Migration):
                 "verbose_name": "What's On page",
             },
             bases=(
-                wagtailmetadata.models.WagtailImageMetadataMixin,
                 "wagtailcore.page",
                 models.Model,
             ),
@@ -451,7 +449,6 @@ class Migration(migrations.Migration):
             },
             bases=(
                 app.collections.models.TopicalPageMixin,
-                wagtailmetadata.models.WagtailImageMetadataMixin,
                 "wagtailcore.page",
                 models.Model,
             ),

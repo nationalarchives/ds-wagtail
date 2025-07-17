@@ -6,7 +6,6 @@ import django.db.models.deletion
 import modelcluster.fields
 import uuid
 import wagtail.fields
-import wagtailmetadata.models
 
 
 class Migration(migrations.Migration):
@@ -75,7 +74,6 @@ class Migration(migrations.Migration):
                 "abstract": False,
             },
             bases=(
-                wagtailmetadata.models.WagtailImageMetadataMixin,
                 "wagtailcore.page",
                 models.Model,
             ),
@@ -151,7 +149,6 @@ class Migration(migrations.Migration):
                 "verbose_name_plural": "Author pages",
             },
             bases=(
-                wagtailmetadata.models.WagtailImageMetadataMixin,
                 "wagtailcore.page",
                 models.Model,
             ),

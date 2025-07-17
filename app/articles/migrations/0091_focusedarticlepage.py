@@ -11,7 +11,6 @@ import wagtail.blocks
 import wagtail.fields
 import wagtail.images.blocks
 import wagtail.snippets.blocks
-import wagtailmetadata.models
 
 
 class Migration(migrations.Migration):
@@ -590,7 +589,6 @@ class Migration(migrations.Migration):
             },
             bases=(
                 app.collections.models.TopicalPageMixin,
-                wagtailmetadata.models.WagtailImageMetadataMixin,
                 "wagtailcore.page",
                 models.Model,
             ),

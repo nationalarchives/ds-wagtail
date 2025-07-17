@@ -7,7 +7,6 @@
 from django.db import migrations, models
 import django.db.models.deletion
 import app.core.blocks.page_list
-import app.articles.blocks
 import app.media.blocks
 import app.ciim.blocks
 import app.core.blocks.page_list
@@ -15,7 +14,6 @@ import wagtail.blocks
 import wagtail.fields
 import wagtail.images.blocks
 import wagtail.snippets.blocks
-import wagtailmetadata.models
 import django.db.models.deletion
 
 
