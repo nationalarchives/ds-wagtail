@@ -11,7 +11,7 @@ class BlogsAPIViewSet(CustomPagesAPIViewSet):
     model = BlogPage
 
     def top_level_blogs_list_view(self, request):
-        queryset = self.get_queryset()
+        queryset = BlogPage.objects.all().live().order_by("title")
         restricted_pages = [
             restriction.page
             for restriction in PageViewRestriction.objects.all().select_related("page")
@@ -28,8 +28,9 @@ class BlogsAPIViewSet(CustomPagesAPIViewSet):
         serializer = DefaultPageSerializer(
             queryset, required_api_fields=["custom_type_label"], many=True
         )
-        blogs = sorted(serializer.data, key=lambda x: x["title"])
-        blogs = [blog | {"posts": blog_post_counts[blog["id"]]} for blog in blogs]
+        blogs = [
+            blog | {"posts": blog_post_counts[blog["id"]]} for blog in serializer.data
+        ]
         top_level_queryset = BlogIndexPage.objects.all().live()
         top_level = DefaultPageSerializer(top_level_queryset, many=True)
         blogs = top_level.data + blogs
