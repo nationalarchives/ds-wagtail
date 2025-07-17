@@ -157,6 +157,7 @@ class BasePage(AlertMixin, SocialMixin, HeadlessPreviewMixin, Page):
         APIField("title"),
         APIField("short_title"),
         APIField("page_path"),
+        APIField("url"),
         APIField("full_url"),
         APIField("type"),
         APIField("type_label"),
@@ -180,6 +181,7 @@ class BasePage(AlertMixin, SocialMixin, HeadlessPreviewMixin, Page):
 
     api_meta_fields = [
         APIField("page_path"),
+        APIField("url"),
         APIField("teaser_text"),
         APIField(
             "teaser_image",

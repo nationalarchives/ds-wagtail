@@ -92,6 +92,7 @@
             "title": "author",
             "short_title": null,
             "page_path": "/people/author/",
+            "url": "/people/author/",
             "full_url": "http://localhost/people/author/",
             "type": "people.PersonPage",
             "type_label": null,
