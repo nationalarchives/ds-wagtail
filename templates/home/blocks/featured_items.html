@@ -1,8 +1,0 @@
-{% load wagtailcore_tags %}
-
-<h2 class="sr-only">Featured items</h2>
-<ul class="card-group--list-style-none" data-container-name="featured-items" id="analytics-featured-items">
-    {% for block in value.0 %}
-        {% include_block block %}
-    {% endfor %}
-</ul>
