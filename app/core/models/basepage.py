@@ -142,13 +142,29 @@ class BasePage(AlertMixin, SocialMixin, HeadlessPreviewMixin, Page):
         URL, regardless of how many sites are configured. It is currently only
         used for the data in the API.
         """
-        url_parts = self.get_url_parts()
+        if self.alias_of is None:
+            url_parts = self.get_url_parts()
+        else:
+            url_parts = self.alias_of.get_url_parts()
 
         if url_parts is None or url_parts[1] is None and url_parts[2] is None:
             # page is not routable
             return
 
         return url_parts[2]
+
+    @property
+    def full_url(self):
+        """
+        Returns the full URL to the page, including the hostname.
+        This is used in the API and for redirects.
+
+        Overrides the default `full_url` property to allow for alias pages.
+        """
+        if self.alias_of is None:
+            return self.get_full_url()
+        else:
+            return self.alias_of.get_full_url()
 
     page_path = property(get_page_path)
 
