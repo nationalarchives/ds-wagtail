@@ -166,6 +166,19 @@ class BasePage(AlertMixin, SocialMixin, HeadlessPreviewMixin, Page):
         else:
             return self.alias_of.get_full_url()
 
+    @property
+    def url(self):
+        """
+        Returns the URL to the page, excluding the hostname.
+        This is used in the API and for redirects.
+
+        Overrides the default `url` property to allow for alias pages.
+        """
+        if self.alias_of is None:
+            return self.get_url()
+        else:
+            return self.alias_of.get_url()
+
     page_path = property(get_page_path)
 
     default_api_fields = [
