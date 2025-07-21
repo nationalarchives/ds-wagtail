@@ -70,13 +70,18 @@ class EtnaMedia(AbstractMedia):
     def clean(self, *args, **kwargs):
         super().clean(*args, **kwargs)
 
-        # Validate audio_described_file based on media type
-        if self.type == "audio" and wagtailmedia_settings.AUDIO_EXTENSIONS:
-            validate = FileExtensionValidator(wagtailmedia_settings.AUDIO_EXTENSIONS)
-            validate(self.audio_described_file)
-        elif self.type == "video" and wagtailmedia_settings.VIDEO_EXTENSIONS:
-            validate = FileExtensionValidator(wagtailmedia_settings.VIDEO_EXTENSIONS)
-            validate(self.audio_described_file)
+        if self.audio_described_file:
+            # Validate audio_described_file based on media type
+            if self.type == "audio" and wagtailmedia_settings.AUDIO_EXTENSIONS:
+                validate = FileExtensionValidator(
+                    wagtailmedia_settings.AUDIO_EXTENSIONS
+                )
+                validate(self.audio_described_file)
+            elif self.type == "video" and wagtailmedia_settings.VIDEO_EXTENSIONS:
+                validate = FileExtensionValidator(
+                    wagtailmedia_settings.VIDEO_EXTENSIONS
+                )
+                validate(self.audio_described_file)
 
         if self.subtitles_file:
             validate = FileExtensionValidator(["vtt"])

@@ -23,6 +23,7 @@
         "last_published_at": "2000-01-01T00:00:00Z",
         "url": "/people/author/",
         "depth": 4,
+        "page_path": "/people/author/",
         "teaser_text": "Teaser text",
         "teaser_image": {
             "id": 10,

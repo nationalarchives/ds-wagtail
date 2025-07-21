@@ -136,10 +136,56 @@ class BasePage(AlertMixin, SocialMixin, HeadlessPreviewMixin, Page):
     def type(self):
         return self._meta.label
 
+    def get_page_path(self):
+        """
+        This always returns the relative path to the page without the base site
+        URL, regardless of how many sites are configured. It is currently only
+        used for the data in the API.
+        """
+        if self.alias_of is None:
+            url_parts = self.get_url_parts()
+        else:
+            url_parts = self.alias_of.get_url_parts()
+
+        if url_parts is None or url_parts[1] is None and url_parts[2] is None:
+            # page is not routable
+            return
+
+        return url_parts[2]
+
+    @property
+    def full_url(self):
+        """
+        Returns the full URL to the page, including the hostname.
+        This is used in the API and for redirects.
+
+        Overrides the default `full_url` property to allow for alias pages.
+        """
+        if self.alias_of is None:
+            return self.get_full_url()
+        else:
+            return self.alias_of.get_full_url()
+
+    @property
+    def url(self):
+        """
+        Returns the URL to the page, excluding the hostname.
+        This is used in the API and for redirects.
+
+        Overrides the default `url` property to allow for alias pages.
+        """
+        if self.alias_of is None:
+            return self.get_url()
+        else:
+            return self.alias_of.get_url()
+
+    page_path = property(get_page_path)
+
     default_api_fields = [
         APIField("id"),
         APIField("title"),
         APIField("short_title"),
+        APIField("page_path"),
         APIField("url"),
         APIField("full_url"),
         APIField("type"),
@@ -163,6 +209,8 @@ class BasePage(AlertMixin, SocialMixin, HeadlessPreviewMixin, Page):
     )
 
     api_meta_fields = [
+        APIField("page_path"),
+        APIField("url"),
         APIField("teaser_text"),
         APIField(
             "teaser_image",

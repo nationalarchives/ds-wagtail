@@ -23,6 +23,7 @@
         "last_published_at": null,
         "url": "/people/",
         "depth": 3,
+        "page_path": "/people/",
         "teaser_text": "Teaser text",
         "teaser_image": {
             "id": 8,
@@ -90,6 +91,7 @@
             "id": AUTHOR_ID,
             "title": "author",
             "short_title": null,
+            "page_path": "/people/author/",
             "url": "/people/author/",
             "full_url": "http://localhost/people/author/",
             "type": "people.PersonPage",
