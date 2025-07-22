@@ -103,7 +103,99 @@ class Highlight(Orderable):
     ]
 
 
-class ExplorerIndexPage(BasePageWithRequiredIntro):
+class ExplorerIndexPageSelection(Orderable):
+    """A model to allow a list of pages to be selected for display on the Explorer Index Page."""
+
+    page = ParentalKey(
+        "collections.ExplorerIndexPage",
+        on_delete=models.CASCADE,
+        related_name="explorer_index_page_selections",
+    )
+
+    selected_page = models.ForeignKey(
+        "wagtailcore.Page",
+        on_delete=models.CASCADE,
+        related_name="explorer_index_page_selected_pages",
+        help_text=_("Select a page to display in the Explorer Index Page."),
+    )
+
+    title = models.CharField(
+        max_length=255,
+        blank=True,
+        help_text=_(
+            "Optional title for the selected page. If left blank, the page title will be used."
+        ),
+    )
+
+    teaser_text = models.CharField(
+        max_length=255,
+        blank=True,
+        help_text=_(
+            "Optional teaser text for the selected page. If left blank, the page's teaser text will be displayed."
+        ),
+    )
+
+    teaser_image = models.ForeignKey(
+        get_image_model_string(),
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        help_text=_(
+            "Optional image to display in the teaser for the selected page. If left blank, the page's teaser image will be displayed."
+        ),
+    )
+
+    cta_label = models.CharField(
+        max_length=50,
+        blank=True,
+        help_text=_(
+            "Optional label for the call to action button. If left blank, 'Read more' will be used."
+        ),
+        verbose_name="CTA label",
+    )
+
+    panels = [
+        FieldPanel("selected_page"),
+        MultiFieldPanel(
+            [
+                FieldPanel("title"),
+                FieldPanel("teaser_text"),
+                FieldPanel("teaser_image"),
+                FieldPanel("cta_label"),
+            ],
+            heading=_("Page link overrides"),
+        ),
+    ]
+
+    class Meta:
+        ordering = ["sort_order"]
+
+
+class ExplorerIndexPageSelectionSerializer(serializers.Serializer):
+    """Serializer for ExplorerIndexPageSelection."""
+
+    def to_representation(self, instance):
+        if instance.selected_page:
+            representation = {
+                "selected_page": DefaultPageSerializer().to_representation(
+                    instance.selected_page
+                ),
+            }
+            if instance.title:
+                representation["selected_page"]["title"] = instance.title
+            if instance.teaser_text:
+                representation["selected_page"]["teaser_text"] = instance.teaser_text
+            if instance.teaser_image:
+                representation["selected_page"][
+                    "teaser_image"
+                ] = ImageSerializer().to_representation(instance.teaser_image)
+            if instance.cta_label:
+                representation["cta_label"] = instance.cta_label
+            return representation
+
+
+class ExplorerIndexPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
     """Collection Explorer landing BasePage.
 
     This page is the starting point for a user's journey through the collection
@@ -143,25 +235,35 @@ class ExplorerIndexPage(BasePageWithRequiredIntro):
         null=True,
     )
 
-    content_panels = BasePageWithRequiredIntro.content_panels + [
-        FieldPanel("body"),
-        MultiFieldPanel(
-            [
-                FieldPanel("articles_title"),
-                FieldPanel("articles_introduction"),
-                PageChooserPanel(
-                    "featured_article",
-                    [
-                        "articles.ArticlePage",
-                        "articles.FocusedArticlePage",
-                        "articles.RecordArticlePage",
-                    ],
-                ),
-                FieldPanel("featured_articles"),
-            ],
-            heading=_("Articles section"),
-        ),
-    ]
+    content_panels = (
+        BasePageWithRequiredIntro.content_panels
+        + RequiredHeroImageMixin.content_panels
+        + [
+            FieldPanel("body"),
+            MultiFieldPanel(
+                [
+                    FieldPanel("articles_title"),
+                    FieldPanel("articles_introduction"),
+                    PageChooserPanel(
+                        "featured_article",
+                        [
+                            "articles.ArticlePage",
+                            "articles.FocusedArticlePage",
+                            "articles.RecordArticlePage",
+                        ],
+                    ),
+                    FieldPanel("featured_articles"),
+                ],
+                heading=_("Articles section"),
+            ),
+            InlinePanel(
+                "explorer_index_page_selections",
+                label=_("Selected pages for Explorer Index Page"),
+                max_num=2,
+                help_text=_("Select pages to display on the Explorer Index Page."),
+            ),
+        ]
+    )
 
     max_count = 1
     parent_page_types = ["home.HomePage"]
@@ -172,16 +274,24 @@ class ExplorerIndexPage(BasePageWithRequiredIntro):
         "blog.BlogPage",
     ]
 
-    api_fields = BasePageWithRequiredIntro.api_fields + [
-        APIField("body"),
-        APIField("articles_title"),
-        APIField("articles_introduction"),
-        APIField(
-            "featured_article",
-            serializer=DefaultPageSerializer(required_api_fields=["teaser_image"]),
-        ),
-        APIField("featured_articles"),
-    ]
+    api_fields = (
+        BasePageWithRequiredIntro.api_fields
+        + RequiredHeroImageMixin.api_fields
+        + [
+            APIField("body"),
+            APIField("articles_title"),
+            APIField("articles_introduction"),
+            APIField(
+                "featured_article",
+                serializer=DefaultPageSerializer(required_api_fields=["teaser_image"]),
+            ),
+            APIField("featured_articles"),
+            APIField(
+                "explorer_index_page_selections",
+                serializer=ExplorerIndexPageSelectionSerializer(many=True),
+            ),
+        ]
+    )
 
 
 class TopicExplorerIndexPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
