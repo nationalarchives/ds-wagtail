@@ -213,7 +213,7 @@ class LocationSerializer(serializers.Serializer):
 
     def to_representation(self, instance):
         if instance:
-            return {
+            representation = {
                 "space_name": instance.space_name,
                 "at_tna": instance.at_tna,
                 "online": instance.online,
@@ -227,4 +227,9 @@ class LocationSerializer(serializers.Serializer):
                 "venue_link": instance.venue_link,
                 "venue_link_text": instance.venue_link_text,
             }
+            if instance.at_tna:
+                representation["address_line_1"] = "The National Archives"
+                representation["address_line_2"] = "Kew, Richmond"
+                representation["postcode"] = "TW9 4DU"
+            return representation
         return None
