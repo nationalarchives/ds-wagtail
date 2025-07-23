@@ -1,7 +1,0 @@
-<div class="login-status" role="region" aria-labelledby="authentication_link">
-    {% if request.user.is_authenticated %}
-        <a href="{% url 'account_logout' %}" class="login-status__link" id="authentication_link">Sign out</a>
-    {% else %}
-        <a href="{% url 'account_login' %}" class="login-status__link" id="authentication_link">Sign in</a>
-    {% endif %}
-</div>

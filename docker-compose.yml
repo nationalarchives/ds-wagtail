@@ -20,6 +20,8 @@ services:
       - ENVIRONMENT_NAME=local
       - DJANGO_SETTINGS_MODULE=config.settings.develop
       - SECRET_KEY=abc123
+      - ALLOWED_HOSTS=localhost,host.docker.internal
+      - DEBUG=True
       - DATABASE_HOST=db
       - DATABASE_NAME=postgres
       - DATABASE_USER=postgres
@@ -29,7 +31,9 @@ services:
       - DJANGO_SUPERUSER_EMAIL=admin@tna.dev
       - WAGTAILADMIN_BASE_URL=http://localhost:8000
       - WAGTAILAPI_BASE_URL=http://host.docker.internal:8000
-      - WAGTAIL_HEADLESS_PREVIEW_URL=http://localhost:65535/preview/
+      - WAGTAILAPI_IMAGES_BASE_URL=https://localhost
+      - WAGTAILAPI_MEDIA_BASE_URL=https://localhost
+      - WAGTAIL_HEADLESS_PREVIEW_URL=https://localhost/preview/
       - REDIS_URL=redis://redis:6379/0
 
   db:
