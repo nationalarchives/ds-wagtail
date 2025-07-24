@@ -8,10 +8,12 @@ from app.api.urls.media import CustomMediaAPIViewSet
 from app.api.urls.page_preview import PagePreviewAPIViewSet
 from app.api.urls.pages import CustomPagesAPIViewSet
 from app.api.urls.redirects import RedirectsAPIViewSet
+from app.api.urls.tags import ArticleTagsAPIViewSet
 
 api_router = WagtailAPIRouter("wagtailapi")
 api_router.register_endpoint("pages", CustomPagesAPIViewSet)
 api_router.register_endpoint("page_preview", PagePreviewAPIViewSet)
+api_router.register_endpoint("article_tags", ArticleTagsAPIViewSet)
 api_router.register_endpoint("images", CustomImagesAPIViewSet)
 api_router.register_endpoint("media", CustomMediaAPIViewSet)
 api_router.register_endpoint("blogs", BlogsAPIViewSet)
