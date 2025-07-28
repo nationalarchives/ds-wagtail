@@ -259,7 +259,7 @@ class ExplorerIndexPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
             InlinePanel(
                 "explorer_index_page_selections",
                 label=_("Selected pages for Explorer Index Page"),
-                max_num=2,
+                max_num=3,
                 help_text=_("Select pages to display on the Explorer Index Page."),
             ),
         ]
