@@ -76,13 +76,23 @@ class DefaultPageSerializer(serializers.Serializer):
 
 class SimplePageSerializer(serializers.Serializer):
     def to_representation(self, instance):
-        return {
+        try:
+            instance = instance.specific
+        except AttributeError:
+            pass
+
+        representation = {
             "id": instance.id,
             "title": instance.title,
             "teaser_text": instance.teaser_text,
-            "page_path": instance.page_path,
             "full_url": instance.full_url,
         }
+
+        if instance.alias_of:
+            representation["page_path"] = instance.alias_of.page_path
+        else:
+            representation["page_path"] = instance.page_path
+        return representation
 
 
 class AliasOfSerializer(serializers.Serializer):
@@ -93,6 +103,11 @@ class AliasOfSerializer(serializers.Serializer):
 
     def to_representation(self, instance):
         if instance:
+            try:
+                instance = instance.specific
+            except AttributeError:
+                pass
+
             if instance.alias_of:
                 return {
                     "id": instance.id,
