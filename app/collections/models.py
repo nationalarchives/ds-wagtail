@@ -301,11 +301,11 @@ class ExplorerIndexPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
             APIField("featured_articles"),
             APIField(
                 "stories_hero_image",
-                serializer=ImageSerializer(rendition_size="fill-1200x480"),
+                serializer=DetailedImageSerializer(rendition_size="fill-1200x480"),
             ),
             APIField(
                 "stories_hero_image_small",
-                serializer=ImageSerializer(source="stories_hero_image"),
+                serializer=DetailedImageSerializer(source="stories_hero_image"),
             ),
             APIField(
                 "explorer_index_page_selections",
