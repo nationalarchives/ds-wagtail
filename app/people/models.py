@@ -258,19 +258,16 @@ class PersonPage(BasePage):
         )
 
     @cached_property
-    def role_tags(self) -> list[Dict[str, str]]:
+    def role_tags(self) -> list[str]:
         """
         Returns a list of role tags for the person.
-        Each tag is a dictionary with 'name' and 'display_on_card' keys.
+        This is used to display the roles on the person's card.
         """
-        roles = self.roles.all()
-        role_tags = []
-        for role in roles:
-            if role.role.display_on_card:
-                role_tags.append(
-                    role.role.name,
-                )
-        return role_tags
+        return [
+            role.role.name
+            for role in self.roles.all()
+            if role.role.display_on_card
+        ]
 
 
 class AuthorTag(models.Model):
