@@ -83,3 +83,13 @@ class GeneralPageStreamBlock(SectionContentBlock):
     content_section = ContentSectionBlock()
     sub_heading = None
     sub_sub_heading = None
+
+
+class HubPageStreamBlock(blocks.StreamBlock):
+    """
+    A block for the HubPage model.
+    """
+
+    contact = ContactBlock()
+    paragraph = ParagraphBlock()
+    

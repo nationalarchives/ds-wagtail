@@ -17,7 +17,7 @@ from app.core.serializers import (
     RichTextSerializer,
 )
 
-from .blocks import GeneralPageStreamBlock
+from .blocks import GeneralPageStreamBlock, HubPageStreamBlock
 
 
 class GeneralPage(SidebarMixin, HeroImageMixin, BasePageWithIntro):
@@ -122,13 +122,7 @@ class LinkItemSerializer(serializers.Serializer):
 
 
 class HubPage(HeroImageMixin, BasePageWithIntro):
-    body = RichTextField(
-        verbose_name=_("body"),
-        help_text=_("The main content of the page."),
-        features=settings.INLINE_RICH_TEXT_FEATURES,
-        blank=True,
-        null=True,
-    )
+    body = StreamField(HubPageStreamBlock, blank=True, null=True)
 
     plain_cards_list = models.BooleanField(
         default=False,
