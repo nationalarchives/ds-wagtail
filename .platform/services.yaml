@@ -1,6 +1,0 @@
-db:
-  type: postgresql:16
-  disk: 512
-
-redis:
-  type: redis:6.0

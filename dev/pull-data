@@ -2,23 +2,16 @@
 
 set -e
 
-. platformsh-pull-setup
+. pre-pull
 
-echo "Pulling data from $ENVIRONMENT..."
+echo "Pulling database snapshot..."
+aws s3 cp s3://ds-$ENVIRONMENT-database-backups/etna/$(aws s3 ls s3://ds-$ENVIRONMENT-database-backups/etna/ | awk '{print $2}' | sort -r | head -n1 | tr -d '/')/etna_backup.sql.gz $DUMP_DIR/$DATABASE_DUMP.gz
 
-if [ ! -d "$DB_DUMP_DIR" ];
-then
-    echo "Creating a directory for database dumps..."
-    mkdir "$DB_DUMP_DIR"
-fi
-
-echo "Creating a database dump..."
-platform db:dump -e "$ENVIRONMENT" -p "$PLATFORM_PROJECT_ID" -f "$DB_DUMP" -d "$DB_DUMP_DIR"
+echo "Unzipping database dump..."
+gzip -d $DUMP_DIR/$DATABASE_DUMP.gz
 
 echo "Replacing values in the database dump..."
-sed -i -r -e 's/(dev-|staging-)?www.nationalarchives.gov.uk([[:space:]])443/localhost\2443/g' "$DB_DUMP_DIR/$DB_DUMP"
-sed -i -r -e 's/(dev-|staging-)?beta.nationalarchives.gov.uk([[:space:]])443/localhost\2443/g' "$DB_DUMP_DIR/$DB_DUMP"
-sed -i -r -e 's/(develop.)?tna.dblclk.dev([[:space:]])443/localhost\2443/g' "$DB_DUMP_DIR/$DB_DUMP"
+sed -i -r -e 's/(dev-|staging-)?www.nationalarchives.gov.uk([[:space:]])443/localhost\2443/g' $DUMP_DIR/$DATABASE_DUMP
 
 echo "Starting the db container..."
 docker compose -p ds-wagtail up db -d
@@ -30,22 +23,19 @@ echo "Dropping the old database..."
 psql "postgresql://$POSTGRES_USER:$POSTGRES_PASSWORD@db/$POSTGRES_DB" -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public;"
 
 echo "Dumping the database..."
-psql "postgresql://$POSTGRES_USER:$POSTGRES_PASSWORD@db/$POSTGRES_DB" < "$DB_DUMP_DIR/$DB_DUMP"
-
-echo "Removing the database dump..."
-rm "$DB_DUMP_DIR/$DB_DUMP"
+psql "postgresql://$POSTGRES_USER:$POSTGRES_PASSWORD@db/$POSTGRES_DB" < $DUMP_DIR/$DATABASE_DUMP
 
 echo "Starting the app container..."
 docker compose -p ds-wagtail restart app
 
-# echo "Wait for application container to be healthy..."
-# for c in {1..30}; do sleep 1 && curl -s -w '%{http_code}' -o /dev/null http://host.docker.internal:8000/healthcheck/live/ | grep -o "200" && break; done
-
-# echo "Running migrations..."
-# docker compose -p ds-wagtail exec app poetry run python manage.py migrate
+echo "Running migrations..."
+docker compose -p ds-wagtail exec app poetry run python manage.py migrate
 
 echo "Running birdbath..."
 docker compose -p ds-wagtail exec app poetry run python manage.py run_birdbath
 
 echo "Creating a superuser..."
 docker compose -p ds-wagtail exec app poetry run python manage.py createsuperuser --no-input
+
+echo "Removing database dump..."
+rm $DUMP_DIR/$DATABASE_DUMP

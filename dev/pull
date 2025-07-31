@@ -2,12 +2,5 @@
 
 set -e
 
-if [ -z "$1" ]
-then
-    export ENVIRONMENT=develop
-else
-    export ENVIRONMENT="$1"
-fi
-
-pull-data "$ENVIRONMENT"
-pull-media "$ENVIRONMENT"
+pull-data
+pull-media
