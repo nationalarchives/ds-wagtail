@@ -21,6 +21,7 @@ from .widgets import BaseRecordChooserWidget
 
 class BaseRecordChooseView(BaseChooseView):
     filter_form_class = APIFilterForm
+    paginator = APIPaginator
 
     @property
     def columns(self):
