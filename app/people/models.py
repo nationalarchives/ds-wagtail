@@ -10,6 +10,7 @@ from wagtail.api import APIField
 from wagtail.fields import RichTextField, StreamField
 from wagtail.images import get_image_model_string
 from wagtail.models import Page
+from wagtail.snippets.models import register_snippet
 
 from app.core.models import BasePage
 from app.core.serializers import (
@@ -20,11 +21,6 @@ from app.core.serializers import (
 )
 
 from .blocks import ResearchSummaryStreamBlock
-
-ROLE_CHOICES = {
-    "author": "Author",
-    "researcher": "Researcher",
-}
 
 
 class PeopleIndexPage(BasePage):
@@ -92,6 +88,54 @@ class ShopItem(models.Model):
         APIField("image", serializer=ImageSerializer(rendition_size="fill-600x400")),
     ]
 
+@register_snippet
+class PersonRole(models.Model):
+    """Person role model
+
+    This model is used to represent a person's role.
+    """
+
+    name = models.CharField(max_length=100, unique=True)
+    display_on_card = models.BooleanField(
+        default=False,
+        help_text="Display this role on a person's card.",
+    )
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "Person role"
+        verbose_name_plural = "Person roles"
+
+    api_fields = [APIField("name")]
+
+
+class PersonRoleSelection(models.Model):
+    """
+    This model allows a link between a PersonPage and a role.
+    """
+
+    person = ParentalKey(
+        "PersonPage",
+        on_delete=models.CASCADE,
+        related_name="roles",
+    )
+    role = models.ForeignKey(
+        PersonRole,
+        on_delete=models.CASCADE,
+        related_name="person_roles",
+    )
+
+    def __str__(self):
+        return str(self.role)
+
+    class Meta:
+        verbose_name = "Person role"
+        verbose_name_plural = "Person roles"
+
+    api_fields = [APIField("role")]
+
 
 class PersonPage(BasePage):
     """Person page
@@ -141,6 +185,11 @@ class PersonPage(BasePage):
         MultiFieldPanel(
             [FieldPanel("first_name"), FieldPanel("last_name")],
             heading="Person details",
+        ),
+        InlinePanel(
+            "roles",
+            label="Roles",
+            help_text="Select the roles that this person has.",
         ),
     ] + BasePage.promote_panels
 
@@ -209,29 +258,19 @@ class PersonPage(BasePage):
         )
 
     @cached_property
-    def is_author(self) -> bool:
-        """
-        def is_X() is going to be a value to help with
-        the logic behind the role tags - an easier way
-        to check if a person is X role.
-        """
-        if self.authored_focused_articles:
-            return True
-        return False
-
-    @cached_property
-    def is_researcher(self) -> bool:
-        if self.research_summary:
-            return True
-        return False
-
-    @cached_property
     def role_tags(self) -> list[Dict[str, str]]:
-        roles = []
-        for role, value in ROLE_CHOICES.items():
-            if getattr(self, f"is_{role}"):
-                roles.append({"slug": role, "name": value})
-        return roles
+        """
+        Returns a list of role tags for the person.
+        Each tag is a dictionary with 'name' and 'display_on_card' keys.
+        """
+        roles = self.roles.all()
+        role_tags = []
+        for role in roles:
+            if role.role.display_on_card:
+                role_tags.append(
+                    role.role.name,
+                )
+        return role_tags
 
 
 class AuthorTag(models.Model):
