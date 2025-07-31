@@ -13,7 +13,6 @@ from app.core.models import BasePageWithIntro, HeroImageMixin, SidebarMixin
 from app.core.serializers import (
     DefaultPageSerializer,
     ImageSerializer,
-    RichTextSerializer,
 )
 
 from .blocks import GeneralPageStreamBlock, HubPageStreamBlock
