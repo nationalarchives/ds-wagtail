@@ -79,20 +79,22 @@ class LinkItem(Orderable):
     ]
 
     def clean(self) -> None:
-        if self.internal_page and (
-            self.url or self.title or self.image or self.description
-        ):
+        if not self.internal_page and not (self.url and self.title and self.description):
+            raise ValidationError(
+                {
+                    "internal_page": "You must select an internal page or provide external page details."
+                }
+            )
+        if self.internal_page and (self.url or self.title or self.description or self.image):
             raise ValidationError(
                 {
                     "internal_page": "You can only select an internal page or provide external page details, not both."
                 }
             )
-        elif not self.internal_page and not (
-            self.url and self.title and self.image and self.description
-        ):
+        if self.page.plain_cards_list is False and not self.image and not self.internal_page:
             raise ValidationError(
                 {
-                    "internal_page": "You must select an internal page or provide external page details."
+                    "image": "You must provide an image if using an external page."
                 }
             )
         return super().clean()
