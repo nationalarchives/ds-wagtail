@@ -4,6 +4,12 @@
 import wagtail.fields
 from django.db import migrations
 
+def alter_hubpage_body(apps, schema_editor):
+    HubPage = apps.get_model('generic_pages', 'HubPage')
+    for page in HubPage.objects.all():
+        page.body = None
+        page.save(update_fields=['body'])
+    
 
 class Migration(migrations.Migration):
 
@@ -12,6 +18,7 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
+        migrations.RunPython(alter_hubpage_body, migrations.RunPython.noop),
         migrations.AlterField(
             model_name='hubpage',
             name='body',
