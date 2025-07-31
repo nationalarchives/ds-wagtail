@@ -93,7 +93,6 @@ class EtnaMedia(AbstractMedia):
     @property
     def full_url(self):
         url = self.url
-        print("url", url)
         if url.startswith("/"):
             if (
                 hasattr(settings, "WAGTAILAPI_MEDIA_BASE_URL")

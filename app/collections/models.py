@@ -235,6 +235,18 @@ class ExplorerIndexPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
         null=True,
     )
 
+    stories_hero_image = models.ForeignKey(
+        get_image_model_string(),
+        null=True,
+        blank=False,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        verbose_name=_("stories hero image"),
+        help_text=_(
+            "The stories section hero image to display on the Explorer Index Page."
+        ),
+    )
+
     content_panels = (
         BasePageWithRequiredIntro.content_panels
         + RequiredHeroImageMixin.content_panels
@@ -256,6 +268,7 @@ class ExplorerIndexPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
                 ],
                 heading=_("Articles section"),
             ),
+            FieldPanel("stories_hero_image"),
             InlinePanel(
                 "explorer_index_page_selections",
                 label=_("Selected pages for Explorer Index Page"),
@@ -286,6 +299,14 @@ class ExplorerIndexPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
                 serializer=DefaultPageSerializer(required_api_fields=["teaser_image"]),
             ),
             APIField("featured_articles"),
+            APIField(
+                "stories_hero_image",
+                serializer=DetailedImageSerializer(rendition_size="fill-1200x480"),
+            ),
+            APIField(
+                "stories_hero_image_small",
+                serializer=DetailedImageSerializer(source="stories_hero_image"),
+            ),
             APIField(
                 "explorer_index_page_selections",
                 serializer=ExplorerIndexPageSelectionSerializer(many=True),

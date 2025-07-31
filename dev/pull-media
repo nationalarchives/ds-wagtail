@@ -2,13 +2,16 @@
 
 set -e
 
-. platformsh-pull-setup
+. pre-pull
 
-echo "Pulling media from $ENVIRONMENT..."
+echo "Downloading zipped media..."
+aws s3 cp s3://ds-$ENVIRONMENT-deployment-source/wagtail-content/$(aws s3 ls s3://ds-$ENVIRONMENT-deployment-source/wagtail-content/ | sort | tail -n 1 | awk '{print $4}') $DUMP_DIR/$MEDIA_DUMP
 
-echo "Downloading media..."
-platform mount:download -e "$ENVIRONMENT" -p "$PLATFORM_PROJECT_ID" -m media --target=/media --exclude='/images/*' --yes
+echo "Unzipping media..."
+unzip -o $DUMP_DIR/$MEDIA_DUMP -d /
+
+echo "Setting media permissions..."
 docker compose -p ds-wagtail exec app chmod -fR 777 /media
 
-echo "Deleting image renditions..."
-psql "postgresql://$POSTGRES_USER:$POSTGRES_PASSWORD@db/$POSTGRES_DB" -c "TRUNCATE images_customimagerendition;"
+echo "Removing media ZIP archive..."
+rm $DUMP_DIR/$MEDIA_DUMP
