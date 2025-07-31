@@ -152,7 +152,7 @@ class HubPage(HeroImageMixin, BasePageWithIntro):
         BasePageWithIntro.api_fields
         + HeroImageMixin.api_fields
         + [
-            APIField("body", serializer=RichTextSerializer()),
+            APIField("body"),
             APIField("plain_cards_list"),
             APIField("links", serializer=LinkItemSerializer(many=True)),
         ]
