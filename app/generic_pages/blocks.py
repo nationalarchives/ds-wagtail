@@ -92,4 +92,3 @@ class HubPageStreamBlock(blocks.StreamBlock):
 
     contact = ContactBlock()
     paragraph = ParagraphBlock()
-    

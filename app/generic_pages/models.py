@@ -1,4 +1,3 @@
-from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -6,7 +5,7 @@ from modelcluster.fields import ParentalKey
 from rest_framework import serializers
 from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
 from wagtail.api import APIField
-from wagtail.fields import RichTextField, StreamField
+from wagtail.fields import StreamField
 from wagtail.images import get_image_model_string
 from wagtail.models import Orderable
 
@@ -79,23 +78,29 @@ class LinkItem(Orderable):
     ]
 
     def clean(self) -> None:
-        if not self.internal_page and not (self.url and self.title and self.description):
+        if not self.internal_page and not (
+            self.url and self.title and self.description
+        ):
             raise ValidationError(
                 {
                     "internal_page": "You must select an internal page or provide external page details."
                 }
             )
-        if self.internal_page and (self.url or self.title or self.description or self.image):
+        if self.internal_page and (
+            self.url or self.title or self.description or self.image
+        ):
             raise ValidationError(
                 {
                     "internal_page": "You can only select an internal page or provide external page details, not both."
                 }
             )
-        if self.page.plain_cards_list is False and not self.image and not self.internal_page:
+        if (
+            self.page.plain_cards_list is False
+            and not self.image
+            and not self.internal_page
+        ):
             raise ValidationError(
-                {
-                    "image": "You must provide an image if using an external page."
-                }
+                {"image": "You must provide an image if using an external page."}
             )
         return super().clean()
 
