@@ -88,6 +88,7 @@ class ShopItem(models.Model):
         APIField("image", serializer=ImageSerializer(rendition_size="fill-600x400")),
     ]
 
+
 @register_snippet
 class PersonRole(models.Model):
     """Person role model
@@ -264,9 +265,7 @@ class PersonPage(BasePage):
         This is used to display the roles on the person's card.
         """
         return [
-            role.role.name
-            for role in self.roles.all()
-            if role.role.display_on_card
+            role.role.name for role in self.roles.all() if role.role.display_on_card
         ]
 
 
