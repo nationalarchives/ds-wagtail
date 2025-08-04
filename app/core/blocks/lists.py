@@ -35,10 +35,9 @@ class DescriptionListBlock(blocks.StructBlock):
         icon = "list-ul"
         label = "Description List"
 
-class PersonListingBlock(blocks.StructBlock):
+class PeopleListingBlock(blocks.StructBlock):
     """
     A block for listing people with their roles.
-    This is a placeholder for future implementation.
     """
     role = SnippetChooserBlock(
         "people.PersonRole",
