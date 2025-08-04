@@ -95,6 +95,7 @@ class PersonRole(models.Model):
     """
 
     name = models.CharField(max_length=100, unique=True)
+    slug = models.SlugField(max_length=100, unique=True)
     display_on_card = models.BooleanField(
         default=False,
         help_text="Display this role on a person's card.",
@@ -107,7 +108,7 @@ class PersonRole(models.Model):
         verbose_name = "Person role"
         verbose_name_plural = "Person roles"
 
-    api_fields = [APIField("name")]
+    api_fields = [APIField("name"), APIField("slug"), APIField("display_on_card")]
 
 
 class PersonRoleSelection(models.Model):
@@ -263,7 +264,9 @@ class PersonPage(BasePage):
         This is used to display the roles on the person's card.
         """
         return [
-            role.role.name for role in self.roles.all() if role.role.display_on_card
+            {"slug": role.role.slug, "name": role.role.name}
+            for role in self.roles.all()
+            if role.role.display_on_card
         ]
 
 
