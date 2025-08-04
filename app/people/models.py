@@ -1,5 +1,3 @@
-from typing import Dict
-
 from django.conf import settings
 from django.db import models
 from django.utils.functional import cached_property
