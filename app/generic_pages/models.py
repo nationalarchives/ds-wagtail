@@ -1,4 +1,3 @@
-from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -6,7 +5,7 @@ from modelcluster.fields import ParentalKey
 from rest_framework import serializers
 from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
 from wagtail.api import APIField
-from wagtail.fields import RichTextField, StreamField
+from wagtail.fields import StreamField
 from wagtail.images import get_image_model_string
 from wagtail.models import Orderable
 
@@ -14,10 +13,9 @@ from app.core.models import BasePageWithIntro, HeroImageMixin, SidebarMixin
 from app.core.serializers import (
     DefaultPageSerializer,
     ImageSerializer,
-    RichTextSerializer,
 )
 
-from .blocks import GeneralPageStreamBlock
+from .blocks import GeneralPageStreamBlock, HubPageStreamBlock
 
 
 class GeneralPage(SidebarMixin, HeroImageMixin, BasePageWithIntro):
@@ -79,21 +77,29 @@ class LinkItem(Orderable):
     ]
 
     def clean(self) -> None:
+        if not self.internal_page and not (
+            self.url and self.title and self.description
+        ):
+            raise ValidationError(
+                {
+                    "internal_page": "You must select an internal page or provide external page details."
+                }
+            )
         if self.internal_page and (
-            self.url or self.title or self.image or self.description
+            self.url or self.title or self.description or self.image
         ):
             raise ValidationError(
                 {
                     "internal_page": "You can only select an internal page or provide external page details, not both."
                 }
             )
-        elif not self.internal_page and not (
-            self.url and self.title and self.image and self.description
+        if (
+            self.page.plain_cards_list is False
+            and not self.image
+            and not self.internal_page
         ):
             raise ValidationError(
-                {
-                    "internal_page": "You must select an internal page or provide external page details."
-                }
+                {"image": "You must provide an image if using an external page."}
             )
         return super().clean()
 
@@ -122,13 +128,7 @@ class LinkItemSerializer(serializers.Serializer):
 
 
 class HubPage(HeroImageMixin, BasePageWithIntro):
-    body = RichTextField(
-        verbose_name=_("body"),
-        help_text=_("The main content of the page."),
-        features=settings.INLINE_RICH_TEXT_FEATURES,
-        blank=True,
-        null=True,
-    )
+    body = StreamField(HubPageStreamBlock, blank=True, null=True)
 
     plain_cards_list = models.BooleanField(
         default=False,
@@ -151,7 +151,7 @@ class HubPage(HeroImageMixin, BasePageWithIntro):
         BasePageWithIntro.api_fields
         + HeroImageMixin.api_fields
         + [
-            APIField("body", serializer=RichTextSerializer()),
+            APIField("body"),
             APIField("plain_cards_list"),
             APIField("links", serializer=LinkItemSerializer(many=True)),
         ]
