@@ -1,7 +1,8 @@
 from django.db import models
 from wagtail.admin.viewsets.model import ModelViewSet
 from django.core.exceptions import ValidationError
-
+from django.utils.functional import cached_property
+from django.conf import settings
 
 def validate_svg_file(value):
     if not value.name.endswith('.svg'):
@@ -18,6 +19,15 @@ class PartnerLogo(models.Model):
         upload_to='partner_logos/', blank=True, null=True, help_text="Upload a raster image for the partner logo."
     )
     alt_text = models.CharField(max_length=255, blank=False, null=False)
+
+    @cached_property
+    def full_url(self):
+        if self.svg_file:
+            return settings.WAGTAILADMIN_BASE_URL + self.svg_file.url
+        elif self.raster_file:
+            return settings.WAGTAILADMIN_BASE_URL + self.raster_file.url
+        return None
+
 
     def clean(self):
         if not self.svg_file and not self.raster_file:
