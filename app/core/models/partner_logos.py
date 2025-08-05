@@ -3,6 +3,9 @@ from wagtail.admin.viewsets.model import ModelViewSet
 from django.core.exceptions import ValidationError
 from django.utils.functional import cached_property
 from django.conf import settings
+from wagtail.images import get_image_model_string
+from wagtail.admin.panels import FieldPanel
+
 
 def validate_svg_file(value):
     if not value.name.endswith('.svg'):
@@ -15,19 +18,14 @@ class PartnerLogo(models.Model):
         upload_to='partner_logos/', blank=True, null=True, help_text="Upload the SVG file for the partner logo.", verbose_name="SVG File",
         validators=[validate_svg_file]
     )
-    raster_file = models.ImageField(
-        upload_to='partner_logos/', blank=True, null=True, help_text="Upload a raster image for the partner logo."
+    raster_file = models.ForeignKey(
+        get_image_model_string(),
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="+",
     )
     alt_text = models.CharField(max_length=255, blank=False, null=False)
-
-    @cached_property
-    def full_url(self):
-        if self.svg_file:
-            return settings.WAGTAILADMIN_BASE_URL + self.svg_file.url
-        elif self.raster_file:
-            return settings.WAGTAILADMIN_BASE_URL + self.raster_file.url
-        return None
-
 
     def clean(self):
         if not self.svg_file and not self.raster_file:
@@ -38,6 +36,13 @@ class PartnerLogo(models.Model):
 
     def __str__(self):
         return self.name
+    
+    panels = [
+        FieldPanel("name"),
+        FieldPanel("svg_file"),
+        FieldPanel("raster_file"),
+        FieldPanel("alt_text"),
+    ]
 
 
 class PartnerLogoViewSet(ModelViewSet):
