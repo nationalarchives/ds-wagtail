@@ -8,11 +8,11 @@ class PartnerLogoField(models.ForeignKey):
     """
 
     def __init__(self, *args, **kwargs):
-        kwargs['to'] = 'core.PartnerLogo'
-        kwargs['on_delete'] = models.SET_NULL
+        kwargs["to"] = "core.PartnerLogo"
+        kwargs["on_delete"] = models.SET_NULL
         super().__init__(*args, **kwargs)
 
     def deconstruct(self):
         name, path, args, kwargs = super().deconstruct()
-        kwargs.pop('to', None)  # Remove 'to' from kwargs
+        kwargs.pop("to", None)  # Remove 'to' from kwargs
         return name, path, args, kwargs

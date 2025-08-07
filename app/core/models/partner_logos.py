@@ -1,23 +1,27 @@
+from django.conf import settings
+from django.core.exceptions import ValidationError
 from django.db import models
+from django.utils.functional import cached_property
+from wagtail.admin.panels import FieldPanel
 from wagtail.admin.viewsets.chooser import ChooserViewSet
 from wagtail.admin.viewsets.model import ModelViewSet
-from django.core.exceptions import ValidationError
-from django.utils.functional import cached_property
-from django.conf import settings
 from wagtail.images import get_image_model_string
-from wagtail.admin.panels import FieldPanel
 
 
 def validate_svg_file(value):
-    if not value.name.endswith('.svg'):
+    if not value.name.endswith(".svg"):
         raise ValidationError("The file must be an SVG file.")
 
 
 class PartnerLogo(models.Model):
     name = models.CharField(max_length=255, blank=False, null=False)
     svg_file = models.FileField(
-        upload_to='partner_logos/', blank=True, null=True, help_text="Upload the SVG file for the partner logo.", verbose_name="SVG File",
-        validators=[validate_svg_file]
+        upload_to="partner_logos/",
+        blank=True,
+        null=True,
+        help_text="Upload the SVG file for the partner logo.",
+        verbose_name="SVG File",
+        validators=[validate_svg_file],
     )
     raster_file = models.ForeignKey(
         get_image_model_string(),
@@ -32,12 +36,14 @@ class PartnerLogo(models.Model):
         if not self.svg_file and not self.raster_file:
             raise ValidationError("At least one file (SVG or raster) must be provided.")
         if self.svg_file and self.raster_file:
-            raise ValidationError("Please provide either an SVG file or a raster image, not both.")
+            raise ValidationError(
+                "Please provide either an SVG file or a raster image, not both."
+            )
         return super().clean()
 
     def __str__(self):
         return self.name
-    
+
     panels = [
         FieldPanel("name"),
         FieldPanel("svg_file"),
@@ -66,5 +72,5 @@ class PartnerLogoChooserViewSet(ChooserViewSet):
     choose_one_text = "Choose a partner logo"
     choose_many_text = "Choose partner logos"
 
-    
+
 partner_logo_chooserviewset = PartnerLogoChooserViewSet("partner_logo_chooser")

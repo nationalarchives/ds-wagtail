@@ -29,6 +29,7 @@ from app.core.blocks import (
     ReviewBlock,
     ShopCollectionBlock,
 )
+from app.core.fields.choosers import PartnerLogoField
 from app.core.models import (
     AccentColourMixin,
     BasePageWithRequiredIntro,
@@ -43,7 +44,6 @@ from app.core.serializers import (
     RichTextSerializer,
 )
 from app.core.serializers.partner_logos import PartnerLogoSerializer
-from app.core.fields.choosers import PartnerLogoField
 
 from ..blocks import EventPageStreamBlock, ExhibitionPageStreamBlock
 from ..serializers import (
