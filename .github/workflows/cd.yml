@@ -41,33 +41,23 @@ jobs:
         with:
           codecov-token: ${{ secrets.CODECOV_TOKEN }}
 
-  version:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-    steps:
-      - uses: actions/checkout@v4
-      - name: Get tag
-        id: version-tag
-        uses: nationalarchives/ds-docker-actions/.github/actions/get-version-tag@main
-    outputs:
-      version: ${{ steps.version-tag.outputs.version-tag }}
-
   build:
     runs-on: ubuntu-latest
     needs:
       - test-python
-      # - check-migrations
-      - version
+      - check-migrations
     permissions:
       packages: write
       contents: write
     steps:
       - uses: actions/checkout@v4
+      - name: Generate version tag
+        id: version-tag
+        uses: nationalarchives/ds-docker-actions/.github/actions/get-version-tag@main
       - name: Build Docker image
-        uses: nationalarchives/ds-docker-actions/.github/actions/docker-build@main
+        uses: nationalarchives/ds-docker-actions/.github/actions/build@main
         with:
-          version: ${{ needs.version.outputs.version }}
+          version: ${{ steps.version-tag.outputs.version-tag }}
           latest: ${{ github.ref == 'refs/heads/main' }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
           docker-image-name: ${{ vars.DOCKER_IMAGE_NAME }}
@@ -82,9 +72,11 @@ jobs:
             github.rest.git.createRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              ref: 'refs/tags/v${{ needs.version.outputs.version }}',
+              ref: 'refs/tags/v${{ steps.version-tag.outputs.version-tag }}',
               sha: context.sha
             })
+    outputs:
+      version: ${{ steps.version-tag.outputs.version-tag }}
 
   update-ds-infrastructure-web:
     runs-on: ubuntu-latest
@@ -92,7 +84,6 @@ jobs:
       contents: write
     needs:
       - build
-      - version
     if: github.ref == 'refs/heads/main'
     steps:
       - uses: actions/checkout@v4
@@ -107,9 +98,9 @@ jobs:
       - name: Install jq
         run: sudo apt-get install jq
       - name: Update config
-        run: jq --indent 4 '(.services.wagtail.version|="${{ needs.version.outputs.version }}")' config/develop.json > tmp.$$.json && mv tmp.$$.json config/develop.json
+        run: jq --indent 4 '(.services.wagtail.version|="${{ needs.build.outputs.version }}")' config/develop.json > tmp.$$.json && mv tmp.$$.json config/develop.json
       - name: Push new version
         run: |
           git add config/develop.json
-          git commit -m "Update wagtail to v${{ needs.version.outputs.version }}"
+          git commit -m "Update wagtail to v${{ needs.build.outputs.version }}"
           git push origin main
