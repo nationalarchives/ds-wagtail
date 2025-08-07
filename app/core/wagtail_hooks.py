@@ -3,7 +3,7 @@ from django.templatetags.static import static
 from django.utils.html import format_html
 from wagtail import hooks
 
-from .models.partner_logos import partner_logo_viewset
+from .models.partner_logos import partner_logo_modelviewset, partner_logo_chooserviewset
 
 
 @hooks.register("insert_global_admin_css")
@@ -81,4 +81,8 @@ def register_icons(icons):
 
 @hooks.register("register_admin_viewset")
 def register_admin_viewset():
-    return partner_logo_viewset
+    return partner_logo_modelviewset
+
+@hooks.register("register_admin_viewset")
+def register_viewset():
+    return partner_logo_chooserviewset

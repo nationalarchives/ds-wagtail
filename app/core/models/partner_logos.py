@@ -1,4 +1,5 @@
 from django.db import models
+from wagtail.admin.viewsets.chooser import ChooserViewSet
 from wagtail.admin.viewsets.model import ModelViewSet
 from django.core.exceptions import ValidationError
 from django.utils.functional import cached_property
@@ -45,7 +46,7 @@ class PartnerLogo(models.Model):
     ]
 
 
-class PartnerLogoViewSet(ModelViewSet):
+class PartnerLogoModelViewSet(ModelViewSet):
     model = PartnerLogo
     form_fields = ["name", "svg_file", "raster_file", "alt_text"]
     icon = "image"
@@ -54,4 +55,16 @@ class PartnerLogoViewSet(ModelViewSet):
     add_to_admin_menu = True
 
 
-partner_logo_viewset = PartnerLogoViewSet("partner_logos")
+partner_logo_modelviewset = PartnerLogoModelViewSet("partner_logos")
+
+
+class PartnerLogoChooserViewSet(ChooserViewSet):
+    model = PartnerLogo
+    icon = "image"
+    page_title = "Partner Logo Chooser"
+    base_form_class = PartnerLogo
+    choose_one_text = "Choose a partner logo"
+    choose_many_text = "Choose partner logos"
+
+    
+partner_logo_chooserviewset = PartnerLogoChooserViewSet("partner_logo_chooser")

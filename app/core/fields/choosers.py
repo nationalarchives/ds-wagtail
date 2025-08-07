@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class PartnerLogoField(models.ForeignKey):
     """
     A custom field for adding Partner logos to a page.
