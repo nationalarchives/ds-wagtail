@@ -13,8 +13,6 @@ services:
       - redis
     ports:
       - 8000:8080
-    env_file:
-      - .env
     environment:
       - RUNTIME=develop
       - ENVIRONMENT_NAME=local
