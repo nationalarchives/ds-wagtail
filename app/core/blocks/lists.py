@@ -1,5 +1,8 @@
 from django.conf import settings
 from wagtail import blocks
+from wagtail.snippets.blocks import SnippetChooserBlock
+
+from app.core.serializers import DefaultPageSerializer
 
 from .paragraph import APIRichTextBlock
 
@@ -34,3 +37,42 @@ class DescriptionListBlock(blocks.StructBlock):
     class Meta:
         icon = "list-ul"
         label = "Description List"
+
+
+class PeopleListingBlock(blocks.StructBlock):
+    """
+    A block for listing people with their roles.
+    """
+
+    role = SnippetChooserBlock(
+        "people.PersonRole",
+        label="Role selection",
+        help_text="Select a role to filter people by their roles.",
+    )
+
+    def get_api_representation(self, value, context=None):
+        role = value.get("role")
+
+        if not role:
+            return {}
+
+        people = role.person_roles.all()
+
+        if not people:
+            return {}
+
+        return {
+            "role": role.name,
+            "people": [
+                (
+                    DefaultPageSerializer().to_representation(person.person)
+                    if person.person
+                    else None
+                )
+                for person in people
+            ],
+        }
+
+    class Meta:
+        icon = "user"
+        label = "People Listing"

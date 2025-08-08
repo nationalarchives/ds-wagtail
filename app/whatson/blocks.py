@@ -27,7 +27,6 @@ class ContentSectionBlock(blocks.StructBlock):
 
     class Meta:
         label = "Section"
-        template = "articles/blocks/section.html"
 
 
 class EventPageStreamBlock(SectionContentBlock):

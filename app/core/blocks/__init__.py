@@ -6,7 +6,7 @@ from .featured_content import (
     FeaturedCollectionBlock,
 )
 from .image import ContentImageBlock, ImageGalleryBlock
-from .lists import DescriptionListBlock, DoDontListBlock
+from .lists import DescriptionListBlock, DoDontListBlock, PeopleListingBlock
 from .page_chooser import APIPageChooserBlock
 from .page_list import PageListBlock
 from .paragraph import ParagraphBlock
@@ -42,6 +42,7 @@ __all__ = [
     "InsetTextBlock",
     "PageListBlock",
     "ParagraphBlock",
+    "PeopleListingBlock",
     "LargeCardLinksBlock",
     "MixedMediaBlock",
     "QuoteBlock",
