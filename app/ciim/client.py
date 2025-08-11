@@ -39,14 +39,34 @@ class CIIMClient(JSONAPIClient):
         if not self.params.get("id"):
             return None
 
+        cache_key = f"record_instance_{self.params.get('id')}"
+        if cached_record := cache.get(cache_key, None):
+            logger.info(
+                f"Using cached record for \"{self.params.get('id')}\"",
+            )
+            print("Using cached record:", cached_record)
+            return cached_record
+        
+        logger.debug(
+            f"Getting record instance from CIIM API for ID \"{self.params.get('id')}\"",
+        )
+
         response = self.get(path="/get", headers={})
 
+        if not response or not response.get("data"):
+            return None
+        
         try:
-            result = response.get("data", [])[0].get("@template", {}).get("details", {})
+            result = response.get("data")[0].get("@template", {}).get("details", {})
+            cache.set(
+                cache_key,
+                result,
+                settings.RECORD_DETAILS_CACHE_TIMEOUT,
+            )
         except IndexError:
             result = {
                 "referenceNumber": DEFAULT_REFERENCE_NUMBER,
-                "summaryTitle": DEFAULT_SUMMARY_TITLE,
+                "title": DEFAULT_SUMMARY_TITLE,
                 "iaid": self.params.get("id", DEFAULT_IAID),
             }
         return result
@@ -70,28 +90,12 @@ class CIIMClient(JSONAPIClient):
         if not self.params.get("id") or self.params.get("id") is None:
             return None
 
-        cache_key = f"record_details_{self.params.get('id')}"
-        if cached_record := cache.get(cache_key, None):
-            logger.info(
-                f"Using cached record for \"{self.params.get('id')}\"",
-            )
-            return cached_record
-
-        logger.debug(
-            f"Getting record instance from CIIM API for ID \"{self.params.get('id')}\"",
-        )
-
         if instance := self.get_record_instance():
             details = {
-                "title": instance.get("summaryTitle", DEFAULT_SUMMARY_TITLE),
+                "title": instance.get("title", DEFAULT_SUMMARY_TITLE),
                 "iaid": instance.get("iaid", DEFAULT_IAID),
                 "reference_number": instance.get(
                     "referenceNumber", DEFAULT_REFERENCE_NUMBER
                 ),
             }
-            cache.set(
-                cache_key,
-                details,
-                settings.RECORD_DETAILS_CACHE_TIMEOUT,
-            )
             return details

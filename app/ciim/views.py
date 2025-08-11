@@ -9,8 +9,8 @@
 # )
 # from wagtail.admin.viewsets.chooser import ChooserViewSet
 
-# from .client import CIIMClient
-# from .forms import APIFilterForm
+from .client import CIIMClient
+from .forms import APIFilterForm
 # from .mixins import (
 #     RecordChosenResponseMixin,
 #     RecordChosenViewMixin,
@@ -61,7 +61,6 @@
 #         paginator = APIPaginator(pagination, self.per_page)
 #         return Page(results, page_number, paginator)
 
-import re
 from queryish.rest import APIModel, APIQuerySet
 from wagtail.admin.viewsets.chooser import ChooserViewSet
 from django.conf import settings
@@ -126,7 +125,6 @@ class Record(APIModel):
 
     @classmethod
     def from_query_data(cls, data):
-        url = settings.ROSETTA_API_URL + "get?id="
         return cls(
             iaid=data['@template']['details']['iaid'],
             title=data['@template']['details']['title'],
@@ -153,9 +151,11 @@ class Record(APIModel):
 class RecordChooserViewSet(ChooserViewSet):
     model = Record
     url_filter_parameters = ["q"]
+    preserve_url_parameters = ["q"]
     per_page = 15
     choose_one_text = "Choose a record"
     choose_another_text = "Choose another record"
+    search_tab_label = "Search"
 
 
 record_chooser_viewset = RecordChooserViewSet("record_chooser")
