@@ -79,6 +79,8 @@ class RecordQuerySet(APIQuerySet):
     verbose_name_plural = "records"
     http_headers = {}
     pk_field_name = "iaid"
+    offset_query_param = "from"
+    limit_query_param = "size"
 
     def fetch_api_response(self, url=None, params=None):
         # construct a hashable key for the params
@@ -94,11 +96,6 @@ class RecordQuerySet(APIQuerySet):
                 params=params,
                 headers=self.http_headers,
             ).json()
-        print(requests.get(
-                url,
-                params=params,
-                headers=self.http_headers,
-            ).url)
         return self._responses[key]
 
     def get_results_from_response(self, response):
@@ -114,9 +111,8 @@ class RecordQuerySet(APIQuerySet):
                 params[self.page_query_param] = 1
 
             response_json = self.fetch_api_response(params=params)
-            print(response_json)
             
-            count = response_json["stats"]["results"]
+            count = response_json["stats"]["total"]
             # count is the full result set without considering slicing;
             # we need to adjust it to the slice
             if self.limit is not None:
@@ -131,7 +127,6 @@ class Record(APIModel):
     @classmethod
     def from_query_data(cls, data):
         url = settings.ROSETTA_API_URL + "get?id="
-        print(data)
         return cls(
             iaid=data['@template']['details']['iaid'],
             title=data['@template']['details']['title'],
@@ -140,7 +135,6 @@ class Record(APIModel):
     @classmethod
     def from_individual_data(cls, data):
         data = data["data"][0]
-        print(data)
         return cls(
             iaid=data['@template']['details']['iaid'],
             title=data['@template']['details']['title'],
@@ -158,7 +152,8 @@ class Record(APIModel):
 
 class RecordChooserViewSet(ChooserViewSet):
     model = Record
-
+    url_filter_parameters = ["q"]
+    per_page = 15
     choose_one_text = "Choose a record"
     choose_another_text = "Choose another record"
 
