@@ -74,7 +74,7 @@ class RecordQuerySet(APIQuerySet):
     """
     base_url = settings.ROSETTA_API_URL + "search?q=*"
     detail_url = settings.ROSETTA_API_URL + "get?id=%s"
-    fields = ["@template.details.iaid", "summaryTitle"]
+    fields = ["iaid", "title"]
     pagination_style = "offset-limit"
     verbose_name_plural = "records"
     http_headers = {}
@@ -134,7 +134,7 @@ class Record(APIModel):
         print(data)
         return cls(
             iaid=data['@template']['details']['iaid'],
-            summaryTitle=data['@template']['details']['title'],
+            title=data['@template']['details']['title'],
         )
 
     @classmethod
@@ -143,8 +143,17 @@ class Record(APIModel):
         print(data)
         return cls(
             iaid=data['@template']['details']['iaid'],
-            summaryTitle=data['@template']['details']['title'],
+            title=data['@template']['details']['title'],
         )
+
+    def __str__(self):
+        return f"{self.title} ({self.iaid})"
+
+    class Meta:
+        fields = [
+            "iaid",
+            "title",
+        ]
     
 
 class RecordChooserViewSet(ChooserViewSet):
