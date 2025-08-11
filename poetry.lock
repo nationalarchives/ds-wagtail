@@ -1238,6 +1238,24 @@ files = [
 ]
 
 [[package]]
+name = "queryish"
+version = "0.2"
+description = "A library for constructing queries on arbitrary data sources following Django's QuerySet API"
+optional = false
+python-versions = ">=3.7"
+groups = ["main"]
+files = [
+    {file = "queryish-0.2-py3-none-any.whl", hash = "sha256:2e460537f6b7cd5af187b78a3635e80ceec421221adb62883282d419dc170ea8"},
+    {file = "queryish-0.2.tar.gz", hash = "sha256:60150be41673af3d0597f78fb5e77be0e30dc49658a83d274b2a0959c4f97c1b"},
+]
+
+[package.dependencies]
+requests = ">=2.28,<3.0"
+
+[package.extras]
+testing = ["responses (>=0.23,<1.0)"]
+
+[[package]]
 name = "redis"
 version = "6.2.0"
 description = "Python client for Redis database and key-value store"
@@ -1616,4 +1634,4 @@ wand = ["Wand (>=0.6,<1.0)"]
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.12"
-content-hash = "89098cfd96beed19af281212309410f64266e85b4e2e4aa9118d4358a0a9ff1c"
+content-hash = "1c754d69435c938ae4d7b024b23272ab5d5960051ab6aaf084e61298c2cdab5b"
