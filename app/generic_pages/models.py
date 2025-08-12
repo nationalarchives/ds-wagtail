@@ -93,14 +93,6 @@ class LinkItem(Orderable):
                     "internal_page": "You can only select an internal page or provide external page details, not both."
                 }
             )
-        if (
-            self.page.plain_cards_list is False
-            and not self.image
-            and not self.internal_page
-        ):
-            raise ValidationError(
-                {"image": "You must provide an image if using an external page."}
-            )
         return super().clean()
 
     api_fields = [
@@ -156,3 +148,17 @@ class HubPage(HeroImageMixin, BasePageWithIntro):
             APIField("links", serializer=LinkItemSerializer(many=True)),
         ]
     )
+
+    def clean(self):
+        links = getattr(self, "links", None)
+        if links is not None:
+            for link in links.all() if hasattr(links, "all") else links:
+                if (
+                    self.plain_cards_list is False
+                    and not link.image
+                    and not link.internal_page
+                ):
+                    raise ValidationError(
+                        "You must provide an image for all external links when 'plain_cards_list' is not checked."
+                    )
+        return super().clean()
