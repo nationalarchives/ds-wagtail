@@ -1,27 +1,28 @@
+import requests
+from django.conf import settings
+from django.utils.html import strip_tags
+from queryish.rest import APIModel, APIQuerySet
 from wagtail.admin.views.generic.chooser import (
     ChooseView,
 )
 from wagtail.admin.viewsets.chooser import ChooserViewSet
 
-from .client import CIIMClient
 from .forms import APIFilterForm
-from django.utils.html import strip_tags
-from queryish.rest import APIModel, APIQuerySet
-from wagtail.admin.viewsets.chooser import ChooserViewSet
-from django.conf import settings
-import requests
+
 
 class BaseRecordChooseView(ChooseView):
     """
     A view for choosing records from the CIIM API.
     """
+
     filter_form_class = APIFilterForm
-    
+
 
 class RecordQuerySet(APIQuerySet):
     """
     Custom queryset for interacting with the CIIM API.
     """
+
     base_url = settings.ROSETTA_API_URL + "search"
     detail_url = settings.ROSETTA_API_URL + "get?id=%s"
     fields = ["iaid", "title"]
@@ -40,7 +41,7 @@ class RecordQuerySet(APIQuerySet):
 
         if params is None:
             params = {}
-        
+
         if not params.get("q", None):
             params["q"] = "*"
         key = tuple([url] + sorted(params.items()))
@@ -54,27 +55,29 @@ class RecordQuerySet(APIQuerySet):
 
     def get_results_from_response(self, response):
         return response.get("data", [])
-    
+
     def run_count(self):
         params = self.get_filters_as_query_dict()
 
-        if self.pagination_style == "offset-limit" or self.pagination_style == "page-number":
+        if (
+            self.pagination_style == "offset-limit"
+            or self.pagination_style == "page-number"
+        ):
             if self.pagination_style == "offset-limit":
                 params[self.limit_query_param] = 1
             else:
                 params[self.page_query_param] = 1
 
             response_json = self.fetch_api_response(params=params)
-            
+
             count = response_json["stats"]["total"]
             # count is the full result set without considering slicing;
             # we need to adjust it to the slice
             if self.limit is not None:
                 count = min(count, self.limit)
-                print(f"Adjusted count: {count}")
             count = max(0, count - self.offset)
-            print(f"Final count: {count}")
             return count
+
 
 class Record(APIModel):
     base_query_class = RecordQuerySet
@@ -83,27 +86,30 @@ class Record(APIModel):
     @classmethod
     def from_query_data(cls, data):
         return cls(
-            iaid=data['@template']['details']['iaid'],
-            title=strip_tags(data['@template']['details']['summaryTitle']),
+            iaid=data["@template"]["details"]["iaid"],
+            title=strip_tags(data["@template"]["details"].get("summaryTitle", None)),
+            reference_number=data["@template"]["details"].get("referenceNumber", None),
         )
 
     @classmethod
     def from_individual_data(cls, data):
         data = data["data"][0]
         return cls(
-            iaid=data['@template']['details']['iaid'],
-            title=strip_tags(data['@template']['details']['title']),
+            iaid=data["@template"]["details"]["iaid"],
+            title=strip_tags(data["@template"]["details"].get("title", None)),
+            reference_number=data["@template"]["details"].get("referenceNumber", None),
         )
 
     def __str__(self):
-        return f"{self.title} ({self.iaid})"
+        return f"{self.title} ({self.reference_number} / {self.iaid})"
 
     class Meta:
         fields = [
             "iaid",
             "title",
+            "reference_number",
         ]
-    
+
 
 class RecordChooserViewSet(ChooserViewSet):
     model = Record

@@ -45,7 +45,7 @@ class CIIMClient(JSONAPIClient):
                 f"Using cached record for \"{self.params.get('id')}\"",
             )
             return cached_record
-        
+
         logger.debug(
             f"Getting record instance from CIIM API for ID \"{self.params.get('id')}\"",
         )
@@ -54,7 +54,7 @@ class CIIMClient(JSONAPIClient):
 
         if not response or not response.get("data"):
             return None
-        
+
         try:
             result = response.get("data")[0].get("@template", {}).get("details", {})
             cache.set(
