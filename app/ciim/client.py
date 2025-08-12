@@ -44,7 +44,6 @@ class CIIMClient(JSONAPIClient):
             logger.info(
                 f"Using cached record for \"{self.params.get('id')}\"",
             )
-            print("Using cached record:", cached_record)
             return cached_record
         
         logger.debug(
