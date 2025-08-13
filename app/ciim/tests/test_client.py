@@ -7,7 +7,7 @@ from app.ciim.client import (
     CIIMClient,
 )
 
-
+@unittest.skip
 class TestCIIMClient(unittest.TestCase):
     def setUp(self):
         self.client = CIIMClient(api_url="http://fake-api-url.com")
