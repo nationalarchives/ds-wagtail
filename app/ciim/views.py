@@ -44,13 +44,16 @@ class RecordQuerySet(APIQuerySet):
 
         if not params.get("q", None):
             params["q"] = "*"
+
         key = tuple([url] + sorted(params.items()))
+
         if key not in self._responses:
             self._responses[key] = requests.get(
                 url,
                 params=params,
                 headers=self.http_headers,
             ).json()
+            
         return self._responses[key]
 
     def get_results_from_response(self, response):
@@ -87,7 +90,7 @@ class Record(APIModel):
     def from_query_data(cls, data):
         return cls(
             iaid=data["@template"]["details"]["iaid"],
-            title=strip_tags(data["@template"]["details"].get("summaryTitle", None)),
+            title=strip_tags(data["@template"]["details"].get("summaryTitle", None) or data["@template"]["details"].get("title", None)),
             reference_number=data["@template"]["details"].get("referenceNumber", None),
         )
 
@@ -96,7 +99,7 @@ class Record(APIModel):
         data = data["data"][0]
         return cls(
             iaid=data["@template"]["details"]["iaid"],
-            title=strip_tags(data["@template"]["details"].get("title", None)),
+            title=strip_tags(data["@template"]["details"].get("summaryTitle", None) or data["@template"]["details"].get("title", None)),
             reference_number=data["@template"]["details"].get("referenceNumber", None),
         )
 
