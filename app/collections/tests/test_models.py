@@ -1,7 +1,5 @@
-import unittest
-
 from django.test import TestCase
-from wagtail.models import PageViewRestriction, Site
+from wagtail.models import Site
 
 from ..models import (
     TimePeriodExplorerIndexPage,
@@ -29,18 +27,6 @@ class TestTopicExplorerIndexPages(TestCase):
         )
         self.topic_explorer_index_page.add_child(instance=unpublished_topic_page)
         unpublished_topic_page.unpublish()
-
-        self.assertEqual(self.topic_explorer_index_page.explorer_pages.count(), 0)
-
-    @unittest.skip(
-        "Disabled test due to all child pages on home being private during beta."
-    )
-    def test_private_page_excluded(self):
-        private_topic_page = TopicExplorerPage(
-            title="Private Topic Page", intro="test", teaser_text="test"
-        )
-        self.topic_explorer_index_page.add_child(instance=private_topic_page)
-        PageViewRestriction.objects.create(page=private_topic_page)
 
         self.assertEqual(self.topic_explorer_index_page.explorer_pages.count(), 0)
 
@@ -159,22 +145,6 @@ class TestTimePeriodExplorerIndexPages(TestCase):
         )
         self.time_period_explorer_index_page.add_child(instance=unpublished_topic_page)
         unpublished_topic_page.unpublish()
-
-        self.assertEqual(self.time_period_explorer_index_page.explorer_pages.count(), 0)
-
-    @unittest.skip(
-        "Disabled test due to all child pages on home being private during beta."
-    )
-    def test_private_page_excluded(self):
-        private_topic_page = TimePeriodExplorerPage(
-            title="Private Time Period Page",
-            intro="test",
-            teaser_text="test",
-            start_year=1900,
-            end_year=1950,
-        )
-        self.time_period_explorer_index_page.add_child(instance=private_topic_page)
-        PageViewRestriction.objects.create(page=private_topic_page)
 
         self.assertEqual(self.time_period_explorer_index_page.explorer_pages.count(), 0)
 
