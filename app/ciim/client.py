@@ -91,7 +91,7 @@ class CIIMClient(JSONAPIClient):
 
         if instance := self.get_record_instance():
             details = {
-                "title": instance.get("title", DEFAULT_SUMMARY_TITLE),
+                "title": instance.get("title", DEFAULT_SUMMARY_TITLE) or instance.get("summaryTitle", DEFAULT_SUMMARY_TITLE),
                 "iaid": instance.get("iaid", DEFAULT_IAID),
                 "reference_number": instance.get(
                     "referenceNumber", DEFAULT_REFERENCE_NUMBER
