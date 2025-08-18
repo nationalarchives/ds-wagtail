@@ -2,12 +2,12 @@ from django.utils.translation import gettext_lazy as _
 from wagtail import blocks
 from wagtail.api import APIField
 from wagtail.blocks.field_block import FieldBlock
+from wagtail.blocks import CharBlock
 
 from app.core.blocks.image import APIImageChooserBlock
 
 from .client import CIIMClient
 from .fields import RecordChoiceField
-from .widgets import BaseRecordChooserWidget
 
 
 class RecordChooserBlock(FieldBlock):
@@ -18,14 +18,9 @@ class RecordChooserBlock(FieldBlock):
     from the Wagtail ChooserBlock.
     """
 
-    widget = BaseRecordChooserWidget()
-
     def __init__(self, help_text=None, **kwargs):
         self.field = RecordChoiceField(help_text=help_text)
         super().__init__(**kwargs)
-
-    def get_form_state(self, value):
-        return self.widget.get_value_data(value)
 
     def get_api_representation(self, value, context=None):
         params = {

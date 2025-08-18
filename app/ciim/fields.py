@@ -1,7 +1,6 @@
 from django.db.models.fields import Field
 from django.forms import CharField
 
-from .widgets import BaseRecordChooserWidget
 
 
 class RecordChoiceField(CharField):
@@ -11,8 +10,7 @@ class RecordChoiceField(CharField):
     the selected record's ``iaid`` value.
     """
 
-    widget = BaseRecordChooserWidget
-
+    pass
 
 class RecordField(Field):
     """
