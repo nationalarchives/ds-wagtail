@@ -204,37 +204,6 @@ class ExplorerIndexPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
 
     body = StreamField(ExplorerIndexPageStreamBlock, blank=True)
 
-    articles_title = models.CharField(
-        max_length=100,
-        blank=True,
-        default="Stories from the collection",
-        help_text=_("The title to display for the articles section."),
-    )
-
-    articles_introduction = models.CharField(
-        max_length=200,
-        blank=True,
-        help_text=_("The introduction to display for the articles section."),
-    )
-
-    featured_article = models.ForeignKey(
-        "wagtailcore.Page",
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="+",
-        help_text=_(
-            "Select a page to display in the featured area. This can be an Article, Focused Article or Record Article."
-        ),
-        verbose_name=_("featured article"),
-    )
-
-    featured_articles = StreamField(
-        [("featuredarticles", FeaturedArticlesBlock())],
-        blank=True,
-        null=True,
-    )
-
     stories_hero_image = models.ForeignKey(
         get_image_model_string(),
         null=True,
@@ -246,6 +215,18 @@ class ExplorerIndexPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
             "The stories section hero image to display on the Explorer Index Page."
         ),
     )
+    
+    stories_hero_image_caption = RichTextField(
+        blank=True,
+        null=True,
+        features=settings.INLINE_RICH_TEXT_FEATURES
+    )
+
+    explorer_index_page_selections_title = models.CharField(
+        max_length=100,
+        blank=True,
+        help_text=_("The title to display for the Explorer Index Page selections."),
+    )
 
     content_panels = (
         BasePageWithRequiredIntro.content_panels
@@ -254,21 +235,12 @@ class ExplorerIndexPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
             FieldPanel("body"),
             MultiFieldPanel(
                 [
-                    FieldPanel("articles_title"),
-                    FieldPanel("articles_introduction"),
-                    PageChooserPanel(
-                        "featured_article",
-                        [
-                            "articles.ArticlePage",
-                            "articles.FocusedArticlePage",
-                            "articles.RecordArticlePage",
-                        ],
-                    ),
-                    FieldPanel("featured_articles"),
+                    FieldPanel("stories_hero_image"),
+                    FieldPanel("stories_hero_image_caption"),
                 ],
-                heading=_("Articles section"),
+                heading=_("Stories section"),
             ),
-            FieldPanel("stories_hero_image"),
+            FieldPanel("explorer_index_page_selections_title"),
             InlinePanel(
                 "explorer_index_page_selections",
                 label=_("Selected pages for Explorer Index Page"),
@@ -292,13 +264,6 @@ class ExplorerIndexPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
         + RequiredHeroImageMixin.api_fields
         + [
             APIField("body"),
-            APIField("articles_title"),
-            APIField("articles_introduction"),
-            APIField(
-                "featured_article",
-                serializer=DefaultPageSerializer(required_api_fields=["teaser_image"]),
-            ),
-            APIField("featured_articles"),
             APIField(
                 "stories_hero_image",
                 serializer=DetailedImageSerializer(rendition_size="fill-1200x480"),
@@ -307,6 +272,8 @@ class ExplorerIndexPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
                 "stories_hero_image_small",
                 serializer=DetailedImageSerializer(source="stories_hero_image"),
             ),
+            APIField("stories_hero_image_caption", serializer=RichTextSerializer()),
+            APIField("explorer_index_page_selections_title"),
             APIField(
                 "explorer_index_page_selections",
                 serializer=ExplorerIndexPageSelectionSerializer(many=True),
