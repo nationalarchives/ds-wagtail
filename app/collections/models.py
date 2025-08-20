@@ -36,7 +36,6 @@ from app.core.utils import skos_id_from_text
 
 from .blocks import (
     ExplorerIndexPageStreamBlock,
-    FeaturedArticlesBlock,
     TopicIndexPageStreamBlock,
 )
 
@@ -215,11 +214,9 @@ class ExplorerIndexPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
             "The stories section hero image to display on the Explorer Index Page."
         ),
     )
-    
+
     stories_hero_image_caption = RichTextField(
-        blank=True,
-        null=True,
-        features=settings.INLINE_RICH_TEXT_FEATURES
+        blank=True, null=True, features=settings.INLINE_RICH_TEXT_FEATURES
     )
 
     explorer_index_page_selections_title = models.CharField(
