@@ -98,7 +98,6 @@ class PartnerLogoChooserViewSet(ChooserViewSet):
     model = PartnerLogo
     icon = "image"
     page_title = "Partner Logo Chooser"
-    base_form_class = PartnerLogo
     choose_one_text = "Choose a partner logo"
     choose_many_text = "Choose partner logos"
 
