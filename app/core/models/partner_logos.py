@@ -48,14 +48,12 @@ class PartnerLogo(models.Model):
     def clean(self):
         if not self.svg_file and not self.raster_file:
             raise ValidationError("At least one file (SVG or raster) must be provided.")
-        if (self.svg_file and self.raster_file) or (
-            self.svg_file_dark and self.raster_file_dark
-        ):
-            raise ValidationError(
-                "Please provide either an SVG file or a raster image, not both."
-            )
-        if (self.svg_file and self.raster_file_dark) or (
-            self.raster_file and self.svg_file_dark
+        if (
+            (self.svg_file and self.raster_file)
+            or (self.svg_file_dark and self.raster_file_dark)
+        ) or (
+            (self.svg_file and self.raster_file_dark)
+            or (self.raster_file and self.svg_file_dark)
         ):
             raise ValidationError(
                 "Please provide either an SVG file or a raster image, not both."
