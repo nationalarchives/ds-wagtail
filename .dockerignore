@@ -8,8 +8,6 @@
 .git
 .github
 .gitignore
-.platform
-.platform.app.yaml
 .prettierrc.json
 .venv
 .vscode

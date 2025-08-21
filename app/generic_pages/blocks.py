@@ -18,6 +18,7 @@ from app.core.blocks import (
     ImageGalleryBlock,
     InsetTextBlock,
     ParagraphBlock,
+    PeopleListingBlock,
     QuoteBlock,
     SubHeadingBlock,
     SubSubHeadingBlock,
@@ -43,6 +44,7 @@ class SectionContentBlock(blocks.StreamBlock):
     inset_text = InsetTextBlock()
     media = MediaBlock()
     paragraph = ParagraphBlock()
+    people_listing = PeopleListingBlock()
     quote = QuoteBlock()
     record_links = RecordLinksBlock()
     sub_heading = SubHeadingBlock()
