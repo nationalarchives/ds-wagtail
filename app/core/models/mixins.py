@@ -133,7 +133,7 @@ class HeroImageMixin(models.Model):
         ),
         APIField(
             "hero_image_small",
-            serializer=DetailedImageSerializer("fill-600x400", source="hero_image"),
+            serializer=DetailedImageSerializer("fill-900x600", source="hero_image"),
         ),
     ]
 
