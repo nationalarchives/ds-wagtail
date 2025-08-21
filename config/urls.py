@@ -23,13 +23,6 @@ def redirect_to_live_site(request):
     return HttpResponsePermanentRedirect("https://www.nationalarchives.gov.uk")
 
 
-# Redirect URLs from the beta subdomain to the main domain.
-redirect_urls = [
-    # path("", redirect_to_live_site),
-    # re_path(r"^explore-the-collection/.*$", redirect_to_live_site),
-    # re_path(r"^people/.*$", redirect_to_live_site),
-]
-
 # Public URLs that are meant to be cached.
 public_urls = []
 
@@ -56,7 +49,6 @@ private_urls = decorate_urlpatterns(private_urls, never_cache)
 # Join private and public URLs.
 urlpatterns = (
     private_urls
-    + redirect_urls
     + public_urls
     + [
         path("", include(wagtail_urls)),
