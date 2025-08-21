@@ -70,17 +70,6 @@ class CIIMClient(JSONAPIClient):
             }
         return result
 
-    def get_record_list(self) -> tuple:
-        """
-        Get a list of records from the CIIM API.
-        """
-
-        response = self.get(path="/search", headers={})
-
-        results = response.get("data", [])
-        total = response.get("stats", {}).get("total", 0)
-        return results, total
-
     def get_serialized_record(self) -> dict:
         """
         Get a standardised serialized record from the CIIM API for the Wagtail API.
@@ -91,7 +80,8 @@ class CIIMClient(JSONAPIClient):
 
         if instance := self.get_record_instance():
             details = {
-                "title": instance.get("title", DEFAULT_SUMMARY_TITLE) or instance.get("summaryTitle", DEFAULT_SUMMARY_TITLE),
+                "title": instance.get("title", DEFAULT_SUMMARY_TITLE)
+                or instance.get("summaryTitle", DEFAULT_SUMMARY_TITLE),
                 "iaid": instance.get("iaid", DEFAULT_IAID),
                 "reference_number": instance.get(
                     "referenceNumber", DEFAULT_REFERENCE_NUMBER

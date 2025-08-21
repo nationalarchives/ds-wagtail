@@ -7,6 +7,7 @@ from app.ciim.client import (
     CIIMClient,
 )
 
+
 @unittest.skip
 class TestCIIMClient(unittest.TestCase):
     def setUp(self):
@@ -68,27 +69,6 @@ class TestCIIMClient(unittest.TestCase):
                 "iaid": DUMMY_ID,
             },
         )
-
-    @patch("app.ciim.client.CIIMClient.get")
-    def test_get_record_list_success(self, mock_get):
-        # Mock API response
-        mock_get.return_value = {
-            "data": [{"key": "value"}],
-            "stats": {"total": 1},
-        }
-
-        results, total = self.client.get_record_list()
-        self.assertEqual(results, [{"key": "value"}])
-        self.assertEqual(total, 1)
-
-    @patch("app.ciim.client.CIIMClient.get")
-    def test_get_record_list_empty(self, mock_get):
-        # Mock API response with empty data
-        mock_get.return_value = {"data": [], "stats": {"total": 0}}
-
-        results, total = self.client.get_record_list()
-        self.assertEqual(results, [])
-        self.assertEqual(total, 0)
 
     @patch("app.ciim.client.CIIMClient.get_record_instance")
     def test_get_serialized_record_success(self, mock_get_record_instance):

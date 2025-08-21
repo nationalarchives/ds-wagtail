@@ -1,26 +1,20 @@
 from django.utils.translation import gettext_lazy as _
 from wagtail import blocks
 from wagtail.api import APIField
-from wagtail.blocks.field_block import FieldBlock
 from wagtail.blocks import CharBlock
 
 from app.core.blocks.image import APIImageChooserBlock
 
 from .client import CIIMClient
-from .fields import RecordChoiceField
 
 
-class RecordChooserBlock(FieldBlock):
+class RecordChooserBlock(CharBlock):
     """
     Custom chooser block for an externally-held record.
 
     Chooser adapted from the example StreamField block implementation
     from the Wagtail ChooserBlock.
     """
-
-    def __init__(self, help_text=None, **kwargs):
-        self.field = RecordChoiceField(help_text=help_text)
-        super().__init__(**kwargs)
 
     def get_api_representation(self, value, context=None):
         params = {
