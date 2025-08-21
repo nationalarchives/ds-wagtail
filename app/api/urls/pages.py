@@ -240,7 +240,7 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
                     "Your query returned multiple sites. Try adding a port number to your site filter."
                 )
             except Site.DoesNotExist:
-                site = queryset.none()
+                site = None
         else:
             site = Site.find_for_request(self.request)
 
