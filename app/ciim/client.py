@@ -35,25 +35,29 @@ class CIIMClient(JSONAPIClient):
         """
         Get a single record instance from the CIIM API.
         """
-
-        if not self.params.get("id"):
+        id = self.params.get("id")
+        if not id:
             return None
 
-        cache_key = f"record_instance_{self.params.get('id')}"
+        cache_key = f"record_instance_{id}"
         if cached_record := cache.get(cache_key, None):
             logger.info(
-                f"Using cached record for \"{self.params.get('id')}\"",
+                f"Using cached record for \"{id}\"",
             )
             return cached_record
-
+        
         logger.debug(
-            f"Getting record instance from CIIM API for ID \"{self.params.get('id')}\"",
+            f"Getting record instance from CIIM API for ID \"{id}\"",
         )
 
         response = self.get(path="/get", headers={})
 
         if not response or not response.get("data"):
-            return None
+            return {
+                "referenceNumber": DEFAULT_REFERENCE_NUMBER,
+                "title": DEFAULT_SUMMARY_TITLE,
+                "iaid": id,
+            }
 
         try:
             result = response.get("data")[0].get("@template", {}).get("details", {})
@@ -66,7 +70,7 @@ class CIIMClient(JSONAPIClient):
             result = {
                 "referenceNumber": DEFAULT_REFERENCE_NUMBER,
                 "title": DEFAULT_SUMMARY_TITLE,
-                "iaid": self.params.get("id", DEFAULT_IAID),
+                "iaid": id,
             }
         return result
 
@@ -74,14 +78,14 @@ class CIIMClient(JSONAPIClient):
         """
         Get a standardised serialized record from the CIIM API for the Wagtail API.
         """
+        id = self.params.get("id")
 
-        if not self.params.get("id") or self.params.get("id") is None:
+        if not id:
             return None
 
         if instance := self.get_record_instance():
             details = {
-                "title": instance.get("title", DEFAULT_SUMMARY_TITLE)
-                or instance.get("summaryTitle", DEFAULT_SUMMARY_TITLE),
+                "title": instance.get("summaryTitle") or instance.get("title") or DEFAULT_SUMMARY_TITLE,
                 "iaid": instance.get("iaid", DEFAULT_IAID),
                 "reference_number": instance.get(
                     "referenceNumber", DEFAULT_REFERENCE_NUMBER
