@@ -25,7 +25,7 @@ from app.collections.models import Highlight, PageTimePeriod, PageTopic
 from app.home.models import MourningNotice
 from app.media.models import EtnaMedia
 from app.people.factories import PeopleIndexPageFactory, PersonPageFactory
-from app.people.models import AuthorTag
+from app.people.models import AuthorTag, PersonRole, PersonRoleSelection
 
 API_URL = "/api/v2/pages/"
 
@@ -120,6 +120,18 @@ class APIResponseTest(WagtailPageTestCase):
             alert=self.alert,
         )
 
+        self.author_role = PersonRole(
+            name="Author",
+            slug="author",
+            display_on_card=True,
+        )
+
+        self.board_member_role = PersonRole(
+            name="Board Member",
+            slug="board-member",
+            display_on_card=False,
+        )
+
         self.author_page = PersonPageFactory(
             title="author",
             role="Test Author",
@@ -129,6 +141,13 @@ class APIResponseTest(WagtailPageTestCase):
             first_name="John",
             last_name="Smith",
         )
+
+        self.author_role.save()
+        self.board_member_role.save()
+
+        self.author_page.roles.add(PersonRoleSelection(role=self.author_role))
+        self.author_page.roles.add(PersonRoleSelection(role=self.board_member_role))
+        self.author_page.save()
 
         self.article_index = ArticleIndexPageFactory(
             parent=self.root_page,
