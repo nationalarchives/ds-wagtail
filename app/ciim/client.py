@@ -42,12 +42,12 @@ class CIIMClient(JSONAPIClient):
         cache_key = f"record_instance_{id}"
         if cached_record := cache.get(cache_key, None):
             logger.info(
-                f"Using cached record for \"{id}\"",
+                f'Using cached record for "{id}"',
             )
             return cached_record
-        
+
         logger.debug(
-            f"Getting record instance from CIIM API for ID \"{id}\"",
+            f'Getting record instance from CIIM API for ID "{id}"',
         )
 
         response = self.get(path="/get", headers={})
@@ -85,7 +85,9 @@ class CIIMClient(JSONAPIClient):
 
         if instance := self.get_record_instance():
             details = {
-                "title": instance.get("summaryTitle") or instance.get("title") or DEFAULT_SUMMARY_TITLE,
+                "title": instance.get("summaryTitle")
+                or instance.get("title")
+                or DEFAULT_SUMMARY_TITLE,
                 "iaid": instance.get("iaid", DEFAULT_IAID),
                 "reference_number": instance.get(
                     "referenceNumber", DEFAULT_REFERENCE_NUMBER
