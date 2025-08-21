@@ -28,12 +28,35 @@ class PartnerLogo(models.Model):
         blank=True,
         related_name="+",
     )
+    svg_file_dark = models.FileField(
+        upload_to="partner_logos/",
+        blank=True,
+        null=True,
+        help_text="Upload the dark mode SVG file for the partner logo.",
+        verbose_name="SVG File (Dark Mode)",
+        validators=[validate_svg_file],
+    )
+    raster_file_dark = models.ForeignKey(
+        get_image_model_string(),
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="+",
+    )
     alt_text = models.CharField(max_length=255, blank=False, null=False)
 
     def clean(self):
         if not self.svg_file and not self.raster_file:
             raise ValidationError("At least one file (SVG or raster) must be provided.")
-        if self.svg_file and self.raster_file:
+        if (self.svg_file and self.raster_file) or (
+            self.svg_file_dark and self.raster_file_dark
+        ):
+            raise ValidationError(
+                "Please provide either an SVG file or a raster image, not both."
+            )
+        if (self.svg_file and self.raster_file_dark) or (
+            self.raster_file and self.svg_file_dark
+        ):
             raise ValidationError(
                 "Please provide either an SVG file or a raster image, not both."
             )
@@ -46,13 +69,22 @@ class PartnerLogo(models.Model):
         FieldPanel("name"),
         FieldPanel("svg_file"),
         FieldPanel("raster_file"),
+        FieldPanel("svg_file_dark"),
+        FieldPanel("raster_file_dark"),
         FieldPanel("alt_text"),
     ]
 
 
 class PartnerLogoModelViewSet(ModelViewSet):
     model = PartnerLogo
-    form_fields = ["name", "svg_file", "raster_file", "alt_text"]
+    form_fields = [
+        "name",
+        "svg_file",
+        "raster_file",
+        "svg_file_dark",
+        "raster_file_dark",
+        "alt_text",
+    ]
     icon = "image"
     menu_label = "Partner Logos"
     menu_name = "partner_logos"

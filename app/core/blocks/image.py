@@ -5,6 +5,7 @@ from wagtail.images.blocks import ImageChooserBlock
 from app.core.blocks.paragraph import APIRichTextBlock
 from app.core.models.partner_logos import partner_logo_chooserviewset
 from app.core.serializers.images import DetailedImageSerializer
+from app.core.serializers.partner_logos import PartnerLogoSerializer
 
 
 class APIImageChooserBlock(ImageChooserBlock):
@@ -93,6 +94,10 @@ class PartnerLogoChooserBlock(
     for consistency with the ChooserViewSet. We can also extend this block
     much easier in the future if needed, by creating the block this way.
     """
+
+    def get_api_representation(self, value, context=None):
+        serializer = PartnerLogoSerializer()
+        return serializer.to_representation(value)
 
     class Meta:
         label = "Partner Logo"

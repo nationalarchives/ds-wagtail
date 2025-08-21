@@ -21,5 +21,14 @@ class PartnerLogoSerializer(serializers.Serializer):
                     else None
                 )
             ),
+            "image_dark": (
+                (settings.WAGTAILADMIN_BASE_URL + instance.svg_file_dark.url)
+                if instance.svg_file_dark
+                else (
+                    ImageSerializer().to_representation(instance.raster_file_dark)
+                    if instance.raster_file_dark
+                    else None
+                )
+            ),
             "alt_text": instance.alt_text,
         }
