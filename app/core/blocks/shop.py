@@ -32,7 +32,7 @@ class ShopCollectionBlock(blocks.StructBlock):
 
     background_image = APIImageChooserBlock(
         label="Background image",
-        rendition_size="fill-1200x480",
+        rendition_size="fill-1800x720",
     )
 
     def get_api_representation(self, value, context=None):
