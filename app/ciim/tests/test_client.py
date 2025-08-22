@@ -8,7 +8,6 @@ from app.ciim.client import (
 )
 
 
-@unittest.skip
 class TestCIIMClient(unittest.TestCase):
     def setUp(self):
         self.client = CIIMClient(api_url="http://fake-api-url.com")
@@ -65,7 +64,7 @@ class TestCIIMClient(unittest.TestCase):
             result,
             {
                 "referenceNumber": DEFAULT_REFERENCE_NUMBER,
-                "summaryTitle": DEFAULT_SUMMARY_TITLE,
+                "title": DEFAULT_SUMMARY_TITLE,
                 "iaid": DUMMY_ID,
             },
         )
