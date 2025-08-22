@@ -61,17 +61,23 @@ class CIIMClient(JSONAPIClient):
 
         try:
             result = response.get("data")[0].get("@template", {}).get("details", {})
+        except (IndexError, KeyError):
+            result = None
+            logger.error(f'Error fetching details in response for IAID "{id}"')
+
+        if result:
             cache.set(
                 cache_key,
                 result,
                 settings.RECORD_DETAILS_CACHE_TIMEOUT,
             )
-        except IndexError:
+        else:
             result = {
                 "referenceNumber": DEFAULT_REFERENCE_NUMBER,
                 "title": DEFAULT_SUMMARY_TITLE,
                 "iaid": id,
             }
+
         return result
 
     def get_serialized_record(self) -> dict:
