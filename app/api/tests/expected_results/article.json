@@ -236,6 +236,8 @@
                                 "id": 1,
                                 "uuid": "00000000-0000-0000-0000-000000000000",
                                 "file": "/media/media/test.mp4",
+                                "alternate_version_link": null,
+                                "alternate_version_type": null,
                                 "full_url": "https://www.nationalarchives.gov.uk/media/media/test.mp4",
                                 "type": "video",
                                 "mime": "video/mp4",

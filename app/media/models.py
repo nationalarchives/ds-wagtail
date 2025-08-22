@@ -28,6 +28,11 @@ class MediaChapterSectionBlock(blocks.StructBlock):
         label = "Chapter"
 
 
+class AlternateVersionTypes(models.TextChoices):
+    AUDIO_DESCRIBED = "audio_described", "Audio Described"
+    SUBTITLED = "subtitled", "Subtitled"
+
+
 class EtnaMedia(AbstractMedia):
     """
     Extend wagtailmedia model.
@@ -57,6 +62,20 @@ class EtnaMedia(AbstractMedia):
     )
     chapters_file = models.FileField(
         blank=True, null=True, upload_to="media", verbose_name="chapters file"
+    )
+    alternate_version_link = models.URLField(
+        blank=True,
+        null=True,
+        verbose_name="alternate version link",
+        help_text="Link to an alternate version of the media.",
+    )
+    alternate_version_type = models.CharField(
+        max_length=20,
+        verbose_name="alternate version type",
+        help_text="The type of the alternate version.",
+        choices=AlternateVersionTypes.choices,
+        blank=True,
+        null=True,
     )
 
     chapters = StreamField(
@@ -128,6 +147,8 @@ class EtnaMedia(AbstractMedia):
         "date",
         "file",
         "audio_described_file",
+        "alternate_version_link",
+        "alternate_version_type",
         "chapters",
         "collection",
         "description",
