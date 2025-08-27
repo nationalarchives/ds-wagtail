@@ -4,8 +4,8 @@ from rest_framework.serializers import Serializer
 def image_generator(
     original_image,
     rendition_size="fill-600x400",
-    jpeg_quality=80,
-    webp_quality=80,
+    jpeg_quality=60,
+    webp_quality=70,
     background_colour=None,
     additional_formats=[],
 ):
@@ -65,7 +65,7 @@ class ImageSerializer(Serializer):
     when the serializer is used, e.g:
     ImageSerializer(rendition_size="original")
 
-    jpeg_quality and webp_quality default to 60 and 80 respectively,
+    jpeg_quality and webp_quality default to 60 and 70 respectively,
     and can be specified in the same way as rendition_size.
 
     additional_formats is an optional list of additional formats to generate,
@@ -81,8 +81,8 @@ class ImageSerializer(Serializer):
     def __init__(
         self,
         rendition_size="fill-600x400",
-        jpeg_quality=80,
-        webp_quality=80,
+        jpeg_quality=60,
+        webp_quality=70,
         background_colour="fff",
         additional_formats=[],
         *args,

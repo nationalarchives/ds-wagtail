@@ -27,8 +27,8 @@ class APIImageChooserBlock(ImageChooserBlock):
         required=True,
         help_text=None,
         rendition_size="fill-600x400",
-        jpeg_quality=80,
-        webp_quality=80,
+        jpeg_quality=60,
+        webp_quality=70,
         background_colour="fff",
         **kwargs,
     ):
