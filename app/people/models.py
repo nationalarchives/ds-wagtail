@@ -294,7 +294,7 @@ class AuthorPageMixin:
     """
 
     @classmethod
-    def get_authors_inlinepanel(cls, max_num=3):
+    def get_authors_inlinepanel(cls, max_num=6):
         return InlinePanel(
             "author_tags",
             heading="Page author",
