@@ -263,7 +263,7 @@ class ExplorerIndexPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
             APIField("body"),
             APIField(
                 "stories_hero_image",
-                serializer=DetailedImageSerializer(rendition_size="fill-1200x480"),
+                serializer=DetailedImageSerializer(rendition_size="fill-1800x720"),
             ),
             APIField(
                 "stories_hero_image_small",

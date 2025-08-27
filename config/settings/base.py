@@ -215,7 +215,7 @@ USE_L10N = True
 
 USE_TZ = True
 
-STATIC_URL = "static/"
+STATIC_URL = "wagtail-static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
@@ -251,7 +251,7 @@ WAGTAILMEDIA = {
 
 # Wagtail settings
 
-WAGTAIL_SITE_NAME = "National Archives"
+WAGTAIL_SITE_NAME = "The National Archives"
 
 CSRF_TRUSTED_ORIGINS = [
     os.getenv("CSRF_TRUSTED_ORIGINS", "https://www.nationalarchives.gov.uk")

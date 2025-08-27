@@ -4,17 +4,23 @@ set -e
 
 . pre-pull
 
+MEDIA_DUMP="media.zip"
+
 echo "Downloading zipped media..."
 aws s3 cp s3://ds-$ENVIRONMENT-deployment-source/wagtail-content/$(aws s3 ls s3://ds-$ENVIRONMENT-deployment-source/wagtail-content/ | sort | tail -n 1 | awk '{print $4}') $DUMP_DIR/$MEDIA_DUMP
 
 echo "Unzipping media..."
-unzip -o $DUMP_DIR/$MEDIA_DUMP -d /
+unzip -o $DUMP_DIR/$MEDIA_DUMP -d $DUMP_DIR/media
+
+echo "Moving media to /media..."
+rm -fR /media/*
+cp -fR $DUMP_DIR/media/* /media/
 
 echo "Setting media permissions..."
 docker compose -p ds-wagtail exec app chmod -fR 777 /media
 
 echo "Removing media ZIP archive..."
-rm $DUMP_DIR/$MEDIA_DUMP
+rm -fR $DUMP_DIR/$MEDIA_DUMP $DUMP_DIR/media $DUMP_DIR/.backup-zips
 
-echo "Recreate media renditions..."
-docker compose -p ds-wagtail exec app manage wagtail_update_image_renditions
+# echo "Recreate media renditions..."
+# docker compose -p ds-wagtail exec app manage wagtail_update_image_renditions
