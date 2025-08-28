@@ -378,15 +378,15 @@ class EventPage(RequiredHeroImageMixin, ContentWarningMixin, BasePageWithRequire
         ),
         MultiFieldPanel(
             [
-                FieldRowPanel(
-                    [
-                        FieldPanel("start_date", read_only=True),
-                        FieldPanel("end_date", read_only=True),
-                    ],
-                    help_text=_(
-                        "These dates are automatically set based on the sessions added."
-                    ),
-                ),
+                # FieldRowPanel(
+                #     [
+                #         FieldPanel("start_date", read_only=True),
+                #         FieldPanel("end_date", read_only=True),
+                #     ],
+                #     help_text=_(
+                #         "These dates are automatically set based on the sessions added."
+                #     ),
+                # ),
                 FieldPanel("various_dates"),
                 InlinePanel(
                     "sessions",
@@ -484,7 +484,10 @@ class EventPage(RequiredHeroImageMixin, ContentWarningMixin, BasePageWithRequire
         """
         Returns True if all sessions of an event is sold out, otherwise False.
         """
-        return all(session.sold_out for session in self.sessions.all())
+        return all(
+            session.sold_out if session.start >= timezone.now() else True
+            for session in self.sessions.all()
+        )
 
     def serializable_data(self):
         # Keep aggregated field values out of revision content
