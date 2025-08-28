@@ -13,7 +13,7 @@ class ViewSetImageSerializer(ImageSerializer):
 
     rendition_size = "max-900x900"
     jpeg_quality = 60
-    webp_quality = 60
+    webp_quality = 70
     background_colour = "fff"
     additional_formats = []
 

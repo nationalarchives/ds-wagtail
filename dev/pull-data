@@ -29,13 +29,13 @@ echo "Starting the app container..."
 docker compose -p ds-wagtail restart app
 
 echo "Running migrations..."
-docker compose -p ds-wagtail exec app poetry run python manage.py migrate
+docker compose -p ds-wagtail exec app manage migrate
 
 echo "Running birdbath..."
-docker compose -p ds-wagtail exec app poetry run python manage.py run_birdbath
+docker compose -p ds-wagtail exec app manage run_birdbath
 
 echo "Creating a superuser..."
-docker compose -p ds-wagtail exec app poetry run python manage.py createsuperuser --no-input
+docker compose -p ds-wagtail exec app manage createsuperuser --no-input
 
 echo "Removing database dump..."
 rm $DUMP_DIR/$DATABASE_DUMP

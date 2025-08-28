@@ -35,63 +35,68 @@ class CIIMClient(JSONAPIClient):
         """
         Get a single record instance from the CIIM API.
         """
-
-        if not self.params.get("id"):
+        id = self.params.get("id")
+        if not id:
             return None
+
+        cache_key = f"record_instance_{id}"
+        if cached_record := cache.get(cache_key, None):
+            logger.info(
+                f'Using cached record for "{id}"',
+            )
+            return cached_record
+
+        logger.debug(
+            f'Getting record instance from CIIM API for ID "{id}"',
+        )
 
         response = self.get(path="/get", headers={})
 
+        if not response or not response.get("data"):
+            return {
+                "referenceNumber": DEFAULT_REFERENCE_NUMBER,
+                "title": DEFAULT_SUMMARY_TITLE,
+                "iaid": id,
+            }
+
         try:
-            result = response.get("data", [])[0].get("@template", {}).get("details", {})
-        except IndexError:
+            result = response.get("data")[0].get("@template", {}).get("details", {})
+        except (IndexError, KeyError):
+            result = None
+            logger.error(f'Error fetching details in response for IAID "{id}"')
+
+        if result:
+            cache.set(
+                cache_key,
+                result,
+                settings.RECORD_DETAILS_CACHE_TIMEOUT,
+            )
+        else:
             result = {
                 "referenceNumber": DEFAULT_REFERENCE_NUMBER,
-                "summaryTitle": DEFAULT_SUMMARY_TITLE,
-                "iaid": self.params.get("id", DEFAULT_IAID),
+                "title": DEFAULT_SUMMARY_TITLE,
+                "iaid": id,
             }
+
         return result
-
-    def get_record_list(self) -> tuple:
-        """
-        Get a list of records from the CIIM API.
-        """
-
-        response = self.get(path="/search", headers={})
-
-        results = response.get("data", [])
-        total = response.get("stats", {}).get("total", 0)
-        return results, total
 
     def get_serialized_record(self) -> dict:
         """
         Get a standardised serialized record from the CIIM API for the Wagtail API.
         """
+        id = self.params.get("id")
 
-        if not self.params.get("id") or self.params.get("id") is None:
+        if not id:
             return None
-
-        cache_key = f"record_details_{self.params.get('id')}"
-        if cached_record := cache.get(cache_key, None):
-            logger.info(
-                f"Using cached record for \"{self.params.get('id')}\"",
-            )
-            return cached_record
-
-        logger.debug(
-            f"Getting record instance from CIIM API for ID \"{self.params.get('id')}\"",
-        )
 
         if instance := self.get_record_instance():
             details = {
-                "title": instance.get("summaryTitle", DEFAULT_SUMMARY_TITLE),
+                "title": instance.get("summaryTitle")
+                or instance.get("title")
+                or DEFAULT_SUMMARY_TITLE,
                 "iaid": instance.get("iaid", DEFAULT_IAID),
                 "reference_number": instance.get(
                     "referenceNumber", DEFAULT_REFERENCE_NUMBER
                 ),
             }
-            cache.set(
-                cache_key,
-                details,
-                settings.RECORD_DETAILS_CACHE_TIMEOUT,
-            )
             return details
