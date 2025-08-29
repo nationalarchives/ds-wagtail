@@ -85,6 +85,7 @@ class SimplePageSerializer(serializers.Serializer):
             "id": instance.id,
             "title": instance.title,
             "teaser_text": instance.teaser_text,
+            "url": instance.url,
             "full_url": instance.full_url,
         }
 
