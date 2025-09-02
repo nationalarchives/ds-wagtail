@@ -18,6 +18,7 @@ from wagtail.images import get_image_model_string
 from wagtail.models import Orderable, Page
 from wagtail.search import index
 
+import app.articles.models as ArticleModels
 from app.ciim.fields import RecordField
 from app.ciim.serializers import RecordSerializer
 from app.core.models import (
@@ -31,6 +32,7 @@ from app.core.serializers import (
     DetailedImageSerializer,
     ImageSerializer,
     RichTextSerializer,
+    SimplePageSerializer,
 )
 from app.core.utils import skos_id_from_text
 
@@ -203,6 +205,19 @@ class ExplorerIndexPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
 
     body = StreamField(ExplorerIndexPageStreamBlock, blank=True)
 
+    stories_title = models.CharField(
+        max_length=100,
+        blank=True,
+        default="Stories from the collection",
+        help_text=_("The title to display for the articles section."),
+    )
+
+    stories_introduction = models.CharField(
+        max_length=200,
+        blank=True,
+        help_text=_("The introduction to display for the articles section."),
+    )
+
     stories_hero_image = models.ForeignKey(
         get_image_model_string(),
         null=True,
@@ -225,6 +240,10 @@ class ExplorerIndexPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
         help_text=_("The title to display for the Explorer Index Page selections."),
     )
 
+    @cached_property
+    def stories_page(self):
+        return self.get_children().type(ArticleModels.ArticleIndexPage).live().first()
+
     content_panels = (
         BasePageWithRequiredIntro.content_panels
         + RequiredHeroImageMixin.content_panels
@@ -234,6 +253,8 @@ class ExplorerIndexPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
                 [
                     FieldPanel("stories_hero_image"),
                     FieldPanel("stories_hero_image_caption"),
+                    FieldPanel("stories_title"),
+                    FieldPanel("stories_introduction"),
                 ],
                 heading=_("Stories section"),
             ),
@@ -270,6 +291,9 @@ class ExplorerIndexPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
                 serializer=DetailedImageSerializer(source="stories_hero_image"),
             ),
             APIField("stories_hero_image_caption", serializer=RichTextSerializer()),
+            APIField("stories_title"),
+            APIField("stories_introduction"),
+            APIField("stories_page", serializer=SimplePageSerializer()),
             APIField("explorer_index_page_selections_title"),
             APIField(
                 "explorer_index_page_selections",
