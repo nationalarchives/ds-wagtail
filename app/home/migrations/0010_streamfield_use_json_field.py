@@ -17,7 +17,6 @@ class Migration(migrations.Migration):
             name="body",
             field=wagtail.fields.StreamField(
                 [
-                    ("featured_items", app.home.blocks.FeaturedItemsBlock()),
                     (
                         "paragraph",
                         wagtail.blocks.StructBlock(
