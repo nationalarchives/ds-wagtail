@@ -12,6 +12,7 @@ from app.core.blocks import (
     ImageGalleryBlock,
     InsetTextBlock,
     ParagraphBlock,
+    PartnerLogoListBlock,
     QuoteBlock,
     SubHeadingBlock,
     YouTubeBlock,
@@ -30,6 +31,7 @@ class SectionContentBlock(blocks.StreamBlock):
     inset_text = InsetTextBlock()
     media = MediaBlock()
     paragraph = ParagraphBlock()
+    partner_logos = PartnerLogoListBlock()
     quote = QuoteBlock()
     record_links = RecordLinksBlock()
     sub_heading = SubHeadingBlock()

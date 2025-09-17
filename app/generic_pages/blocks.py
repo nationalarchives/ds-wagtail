@@ -96,3 +96,4 @@ class HubPageStreamBlock(blocks.StreamBlock):
 
     contact = ContactBlock()
     paragraph = ParagraphBlock()
+    partner_logos = PartnerLogoListBlock()
