@@ -51,7 +51,7 @@ partner_logo_modelviewset = PartnerLogoModelViewSet("partner_logos")
 class PartnerLogoChooserViewSet(ChooserViewSet):
     model = PartnerLogo
     icon = "image"
-    page_title = "Partner Logo Chooser"
+    page_title = "Partner logo chooser"
     choose_one_text = "Choose a partner logo"
     choose_many_text = "Choose partner logos"
 
