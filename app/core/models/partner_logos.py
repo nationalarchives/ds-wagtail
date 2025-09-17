@@ -6,70 +6,30 @@ from wagtail.admin.viewsets.model import ModelViewSet
 from wagtail.images import get_image_model_string
 
 
-def validate_svg_file(value):
-    if not value.name.endswith(".svg"):
-        raise ValidationError("The file must be an SVG file.")
-
-
 class PartnerLogo(models.Model):
     name = models.CharField(max_length=255, blank=False, null=False)
-    svg_file = models.FileField(
-        upload_to="partner_logos/",
-        blank=True,
+    logo = models.ForeignKey(
+        get_image_model_string(),
+        on_delete=models.SET_NULL,
         null=True,
-        help_text="Upload the SVG file for the partner logo.",
-        verbose_name="SVG File",
-        validators=[validate_svg_file],
+        blank=False,
+        related_name="+",
     )
-    raster_file = models.ForeignKey(
+    logo_dark = models.ForeignKey(
         get_image_model_string(),
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
         related_name="+",
     )
-    svg_file_dark = models.FileField(
-        upload_to="partner_logos/",
-        blank=True,
-        null=True,
-        help_text="Upload the dark mode SVG file for the partner logo.",
-        verbose_name="SVG File (Dark Mode)",
-        validators=[validate_svg_file],
-    )
-    raster_file_dark = models.ForeignKey(
-        get_image_model_string(),
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        related_name="+",
-    )
-    alt_text = models.CharField(max_length=255, blank=False, null=False)
-
-    def clean(self):
-        if not self.svg_file and not self.raster_file:
-            raise ValidationError("At least one file (SVG or raster) must be provided.")
-        if (
-            (self.svg_file and self.raster_file)
-            or (self.svg_file_dark and self.raster_file_dark)
-        ) or (
-            (self.svg_file and self.raster_file_dark)
-            or (self.raster_file and self.svg_file_dark)
-        ):
-            raise ValidationError(
-                "Please provide either an SVG file or a raster image, not both."
-            )
-        return super().clean()
 
     def __str__(self):
         return self.name
 
     panels = [
         FieldPanel("name"),
-        FieldPanel("svg_file"),
-        FieldPanel("raster_file"),
-        FieldPanel("svg_file_dark"),
-        FieldPanel("raster_file_dark"),
-        FieldPanel("alt_text"),
+        FieldPanel("logo"),
+        FieldPanel("logo_dark"),
     ]
 
 
@@ -77,11 +37,8 @@ class PartnerLogoModelViewSet(ModelViewSet):
     model = PartnerLogo
     form_fields = [
         "name",
-        "svg_file",
-        "raster_file",
-        "svg_file_dark",
-        "raster_file_dark",
-        "alt_text",
+        "logo",
+        "logo_dark",
     ]
     icon = "image"
     menu_label = "Partner Logos"

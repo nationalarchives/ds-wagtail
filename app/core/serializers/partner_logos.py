@@ -8,13 +8,13 @@ class PartnerLogoSerializer(serializers.Serializer):
     """
     Serializer for PartnerLogo model.
     """
+    image_serializer = ImageSerializer(rendition_size="max-400x200",
+        background_colour=None,
+    )
 
     def to_representation(self, instance):
         return {
             "name": instance.name,
-            "vector": (settings.WAGTAILADMIN_BASE_URL + instance.svg_file.url) if instance.svg_file else None,
-            "raster": ImageSerializer().to_representation(instance.raster_file) if instance.raster_file else None,
-            "vector_dark": (settings.WAGTAILADMIN_BASE_URL + instance.svg_file_dark.url) if instance.svg_file_dark else None,
-            "raster_dark": ImageSerializer().to_representation(instance.raster_file_dark) if instance.raster_file_dark else None,
-            "alt_text": instance.alt_text,
+            "logo": self.image_serializer.to_representation(instance.logo) if instance.logo else None,
+            "logo_dark": self.image_serializer.to_representation(instance.logo_dark) if instance.logo_dark else None,
         }
