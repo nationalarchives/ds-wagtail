@@ -1124,7 +1124,13 @@ class ExhibitionPage(
         FieldPanel("open_days"),
         FieldPanel("age_detail"),
         FieldPanel("location"),
-        FieldPanel("partnership"),
+        MultiFieldPanel(
+            [
+                FieldPanel("partnership_lead_text"),
+                FieldPanel("partnership"),
+            ],
+            heading=_("Partnership details"),
+        ),
     ]
 
     design_panels = [
@@ -1164,6 +1170,7 @@ class ExhibitionPage(
             APIField("booking_details", serializer=RichTextSerializer()),
             APIField("age_detail"),
             APIField("location", serializer=LocationSerializer()),
+            APIField("partnership_lead_text"),
             APIField("partnership", serializer=PartnerLogoSerializer()),
             APIField("intro_title"),
             APIField("body"),
