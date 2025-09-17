@@ -7,52 +7,44 @@ def image_generator(
     jpeg_quality=60,
     webp_quality=70,
     background_colour=None,
-    additional_formats=[],
+    formats=["jpeg", "webp"],
 ):
+    if not original_image:
+        return None
+
     background_colour_rendition = (
         f"|bgcolor-{background_colour}" if background_colour else ""
     )
-    jpeg_image = original_image.get_rendition(
-        f"{rendition_size}|format-jpeg|jpegquality-{jpeg_quality}{background_colour_rendition}"
-    )
-    webp_image = original_image.get_rendition(
-        f"{rendition_size}|format-webp|webpquality-{webp_quality}{background_colour_rendition}"
-    )
 
-    additional_images = {}
-
-    if formats := additional_formats:
-        for format in formats:
-            additional_image = original_image.get_rendition(
-                f"{rendition_size}|format-{format}"
+    rendition_specs = []
+    for fmt in formats:
+        if fmt == "jpeg":
+            rendition_specs.append(
+                f"{rendition_size}|format-jpeg|jpegquality-{jpeg_quality}{background_colour_rendition}"
             )
-            if additional_image:
-                additional_image = {
-                    "url": additional_image.url,
-                    "full_url": additional_image.full_url,
-                    "width": additional_image.width,
-                    "height": additional_image.height,
-                }
-                additional_images[format] = additional_image
+        elif fmt == "webp":
+            rendition_specs.append(
+                f"{rendition_size}|format-webp|webpquality-{webp_quality}{background_colour_rendition}"
+            )
+        else:
+            rendition_specs.append(f"{rendition_size}|format-{fmt}")
 
-    if not jpeg_image or not webp_image:
+    renditions = original_image.get_renditions(*rendition_specs)
+
+    if not renditions:
         return None
 
-    return {
-        "jpeg": {
-            "url": jpeg_image.url,
-            "full_url": jpeg_image.full_url,
-            "width": jpeg_image.width,
-            "height": jpeg_image.height,
-        },
-        "webp": {
-            "url": webp_image.url,
-            "full_url": webp_image.full_url,
-            "width": webp_image.width,
-            "height": webp_image.height,
-        },
-        **(additional_images),
-    }
+    output = {}
+    for spec, rendition in renditions.items():
+        fmt = spec.split("format-")[1].split("|", 1)[0]
+        output[fmt] = {
+            "url": rendition.url,
+            "full_url": rendition.full_url,
+            "width": rendition.width,
+            "height": rendition.height,
+        }
+
+    return output
 
 
 class ImageSerializer(Serializer):
@@ -68,8 +60,8 @@ class ImageSerializer(Serializer):
     jpeg_quality and webp_quality default to 60 and 70 respectively,
     and can be specified in the same way as rendition_size.
 
-    additional_formats is an optional list of additional formats to generate,
-    such as `png`, `gif`, etc. These will be returned in the API response
+    To generate any additional formats of images, override `formats` in the serializer, e.g:
+    ["jpeg", "webp", "png"]. These will be returned in the API response
     in the same way as the `jpeg` and `webp` renditions.
 
     The source of the image can also be set in the serializer, e.g:
@@ -84,7 +76,7 @@ class ImageSerializer(Serializer):
         jpeg_quality=60,
         webp_quality=70,
         background_colour="fff",
-        additional_formats=[],
+        formats=["jpeg", "webp"],
         *args,
         **kwargs,
     ):
@@ -92,7 +84,7 @@ class ImageSerializer(Serializer):
         self.jpeg_quality = jpeg_quality
         self.webp_quality = webp_quality
         self.background_colour = background_colour
-        self.additional_formats = additional_formats
+        self.formats = formats
         super().__init__(*args, **kwargs)
 
     def to_representation(self, value):
@@ -103,7 +95,7 @@ class ImageSerializer(Serializer):
                 jpeg_quality=self.jpeg_quality,
                 webp_quality=self.webp_quality,
                 background_colour=self.background_colour,
-                additional_formats=self.additional_formats,
+                formats=self.formats,
             )
 
             if not image_data:
