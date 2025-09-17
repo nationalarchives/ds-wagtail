@@ -29,6 +29,7 @@ from app.core.blocks import (
     ReviewBlock,
     ShopCollectionBlock,
 )
+from app.core.fields.choosers import PartnerLogoField
 from app.core.models import (
     AccentColourMixin,
     BasePageWithRequiredIntro,
@@ -42,6 +43,7 @@ from app.core.serializers import (
     DefaultPageSerializer,
     RichTextSerializer,
 )
+from app.core.serializers.partner_logos import PartnerLogoSerializer
 
 from ..blocks import EventPageStreamBlock, ExhibitionPageStreamBlock
 from ..serializers import (
@@ -903,6 +905,23 @@ class ExhibitionPage(
         help_text=_("The location of the exhibition."),
     )
 
+    partnership_lead_text = models.CharField(
+        max_length=40,
+        verbose_name=_("partnership lead text"),
+        blank=True,
+        help_text=_(
+            "Optional override for the partner logos section lead text. Will display a default if not provided."
+        ),
+    )
+
+    partnership = PartnerLogoField(
+        null=True,
+        blank=True,
+        related_name="+",
+        verbose_name=_("partnership"),
+        help_text=_("The partnership logo for the exhibition."),
+    )
+
     # Body section
     intro_title = models.CharField(
         max_length=100,
@@ -1105,6 +1124,13 @@ class ExhibitionPage(
         FieldPanel("open_days"),
         FieldPanel("age_detail"),
         FieldPanel("location"),
+        MultiFieldPanel(
+            [
+                FieldPanel("partnership_lead_text"),
+                FieldPanel("partnership"),
+            ],
+            heading=_("Partnership details"),
+        ),
     ]
 
     design_panels = [
@@ -1144,6 +1170,8 @@ class ExhibitionPage(
             APIField("booking_details", serializer=RichTextSerializer()),
             APIField("age_detail"),
             APIField("location", serializer=LocationSerializer()),
+            APIField("partnership_lead_text"),
+            APIField("partnership", serializer=PartnerLogoSerializer()),
             APIField("intro_title"),
             APIField("body"),
             APIField("exhibition_highlights_title"),
