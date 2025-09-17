@@ -2,7 +2,12 @@ from rest_framework import serializers
 
 from .images import ImageSerializer
 
-image_serializer = ImageSerializer(rendition_size="max-400x200", background_colour=None)
+image_serializer = ImageSerializer(
+    rendition_size="max-400x200",
+    background_colour=None,
+    jpeg_quality=100,
+    webp_quality=100,
+)
 
 
 class PartnerLogoSerializer(serializers.Serializer):
