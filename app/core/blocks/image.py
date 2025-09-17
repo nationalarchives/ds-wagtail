@@ -105,6 +105,10 @@ class PartnerLogoChooserBlock(
 
 
 class PartnerLogoListBlock(blocks.StructBlock):
+    lead_text = blocks.CharBlock(
+        required=False,
+        help_text="Optional override for the partner logos section lead text. Will display a default if not provided.",
+    )
     logos = blocks.ListBlock(
         PartnerLogoChooserBlock(),
         required=True,

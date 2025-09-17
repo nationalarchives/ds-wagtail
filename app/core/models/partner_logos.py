@@ -1,4 +1,3 @@
-from django.core.exceptions import ValidationError
 from django.db import models
 from wagtail.admin.panels import FieldPanel
 from wagtail.admin.viewsets.chooser import ChooserViewSet
