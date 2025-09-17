@@ -380,15 +380,15 @@ class EventPage(RequiredHeroImageMixin, ContentWarningMixin, BasePageWithRequire
         ),
         MultiFieldPanel(
             [
-                # FieldRowPanel(
-                #     [
-                #         FieldPanel("start_date", read_only=True),
-                #         FieldPanel("end_date", read_only=True),
-                #     ],
-                #     help_text=_(
-                #         "These dates are automatically set based on the sessions added."
-                #     ),
-                # ),
+                FieldRowPanel(
+                    [
+                        FieldPanel("start_date", read_only=True),
+                        FieldPanel("end_date", read_only=True),
+                    ],
+                    help_text=_(
+                        "These dates are automatically set based on the sessions added."
+                    ),
+                ),
                 FieldPanel("various_dates"),
                 InlinePanel(
                     "sessions",
