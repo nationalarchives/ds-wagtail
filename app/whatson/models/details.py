@@ -905,6 +905,15 @@ class ExhibitionPage(
         help_text=_("The location of the exhibition."),
     )
 
+    partnership_lead_text = models.CharField(
+        max_length=40,
+        verbose_name=_("partnership lead text"),
+        blank=True,
+        help_text=_(
+            "Optional override for the partner logos section lead text. Will display a default if not provided."
+        ),
+    )
+
     partnership = PartnerLogoField(
         null=True,
         blank=True,
