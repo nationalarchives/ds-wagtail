@@ -40,7 +40,7 @@ class PartnerLogoModelViewSet(ModelViewSet):
         "logo_dark",
     ]
     icon = "image"
-    menu_label = "Partner Logos"
+    menu_label = "Partner logos"
     menu_name = "partner_logos"
     add_to_admin_menu = True
 
