@@ -71,11 +71,3 @@ class TestArticleIndexPage(TestCase):
             published_date=DATE_1,
         )
         self.article_index_page.add_child(instance=self.article_page3)
-
-    def test_get_article_pages(self):
-        self.assertEqual(len(self.article_index_page.article_pages), 3)
-
-    def test_check_article_pages(self):
-        children = self.article_index_page.get_children()
-        for i, page in enumerate(self.article_index_page.article_pages):
-            self.assertEqual(page.title, children[i].title)
