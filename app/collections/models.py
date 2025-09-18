@@ -506,6 +506,7 @@ class TopicExplorerPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
             .filter(pk__in=self.related_page_pks)
             .order_by("title")
             .select_related("teaser_image")
+            .prefetch_related("teaser_image__renditions")
         )
 
     @cached_property
@@ -695,6 +696,7 @@ class TimePeriodExplorerPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
             .filter(pk__in=self.related_page_pks)
             .order_by("title")
             .select_related("teaser_image")
+            .prefetch_related("teaser_image__renditions")
         )
 
     @cached_property
