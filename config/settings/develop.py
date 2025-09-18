@@ -12,6 +12,9 @@ try:
 except NameError:
     pass
 
+def show_toolbar(request):
+    return True
+
 if DEBUG and strtobool(os.getenv("DEBUG_TOOLBAR_ENABLED", "False")):  # noqa: F405
     from .base import INSTALLED_APPS, MIDDLEWARE
 
@@ -22,3 +25,8 @@ if DEBUG and strtobool(os.getenv("DEBUG_TOOLBAR_ENABLED", "False")):  # noqa: F4
     MIDDLEWARE += [
         "debug_toolbar.middleware.DebugToolbarMiddleware",
     ]
+
+    DEBUG_TOOLBAR_CONFIG = {
+        "SHOW_TOOLBAR_CALLBACK": "config.settings.develop.show_toolbar",
+        "RESULTS_CACHE_SIZE": 50,
+    }
