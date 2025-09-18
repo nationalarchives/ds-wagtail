@@ -33,6 +33,10 @@ services:
       - WAGTAILAPI_MEDIA_BASE_URL=https://localhost
       - WAGTAIL_HEADLESS_PREVIEW_URL=https://localhost/preview/
       - REDIS_URL=redis://redis:6379/0
+    env_file:
+      - path: .env
+        required: false
+      
 
   db:
     image: postgres:16.0
