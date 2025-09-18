@@ -102,5 +102,5 @@ jobs:
       - name: Push new version
         run: |
           git add config/develop.json
-          git commit -m "Update wagtail to v${{ needs.build.outputs.version }}"
+          git commit -m "Update wagtail to v${{ needs.build.outputs.version }}" -m "${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}"
           git push origin main
