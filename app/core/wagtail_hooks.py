@@ -3,6 +3,8 @@ from django.templatetags.static import static
 from django.utils.html import format_html
 from wagtail import hooks
 
+from .models.partner_logos import partner_logo_chooserviewset, partner_logo_modelviewset
+
 
 @hooks.register("insert_global_admin_css")
 def editor_css():
@@ -70,3 +72,13 @@ def register_icons(icons):
         "wagtailfontawesomesvg/solid/terminal.svg",
         "wagtailfontawesomesvg/solid/shop.svg",
     ]
+
+
+@hooks.register("register_admin_viewset")
+def register_admin_viewset():
+    return partner_logo_modelviewset
+
+
+@hooks.register("register_admin_viewset")
+def register_viewset():
+    return partner_logo_chooserviewset

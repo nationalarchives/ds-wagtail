@@ -56,7 +56,9 @@ class PeopleListingBlock(blocks.StructBlock):
         if not role:
             return {}
 
-        people = role.person_roles.all()
+        people = role.person_roles.all().order_by(
+            "-weighting", "person__last_name", "person__first_name"
+        )
 
         if not people:
             return {}

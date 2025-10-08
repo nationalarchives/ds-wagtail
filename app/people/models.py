@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.utils.functional import cached_property
 from modelcluster.fields import ParentalKey
@@ -126,6 +127,11 @@ class PersonRoleSelection(models.Model):
         on_delete=models.CASCADE,
         related_name="person_roles",
     )
+    weighting = models.PositiveIntegerField(
+        default=1,
+        help_text="The weighting of the person within this role from 1-5. Higher numbers place the person higher in lists.",
+        validators=[MinValueValidator(1), MaxValueValidator(5)],
+    )
 
     def __str__(self):
         return str(self.role)
@@ -134,7 +140,7 @@ class PersonRoleSelection(models.Model):
         verbose_name = "Person role"
         verbose_name_plural = "Person roles"
 
-    api_fields = [APIField("role")]
+    api_fields = [APIField("role"), APIField("weighting")]
 
 
 class PersonPage(BasePage):

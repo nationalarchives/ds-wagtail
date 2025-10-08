@@ -18,6 +18,7 @@ from app.core.blocks import (
     ImageGalleryBlock,
     InsetTextBlock,
     ParagraphBlock,
+    PartnerLogoListBlock,
     PeopleListingBlock,
     QuoteBlock,
     SubHeadingBlock,
@@ -44,6 +45,7 @@ class SectionContentBlock(blocks.StreamBlock):
     inset_text = InsetTextBlock()
     media = MediaBlock()
     paragraph = ParagraphBlock()
+    partner_logos = PartnerLogoListBlock()
     people_listing = PeopleListingBlock()
     quote = QuoteBlock()
     record_links = RecordLinksBlock()
@@ -94,3 +96,4 @@ class HubPageStreamBlock(blocks.StreamBlock):
 
     contact = ContactBlock()
     paragraph = ParagraphBlock()
+    partner_logos = PartnerLogoListBlock()

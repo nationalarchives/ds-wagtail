@@ -15,7 +15,6 @@ class ViewSetImageSerializer(ImageSerializer):
     jpeg_quality = 60
     webp_quality = 70
     background_colour = "fff"
-    additional_formats = []
 
     def to_representation(self, value):
         representation = super().to_representation(value)
@@ -27,7 +26,6 @@ class ViewSetImageSerializer(ImageSerializer):
             jpeg_quality=self.jpeg_quality,
             webp_quality=self.webp_quality,
             background_colour=self.background_colour,
-            additional_formats=self.additional_formats,
         )
 
         return representation | image_data

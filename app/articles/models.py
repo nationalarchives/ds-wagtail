@@ -2,7 +2,6 @@ from typing import List, Tuple, Union
 
 from django.conf import settings
 from django.db import models
-from django.db.models.functions import Coalesce
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
 from modelcluster.contrib.taggit import ClusterTaggableManager
@@ -149,23 +148,6 @@ class ArticleIndexPage(BasePageWithRequiredIntro):
 
     class Meta:
         verbose_name = _("article index page")
-
-    @cached_property
-    def article_pages(self):
-        return (
-            self.get_children()
-            .public()
-            .live()
-            .order_by(
-                Coalesce(
-                    "recordarticlepage__published_date",
-                    "focusedarticlepage__published_date",
-                    "articlepage__published_date",
-                )
-            )
-            .reverse()
-            .specific()
-        )
 
     content_panels = BasePageWithRequiredIntro.content_panels + [
         PageChooserPanel(

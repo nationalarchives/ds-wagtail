@@ -3,7 +3,9 @@ from wagtail import blocks
 from wagtail.images.blocks import ImageChooserBlock
 
 from app.core.blocks.paragraph import APIRichTextBlock
+from app.core.models.partner_logos import partner_logo_chooserviewset
 from app.core.serializers.images import DetailedImageSerializer
+from app.core.serializers.partner_logos import PartnerLogoSerializer
 
 
 class APIImageChooserBlock(ImageChooserBlock):
@@ -79,4 +81,41 @@ class ImageGalleryBlock(blocks.StructBlock):
 
     class Meta:
         label = "Image Gallery"
+        icon = "image"
+
+
+class PartnerLogoChooserBlock(
+    partner_logo_chooserviewset.get_block_class(
+        name="PartnerLogoChooserBlock", module_path="app.core.blocks.image"
+    )
+):
+    """
+    We inherit the result of get_block_class from the PartnerLogoChooserViewSet
+    for consistency with the ChooserViewSet. We can also extend this block
+    much easier in the future if needed, by creating the block this way.
+    """
+
+    def get_api_representation(self, value, context=None):
+        serializer = PartnerLogoSerializer()
+        return serializer.to_representation(value)
+
+    class Meta:
+        label = "Partner Logo"
+        icon = "image"
+
+
+class PartnerLogoListBlock(blocks.StructBlock):
+    lead_text = blocks.CharBlock(
+        max_length=40,
+        required=False,
+        help_text="Optional override for the partner logos section lead text. Will display a default if not provided.",
+    )
+    logos = blocks.ListBlock(
+        PartnerLogoChooserBlock(),
+        required=True,
+        max_num=4,
+    )
+
+    class Meta:
+        label = "Partner Logo List"
         icon = "image"
