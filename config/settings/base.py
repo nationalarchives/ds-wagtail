@@ -24,7 +24,9 @@ WAGTAILAPI_MEDIA_BASE_URL = os.getenv("WAGTAILAPI_MEDIA_BASE_URL", "")
 WAGTAILAPI_BASE_URL = os.getenv("WAGTAILAPI_BASE_URL", WAGTAILADMIN_BASE_URL)
 WAGTAIL_HEADLESS_PREVIEW = {
     "CLIENT_URLS": {
-        "default": os.getenv("WAGTAIL_HEADLESS_PREVIEW_URL", "{SITE_ROOT_URL}"),
+        "default": os.getenv(
+            "WAGTAIL_HEADLESS_PREVIEW_URL", "{SITE_ROOT_URL}/preview/"
+        ),
     },
     "SERVE_BASE_URL": None,
 }
