@@ -12,7 +12,6 @@ from wagtail.fields import RichTextField
 from wagtail.images import get_image_model_string
 from wagtail.models import Page
 from wagtail.search import index
-from wagtail_headless_preview.models import HeadlessPreviewMixin
 
 from app.alerts.models import AlertMixin
 from app.core.serializers import (
@@ -22,7 +21,7 @@ from app.core.serializers import (
     RichTextSerializer,
 )
 
-from .mixins import SocialMixin
+from .mixins import CustomHeadlessPreviewMixin, SocialMixin
 
 __all__ = [
     "BasePage",
@@ -36,7 +35,7 @@ __all__ = [
 options.DEFAULT_NAMES = options.DEFAULT_NAMES + ("verbose_name_public",)
 
 
-class BasePage(AlertMixin, SocialMixin, HeadlessPreviewMixin, Page):
+class BasePage(AlertMixin, SocialMixin, CustomHeadlessPreviewMixin, Page):
     """
     An abstract base model that is used for all Page models within
     the project. Any common fields, Wagtail overrides or custom
