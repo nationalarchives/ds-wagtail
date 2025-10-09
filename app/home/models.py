@@ -7,7 +7,7 @@ from wagtail.fields import RichTextField, StreamField
 from wagtail.images import get_image_model_string
 from wagtail.models import Page
 
-from app.core.blocks import FeaturedPagesBlock
+from app.core.blocks import FeaturedExternalLinkBlock, FeaturedPageBlock
 from app.core.models import BasePageWithRequiredIntro, HeroImageMixin
 from app.core.serializers.pages import DefaultPageSerializer
 
@@ -47,40 +47,50 @@ class HomePage(HeroImageMixin, BasePageWithRequiredIntro):
         related_name="+",
     )
 
-    secondary_promos = StreamField(
-        [("secondary_promos", FeaturedPagesBlock())],
+    secondary_promos = secondary_promos = StreamField(
+        [
+            ("featured_page", FeaturedPageBlock()),
+            ("featured_external_link", FeaturedExternalLinkBlock()),
+        ],
         blank=True,
-        max_num=1,
         verbose_name="Secondary promo links",
     )
 
-    content_panels = BasePageWithRequiredIntro.content_panels + HeroImageMixin.content_panels + [
-        MultiFieldPanel(
-            [
-                FieldPanel("primary_promo_internal_page"),
-                FieldPanel("primary_promo_title"),
-                FieldPanel("primary_promo_image"),
-                FieldPanel("primary_promo_description"),
-                FieldPanel("primary_promo_chip"),
-                FieldPanel("primary_promo_url"),
-            ],
-            heading="Primary promo link",
-        ),
-        FieldPanel("secondary_promos"),
-    ]
+    content_panels = (
+        BasePageWithRequiredIntro.content_panels
+        + HeroImageMixin.content_panels
+        + [
+            MultiFieldPanel(
+                [
+                    FieldPanel("primary_promo_internal_page"),
+                    FieldPanel("primary_promo_title"),
+                    FieldPanel("primary_promo_image"),
+                    FieldPanel("primary_promo_description"),
+                    FieldPanel("primary_promo_chip"),
+                    FieldPanel("primary_promo_url"),
+                ],
+                heading="Primary promo link",
+            ),
+            FieldPanel("secondary_promos"),
+        ]
+    )
 
     settings_panels = BasePageWithRequiredIntro.settings_panels + [
         InlinePanel("mourning", label="Mourning Notice", max_num=1),
     ]
 
-    api_fields = BasePageWithRequiredIntro.api_fields + HeroImageMixin.api_fields + [
-        APIField("primary_promo_title"),
-        APIField("primary_promo_image"),
-        APIField("primary_promo_description"),
-        APIField("primary_promo_chip"),
-        APIField("primary_promo_url"),
-        APIField("primary_promo_internal_page", serializer=DefaultPageSerializer()),
-        APIField("secondary_promos"),
-    ]
+    api_fields = (
+        BasePageWithRequiredIntro.api_fields
+        + HeroImageMixin.api_fields
+        + [
+            APIField("primary_promo_title"),
+            APIField("primary_promo_image"),
+            APIField("primary_promo_description"),
+            APIField("primary_promo_chip"),
+            APIField("primary_promo_url"),
+            APIField("primary_promo_internal_page", serializer=DefaultPageSerializer()),
+            APIField("secondary_promos"),
+        ]
+    )
 
     max_count = 1
