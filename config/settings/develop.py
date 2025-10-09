@@ -1,6 +1,6 @@
 import os
 
-from .base import *  # noqa: F401, F403
+from .production import *  # noqa: F401, F403
 from .util import strtobool
 
 SENTRY_SAMPLE_RATE = float(os.getenv("SENTRY_SAMPLE_RATE", "1.0"))
@@ -18,7 +18,7 @@ def show_toolbar(request):
 
 
 if DEBUG and strtobool(os.getenv("DEBUG_TOOLBAR_ENABLED", "False")):  # noqa: F405
-    from .base import INSTALLED_APPS, MIDDLEWARE
+    from .production import INSTALLED_APPS, MIDDLEWARE
 
     INSTALLED_APPS += [
         "debug_toolbar",
