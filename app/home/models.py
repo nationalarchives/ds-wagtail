@@ -1,15 +1,15 @@
 from django.conf import settings
 from django.db import models
 from modelcluster.fields import ParentalKey
-from wagtail.admin.panels import FieldPanel, InlinePanel
+from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
 from wagtail.api import APIField
 from wagtail.fields import RichTextField, StreamField
+from wagtail.images import get_image_model_string
 from wagtail.models import Page
 
-from app.core.models import BasePageWithRequiredIntro, HeroImageMixin
 from app.core.blocks import FeaturedPagesBlock
-
-from .blocks import FeaturedItemBlock
+from app.core.models import BasePageWithRequiredIntro, HeroImageMixin
+from app.core.serializers.pages import DefaultPageSerializer
 
 
 class MourningNotice(models.Model):
@@ -27,83 +27,24 @@ class MourningNotice(models.Model):
     ]
 
 
-# class HomePageLinkItem(Orderable):
-#     page = ParentalKey("HomePage", related_name="secondary_promos")
-
-#     title = models.CharField(max_length=255, null=True, blank=True)
-#     image = models.ForeignKey(
-#         get_image_model_string(),
-#         null=True,
-#         blank=True,
-#         on_delete=models.SET_NULL,
-#         related_name="+",
-#     )
-#     description = models.CharField(max_length=255, null=True, blank=True)
-#     chip = models.CharField(max_length=20, null=True, blank=True)
-#     url = models.URLField(verbose_name="URL", blank=True, null=True)
-
-#     internal_page = models.ForeignKey(
-#         "wagtailcore.Page",
-#         null=True,
-#         blank=True,
-#         on_delete=models.SET_NULL,
-#         related_name="+",
-#     )
-
-#     panels = [
-#         FieldPanel("internal_page"),
-#         MultiFieldPanel(
-#             [
-#                 FieldPanel("title"),
-#                 FieldPanel("image"),
-#                 FieldPanel("description"),
-#                 FieldPanel("chip"),
-#                 FieldPanel("url"),
-#             ],
-#             heading="External page details",
-#         ),
-#     ]
-
-#     def clean(self) -> None:
-#         if not self.internal_page and not (
-#             self.url and self.title and self.description and self.chip and self.image
-#         ):
-#             raise ValidationError(
-#                 {
-#                     "internal_page": "You must select an internal page or provide external page details."
-#                 }
-#             )
-#         if self.internal_page and (
-#             self.url
-#             or self.title
-#             or self.description
-#             or self.image
-#             or self.chip
-#             or self.image
-#         ):
-#             raise ValidationError(
-#                 {
-#                     "internal_page": "You can only select an internal page or provide external page details, not both."
-#                 }
-#             )
-#         return super().clean()
-
-#     api_fields = [
-#         APIField("title"),
-#         APIField("image"),
-#         APIField("description"),
-#         APIField("chip"),
-#         APIField("url"),
-#         APIField("internal_page"),
-#     ]
-
-
 class HomePage(HeroImageMixin, BasePageWithRequiredIntro):
-    primary_promo = StreamField(
-        [("primary_promo", FeaturedItemBlock())],
+    primary_promo_title = models.CharField(max_length=255, null=True, blank=True)
+    primary_promo_image = models.ForeignKey(
+        get_image_model_string(),
+        null=True,
         blank=True,
-        max_num=1,
-        verbose_name="Primary promo link",
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+    primary_promo_description = models.CharField(max_length=255, null=True, blank=True)
+    primary_promo_chip = models.CharField(max_length=20, null=True, blank=True)
+    primary_promo_url = models.URLField(verbose_name="URL", blank=True, null=True)
+    primary_promo_internal_page = models.ForeignKey(
+        "wagtailcore.Page",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
     )
 
     secondary_promos = StreamField(
@@ -114,7 +55,17 @@ class HomePage(HeroImageMixin, BasePageWithRequiredIntro):
     )
 
     content_panels = BasePageWithRequiredIntro.content_panels + [
-        FieldPanel("primary_promo"),
+        MultiFieldPanel(
+            [
+                FieldPanel("primary_promo_internal_page"),
+                FieldPanel("primary_promo_title"),
+                FieldPanel("primary_promo_image"),
+                FieldPanel("primary_promo_description"),
+                FieldPanel("primary_promo_chip"),
+                FieldPanel("primary_promo_url"),
+            ],
+            heading="Primary promo link",
+        ),
         FieldPanel("secondary_promos"),
     ]
 
@@ -123,7 +74,13 @@ class HomePage(HeroImageMixin, BasePageWithRequiredIntro):
     ]
 
     api_fields = BasePageWithRequiredIntro.api_fields + [
-        APIField("body"),
+        APIField("primary_promo_title"),
+        APIField("primary_promo_image"),
+        APIField("primary_promo_description"),
+        APIField("primary_promo_chip"),
+        APIField("primary_promo_url"),
+        APIField("primary_promo_internal_page", serializer=DefaultPageSerializer()),
+        APIField("secondary_promos"),
     ]
 
     max_count = 1
