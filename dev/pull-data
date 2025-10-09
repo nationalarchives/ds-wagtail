@@ -12,6 +12,7 @@ gzip -d $DUMP_DIR/$DATABASE_DUMP.gz
 
 echo "Replacing values in the database dump..."
 sed -i -r -e 's/(dev-|staging-)?www.nationalarchives.gov.uk([[:space:]])443/localhost\2443/g' $DUMP_DIR/$DATABASE_DUMP
+sed -i -r -e 's/(dev-|staging-)?wagtail.nationalarchives.gov.uk([[:space:]])443/wagtail.localhost\2443/g' $DUMP_DIR/$DATABASE_DUMP
 
 echo "Starting the db container..."
 docker compose -p ds-wagtail up db -d

@@ -1,6 +1,7 @@
 from datetime import timedelta
 
 from django.db import models
+from django.http import HttpRequest
 from django.utils import timezone
 from django.utils.functional import cached_property
 from django.utils.safestring import mark_safe
@@ -9,6 +10,11 @@ from wagtail.admin.panels import FieldPanel, MultiFieldPanel
 from wagtail.api import APIField
 from wagtail.fields import RichTextField
 from wagtail.images import get_image_model_string
+from wagtail.models import Site
+from wagtail_headless_preview.models import (
+    HeadlessPreviewMixin,
+    get_client_root_url_from_site,
+)
 
 from app.core.serializers import (
     DateTimeSerializer,
@@ -341,3 +347,14 @@ class SocialMixin(models.Model):
             serializer=ImageSerializer("fill-1200x630"),
         ),
     ]
+
+
+class CustomHeadlessPreviewMixin(HeadlessPreviewMixin):
+    def get_client_root_url(self, request: HttpRequest) -> str:
+        """
+        Finds the root URL of the page's site to allow that site's frontend to render the page preview.
+        If the page's site cannot be found, it falls back to the default site defined in settings.
+        """
+        if site := self.get_site():
+            return site.root_url + "/preview/"
+        return get_client_root_url_from_site(Site.find_for_request(request))
