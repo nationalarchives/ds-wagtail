@@ -54,7 +54,7 @@ class HomePage(HeroImageMixin, BasePageWithRequiredIntro):
         verbose_name="Secondary promo links",
     )
 
-    content_panels = BasePageWithRequiredIntro.content_panels + [
+    content_panels = BasePageWithRequiredIntro.content_panels + HeroImageMixin.content_panels + [
         MultiFieldPanel(
             [
                 FieldPanel("primary_promo_internal_page"),
@@ -73,7 +73,7 @@ class HomePage(HeroImageMixin, BasePageWithRequiredIntro):
         InlinePanel("mourning", label="Mourning Notice", max_num=1),
     ]
 
-    api_fields = BasePageWithRequiredIntro.api_fields + [
+    api_fields = BasePageWithRequiredIntro.api_fields + HeroImageMixin.api_fields + [
         APIField("primary_promo_title"),
         APIField("primary_promo_image"),
         APIField("primary_promo_description"),
