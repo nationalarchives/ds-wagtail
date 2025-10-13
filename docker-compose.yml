@@ -4,7 +4,7 @@ services:
       context: .
       args:
         IMAGE: ghcr.io/nationalarchives/tna-python-django-root
-        IMAGE_TAG: preview
+        IMAGE_TAG: 0
     volumes:
       - ./:/app
       - media:/media
