@@ -6,12 +6,17 @@ from django.http import HttpResponsePermanentRedirect
 from django.urls import include, path
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.decorators.cache import never_cache
+from wagtail import hooks
 from wagtail import urls as wagtail_urls
 from wagtail.admin import urls as wagtailadmin_urls
+from wagtail.admin.userbar import AccessibilityItem
+from wagtail.admin.utils import get_admin_base_url
 from wagtail.documents import urls as wagtaildocs_urls
 from wagtail.utils.urlpatterns import decorate_urlpatterns
 
 from app.api.urls import api_router
+
+from .views import UserbarView
 
 
 def redirect_to_live_site(request):
@@ -41,6 +46,7 @@ private_urls = [
     path("api/v2/", api_router.urls),
     path("admin/", include(wagtailadmin_urls)),
     path("wagtail-documents/", include(wagtaildocs_urls)),
+    path("userbar/", UserbarView.as_view(), name="wagtail_userbar"),
 ]
 
 # Update private URLs to use the "never cache" cache settings.
@@ -54,6 +60,32 @@ urlpatterns = (
         path("", include(wagtail_urls)),
     ]
 )
+
+
+class HeadlessAccessibilityItem(AccessibilityItem):
+    def get_axe_spec(self, request):
+        spec = super().get_axe_spec(request)
+        spec["allowedOrigins"] = [
+            (
+                "https://my.headless.site"  # Replace with your frontend URL
+                if self.in_editor
+                else get_admin_base_url()
+            )
+        ]
+        return spec
+
+
+@hooks.register("construct_wagtail_userbar")
+def replace_userbar_accessibility_item(request, items, page):
+    items[:] = [
+        (
+            HeadlessAccessibilityItem(in_editor=item.in_editor)
+            if isinstance(item, AccessibilityItem)
+            else item
+        )
+        for item in items
+    ]
+
 
 if apps.is_installed("debug_toolbar"):
     urlpatterns = [
