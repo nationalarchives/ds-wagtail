@@ -6,23 +6,23 @@ from wagtail.coreutils import find_available_slug
 from wagtail.fields import StreamField
 from wagtail.search import index
 
-from app.core.models import BasePageWithRequiredIntro
+from app.core.models import BasePage, BasePageWithRequiredIntro
 
 from .blocks import AnnexeStreamBlock, RequestStreamBlock, ResponseStreamBlock
 
 
 class FoiIndexPage(BasePageWithRequiredIntro):
     class Meta:
-        verbose_name = "Free of information listing page"
+        verbose_name = "Freedom of information listing page"
 
     max_count = 1
     subpage_types = ["foi.FoiRequestPage"]
 
 
-class FoiRequestPage(BasePageWithRequiredIntro):
+class FoiRequestPage(BasePage):
     class Meta:
-        verbose_name = "Free of information request page"
-        verbose_name_plural = "Free of information request pages"
+        verbose_name = "Freedom of information request page"
+        verbose_name_plural = "Freedom of information request pages"
 
     parent_page_types = ["foi.FoiIndexPage"]
     subpage_types = []
@@ -33,7 +33,7 @@ class FoiRequestPage(BasePageWithRequiredIntro):
         null=True,
     )
 
-    date = models.DateTimeField(
+    date = models.DateField(
         verbose_name="publication date",
         help_text="The date the request was published.",
         null=True,
@@ -68,9 +68,10 @@ class FoiRequestPage(BasePageWithRequiredIntro):
     annexe = StreamField(
         AnnexeStreamBlock,
         null=True,
+        blank=True,
     )
 
-    content_panels = BasePageWithRequiredIntro.content_panels + [
+    content_panels = BasePage.content_panels + [
         MultiFieldPanel(
             heading="Request",
             classname="collapsible",
@@ -85,7 +86,7 @@ class FoiRequestPage(BasePageWithRequiredIntro):
         FieldPanel("annexe"),
     ]
 
-    search_fields = BasePageWithRequiredIntro.search_fields + [
+    search_fields = BasePage.search_fields + [
         index.SearchField("reference"),
         index.SearchField("request"),
         index.SearchField("outcome"),
@@ -93,7 +94,7 @@ class FoiRequestPage(BasePageWithRequiredIntro):
         index.SearchField("annexe"),
     ]
 
-    api_fields = BasePageWithRequiredIntro.api_fields + [
+    api_fields = BasePage.api_fields + [
         APIField("reference"),
         APIField("date"),
         APIField("request"),
@@ -106,5 +107,15 @@ class FoiRequestPage(BasePageWithRequiredIntro):
         if self.reference:
             slug = slugify(self.reference)
             self.slug = find_available_slug(self.get_parent(), slug)
+
+            if not self.short_title:
+                new_short_title = f"FOI request {self.reference}"
+                short_title_max_length = self._meta.get_field("short_title").max_length
+                if len(new_short_title) <= short_title_max_length:
+                    self.short_title = new_short_title
+                else:
+                    self.short_title = (
+                        f"{new_short_title[:short_title_max_length - 3]}..."
+                    )
 
         super().save(*args, **kwargs)

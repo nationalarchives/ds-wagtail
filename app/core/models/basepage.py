@@ -47,7 +47,7 @@ class BasePage(AlertMixin, SocialMixin, CustomHeadlessPreviewMixin, Page):
         help_text=_(
             "A shorter title for use in breadcrumbs and other navigational elements, where applicable."
         ),
-        max_length=30,
+        max_length=46,
         blank=True,
         null=True,
     )
