@@ -14,51 +14,51 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='displaypage',
             name='short_title',
-            field=models.CharField(blank=True, help_text='A shorter title for use in breadcrumbs and other navigational elements, where applicable.', max_length=46, null=True, verbose_name='short title'),
+            field=models.CharField(blank=True, help_text='A shorter title for use in breadcrumbs and other navigational elements, where applicable.', max_length=45, null=True, verbose_name='short title'),
         ),
         migrations.AlterField(
             model_name='eventpage',
             name='short_title',
-            field=models.CharField(blank=True, help_text='A shorter title for use in breadcrumbs and other navigational elements, where applicable.', max_length=46, null=True, verbose_name='short title'),
+            field=models.CharField(blank=True, help_text='A shorter title for use in breadcrumbs and other navigational elements, where applicable.', max_length=45, null=True, verbose_name='short title'),
         ),
         migrations.AlterField(
             model_name='eventslistingpage',
             name='short_title',
-            field=models.CharField(blank=True, help_text='A shorter title for use in breadcrumbs and other navigational elements, where applicable.', max_length=46, null=True, verbose_name='short title'),
+            field=models.CharField(blank=True, help_text='A shorter title for use in breadcrumbs and other navigational elements, where applicable.', max_length=45, null=True, verbose_name='short title'),
         ),
         migrations.AlterField(
             model_name='exhibitionpage',
             name='short_title',
-            field=models.CharField(blank=True, help_text='A shorter title for use in breadcrumbs and other navigational elements, where applicable.', max_length=46, null=True, verbose_name='short title'),
+            field=models.CharField(blank=True, help_text='A shorter title for use in breadcrumbs and other navigational elements, where applicable.', max_length=45, null=True, verbose_name='short title'),
         ),
         migrations.AlterField(
             model_name='exhibitionslistingpage',
             name='short_title',
-            field=models.CharField(blank=True, help_text='A shorter title for use in breadcrumbs and other navigational elements, where applicable.', max_length=46, null=True, verbose_name='short title'),
+            field=models.CharField(blank=True, help_text='A shorter title for use in breadcrumbs and other navigational elements, where applicable.', max_length=45, null=True, verbose_name='short title'),
         ),
         migrations.AlterField(
             model_name='whatsoncategorypage',
             name='short_title',
-            field=models.CharField(blank=True, help_text='A shorter title for use in breadcrumbs and other navigational elements, where applicable.', max_length=46, null=True, verbose_name='short title'),
+            field=models.CharField(blank=True, help_text='A shorter title for use in breadcrumbs and other navigational elements, where applicable.', max_length=45, null=True, verbose_name='short title'),
         ),
         migrations.AlterField(
             model_name='whatsondatelistingpage',
             name='short_title',
-            field=models.CharField(blank=True, help_text='A shorter title for use in breadcrumbs and other navigational elements, where applicable.', max_length=46, null=True, verbose_name='short title'),
+            field=models.CharField(blank=True, help_text='A shorter title for use in breadcrumbs and other navigational elements, where applicable.', max_length=45, null=True, verbose_name='short title'),
         ),
         migrations.AlterField(
             model_name='whatsonlocationlistingpage',
             name='short_title',
-            field=models.CharField(blank=True, help_text='A shorter title for use in breadcrumbs and other navigational elements, where applicable.', max_length=46, null=True, verbose_name='short title'),
+            field=models.CharField(blank=True, help_text='A shorter title for use in breadcrumbs and other navigational elements, where applicable.', max_length=45, null=True, verbose_name='short title'),
         ),
         migrations.AlterField(
             model_name='whatsonpage',
             name='short_title',
-            field=models.CharField(blank=True, help_text='A shorter title for use in breadcrumbs and other navigational elements, where applicable.', max_length=46, null=True, verbose_name='short title'),
+            field=models.CharField(blank=True, help_text='A shorter title for use in breadcrumbs and other navigational elements, where applicable.', max_length=45, null=True, verbose_name='short title'),
         ),
         migrations.AlterField(
             model_name='whatsonseriespage',
             name='short_title',
-            field=models.CharField(blank=True, help_text='A shorter title for use in breadcrumbs and other navigational elements, where applicable.', max_length=46, null=True, verbose_name='short title'),
+            field=models.CharField(blank=True, help_text='A shorter title for use in breadcrumbs and other navigational elements, where applicable.', max_length=45, null=True, verbose_name='short title'),
         ),
     ]

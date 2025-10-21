@@ -14,11 +14,11 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='peopleindexpage',
             name='short_title',
-            field=models.CharField(blank=True, help_text='A shorter title for use in breadcrumbs and other navigational elements, where applicable.', max_length=46, null=True, verbose_name='short title'),
+            field=models.CharField(blank=True, help_text='A shorter title for use in breadcrumbs and other navigational elements, where applicable.', max_length=45, null=True, verbose_name='short title'),
         ),
         migrations.AlterField(
             model_name='personpage',
             name='short_title',
-            field=models.CharField(blank=True, help_text='A shorter title for use in breadcrumbs and other navigational elements, where applicable.', max_length=46, null=True, verbose_name='short title'),
+            field=models.CharField(blank=True, help_text='A shorter title for use in breadcrumbs and other navigational elements, where applicable.', max_length=45, null=True, verbose_name='short title'),
         ),
     ]
