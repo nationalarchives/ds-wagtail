@@ -1,5 +1,3 @@
-from django.urls import path
-from rest_framework.response import Response
 from wagtail.models import PageViewRestriction
 
 from app.api.urls.pages import CustomPagesAPIViewSet
@@ -10,12 +8,8 @@ from app.foi.models import FoiRequestPage
 class FreedomOfInformationRequestsAPIViewSet(CustomPagesAPIViewSet):
     model = FoiRequestPage
 
-    def get_queryset(self):
-        return super().get_queryset().order_by("-date")
-
     def listing_view(self, request):
         queryset = self.get_queryset()
-        # queryset = self.get_queryset().order_by("-date")
 
         # Exclude pages that the user doesn't have access to
         restricted_pages = [
@@ -32,6 +26,6 @@ class FreedomOfInformationRequestsAPIViewSet(CustomPagesAPIViewSet):
         queryset = self.filter_queryset(queryset)
         queryset = self.paginate_queryset(queryset)
         serializer = DefaultPageSerializer(
-            queryset, required_api_fields=["date"], many=True
+            queryset, required_api_fields=["date", "reference"], many=True
         )
         return self.get_paginated_response(serializer.data)
