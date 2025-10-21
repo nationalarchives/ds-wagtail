@@ -113,7 +113,7 @@ class FoiRequestPage(BasePage):
             if slug not in self.slug:
                 self.slug = find_available_slug(self.get_parent(), slug)
 
-            if not self.short_title or self.reference not in self.short_title:
+            if not self.short_title:
                 new_short_title = f"FOI request {self.reference}"
                 short_title_max_length = self._meta.get_field("short_title").max_length
                 if len(new_short_title) <= short_title_max_length:
