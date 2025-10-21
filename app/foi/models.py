@@ -106,7 +106,8 @@ class FoiRequestPage(BasePage):
     def save(self, *args, **kwargs):
         if self.reference:
             slug = slugify(self.reference)
-            self.slug = find_available_slug(self.get_parent(), slug)
+            if slug not in self.slug:
+                self.slug = find_available_slug(self.get_parent(), slug)
 
             if not self.short_title:
                 new_short_title = f"FOI request {self.reference}"
