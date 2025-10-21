@@ -78,7 +78,7 @@ class BasePage(AlertMixin, SocialMixin, CustomHeadlessPreviewMixin, Page):
                 FieldPanel(
                     "slug",
                     help_text=_(
-                        "The name of the page as it will appear at the end of the URL e.g. http://nationalarchives.org.uk/[slug]"
+                        "The name of the page as it will appear at the end of the URL"
                     ),
                     widget=SlugInput,
                 ),
