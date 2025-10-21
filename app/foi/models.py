@@ -28,6 +28,15 @@ class FoiRequestPage(BasePage):
     parent_page_types = ["foi.FoiIndexPage"]
     subpage_types = []
 
+    # Not a required field like in BasePage
+    teaser_text = models.TextField(
+        verbose_name="teaser text",
+        help_text="A short, enticing description of this page. This will appear in promos and under thumbnails around the site.",
+        max_length=160,
+        null=True,
+        blank=True,
+    )
+
     reference = models.CharField(
         verbose_name="request reference",
         max_length=100,
