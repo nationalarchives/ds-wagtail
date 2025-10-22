@@ -117,7 +117,7 @@ class FoiRequestPage(BasePage):
         APIField("annexe"),
     ]
 
-    def clean(self, *args, **kwargs):
+    def save(self, *args, **kwargs):
         if self.reference:
             slug = slugify(self.reference)
             if slug not in self.slug:
@@ -133,4 +133,4 @@ class FoiRequestPage(BasePage):
                         f"{new_short_title[:short_title_max_length - 3]}..."
                     )
 
-        return super().clean(*args, **kwargs)
+        return super().save(*args, **kwargs)
