@@ -66,6 +66,7 @@ class FoiRequestPage(BasePage):
         choices=REQUEST_OUTCOMES,
     )
 
+    @cached_property
     def outcome_description(self):
         return self.REQUEST_OUTCOMES.get(self.outcome, "")
 
