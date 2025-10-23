@@ -9,7 +9,7 @@ class FreedomOfInformationRequestsAPIViewSet(CustomPagesAPIViewSet):
     model = FoiRequestPage
 
     def listing_view(self, request):
-        queryset = self.get_queryset()
+        queryset = self.get_queryset().public()
 
         # Exclude pages that the user doesn't have access to
         restricted_pages = [
