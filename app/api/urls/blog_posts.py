@@ -23,7 +23,7 @@ class BlogPostsAPIViewSet(CustomPagesAPIViewSet):
     model = BlogPostPage
 
     def count_view(self, request):
-        queryset = self.get_queryset()
+        queryset = self.get_queryset().public()
         self.check_query_parameters(queryset)
         queryset = self.filter_queryset(queryset).public()
         years = set(queryset.values_list("published_date__year", flat=True))
@@ -55,7 +55,7 @@ class BlogPostsAPIViewSet(CustomPagesAPIViewSet):
         return Response(years_count)
 
     def author_view(self, request):
-        queryset = self.get_queryset()
+        queryset = self.get_queryset().public()
         self.check_query_parameters(queryset)
         queryset = self.filter_queryset(queryset)
         authors = set(
