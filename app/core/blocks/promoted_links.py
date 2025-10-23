@@ -39,6 +39,12 @@ class FeaturedExternalLinkBlock(blocks.StructBlock):
     Block for featuring a link to an external site.
     """
 
+    supertitle = blocks.CharBlock(
+        label="Supertitle",
+        max_length=20,
+        required=False,
+    )
+
     title = blocks.CharBlock(
         label="Title",
         max_length=100,

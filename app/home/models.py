@@ -6,9 +6,8 @@ from wagtail.api import APIField
 from wagtail.fields import RichTextField, StreamField
 from wagtail.models import Page
 
-from app.core.models import BasePageWithRequiredIntro
-
-from .blocks import HomePageStreamBlock
+from app.core.blocks import FeaturedExternalLinkBlock, FeaturedPageBlock
+from app.core.models import BasePageWithRequiredIntro, RequiredHeroImageMixin
 
 
 class MourningNotice(models.Model):
@@ -26,19 +25,46 @@ class MourningNotice(models.Model):
     ]
 
 
-class HomePage(BasePageWithRequiredIntro):
-    body = StreamField(HomePageStreamBlock, blank=True, null=True)
+class HomePage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
+    primary_promo = secondary_promos = StreamField(
+        [
+            ("featured_page", FeaturedPageBlock()),
+            ("featured_external_link", FeaturedExternalLinkBlock()),
+        ],
+        blank=True,
+        max_num=1,
+        verbose_name="Primary promo link",
+    )
 
-    content_panels = BasePageWithRequiredIntro.content_panels + [
-        FieldPanel("body"),
-    ]
+    secondary_promos = secondary_promos = StreamField(
+        [
+            ("featured_page", FeaturedPageBlock()),
+            ("featured_external_link", FeaturedExternalLinkBlock()),
+        ],
+        blank=True,
+        verbose_name="Secondary promo links",
+    )
+
+    content_panels = (
+        BasePageWithRequiredIntro.content_panels
+        + RequiredHeroImageMixin.content_panels
+        + [
+            FieldPanel("primary_promo"),
+            FieldPanel("secondary_promos"),
+        ]
+    )
 
     settings_panels = BasePageWithRequiredIntro.settings_panels + [
         InlinePanel("mourning", label="Mourning Notice", max_num=1),
     ]
 
-    api_fields = BasePageWithRequiredIntro.api_fields + [
-        APIField("body"),
-    ]
+    api_fields = (
+        BasePageWithRequiredIntro.api_fields
+        + RequiredHeroImageMixin.api_fields
+        + [
+            APIField("primary_promo"),
+            APIField("secondary_promos"),
+        ]
+    )
 
     max_count = 1
