@@ -14,7 +14,7 @@ unzip -o $DUMP_DIR/$MEDIA_DUMP -d $DUMP_DIR/media
 
 echo "Moving media to /media..."
 rm -fR /media/*
-cp -fR $DUMP_DIR/media/* /media/
+cp -fR $DUMP_DIR/media/* /
 
 echo "Setting media permissions..."
 docker compose -p ds-wagtail exec app chmod -fR 777 /media
