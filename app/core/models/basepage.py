@@ -1,5 +1,6 @@
 from django.conf import settings
-from django.core.exceptions import ValidationError
+
+# from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import options
 from django.utils.functional import cached_property
@@ -47,7 +48,7 @@ class BasePage(AlertMixin, SocialMixin, CustomHeadlessPreviewMixin, Page):
         help_text=_(
             "A shorter title for use in breadcrumbs and other navigational elements, where applicable."
         ),
-        max_length=30,
+        max_length=45,
         blank=True,
         null=True,
     )
@@ -78,7 +79,7 @@ class BasePage(AlertMixin, SocialMixin, CustomHeadlessPreviewMixin, Page):
                 FieldPanel(
                     "slug",
                     help_text=_(
-                        "The name of the page as it will appear at the end of the URL e.g. http://nationalarchives.org.uk/[slug]"
+                        "The name of the page as it will appear at the end of the URL"
                     ),
                     widget=SlugInput,
                 ),
@@ -93,12 +94,12 @@ class BasePage(AlertMixin, SocialMixin, CustomHeadlessPreviewMixin, Page):
     class Meta:
         abstract = True
 
-    def clean(self, *args, **kwargs):
-        if self.short_title and len(self.short_title) > len(self.title):
-            raise ValidationError(
-                {"short_title": ["The short title must not be longer than the title."]}
-            )
-        return super().clean(*args, **kwargs)
+    # def clean(self, *args, **kwargs):
+    #     if self.short_title and len(self.short_title) > len(self.title):
+    #         raise ValidationError(
+    #             {"short_title": ["The short title must not be longer than the title."]}
+    #         )
+    #     return super().clean(*args, **kwargs)
 
     @cached_property
     def type_label(cls) -> str:
