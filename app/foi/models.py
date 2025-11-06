@@ -104,6 +104,7 @@ class FoiRequestPage(BasePage):
         for panel in BasePage.promote_panels
         if not (
             (hasattr(panel, "heading") and panel.heading == "Internal data")
+            or (hasattr(panel, "heading") and panel.heading == "For search engines")
             or (hasattr(panel, "field_name") and panel.field_name == "short_title")
         )
     ]
@@ -136,17 +137,13 @@ class FoiRequestPage(BasePage):
             if len(new_short_title) <= short_title_max_length:
                 self.short_title = new_short_title
             else:
-                self.short_title = (
-                    f"{new_short_title[:short_title_max_length - 3]}..."
-                )
+                self.short_title = f"{new_short_title[:short_title_max_length - 3]}..."
 
-            new_teaser_text = f"Freedom of information request: \"{self.title}\""
+            new_teaser_text = f'Freedom of information request: "{self.title}"'
             teaser_text_max_length = self._meta.get_field("teaser_text").max_length
             if len(new_teaser_text) <= teaser_text_max_length:
                 self.teaser_text = new_teaser_text
             else:
-                self.teaser_text = (
-                    f"{new_teaser_text[:teaser_text_max_length - 4]}...\""
-                )
+                self.teaser_text = f'{new_teaser_text[:teaser_text_max_length - 4]}..."'
 
         return super().save(*args, **kwargs)
