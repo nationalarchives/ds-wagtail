@@ -100,13 +100,6 @@ class BasePage(AlertMixin, SocialMixin, CustomHeadlessPreviewMixin, Page):
     class Meta:
         abstract = True
 
-    # def clean(self, *args, **kwargs):
-    #     if self.short_title and len(self.short_title) > len(self.title):
-    #         raise ValidationError(
-    #             {"short_title": ["The short title must not be longer than the title."]}
-    #         )
-    #     return super().clean(*args, **kwargs)
-
     @cached_property
     def type_label(cls) -> str:
         """
