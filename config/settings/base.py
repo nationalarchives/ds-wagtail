@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     "app.ciim",
     "app.collections",
     "app.core",
+    "app.foi",
     "app.highlights",
     "app.home",
     "app.images",

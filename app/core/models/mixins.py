@@ -296,13 +296,6 @@ class SocialMixin(models.Model):
     promote_panels = [
         MultiFieldPanel(
             [
-                FieldPanel("teaser_text"),
-                FieldPanel("teaser_image"),
-            ],
-            heading="Internal data",
-        ),
-        MultiFieldPanel(
-            [
                 FieldPanel(
                     "seo_title",
                     help_text=_(
