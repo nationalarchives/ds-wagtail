@@ -72,7 +72,6 @@ class BasePage(AlertMixin, SocialMixin, CustomHeadlessPreviewMixin, Page):
 
     show_publish_date_in_search_results = False
 
-    # Overriding the default/core help_text set in MetadataPageMixin
     promote_panels = [
         MultiFieldPanel(
             [
@@ -87,6 +86,13 @@ class BasePage(AlertMixin, SocialMixin, CustomHeadlessPreviewMixin, Page):
             _("For search engines"),
         ),
         FieldPanel("short_title"),
+        MultiFieldPanel(
+            [
+                FieldPanel("teaser_text"),
+                FieldPanel("teaser_image"),
+            ],
+            heading="Internal data",
+        ),
     ] + SocialMixin.promote_panels
 
     settings_panels = Page.settings_panels + AlertMixin.settings_panels
