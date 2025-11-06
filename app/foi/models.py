@@ -30,8 +30,6 @@ class FoiRequestPage(BasePage):
 
     # Not a required field like in BasePage
     teaser_text = models.TextField(
-        verbose_name="teaser text",
-        help_text="A short, enticing description of this page. This will appear in promos and under thumbnails around the site.",
         max_length=160,
         null=True,
         blank=True,
@@ -100,6 +98,16 @@ class FoiRequestPage(BasePage):
         FieldPanel("annexe"),
     ]
 
+    # Remove certain promote panels from BasePage as these will be auto-generated
+    promote_panels = [
+        panel
+        for panel in BasePage.promote_panels
+        if not (
+            (hasattr(panel, "heading") and panel.heading == "Internal data")
+            or (hasattr(panel, "field_name") and panel.field_name == "short_title")
+        )
+    ]
+
     search_fields = BasePage.search_fields + [
         index.SearchField("reference"),
         index.SearchField("request"),
@@ -123,14 +131,22 @@ class FoiRequestPage(BasePage):
             if slug not in self.slug:
                 self.slug = find_available_slug(self.get_parent(), slug)
 
+            new_short_title = f"FOI request: {self.reference}"
             short_title_max_length = self._meta.get_field("short_title").max_length
-            if not self.short_title and len(self.title) > short_title_max_length:
-                new_short_title = f"FOI request {self.reference}"
-                if len(new_short_title) <= short_title_max_length:
-                    self.short_title = new_short_title
-                else:
-                    self.short_title = (
-                        f"{new_short_title[:short_title_max_length - 3]}..."
-                    )
+            if len(new_short_title) <= short_title_max_length:
+                self.short_title = new_short_title
+            else:
+                self.short_title = (
+                    f"{new_short_title[:short_title_max_length - 3]}..."
+                )
+
+            new_teaser_text = f"Freedom of information request: \"{self.title}\""
+            teaser_text_max_length = self._meta.get_field("teaser_text").max_length
+            if len(new_teaser_text) <= teaser_text_max_length:
+                self.teaser_text = new_teaser_text
+            else:
+                self.teaser_text = (
+                    f"{new_teaser_text[:teaser_text_max_length - 4]}...\""
+                )
 
         return super().save(*args, **kwargs)
