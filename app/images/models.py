@@ -98,6 +98,7 @@ class CustomImage(ClusterableModel, AbstractImage):
         index.SearchField("transcription", boost=1),
         index.SearchField("translation", boost=1),
         index.SearchField("copyright"),
+        index.FilterField("usage_count"),
     ]
 
     api_fields = [
