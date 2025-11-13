@@ -12,6 +12,8 @@ from app.core.blocks import (
 class ExhibitionPageStreamBlock(blocks.StreamBlock):
     paragraph = ParagraphBlock()
     quote = QuoteBlock()
+    inset_text = InsetTextBlock()
+    sub_heading = SubHeadingBlock()
 
 
 class SectionContentBlock(blocks.StreamBlock):

@@ -89,10 +89,14 @@ class CustomImage(AbstractImage):
         ),
     )
 
+    def usage_count(self):
+        return self.get_usage().count()
+
     search_fields = AbstractImage.search_fields + [
         index.SearchField("transcription", boost=1),
         index.SearchField("translation", boost=1),
         index.SearchField("copyright"),
+        index.FilterField("usage_count"),
     ]
 
     api_fields = [
