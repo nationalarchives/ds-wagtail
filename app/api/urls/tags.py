@@ -27,7 +27,7 @@ class ArticleTagsAPIViewSet(CustomPagesAPIViewSet):
                 .distinct()
             )
             return Response(DefaultPageSerializer(tagged_pages, many=True).data[:limit])
-        return Response(None)
+        return Response({"error": "Not tags parameter specified"}, status=400)
 
     @classmethod
     def get_urlpatterns(cls):
