@@ -17,7 +17,7 @@ class ArticleTagsAPIViewSet(CustomPagesAPIViewSet):
                 return Response({"error": "Invalid limit value"}, status=400)
         else:
             limit = 3
-        if request_tags:
+        if request_tags is not None:
             tag_slugs = request_tags.split(",")
             tagged_pages = (
                 Page.objects.filter(tagged_items__tag__slug__in=tag_slugs)
@@ -27,7 +27,7 @@ class ArticleTagsAPIViewSet(CustomPagesAPIViewSet):
                 .distinct()
             )
             return Response(DefaultPageSerializer(tagged_pages, many=True).data[:limit])
-        return Response({"error": "Not tags parameter specified"}, status=400)
+        return Response({"error": "No tags parameter specified"}, status=400)
 
     @classmethod
     def get_urlpatterns(cls):
