@@ -3,6 +3,7 @@ import uuid
 from django.conf import settings
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from modelcluster.models import ClusterableModel
 from wagtail.api import APIField
 from wagtail.fields import RichTextField
 from wagtail.images.models import AbstractImage, AbstractRendition, Image
@@ -21,7 +22,7 @@ class TranslationHeadingChoices(models.TextChoices):
     MODERN_ENGLISH = "modern-english", _("Modern English")
 
 
-class CustomImage(AbstractImage):
+class CustomImage(ClusterableModel, AbstractImage):
     uuid = models.UUIDField(
         default=uuid.uuid4,
         editable=False,
