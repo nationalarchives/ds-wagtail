@@ -7,6 +7,7 @@ from wagtail.admin.panels import (
     PageChooserPanel,
 )
 from wagtail.api import APIField
+from wagtail.models import Orderable
 
 from app.core.models import (
     BasePageWithRequiredIntro,
@@ -17,7 +18,7 @@ from ..serializers import (
 )
 
 
-class WhatsOnPageSelection(models.Model):
+class WhatsOnPageSelection(Orderable):
     """
     This model is used to select a page to display on the What's On page.
     """
@@ -50,6 +51,7 @@ class WhatsOnPageSelection(models.Model):
 
     class Meta:
         verbose_name = _("selection")
+        ordering = ["sort_order"]
 
 
 class WhatsOnPage(BasePageWithRequiredIntro):
