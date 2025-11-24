@@ -7,7 +7,7 @@ from wagtail.fields import RichTextField, StreamField
 from wagtail.models import Page
 
 from app.core.blocks import FeaturedExternalLinkBlock, FeaturedPageBlock
-from app.core.models import BasePageWithRequiredIntro, RequiredHeroImageMixin
+from app.core.models import BasePageWithRequiredIntro, HeroImageMixin
 
 
 class MourningNotice(models.Model):
@@ -25,7 +25,7 @@ class MourningNotice(models.Model):
     ]
 
 
-class HomePage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
+class HomePage(HeroImageMixin, BasePageWithRequiredIntro):
     primary_promo = secondary_promos = StreamField(
         [
             ("featured_page", FeaturedPageBlock()),
@@ -47,7 +47,7 @@ class HomePage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
 
     content_panels = (
         BasePageWithRequiredIntro.content_panels
-        + RequiredHeroImageMixin.content_panels
+        + HeroImageMixin.content_panels
         + [
             FieldPanel("primary_promo"),
             FieldPanel("secondary_promos"),
@@ -60,7 +60,7 @@ class HomePage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
 
     api_fields = (
         BasePageWithRequiredIntro.api_fields
-        + RequiredHeroImageMixin.api_fields
+        + HeroImageMixin.api_fields
         + [
             APIField("primary_promo"),
             APIField("secondary_promos"),
