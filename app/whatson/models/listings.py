@@ -36,6 +36,7 @@ def get_specific_listings(
     filters: dict | Q = None,
     order_by: str = "start_date",
     exclude: dict = {},
+    reverse: bool = False,
 ) -> list:
     """
     Helper function to get a list of specific pages based on the provided page types, filters, and order by criteria.
@@ -52,9 +53,11 @@ def get_specific_listings(
             queryset = queryset.filter(**(filters or {}))
         else:  # Otherwise assume the filters are a Q object
             queryset = queryset.filter(filters)
-        queryset = queryset.live().public().distinct().order_by(order_by)
+        queryset = queryset.live().public().distinct()
         pages.extend(queryset)
-    return pages
+
+    sorted_pages = sorted(pages, key=lambda x: getattr(x, order_by), reverse=reverse)
+    return sorted_pages
 
 
 class WhatsOnSeriesPage(BasePageWithRequiredIntro):
@@ -535,7 +538,8 @@ class ExhibitionsListingPage(BasePageWithRequiredIntro):
         return get_specific_listings(
             page_types=[ExhibitionPage, DisplayPage],
             filters={"end_date__lt": timezone.now()},
-            order_by="start_date",
+            order_by="end_date",
+            reverse=True,
         )
 
     @cached_property
