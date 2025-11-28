@@ -23,11 +23,6 @@ __pycache__
 # Node
 /node_modules/
 
-# coverage.py
-.coverage
-
-/coverage/
-
 # built docs
 /site/
 
@@ -37,5 +32,3 @@ config/settings/local.py
 # NVM/NPM
 .npm
 .nvm
-
-coverage.xml
