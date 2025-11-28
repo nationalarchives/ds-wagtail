@@ -3,11 +3,9 @@ services:
     build:
       context: .
       args:
-        IMAGE: ghcr.io/nationalarchives/tna-python-django-root
-        IMAGE_TAG: 0
-    volumes:
-      - ./:/app
-      - media:/media
+        IMAGE: ghcr.io/nationalarchives/tna-python-dev
+        # IMAGE_TAG: latest
+        IMAGE_TAG: image-refactor # TEMP: Until new images are merged
     depends_on:
       - db
       - redis
@@ -33,10 +31,12 @@ services:
       - WAGTAILAPI_MEDIA_BASE_URL=https://localhost
       - WAGTAIL_HEADLESS_PREVIEW_URL=https://localhost/preview/
       - REDIS_URL=redis://redis:6379/0
-    env_file:
-      - path: .env
-        required: false
-      
+    volumes:
+      - ./:/app
+      - media:/media
+    healthcheck:
+      start_period: 10s
+      start_interval: 2s
 
   db:
     image: postgres:16.0
@@ -45,24 +45,6 @@ services:
 
   redis:
     image: redis:latest
-
-  dev:
-    image: ghcr.io/nationalarchives/tna-python-dev:preview
-    environment:
-      - DJANGO_SETTINGS_MODULE=config.settings.test
-      - DATABASE_HOST=db
-      - DATABASE_NAME=test
-      - DATABASE_USER=postgres
-      - DATABASE_PASSWORD=postgres
-      - POSTGRES_DB=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-    volumes:
-      - ./:/app
-      - ./dev:/home/app/.local/bin/tasks
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - media:/media
-      - ~/.aws:/home/app/.aws
 
   docs:
     image: squidfunk/mkdocs-material

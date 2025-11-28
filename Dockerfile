@@ -13,4 +13,6 @@ COPY --chown=app . .
 # Install dependencies
 RUN tna-build
 
-CMD ["tna-run", "config.wsgi:application"]
+# RUN tna-clean  # TODO: Enable once the new images have been published
+
+CMD ["tna-wsgi", "config.wsgi:application"]

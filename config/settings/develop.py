@@ -1,7 +1,9 @@
 import os
 
-from .base import *  # noqa: F401, F403
+from .production import *  # noqa: F401, F403
 from .util import strtobool
+
+DEBUG = strtobool(os.getenv("DEBUG", "False"))
 
 SENTRY_SAMPLE_RATE = float(os.getenv("SENTRY_SAMPLE_RATE", "1.0"))
 
@@ -17,18 +19,22 @@ def show_toolbar(request):
     return True
 
 
-if DEBUG and strtobool(os.getenv("DEBUG_TOOLBAR_ENABLED", "False")):  # noqa: F405
-    from .base import INSTALLED_APPS, MIDDLEWARE
+if DEBUG:
+    LOGGING["root"]["level"] = "DEBUG"  # noqa: F405
 
-    INSTALLED_APPS += [
-        "debug_toolbar",
-    ]
+    try:
+        import debug_toolbar  # noqa: F401
 
-    MIDDLEWARE += [
-        "debug_toolbar.middleware.DebugToolbarMiddleware",
-    ]
+        INSTALLED_APPS += [  # noqa: F405
+            "debug_toolbar",
+        ]
 
-    DEBUG_TOOLBAR_CONFIG = {
-        "SHOW_TOOLBAR_CALLBACK": "config.settings.develop.show_toolbar",
-        "RESULTS_CACHE_SIZE": 50,
-    }
+        MIDDLEWARE = [
+            "debug_toolbar.middleware.DebugToolbarMiddleware",
+        ] + MIDDLEWARE  # noqa: F405
+
+        DEBUG_TOOLBAR_CONFIG = {
+            "SHOW_COLLAPSED": True,
+        }
+    except ImportError:
+        pass
