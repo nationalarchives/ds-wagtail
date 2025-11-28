@@ -1,4 +1,6 @@
-from .base import *  # noqa: F401, F403
+from .production import *  # noqa: F401, F403
+
+DEBUG = True
 
 SECRET_KEY = "abc123"
 

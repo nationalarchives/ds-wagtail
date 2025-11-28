@@ -33,12 +33,6 @@ coverage = "~7.6"
 django-extensions = "~3.2"
 responses = "~0.25"
 
-[tool.poetry.group.root]
-optional = true
-
-[tool.poetry.group.root.dependencies]
-django-debug-toolbar = "~5.0"
-
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
@@ -60,3 +54,6 @@ exclude = '''
   | migrations
 )/
 '''
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "config.settings.test"

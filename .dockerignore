@@ -9,9 +9,11 @@
 .github
 .gitignore
 .prettierrc.json
+.pytest_cache
 .venv
 .vscode
 Dockerfile
+LICENCE
 README.md
 babel.config.json
 dev
@@ -23,3 +25,5 @@ media
 mkdocs.yml
 node_modules
 setup.cfg
+docs
+test
