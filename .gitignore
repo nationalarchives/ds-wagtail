@@ -32,3 +32,6 @@ config/settings/local.py
 # NVM/NPM
 .npm
 .nvm
+
+# dumped data from AWS
+dumps
