@@ -3,7 +3,7 @@
     "meta": {
         "type": "people.PeopleIndexPage",
         "detail_url": "WAGTAILAPI_BASE_URL/api/v2/pages/AUTHOR_INDEX_ID/",
-        "html_url": "https://localhost/people/",
+        "html_url": "http://localhost/people/",
         "slug": "people",
         "show_in_menus": false,
         "seo_title": "",
@@ -15,13 +15,13 @@
             "meta": {
                 "type": "home.HomePage",
                 "detail_url": "WAGTAILAPI_BASE_URL/api/v2/pages/3/",
-                "html_url": "https://localhost/"
+                "html_url": "http://localhost/"
             },
             "title": "Home"
         },
         "privacy": "public",
         "last_published_at": null,
-        "url": "https://localhost/people/",
+        "url": "/people/",
         "depth": 3,
         "page_path": "/people/",
         "teaser_text": "Teaser text",
@@ -32,13 +32,13 @@
             "description": "",
             "jpeg": {
                 "url": "/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
-                "full_url": "https://localhost/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                "full_url": "http://localhost/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
                 "width": 100,
                 "height": 68
             },
             "webp": {
                 "url": "/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-70.bgcolor-fff.webp",
-                "full_url": "https://localhost/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-70.bgcolor-fff.webp",
+                "full_url": "http://localhost/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-70.bgcolor-fff.webp",
                 "width": 100,
                 "height": 68
             }
@@ -50,13 +50,13 @@
             "description": "",
             "jpeg": {
                 "url": "/media/images/example.2e16d0ba.fill-512x512.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
-                "full_url": "https://localhost/media/images/example.2e16d0ba.fill-512x512.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                "full_url": "http://localhost/media/images/example.2e16d0ba.fill-512x512.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
                 "width": 100,
                 "height": 100
             },
             "webp": {
                 "url": "/media/images/exampl.2e16d0ba.fill-512x512.format-webp.webpquality-70.bgcolor-fff.webp",
-                "full_url": "https://localhost/media/images/exampl.2e16d0ba.fill-512x512.format-webp.webpquality-70.bgcolor-fff.webp",
+                "full_url": "http://localhost/media/images/exampl.2e16d0ba.fill-512x512.format-webp.webpquality-70.bgcolor-fff.webp",
                 "width": 100,
                 "height": 100
             }
@@ -68,7 +68,7 @@
         "breadcrumbs": [
             {
                 "text": "Home",
-                "href": "https://localhost/"
+                "href": "/"
             }
         ]
     },
@@ -92,8 +92,8 @@
             "title": "author",
             "short_title": null,
             "page_path": "/people/author/",
-            "url": "https://localhost/people/author/",
-            "full_url": "https://localhost/people/author/",
+            "url": "/people/author/",
+            "full_url": "http://localhost/people/author/",
             "type": "people.PersonPage",
             "type_label": null,
             "teaser_text": "Teaser text",
@@ -104,13 +104,13 @@
                 "description": "",
                 "jpeg": {
                     "url": "/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
-                    "full_url": "https://localhost/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                    "full_url": "http://localhost/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
                     "width": 100,
                     "height": 68
                 },
                 "webp": {
                     "url": "/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-70.bgcolor-fff.webp",
-                    "full_url": "https://localhost/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-70.bgcolor-fff.webp",
+                    "full_url": "http://localhost/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-70.bgcolor-fff.webp",
                     "width": 100,
                     "height": 68
                 }
@@ -125,13 +125,13 @@
                 "description": "",
                 "jpeg": {
                     "url": "/media/images/example.2e16d0ba.fill-512x512.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
-                    "full_url": "https://localhost/media/images/example.2e16d0ba.fill-512x512.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                    "full_url": "http://localhost/media/images/example.2e16d0ba.fill-512x512.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
                     "width": 100,
                     "height": 100
                 },
                 "webp": {
                     "url": "/media/images/exampl.2e16d0ba.fill-512x512.format-webp.webpquality-70.bgcolor-fff.webp",
-                    "full_url": "https://localhost/media/images/exampl.2e16d0ba.fill-512x512.format-webp.webpquality-70.bgcolor-fff.webp",
+                    "full_url": "http://localhost/media/images/exampl.2e16d0ba.fill-512x512.format-webp.webpquality-70.bgcolor-fff.webp",
                     "width": 100,
                     "height": 100
                 }
@@ -143,13 +143,13 @@
                 "description": "",
                 "jpeg": {
                     "url": "/media/images/example.2e16d0ba.fill-128x128.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
-                    "full_url": "https://localhost/media/images/example.2e16d0ba.fill-128x128.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                    "full_url": "http://localhost/media/images/example.2e16d0ba.fill-128x128.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
                     "width": 100,
                     "height": 100
                 },
                 "webp": {
                     "url": "/media/images/exampl.2e16d0ba.fill-128x128.format-webp.webpquality-70.bgcolor-fff.webp",
-                    "full_url": "https://localhost/media/images/exampl.2e16d0ba.fill-128x128.format-webp.webpquality-70.bgcolor-fff.webp",
+                    "full_url": "http://localhost/media/images/exampl.2e16d0ba.fill-128x128.format-webp.webpquality-70.bgcolor-fff.webp",
                     "width": 100,
                     "height": 100
                 }

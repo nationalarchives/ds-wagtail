@@ -3,7 +3,7 @@
     "meta": {
         "type": "collections.TopicExplorerPage",
         "detail_url": "WAGTAILAPI_BASE_URL/api/v2/pages/ARTS_ID/",
-        "html_url": "https://localhost/arts/",
+        "html_url": "http://localhost/arts/",
         "slug": "arts",
         "show_in_menus": false,
         "seo_title": "",
@@ -15,13 +15,13 @@
             "meta": {
                 "type": "home.HomePage",
                 "detail_url": "WAGTAILAPI_BASE_URL/api/v2/pages/3/",
-                "html_url": "https://localhost/"
+                "html_url": "http://localhost/"
             },
             "title": "Home"
         },
         "privacy": "public",
         "last_published_at": "2000-01-01T00:00:00Z",
-        "url": "https://localhost/arts/",
+        "url": "/arts/",
         "depth": 3,
         "page_path": "/arts/",
         "teaser_text": "Teaser text",
@@ -32,13 +32,13 @@
             "description": "",
             "jpeg": {
                 "url": "/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
-                "full_url": "https://localhost/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                "full_url": "http://localhost/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
                 "width": 100,
                 "height": 68
             },
             "webp": {
                 "url": "/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-70.bgcolor-fff.webp",
-                "full_url": "https://localhost/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-70.bgcolor-fff.webp",
+                "full_url": "http://localhost/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-70.bgcolor-fff.webp",
                 "width": 100,
                 "height": 68
             }
@@ -50,13 +50,13 @@
             "description": "",
             "jpeg": {
                 "url": "/media/images/example.2e16d0ba.fill-512x512.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
-                "full_url": "https://localhost/media/images/example.2e16d0ba.fill-512x512.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                "full_url": "http://localhost/media/images/example.2e16d0ba.fill-512x512.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
                 "width": 100,
                 "height": 100
             },
             "webp": {
                 "url": "/media/images/exampl.2e16d0ba.fill-512x512.format-webp.webpquality-70.bgcolor-fff.webp",
-                "full_url": "https://localhost/media/images/exampl.2e16d0ba.fill-512x512.format-webp.webpquality-70.bgcolor-fff.webp",
+                "full_url": "http://localhost/media/images/exampl.2e16d0ba.fill-512x512.format-webp.webpquality-70.bgcolor-fff.webp",
                 "width": 100,
                 "height": 100
             }
@@ -68,7 +68,7 @@
         "breadcrumbs": [
             {
                 "text": "Home",
-                "href": "https://localhost/"
+                "href": "/"
             }
         ]
     },
@@ -89,13 +89,13 @@
         "description": "",
         "jpeg": {
             "url": "/media/images/exampl.2e16d0ba.fill-1800x720.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
-            "full_url": "https://localhost/media/images/exampl.2e16d0ba.fill-1800x720.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+            "full_url": "http://localhost/media/images/exampl.2e16d0ba.fill-1800x720.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
             "width": 100,
             "height": 40
         },
         "webp": {
             "url": "/media/images/examp.2e16d0ba.fill-1800x720.format-webp.webpquality-70.bgcolor-fff.webp",
-            "full_url": "https://localhost/media/images/examp.2e16d0ba.fill-1800x720.format-webp.webpquality-70.bgcolor-fff.webp",
+            "full_url": "http://localhost/media/images/examp.2e16d0ba.fill-1800x720.format-webp.webpquality-70.bgcolor-fff.webp",
             "width": 100,
             "height": 40
         },
@@ -110,13 +110,13 @@
         "description": "",
         "jpeg": {
             "url": "/media/images/example.2e16d0ba.fill-900x600.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
-            "full_url": "https://localhost/media/images/example.2e16d0ba.fill-900x600.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+            "full_url": "http://localhost/media/images/example.2e16d0ba.fill-900x600.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
             "width": 100,
             "height": 68
         },
         "webp": {
             "url": "/media/images/exampl.2e16d0ba.fill-900x600.format-webp.webpquality-70.bgcolor-fff.webp",
-            "full_url": "https://localhost/media/images/exampl.2e16d0ba.fill-900x600.format-webp.webpquality-70.bgcolor-fff.webp",
+            "full_url": "http://localhost/media/images/exampl.2e16d0ba.fill-900x600.format-webp.webpquality-70.bgcolor-fff.webp",
             "width": 100,
             "height": 68
         },
@@ -132,8 +132,8 @@
             "title": "record_article",
             "short_title": null,
             "page_path": "/article_index/record_article/",
-            "url": "https://localhost/article_index/record_article/",
-            "full_url": "https://localhost/article_index/record_article/",
+            "url": "/article_index/record_article/",
+            "full_url": "http://localhost/article_index/record_article/",
             "type": "articles.RecordArticlePage",
             "type_label": "Record revealed",
             "teaser_text": "Teaser text",
@@ -144,13 +144,13 @@
                 "description": "",
                 "jpeg": {
                     "url": "/media/images/image.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
-                    "full_url": "https://localhost/media/images/image.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                    "full_url": "http://localhost/media/images/image.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
                     "width": 100,
                     "height": 68
                 },
                 "webp": {
                     "url": "/media/images/image.fill-600x400.format-webp.webpquality-70.bgcolor-fff.webp",
-                    "full_url": "https://localhost/media/images/image.fill-600x400.format-webp.webpquality-70.bgcolor-fff.webp",
+                    "full_url": "http://localhost/media/images/image.fill-600x400.format-webp.webpquality-70.bgcolor-fff.webp",
                     "width": 100,
                     "height": 68
                 }
@@ -164,8 +164,8 @@
             "title": "focused_article",
             "short_title": null,
             "page_path": "/article_index/focused_article/",
-            "url": "https://localhost/article_index/focused_article/",
-            "full_url": "https://localhost/article_index/focused_article/",
+            "url": "/article_index/focused_article/",
+            "full_url": "http://localhost/article_index/focused_article/",
             "type": "articles.FocusedArticlePage",
             "type_label": "Focus on",
             "teaser_text": "Teaser text",
@@ -176,13 +176,13 @@
                 "description": "",
                 "jpeg": {
                     "url": "/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
-                    "full_url": "https://localhost/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                    "full_url": "http://localhost/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
                     "width": 100,
                     "height": 68
                 },
                 "webp": {
                     "url": "/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-70.bgcolor-fff.webp",
-                    "full_url": "https://localhost/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-70.bgcolor-fff.webp",
+                    "full_url": "http://localhost/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-70.bgcolor-fff.webp",
                     "width": 100,
                     "height": 68
                 }
@@ -196,8 +196,8 @@
             "title": "article",
             "short_title": null,
             "page_path": "/article_index/article/",
-            "url": "https://localhost/article_index/article/",
-            "full_url": "https://localhost/article_index/article/",
+            "url": "/article_index/article/",
+            "full_url": "http://localhost/article_index/article/",
             "type": "articles.ArticlePage",
             "type_label": "The story of",
             "teaser_text": "Teaser text",
@@ -208,13 +208,13 @@
                 "description": "",
                 "jpeg": {
                     "url": "/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
-                    "full_url": "https://localhost/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                    "full_url": "http://localhost/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
                     "width": 100,
                     "height": 68
                 },
                 "webp": {
                     "url": "/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-70.bgcolor-fff.webp",
-                    "full_url": "https://localhost/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-70.bgcolor-fff.webp",
+                    "full_url": "http://localhost/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-70.bgcolor-fff.webp",
                     "width": 100,
                     "height": 68
                 }
@@ -230,8 +230,8 @@
             "title": "highlight_gallery",
             "short_title": null,
             "page_path": "/arts/highlight_gallery/",
-            "url": "https://localhost/arts/highlight_gallery/",
-            "full_url": "https://localhost/arts/highlight_gallery/",
+            "url": "/arts/highlight_gallery/",
+            "full_url": "http://localhost/arts/highlight_gallery/",
             "type": "collections.HighlightGalleryPage",
             "type_label": "In pictures",
             "teaser_text": "Teaser text",
@@ -242,13 +242,13 @@
                 "description": "",
                 "jpeg": {
                     "url": "/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
-                    "full_url": "https://localhost/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                    "full_url": "http://localhost/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
                     "width": 100,
                     "height": 68
                 },
                 "webp": {
                     "url": "/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-70.bgcolor-fff.webp",
-                    "full_url": "https://localhost/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-70.bgcolor-fff.webp",
+                    "full_url": "http://localhost/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-70.bgcolor-fff.webp",
                     "width": 100,
                     "height": 68
                 }

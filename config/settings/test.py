@@ -7,9 +7,9 @@ DEBUG = True
 
 SECRET_KEY = "abc123"
 
-WAGTAILADMIN_BASE_URL = "https://localhost"
-WAGTAILAPI_IMAGES_BASE_URL = "https://localhost"
-WAGTAILAPI_MEDIA_BASE_URL = "https://localhost"
+WAGTAILADMIN_BASE_URL = "http://localhost"
+WAGTAILAPI_IMAGES_BASE_URL = "http://localhost"
+WAGTAILAPI_MEDIA_BASE_URL = "http://localhost"
 
 ALLOWED_HOSTS = ["*"]
 
@@ -27,7 +27,7 @@ DATABASES = {
 
 STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
 
-ROSETTA_API_URL = "https://rosetta.test/data"
+ROSETTA_API_URL = "http://rosetta.test/data"
 
 RECORD_DETAILS_CACHE_TIMEOUT = 0
 
