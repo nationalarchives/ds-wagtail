@@ -3,7 +3,7 @@
     "meta": {
         "type": "articles.ArticleIndexPage",
         "detail_url": "WAGTAILAPI_BASE_URL/api/v2/pages/ARTICLE_INDEX_ID/",
-        "html_url": "http://localhost/article_index/",
+        "html_url": "https://localhost/article_index/",
         "slug": "article_index",
         "show_in_menus": false,
         "seo_title": "",
@@ -15,13 +15,13 @@
             "meta": {
                 "type": "home.HomePage",
                 "detail_url": "WAGTAILAPI_BASE_URL/api/v2/pages/HOME_PAGE_ID/",
-                "html_url": "http://localhost/"
+                "html_url": "https://localhost/"
             },
             "title": "Home"
         },
         "privacy": "public",
         "last_published_at": "2000-01-01T00:00:00Z",
-        "url": "/article_index/",
+        "url": "https://localhost/article_index/",
         "depth": 3,
         "page_path": "/article_index/",
         "teaser_text": "Teaser text",
@@ -32,13 +32,13 @@
             "description": "",
             "jpeg": {
                 "url": "/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
-                "full_url": "http://localhost/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                "full_url": "https://localhost/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
                 "width": 100,
                 "height": 68
             },
             "webp": {
                 "url": "/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-70.bgcolor-fff.webp",
-                "full_url": "http://localhost/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-70.bgcolor-fff.webp",
+                "full_url": "https://localhost/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-70.bgcolor-fff.webp",
                 "width": 100,
                 "height": 68
             }
@@ -50,13 +50,13 @@
             "description": "",
             "jpeg": {
                 "url": "/media/images/example.2e16d0ba.fill-512x512.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
-                "full_url": "http://localhost/media/images/example.2e16d0ba.fill-512x512.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                "full_url": "https://localhost/media/images/example.2e16d0ba.fill-512x512.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
                 "width": 100,
                 "height": 100
             },
             "webp": {
                 "url": "/media/images/exampl.2e16d0ba.fill-512x512.format-webp.webpquality-70.bgcolor-fff.webp",
-                "full_url": "http://localhost/media/images/exampl.2e16d0ba.fill-512x512.format-webp.webpquality-70.bgcolor-fff.webp",
+                "full_url": "https://localhost/media/images/exampl.2e16d0ba.fill-512x512.format-webp.webpquality-70.bgcolor-fff.webp",
                 "width": 100,
                 "height": 100
             }
@@ -68,7 +68,7 @@
         "breadcrumbs": [
             {
                 "text": "Home",
-                "href": "/"
+                "href": "https://localhost/"
             }
         ]
     },
@@ -86,8 +86,8 @@
         "title": "article",
         "short_title": null,
         "page_path": "/article_index/article/",
-        "url": "/article_index/article/",
-        "full_url": "http://localhost/article_index/article/",
+        "url": "https://localhost/article_index/article/",
+        "full_url": "https://localhost/article_index/article/",
         "type": "articles.ArticlePage",
         "type_label": "The story of",
         "teaser_text": "Teaser text",
@@ -98,13 +98,13 @@
             "description": "",
             "jpeg": {
                 "url": "/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
-                "full_url": "http://localhost/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                "full_url": "https://localhost/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
                 "width": 100,
                 "height": 68
             },
             "webp": {
                 "url": "/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-70.bgcolor-fff.webp",
-                "full_url": "http://localhost/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-70.bgcolor-fff.webp",
+                "full_url": "https://localhost/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-70.bgcolor-fff.webp",
                 "width": 100,
                 "height": 68
             }
@@ -125,8 +125,8 @@
                         "title": "article",
                         "short_title": null,
                         "page_path": "/article_index/article/",
-                        "url": "/article_index/article/",
-                        "full_url": "http://localhost/article_index/article/",
+                        "url": "https://localhost/article_index/article/",
+                        "full_url": "https://localhost/article_index/article/",
                         "type": "articles.ArticlePage",
                         "type_label": "The story of",
                         "teaser_text": "Teaser text",
@@ -137,13 +137,13 @@
                             "description": "",
                             "jpeg": {
                                 "url": "/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
-                                "full_url": "http://localhost/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                                "full_url": "https://localhost/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
                                 "width": 100,
                                 "height": 68
                             },
                             "webp": {
                                 "url": "/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-70.bgcolor-fff.webp",
-                                "full_url": "http://localhost/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-70.bgcolor-fff.webp",
+                                "full_url": "https://localhost/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-70.bgcolor-fff.webp",
                                 "width": 100,
                                 "height": 68
                             }
@@ -157,8 +157,8 @@
                         "title": "focused_article",
                         "short_title": null,
                         "page_path": "/article_index/focused_article/",
-                        "url": "/article_index/focused_article/",
-                        "full_url": "http://localhost/article_index/focused_article/",
+                        "url": "https://localhost/article_index/focused_article/",
+                        "full_url": "https://localhost/article_index/focused_article/",
                         "type": "articles.FocusedArticlePage",
                         "type_label": "Focus on",
                         "teaser_text": "Teaser text",
@@ -169,13 +169,13 @@
                             "description": "",
                             "jpeg": {
                                 "url": "/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
-                                "full_url": "http://localhost/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                                "full_url": "https://localhost/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
                                 "width": 100,
                                 "height": 68
                             },
                             "webp": {
                                 "url": "/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-70.bgcolor-fff.webp",
-                                "full_url": "http://localhost/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-70.bgcolor-fff.webp",
+                                "full_url": "https://localhost/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-70.bgcolor-fff.webp",
                                 "width": 100,
                                 "height": 68
                             }

@@ -13,22 +13,27 @@ class TestArticlePageSimilarItems(TestCase):
             title="Original", intro="test", teaser_text="test"
         )
         root.add_child(instance=self.original_page)
+
         self.untagged_page = ArticlePage(
             title="Untagged", intro="test", teaser_text="test"
         )
         root.add_child(instance=self.untagged_page)
-        self.single_match_page = ArticlePage(
-            title="Single", intro="test", teaser_text="test"
-        )
-        root.add_child(instance=self.single_match_page)
-        self.two_matches_page = ArticlePage(
-            title="Two", intro="test", teaser_text="test"
-        )
-        root.add_child(instance=self.two_matches_page)
+
         self.three_matches_page = ArticlePage(
             title="Three", intro="test", teaser_text="test"
         )
         root.add_child(instance=self.three_matches_page)
+
+        self.two_matches_page = ArticlePage(
+            title="Two", intro="test", teaser_text="test"
+        )
+        root.add_child(instance=self.two_matches_page)
+
+        self.single_match_page = ArticlePage(
+            title="Single", intro="test", teaser_text="test"
+        )
+        root.add_child(instance=self.single_match_page)
+
         self.draft_page = ArticlePage(
             title="Draft", intro="test", teaser_text="test", live=False
         )
@@ -110,26 +115,32 @@ class TestFocusedArticlePageSimilarItems(TestCase):
             title="Original", intro="test", teaser_text="test"
         )
         root.add_child(instance=self.original_page)
+
         self.untagged_page = FocusedArticlePage(
             title="Untagged", intro="test", teaser_text="test"
         )
         root.add_child(instance=self.untagged_page)
-        self.single_match_page = FocusedArticlePage(
-            title="Single", intro="test", teaser_text="test"
-        )
-        root.add_child(instance=self.single_match_page)
-        self.two_matches_page = FocusedArticlePage(
-            title="Two", intro="test", teaser_text="test"
-        )
-        root.add_child(instance=self.two_matches_page)
+
         self.three_matches_page = FocusedArticlePage(
             title="Three", intro="test", teaser_text="test"
         )
         root.add_child(instance=self.three_matches_page)
+
+        self.two_matches_page = FocusedArticlePage(
+            title="Two", intro="test", teaser_text="test"
+        )
+        root.add_child(instance=self.two_matches_page)
+
+        self.single_match_page = FocusedArticlePage(
+            title="Single", intro="test", teaser_text="test"
+        )
+        root.add_child(instance=self.single_match_page)
+
         self.draft_page = FocusedArticlePage(
             title="Draft", intro="test", teaser_text="test", live=False
         )
         root.add_child(instance=self.draft_page)
+
         self.different_tags_page = FocusedArticlePage(
             title="Different", intro="test", teaser_text="test"
         )

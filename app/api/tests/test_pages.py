@@ -55,6 +55,8 @@ class APIResponseTest(WagtailPageTestCase):
     @classmethod
     def setUpTestData(self):
         self.root_page = Site.objects.get().root_page
+        self.root_page.host_name = "localhost"
+        self.root_page.port = 443
         self.root_page.mourning = [
             MourningNotice.objects.create(
                 title="Test title",

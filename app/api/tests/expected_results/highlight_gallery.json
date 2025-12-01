@@ -3,7 +3,7 @@
     "meta": {
         "type": "collections.HighlightGalleryPage",
         "detail_url": "WAGTAILAPI_BASE_URL/api/v2/pages/HIGHLIGHT_GALLERY_ID/",
-        "html_url": "http://localhost/arts/highlight_gallery/",
+        "html_url": "https://localhost/arts/highlight_gallery/",
         "slug": "highlight_gallery",
         "show_in_menus": false,
         "seo_title": "",
@@ -15,13 +15,13 @@
             "meta": {
                 "type": "collections.TopicExplorerPage",
                 "detail_url": "WAGTAILAPI_BASE_URL/api/v2/pages/ARTS_ID/",
-                "html_url": "http://localhost/arts/"
+                "html_url": "https://localhost/arts/"
             },
             "title": "arts"
         },
         "privacy": "public",
         "last_published_at": "2000-01-03T00:00:00Z",
-        "url": "/arts/highlight_gallery/",
+        "url": "https://localhost/arts/highlight_gallery/",
         "depth": 4,
         "page_path": "/arts/highlight_gallery/",
         "teaser_text": "Teaser text",
@@ -32,13 +32,13 @@
             "description": "",
             "jpeg": {
                 "url": "/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
-                "full_url": "http://localhost/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                "full_url": "https://localhost/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
                 "width": 100,
                 "height": 68
             },
             "webp": {
                 "url": "/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-70.bgcolor-fff.webp",
-                "full_url": "http://localhost/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-70.bgcolor-fff.webp",
+                "full_url": "https://localhost/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-70.bgcolor-fff.webp",
                 "width": 100,
                 "height": 68
             }
@@ -50,13 +50,13 @@
             "description": "",
             "jpeg": {
                 "url": "/media/images/example.2e16d0ba.fill-512x512.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
-                "full_url": "http://localhost/media/images/example.2e16d0ba.fill-512x512.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                "full_url": "https://localhost/media/images/example.2e16d0ba.fill-512x512.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
                 "width": 100,
                 "height": 100
             },
             "webp": {
                 "url": "/media/images/exampl.2e16d0ba.fill-512x512.format-webp.webpquality-70.bgcolor-fff.webp",
-                "full_url": "http://localhost/media/images/exampl.2e16d0ba.fill-512x512.format-webp.webpquality-70.bgcolor-fff.webp",
+                "full_url": "https://localhost/media/images/exampl.2e16d0ba.fill-512x512.format-webp.webpquality-70.bgcolor-fff.webp",
                 "width": 100,
                 "height": 100
             }
@@ -68,11 +68,11 @@
         "breadcrumbs": [
             {
                 "text": "Home",
-                "href": "/"
+                "href": "https://localhost/"
             },
             {
                 "text": "arts",
-                "href": "/arts/"
+                "href": "https://localhost/arts/"
             }
         ]
     },
@@ -91,8 +91,8 @@
         "title": "article",
         "short_title": null,
         "page_path": "/article_index/article/",
-        "url": "/article_index/article/",
-        "full_url": "http://localhost/article_index/article/",
+        "url": "https://localhost/article_index/article/",
+        "full_url": "https://localhost/article_index/article/",
         "type": "articles.ArticlePage",
         "type_label": "The story of",
         "teaser_text": "Teaser text",
@@ -103,13 +103,13 @@
             "description": "",
             "jpeg": {
                 "url": "/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
-                "full_url": "http://localhost/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                "full_url": "https://localhost/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
                 "width": 100,
                 "height": 68
             },
             "webp": {
                 "url": "/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-70.bgcolor-fff.webp",
-                "full_url": "http://localhost/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-70.bgcolor-fff.webp",
+                "full_url": "https://localhost/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-70.bgcolor-fff.webp",
                 "width": 100,
                 "height": 68
             }
@@ -128,13 +128,13 @@
                 "description": "Some alt text",
                 "jpeg": {
                     "url": "/media/images/example_E1PUN8.max-1024x1024.format-jpeg.jpegquality-60.jpg",
-                    "full_url": "http://localhost/media/images/example_E1PUN8.max-1024x1024.format-jpeg.jpegquality-60.jpg",
+                    "full_url": "https://localhost/media/images/example_E1PUN8.max-1024x1024.format-jpeg.jpegquality-60.jpg",
                     "width": 100,
                     "height": 100
                 },
                 "webp": {
                     "url": "/media/images/example_E1PUN8.max-1024x1024.format-webp.webpquality-70.webp",
-                    "full_url": "http://localhost/media/images/example_E1PUN8.max-1024x1024.format-webp.webpquality-70.webp",
+                    "full_url": "https://localhost/media/images/example_E1PUN8.max-1024x1024.format-webp.webpquality-70.webp",
                     "width": 100,
                     "height": 100
                 },
@@ -166,13 +166,13 @@
                 "description": "Some alt text",
                 "jpeg": {
                     "url": "/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
-                    "full_url": "http://localhost/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                    "full_url": "https://localhost/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
                     "width": 100,
                     "height": 68
                 },
                 "webp": {
                     "url": "/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-70.bgcolor-fff.webp",
-                    "full_url": "http://localhost/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-70.bgcolor-fff.webp",
+                    "full_url": "https://localhost/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-70.bgcolor-fff.webp",
                     "width": 100,
                     "height": 68
                 }
@@ -185,8 +185,8 @@
             "title": "arts",
             "short_title": null,
             "page_path": "/arts/",
-            "url": "/arts/",
-            "full_url": "http://localhost/arts/",
+            "url": "https://localhost/arts/",
+            "full_url": "https://localhost/arts/",
             "type": "collections.TopicExplorerPage",
             "type_label": "Explore the collection",
             "teaser_text": "Teaser text",
@@ -197,13 +197,13 @@
                 "description": "",
                 "jpeg": {
                     "url": "/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
-                    "full_url": "http://localhost/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                    "full_url": "https://localhost/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
                     "width": 100,
                     "height": 68
                 },
                 "webp": {
                     "url": "/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-70.bgcolor-fff.webp",
-                    "full_url": "http://localhost/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-70.bgcolor-fff.webp",
+                    "full_url": "https://localhost/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-70.bgcolor-fff.webp",
                     "width": 100,
                     "height": 68
                 }
@@ -218,8 +218,8 @@
             "title": "early_modern",
             "short_title": null,
             "page_path": "/early_modern/",
-            "url": "/early_modern/",
-            "full_url": "http://localhost/early_modern/",
+            "url": "https://localhost/early_modern/",
+            "full_url": "https://localhost/early_modern/",
             "type": "collections.TimePeriodExplorerPage",
             "type_label": "Explore the collection",
             "teaser_text": "Teaser text",
@@ -230,13 +230,13 @@
                 "description": "",
                 "jpeg": {
                     "url": "/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
-                    "full_url": "http://localhost/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                    "full_url": "https://localhost/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
                     "width": 100,
                     "height": 68
                 },
                 "webp": {
                     "url": "/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-70.bgcolor-fff.webp",
-                    "full_url": "http://localhost/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-70.bgcolor-fff.webp",
+                    "full_url": "https://localhost/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-70.bgcolor-fff.webp",
                     "width": 100,
                     "height": 68
                 }
