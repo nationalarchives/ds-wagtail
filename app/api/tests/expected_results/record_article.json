@@ -97,9 +97,9 @@
     "date_text": "Date text",
     "about": "<p>About this record</p>",
     "record": {
-        "title": "Test record title",
+        "title": "[unknown]",
         "iaid": "C4761957",
-        "reference_number": "TEST 1/2/3"
+        "reference_number": "[unknown]"
     },
     "gallery_heading": "Gallery heading",
     "gallery_items": [],
