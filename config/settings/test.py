@@ -4,9 +4,9 @@ DEBUG = True
 
 SECRET_KEY = "abc123"
 
-WAGTAILADMIN_BASE_URL = "https://www.nationalarchives.gov.uk"
-WAGTAILAPI_IMAGES_BASE_URL = "https://www.nationalarchives.gov.uk"
-WAGTAILAPI_MEDIA_BASE_URL = "https://www.nationalarchives.gov.uk"
+WAGTAILADMIN_BASE_URL = "http://localhost"
+WAGTAILAPI_IMAGES_BASE_URL = "http://localhost"
+WAGTAILAPI_MEDIA_BASE_URL = "http://localhost"
 
 ALLOWED_HOSTS = ["*"]
 

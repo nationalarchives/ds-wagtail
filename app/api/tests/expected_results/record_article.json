@@ -32,13 +32,13 @@
             "description": "",
             "jpeg": {
                 "url": "/media/images/image.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
-                "full_url": "https://www.nationalarchives.gov.uk//media/images/image.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                "full_url": "http://localhost/media/images/image.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
                 "width": 100,
                 "height": 68
             },
             "webp": {
                 "url": "/media/images/image.fill-600x400.format-webp.webpquality-70.bgcolor-fff.webp",
-                "full_url": "https://www.nationalarchives.gov.uk//media/images/image.fill-600x400.format-webp.webpquality-70.bgcolor-fff.webp",
+                "full_url": "http://localhost/media/images/image.fill-600x400.format-webp.webpquality-70.bgcolor-fff.webp",
                 "width": 100,
                 "height": 68
             }
@@ -50,13 +50,13 @@
             "description": "",
             "jpeg": {
                 "url": "/media/images/image.fill-512x512.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
-                "full_url": "https://www.nationalarchives.gov.uk//media/images/image.fill-512x512.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                "full_url": "http://localhost/media/images/image.fill-512x512.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
                 "width": 100,
                 "height": 100
             },
             "webp": {
                 "url": "/media/images/image.fill-512x512.format-webp.webpquality-70.bgcolor-fff.webp",
-                "full_url": "https://www.nationalarchives.gov.uk//media/images/image.fill-512x512.format-webp.webpquality-70.bgcolor-fff.webp",
+                "full_url": "http://localhost/media/images/image.fill-512x512.format-webp.webpquality-70.bgcolor-fff.webp",
                 "width": 100,
                 "height": 100
             }
@@ -97,9 +97,9 @@
     "date_text": "Date text",
     "about": "<p>About this record</p>",
     "record": {
-        "title": "[unknown]",
+        "title": "Test record title",
         "iaid": "C4761957",
-        "reference_number": "[unknown]"
+        "reference_number": "TEST 1/2/3"
     },
     "gallery_heading": "Gallery heading",
     "gallery_items": [],
@@ -114,13 +114,13 @@
         "description": "",
         "jpeg": {
             "url": "/media/images/image.width-400.format-jpeg.jpegquality-60.jpg",
-            "full_url": "https://www.nationalarchives.gov.uk//media/images/image.width-400.format-jpeg.jpegquality-60.jpg",
+            "full_url": "http://localhost/media/images/image.width-400.format-jpeg.jpegquality-60.jpg",
             "width": 100,
             "height": 100
         },
         "webp": {
             "url": "/media/images/image.width-400.format-webp.webpquality-70.webp",
-            "full_url": "https://www.nationalarchives.gov.uk//media/images/image.width-400.format-webp.webpquality-70.webp",
+            "full_url": "http://localhost/media/images/image.width-400.format-webp.webpquality-70.webp",
             "width": 100,
             "height": 100
         }
@@ -132,7 +132,7 @@
             "short_title": null,
             "page_path": "/arts/",
             "url": "/arts/",
-            "full_url": "https://www.nationalarchives.gov.uk//arts/",
+            "full_url": "http://localhost/arts/",
             "type": "collections.TopicExplorerPage",
             "type_label": "Explore the collection",
             "teaser_text": "Teaser text",
@@ -143,13 +143,13 @@
                 "description": "",
                 "jpeg": {
                     "url": "/media/images/image.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
-                    "full_url": "https://www.nationalarchives.gov.uk//media/images/image.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                    "full_url": "http://localhost/media/images/image.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
                     "width": 100,
                     "height": 68
                 },
                 "webp": {
                     "url": "/media/images/image.fill-600x400.format-webp.webpquality-70.bgcolor-fff.webp",
-                    "full_url": "https://www.nationalarchives.gov.uk//media/images/image.fill-600x400.format-webp.webpquality-70.bgcolor-fff.webp",
+                    "full_url": "http://localhost/media/images/image.fill-600x400.format-webp.webpquality-70.bgcolor-fff.webp",
                     "width": 100,
                     "height": 68
                 }
@@ -165,7 +165,7 @@
             "short_title": null,
             "page_path": "/early_modern/",
             "url": "/early_modern/",
-            "full_url": "https://www.nationalarchives.gov.uk//early_modern/",
+            "full_url": "http://localhost/early_modern/",
             "type": "collections.TimePeriodExplorerPage",
             "type_label": "Explore the collection",
             "teaser_text": "Teaser text",
@@ -176,13 +176,13 @@
                 "description": "",
                 "jpeg": {
                     "url": "/media/images/image.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
-                    "full_url": "https://www.nationalarchives.gov.uk//media/images/image.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                    "full_url": "http://localhost/media/images/image.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
                     "width": 100,
                     "height": 68
                 },
                 "webp": {
                     "url": "/media/images/image.fill-600x400.format-webp.webpquality-70.bgcolor-fff.webp",
-                    "full_url": "https://www.nationalarchives.gov.uk//media/images/image.fill-600x400.format-webp.webpquality-70.bgcolor-fff.webp",
+                    "full_url": "http://localhost/media/images/image.fill-600x400.format-webp.webpquality-70.bgcolor-fff.webp",
                     "width": 100,
                     "height": 68
                 }
