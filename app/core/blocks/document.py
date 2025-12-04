@@ -23,7 +23,6 @@ class DocumentBlock(blocks.StructBlock):
                 "pretty_file_size": file.pretty_file_size,
                 "type": file.file_extension,
                 "extent": file.extent,
-                "file_location": file.file.url,
                 "url": file.url,
             }
 
