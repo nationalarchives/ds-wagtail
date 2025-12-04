@@ -5,6 +5,8 @@ set -e
 SCRIPTDIR=$(dirname $0)
 . $SCRIPTDIR/pre-pull
 
+DATABASE_DUMP="$ENVIRONMENT-$(date +%s)-db.sql"
+
 echo "Pulling database snapshot..."
 aws s3 cp s3://ds-$ENVIRONMENT-database-backups/etna/$(aws s3 ls s3://ds-$ENVIRONMENT-database-backups/etna/ | awk '{print $2}' | sort -r | head -n1 | tr -d '/')/etna_backup.sql.gz $DUMP_DIR/$DATABASE_DUMP.gz
 

@@ -8,20 +8,19 @@ SCRIPTDIR=$(dirname $0)
 MEDIA_DUMP="media.zip"
 
 echo "Downloading zipped media..."
-# aws s3 cp s3://ds-$ENVIRONMENT-deployment-source/wagtail-content/$(aws s3 ls s3://ds-$ENVIRONMENT-deployment-source/wagtail-content/ | sort | tail -n 1 | awk '{print $4}') $DUMP_DIR/$MEDIA_DUMP
-
-echo "Moving media to /media..."
-docker compose cp $DUMP_DIR/$MEDIA_DUMP app:/home/app/$MEDIA_DUMP
+aws s3 cp s3://ds-$ENVIRONMENT-deployment-source/wagtail-content/$(aws s3 ls s3://ds-$ENVIRONMENT-deployment-source/wagtail-content/ | sort | tail -n 1 | awk '{print $4}') $DUMP_DIR/$MEDIA_DUMP
 
 echo "Unzipping media..."
-docker compose exec app unzip -o /home/app/$MEDIA_DUMP -d /media
+unzip -o $DUMP_DIR/$MEDIA_DUMP -d $DUMP_DIR/media
+
+echo "Moving media to /media..."
+docker compose cp $DUMP_DIR/media/media app:/media/media
 
 echo "Setting media permissions..."
 docker compose exec app chmod -fR 777 /media
 
-echo "Removing media ZIP archive..."
-# rm -fR $DUMP_DIR/$MEDIA_DUMP
-docker compose exec app rm -fR /home/app/$MEDIA_DUMP /home/app/media/
+echo "Removing downloaded media..."
+rm -fR $DUMP_DIR/$MEDIA_DUMP $DUMP_DIR/media
 
 # echo "Recreate media renditions..."
 # docker compose exec app manage wagtail_update_image_renditions

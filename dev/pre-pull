@@ -10,8 +10,6 @@ else
 fi
 
 export DUMP_DIR=./dumps
-export MEDIA_DUMP="$ENVIRONMENT-$(date +%s).zip"
-export DATABASE_DUMP="$ENVIRONMENT-$(date +%s)-db.sql"
 
 echo "Pulling from $ENVIRONMENT..."
 
