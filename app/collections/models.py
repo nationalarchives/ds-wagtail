@@ -242,7 +242,7 @@ class ExplorerIndexPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
 
     @cached_property
     def stories_page(self):
-        return self.get_children().type(ArticleModels.ArticleIndexPage).live().first()
+        return self.get_children().type(ArticleModels.ArticleIndexPage).live().public().first()
 
     content_panels = (
         BasePageWithRequiredIntro.content_panels
@@ -341,6 +341,7 @@ class TopicExplorerIndexPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
             .type(TopicExplorerPage)
             .order_by("?")
             .live()
+            .public()
             .specific()[:3]
         )
 
@@ -352,6 +353,7 @@ class TopicExplorerIndexPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
             .type(TopicExplorerPage)
             .order_by("title")
             .live()
+            .public()
             .specific()
         )
 
@@ -548,6 +550,7 @@ class TimePeriodExplorerIndexPage(RequiredHeroImageMixin, BasePageWithRequiredIn
             .type(TimePeriodExplorerPage)
             .order_by("?")
             .live()
+            .public()
             .specific()[:3]
         )
 
@@ -559,6 +562,7 @@ class TimePeriodExplorerIndexPage(RequiredHeroImageMixin, BasePageWithRequiredIn
             .type(TimePeriodExplorerPage)
             .order_by("timeperiodexplorerpage__start_year")
             .live()
+            .public()
             .specific()
         )
 
