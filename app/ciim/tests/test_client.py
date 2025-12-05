@@ -10,7 +10,7 @@ from app.ciim.client import (
 
 class TestCIIMClient(unittest.TestCase):
     def setUp(self):
-        self.client = CIIMClient(api_url="http://fake-api-url.com")
+        self.client = CIIMClient()
 
     @patch("app.ciim.client.CIIMClient.get")
     def test_get_record_instance_success(self, mock_get):

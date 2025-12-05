@@ -55,6 +55,8 @@ class APIResponseTest(WagtailPageTestCase):
     @classmethod
     def setUpTestData(self):
         self.root_page = Site.objects.get().root_page
+        self.root_page.host_name = "localhost"
+        self.root_page.port = 80
         self.root_page.mourning = [
             MourningNotice.objects.create(
                 title="Test title",
@@ -399,6 +401,9 @@ class APIResponseTest(WagtailPageTestCase):
                     '"uuid": "00000000-0000-0000-0000-000000000000"',
                     api_data,
                 )
+
+                # Fix the site root domain
+                api_data = api_data.replace("https://localhost/", "http://localhost/")
 
                 self.assertEqual(expected_data, api_data)
 

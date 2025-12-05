@@ -1,24 +1,7 @@
 from django.conf import settings
-from django.templatetags.static import static
-from django.utils.html import format_html
 from wagtail import hooks
 
 from .models.partner_logos import partner_logo_chooserviewset, partner_logo_modelviewset
-
-
-@hooks.register("insert_global_admin_css")
-def editor_css():
-    return format_html(
-        '<link rel="stylesheet" href="{}">', static("css/wagtail-overrides.css")
-    )
-
-
-@hooks.register("insert_editor_js")
-def editor_js():
-    return format_html(
-        '<script src="{}"></script>',
-        static("admin/js/inputLengthIndicators.js"),
-    )
 
 
 @hooks.register("insert_global_admin_css")
