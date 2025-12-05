@@ -29,6 +29,7 @@ WAGTAIL_HEADLESS_PREVIEW = {
         ),
     },
     "SERVE_BASE_URL": None,
+    "REDIRECT_ON_PREVIEW": True,
 }
 
 DEBUG = strtobool(os.getenv("DEBUG", "False"))
