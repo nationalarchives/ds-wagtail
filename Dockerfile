@@ -1,4 +1,4 @@
-ARG IMAGE=ghcr.io/nationalarchives/tna-python-django
+ARG IMAGE=ghcr.io/nationalarchives/tna-python
 ARG IMAGE_TAG=latest
 
 FROM "$IMAGE":"$IMAGE_TAG"
