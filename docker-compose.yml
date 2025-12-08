@@ -4,8 +4,7 @@ services:
       context: .
       args:
         IMAGE: ghcr.io/nationalarchives/tna-python-dev
-        # IMAGE_TAG: latest
-        IMAGE_TAG: image-refactor # TEMP: Until new images are merged
+        IMAGE_TAG: latest
     depends_on:
       - db
       - redis
