@@ -30,15 +30,9 @@ boto3 = "^1.42.1"
 optional = true
 
 [tool.poetry.group.dev.dependencies]
-coverage = "~7.6"
 django-extensions = "~3.2"
 responses = "~0.25"
-
-[tool.poetry.group.root]
-optional = true
-
-[tool.poetry.group.root.dependencies]
-django-debug-toolbar = "~5.0"
+pytest-django = "~4.11.1"
 
 [build-system]
 requires = ["poetry-core"]
@@ -61,3 +55,6 @@ exclude = '''
   | migrations
 )/
 '''
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "config.settings.test"

@@ -242,7 +242,13 @@ class ExplorerIndexPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
 
     @cached_property
     def stories_page(self):
-        return self.get_children().type(ArticleModels.ArticleIndexPage).live().public().first()
+        return (
+            self.get_children()
+            .type(ArticleModels.ArticleIndexPage)
+            .live()
+            .public()
+            .first()
+        )
 
     content_panels = (
         BasePageWithRequiredIntro.content_panels
