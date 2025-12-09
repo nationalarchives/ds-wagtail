@@ -13,6 +13,9 @@ COPY --chown=app . .
 # Install dependencies
 RUN tna-build
 
+# Collect static files
+RUN poetry run python /app/manage.py collectstatic --no-input --clear
+
 # Clean up build dependencies
 RUN tna-clean
 
