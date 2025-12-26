@@ -11,7 +11,7 @@ from ..models import (
 
 class TestTopicExplorerIndexPages(TestCase):
     def setUp(self):
-        root_page = Site.objects.get().root_page
+        root_page = Site.objects.get(is_default_site=True).root_page
 
         self.topic_explorer_index_page = TopicExplorerIndexPage(
             title="Explorer Page", intro="test", teaser_text="test"
@@ -53,7 +53,7 @@ class TestTopicExplorerIndexPages(TestCase):
 
 class TestTopicExplorerPage(TestCase):
     def setUp(self):
-        root_page = Site.objects.get().root_page
+        root_page = Site.objects.get(is_default_site=True).root_page
         self.index_page = TopicExplorerIndexPage(
             title="Topics", intro="topics", teaser_text="topics"
         )
@@ -125,7 +125,7 @@ class TestTopicExplorerPage(TestCase):
 
 class TestTimePeriodExplorerIndexPages(TestCase):
     def setUp(self):
-        root_page = Site.objects.get().root_page
+        root_page = Site.objects.get(is_default_site=True).root_page
 
         self.time_period_explorer_index_page = TimePeriodExplorerIndexPage(
             title="Explorer Page", intro="test", teaser_text="test"
