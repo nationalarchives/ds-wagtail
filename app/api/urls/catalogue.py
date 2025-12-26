@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
 from app.alerts.models import AlertSerializer
+from app.api.utils import get_site_from_request
 from app.articles.models import ArticleIndexPage
 from app.collections.models import ExplorerIndexPage
 from app.core.models import BasePage
@@ -16,28 +17,47 @@ class CatalogueAPIViewSet(GenericViewSet):
     model = BasePage
 
     def landing_view(self, request):
-        homepage_global_notification = HomePage.objects.first().global_alert
-        global_alert = (
-            AlertSerializer(homepage_global_notification).data
-            if homepage_global_notification and homepage_global_notification.cascade
-            else None
-        )
-        homepage_mourning_notice = HomePage.objects.first().mourning_notice
-        mourning_notice = (
-            MourningSerializer(homepage_mourning_notice).data
-            if homepage_mourning_notice
-            else None
+        site = get_site_from_request(request)
+
+        # Get the HomePage for specific site
+        try:
+            homepage = HomePage.objects.get(id=site.root_page_id)
+            homepage_global_notification = homepage.global_alert
+            global_alert = (
+                AlertSerializer(homepage_global_notification).data
+                if homepage_global_notification and homepage_global_notification.cascade
+                else None
+            )
+            homepage_mourning_notice = HomePage.objects.first().mourning_notice
+            mourning_notice = (
+                MourningSerializer(homepage_mourning_notice).data
+                if homepage_mourning_notice
+                else None
+            )
+        except HomePage.DoesNotExist:
+            # If the root page isn't a HomePage, set notifications to None
+            global_alert = None
+            mourning_notice = None
+
+        explorer_index = (
+            ExplorerIndexPage.objects.live().descendant_of(site.root_page).first()
         )
         explore_the_collection_top_pages = (
-            ExplorerIndexPage.objects.first().get_children().all().live()
+            explorer_index.get_children().all().live() if explorer_index else []
+        )
+
+        article_index = (
+            ArticleIndexPage.objects.live().descendant_of(site.root_page).first()
         )
         explore_the_collection_latest_articles = (
-            ArticleIndexPage.objects.first()
-            .get_children()
+            article_index.get_children()
             .all()
             .live()
             .order_by("-first_published_at")[:3]
+            if article_index
+            else []
         )
+
         return Response(
             {
                 "global_alert": global_alert,

@@ -127,9 +127,30 @@ class BasePage(AlertMixin, SocialMixin, CustomHeadlessPreviewMixin, Page):
 
     @property
     def mourning_notice(self):
-        from app.home.models import MourningNotice
+        from app.home.models import HomePage
 
-        return MourningNotice.objects.first()
+        # Get the site for this page
+        try:
+            site = self.get_site()
+        except Exception:
+            # If we can't determine the site, return None
+            return None
+
+        if not site:
+            return None
+
+        # Get the HomePage for specific site
+        try:
+            homepage = HomePage.objects.get(id=site.root_page_id)
+        except HomePage.DoesNotExist:
+            # If the root page isn't a HomePage, return None
+            return None
+
+        # Return the first mourning notice from this site's homepage
+        # 
+        # Use the reverse relation instead of the property (mourning_notice) to avoid
+        # recursion, since HomePage inherits from BasePage.
+        return homepage.mourning.first()
 
     @cached_property
     def type(self):
