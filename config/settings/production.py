@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     "app.ukgwa",
     "app.images",
     "app.media",
+    "app.navigation",
     "app.users",
     "app.whatson",
     "wagtail.contrib.forms",
