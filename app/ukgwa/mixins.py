@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel
+from wagtail.api import APIField
 from wagtail.fields import StreamField
 
 from .blocks import ExternalLinkBlock
@@ -22,6 +23,11 @@ class FeaturedLinksMixin(models.Model):
         use_json_field=True,
         help_text=_("Add three external links"),
     )
+
+    api_fields = [
+        APIField("featured_links_heading"),
+        APIField("featured_links"),
+    ]
 
     class Meta:
         abstract = True

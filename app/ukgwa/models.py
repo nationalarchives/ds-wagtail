@@ -20,9 +20,7 @@ class UKGWAHomePage(FeaturedLinksMixin, HeroImageMixin, BasePageWithRequiredIntr
     api_fields = (
         BasePageWithRequiredIntro.api_fields
         + HeroImageMixin.api_fields
-        + [
-            APIField("featured_links"),
-        ]
+        + FeaturedLinksMixin.api_fields
     )
 
     max_count = 1
