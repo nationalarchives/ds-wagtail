@@ -119,3 +119,23 @@ class LinkBlock(InternalLinkBlock):
         if errors:
             raise StructBlockValidationError(errors)
         return struct_value
+
+
+class LinkColumnWithHeaderBlock(blocks.StructBlock):
+    heading = blocks.CharBlock(
+        required=False, help_text="Leave blank if no header required."
+    )
+    links = blocks.ListBlock(LinkBlock())
+
+    def get_api_representation(self, value, context=None):
+        return {
+            "heading": value.get("heading"),
+            "links": [
+                {
+                    "url": link.url(),
+                    "text": link.text(),
+                    "is_page": link.is_page(),
+                }
+                for link in value.get("links", [])
+            ],
+        }
