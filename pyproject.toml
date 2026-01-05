@@ -30,7 +30,7 @@ boto3 = "~1.42.1"
 optional = true
 
 [tool.poetry.group.dev.dependencies]
-django-extensions = "~3.2"
+django-extensions = "~4.1"
 responses = "~0.25"
 pytest-django = "~4.11.1"
 
