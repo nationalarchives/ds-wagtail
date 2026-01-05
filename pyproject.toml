@@ -6,7 +6,7 @@ authors = ["James Biggs <james.biggs@nationalarchives.gov.uk>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-Django = "^5.2"
+Django = "^6.0"
 django-allauth = "^65.13"
 django-birdbath = "^2.0"
 django-redis = "^6.0"
