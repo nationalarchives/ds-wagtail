@@ -285,13 +285,14 @@ bcrypt = ["bcrypt"]
 
 [[package]]
 name = "django-allauth"
-version = "65.11.2"
+version = "65.13.1"
 description = "Integrated set of Django applications addressing authentication, registration, account management as well as 3rd party (social) account authentication."
 optional = false
 python-versions = ">=3.8"
 groups = ["main"]
 files = [
-    {file = "django_allauth-65.11.2.tar.gz", hash = "sha256:7b7e771d3384d0e247d0d6aef31b0cb589f92305b7e975e70056a513525906e7"},
+    {file = "django_allauth-65.13.1-py3-none-any.whl", hash = "sha256:2887294beedfd108b4b52ebd182e0ed373deaeb927fc5a22f77bbde3174704a6"},
+    {file = "django_allauth-65.13.1.tar.gz", hash = "sha256:2af0d07812f8c1a8e3732feaabe6a9db5ecf3fad6b45b6a0f7fd825f656c5a15"},
 ]
 
 [package.dependencies]
@@ -299,6 +300,7 @@ asgiref = ">=3.8.1"
 Django = ">=4.2.16"
 
 [package.extras]
+headless = ["pyjwt[crypto] (>=2.0,<3)"]
 headless-spec = ["PyYAML (>=6,<7)"]
 idp-oidc = ["oauthlib (>=3.3.0,<4)", "pyjwt[crypto] (>=2.0,<3)"]
 mfa = ["fido2 (>=1.1.2,<3)", "qrcode (>=7.0.0,<9)"]
@@ -1695,4 +1697,4 @@ wand = ["Wand (>=0.6,<1.0)"]
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.12"
-content-hash = "bf7f991b41980196df9cf22a73261d90183a1d344298b660a205d62363ddce90"
+content-hash = "88a314cafd39b4353cddac3ad7c597f0dde47e06b7167e68dbf9afe98bfe901b"
