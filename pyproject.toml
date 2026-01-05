@@ -21,10 +21,10 @@ wagtail = "~7.2"
 wagtail-factories = "~4.3"
 wagtail-font-awesome-svg = "~1.1"
 wagtailmedia = "~0.16"
-wagtail-headless-preview = "0.8.0"
+wagtail-headless-preview = "~0.8.0"
 whitenoise = "~6.9"
 queryish = "~0.2"
-boto3 = "^1.42.1"
+boto3 = "~1.42.1"
 
 [tool.poetry.group.dev]
 optional = true
