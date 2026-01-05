@@ -1176,14 +1176,14 @@ crt = ["botocore[crt] (>=1.37.4,<2.0a.0)"]
 
 [[package]]
 name = "sentry-sdk"
-version = "2.47.0"
+version = "2.48.0"
 description = "Python client for Sentry (https://sentry.io)"
 optional = false
 python-versions = ">=3.6"
 groups = ["main"]
 files = [
-    {file = "sentry_sdk-2.47.0-py2.py3-none-any.whl", hash = "sha256:d72f8c61025b7d1d9e52510d03a6247b280094a327dd900d987717a4fce93412"},
-    {file = "sentry_sdk-2.47.0.tar.gz", hash = "sha256:8218891d5e41b4ea8d61d2aed62ed10c80e39d9f2959d6f939efbf056857e050"},
+    {file = "sentry_sdk-2.48.0-py2.py3-none-any.whl", hash = "sha256:6b12ac256769d41825d9b7518444e57fa35b5642df4c7c5e322af4d2c8721172"},
+    {file = "sentry_sdk-2.48.0.tar.gz", hash = "sha256:5213190977ff7fdff8a58b722fb807f8d5524a80488626ebeda1b5676c0c1473"},
 ]
 
 [package.dependencies]
@@ -1392,15 +1392,18 @@ test = ["coverage (==7.10.3)", "pytest (==8.4.1)", "pytest-cov (==6.2.1)", "pyte
 
 [[package]]
 name = "wagtail-font-awesome-svg"
-version = "1.1"
-description = "Font Awesome icons as SVG for Wagtail"
+version = "1.2.1"
+description = "Font Awesome 6 icons as SVG for Wagtail"
 optional = false
 python-versions = ">=3.8"
 groups = ["main"]
 files = [
-    {file = "wagtail_font_awesome_svg-1.1-py3-none-any.whl", hash = "sha256:f78276281f227accede5b61bfa521911a8f7970553829c74d1ce3025da73c41f"},
-    {file = "wagtail_font_awesome_svg-1.1.tar.gz", hash = "sha256:f2a19c23d071e58157a3ac4cea61c1dfeddf6cc337d8c99bc88aa0fe52d1ff61"},
+    {file = "wagtail_font_awesome_svg-1.2.1-py3-none-any.whl", hash = "sha256:1f52c2bb63cc5529885980eb87a9976f3c4fd59f2ba6642bf6d3307aaf82f76d"},
+    {file = "wagtail_font_awesome_svg-1.2.1.tar.gz", hash = "sha256:114cba6972823ccc0706102b12b04e4ce67a728a8a693a4f550abd213d9e3867"},
 ]
+
+[package.dependencies]
+wagtail = "*"
 
 [[package]]
 name = "wagtail-headless-preview"
@@ -1482,4 +1485,4 @@ wand = ["Wand (>=0.6,<1.0)"]
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.12"
-content-hash = "55046ba8cca77af08a6c84b6edbde2ca7bf5b61e8f46cc2cfbdfb92365ac274d"
+content-hash = "ba22bc0b6154d3482f4622a9e5b4b57688d85d77cd39917d5116b234feb5ad56"
