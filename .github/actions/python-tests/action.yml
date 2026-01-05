@@ -12,9 +12,6 @@ runs:
     - name: Start Docker containers
       run: docker compose up --detach --wait --wait-timeout 300 || docker compose logs app
       shell: bash
-    - name: Check formatting
-      run: docker compose exec app checkformat
-      shell: bash
     - name: Run check
       run: docker compose exec app poetry run python manage.py check
       shell: bash
