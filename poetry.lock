@@ -252,24 +252,24 @@ files = [
 
 [[package]]
 name = "django"
-version = "5.2.9"
+version = "6.0"
 description = "A high-level Python web framework that encourages rapid development and clean, pragmatic design."
 optional = false
-python-versions = ">=3.10"
+python-versions = ">=3.12"
 groups = ["main"]
 files = [
-    {file = "django-5.2.9-py3-none-any.whl", hash = "sha256:3a4ea88a70370557ab1930b332fd2887a9f48654261cdffda663fef5976bb00a"},
-    {file = "django-5.2.9.tar.gz", hash = "sha256:16b5ccfc5e8c27e6c0561af551d2ea32852d7352c67d452ae3e76b4f6b2ca495"},
+    {file = "django-6.0-py3-none-any.whl", hash = "sha256:1cc2c7344303bbfb7ba5070487c17f7fc0b7174bbb0a38cebf03c675f5f19b6d"},
+    {file = "django-6.0.tar.gz", hash = "sha256:7b0c1f50c0759bbe6331c6a39c89ae022a84672674aeda908784617ef47d8e26"},
 ]
 
 [package.dependencies]
-asgiref = ">=3.8.1"
-sqlparse = ">=0.3.1"
+asgiref = ">=3.9.1"
+sqlparse = ">=0.5.0"
 tzdata = {version = "*", markers = "sys_platform == \"win32\""}
 
 [package.extras]
-argon2 = ["argon2-cffi (>=19.1.0)"]
-bcrypt = ["bcrypt"]
+argon2 = ["argon2-cffi (>=23.1.0)"]
+bcrypt = ["bcrypt (>=4.1.1)"]
 
 [[package]]
 name = "django-allauth"
@@ -1392,14 +1392,14 @@ test = ["coverage (==7.10.3)", "pytest (==8.4.1)", "pytest-cov (==6.2.1)", "pyte
 
 [[package]]
 name = "wagtail-font-awesome-svg"
-version = "1.2.1"
-description = "Font Awesome 6 icons as SVG for Wagtail"
+version = "2.0"
+description = "Font Awesome 7 icons as SVG for Wagtail"
 optional = false
 python-versions = ">=3.8"
 groups = ["main"]
 files = [
-    {file = "wagtail_font_awesome_svg-1.2.1-py3-none-any.whl", hash = "sha256:1f52c2bb63cc5529885980eb87a9976f3c4fd59f2ba6642bf6d3307aaf82f76d"},
-    {file = "wagtail_font_awesome_svg-1.2.1.tar.gz", hash = "sha256:114cba6972823ccc0706102b12b04e4ce67a728a8a693a4f550abd213d9e3867"},
+    {file = "wagtail_font_awesome_svg-2.0-py3-none-any.whl", hash = "sha256:031e0d3d64ec96a87216519502c97a29ef6e6f10f4f8d6bbb4c98dce567bd9b7"},
+    {file = "wagtail_font_awesome_svg-2.0.tar.gz", hash = "sha256:aac01b5ea8b0c3de3e363a91aa5067f514b9cd385224d6ba7153d9de47120493"},
 ]
 
 [package.dependencies]
@@ -1425,14 +1425,14 @@ testing = ["coverage[toml] (>=7.0,<8.0)", "django-cors-headers", "tox (>=4)"]
 
 [[package]]
 name = "wagtailmedia"
-version = "0.16.0"
+version = "0.17.2"
 description = "A Wagtail module for audio and video files."
 optional = false
 python-versions = ">=3.9"
 groups = ["main"]
 files = [
-    {file = "wagtailmedia-0.16.0-py3-none-any.whl", hash = "sha256:40e3adc077ed6251b9c43a7177649e8cdefa4f94828dff6f1ca3e48ba61dcdca"},
-    {file = "wagtailmedia-0.16.0.tar.gz", hash = "sha256:1f757984240822a7ddfe3eda8e58243f31a3c29935ce8014499e7e664923d4c9"},
+    {file = "wagtailmedia-0.17.2-py3-none-any.whl", hash = "sha256:abe10c6341fbc41ebc30d2955fff00abf6160bc473a5f9f1106d69111045c202"},
+    {file = "wagtailmedia-0.17.2.tar.gz", hash = "sha256:4457e267fc53d8db4c9eb9a48d27f4b47b0823a9f7d0820f2dd98f1ba5d58600"},
 ]
 
 [package.dependencies]
@@ -1440,8 +1440,8 @@ Django = ">=4.2"
 Wagtail = ">=6.3"
 
 [package.extras]
-linting = ["pre-commit (>=4.2.0)"]
-testing = ["coverage (>=7.8.0)"]
+linting = ["pre-commit (>=4.3.0)"]
+testing = ["coverage (>=7.10.0)", "tox (>=4.28.4)"]
 
 [[package]]
 name = "whitenoise"
@@ -1485,4 +1485,4 @@ wand = ["Wand (>=0.6,<1.0)"]
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.12"
-content-hash = "ba22bc0b6154d3482f4622a9e5b4b57688d85d77cd39917d5116b234feb5ad56"
+content-hash = "5fe466c9021fc1310e7644ba766329c33654f015f66ef6457a8e2036928739a2"
