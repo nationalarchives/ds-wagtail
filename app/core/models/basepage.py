@@ -147,7 +147,7 @@ class BasePage(AlertMixin, SocialMixin, CustomHeadlessPreviewMixin, Page):
             return None
 
         # Return the first mourning notice from this site's homepage
-        # 
+        #
         # Use the reverse relation instead of the property (mourning_notice) to avoid
         # recursion, since HomePage inherits from BasePage.
         return homepage.mourning.first()
