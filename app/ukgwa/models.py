@@ -1,11 +1,14 @@
 from app.core.blocks.links import LinkBlock
 from app.core.models import BasePageWithRequiredIntro, HeroImageMixin
+from app.ukgwa.blocks import InformationPageStreamBlock
+from app.ukgwa.mixins import FeaturedLinksMixin
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from modelcluster.fields import ParentalKey
 from wagtail.admin.panels import FieldPanel, InlinePanel
 from wagtail.api import APIField
 from wagtail.fields import StreamField
+from wagtail.search import index
 
 
 class FeaturedLinksSection(models.Model):
@@ -87,3 +90,26 @@ class UKGWAHomePage(HeroImageMixin, BasePageWithRequiredIntro):
 
     class Meta:
         verbose_name = "UKGWA Home Page"
+
+
+class InformationPage(FeaturedLinksMixin, BasePageWithRequiredIntro):
+    body = StreamField(InformationPageStreamBlock())
+
+    search_fields = BasePageWithRequiredIntro.search_fields + [
+        index.SearchField("body"),
+    ]
+
+    api_fields = (
+        BasePageWithRequiredIntro.api_fields
+        + FeaturedLinksMixin.api_fields
+        + [
+            APIField("body"),
+        ]
+    )
+    content_panels = (
+        BasePageWithRequiredIntro.content_panels
+        + [
+            FieldPanel("body"),
+        ]
+        + FeaturedLinksMixin.get_featured_links_panels()
+    )
