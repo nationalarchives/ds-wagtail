@@ -34,6 +34,10 @@ class UKGWAHomePage(FeaturedLinksMixin, HeroImageMixin, BasePageWithRequiredIntr
 
 
 class InformationPage(FeaturedLinksMixin, BasePageWithRequiredIntro):
+
+    parent_page_types = ["ukgwa.UKGWAHomePage"]
+    subpage_types = []
+
     body = StreamField(InformationPageStreamBlock())
 
     search_fields = BasePageWithRequiredIntro.search_fields + [
