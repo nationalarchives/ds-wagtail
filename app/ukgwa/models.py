@@ -1,5 +1,3 @@
-from wagtail.api import APIField
-
 from app.core.models import BasePageWithRequiredIntro, HeroImageMixin
 from app.ukgwa.mixins import FeaturedLinksMixin
 
