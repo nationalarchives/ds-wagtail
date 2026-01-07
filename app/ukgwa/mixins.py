@@ -21,7 +21,9 @@ class FeaturedLinksMixin(models.Model):
         min_num=3,
         max_num=3,
         use_json_field=True,
-        help_text=_("Contains exactly three links. Each link can be to an internal page or an external URL."),
+        help_text=_(
+            "Contains exactly three links. Each link can be to an internal page or an external URL."
+        ),
     )
 
     api_fields = [

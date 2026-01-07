@@ -6,7 +6,7 @@ from wagtail.blocks.struct_block import StructBlockValidationError
 
 class LinkBlockStructValue(blocks.StructValue):
     """
-    Provides convenience methods for accessing link data from internal pages or 
+    Provides convenience methods for accessing link data from internal pages or
     external URLs.
 
     Methods:
