@@ -4,7 +4,7 @@ from wagtail.admin.panels import FieldPanel, MultiFieldPanel
 from wagtail.api import APIField
 from wagtail.fields import StreamField
 
-from .blocks import ExternalLinkBlock
+from app.core.blocks.links import LinkBlock
 
 
 class FeaturedLinksMixin(models.Model):
@@ -16,12 +16,12 @@ class FeaturedLinksMixin(models.Model):
         help_text="A short heading for the featured links section",
     )
     featured_links = StreamField(
-        [("link", ExternalLinkBlock())],
+        [("link", LinkBlock())],
         verbose_name=_("featured links"),
         min_num=3,
         max_num=3,
         use_json_field=True,
-        help_text=_("Add three external links"),
+        help_text=_("Contains exactly three links. Each link can be to an internal page or an external URL."),
     )
 
     api_fields = [
