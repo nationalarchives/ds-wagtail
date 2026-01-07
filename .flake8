@@ -1,5 +1,0 @@
-[flake8]
-ignore = E501, W503
-exclude = venv*,__pycache__,node_modules,migrations
-max-line-length = 88
-max-complexity = 12
