@@ -146,4 +146,8 @@ class FoiRequestPage(BasePage):
             else:
                 self.teaser_text = f'{new_teaser_text[:teaser_text_max_length - 4]}..."'
 
+        if self.date:
+            # Change the date to the first of the month
+            self.date = self.date.replace(day=1)
+
         return super().save(*args, **kwargs)
