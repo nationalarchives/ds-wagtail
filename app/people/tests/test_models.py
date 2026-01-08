@@ -9,7 +9,7 @@ from ..models import AuthorTag, PeopleIndexPage, PersonPage
 
 class TestAuthorPages(TestCase):
     def setUp(self):
-        root = Site.objects.get().root_page
+        root = Site.objects.get(is_default_site=True).root_page
 
         self.author_index_page = PeopleIndexPage(
             title="People", teaser_text="Test teaser text"

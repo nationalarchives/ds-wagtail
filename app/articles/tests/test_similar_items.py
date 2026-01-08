@@ -6,7 +6,7 @@ from ..models import ArticlePage, ArticleTag, FocusedArticlePage, TaggedArticle
 
 class TestArticlePageSimilarItems(TestCase):
     def setUp(self):
-        root = Site.objects.get().root_page
+        root = Site.objects.get(is_default_site=True).root_page
 
         # Add pages
         self.original_page = ArticlePage(
@@ -108,7 +108,7 @@ class TestArticlePageSimilarItems(TestCase):
 
 class TestFocusedArticlePageSimilarItems(TestCase):
     def setUp(self):
-        root = Site.objects.get().root_page
+        root = Site.objects.get(is_default_site=True).root_page
 
         # Add pages
         self.original_page = FocusedArticlePage(

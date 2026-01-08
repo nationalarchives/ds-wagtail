@@ -1,6 +1,7 @@
 from django.urls import path
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
+from wagtail.models import Site
 
 from app.alerts.models import AlertSerializer
 from app.articles.models import ArticleIndexPage
@@ -16,28 +17,41 @@ class CatalogueAPIViewSet(GenericViewSet):
     model = BasePage
 
     def landing_view(self, request):
-        homepage_global_notification = HomePage.objects.first().global_alert
+        site = Site.objects.get(is_default_site=True)
+        homepage = HomePage.objects.get(id=site.root_page_id)
+
+        homepage_global_notification = homepage.global_alert
         global_alert = (
             AlertSerializer(homepage_global_notification).data
             if homepage_global_notification and homepage_global_notification.cascade
             else None
         )
-        homepage_mourning_notice = HomePage.objects.first().mourning_notice
+        homepage_mourning_notice = homepage.mourning_notice
         mourning_notice = (
             MourningSerializer(homepage_mourning_notice).data
             if homepage_mourning_notice
             else None
         )
+
+        explorer_index = (
+            ExplorerIndexPage.objects.live().descendant_of(site.root_page).first()
+        )
         explore_the_collection_top_pages = (
-            ExplorerIndexPage.objects.first().get_children().all().live()
+            explorer_index.get_children().all().live() if explorer_index else []
+        )
+
+        article_index = (
+            ArticleIndexPage.objects.live().descendant_of(site.root_page).first()
         )
         explore_the_collection_latest_articles = (
-            ArticleIndexPage.objects.first()
-            .get_children()
+            article_index.get_children()
             .all()
             .live()
             .order_by("-first_published_at")[:3]
+            if article_index
+            else []
         )
+
         return Response(
             {
                 "global_alert": global_alert,
