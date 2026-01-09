@@ -40,6 +40,8 @@ services:
     image: postgres:16.0
     environment:
       - POSTGRES_PASSWORD=postgres
+    volumes:
+      - pgdata:/var/lib/postgresql/data
 
   redis:
     image: redis:latest
@@ -53,3 +55,4 @@ services:
 
 volumes:
   media:
+  pgdata:
