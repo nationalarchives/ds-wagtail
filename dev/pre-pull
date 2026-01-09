@@ -9,7 +9,7 @@ else
     export ENVIRONMENT="$1"
 fi
 
-export DUMP_DIR=./dumps
+export DUMP_DIR="$(dirname $0)/../dumps"
 
 echo "Pulling from $ENVIRONMENT..."
 
