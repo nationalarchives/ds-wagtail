@@ -14,7 +14,7 @@ services:
       - ENVIRONMENT_NAME=local
       - DJANGO_SETTINGS_MODULE=config.settings.develop
       - SECRET_KEY=abc123
-      - ALLOWED_HOSTS=localhost,host.docker.internal
+      - ALLOWED_HOSTS=localhost,host.docker.internal,wagtail.localhost
       - DEBUG=True
       - DATABASE_HOST=db
       - DATABASE_NAME=postgres
