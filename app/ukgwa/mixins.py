@@ -1,14 +1,18 @@
+from app.core.blocks.links import LinkBlock
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel
 from wagtail.api import APIField
 from wagtail.fields import StreamField
 
-from app.core.blocks.links import LinkBlock
-
 
 class FeaturedLinksMixin(models.Model):
-    """Add featured links section to a page"""
+    """
+    Add a single featured links section to a page.
+
+    For pages requiring multiple featured links sections (like UKGWAHomePage which needs
+    2), use the FeaturedLinksSection class with an InlinePanel instead.
+    """
 
     featured_links_heading = models.CharField(
         verbose_name=_("featured links heading text"),
