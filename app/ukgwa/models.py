@@ -63,15 +63,19 @@ class UKGWAHomePage(HeroImageMixin, BasePageWithRequiredIntro):
 
     parent_page_types = ["wagtailcore.Page"]
 
-    content_panels = BasePageWithRequiredIntro.content_panels + [
-        InlinePanel(
-            "featured_links_sections",
-            label=_("Featured links section"),
-            min_num=2,
-            max_num=2,
-            help_text=_("Add exactly 2 featured links sections to the homepage"),
-        )
-    ]
+    content_panels = (
+        BasePageWithRequiredIntro.content_panels
+        + HeroImageMixin.content_panels
+        + [
+            InlinePanel(
+                "featured_links_sections",
+                label=_("Featured links section"),
+                min_num=2,
+                max_num=2,
+                help_text=_("Add exactly 2 featured links sections to the homepage"),
+            )
+        ]
+    )
 
     api_fields = (
         BasePageWithRequiredIntro.api_fields
