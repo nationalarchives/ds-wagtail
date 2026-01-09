@@ -1,11 +1,19 @@
-from django.utils.translation import gettext_lazy as _
 from wagtail import blocks
 
+from app.core.blocks import (
+    CallToActionBlock,
+    ContentImageBlock,
+    ParagraphBlock,
+    QuoteBlock,
+    SubHeadingBlock,
+    YouTubeBlock,
+)
 
-class ExternalLinkBlock(blocks.StructBlock):
-    url = blocks.URLBlock(label="URL")
-    link_text = blocks.CharBlock()
 
-    class Meta:
-        label = _("External link")
-        icon = "link"
+class InformationPageStreamBlock(blocks.StreamBlock):
+    sub_heading = SubHeadingBlock()
+    paragraph = ParagraphBlock()
+    image = ContentImageBlock()
+    quote = QuoteBlock()
+    youtube_video = YouTubeBlock()
+    call_to_action = CallToActionBlock()
