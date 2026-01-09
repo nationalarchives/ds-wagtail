@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set -e
+
+SCRIPTDIR=$(dirname $0)
+. $SCRIPTDIR/pre-pull
+
+DATABASE_DUMP="$DUMP_DIR/local-$(date +%s)-db.sql"
+
+echo "Dumping the local database..."
+docker compose exec -t db pg_dumpall -c -U postgres > "$DATABASE_DUMP"
