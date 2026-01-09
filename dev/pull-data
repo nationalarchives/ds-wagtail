@@ -21,6 +21,7 @@ docker compose exec db chmod 777 /home/$DATABASE_DUMP
 echo "Replacing values in the database dump..."
 docker compose exec db sed -i -r -e 's/(dev-|staging-)?www.nationalarchives.gov.uk([[:space:]])443/localhost\2443/g' /home/$DATABASE_DUMP
 docker compose exec db sed -i -r -e 's/(dev-|staging-)?wagtail.nationalarchives.gov.uk([[:space:]])443/wagtail.localhost\2443/g' /home/$DATABASE_DUMP
+docker compose exec db sed -i -r -e 's/(dev-|staging-)?webarchive.nationalarchives.gov.uk([[:space:]])443/webarchive.localhost\2443/g' /home/$DATABASE_DUMP
 
 echo "Dropping the old database..."
 docker compose exec db psql -U postgres -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public;"

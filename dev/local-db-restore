@@ -1,0 +1,42 @@
+#!/bin/bash
+
+set -e
+
+SCRIPTDIR=$(dirname $0)
+. $SCRIPTDIR/pre-pull
+
+DATABASE_DUMP="$1"
+
+if [ -z "$DATABASE_DUMP" ]
+then
+  echo -e "Error: no database dump file specified"
+  exit 1
+fi
+
+if [ ! -f "$DUMP_DIR/$DATABASE_DUMP" ]
+then
+  echo "Database dump $DATABASE_DUMP does not exist in $DUMP_DIR"
+  exit 1
+fi
+
+echo "Copying the database dump to the db container..."
+docker compose cp $DUMP_DIR/$DATABASE_DUMP db:/home/$DATABASE_DUMP
+docker compose exec db chmod 777 /home/$DATABASE_DUMP
+
+echo "Dropping the old database..."
+docker compose exec db psql -U postgres -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public;"
+
+echo "Restoring database dump..."
+docker compose exec -i db sh -c "psql -U postgres < /home/$DATABASE_DUMP"
+
+echo "Starting the app container..."
+docker compose restart app
+
+echo "Running migrations..."
+docker compose exec app poetry run python /app/manage.py migrate
+
+echo "Running birdbath..."
+docker compose exec app poetry run python /app/manage.py run_birdbath
+
+echo "Creating a superuser..."
+docker compose exec app poetry run python /app/manage.py createsuperuser --no-input
