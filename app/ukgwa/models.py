@@ -3,6 +3,7 @@ import copy
 from app.core.blocks.links import LinkBlock
 from app.core.models import BasePageWithRequiredIntro, HeroImageMixin
 from app.core.models.mixins import SocialMixin
+from app.ukgwa.serializers import SubpagesSerializer
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from modelcluster.fields import ParentalKey
@@ -116,3 +117,20 @@ class UKGWAHomePage(HeroImageMixin, UKGWABasePage):
 
     class Meta:
         verbose_name = "UKGWA Home Page"
+
+
+class SectionIndexPage(UKGWABasePage):
+    """
+    Index page that returns its direct child pages which have 'show in menus' enabled.
+    """
+
+    parent_page_types = ["ukgwa.UKGWAHomePage"]
+
+    @property
+    def subpages(self):
+        return self.get_children().live().in_menu().specific()
+
+    api_fields = UKGWABasePage.api_fields + [
+        APIField("subpages", serializer=SubpagesSerializer()),
+    ]
+    content_panels = UKGWABasePage.content_panels
