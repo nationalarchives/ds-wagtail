@@ -1,5 +1,8 @@
+import copy
+
 from app.core.blocks.links import LinkBlock
 from app.core.models import BasePageWithRequiredIntro, HeroImageMixin
+from app.core.models.mixins import SocialMixin
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from modelcluster.fields import ParentalKey
@@ -53,7 +56,33 @@ class FeaturedLinksSection(models.Model):
         verbose_name_plural = "Featured links sections"
 
 
-class UKGWAHomePage(HeroImageMixin, BasePageWithRequiredIntro):
+class UKGWABasePage(BasePageWithRequiredIntro):
+    """Base page for UKGWA with customized panels"""
+
+    class Meta:
+        abstract = True
+
+    show_in_menus_default = True
+
+    base_page_promote_panels = copy.deepcopy(BasePageWithRequiredIntro.promote_panels)
+    # Remove teaser_image from the BasePageWithRequiredIntro promote panels
+    for panel in base_page_promote_panels:
+        if hasattr(panel, "heading") and panel.heading == "Internal data":
+            panel.children = [
+                child
+                for child in panel.children
+                if getattr(child, "field_name", None) != "teaser_image"
+            ]
+
+    promote_panels = (
+        base_page_promote_panels[:1]
+        + [FieldPanel("show_in_menus")]  # Add below the slug field
+        + base_page_promote_panels[1:]
+        + SocialMixin.promote_panels
+    )
+
+
+class UKGWAHomePage(HeroImageMixin, UKGWABasePage):
     """
     Homepage for UK Government Web Archive site.
 
@@ -78,7 +107,7 @@ class UKGWAHomePage(HeroImageMixin, BasePageWithRequiredIntro):
     )
 
     api_fields = (
-        BasePageWithRequiredIntro.api_fields
+        UKGWABasePage.api_fields
         + HeroImageMixin.api_fields
         + [APIField("featured_links_sections")]
     )
