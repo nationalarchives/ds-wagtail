@@ -1,9 +1,8 @@
+from app.api.urls.pages import CustomPagesAPIViewSet
+from app.core.serializers import DefaultPageSerializer
 from django.urls import path
 from rest_framework.response import Response
 from wagtail.models import Page
-
-from app.api.urls.pages import CustomPagesAPIViewSet
-from app.core.serializers import DefaultPageSerializer
 
 
 class ArticleTagsAPIViewSet(CustomPagesAPIViewSet):

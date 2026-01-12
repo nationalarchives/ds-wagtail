@@ -1,7 +1,6 @@
-from wagtail import blocks
-
 from app.core.blocks.image import APIImageChooserBlock
 from app.core.blocks.page_chooser import APIPageChooserBlock
+from wagtail import blocks
 
 
 class FeaturedPageBlock(blocks.StructBlock):

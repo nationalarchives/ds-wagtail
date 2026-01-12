@@ -1,5 +1,6 @@
 import logging
 
+from app.core.serializers.pages import DefaultPageSerializer
 from django.conf import settings
 from django.db.models import Q
 from django.http import Http404
@@ -20,8 +21,6 @@ from wagtail.api.v2.utils import BadRequestError
 from wagtail.api.v2.views import PagesAPIViewSet
 from wagtail.contrib.redirects.models import Redirect
 from wagtail.models import Page, PageViewRestriction, Site
-
-from app.core.serializers.pages import DefaultPageSerializer
 
 from ..filters import AliasFilter, DescendantOfPathFilter, SiteFilter
 

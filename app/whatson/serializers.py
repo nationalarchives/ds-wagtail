@@ -1,10 +1,9 @@
-from rest_framework import serializers
-
 from app.core.serializers import (
     DefaultPageSerializer,
     ImageSerializer,
     RichTextSerializer,
 )
+from rest_framework import serializers
 
 
 class EventTypeSerializer(serializers.Serializer):

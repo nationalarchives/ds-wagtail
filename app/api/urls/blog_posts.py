@@ -1,10 +1,9 @@
-from django.urls import path
-from rest_framework.response import Response
-
 from app.api.filters import AuthorFilter, PublishedDateFilter
 from app.api.urls.pages import CustomPagesAPIViewSet
 from app.blog.models import BlogPostPage
 from app.core.serializers.pages import DefaultPageSerializer
+from django.urls import path
+from rest_framework.response import Response
 
 
 class BlogPostsAPIViewSet(CustomPagesAPIViewSet):

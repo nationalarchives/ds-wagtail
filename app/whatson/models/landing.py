@@ -1,3 +1,6 @@
+from app.core.models import (
+    BasePageWithRequiredIntro,
+)
 from django.db import models
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
@@ -8,10 +11,6 @@ from wagtail.admin.panels import (
 )
 from wagtail.api import APIField
 from wagtail.models import Orderable
-
-from app.core.models import (
-    BasePageWithRequiredIntro,
-)
 
 from ..serializers import (
     WhatsOnPageSelectionSerializer,
