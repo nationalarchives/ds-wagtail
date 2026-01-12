@@ -1,6 +1,5 @@
-from wagtail import blocks
-
 from app.core.serializers.pages import get_api_data
+from wagtail import blocks
 
 
 class APIPageChooserBlock(blocks.PageChooserBlock):

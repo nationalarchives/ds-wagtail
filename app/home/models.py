@@ -1,3 +1,5 @@
+from app.core.blocks import FeaturedExternalLinkBlock, FeaturedPageBlock
+from app.core.models import BasePageWithRequiredIntro, HeroImageMixin
 from django.conf import settings
 from django.db import models
 from modelcluster.fields import ParentalKey
@@ -5,9 +7,6 @@ from wagtail.admin.panels import FieldPanel, InlinePanel
 from wagtail.api import APIField
 from wagtail.fields import RichTextField, StreamField
 from wagtail.models import Page
-
-from app.core.blocks import FeaturedExternalLinkBlock, FeaturedPageBlock
-from app.core.models import BasePageWithRequiredIntro, HeroImageMixin
 
 
 class MourningNotice(models.Model):

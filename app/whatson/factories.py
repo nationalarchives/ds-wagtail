@@ -1,8 +1,7 @@
 import factory
-from wagtail_factories import ImageFactory
-
 from app.core.factories import BasePageFactory
 from app.whatson import models as app_models
+from wagtail_factories import ImageFactory
 
 
 class WhatsOnPageFactory(BasePageFactory):

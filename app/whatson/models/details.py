@@ -1,26 +1,3 @@
-from django.conf import settings
-from django.core.exceptions import ValidationError
-from django.db import models
-from django.utils import timezone
-from django.utils.functional import cached_property
-from django.utils.translation import gettext_lazy as _
-from modelcluster.fields import ParentalKey
-from wagtail import blocks
-from wagtail.admin.panels import (
-    FieldPanel,
-    FieldRowPanel,
-    InlinePanel,
-    MultiFieldPanel,
-    ObjectList,
-    TabbedInterface,
-    TitleFieldPanel,
-)
-from wagtail.api import APIField
-from wagtail.fields import RichTextField, StreamField
-from wagtail.images import get_image_model_string
-from wagtail.models import Orderable
-from wagtail.snippets.models import register_snippet
-
 from app.core.blocks import (
     FeaturedExternalLinkBlock,
     FeaturedPagesBlock,
@@ -44,6 +21,28 @@ from app.core.serializers import (
     RichTextSerializer,
 )
 from app.core.serializers.partner_logos import PartnerLogoSerializer
+from django.conf import settings
+from django.core.exceptions import ValidationError
+from django.db import models
+from django.utils import timezone
+from django.utils.functional import cached_property
+from django.utils.translation import gettext_lazy as _
+from modelcluster.fields import ParentalKey
+from wagtail import blocks
+from wagtail.admin.panels import (
+    FieldPanel,
+    FieldRowPanel,
+    InlinePanel,
+    MultiFieldPanel,
+    ObjectList,
+    TabbedInterface,
+    TitleFieldPanel,
+)
+from wagtail.api import APIField
+from wagtail.fields import RichTextField, StreamField
+from wagtail.images import get_image_model_string
+from wagtail.models import Orderable
+from wagtail.snippets.models import register_snippet
 
 from ..blocks import EventPageStreamBlock, ExhibitionPageStreamBlock
 from ..serializers import (

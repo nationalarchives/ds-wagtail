@@ -1,6 +1,8 @@
 import mimetypes
 import uuid
 
+from app.core.blocks.paragraph import APIRichTextBlock
+from app.core.serializers import RichTextSerializer
 from django.conf import settings
 from django.core.validators import FileExtensionValidator, MinValueValidator
 from django.db import models
@@ -9,9 +11,6 @@ from wagtail.api import APIField
 from wagtail.fields import RichTextField, StreamField
 from wagtailmedia.models import AbstractMedia
 from wagtailmedia.settings import wagtailmedia_settings
-
-from app.core.blocks.paragraph import APIRichTextBlock
-from app.core.serializers import RichTextSerializer
 
 
 class MediaChapterSectionBlock(blocks.StructBlock):

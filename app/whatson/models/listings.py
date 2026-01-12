@@ -1,5 +1,11 @@
 import datetime
 
+from app.core.models import (
+    BasePageWithRequiredIntro,
+)
+from app.core.serializers import (
+    DefaultPageSerializer,
+)
 from django.db import models
 from django.db.models import Q
 from django.utils import timezone
@@ -13,13 +19,6 @@ from wagtail.admin.panels import (
 )
 from wagtail.api import APIField
 from wagtail.models import Page
-
-from app.core.models import (
-    BasePageWithRequiredIntro,
-)
-from app.core.serializers import (
-    DefaultPageSerializer,
-)
 
 from ..serializers import (
     EventTypeSerializer,

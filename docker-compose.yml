@@ -14,7 +14,7 @@ services:
       - ENVIRONMENT_NAME=local
       - DJANGO_SETTINGS_MODULE=config.settings.develop
       - SECRET_KEY=abc123
-      - ALLOWED_HOSTS=localhost,host.docker.internal
+      - ALLOWED_HOSTS=localhost,host.docker.internal,wagtail.localhost
       - DEBUG=True
       - DATABASE_HOST=db
       - DATABASE_NAME=postgres
@@ -27,7 +27,6 @@ services:
       - WAGTAILAPI_BASE_URL=http://host.docker.internal:8000
       - WAGTAILAPI_IMAGES_BASE_URL=https://localhost
       - WAGTAILAPI_MEDIA_BASE_URL=https://localhost
-      - WAGTAIL_HEADLESS_PREVIEW_URL=https://localhost/preview/
       - REDIS_URL=redis://redis:6379/0
     volumes:
       - ./:/app
@@ -40,6 +39,8 @@ services:
     image: postgres:16.0
     environment:
       - POSTGRES_PASSWORD=postgres
+    volumes:
+      - pgdata:/var/lib/postgresql/data
 
   redis:
     image: redis:latest
@@ -53,3 +54,4 @@ services:
 
 volumes:
   media:
+  pgdata:

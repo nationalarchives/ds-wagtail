@@ -1,5 +1,6 @@
 from urllib.parse import urljoin
 
+from app.api.urls import api_router
 from django.apps import apps
 from django.conf import settings
 from django.http import HttpResponsePermanentRedirect
@@ -10,8 +11,6 @@ from wagtail import urls as wagtail_urls
 from wagtail.admin import urls as wagtailadmin_urls
 from wagtail.documents import urls as wagtaildocs_urls
 from wagtail.utils.urlpatterns import decorate_urlpatterns
-
-from app.api.urls import api_router
 
 
 def redirect_to_live_site(request):
