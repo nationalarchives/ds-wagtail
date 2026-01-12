@@ -1,11 +1,10 @@
-from django.conf import settings
-from wagtail import blocks
-from wagtail.images.blocks import ImageChooserBlock
-
 from app.core.blocks.paragraph import APIRichTextBlock
 from app.core.models.partner_logos import partner_logo_chooserviewset
 from app.core.serializers.images import DetailedImageSerializer
 from app.core.serializers.partner_logos import PartnerLogoSerializer
+from django.conf import settings
+from wagtail import blocks
+from wagtail.images.blocks import ImageChooserBlock
 
 
 class APIImageChooserBlock(ImageChooserBlock):

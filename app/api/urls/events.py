@@ -1,8 +1,7 @@
-from wagtail.api.v2.views import path
-
 from app.api.filters import EventDateFilter, LocationFilter
 from app.api.urls.pages import CustomPagesAPIViewSet
 from app.whatson.models import EventPage
+from wagtail.api.v2.views import path
 
 
 class EventsAPIViewSet(CustomPagesAPIViewSet):

@@ -1,8 +1,7 @@
 import factory
+from app.people.models import PeopleIndexPage, PersonPage
 from django.utils import timezone
 from wagtail_factories import ImageFactory, PageFactory
-
-from app.people.models import PeopleIndexPage, PersonPage
 
 
 class PeopleIndexPageFactory(PageFactory):

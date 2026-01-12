@@ -1,7 +1,6 @@
+from app.core.blocks.paragraph import APIRichTextBlock
 from django.conf import settings
 from wagtail import blocks
-
-from app.core.blocks.paragraph import APIRichTextBlock
 
 
 class QuoteBlock(blocks.StructBlock):
