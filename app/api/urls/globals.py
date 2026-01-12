@@ -1,10 +1,13 @@
 from app.alerts.models import AlertSerializer
+from app.api.utils import get_site_from_request
 from app.core.models import BasePage
 from app.core.serializers import MourningSerializer
 from app.home.models import HomePage
+from app.navigation.models import NavigationSettings
 from django.urls import path
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
+from wagtail.api.v2.serializers import StreamField as StreamFieldSerializer
 from wagtail.models import Site
 
 
@@ -38,6 +41,57 @@ class GlobalsAPIViewSet(GenericViewSet):
             }
         )
 
+    def navigation_view(self, request):
+        """
+        Navigation-specific endpoint for header and footer navigation.
+        """
+        site = get_site_from_request(request)
+
+        if not site:
+            return Response(
+                {
+                    "primary_navigation": [],
+                    "secondary_navigation": [],
+                    "footer_navigation": [],
+                    "footer_links": [],
+                }
+            )
+
+        navigation_settings = NavigationSettings.for_site(site)
+
+        data = {
+            "primary_navigation": (
+                StreamFieldSerializer().to_representation(
+                    navigation_settings.primary_navigation
+                )
+                if navigation_settings.primary_navigation
+                else []
+            ),
+            "secondary_navigation": (
+                StreamFieldSerializer().to_representation(
+                    navigation_settings.secondary_navigation
+                )
+                if navigation_settings.secondary_navigation
+                else []
+            ),
+            "footer_navigation": (
+                StreamFieldSerializer().to_representation(
+                    navigation_settings.footer_navigation
+                )
+                if navigation_settings.footer_navigation
+                else []
+            ),
+            "footer_links": (
+                StreamFieldSerializer().to_representation(
+                    navigation_settings.footer_links
+                )
+                if navigation_settings.footer_links
+                else []
+            ),
+        }
+
+        return Response(data)
+
     @classmethod
     def get_urlpatterns(cls):
         """
@@ -48,5 +102,10 @@ class GlobalsAPIViewSet(GenericViewSet):
                 "notifications/",
                 cls.as_view({"get": "notifications_view"}),
                 name="notifications",
+            ),
+            path(
+                "navigation/",
+                cls.as_view({"get": "navigation_view"}),
+                name="navigation",
             ),
         ]
