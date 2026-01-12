@@ -1,3 +1,4 @@
+from app.core.models import BasePage, BasePageWithRequiredIntro
 from django.db import models
 from django.utils.functional import cached_property
 from django.utils.text import slugify
@@ -6,8 +7,6 @@ from wagtail.api import APIField
 from wagtail.coreutils import find_available_slug
 from wagtail.fields import StreamField
 from wagtail.search import index
-
-from app.core.models import BasePage, BasePageWithRequiredIntro
 
 from .blocks import AnnexeStreamBlock, RequestStreamBlock, ResponseStreamBlock
 

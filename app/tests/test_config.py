@@ -2,7 +2,6 @@
 # does not seem able to find it there. Also the test.py setting file is being
 # discovered as a test.
 import django.test
-
 from config.settings.util import strtobool
 
 

@@ -1,3 +1,7 @@
+from app.core.blocks import (
+    SimplifiedAccordionBlock,
+)
+from app.core.serializers import ImageSerializer
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -8,11 +12,6 @@ from wagtail.api import APIField
 from wagtail.api.v2.serializers import StreamField as StreamFieldSerializer
 from wagtail.fields import StreamField
 from wagtail.snippets.models import register_snippet
-
-from app.core.blocks import (
-    SimplifiedAccordionBlock,
-)
-from app.core.serializers import ImageSerializer
 
 
 @register_snippet

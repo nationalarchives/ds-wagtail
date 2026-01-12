@@ -1,5 +1,3 @@
-from wagtail import blocks
-
 from app.core.blocks import (
     ContactBlock,
     InsetTextBlock,
@@ -7,6 +5,7 @@ from app.core.blocks import (
     QuoteBlock,
     SubHeadingBlock,
 )
+from wagtail import blocks
 
 
 class ExhibitionPageStreamBlock(blocks.StreamBlock):

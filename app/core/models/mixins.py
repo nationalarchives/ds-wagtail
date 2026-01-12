@@ -1,5 +1,12 @@
 from datetime import timedelta
 
+from app.core.serializers import (
+    DateTimeSerializer,
+    DetailedImageSerializer,
+    ImageSerializer,
+    RichTextSerializer,
+)
+from app.core.styling import BrandColourChoices, HeroColourChoices, HeroLayoutChoices
 from django.db import models
 from django.http import HttpRequest
 from django.utils import timezone
@@ -15,14 +22,6 @@ from wagtail_headless_preview.models import (
     HeadlessPreviewMixin,
     get_client_root_url_from_site,
 )
-
-from app.core.serializers import (
-    DateTimeSerializer,
-    DetailedImageSerializer,
-    ImageSerializer,
-    RichTextSerializer,
-)
-from app.core.styling import BrandColourChoices, HeroColourChoices, HeroLayoutChoices
 
 from .forms import RequiredHeroImagePageForm
 

@@ -1,10 +1,9 @@
-from django.urls import path
-from rest_framework.response import Response
-from wagtail.models import PageViewRestriction
-
 from app.api.urls.pages import CustomPagesAPIViewSet
 from app.blog.models import BlogIndexPage, BlogPage, BlogPostPage
 from app.core.serializers.pages import DefaultPageSerializer
+from django.urls import path
+from rest_framework.response import Response
+from wagtail.models import PageViewRestriction
 
 
 class BlogsAPIViewSet(CustomPagesAPIViewSet):

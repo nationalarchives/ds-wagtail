@@ -1,7 +1,6 @@
-from wagtail import blocks
-
 from app.core.blocks.image import APIImageChooserBlock
 from app.core.serializers import ImageSerializer
+from wagtail import blocks
 
 
 class ShopCollectionBlock(blocks.StructBlock):

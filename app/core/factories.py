@@ -1,8 +1,7 @@
 import factory
+from app.core.models import BasePage
 from django.utils import timezone
 from wagtail_factories import ImageFactory, PageFactory
-
-from app.core.models import BasePage
 
 
 class BasePageFactory(PageFactory):

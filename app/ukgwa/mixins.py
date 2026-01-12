@@ -1,10 +1,9 @@
+from app.core.blocks.links import LinkBlock
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel
 from wagtail.api import APIField
 from wagtail.fields import StreamField
-
-from app.core.blocks.links import LinkBlock
 
 
 class FeaturedLinksMixin(models.Model):
