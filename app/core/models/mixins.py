@@ -344,9 +344,9 @@ class SocialMixin(models.Model):
 class CustomHeadlessPreviewMixin(HeadlessPreviewMixin):
     def get_client_root_url(self, request: HttpRequest) -> str:
         """
-        Finds the root URL of the page's site to allow that site's frontend to render the page preview.
-        If the page's site cannot be found, it falls back to the default site defined in settings.
+        Uses the WAGTAIL_HEADLESS_PREVIEW settings to determine the preview URL.
+        Falls back to the site from the request if the page has no specific site.
+        This respects the WAGTAIL_HEADLESS_PREVIEW_URL environment variable.
         """
-        if site := self.get_site():
-            return site.root_url + "/preview/"
-        return get_client_root_url_from_site(Site.find_for_request(request))
+        site = self.get_site() or Site.find_for_request(request)
+        return get_client_root_url_from_site(site)
