@@ -7,7 +7,12 @@ from wagtail.fields import StreamField
 
 
 class FeaturedLinksMixin(models.Model):
-    """Add featured links section to a page"""
+    """
+    Add a single featured links section to a page.
+
+    For pages requiring multiple featured links sections (like UKGWAHomePage which needs
+    2), use the FeaturedLinksSection class with an InlinePanel instead.
+    """
 
     featured_links_heading = models.CharField(
         verbose_name=_("featured links heading text"),
