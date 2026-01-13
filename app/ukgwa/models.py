@@ -126,7 +126,7 @@ class SectionIndexPage(UKGWABasePage):
 
     # TODO: Uncomment when other subpage types have been added and can be used for
     # testing
-    # 
+    #
     # parent_page_types = ["ukgwa.UKGWAHomePage"]
     subpage_types = ["ukgwa.SectionIndexPage"]
 
