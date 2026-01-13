@@ -140,7 +140,7 @@ class SectionIndexPage(UKGWABasePage):
     content_panels = UKGWABasePage.content_panels
 
 
-class InformationPage(FeaturedLinksMixin, BasePageWithRequiredIntro):
+class InformationPage(FeaturedLinksMixin, UKGWABasePage):
 
     parent_page_types = ["ukgwa.SectionIndexPage"]
     subpage_types = []
