@@ -124,7 +124,11 @@ class SectionIndexPage(UKGWABasePage):
     Index page that returns its direct child pages which have 'show in menus' enabled.
     """
 
-    parent_page_types = ["ukgwa.UKGWAHomePage"]
+    # TODO: Uncomment when other subpage types have been added and can be used for
+    # testing
+    # 
+    # parent_page_types = ["ukgwa.UKGWAHomePage"]
+    subpage_types = ["ukgwa.SectionIndexPage"]
 
     @property
     def subpages(self):
