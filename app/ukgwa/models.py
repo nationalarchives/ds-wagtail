@@ -1,5 +1,6 @@
 import copy
 
+from app.alerts.models import ThemedAlertMixin
 from app.core.blocks.links import LinkBlock
 from app.core.models import BasePageWithRequiredIntro, HeroImageMixin
 from app.core.models.mixins import SocialMixin
@@ -12,6 +13,7 @@ from modelcluster.fields import ParentalKey
 from wagtail.admin.panels import FieldPanel, InlinePanel
 from wagtail.api import APIField
 from wagtail.fields import StreamField
+from wagtail.models import Page
 from wagtail.search import index
 
 
@@ -60,7 +62,7 @@ class FeaturedLinksSection(models.Model):
         verbose_name_plural = "Featured links sections"
 
 
-class UKGWABasePage(BasePageWithRequiredIntro):
+class UKGWABasePage(ThemedAlertMixin, BasePageWithRequiredIntro):
     """Base page for UKGWA with customized panels"""
 
     class Meta:
@@ -69,6 +71,7 @@ class UKGWABasePage(BasePageWithRequiredIntro):
     show_in_menus_default = True
 
     base_page_promote_panels = copy.deepcopy(BasePageWithRequiredIntro.promote_panels)
+
     # Remove teaser_image from the BasePageWithRequiredIntro promote panels
     for panel in base_page_promote_panels:
         if hasattr(panel, "heading") and panel.heading == "Internal data":
@@ -85,6 +88,12 @@ class UKGWABasePage(BasePageWithRequiredIntro):
         + SocialMixin.promote_panels
     )
 
+    # Override to hide inherited alert field
+    settings_panels = Page.settings_panels + ThemedAlertMixin.settings_panels
+
+    # Override api_fields to exclude alert
+    api_fields = BasePageWithRequiredIntro.api_fields + ThemedAlertMixin.api_fields
+
 
 class UKGWAHomePage(HeroImageMixin, UKGWABasePage):
     """
@@ -97,7 +106,7 @@ class UKGWAHomePage(HeroImageMixin, UKGWABasePage):
     parent_page_types = ["wagtailcore.Page"]
 
     content_panels = (
-        BasePageWithRequiredIntro.content_panels
+        UKGWABasePage.content_panels
         + HeroImageMixin.content_panels
         + [
             InlinePanel(
