@@ -1,5 +1,7 @@
 import logging
 
+from app.api.utils import get_site_from_request
+from app.core.models.settings import ErrorPageSettings
 from app.core.serializers.pages import DefaultPageSerializer
 from django.conf import settings
 from django.db.models import Q
@@ -21,6 +23,7 @@ from wagtail.api.v2.utils import BadRequestError
 from wagtail.api.v2.views import PagesAPIViewSet
 from wagtail.contrib.redirects.models import Redirect
 from wagtail.models import Page, PageViewRestriction, Site
+from wagtail.rich_text import expand_db_html
 
 from ..filters import AliasFilter, DescendantOfPathFilter
 
@@ -125,6 +128,43 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
             "message": "Selected privacy mode is not compatible with this API.",
         }
         return Response(data, status=status.HTTP_403_FORBIDDEN)
+
+    def handle_exception(self, exc):
+        """
+        Override to provide custom 404 message from site settings.
+        """
+        if isinstance(exc, Http404):
+            # Get custom 404 message from site settings
+            try:
+                site = get_site_from_request(self.request)
+                if site:
+                    site_settings = ErrorPageSettings.for_site(site)
+                    title = site_settings.title
+                    # Convert Wagtail's internal link format to proper HTML
+                    message = (
+                        expand_db_html(site_settings.message)
+                        if site_settings.message
+                        else None
+                    )
+                else:
+                    # No site configured
+                    title = "Page not found"
+                    message = None
+            except Site.DoesNotExist:
+                title = "Page not found"
+                message = None
+
+            response_data = {"title": title}
+            if message:
+                response_data["message"] = message
+
+            return Response(
+                response_data,
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+        # Call parent's handle_exception for other exceptions
+        return super().handle_exception(exc)
 
     def get_base_queryset(self):
         """
