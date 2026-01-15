@@ -14,7 +14,7 @@ echo "Unzipping media..."
 unzip -o $DUMP_DIR/$MEDIA_DUMP -d $DUMP_DIR/media
 
 echo "Moving media to /media..."
-docker compose cp $DUMP_DIR/media/media app:/media/media
+docker compose cp $DUMP_DIR/media/media app:/media
 
 echo "Setting media permissions..."
 docker compose exec app chmod -fR 777 /media
