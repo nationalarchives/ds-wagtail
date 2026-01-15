@@ -132,7 +132,7 @@ class SectionIndexPage(UKGWABasePage):
 
     @property
     def subpages(self):
-        return self.get_children().live().in_menu().specific()
+        return self.get_children().live().public().in_menu().specific()
 
     api_fields = UKGWABasePage.api_fields + [
         APIField("subpages", serializer=SubpagesSerializer()),
