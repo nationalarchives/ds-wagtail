@@ -22,7 +22,7 @@ from wagtail.api.v2.views import PagesAPIViewSet
 from wagtail.contrib.redirects.models import Redirect
 from wagtail.models import Page, PageViewRestriction, Site
 
-from ..filters import AliasFilter, DescendantOfPathFilter, SiteFilter
+from ..filters import AliasFilter, DescendantOfPathFilter
 
 logger = logging.getLogger(__name__)
 
@@ -50,7 +50,6 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
         OrderingFilter,
         TranslationOfFilter,
         LocaleFilter,
-        SiteFilter,
         AliasFilter,  # Needs to come before SearchFilter
         SearchFilter,  # Needs to be last, as SearchResults querysets cannot be filtered further
     ]
