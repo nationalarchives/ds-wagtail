@@ -145,21 +145,21 @@ class InformationPage(FeaturedLinksMixin, UKGWABasePage):
     parent_page_types = ["ukgwa.SectionIndexPage"]
     subpage_types = []
 
-    body = StreamField(InformationPageStreamBlock())
+    body = StreamField(InformationPageStreamBlock, blank=True, null=True)
 
-    search_fields = BasePageWithRequiredIntro.search_fields + [
+    search_fields = UKGWABasePage.search_fields + [
         index.SearchField("body"),
     ]
 
     api_fields = (
-        BasePageWithRequiredIntro.api_fields
+        UKGWABasePage.api_fields
         + FeaturedLinksMixin.api_fields
         + [
             APIField("body"),
         ]
     )
     content_panels = (
-        BasePageWithRequiredIntro.content_panels
+        UKGWABasePage.content_panels
         + [
             FieldPanel("body"),
         ]
