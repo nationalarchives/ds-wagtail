@@ -101,14 +101,13 @@ class Alert(BaseAlert):
     "Low", "Medium" and "High". The default is "Low".
     """
 
-    ALERT_LEVEL_CHOICES = [
-        ("low", "Low"),
-        ("medium", "Medium"),
-        ("high", "High"),
-    ]
+    class AlertLevelChoices(models.TextChoices):
+        LOW = "low", "Low"
+        MEDIUM = "medium", "Medium"
+        HIGH = "high", "High"
 
     alert_level = models.CharField(
-        max_length=6, choices=ALERT_LEVEL_CHOICES, default="low"
+        max_length=6, choices=AlertLevelChoices.choices, default="low"
     )
 
     panels = BaseAlert.panels + [
@@ -153,14 +152,15 @@ class ThemedAlert(BaseAlert):
     "Green", "Yellow" and "Red". The default is "Green".
     """
 
-    ALERT_THEME_CHOICES = [
-        ("green", "Green"),
-        ("yellow", "Yellow"),
-        ("red", "Red"),
-    ]
+    class AlertThemeChoices(models.TextChoices):
+        GREEN = "green", "Green"
+        YELLOW = "yellow", "Yellow"
+        RED = "red", "Red"
 
     theme = models.CharField(
-        max_length=6, choices=ALERT_THEME_CHOICES, default="yellow"
+        max_length=6,
+        choices=AlertThemeChoices.choices,
+        default=AlertThemeChoices.YELLOW,
     )
 
     panels = BaseAlert.panels + [
