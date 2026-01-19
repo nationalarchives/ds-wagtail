@@ -35,7 +35,7 @@ class ContentSectionBlock(blocks.StructBlock):
         for block in content:
             block_type = block.block_type
             if block_type == "sub_heading":
-               break  # Found a sub-heading first; any subsequent headings are valid.
+                break  # Found a sub-heading first; any subsequent headings are valid.
             elif block_type == "sub_sub_heading":
                 raise ValidationError(
                     "A sub-sub-heading was found before any sub-headings."
