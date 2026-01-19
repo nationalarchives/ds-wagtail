@@ -34,6 +34,12 @@ class LinkBlockStructValue(blocks.StructValue):
     def is_page(self):
         return bool(self.get("page"))
 
+    def page_id(self):
+        if page := self.get("page"):
+            return page.id
+        else:
+            return None
+
 
 class LinkValidationMixin:
     """
@@ -85,6 +91,7 @@ class InternalLinkBlock(LinkValidationMixin, blocks.StructBlock):
             "url": value.url(),
             "text": value.text(),
             "is_page": value.is_page(),
+            "page_id": value.page_id(),
         }
 
     class Meta:
