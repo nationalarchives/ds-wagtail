@@ -77,10 +77,9 @@ class BaseAlertMixin(models.Model):
 
         # Look higher in the page tree for cascading alerts
         if parent := self.get_parent():
-            if type(parent.specific) is not Page:
-                inherited_alert = getattr(parent.specific, property_name, None)
-                if inherited_alert and inherited_alert.cascade:
-                    return inherited_alert
+            inherited_alert = getattr(parent.specific, property_name, None)
+            if inherited_alert and inherited_alert.cascade:
+                return inherited_alert
 
         # No cascading parent alert, so use this page's own alert
         if page_alert and page_alert.active:
