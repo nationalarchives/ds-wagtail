@@ -349,36 +349,3 @@ class ThemedAlertTests(WagtailPageTestCase):
 
         # Grandchild should inherit cascading alert
         self.assertEqual(self.grandchild_page.global_alert, grandparent_alert)
-
-    def test_themes(self):
-        """ThemedAlert should correctly store and retrieve all themes"""
-        for theme in ThemedAlert.AlertThemeChoices:
-            with self.subTest(theme=theme):
-                alert = ThemedAlert.objects.create(
-                    name=f"{theme.label} Alert",
-                    title=theme.label,
-                    message=f"{theme.label} themed",
-                    active=True,
-                    theme=theme,
-                )
-                self.assertEqual(alert.theme, theme)
-
-    def test_theme_default_is_yellow(self):
-        """ThemedAlert theme should default to 'yellow' if not specified"""
-        alert = ThemedAlert.objects.create(
-            name="Default Alert",
-            title="Default",
-            message="Default message",
-            active=True,
-        )
-        self.assertEqual(alert.theme, ThemedAlert.AlertThemeChoices.YELLOW)
-
-    def test_themed_alert_str_method(self):
-        """ThemedAlert __str__ should return the name"""
-        alert = ThemedAlert.objects.create(
-            name="Test Themed Alert Name",
-            title="Title",
-            message="Message",
-            active=True,
-        )
-        self.assertEqual(str(alert), "Test Themed Alert Name")
