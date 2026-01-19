@@ -107,7 +107,7 @@ class Alert(BaseAlert):
         HIGH = "high", "High"
 
     alert_level = models.CharField(
-        max_length=6, choices=AlertLevelChoices.choices, default="low"
+        max_length=6, choices=AlertLevelChoices.choices, default=AlertLevelChoices.LOW
     )
 
     panels = BaseAlert.panels + [
