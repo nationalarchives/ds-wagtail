@@ -193,6 +193,5 @@ class InformationPage(FeaturedLinksMixin, SidebarNavigationMixin, UKGWABasePage)
         + FeaturedLinksMixin.get_featured_links_panels()
     )
     settings_panels = (
-        UKGWABasePage.settings_panels
-        + SidebarNavigationMixin.settings_panels
+        UKGWABasePage.settings_panels + SidebarNavigationMixin.settings_panels
     )
