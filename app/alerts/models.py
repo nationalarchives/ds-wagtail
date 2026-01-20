@@ -200,15 +200,3 @@ class ThemedAlertMixin(BaseAlertMixin):
 
     class Meta:
         abstract = True
-
-
-class TestAlertPage(AlertMixin, Page):
-    """Test page model using AlertMixin for unit tests."""
-
-    pass
-
-
-class TestThemedAlertPage(ThemedAlertMixin, Page):
-    """Test page model using ThemedAlertMixin for unit tests."""
-
-    pass

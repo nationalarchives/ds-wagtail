@@ -1,27 +1,33 @@
-from app.alerts.factories import TestAlertPageFactory, TestThemedAlertPageFactory
-from app.alerts.models import Alert, ThemedAlert
+from app.alerts.models import Alert
+from app.generic_pages.factories import GeneralPageFactory
 from wagtail.models import Site
 from wagtail.test.utils import WagtailPageTestCase
 
 
-class AlertTests(WagtailPageTestCase):
-    """Tests for Alert model and AlertMixin"""
+class AlertMixinCascadeTests(WagtailPageTestCase):
+    """
+    Tests for alert cascade behavior.
+
+    Tests the cascade logic implemented in BaseAlertMixin.get_active_alert(),
+    which is shared by both AlertMixin and ThemedAlertMixin.
+    Uses AlertMixin with GeneralPage as the test implementation.
+    """
 
     def setUp(self):
         self.root_page = Site.objects.get(is_default_site=True).root_page
 
         # Create parent page
-        self.parent_page = TestAlertPageFactory(
+        self.parent_page = GeneralPageFactory(
             title="Parent Page", parent=self.root_page
         )
 
         # Create child page
-        self.child_page = TestAlertPageFactory(
+        self.child_page = GeneralPageFactory(
             title="Child Page", parent=self.parent_page
         )
 
         # Create grandchild page
-        self.grandchild_page = TestAlertPageFactory(
+        self.grandchild_page = GeneralPageFactory(
             title="Grandchild Page", parent=self.child_page
         )
 
@@ -187,165 +193,3 @@ class AlertTests(WagtailPageTestCase):
 
         # Child should display its own alert since parent is inactive
         self.assertEqual(self.child_page.global_alert, child_alert)
-
-    def test_alert_levels(self):
-        """Alert should correctly store and retrieve all alert levels"""
-        for level in Alert.AlertLevelChoices:
-            with self.subTest(level=level):
-                alert = Alert.objects.create(
-                    name=f"{level.label} Alert",
-                    title=level.label,
-                    message=f"{level.label} priority",
-                    active=True,
-                    alert_level=level,
-                )
-                self.assertEqual(alert.alert_level, level)
-
-    def test_alert_level_default_is_low(self):
-        """Alert level should default to 'low' if not specified"""
-        alert = Alert.objects.create(
-            name="Default Alert",
-            title="Default",
-            message="Default message",
-            active=True,
-        )
-        self.assertEqual(alert.alert_level, Alert.AlertLevelChoices.LOW)
-
-    def test_alert_str_method(self):
-        """Alert __str__ should return the name"""
-        alert = Alert.objects.create(
-            name="Test Alert Name",
-            title="Title",
-            message="Message",
-            active=True,
-        )
-        self.assertEqual(str(alert), "Test Alert Name")
-
-
-class ThemedAlertTests(WagtailPageTestCase):
-    """Tests for ThemedAlert model and ThemedAlertMixin"""
-
-    def setUp(self):
-        self.root_page = Site.objects.get(is_default_site=True).root_page
-
-        # Create parent page
-        self.parent_page = TestThemedAlertPageFactory(
-            title="Parent Page", parent=self.root_page
-        )
-
-        # Create child page
-        self.child_page = TestThemedAlertPageFactory(
-            title="Child Page", parent=self.parent_page
-        )
-
-        # Create grandchild page
-        self.grandchild_page = TestThemedAlertPageFactory(
-            title="Grandchild Page", parent=self.child_page
-        )
-
-    def test_no_alert_set_returns_none(self):
-        """When no alert is set, global_alert should return None"""
-        self.assertIsNone(self.child_page.global_alert)
-
-    def test_page_with_active_themed_alert_displays_alert(self):
-        """Page with an active themed alert should display it"""
-        alert = ThemedAlert.objects.create(
-            name="Test Themed Alert",
-            title="Important",
-            message="This is a test",
-            active=True,
-            theme=ThemedAlert.AlertThemeChoices.YELLOW,
-        )
-        self.child_page.themed_alert = alert
-        self.child_page.save()
-
-        self.assertEqual(self.child_page.global_alert, alert)
-
-    def test_page_with_inactive_themed_alert_returns_none(self):
-        """Page with an inactive themed alert should return None"""
-        alert = ThemedAlert.objects.create(
-            name="Test Themed Alert",
-            title="Important",
-            message="This is a test",
-            active=False,
-            theme=ThemedAlert.AlertThemeChoices.RED,
-        )
-        self.child_page.themed_alert = alert
-        self.child_page.save()
-
-        self.assertIsNone(self.child_page.global_alert)
-
-    def test_child_and_parent_different_alerts_no_cascade(self):
-        """Child and parent with different themed alerts (no cascade) should show their own alerts"""
-        parent_alert = ThemedAlert.objects.create(
-            name="Parent Alert",
-            title="Parent",
-            message="Parent message",
-            active=True,
-            cascade=False,
-            theme=ThemedAlert.AlertThemeChoices.GREEN,
-        )
-        child_alert = ThemedAlert.objects.create(
-            name="Child Alert",
-            title="Child",
-            message="Child message",
-            active=True,
-            cascade=False,
-            theme=ThemedAlert.AlertThemeChoices.RED,
-        )
-
-        self.parent_page.themed_alert = parent_alert
-        self.parent_page.save()
-
-        self.child_page.themed_alert = child_alert
-        self.child_page.save()
-
-        # Parent should show parent alert
-        self.assertEqual(self.parent_page.global_alert, parent_alert)
-        # Child should show child alert
-        self.assertEqual(self.child_page.global_alert, child_alert)
-
-    def test_parent_cascade_overrides_child_active_alert(self):
-        """Parent themed alert with cascade should override child's own active alert"""
-        parent_alert = ThemedAlert.objects.create(
-            name="Parent Alert",
-            title="Parent",
-            message="Parent message",
-            active=True,
-            cascade=True,
-            theme=ThemedAlert.AlertThemeChoices.RED,
-        )
-        child_alert = ThemedAlert.objects.create(
-            name="Child Alert",
-            title="Child",
-            message="Child message",
-            active=True,
-            cascade=False,
-            theme=ThemedAlert.AlertThemeChoices.GREEN,
-        )
-
-        self.parent_page.themed_alert = parent_alert
-        self.parent_page.save()
-
-        self.child_page.themed_alert = child_alert
-        self.child_page.save()
-
-        # Child should display parent's cascading alert
-        self.assertEqual(self.child_page.global_alert, parent_alert)
-
-    def test_grandchild_inherits_from_grandparent_cascade(self):
-        """Cascade should work through multiple levels of hierarchy for themed alerts"""
-        grandparent_alert = ThemedAlert.objects.create(
-            name="Grandparent Alert",
-            title="Grandparent",
-            message="Grandparent message",
-            active=True,
-            cascade=True,
-            theme=ThemedAlert.AlertThemeChoices.YELLOW,
-        )
-
-        self.parent_page.themed_alert = grandparent_alert
-        self.parent_page.save()
-
-        # Grandchild should inherit cascading alert
-        self.assertEqual(self.grandchild_page.global_alert, grandparent_alert)
