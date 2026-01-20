@@ -50,3 +50,51 @@ class FeaturedLinksMixin(models.Model):
                 heading="Featured links",
             )
         ]
+
+
+class SidebarNavigationMixin(models.Model):
+    """Mixin to add section navigation sidebar to pages."""
+
+    show_sidebar_navigation = models.BooleanField(
+        default=True,
+        help_text="Show a navigation sidebar of sibling pages within this section"
+    )
+
+    @property
+    def sidebar_navigation(self):
+        """Return section navigation data if enabled and parent is a SectionIndexPage."""
+        if not self.show_sidebar_navigation:
+            return None
+
+        parent = self.get_parent().specific
+
+        # Check if parent is a SectionIndexPage using lazy model name check
+        if not parent or parent._meta.model_name != 'sectionindexpage':
+            return None
+
+        # Check if parent has subpages
+        if not hasattr(parent, 'subpages') or not parent.subpages:
+            return None
+
+        return {
+            'parent_page_title': parent.title,
+            'subpages': [
+                {
+                    'text': page.title,
+                    'href': page.url,
+                    'is_current': page.id == self.id,
+                }
+                for page in parent.subpages
+            ]
+        }
+
+    class Meta:
+        abstract = True
+
+    settings_panels = [
+        FieldPanel("show_sidebar_navigation"),
+    ]
+
+    api_fields = [
+        APIField("sidebar_navigation"),
+    ]                 
