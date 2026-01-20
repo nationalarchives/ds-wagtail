@@ -2,6 +2,8 @@ from app.core.blocks.links import LinkBlock
 from app.core.models import BasePageWithRequiredIntro, HeroImageMixin
 from app.core.models.basepage import BasePage
 from app.core.models.mixins import SocialMixin
+from app.ukgwa.blocks import InformationPageStreamBlock
+from app.ukgwa.mixins import FeaturedLinksMixin
 from app.ukgwa.serializers import SubpagesSerializer
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -9,6 +11,7 @@ from modelcluster.fields import ParentalKey
 from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
 from wagtail.api import APIField
 from wagtail.fields import StreamField
+from wagtail.search import index
 
 
 class FeaturedLinksSection(models.Model):
@@ -142,11 +145,8 @@ class SectionIndexPage(UKGWABasePage):
     Index page that returns its direct child pages which have 'show in menus' enabled.
     """
 
-    # TODO: Uncomment when other subpage types have been added and can be used for
-    # testing
-    #
-    # parent_page_types = ["ukgwa.UKGWAHomePage"]
-    subpage_types = ["ukgwa.SectionIndexPage"]
+    parent_page_types = ["ukgwa.UKGWAHomePage"]
+    subpage_types = ["ukgwa.InformationPage"]
 
     @property
     def subpages(self):
@@ -156,3 +156,30 @@ class SectionIndexPage(UKGWABasePage):
         APIField("subpages", serializer=SubpagesSerializer()),
     ]
     content_panels = UKGWABasePage.content_panels
+
+
+class InformationPage(FeaturedLinksMixin, UKGWABasePage):
+
+    parent_page_types = ["ukgwa.SectionIndexPage"]
+    subpage_types = []
+
+    body = StreamField(InformationPageStreamBlock, blank=True, null=True)
+
+    search_fields = UKGWABasePage.search_fields + [
+        index.SearchField("body"),
+    ]
+
+    api_fields = (
+        UKGWABasePage.api_fields
+        + FeaturedLinksMixin.api_fields
+        + [
+            APIField("body"),
+        ]
+    )
+    content_panels = (
+        UKGWABasePage.content_panels
+        + [
+            FieldPanel("body"),
+        ]
+        + FeaturedLinksMixin.get_featured_links_panels()
+    )
