@@ -113,7 +113,7 @@ class UKGWABasePage(ThemedAlertMixin, BasePageWithRequiredIntro):
     api_fields = BasePageWithRequiredIntro.api_fields + ThemedAlertMixin.api_fields
 
 
-class UKGWAHomePage(HeroImageMixin, UKGWABasePage):
+class UKGWAHomePage(HeroImageMixin, SearchMixin, UKGWABasePage):
     """
     Homepage for UK Government Web Archive site.
 
@@ -140,8 +140,11 @@ class UKGWAHomePage(HeroImageMixin, UKGWABasePage):
     api_fields = (
         UKGWABasePage.api_fields
         + HeroImageMixin.api_fields
+        + SearchMixin.api_fields
         + [APIField("featured_links_sections")]
     )
+
+    settings_panels = UKGWABasePage.settings_panels + SearchMixin.settings_panels
 
     max_count = 1
 
