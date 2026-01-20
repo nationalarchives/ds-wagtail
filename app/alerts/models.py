@@ -5,15 +5,14 @@ from django.db import models
 from wagtail.admin.panels import FieldPanel
 from wagtail.api import APIField
 from wagtail.fields import RichTextField
-from wagtail.models import Page
 from wagtail.snippets.models import register_snippet
 
-from .serializers import AlertSerializer
+from .serializers import AlertSerializer, ThemedAlertSerializer
 
 
-@register_snippet
-class Alert(models.Model):
-    """Alert snippet.
+class BaseAlert(models.Model):
+    """
+    Base Alert snippet
 
     Alerts are preconfigured pieces of content that can be selected
     to display on pages with an alert field defined.
@@ -28,17 +27,8 @@ class Alert(models.Model):
     A global alert can be set by selecting it on the Home page and
     setting cascade to True.
     It is possible, through inheritance, for multiple alerts to display
-    on a single page. These will be listed in heirarchical order.
-
-    alert_level: The level of importance of the alert. Choices are
-    "Low", "Medium" and "High". The default is "Low".
+    on a single page. These will be listed in hierarchical order.
     """
-
-    ALERT_LEVEL_CHOICES = [
-        ("low", "Low"),
-        ("medium", "Medium"),
-        ("high", "High"),
-    ]
 
     name = models.CharField(
         max_length=100,
@@ -53,9 +43,6 @@ class Alert(models.Model):
     cascade = models.BooleanField(
         default=False, verbose_name="Show on current and all child pages"
     )
-    alert_level = models.CharField(
-        max_length=6, choices=ALERT_LEVEL_CHOICES, default="low"
-    )
 
     panels = [
         FieldPanel("name"),
@@ -63,7 +50,6 @@ class Alert(models.Model):
         FieldPanel("message"),
         FieldPanel("active"),
         FieldPanel("cascade"),
-        FieldPanel("alert_level"),
     ]
 
     uid = models.BigIntegerField(null=False, blank=True, editable=False)
@@ -75,8 +61,59 @@ class Alert(models.Model):
         self.uid = round(time.time() * 1000)
         super().save(*args, **kwargs)
 
+    class Meta:
+        abstract = True
 
-class AlertMixin(models.Model):
+
+class BaseAlertMixin(models.Model):
+    """Base mixin with shared alert retrieval logic."""
+
+    def get_active_alert(self, field_name, property_name):
+        """
+        Find which alert should display on this page.
+        """
+        page_alert = getattr(self, field_name, None)
+
+        # Look higher in the page tree for cascading alerts
+        if parent := self.get_parent():
+            inherited_alert = getattr(parent.specific, property_name, None)
+            if inherited_alert and inherited_alert.cascade:
+                return inherited_alert
+
+        # No cascading parent alert, so use this page's own alert
+        if page_alert and page_alert.active:
+            return page_alert
+
+        # No alert found
+        return None
+
+    class Meta:
+        abstract = True
+
+
+@register_snippet
+class Alert(BaseAlert):
+    """Extends BaseAlert adding alert levels.
+
+    alert_level: The level of importance of the alert. Choices are
+    "Low", "Medium" and "High". The default is "Low".
+    """
+
+    class AlertLevelChoices(models.TextChoices):
+        LOW = "low", "Low"
+        MEDIUM = "medium", "Medium"
+        HIGH = "high", "High"
+
+    alert_level = models.CharField(
+        max_length=6, choices=AlertLevelChoices.choices, default=AlertLevelChoices.LOW
+    )
+
+    panels = BaseAlert.panels + [
+        FieldPanel("alert_level"),
+    ]
+
+
+class AlertMixin(BaseAlertMixin):
     """Alert mixin.
 
     Add this mixin to pages that require an alert field.
@@ -96,20 +133,69 @@ class AlertMixin(models.Model):
         Retrieve the parent-most alert that is active and has cascade enabled.
         If there is no parent alert, then return the current alert if it is active.
         """
-        if parent := self.get_parent():
-            if type(parent.specific) is not Page:
-                if parent_alert := parent.specific.global_alert:
-                    if parent_alert.cascade:
-                        return parent_alert
-        if self.alert and self.alert.active:
-            return self.alert
-        return None
+        return self.get_active_alert(field_name="alert", property_name="global_alert")
 
-    settings_panels = [
-        FieldPanel("alert"),
+    settings_panels = [FieldPanel("alert")]
+    api_fields = [APIField("global_alert", serializer=AlertSerializer())]
+
+    class Meta:
+        abstract = True
+
+
+@register_snippet
+class ThemedAlert(BaseAlert):
+    """Extends BaseAlert adding alert levels.
+
+    theme: The theme to be applied to the alert. Choices are
+    "Green", "Yellow" and "Red". The default is "Green".
+    """
+
+    class AlertThemeChoices(models.TextChoices):
+        GREEN = "green", "Green"
+        YELLOW = "yellow", "Yellow"
+        RED = "red", "Red"
+
+    theme = models.CharField(
+        max_length=6,
+        choices=AlertThemeChoices.choices,
+        default=AlertThemeChoices.YELLOW,
+    )
+
+    panels = BaseAlert.panels + [
+        FieldPanel("theme"),
     ]
 
-    api_fields = [APIField("global_alert", serializer=AlertSerializer())]
+    class Meta:
+        verbose_name = "Themed Alert"
+        verbose_name_plural = "Themed Alerts"
+
+
+class ThemedAlertMixin(BaseAlertMixin):
+    """Alert mixin.
+
+    Add this mixin to pages that require an alert field.
+    """
+
+    themed_alert = models.ForeignKey(
+        "alerts.ThemedAlert",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+
+    @property
+    def global_alert(self):
+        """
+        Retrieve the parent-most alert that is active and has cascade enabled.
+        If there is no parent alert, then return the current alert if it is active.
+        """
+        return self.get_active_alert(
+            field_name="themed_alert", property_name="global_alert"
+        )
+
+    settings_panels = [FieldPanel("themed_alert")]
+    api_fields = [APIField("global_alert", serializer=ThemedAlertSerializer())]
 
     class Meta:
         abstract = True

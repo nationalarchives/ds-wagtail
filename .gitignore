@@ -35,3 +35,5 @@ config/settings/local.py
 
 # dumped data from AWS
 dumps
+
+docker-compose.override.yml
