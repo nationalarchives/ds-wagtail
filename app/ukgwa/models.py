@@ -317,7 +317,7 @@ class InformationPage(FeaturedLinksMixin, UKGWABasePage):
     )
 
 
-class AtoZArchivePage(UKGWABasePage):
+class AToZArchivePage(UKGWABasePage):
     """
     A-Z Archive index page.
 
@@ -339,13 +339,9 @@ class AtoZArchivePage(UKGWABasePage):
         """
         return ArchiveRecord.get_available_letters()
 
-    api_fields = (
-        UKGWABasePage.api_fields
-        + SearchMixin.api_fields
-        + [
-            APIField("available_characters"),
-        ]
-    )
+    api_fields = UKGWABasePage.api_fields + [
+        APIField("available_characters"),
+    ]
 
     content_panels = UKGWABasePage.content_panels
 
