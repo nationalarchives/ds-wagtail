@@ -83,7 +83,7 @@ class ArchiveRecordSchema(BaseModel):
         """
         # Get model data excluding wam_id and computed fields
         data = self.model_dump(
-            mode='json',  # Converts HttpUrl JSON-serializable value
+            mode="json",  # Converts HttpUrl JSON-serializable value
             exclude={"wam_id", "sort_name", "first_character", "record_hash"},
             by_alias=False,
         )
