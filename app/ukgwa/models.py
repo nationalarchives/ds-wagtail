@@ -317,7 +317,7 @@ class InformationPage(FeaturedLinksMixin, UKGWABasePage):
     )
 
 
-class AtoZArchivePage(SearchMixin, UKGWABasePage):
+class AtoZArchivePage(UKGWABasePage):
     """
     A-Z Archive index page.
 
@@ -334,7 +334,7 @@ class AtoZArchivePage(SearchMixin, UKGWABasePage):
     def available_characters(self):
         """
         Get list of characters that have archive records.
-        
+
         Returns sorted list: ['0', '1', ..., '9', 'a', 'b', ..., 'z', 'other']
         """
         return ArchiveRecord.get_available_letters()
@@ -348,8 +348,6 @@ class AtoZArchivePage(SearchMixin, UKGWABasePage):
     )
 
     content_panels = UKGWABasePage.content_panels
-
-    settings_panels = UKGWABasePage.settings_panels + SearchMixin.settings_panels
 
     class Meta:
         verbose_name = "A-Z Archive Page"
