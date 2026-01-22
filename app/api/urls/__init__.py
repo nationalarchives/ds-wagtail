@@ -1,3 +1,4 @@
+from app.api.urls.archive_records import ArchiveRecordsAPIViewSet
 from app.api.urls.blog_posts import BlogPostsAPIViewSet
 from app.api.urls.blogs import BlogsAPIViewSet
 from app.api.urls.catalogue import CatalogueAPIViewSet
@@ -25,3 +26,4 @@ api_router.register_endpoint("redirects", RedirectsAPIViewSet)
 api_router.register_endpoint("foi", FreedomOfInformationRequestsAPIViewSet)
 api_router.register_endpoint("catalogue", CatalogueAPIViewSet)
 api_router.register_endpoint("globals", GlobalsAPIViewSet)
+api_router.register_endpoint("archive_records", ArchiveRecordsAPIViewSet)
