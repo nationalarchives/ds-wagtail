@@ -62,6 +62,120 @@ class FeaturedLinksSection(models.Model):
         verbose_name_plural = "Featured links sections"
 
 
+class ArchiveRecord(models.Model):
+    """
+    Archive record from external JSON source.
+
+    - Synced via management command from external archive data.
+    - Includes computed fields for efficient filtering and sorting.
+    """
+
+    # Unique identifier from source
+    wam_id = models.IntegerField(
+        unique=True,
+        db_index=True,
+        help_text=_("WAM database ID (unique identifier)"),
+    )
+
+    # Core fields
+    profile_name = models.TextField(
+        help_text=_("Display name of the archive record"),
+    )
+    record_url = models.TextField(
+        help_text=_("Original URL of the archived site"),
+    )
+    archive_link = models.TextField(
+        help_text=_("Link to the archived version"),
+    )
+    domain_type = models.CharField(
+        max_length=50,
+        blank=True,
+        help_text=_("Type of domain (e.g., Domain, SocialMedia)"),
+    )
+    first_capture_display = models.CharField(
+        max_length=100,
+        blank=True,
+        help_text=_("Human-readable first capture date"),
+    )
+    latest_capture_display = models.CharField(
+        max_length=100,
+        blank=True,
+        help_text=_("Human-readable latest capture date"),
+    )
+    ongoing = models.BooleanField(
+        default=False,
+        help_text=_("Whether archiving is ongoing"),
+    )
+    description = models.TextField(
+        help_text=_("Description of archive record"),
+    )
+
+    # Computed fields for sorting and filtering
+    sort_name = models.TextField(
+        db_index=True,
+        help_text=_("Normalized name for sorting (strips 'The' prefix)"),
+    )
+    first_character = models.CharField(
+        max_length=5,
+        db_index=True,
+        help_text=_("First character for navigation: a-z, 0-9, or 'other' for symbols"),
+    )
+
+    # Hash for change detection
+    record_hash = models.CharField(
+        max_length=32,
+        help_text=_("MD5 hash of record data for change detection"),
+    )
+
+    # Timestamps
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = _("Archive record")
+        verbose_name_plural = _("Archive records")
+        ordering = ["sort_name"]
+        indexes = [
+            models.Index(fields=["first_character", "sort_name"]),
+        ]
+
+    def __str__(self):
+        return self.profile_name
+
+    @classmethod
+    def get_available_letters(cls):
+        """
+        Get list of characters that have records.
+        Returns sorted list: digits (0-9), then letters (a-z), then 'other' at the end.
+        Note: 'other' represents symbols/special characters.
+        """
+        # Get unique first_character values
+        letters = set(cls.objects.values_list("first_character", flat=True))
+
+        # Custom sort: digits (0-9), then letters (a-z), then 'other' at the end
+        def sort_key(char):
+            if char == "other":
+                return (2, "")  # 'other' last
+            elif char.isdigit():
+                return (0, char)  # Digits first
+            elif char.isalpha():
+                return (1, char)  # Letters second
+            else:
+                return (2, char)  # Any unexpected value
+
+        return sorted(letters, key=sort_key)
+
+    @classmethod
+    def get_records_for_letter(cls, letter):
+        """
+        Get all records for a specific letter, ordered by sort name. Letter should be
+        lowercase (a-z), digit (0-9), or 'other'.
+        """
+        # Normalize to lowercase for letters, keep digits and 'other' as-is
+        normalized = letter.lower() if letter and letter.isalpha() else letter
+        return cls.objects.filter(first_character=normalized).order_by("sort_name")
+
+
 class UKGWABasePage(ThemedAlertMixin, BasePageWithRequiredIntro):
     """
     Base page for UK Government Web Archive (UKGWA) pages.
