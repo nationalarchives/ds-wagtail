@@ -317,6 +317,44 @@ class InformationPage(FeaturedLinksMixin, UKGWABasePage):
     )
 
 
+class AtoZArchivePage(SearchMixin, UKGWABasePage):
+    """
+    A-Z Archive index page.
+
+    - Displays an alphabetical/numerical index of archive records.
+    - Records are filtered via the separate archive records API endpoint.
+    """
+
+    parent_page_types = ["ukgwa.UKGWAHomePage"]
+    subpage_types = []
+
+    max_count = 1
+
+    @property
+    def available_characters(self):
+        """
+        Get list of characters that have archive records.
+        
+        Returns sorted list: ['0', '1', ..., '9', 'a', 'b', ..., 'z', 'other']
+        """
+        return ArchiveRecord.get_available_letters()
+
+    api_fields = (
+        UKGWABasePage.api_fields
+        + SearchMixin.api_fields
+        + [
+            APIField("available_characters"),
+        ]
+    )
+
+    content_panels = UKGWABasePage.content_panels
+
+    settings_panels = UKGWABasePage.settings_panels + SearchMixin.settings_panels
+
+    class Meta:
+        verbose_name = "A-Z Archive Page"
+
+
 @register_snippet
 class ArchiveSearchComponent(models.Model):
     """
