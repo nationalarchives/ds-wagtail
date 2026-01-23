@@ -144,17 +144,16 @@ class Command(BaseCommand):
 
         source_wam_ids = []
         total_validated = 0
+        total_batches = (len(raw_data) + validation_batch_size - 1) // validation_batch_size
 
         # Process data in validation batches
         for batch_start in range(0, len(raw_data), validation_batch_size):
             batch_end = min(batch_start + validation_batch_size, len(raw_data))
             batch_data = raw_data[batch_start:batch_end]
             batch_num = (batch_start // validation_batch_size) + 1
-            total_batches = (
-                len(raw_data) + validation_batch_size - 1
-            ) // validation_batch_size
 
             self.stdout.write(
+                # Use 1-based indexing when reporting progress.
                 f"\n--- Batch {batch_num}/{total_batches}: Validating entries {batch_start + 1}-{batch_end} ---"
             )
 
@@ -166,7 +165,7 @@ class Command(BaseCommand):
 
             self.stdout.write(f"Validated {batch_valid_count} entries")
 
-            if batch_valid_count > 0:
+            if batch_valid_count:
                 # Collect wam_ids for deletion later
                 batch_wam_ids = [entry.wam_id for entry in validated_entries]
                 source_wam_ids.extend(batch_wam_ids)
@@ -179,10 +178,8 @@ class Command(BaseCommand):
                 )
 
                 # Accumulate stats
-                stats["created"] += save_results["created"]
-                stats["updated"] += save_results["updated"]
-                stats["skipped"] += save_results["skipped"]
-                stats["database_errors"] += save_results["database_errors"]
+                for key in ("created", "updated", "skipped", "database_errors"):
+                    stats[key] += save_results[key]
 
         # Summary after all batches
         self.stdout.write(
@@ -190,7 +187,7 @@ class Command(BaseCommand):
                 f"\n\nValidation complete: {total_validated} valid entries"
             )
         )
-        if stats["validation_errors"] > 0:
+        if stats["validation_errors"]:
             self.stdout.write(
                 self.style.WARNING(
                     f"Skipped {stats['validation_errors']} entries due to validation errors"
@@ -207,7 +204,7 @@ class Command(BaseCommand):
 
                 if not options["dry_run"]:
                     to_delete.delete()
-                    if deleted_count > 0:
+                    if deleted_count:
                         self.stdout.write(f"Deleted {deleted_count} entries not in source")
 
                 stats["deleted"] = deleted_count
@@ -249,7 +246,7 @@ class Command(BaseCommand):
             tuple: (validated_entries, validation_error_count)
         """
         validated_entries = []
-        validation_errors = 0
+        validation_errors_count = 0
 
         for idx, raw_entry in enumerate(raw_data, 1):
             try:
@@ -258,7 +255,7 @@ class Command(BaseCommand):
                 validated_entries.append(validated)
 
             except ValidationError as e:
-                validation_errors += 1
+                validation_errors_count += 1
                 wam_id = raw_entry.get("wamId", "unknown")
 
                 # Format error details for readable output
@@ -275,7 +272,7 @@ class Command(BaseCommand):
                     error_details,
                 )
 
-        return validated_entries, validation_errors
+        return validated_entries, validation_errors_count
 
     def _save_entries(self, validated_entries, total_valid_entries, commit_batch_size, dry_run):
         """
