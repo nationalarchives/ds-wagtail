@@ -192,11 +192,25 @@ class ArchiveRecord(models.Model):
         # Normalize to lowercase for letters
         if letter and letter.isalpha():
             normalized = letter.lower()
-            queryset = cls.objects.filter(first_character=normalized).order_by("sort_name")
+            queryset = cls.objects.filter(first_character=normalized).order_by(
+                "sort_name"
+            )
         # Handle '0-9' category - includes all digits and 'other'
         elif letter == "0-9":
             queryset = cls.objects.filter(
-                first_character__in=["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "other"]
+                first_character__in=[
+                    "0",
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                    "6",
+                    "7",
+                    "8",
+                    "9",
+                    "other",
+                ]
             ).order_by("sort_name")
         else:
             queryset = cls.objects.none()
