@@ -386,41 +386,29 @@ class Command(BaseCommand):
 
         Returns: 'created', 'updated', or 'skipped'
         """
-        try:
-            existing = ArchiveRecord.objects.get(wam_id=validated.wam_id)
+        if dry_run:
+            try:
+                existing = ArchiveRecord.objects.get(wam_id=validated.wam_id)
+                if existing.record_hash == validated.record_hash:
+                    return "skipped"
+                return "updated"
+            except ArchiveRecord.DoesNotExist:
+                return "created"
 
-            if existing.record_hash == validated.record_hash:
-                return "skipped"
+        defaults = validated.model_dump(mode="json", by_alias=False, exclude={"wam_id"})
+        instance, created = ArchiveRecord.objects.get_or_create(
+            wam_id=validated.wam_id,
+            defaults=defaults,
+        )
 
-            if not dry_run:
-                existing.profile_name = validated.profile_name
-                existing.record_url = str(validated.record_url)
-                existing.archive_link = str(validated.archive_link)
-                existing.domain_type = validated.domain_type
-                existing.first_capture_display = validated.first_capture_display
-                existing.latest_capture_display = validated.latest_capture_display
-                existing.ongoing = validated.ongoing
-                existing.sort_name = validated.sort_name
-                existing.first_character = validated.first_character
-                existing.record_hash = validated.record_hash
-                existing.save()
-
-            return "updated"
-
-        except ArchiveRecord.DoesNotExist:
-            if not dry_run:
-                ArchiveRecord.objects.create(
-                    wam_id=validated.wam_id,
-                    profile_name=validated.profile_name,
-                    record_url=str(validated.record_url),
-                    archive_link=str(validated.archive_link),
-                    domain_type=validated.domain_type,
-                    first_capture_display=validated.first_capture_display,
-                    latest_capture_display=validated.latest_capture_display,
-                    ongoing=validated.ongoing,
-                    sort_name=validated.sort_name,
-                    first_character=validated.first_character,
-                    record_hash=validated.record_hash,
-                )
-
+        if created:
             return "created"
+
+        if instance.record_hash == validated.record_hash:
+            return "skipped"
+
+        for field, value in defaults.items():
+            setattr(instance, field, value)
+        instance.save()
+
+        return "updated"
