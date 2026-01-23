@@ -136,7 +136,9 @@ class Command(BaseCommand):
         # Processing mode message
         mode = "DRY RUN - no changes will be saved" if options["dry_run"] else "LIVE"
         self.stdout.write(
-            self.style.WARNING(f"Mode: {mode}\n") if options["dry_run"] else f"Mode: {mode}\n"
+            self.style.WARNING(f"Mode: {mode}\n")
+            if options["dry_run"]
+            else f"Mode: {mode}\n"
         )
         self.stdout.write(
             f"Processing {stats['total']} entries in batches of {validation_batch_size}...\n"
@@ -144,7 +146,9 @@ class Command(BaseCommand):
 
         source_wam_ids = []
         total_validated = 0
-        total_batches = (len(raw_data) + validation_batch_size - 1) // validation_batch_size
+        total_batches = (
+            len(raw_data) + validation_batch_size - 1
+        ) // validation_batch_size
 
         # Process data in validation batches
         for batch_start in range(0, len(raw_data), validation_batch_size):
@@ -172,9 +176,14 @@ class Command(BaseCommand):
 
                 # Save batch immediately
                 if not options["dry_run"]:
-                    self.stdout.write(f"Saving {batch_valid_count} entries to database...")
+                    self.stdout.write(
+                        f"Saving {batch_valid_count} entries to database..."
+                    )
                 save_results = self._save_entries(
-                    validated_entries, batch_valid_count, commit_batch_size, options["dry_run"]
+                    validated_entries,
+                    batch_valid_count,
+                    commit_batch_size,
+                    options["dry_run"],
                 )
 
                 # Accumulate stats
@@ -205,7 +214,9 @@ class Command(BaseCommand):
                 if not options["dry_run"]:
                     to_delete.delete()
                     if deleted_count:
-                        self.stdout.write(f"Deleted {deleted_count} entries not in source")
+                        self.stdout.write(
+                            f"Deleted {deleted_count} entries not in source"
+                        )
 
                 stats["deleted"] = deleted_count
             except DatabaseError as e:
@@ -274,7 +285,9 @@ class Command(BaseCommand):
 
         return validated_entries, validation_errors_count
 
-    def _save_entries(self, validated_entries, total_valid_entries, commit_batch_size, dry_run):
+    def _save_entries(
+        self, validated_entries, total_valid_entries, commit_batch_size, dry_run
+    ):
         """
         Save validated entries to database in batches. Each batch commits independently
         with savepoints for individual entry error handling.
@@ -297,9 +310,7 @@ class Command(BaseCommand):
 
         # Process entries in batches to commit incrementally
         for batch_start in range(0, len(validated_entries), commit_batch_size):
-            batch_end = min(
-                batch_start + commit_batch_size, len(validated_entries)
-            )
+            batch_end = min(batch_start + commit_batch_size, len(validated_entries))
             batch = validated_entries[batch_start:batch_end]
 
             # Batch transaction
