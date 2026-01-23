@@ -73,20 +73,19 @@ class SidebarNavigationMixin(models.Model):
         if not parent or not isinstance(parent, SectionIndexPage):
             return None
 
-        # Check if parent has subpages
-        if not hasattr(parent, "subpages") or not parent.subpages:
+        subpages = [
+            {
+                 "text": page.title,
+                 "href": page.url,
+                 "is_current": page.id == self.id,
+             }
+            for page in parent.subpages
+        ]
+        if not subpages:
             return None
-
         return {
             "parent_page_title": parent.title,
-            "subpages": [
-                {
-                    "text": page.title,
-                    "href": page.url,
-                    "is_current": page.id == self.id,
-                }
-                for page in parent.subpages
-            ],
+            "subpages": subpages,
         }
 
     class Meta:
