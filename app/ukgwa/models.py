@@ -6,6 +6,7 @@ from app.core.models.mixins import SocialMixin
 from app.ukgwa.blocks import InformationPageStreamBlock
 from app.ukgwa.mixins import FeaturedLinksMixin, SearchMixin
 from app.ukgwa.serializers import SubpagesSerializer
+from django.core.cache import cache
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from modelcluster.fields import ParentalKey
@@ -149,7 +150,13 @@ class ArchiveRecord(models.Model):
 
         Returns sorted list of letters (a-z), then '0-9' (for digits and special chars)
         at the end.
+
+        Results are cached indefinitely and invalidated when archive data is synced.
         """
+        cached_result = cache.get("archive_available_letters")
+        if cached_result is not None:
+            return cached_result
+
         # Get unique first_character values
         letters = set(cls.objects.values_list("first_character", flat=True))
 
@@ -163,6 +170,9 @@ class ArchiveRecord(models.Model):
         if has_numbers_or_special:
             result.append("0-9")
 
+        # Cache indefinitely (cleared on sync)
+        cache.set("archive_available_letters", result, None)
+
         return result
 
     @classmethod
@@ -170,6 +180,14 @@ class ArchiveRecord(models.Model):
         """
         Get all records for a specific letter, ordered by sort name. Letter should be
         lowercase (a-z), or '0-9' for digits and special characters.
+
+        Results are cached indefinitely and invalidated when archive data is synced.
+        """
+        # Check cache first
+        cache_key = f"archive_records_{letter}"
+        cached_result = cache.get(cache_key)
+        if cached_result is not None:
+            return cached_result
 
         # Normalize to lowercase for letters
         if letter and letter.isalpha():
@@ -186,8 +204,25 @@ class ArchiveRecord(models.Model):
         # Convert to list for caching
         result = list(queryset)
 
+        # Cache indefinitely (cleared on sync)
+        cache.set(cache_key, result, None)
+
         return result
+
+    @classmethod
+    def clear_cache(cls):
         """
+        Clear all archive-related caches.
+        Should be called after syncing archive data.
+        """
+        # Clear available letters cache
+        cache.delete("archive_available_letters")
+
+        # Clear all letter-specific record caches
+        # Cache keys: a-z and 0-9
+        for char in "abcdefghijklmnopqrstuvwxyz":
+            cache.delete(f"archive_records_{char}")
+        cache.delete("archive_records_0-9")
 
 
 class UKGWABasePage(ThemedAlertMixin, BasePageWithRequiredIntro):

@@ -193,6 +193,11 @@ class Command(BaseCommand):
                     self.style.ERROR(f"Failed to delete removed entries: {e}")
                 )
 
+        # Clear caches after successful sync
+        self.stdout.write("\nClearing archive caches...")
+        ArchiveRecord.clear_cache()
+        self.stdout.write("Caches cleared")
+
         logger.info(
             f"Archive data sync completed: {stats['total']} total, "
             f"{stats['created']} created, {stats['updated']} updated, "
