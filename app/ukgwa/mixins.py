@@ -75,10 +75,10 @@ class SidebarNavigationMixin(models.Model):
 
         subpages = [
             {
-                 "text": page.title,
-                 "href": page.url,
-                 "is_current": page.id == self.id,
-             }
+                "text": page.title,
+                "href": page.url,
+                "is_current": page.id == self.id,
+            }
             for page in parent.subpages
         ]
         if not subpages:
