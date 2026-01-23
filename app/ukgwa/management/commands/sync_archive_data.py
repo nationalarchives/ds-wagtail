@@ -187,10 +187,10 @@ class Command(BaseCommand):
                 f"\n\nValidation complete: {total_validated} valid entries"
             )
         )
-        if stats["validation_errors"]:
+        if validation_error_count := stats["validation_errors"]:
             self.stdout.write(
                 self.style.WARNING(
-                    f"Skipped {stats['validation_errors']} entries due to validation errors"
+                    f"Skipped {validation_error_count} entries due to validation errors"
                 )
             )
 
