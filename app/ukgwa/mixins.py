@@ -68,8 +68,9 @@ class SidebarNavigationMixin(models.Model):
 
         parent = self.get_parent().specific
 
-        # Check if parent is a SectionIndexPage using lazy model name check
-        if not parent or parent._meta.model_name != "sectionindexpage":
+        from app.ukgwa.models import SectionIndexPage
+
+        if not parent or not isinstance(parent, SectionIndexPage):
             return None
 
         # Check if parent has subpages
