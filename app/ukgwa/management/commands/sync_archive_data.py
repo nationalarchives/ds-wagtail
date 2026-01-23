@@ -121,14 +121,16 @@ class Command(BaseCommand):
         try:
             raw_data = self.load_data(url)
         except (requests.RequestException, json.JSONDecodeError, ValueError) as e:
-            logger.error(f"Failed to load archive data from {url}: {str(e)}")
+            logger.error("Failed to load archive data from %s: %s", url, str(e))
             self.stdout.write(self.style.ERROR(f"Failed to load data: {e}"))
             return
 
         stats["total"] = len(raw_data)
 
         logger.info(
-            f"Starting archive data sync: {stats['total']} entries, dry_run={options['dry_run']}"
+            "Starting archive data sync: %s entries, dry_run=%s",
+            stats["total"],
+            options["dry_run"],
         )
 
         # Processing mode message
@@ -211,7 +213,7 @@ class Command(BaseCommand):
                 stats["deleted"] = deleted_count
             except DatabaseError as e:
                 if not options["dry_run"]:
-                    logger.error(f"Database error deleting removed entries: {str(e)}")
+                    logger.error("Database error deleting removed entries: %s", str(e))
                     self.stdout.write(
                         self.style.ERROR(f"Failed to delete removed entries: {e}")
                     )
@@ -223,11 +225,15 @@ class Command(BaseCommand):
             self.stdout.write("Caches cleared")
 
         logger.info(
-            f"Archive data sync completed: {stats['total']} total, "
-            f"{stats['created']} created, {stats['updated']} updated, "
-            f"{stats['skipped']} skipped, {stats['deleted']} deleted, "
-            f"{stats['validation_errors']} validation errors, "
-            f"{stats['database_errors']} database errors"
+            "Archive data sync completed: %s total, %s created, %s updated, "
+            "%s skipped, %s deleted, %s validation errors, %s database errors",
+            stats["total"],
+            stats["created"],
+            stats["updated"],
+            stats["skipped"],
+            stats["deleted"],
+            stats["validation_errors"],
+            stats["database_errors"],
         )
         self.stdout.write(
             self.style.SUCCESS(
@@ -263,7 +269,10 @@ class Command(BaseCommand):
                     ]
                 )
                 logger.warning(
-                    f"Validation failed for entry {idx} (wam_id: {wam_id}): {error_details}"
+                    "Validation failed for entry %s (wam_id: %s): %s",
+                    idx,
+                    wam_id,
+                    error_details,
                 )
 
         return validated_entries, validation_errors
@@ -314,8 +323,10 @@ class Command(BaseCommand):
                         )
 
                         logger.error(
-                            f"Database error saving entry {validated.wam_id} "
-                            f"({profile_name}): {error_msg}"
+                            "Database error saving entry %s (%s): %s",
+                            validated.wam_id,
+                            profile_name,
+                            error_msg,
                         )
 
                         self.stdout.write(
