@@ -71,10 +71,6 @@ class Command(BaseCommand):
     )
 
     DRY_RUN_LIMIT = 100  # Number of entries to process in dry-run mode
-    VALIDATION_BATCH_SIZE = 5000  # Number of entries to validate at once before saving
-    COMMIT_BATCH_SIZE = (
-        1000  # Number of entries per database transaction (reduce for smaller commits)
-    )
 
     def add_arguments(self, parser):
         parser.add_argument(
@@ -87,6 +83,18 @@ class Command(BaseCommand):
             action="store_true",
             help="Validate and report without saving to database (processes first 100 entries only)",
         )
+        parser.add_argument(
+            "--validation-batch-size",
+            type=int,
+            default=5000,
+            help="Number of entries to validate at once before saving (default: 5000)",
+        )
+        parser.add_argument(
+            "--commit-batch-size",
+            type=int,
+            default=1000,
+            help="Number of entries per database transaction (default: 1000)",
+        )
 
     def handle(self, **options):
         stats = {
@@ -98,6 +106,9 @@ class Command(BaseCommand):
             "validation_errors": 0,
             "database_errors": 0,
         }
+
+        validation_batch_size = options["validation_batch_size"]
+        commit_batch_size = options["commit_batch_size"]
 
         # Load JSON data
         try:
@@ -121,20 +132,20 @@ class Command(BaseCommand):
 
         # Full sync
         self.stdout.write(
-            f"Processing {stats['total']} entries in batches of {self.VALIDATION_BATCH_SIZE}...\n"
+            f"Processing {stats['total']} entries in batches of {validation_batch_size}...\n"
         )
 
         source_wam_ids = []
         total_validated = 0
 
         # Process data in validation batches
-        for batch_start in range(0, len(raw_data), self.VALIDATION_BATCH_SIZE):
-            batch_end = min(batch_start + self.VALIDATION_BATCH_SIZE, len(raw_data))
+        for batch_start in range(0, len(raw_data), validation_batch_size):
+            batch_end = min(batch_start + validation_batch_size, len(raw_data))
             batch_data = raw_data[batch_start:batch_end]
-            batch_num = (batch_start // self.VALIDATION_BATCH_SIZE) + 1
+            batch_num = (batch_start // validation_batch_size) + 1
             total_batches = (
-                len(raw_data) + self.VALIDATION_BATCH_SIZE - 1
-            ) // self.VALIDATION_BATCH_SIZE
+                len(raw_data) + validation_batch_size - 1
+            ) // validation_batch_size
 
             self.stdout.write(
                 f"\n--- Batch {batch_num}/{total_batches}: Validating entries {batch_start + 1}-{batch_end} ---"
@@ -155,7 +166,9 @@ class Command(BaseCommand):
 
                 # Save batch immediately
                 self.stdout.write(f"Saving {batch_valid_count} entries to database...")
-                save_results = self._save_entries(validated_entries, batch_valid_count)
+                save_results = self._save_entries(
+                    validated_entries, batch_valid_count, commit_batch_size
+                )
 
                 # Accumulate stats
                 stats["created"] += save_results["created"]
@@ -287,7 +300,7 @@ class Command(BaseCommand):
 
         return validated_entries, validation_errors
 
-    def _save_entries(self, validated_entries, total_valid_entries):
+    def _save_entries(self, validated_entries, total_valid_entries, commit_batch_size):
         """
         Save validated entries to database in batches. Each batch commits independently
         with savepoints for individual entry error handling.
@@ -295,6 +308,7 @@ class Command(BaseCommand):
         Args:
             validated_entries: List of validated ArchiveRecordSchema objects
             total_valid_entries: Total count of validated entries (for progress indicator)
+            commit_batch_size: Number of entries per database transaction
 
         Returns:
             dict: {
@@ -307,9 +321,9 @@ class Command(BaseCommand):
         save_stats = {"created": 0, "updated": 0, "skipped": 0, "database_errors": 0}
 
         # Process entries in batches to commit incrementally
-        for batch_start in range(0, len(validated_entries), self.COMMIT_BATCH_SIZE):
+        for batch_start in range(0, len(validated_entries), commit_batch_size):
             batch_end = min(
-                batch_start + self.COMMIT_BATCH_SIZE, len(validated_entries)
+                batch_start + commit_batch_size, len(validated_entries)
             )
             batch = validated_entries[batch_start:batch_end]
 
