@@ -119,7 +119,9 @@ class ArchiveRecord(models.Model):
     first_character = models.CharField(
         max_length=5,
         db_index=True,
-        help_text=_("First character for navigation: a-z, 0-9, or 'other' for symbols"),
+        help_text=_(
+            "First character for navigation: a-z or '0-9' for digits and symbols"
+        ),
     )
 
     # Hash for change detection
@@ -160,14 +162,11 @@ class ArchiveRecord(models.Model):
         # Get unique first_character values
         letters = set(cls.objects.values_list("first_character", flat=True))
 
-        # Add alphabetic characters first
-        result = sorted([char for char in letters if char.isalpha()])
+        # Add single alphabetic characters (a-z)
+        result = sorted([char for char in letters if char.isalpha() and len(char) == 1])
 
-        # Group digits and 'other' into '0-9' at the end
-        has_numbers_or_special = any(
-            char.isdigit() or char == "other" for char in letters
-        )
-        if has_numbers_or_special:
+        # Add '0-9' at the end if it exists
+        if "0-9" in letters:
             result.append("0-9")
 
         # Cache indefinitely (cleared on sync)
@@ -195,23 +194,9 @@ class ArchiveRecord(models.Model):
             queryset = cls.objects.filter(first_character=normalized).order_by(
                 "sort_name"
             )
-        # Handle '0-9' category - includes all digits and 'other'
+        # Handle '0-9' category
         elif letter == "0-9":
-            queryset = cls.objects.filter(
-                first_character__in=[
-                    "0",
-                    "1",
-                    "2",
-                    "3",
-                    "4",
-                    "5",
-                    "6",
-                    "7",
-                    "8",
-                    "9",
-                    "other",
-                ]
-            ).order_by("sort_name")
+            queryset = cls.objects.filter(first_character="0-9").order_by("sort_name")
         else:
             queryset = cls.objects.none()
 
@@ -232,8 +217,7 @@ class ArchiveRecord(models.Model):
         # Clear available letters cache
         cache.delete("archive_available_letters")
 
-        # Clear all letter-specific record caches
-        # Cache keys: a-z and 0-9
+        # Clear all letter-specific record caches (a-z and 0-9)
         for char in "abcdefghijklmnopqrstuvwxyz":
             cache.delete(f"archive_records_{char}")
         cache.delete("archive_records_0-9")
@@ -398,7 +382,7 @@ class AToZArchivePage(UKGWABasePage):
         """
         Get list of characters that have archive records.
 
-        Returns sorted list: ['0', '1', ..., '9', 'a', 'b', ..., 'z', 'other']
+        Returns sorted list: ['a', 'b', ..., 'z', '0-9']
         """
         return ArchiveRecord.get_available_letters()
 

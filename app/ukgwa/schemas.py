@@ -58,22 +58,18 @@ class ArchiveRecordSchema(BaseModel):
         Compute first character for navigation.
 
         Returns:
-            lowercase letter (a-z), digit (0-9), or 'other' for symbols.
-
-        Uses 'other' instead of '#' to avoid URL encoding issues with progressive enhancement.
+            lowercase letter (a-z) or '0-9' for digits and symbols.
         """
         if not self.sort_name:
-            return "other"
+            return "0-9"
 
         first_char = self.sort_name[0]
 
         if first_char.isalpha():
             return first_char.lower()
 
-        if first_char.isdigit():
-            return first_char
-
-        return "other"
+        # Group digits and symbols together
+        return "0-9"
 
     @computed_field
     @property
