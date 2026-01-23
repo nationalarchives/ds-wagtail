@@ -47,17 +47,17 @@ Saved fields:
 
 Usage:
     python manage.py sync_archive_data --url https://example.com/data.json
-    python manage.py sync_archive_data  # Uses ARCHIVE_JSON_URL from settings
+    python manage.py sync_archive_data  # Uses ARCHIVE_JSON_URL environment variable
     python manage.py sync_archive_data --dry-run  # Validates first 100 entries only
 """
 
 import json
 import logging
+import os
 
 import requests
 from app.ukgwa.models import ArchiveRecord
 from app.ukgwa.schemas import ArchiveRecordSchema
-from django.conf import settings
 from django.core.management.base import BaseCommand
 from django.db import DatabaseError, transaction
 from pydantic import ValidationError
@@ -110,11 +110,19 @@ class Command(BaseCommand):
         validation_batch_size = options["validation_batch_size"]
         commit_batch_size = options["commit_batch_size"]
 
+        url = options.get("url") or os.environ.get("ARCHIVE_JSON_URL")
+        if not url:
+            self.stdout.write(
+                self.style.ERROR(
+                    "No data source specified. Use --url or set ARCHIVE_JSON_URL environment variable"
+                )
+            )
+            return
+
         # Load JSON data
         try:
-            raw_data = self.load_data(options)
+            raw_data = self.load_data(url)
         except (requests.RequestException, json.JSONDecodeError, ValueError) as e:
-            url = options.get("url") or getattr(settings, "ARCHIVE_JSON_URL", "N/A")
             logger.error(f"Failed to load archive data from {url}: {str(e)}")
             self.stdout.write(self.style.ERROR(f"Failed to load data: {e}"))
             return
@@ -368,29 +376,20 @@ class Command(BaseCommand):
 
         return save_stats
 
-    def load_data(self, options):
+    def load_data(self, url):
         """
         Load JSON data from URL.
 
         Args:
-            options: Command options dict (must contain 'url' or use settings.ARCHIVE_JSON_URL)
+            url: URL to fetch JSON data from
 
         Returns:
             list: Parsed JSON array of archive entries
 
         Raises:
-            ValueError: If no URL provided
             requests.RequestException: If HTTP request fails
             json.JSONDecodeError: If response is not valid JSON
         """
-        # Use provided URL or fallback to settings
-        url = options.get("url") or getattr(settings, "ARCHIVE_JSON_URL", None)
-
-        if not url:
-            raise ValueError(
-                "No data source specified. Use --url or set ARCHIVE_JSON_URL in settings"
-            )
-
         self.stdout.write(f"Fetching data from {url}...")
         response = requests.get(url, timeout=60)
         response.raise_for_status()
