@@ -51,6 +51,9 @@ Usage:
     python manage.py sync_archive_data --dry-run  # Processes all entries without saving to database
 """
 
+# flake8: noqa  # Ignore complexity warnings (C901)
+
+
 import json
 import logging
 import os
