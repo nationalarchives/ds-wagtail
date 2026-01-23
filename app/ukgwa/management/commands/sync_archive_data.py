@@ -48,7 +48,7 @@ Saved fields:
 Usage:
     python manage.py sync_archive_data --url https://example.com/data.json
     python manage.py sync_archive_data  # Uses ARCHIVE_JSON_URL environment variable
-    python manage.py sync_archive_data --dry-run  # Validates first 100 entries only
+    python manage.py sync_archive_data --dry-run  # Processes all entries without saving to database
 """
 
 import json
@@ -70,8 +70,6 @@ class Command(BaseCommand):
         "Sync archive data from external JSON source with hash-based change detection"
     )
 
-    DRY_RUN_LIMIT = 100  # Number of entries to process in dry-run mode
-
     def add_arguments(self, parser):
         parser.add_argument(
             "--url",
@@ -81,7 +79,7 @@ class Command(BaseCommand):
         parser.add_argument(
             "--dry-run",
             action="store_true",
-            help="Validate and report without saving to database (processes first 100 entries only)",
+            help="Validate and report without saving to database",
         )
         parser.add_argument(
             "--validation-batch-size",
@@ -133,12 +131,11 @@ class Command(BaseCommand):
             f"Starting archive data sync: {stats['total']} entries, dry_run={options['dry_run']}"
         )
 
-        # Handle dry run
-        if options["dry_run"]:
-            self._handle_dry_run(raw_data, stats["total"])
-            return
-
-        # Full sync
+        # Processing mode message
+        mode = "DRY RUN - no changes will be saved" if options["dry_run"] else "LIVE"
+        self.stdout.write(
+            self.style.WARNING(f"Mode: {mode}\n") if options["dry_run"] else f"Mode: {mode}\n"
+        )
         self.stdout.write(
             f"Processing {stats['total']} entries in batches of {validation_batch_size}...\n"
         )
@@ -173,9 +170,10 @@ class Command(BaseCommand):
                 source_wam_ids.extend(batch_wam_ids)
 
                 # Save batch immediately
-                self.stdout.write(f"Saving {batch_valid_count} entries to database...")
+                if not options["dry_run"]:
+                    self.stdout.write(f"Saving {batch_valid_count} entries to database...")
                 save_results = self._save_entries(
-                    validated_entries, batch_valid_count, commit_batch_size
+                    validated_entries, batch_valid_count, commit_batch_size, options["dry_run"]
                 )
 
                 # Accumulate stats
@@ -198,26 +196,31 @@ class Command(BaseCommand):
             )
 
         # Delete entries not in source
-        self.stdout.write("\nRemoving entries not in source...")
+        if not options["dry_run"]:
+            self.stdout.write("\nRemoving entries not in source...")
         with transaction.atomic():
             try:
-                deleted_count, _ = ArchiveRecord.objects.exclude(
-                    wam_id__in=source_wam_ids
-                ).delete()
-                stats["deleted"] = deleted_count
+                to_delete = ArchiveRecord.objects.exclude(wam_id__in=source_wam_ids)
+                deleted_count = to_delete.count()
 
-                if deleted_count > 0:
-                    self.stdout.write(f"Deleted {deleted_count} entries not in source")
+                if not options["dry_run"]:
+                    to_delete.delete()
+                    if deleted_count > 0:
+                        self.stdout.write(f"Deleted {deleted_count} entries not in source")
+
+                stats["deleted"] = deleted_count
             except DatabaseError as e:
-                logger.error(f"Database error deleting removed entries: {str(e)}")
-                self.stdout.write(
-                    self.style.ERROR(f"Failed to delete removed entries: {e}")
-                )
+                if not options["dry_run"]:
+                    logger.error(f"Database error deleting removed entries: {str(e)}")
+                    self.stdout.write(
+                        self.style.ERROR(f"Failed to delete removed entries: {e}")
+                    )
 
         # Clear caches after successful sync
-        self.stdout.write("\nClearing archive caches...")
-        ArchiveRecord.clear_cache()
-        self.stdout.write("Caches cleared")
+        if not options["dry_run"]:
+            self.stdout.write("\nClearing archive caches...")
+            ArchiveRecord.clear_cache()
+            self.stdout.write("Caches cleared")
 
         logger.info(
             f"Archive data sync completed: {stats['total']} total, "
@@ -229,49 +232,6 @@ class Command(BaseCommand):
         self.stdout.write(
             self.style.SUCCESS(
                 "\nProcessing complete. Check logs for detailed statistics."
-            )
-        )
-
-    def _handle_dry_run(self, raw_data, total_count):
-        """
-        Validate a limited sample and display summary, without database transactions.
-        """
-        sample_data = raw_data[: self.DRY_RUN_LIMIT]
-        self.stdout.write(
-            self.style.WARNING(
-                f"Dry run mode: processing first {len(sample_data)} of {total_count} entries\n"
-            )
-        )
-
-        # Validate sample
-        validated_entries, validation_errors = self._validate_entries(sample_data)
-        total_valid_entries = len(validated_entries)
-
-        self.stdout.write(
-            self.style.SUCCESS(
-                f"\nValidation complete: {total_valid_entries} valid entries"
-            )
-        )
-        if validation_errors > 0:
-            self.stdout.write(
-                self.style.WARNING(
-                    f"Skipped {validation_errors} entries due to validation errors"
-                )
-            )
-
-        # Output summary
-        self.stdout.write(
-            f"\n{'=' * 60}"
-            f"\n{self.style.SUCCESS('Dry Run Complete')}\n"
-            f"{'=' * 60}\n"
-            f"Validated: {total_valid_entries}/{len(sample_data)} entries from sample\n"
-            f"Total in source: {total_count} entries\n"
-            f"Validation errors: {validation_errors}\n"
-            f"{'=' * 60}\n"
-        )
-        self.stdout.write(
-            self.style.SUCCESS(
-                f"Would process {total_valid_entries} valid entries in full sync"
             )
         )
 
@@ -308,7 +268,7 @@ class Command(BaseCommand):
 
         return validated_entries, validation_errors
 
-    def _save_entries(self, validated_entries, total_valid_entries, commit_batch_size):
+    def _save_entries(self, validated_entries, total_valid_entries, commit_batch_size, dry_run):
         """
         Save validated entries to database in batches. Each batch commits independently
         with savepoints for individual entry error handling.
@@ -317,6 +277,7 @@ class Command(BaseCommand):
             validated_entries: List of validated ArchiveRecordSchema objects
             total_valid_entries: Total count of validated entries (for progress indicator)
             commit_batch_size: Number of entries per database transaction
+            dry_run: If True, skip database writes while running save logic
 
         Returns:
             dict: {
@@ -341,7 +302,7 @@ class Command(BaseCommand):
                     try:
                         # Savepoint to prevent failure breaking the batch
                         with transaction.atomic():
-                            result = self.save_entry(validated)
+                            result = self.save_entry(validated, dry_run)
                             save_stats[result] += 1
                     except DatabaseError as e:
                         save_stats["database_errors"] += 1
@@ -395,10 +356,14 @@ class Command(BaseCommand):
         response.raise_for_status()
         return response.json()
 
-    def save_entry(self, validated: ArchiveRecordSchema):
+    def save_entry(self, validated: ArchiveRecordSchema, dry_run=False):
         """
         Save or update an entry in the database using hash-based change detection to
         avoid unnecessary updates.
+
+        Args:
+            validated: Validated ArchiveRecordSchema object
+            dry_run: If True, determine what would happen without writing to database
 
         Returns: 'created', 'updated', or 'skipped'
         """
@@ -408,33 +373,35 @@ class Command(BaseCommand):
             if existing.record_hash == validated.record_hash:
                 return "skipped"
 
-            existing.profile_name = validated.profile_name
-            existing.record_url = str(validated.record_url)
-            existing.archive_link = str(validated.archive_link)
-            existing.domain_type = validated.domain_type
-            existing.first_capture_display = validated.first_capture_display
-            existing.latest_capture_display = validated.latest_capture_display
-            existing.ongoing = validated.ongoing
-            existing.sort_name = validated.sort_name
-            existing.first_character = validated.first_character
-            existing.record_hash = validated.record_hash
-            existing.save()
+            if not dry_run:
+                existing.profile_name = validated.profile_name
+                existing.record_url = str(validated.record_url)
+                existing.archive_link = str(validated.archive_link)
+                existing.domain_type = validated.domain_type
+                existing.first_capture_display = validated.first_capture_display
+                existing.latest_capture_display = validated.latest_capture_display
+                existing.ongoing = validated.ongoing
+                existing.sort_name = validated.sort_name
+                existing.first_character = validated.first_character
+                existing.record_hash = validated.record_hash
+                existing.save()
 
             return "updated"
 
         except ArchiveRecord.DoesNotExist:
-            ArchiveRecord.objects.create(
-                wam_id=validated.wam_id,
-                profile_name=validated.profile_name,
-                record_url=str(validated.record_url),
-                archive_link=str(validated.archive_link),
-                domain_type=validated.domain_type,
-                first_capture_display=validated.first_capture_display,
-                latest_capture_display=validated.latest_capture_display,
-                ongoing=validated.ongoing,
-                sort_name=validated.sort_name,
-                first_character=validated.first_character,
-                record_hash=validated.record_hash,
-            )
+            if not dry_run:
+                ArchiveRecord.objects.create(
+                    wam_id=validated.wam_id,
+                    profile_name=validated.profile_name,
+                    record_url=str(validated.record_url),
+                    archive_link=str(validated.archive_link),
+                    domain_type=validated.domain_type,
+                    first_capture_display=validated.first_capture_display,
+                    latest_capture_display=validated.latest_capture_display,
+                    ongoing=validated.ongoing,
+                    sort_name=validated.sort_name,
+                    first_character=validated.first_character,
+                    record_hash=validated.record_hash,
+                )
 
             return "created"
