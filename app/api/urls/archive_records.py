@@ -11,11 +11,9 @@ class ArchiveRecordsAPIViewSet(CustomPagesAPIViewSet):
 
     Supports filtering by first_character query parameter:
     - /api/v2/archive_records/?first_character=a  (letters a-z)
-    - /api/v2/archive_records/?first_character=5  (digits 0-9)
-    - /api/v2/archive_records/?first_character=other  (symbols/special chars)
+    - /api/v2/archive_records/?first_character=0-9  (digits and special chars)
 
     Returns all matching records (no pagination).
-    Note: Frontend should display 'other' as '#' to users.
     """
 
     def list_view(self, request):
@@ -30,15 +28,7 @@ class ArchiveRecordsAPIViewSet(CustomPagesAPIViewSet):
         if not first_character or not first_character.strip():
             return Response([])
 
-        # Normalize to lowercase for letters
-        first_character = (
-            first_character.lower() if first_character.isalpha() else first_character
-        )
-
-        # Filter and return results
-        queryset = ArchiveRecord.objects.filter(
-            first_character=first_character
-        ).order_by("sort_name")
+        queryset = ArchiveRecord.get_records_for_letter(first_character)
 
         serializer = ArchiveRecordSerializer(queryset, many=True)
         return Response(serializer.data)
@@ -48,8 +38,8 @@ class ArchiveRecordsAPIViewSet(CustomPagesAPIViewSet):
         Return available characters that have records.
         GET /api/v2/archive_records/characters/
 
-        Returns: {"characters": ["0", "1", ..., "9", "a", "b", ..., "z", "other"]}
-        Note: 'other' represents symbols - display as '#' in UI.
+        Returns: {"characters": ["a", "b", ..., "z", "0-9"]}
+        Note: '0-9' represents digits and special characters combined.
         """
         characters = ArchiveRecord.get_available_letters()
         return Response({"characters": characters})

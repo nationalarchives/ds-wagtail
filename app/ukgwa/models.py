@@ -146,34 +146,48 @@ class ArchiveRecord(models.Model):
     def get_available_letters(cls):
         """
         Get list of characters that have records.
-        Returns sorted list: digits (0-9), then letters (a-z), then 'other' at the end.
-        Note: 'other' represents symbols/special characters.
+
+        Returns sorted list of letters (a-z), then '0-9' (for digits and special chars)
+        at the end.
         """
         # Get unique first_character values
         letters = set(cls.objects.values_list("first_character", flat=True))
 
-        # Custom sort: digits (0-9), then letters (a-z), then 'other' at the end
-        def sort_key(char):
-            if char == "other":
-                return (2, "")  # 'other' last
-            elif char.isdigit():
-                return (0, char)  # Digits first
-            elif char.isalpha():
-                return (1, char)  # Letters second
-            else:
-                return (2, char)  # Any unexpected value
+        # Add alphabetic characters first
+        result = sorted([char for char in letters if char.isalpha()])
 
-        return sorted(letters, key=sort_key)
+        # Group digits and 'other' into '0-9' at the end
+        has_numbers_or_special = any(
+            char.isdigit() or char == "other" for char in letters
+        )
+        if has_numbers_or_special:
+            result.append("0-9")
+
+        return result
 
     @classmethod
     def get_records_for_letter(cls, letter):
         """
         Get all records for a specific letter, ordered by sort name. Letter should be
-        lowercase (a-z), digit (0-9), or 'other'.
+        lowercase (a-z), or '0-9' for digits and special characters.
+
+        # Normalize to lowercase for letters
+        if letter and letter.isalpha():
+            normalized = letter.lower()
+            queryset = cls.objects.filter(first_character=normalized).order_by("sort_name")
+        # Handle '0-9' category - includes all digits and 'other'
+        elif letter == "0-9":
+            queryset = cls.objects.filter(
+                first_character__in=["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "other"]
+            ).order_by("sort_name")
+        else:
+            queryset = cls.objects.none()
+
+        # Convert to list for caching
+        result = list(queryset)
+
+        return result
         """
-        # Normalize to lowercase for letters, keep digits and 'other' as-is
-        normalized = letter.lower() if letter and letter.isalpha() else letter
-        return cls.objects.filter(first_character=normalized).order_by("sort_name")
 
 
 class UKGWABasePage(ThemedAlertMixin, BasePageWithRequiredIntro):
