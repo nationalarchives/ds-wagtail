@@ -146,17 +146,30 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
                         if site_settings.message
                         else None
                     )
+                    links_heading = site_settings.links_heading
+                    links = site_settings.links
                 else:
                     # No site configured
                     title = "Page not found"
                     message = None
+                    links_heading = None
+                    links = None
             except Site.DoesNotExist:
                 title = "Page not found"
                 message = None
+                links_heading = None
+                links = None
 
             response_data = {"title": title}
             if message:
                 response_data["message"] = message
+            if links_heading and links:
+                response_data["links_heading"] = links_heading
+                # Serialize StreamField links properly
+                response_data["links"] = [
+                    block.block.get_api_representation(block.value)
+                    for block in links
+                ]
 
             return Response(
                 response_data,
