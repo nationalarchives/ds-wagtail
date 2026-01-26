@@ -34,9 +34,7 @@ class ErrorPageSettings(BaseSiteSetting):
         verbose_name=_("links"),
         blank=True,
         use_json_field=True,
-        help_text=_(
-            "Add links to internal pages to help users navigate."
-        ),
+        help_text=_("Add links to internal pages to help users navigate."),
     )
 
     panels = [

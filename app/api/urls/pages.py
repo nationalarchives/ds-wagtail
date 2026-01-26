@@ -167,8 +167,7 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
                 response_data["links_heading"] = links_heading
                 # Serialize StreamField links properly
                 response_data["links"] = [
-                    block.block.get_api_representation(block.value)
-                    for block in links
+                    block.block.get_api_representation(block.value) for block in links
                 ]
 
             return Response(
