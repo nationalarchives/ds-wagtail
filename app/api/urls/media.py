@@ -1,4 +1,5 @@
 from django.urls import path
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from wagtail.rich_text import expand_db_html
 from wagtailmedia.api.serializers import MediaItemSerializer
@@ -27,6 +28,8 @@ class CustomMediaItemSerializer(MediaItemSerializer):
 
 
 class CustomMediaAPIViewSet(MediaAPIViewSet):
+    permission_classes = (IsAuthenticated,)
+
     lookup_field = "uuid"
     base_serializer_class = CustomMediaItemSerializer
     meta_fields = MediaAPIViewSet.meta_fields

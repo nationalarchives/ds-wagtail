@@ -95,6 +95,7 @@ INSTALLED_APPS = [
     "wagtail.api.v2",
     "wagtail.contrib.frontend_cache",
     "rest_framework",
+    "rest_framework.authtoken",
     "wagtail_headless_preview",
 ]
 
@@ -343,3 +344,9 @@ WAGTAILFRONTENDCACHE = {
 }
 
 WAGTAILAPI_LIMIT_MAX = int(os.getenv("WAGTAILAPI_LIMIT_MAX", "0")) or None
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.TokenAuthentication"
+    ],
+}

@@ -1,5 +1,6 @@
 from app.core.serializers.images import image_generator
 from django.urls import path
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from wagtail.images.api.v2.serializers import ImageSerializer
 from wagtail.images.api.v2.views import ImagesAPIViewSet
@@ -31,6 +32,8 @@ class ViewSetImageSerializer(ImageSerializer):
 
 
 class CustomImagesAPIViewSet(ImagesAPIViewSet):
+    permission_classes = (IsAuthenticated,)
+
     lookup_field = "uuid"
     base_serializer_class = ViewSetImageSerializer
     meta_fields = []

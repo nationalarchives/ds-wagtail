@@ -6,6 +6,7 @@ from django.db.models import Q
 from django.http import Http404
 from django.utils.crypto import constant_time_compare
 from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from wagtail.api.v2.filters import (
     AncestorOfFilter,
@@ -28,6 +29,8 @@ logger = logging.getLogger(__name__)
 
 
 class CustomPagesAPIViewSet(PagesAPIViewSet):
+    permission_classes = (IsAuthenticated,)
+
     known_query_parameters = PagesAPIViewSet.known_query_parameters.union(
         ["password", "author", "include_aliases", "descendant_of_path"]
     )
