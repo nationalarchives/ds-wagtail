@@ -122,6 +122,8 @@ class UKGWAHomePage(HeroImageMixin, SearchMixin, UKGWABasePage):
     """
 
     parent_page_types = ["wagtailcore.Page"]
+    subpage_types = ["ukgwa.SectionIndexPage", "ukgwa.InformationPage"]
+
 
     content_panels = (
         UKGWABasePage.content_panels
