@@ -1,6 +1,7 @@
 import hashlib
 import json
 
+from app.ukgwa.utils import normalize_archive_letter
 from pydantic import (
     BaseModel,
     Field,
@@ -65,11 +66,10 @@ class ArchiveRecordSchema(BaseModel):
 
         first_char = self.sort_name[0]
 
-        if first_char.isalpha():
-            return first_char.lower()
+        normalized = normalize_archive_letter(first_char)
 
-        # Group digits and symbols together
-        return "0-9"
+        # If normalization returns empty (invalid input), default to '0-9'
+        return normalized if normalized else "0-9"
 
     @computed_field
     @property

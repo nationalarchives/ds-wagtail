@@ -6,6 +6,7 @@ from app.core.models.mixins import SocialMixin
 from app.ukgwa.blocks import InformationPageStreamBlock
 from app.ukgwa.mixins import FeaturedLinksMixin, SearchMixin
 from app.ukgwa.serializers import SubpagesSerializer
+from app.ukgwa.utils import normalize_archive_letter
 from django.core.cache import cache
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -182,26 +183,23 @@ class ArchiveRecord(models.Model):
 
         Results are cached indefinitely and invalidated when archive data is synced.
         """
-        # Normalize to lowercase for letters
-        if letter and letter.isalpha():
-            normalized = letter.lower()
+        # Normalize first to ensure consistent cache keys
+        normalized_letter = normalize_archive_letter(letter)
 
-        # Check cache first
-        cache_key = f"archive_records_{letter}"
+        # If invalid input, return empty
+        if not normalized_letter:
+            return []
+
+        # Check cache
+        cache_key = f"archive_records_{normalized_letter}"
         cached_result = cache.get(cache_key)
         if cached_result is not None:
             return cached_result
 
         # Query based on normalized letter
-        if letter and letter.isalpha():
-            queryset = cls.objects.filter(first_character=normalized).order_by(
-                "sort_name"
-            )
-        # Handle '0-9' category
-        elif letter == "0-9":
-            queryset = cls.objects.filter(first_character="0-9").order_by("sort_name")
-        else:
-            queryset = cls.objects.none()
+        queryset = cls.objects.filter(first_character=normalized_letter).order_by(
+            "sort_name"
+        )
 
         # Convert to list for caching
         result = list(queryset)
