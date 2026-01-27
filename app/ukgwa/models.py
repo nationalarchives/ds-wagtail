@@ -118,7 +118,7 @@ class ArchiveRecord(models.Model):
         help_text=_("Normalized name for sorting (strips 'The' prefix)"),
     )
     first_character = models.CharField(
-        max_length=5,
+        max_length=3,
         db_index=True,
         help_text=_(
             "First character for navigation: a-z or '0-9' for digits and symbols"
