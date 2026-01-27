@@ -9,11 +9,10 @@ else
     export ENVIRONMENT="$1"
 fi
 
-export DUMP_DIR=/home/app/dumps
-export MEDIA_DUMP="$ENVIRONMENT-$(date +%s).zip"
-export DATABASE_DUMP="$ENVIRONMENT-$(date +%s)-db.sql"
+export DUMP_DIR="$(dirname $0)/../dumps"
 
 echo "Pulling from $ENVIRONMENT..."
+
 if [ ! -d "$DUMP_DIR" ];
 then
     echo "Creating a directory for dumps..."

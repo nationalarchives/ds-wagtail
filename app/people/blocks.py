@@ -1,10 +1,9 @@
-from wagtail import blocks
-
 from app.core.blocks import (
     ContactBlock,
     InsetTextBlock,
     ParagraphBlock,
 )
+from wagtail import blocks
 
 
 class SectionContentBlock(blocks.StreamBlock):

@@ -31,7 +31,7 @@ WAGTAIL_HEADLESS_PREVIEW = {
     "SERVE_BASE_URL": None,
 }
 
-DEBUG = strtobool(os.getenv("DEBUG", "False"))
+DEBUG = False
 
 SECRET_KEY = os.getenv("SECRET_KEY", "")
 
@@ -54,10 +54,13 @@ INSTALLED_APPS = [
     "app.ciim",
     "app.collections",
     "app.core",
+    "app.foi",
     "app.highlights",
     "app.home",
+    "app.ukgwa",
     "app.images",
     "app.media",
+    "app.navigation",
     "app.users",
     "app.whatson",
     "wagtail.contrib.forms",
@@ -85,6 +88,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.sites",
     "django.contrib.staticfiles",
+    "django.contrib.postgres",
     "allauth",
     "allauth.account",
     "birdbath",
@@ -262,9 +266,9 @@ WAGTAILMEDIA = {
 
 WAGTAIL_SITE_NAME = "The National Archives"
 
-CSRF_TRUSTED_ORIGINS = [
-    os.getenv("CSRF_TRUSTED_ORIGINS", "https://www.nationalarchives.gov.uk")
-]
+CSRF_TRUSTED_ORIGINS = os.getenv(
+    "CSRF_TRUSTED_ORIGINS", "https://www.nationalarchives.gov.uk"
+).split(",")
 
 # For search results within Wagtail itself
 WAGTAILSEARCH_BACKENDS = {

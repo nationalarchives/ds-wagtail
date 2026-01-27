@@ -1,23 +1,5 @@
 from typing import Optional, Tuple
 
-from django.conf import settings
-from django.db import models
-from django.utils.functional import cached_property
-from django.utils.translation import gettext_lazy as _
-from modelcluster.fields import ParentalKey
-from rest_framework import serializers
-from wagtail.admin.panels import (
-    FieldPanel,
-    InlinePanel,
-    MultiFieldPanel,
-    PageChooserPanel,
-)
-from wagtail.api import APIField
-from wagtail.fields import RichTextField, StreamField
-from wagtail.images import get_image_model_string
-from wagtail.models import Orderable, Page
-from wagtail.search import index
-
 import app.articles.models as ArticleModels
 from app.ciim.fields import RecordField
 from app.ciim.serializers import RecordSerializer
@@ -35,6 +17,23 @@ from app.core.serializers import (
     SimplePageSerializer,
 )
 from app.core.utils import skos_id_from_text
+from django.conf import settings
+from django.db import models
+from django.utils.functional import cached_property
+from django.utils.translation import gettext_lazy as _
+from modelcluster.fields import ParentalKey
+from rest_framework import serializers
+from wagtail.admin.panels import (
+    FieldPanel,
+    InlinePanel,
+    MultiFieldPanel,
+    PageChooserPanel,
+)
+from wagtail.api import APIField
+from wagtail.fields import RichTextField, StreamField
+from wagtail.images import get_image_model_string
+from wagtail.models import Orderable, Page
+from wagtail.search import index
 
 from .blocks import (
     ExplorerIndexPageStreamBlock,
@@ -242,7 +241,13 @@ class ExplorerIndexPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
 
     @cached_property
     def stories_page(self):
-        return self.get_children().type(ArticleModels.ArticleIndexPage).live().first()
+        return (
+            self.get_children()
+            .type(ArticleModels.ArticleIndexPage)
+            .live()
+            .public()
+            .first()
+        )
 
     content_panels = (
         BasePageWithRequiredIntro.content_panels
@@ -341,6 +346,7 @@ class TopicExplorerIndexPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
             .type(TopicExplorerPage)
             .order_by("?")
             .live()
+            .public()
             .specific()[:3]
         )
 
@@ -352,6 +358,7 @@ class TopicExplorerIndexPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
             .type(TopicExplorerPage)
             .order_by("title")
             .live()
+            .public()
             .specific()
         )
 
@@ -548,6 +555,7 @@ class TimePeriodExplorerIndexPage(RequiredHeroImageMixin, BasePageWithRequiredIn
             .type(TimePeriodExplorerPage)
             .order_by("?")
             .live()
+            .public()
             .specific()[:3]
         )
 
@@ -559,6 +567,7 @@ class TimePeriodExplorerIndexPage(RequiredHeroImageMixin, BasePageWithRequiredIn
             .type(TimePeriodExplorerPage)
             .order_by("timeperiodexplorerpage__start_year")
             .live()
+            .public()
             .specific()
         )
 

@@ -1,8 +1,7 @@
+from app.core.models import BasePageWithRequiredIntro
 from wagtail.admin.panels import FieldPanel
 from wagtail.api import APIField
 from wagtail.fields import StreamField
-
-from app.core.models import BasePageWithRequiredIntro
 
 from .blocks import CookieDetailsStreamBlock
 

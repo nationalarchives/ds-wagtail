@@ -1,8 +1,7 @@
+from app.core.serializers import DefaultPageSerializer
 from django.conf import settings
 from wagtail import blocks
 from wagtail.snippets.blocks import SnippetChooserBlock
-
-from app.core.serializers import DefaultPageSerializer
 
 from .paragraph import APIRichTextBlock
 
@@ -12,7 +11,17 @@ class DoDontBlock(blocks.StructBlock):
 
 
 class DoDontListBlock(blocks.StructBlock):
+    do_heading = blocks.CharBlock(
+        max_length=100,
+        required=False,
+        label='Custom do heading (defaults to "Do")',
+    )
     do = blocks.ListBlock(DoDontBlock(icon="check", label="Do item"), label="Dos")
+    dont_heading = blocks.CharBlock(
+        max_length=100,
+        required=False,
+        label="Custom don't heading (defaults to \"Don't\")",
+    )
     dont = blocks.ListBlock(
         DoDontBlock(icon="cross", label="Don't item"), label="Don'ts"
     )

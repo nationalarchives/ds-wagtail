@@ -39,7 +39,7 @@ class TestArticleTagClean(TestCase):
 
 class TestArticleIndexPage(TestCase):
     def setUp(self):
-        self.root_page = Site.objects.get().root_page
+        self.root_page = Site.objects.get(is_default_site=True).root_page
 
         self.article_index_page = ArticleIndexPage(
             title="Article Index Page",

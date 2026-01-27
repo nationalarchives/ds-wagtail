@@ -2,7 +2,8 @@
 
 set -e
 
-. pre-pull
+SCRIPTDIR=$(dirname $0)
+. $SCRIPTDIR/pre-pull
 
 MEDIA_DUMP="media.zip"
 
@@ -13,14 +14,13 @@ echo "Unzipping media..."
 unzip -o $DUMP_DIR/$MEDIA_DUMP -d $DUMP_DIR/media
 
 echo "Moving media to /media..."
-rm -fR /media/*
-cp -fR $DUMP_DIR/media/* /media/
+docker compose cp $DUMP_DIR/media/media app:/media
 
 echo "Setting media permissions..."
-docker compose -p ds-wagtail exec app chmod -fR 777 /media
+docker compose exec app chmod -fR 777 /media
 
-echo "Removing media ZIP archive..."
-rm -fR $DUMP_DIR/$MEDIA_DUMP $DUMP_DIR/media $DUMP_DIR/.backup-zips
+echo "Removing downloaded media..."
+rm -fR $DUMP_DIR/$MEDIA_DUMP $DUMP_DIR/media
 
 # echo "Recreate media renditions..."
-# docker compose -p ds-wagtail exec app manage wagtail_update_image_renditions
+# docker compose exec app manage wagtail_update_image_renditions

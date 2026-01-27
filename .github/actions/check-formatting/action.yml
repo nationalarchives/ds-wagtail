@@ -1,0 +1,8 @@
+name: Check formatting
+
+runs:
+  using: "composite"
+  steps:
+    - name: Check formatting
+      run: docker run --rm -v "$(pwd)":/app/ ghcr.io/nationalarchives/tna-python-dev:latest checkformat
+      shell: bash

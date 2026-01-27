@@ -1,10 +1,9 @@
-from django.urls import path
-from rest_framework.response import Response
-
 from app.api.filters import AuthorFilter, PublishedDateFilter
 from app.api.urls.pages import CustomPagesAPIViewSet
 from app.blog.models import BlogPostPage
 from app.core.serializers.pages import DefaultPageSerializer
+from django.urls import path
+from rest_framework.response import Response
 
 
 class BlogPostsAPIViewSet(CustomPagesAPIViewSet):
@@ -23,7 +22,7 @@ class BlogPostsAPIViewSet(CustomPagesAPIViewSet):
     model = BlogPostPage
 
     def count_view(self, request):
-        queryset = self.get_queryset()
+        queryset = self.get_queryset().public()
         self.check_query_parameters(queryset)
         queryset = self.filter_queryset(queryset).public()
         years = set(queryset.values_list("published_date__year", flat=True))
@@ -55,7 +54,7 @@ class BlogPostsAPIViewSet(CustomPagesAPIViewSet):
         return Response(years_count)
 
     def author_view(self, request):
-        queryset = self.get_queryset()
+        queryset = self.get_queryset().public()
         self.check_query_parameters(queryset)
         queryset = self.filter_queryset(queryset)
         authors = set(

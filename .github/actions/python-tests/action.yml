@@ -9,29 +9,15 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - uses: actions/setup-python@v5
-      with:
-        python-version: 3.13
-    - run: pip install flake8 isort black
-      shell: bash
-    - name: Check compliance with isort
-      run: isort -c .
-      shell: bash
-    - name: Check compliance with Black
-      run: black -t py38 -t py39 -t py310 -t py311 -t py312 --line-length 88 --verbose app config
-      shell: bash
-    - name: Check compliance with flake8
-      run: flake8 .
-      shell: bash
     - name: Start Docker containers
       run: docker compose up --detach --wait --wait-timeout 300 || docker compose logs app
       shell: bash
-    - name: Run check in the app Docker container
-      run: docker compose exec app poetry run python /app/manage.py check
+    - name: Run check
+      run: docker compose exec app poetry run python manage.py check
       shell: bash
-    - name: Run tests in the dev Docker container
-      run: docker compose exec dev poetry run python /app/manage.py test
+    - name: Run tests
+      run: docker compose exec app poetry run pytest --ds=config.settings.test
       shell: bash
     - name: Check for missing migrations
-      run: docker compose exec app poetry run python /app/manage.py makemigrations --check --noinput
+      run: docker compose exec app poetry run python manage.py makemigrations --check --noinput
       shell: bash

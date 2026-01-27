@@ -3,11 +3,6 @@ import re
 from datetime import datetime, timezone
 from unittest.mock import patch
 
-from django.conf import settings
-from wagtail.models import Site
-from wagtail.test.utils import WagtailPageTestCase
-from wagtail_factories import ImageFactory
-
 from app.alerts.models import Alert
 from app.articles.factories import (
     ArticleIndexPageFactory,
@@ -26,6 +21,10 @@ from app.home.models import MourningNotice
 from app.media.models import EtnaMedia
 from app.people.factories import PeopleIndexPageFactory, PersonPageFactory
 from app.people.models import AuthorTag, PersonRole, PersonRoleSelection
+from django.conf import settings
+from wagtail.models import Site
+from wagtail.test.utils import WagtailPageTestCase
+from wagtail_factories import ImageFactory
 
 API_URL = "/api/v2/pages/"
 
@@ -54,7 +53,9 @@ class APIResponseTest(WagtailPageTestCase):
 
     @classmethod
     def setUpTestData(self):
-        self.root_page = Site.objects.get().root_page
+        self.root_page = Site.objects.get(is_default_site=True).root_page
+        self.root_page.host_name = "localhost"
+        self.root_page.port = 80
         self.root_page.mourning = [
             MourningNotice.objects.create(
                 title="Test title",
@@ -76,7 +77,7 @@ class APIResponseTest(WagtailPageTestCase):
             message="<p>Message</p>",
             active=True,
             cascade=True,
-            alert_level="high",
+            alert_level=Alert.AlertLevelChoices.HIGH,
         )
 
         self.test_media = EtnaMedia.objects.create(
@@ -399,6 +400,9 @@ class APIResponseTest(WagtailPageTestCase):
                     '"uuid": "00000000-0000-0000-0000-000000000000"',
                     api_data,
                 )
+
+                # Fix the site root domain
+                api_data = api_data.replace("https://localhost/", "http://localhost/")
 
                 self.assertEqual(expected_data, api_data)
 

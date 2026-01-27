@@ -1,7 +1,6 @@
-from wagtail import blocks
-
 from app.core.blocks.image import APIImageChooserBlock
 from app.core.blocks.page_chooser import APIPageChooserBlock
+from wagtail import blocks
 
 
 class FeaturedPageBlock(blocks.StructBlock):
@@ -38,6 +37,12 @@ class FeaturedExternalLinkBlock(blocks.StructBlock):
     """
     Block for featuring a link to an external site.
     """
+
+    supertitle = blocks.CharBlock(
+        label="Supertitle",
+        max_length=20,
+        required=False,
+    )
 
     title = blocks.CharBlock(
         label="Title",

@@ -2,5 +2,6 @@
 
 set -e
 
-pull-media
-pull-data
+SCRIPTDIR=$(dirname $0)
+$SCRIPTDIR/pull-media
+$SCRIPTDIR/pull-data

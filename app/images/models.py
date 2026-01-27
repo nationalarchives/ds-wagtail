@@ -1,5 +1,6 @@
 import uuid
 
+from app.core.serializers import RichTextSerializer
 from django.conf import settings
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -8,8 +9,6 @@ from wagtail.api import APIField
 from wagtail.fields import RichTextField
 from wagtail.images.models import AbstractImage, AbstractRendition
 from wagtail.search import index
-
-from app.core.serializers import RichTextSerializer
 
 DEFAULT_SENSITIVE_IMAGE_WARNING = (
     "This image contains content which some people may find offensive or distressing."
@@ -94,10 +93,14 @@ class CustomImage(ClusterableModel, AbstractImage):
         ),
     )
 
+    def usage_count(self):
+        return self.get_usage().count()
+
     search_fields = AbstractImage.search_fields + [
         index.SearchField("transcription", boost=1),
         index.SearchField("translation", boost=1),
         index.SearchField("copyright"),
+        index.FilterField("usage_count"),
     ]
 
     api_fields = [

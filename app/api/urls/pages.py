@@ -1,9 +1,9 @@
 import logging
 
+from app.core.serializers.pages import DefaultPageSerializer
 from django.conf import settings
 from django.db.models import Q
 from django.http import Http404
-from django.shortcuts import redirect
 from django.utils.crypto import constant_time_compare
 from rest_framework import status
 from rest_framework.response import Response
@@ -17,14 +17,12 @@ from wagtail.api.v2.filters import (
     SearchFilter,
     TranslationOfFilter,
 )
-from wagtail.api.v2.utils import BadRequestError, get_object_detail_url
+from wagtail.api.v2.utils import BadRequestError
 from wagtail.api.v2.views import PagesAPIViewSet
 from wagtail.contrib.redirects.models import Redirect
 from wagtail.models import Page, PageViewRestriction, Site
 
-from app.core.serializers.pages import DefaultPageSerializer
-
-from ..filters import AliasFilter, DescendantOfPathFilter, SiteFilter
+from ..filters import AliasFilter, DescendantOfPathFilter
 
 logger = logging.getLogger(__name__)
 
@@ -52,13 +50,12 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
         OrderingFilter,
         TranslationOfFilter,
         LocaleFilter,
-        SiteFilter,
         AliasFilter,  # Needs to come before SearchFilter
         SearchFilter,  # Needs to be last, as SearchResults querysets cannot be filtered further
     ]
 
     def listing_view(self, request):
-        queryset = self.get_queryset()
+        queryset = self.get_queryset().public()
 
         # Exclude pages that the user doesn't have access to
         restricted_pages = [
@@ -128,36 +125,6 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
             "message": "Selected privacy mode is not compatible with this API.",
         }
         return Response(data, status=status.HTTP_403_FORBIDDEN)
-
-    # TODO: Can be removed when Wagtail is updated
-    # https://github.com/wagtail/wagtail/pull/12141
-    def find_view(self, request):
-        queryset = self.get_queryset()
-
-        try:
-            obj = self.find_object(queryset, request)
-            if obj is None:
-                raise self.model.DoesNotExist
-
-        except self.model.DoesNotExist:
-            raise Http404("not found")
-
-        url = get_object_detail_url(
-            self.request.wagtailapi_router, request, self.model, obj.pk
-        )
-        if url is None:
-            raise Exception(
-                "Cannot generate URL to detail view. Is '{}' installed in the API router?".format(
-                    self.__class__.__name__
-                )
-            )
-
-        # Retain all query parameters except ones only used to find the object
-        query = request.GET.copy()
-        for param in self.find_query_parameters:
-            query.pop(param, None)
-
-        return redirect(f"{url}?{query.urlencode()}")
 
     def get_base_queryset(self):
         """
