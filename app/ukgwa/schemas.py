@@ -4,6 +4,7 @@ import json
 from app.ukgwa.utils import normalize_archive_letter
 from pydantic import (
     BaseModel,
+    ConfigDict,
     Field,
     HttpUrl,
     PositiveInt,
@@ -29,10 +30,10 @@ class ArchiveRecordSchema(BaseModel):
     wam_id: PositiveInt = Field(alias="wamId")
     description: str | None = Field(alias="description")
 
-    model_config = {
-        "populate_by_name": True,  # Allow alias names from JSON (camelCase)
-        "str_strip_whitespace": True,
-    }
+    model_config = ConfigDict(
+        validate_by_alias=True,  # Allow alias names from JSON (camelCase)
+        str_strip_whitespace=True,
+    )
 
     @computed_field
     @property
