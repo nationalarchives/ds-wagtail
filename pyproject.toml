@@ -23,7 +23,6 @@ wagtailmedia = "^0.17"
 wagtail-headless-preview = "^0.8.0"
 whitenoise = "^6.11"
 boto3 = "^1.42.1"
-wagtail-2fa = "^1.7.1"
 
 [tool.poetry.group.dev]
 optional = true
