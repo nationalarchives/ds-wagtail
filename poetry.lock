@@ -231,7 +231,7 @@ version = "0.4.6"
 description = "Cross-platform colored terminal text."
 optional = false
 python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,!=3.5.*,!=3.6.*,>=2.7"
-groups = ["dev"]
+groups = ["main", "dev"]
 markers = "sys_platform == \"win32\""
 files = [
     {file = "colorama-0.4.6-py2.py3-none-any.whl", hash = "sha256:4f1d9991f5acc0ca119f9d443620b77f9d6b33703e51011c16baf57afb285fc6"},
@@ -351,6 +351,25 @@ django = ">=4.2"
 
 [package.extras]
 taggit = ["django-taggit (>=3.1)"]
+
+[[package]]
+name = "django-otp"
+version = "1.7.0"
+description = "A pluggable framework for adding two-factor authentication to Django using one-time passwords."
+optional = false
+python-versions = ">=3.8"
+groups = ["main"]
+files = [
+    {file = "django_otp-1.7.0-py3-none-any.whl", hash = "sha256:406d2d7f797dc313569270e06d6c360c7d986c9f653eab80b190d663ed5f1133"},
+    {file = "django_otp-1.7.0.tar.gz", hash = "sha256:961ccf2d80a67303cb46d97427b16c476ee075acfa2b4c82a59d8f1e0745a454"},
+]
+
+[package.dependencies]
+django = ">=4.2"
+
+[package.extras]
+qrcode = ["qrcode"]
+segno = ["segno"]
 
 [[package]]
 name = "django-permissionedforms"
@@ -1100,6 +1119,26 @@ files = [
 ]
 
 [[package]]
+name = "qrcode"
+version = "8.2"
+description = "QR Code image generator"
+optional = false
+python-versions = "<4.0,>=3.9"
+groups = ["main"]
+files = [
+    {file = "qrcode-8.2-py3-none-any.whl", hash = "sha256:16e64e0716c14960108e85d853062c9e8bba5ca8252c0b4d0231b9df4060ff4f"},
+    {file = "qrcode-8.2.tar.gz", hash = "sha256:35c3f2a4172b33136ab9f6b3ef1c00260dd2f66f858f24d88418a015f446506c"},
+]
+
+[package.dependencies]
+colorama = {version = "*", markers = "sys_platform == \"win32\""}
+
+[package.extras]
+all = ["pillow (>=9.1.0)", "pypng"]
+pil = ["pillow (>=9.1.0)"]
+png = ["pypng"]
+
+[[package]]
 name = "redis"
 version = "7.1.0"
 description = "Python client for Redis database and key-value store"
@@ -1375,6 +1414,29 @@ docs = ["Sphinx (>=7.3)", "myst_parser (==2.0.0)", "pyenchant (>=3.1.1,<4)", "sp
 testing = ["Jinja2 (>=3.0,<3.2)", "azure-mgmt-cdn (>=12.0,<13.0)", "azure-mgmt-frontdoor (>=1.0,<1.1)", "boto3 (>=1.28,<2)", "coverage (>=3.7.0)", "curlylint (==0.13.1)", "django-pattern-library (>=0.7)", "djhtml (==3.0.6)", "doc8 (==1.1.2)", "factory-boy (>=3.2)", "freezegun (>=0.3.8)", "polib (>=1.1,<2.0)", "python-dateutil (>=2.7)", "responses (>=0.25,<1)", "ruff (==0.9.6)", "semgrep (==1.132.0)", "tblib (>=2.0,<3.0)"]
 
 [[package]]
+name = "wagtail-2fa"
+version = "1.7.1"
+description = "Two factor authentication for Wagtail"
+optional = false
+python-versions = ">=3.8"
+groups = ["main"]
+files = [
+    {file = "wagtail-2fa-1.7.1.tar.gz", hash = "sha256:cbffe7c0fe939428e3aa41ca356d152a1e108cb6afc910102ec390d7a0255711"},
+    {file = "wagtail_2fa-1.7.1-py3-none-any.whl", hash = "sha256:98f8d2f1815420933b674745768b56f57579d8a0ee3e2ea1b077e89adeae36c2"},
+]
+
+[package.dependencies]
+Django = ">=3.2"
+django-otp = ">=0.8.1"
+qrcode = ">=6.1"
+six = ">=1.14.0"
+Wagtail = ">=4.1"
+
+[package.extras]
+docs = ["sphinx (>=1.4.1)", "sphinx-rtd-theme (>=0.4.3)"]
+test = ["coverage (==5.5)", "flake8 (==3.9.2)", "flake8-blind-except (==0.2.0)", "flake8-debugger (==4.0.0)", "isort (==5.9.3)", "pytest (==6.2.4)", "pytest-cov (==2.12.1)", "pytest-django (==4.4.0)"]
+
+[[package]]
 name = "wagtail-factories"
 version = "4.3.0"
 description = "Factory boy classes for wagtail"
@@ -1489,4 +1551,4 @@ wand = ["Wand (>=0.6,<1.0)"]
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.12"
-content-hash = "5fe466c9021fc1310e7644ba766329c33654f015f66ef6457a8e2036928739a2"
+content-hash = "b7290fa52e186b00f2778e804b6abaf992d3762e97d7be9aebbdafc545b1fcae"
