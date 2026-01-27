@@ -17,6 +17,7 @@ ALLOWED_HOSTS = ["*"]
 INSTALLED_APPS = INSTALLED_APPS.copy()
 INSTALLED_APPS.remove("birdbath")
 
+WAGTAIL_2FA_REQUIRED = False
 
 DATABASES = {
     "default": {
