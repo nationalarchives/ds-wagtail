@@ -11,7 +11,7 @@ class Migration(migrations.Migration):
     dependencies = [
         ("alerts", "0004_themedalert"),
         ("images", "0013_alter_customimage_description"),
-        ("ukgwa", "0011_archiverecord"),
+        ("ukgwa", "0012_archiverecord"),
         ("wagtailcore", "0096_referenceindex_referenceindex_source_object_and_more"),
     ]
 
