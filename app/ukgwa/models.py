@@ -182,15 +182,18 @@ class ArchiveRecord(models.Model):
 
         Results are cached indefinitely and invalidated when archive data is synced.
         """
+        # Normalize to lowercase for letters
+        if letter and letter.isalpha():
+            normalized = letter.lower()
+
         # Check cache first
         cache_key = f"archive_records_{letter}"
         cached_result = cache.get(cache_key)
         if cached_result is not None:
             return cached_result
 
-        # Normalize to lowercase for letters
+        # Query based on normalized letter
         if letter and letter.isalpha():
-            normalized = letter.lower()
             queryset = cls.objects.filter(first_character=normalized).order_by(
                 "sort_name"
             )
