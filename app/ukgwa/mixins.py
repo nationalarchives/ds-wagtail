@@ -78,3 +78,51 @@ class SearchMixin(models.Model):
 
     class Meta:
         abstract = True
+
+
+class SidebarNavigationMixin(models.Model):
+    """Mixin to add section navigation sidebar to pages."""
+
+    show_sidebar_navigation = models.BooleanField(
+        default=True,
+        help_text="Show a navigation sidebar of sibling pages within this section",
+    )
+
+    @property
+    def sidebar_navigation(self):
+        """Return section navigation data if enabled and parent is a SectionIndexPage."""
+        if not self.show_sidebar_navigation:
+            return None
+
+        parent = self.get_parent().specific
+
+        from app.ukgwa.models import SectionIndexPage
+
+        if not parent or not isinstance(parent, SectionIndexPage):
+            return None
+
+        subpages = [
+            {
+                "text": page.title,
+                "href": page.url,
+                "is_current": page.id == self.id,
+            }
+            for page in parent.subpages
+        ]
+        if not subpages:
+            return None
+        return {
+            "parent_page_title": parent.title,
+            "subpages": subpages,
+        }
+
+    class Meta:
+        abstract = True
+
+    settings_panels = [
+        FieldPanel("show_sidebar_navigation"),
+    ]
+
+    api_fields = [
+        APIField("sidebar_navigation"),
+    ]

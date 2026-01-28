@@ -4,7 +4,7 @@ from app.core.models import BasePageWithRequiredIntro, HeroImageMixin
 from app.core.models.basepage import BasePage
 from app.core.models.mixins import SocialMixin
 from app.ukgwa.blocks import InformationPageStreamBlock
-from app.ukgwa.mixins import FeaturedLinksMixin, SearchMixin
+from app.ukgwa.mixins import FeaturedLinksMixin, SearchMixin, SidebarNavigationMixin
 from app.ukgwa.serializers import SubpagesSerializer
 from app.ukgwa.utils import normalize_archive_letter
 from django.core.cache import cache
@@ -338,7 +338,7 @@ class SectionIndexPage(SearchMixin, UKGWABasePage):
     settings_panels = UKGWABasePage.settings_panels + SearchMixin.settings_panels
 
 
-class InformationPage(FeaturedLinksMixin, UKGWABasePage):
+class InformationPage(FeaturedLinksMixin, SidebarNavigationMixin, UKGWABasePage):
 
     parent_page_types = ["ukgwa.SectionIndexPage", "ukgwa.ListingPage"]
     subpage_types = []
@@ -352,6 +352,7 @@ class InformationPage(FeaturedLinksMixin, UKGWABasePage):
     api_fields = (
         UKGWABasePage.api_fields
         + FeaturedLinksMixin.api_fields
+        + SidebarNavigationMixin.api_fields
         + [
             APIField("body"),
         ]
@@ -362,6 +363,9 @@ class InformationPage(FeaturedLinksMixin, UKGWABasePage):
             FieldPanel("body"),
         ]
         + FeaturedLinksMixin.get_featured_links_panels()
+    )
+    settings_panels = (
+        UKGWABasePage.settings_panels + SidebarNavigationMixin.settings_panels
     )
 
 

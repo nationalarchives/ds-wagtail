@@ -142,7 +142,7 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
         if "site" in request.GET:
             # Optionally allow querying by port
             if ":" in request.GET["site"]:
-                (hostname, port) = request.GET["site"].split(":", 1)
+                hostname, port = request.GET["site"].split(":", 1)
                 query = {
                     "hostname": hostname,
                     "port": port,
@@ -191,7 +191,7 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
     def find_object(self, queryset, request):  # noqa: C901
         if "site" in request.GET:
             if ":" in request.GET["site"]:
-                (hostname, port) = request.GET["site"].split(":", 1)
+                hostname, port = request.GET["site"].split(":", 1)
                 query = {
                     "hostname": hostname,
                     "port": port,
