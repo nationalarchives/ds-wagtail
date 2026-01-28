@@ -68,7 +68,8 @@ INSTALLED_APPS = [
     "wagtail.contrib.table_block",
     "wagtail.embeds",
     "wagtail.sites",
-    "wagtail.users",
+    # "wagtail.users",
+    "app.users.apps.CustomUsersAppConfig",  # Replace wagtail.users to hide users without passwords
     "wagtail.snippets",
     "wagtail.documents",
     "wagtail.images",
