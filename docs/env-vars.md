@@ -2,7 +2,6 @@
 
 | Variable                             | Purpose | Production default | Staging default | Develop default |
 | ------------------------------------ | ------- | ------------------ | --------------- | --------------- |
-| `RUNTIME`                            | ?       | `?`                | `?`             | `?`             |
 | `ENVIRONMENT_NAME`                   | ?       | `?`                | `?`             | `?`             |
 | `DJANGO_SETTINGS_MODULE`             | ?       | `?`                | `?`             | `?`             |
 | `SECRET_KEY`                         | ?       | `?`                | `?`             | `?`             |
