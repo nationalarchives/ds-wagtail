@@ -12,6 +12,10 @@ def global_admin_css():
         .sidebar-menu-item__link:hover {
             text-shadow: none;
         }
+        /* Until https://github.com/labd/wagtail-2fa/pull/254 is merged and released */
+        .field-content > img {
+            background: #fff;
+        }
     """
     if settings.ENVIRONMENT_NAME == "production":
         environment_colours = """
@@ -34,7 +38,7 @@ def global_admin_css():
             --w-color-surface-menu-item-active: #00492c;
         }"""
         return f"<style>{static} {environment_colours}</style>"
-    return ""
+    return f"<style>{static}</style>"
 
 
 @hooks.register("register_icons")
