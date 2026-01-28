@@ -28,6 +28,9 @@ services:
       - WAGTAILAPI_IMAGES_BASE_URL=https://localhost
       - WAGTAILAPI_MEDIA_BASE_URL=https://localhost
       - REDIS_URL=redis://redis:6379/0
+      - EMAIL_HOST=${EMAIL_HOST}
+      - EMAIL_HOST_USER=${EMAIL_HOST_USER}
+      - EMAIL_HOST_PASSWORD=${EMAIL_HOST_PASSWORD}
     volumes:
       - ./:/app
       - media:/media
