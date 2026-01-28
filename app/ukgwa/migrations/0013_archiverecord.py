@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("ukgwa", "0011_listingpage"),
+        ("ukgwa", "0012_informationpage_show_sidebar_navigation"),
     ]
 
     operations = [
