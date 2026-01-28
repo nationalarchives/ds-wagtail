@@ -3,6 +3,8 @@ import os
 from .production import *  # noqa: F401, F403
 from .production import BASE_DIR, INSTALLED_APPS
 
+ENVIRONMENT_NAME = "test"
+
 DEBUG = True
 
 SECRET_KEY = "abc123"
@@ -32,7 +34,6 @@ ROSETTA_API_URL = "http://rosetta.test/data"
 
 RECORD_DETAILS_CACHE_TIMEOUT = 0
 
-ENVIRONMENT_NAME = "test"
 SENTRY_SAMPLE_RATE = 0
 
 RECORD_DETAILS_CACHE_TIMEOUT = 0

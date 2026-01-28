@@ -18,6 +18,8 @@ from .util import strtobool
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR = os.path.dirname(PROJECT_DIR)
 
+ENVIRONMENT_NAME = os.getenv("ENVIRONMENT_NAME", "production")
+
 WAGTAILADMIN_BASE_URL = os.getenv("WAGTAILADMIN_BASE_URL", "")
 WAGTAILAPI_IMAGES_BASE_URL = os.getenv("WAGTAILAPI_IMAGES_BASE_URL", "")
 WAGTAILAPI_MEDIA_BASE_URL = os.getenv("WAGTAILAPI_MEDIA_BASE_URL", "")
@@ -148,7 +150,9 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 WAGTAIL_2FA_REQUIRED = strtobool(os.getenv("WAGTAIL_2FA_REQUIRED", "True"))
-WAGTAIL_2FA_OTP_TOTP_NAME = "The National Archives Wagtail"
+WAGTAIL_2FA_OTP_TOTP_NAME = (
+    f"National Archives Wagtail ({ENVIRONMENT_NAME.capitalize()})"
+)
 
 # django-allauth configuration
 ACCOUNT_LOGIN_METHODS = {"email"}
@@ -176,7 +180,6 @@ LOGGING = {
 }
 
 SENTRY_DSN = os.getenv("SENTRY_DSN", "")
-ENVIRONMENT_NAME = os.getenv("ENVIRONMENT_NAME", "production")
 SENTRY_SAMPLE_RATE = float(os.getenv("SENTRY_SAMPLE_RATE", "0.1"))
 
 # Generated in the CI/CD process
