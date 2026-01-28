@@ -1,5 +1,5 @@
 ARG IMAGE=ghcr.io/nationalarchives/tna-python
-ARG IMAGE_TAG=latest
+ARG IMAGE_TAG=1
 
 FROM "$IMAGE":"$IMAGE_TAG"
 
