@@ -158,7 +158,7 @@ class SectionIndexPage(SearchMixin, UKGWABasePage):
     """
 
     parent_page_types = ["ukgwa.UKGWAHomePage"]
-    subpage_types = ["ukgwa.InformationPage"]
+    subpage_types = ["ukgwa.InformationPage", "ukgwa.ListingPage"]
 
     @property
     def subpages(self):
@@ -178,7 +178,7 @@ class SectionIndexPage(SearchMixin, UKGWABasePage):
 
 class InformationPage(FeaturedLinksMixin, UKGWABasePage):
 
-    parent_page_types = ["ukgwa.SectionIndexPage"]
+    parent_page_types = ["ukgwa.SectionIndexPage", "ukgwa.ListingPage"]
     subpage_types = []
 
     body = StreamField(InformationPageStreamBlock, blank=True, null=True)
@@ -273,3 +273,8 @@ class ArchiveSearchComponent(models.Model):
     class Meta:
         verbose_name = _("Archive Search Component")
         verbose_name_plural = _("Archive Search Components")
+
+
+class ListingPage(UKGWABasePage):
+    parent_page_types = ["ukgwa.SectionIndexPage"]
+    subpage_types = ["ukgwa.InformationPage"]
