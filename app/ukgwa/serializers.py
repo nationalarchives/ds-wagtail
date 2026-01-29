@@ -19,6 +19,18 @@ class ArchiveSearchComponentSerializer(serializers.Serializer):
         return None
 
 
+class BookmarkletCTASerializer(serializers.Serializer):
+    def to_representation(self, instance):
+        if instance:
+            return {
+                "heading": instance.heading,
+                "body": instance.body,
+                "button_text": instance.button_text,
+                "button_link": instance.button_link.full_url,
+            }
+        return None
+
+
 class ArchiveRecordSerializer(serializers.Serializer):
     """Serializer for ArchiveRecord model"""
 
