@@ -4,6 +4,7 @@ from app.core.models import BasePage
 from app.core.serializers import MourningSerializer
 from app.home.models import HomePage
 from app.navigation.models import NavigationSettings
+from django.conf import settings
 from django.urls import path
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -13,7 +14,8 @@ from wagtail.models import Site
 
 
 class GlobalsAPIViewSet(GenericViewSet):
-    permission_classes = (IsAuthenticated,)
+    if settings.WAGTAILAPI_AUTHENTICATION:
+        permission_classes = (IsAuthenticated,)
 
     model = BasePage
 

@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.urls import path
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -28,7 +29,8 @@ class CustomMediaItemSerializer(MediaItemSerializer):
 
 
 class CustomMediaAPIViewSet(MediaAPIViewSet):
-    permission_classes = (IsAuthenticated,)
+    if settings.WAGTAILAPI_AUTHENTICATION:
+        permission_classes = (IsAuthenticated,)
 
     lookup_field = "uuid"
     base_serializer_class = CustomMediaItemSerializer

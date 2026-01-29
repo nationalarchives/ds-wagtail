@@ -1,4 +1,5 @@
 from app.core.serializers.images import image_generator
+from django.conf import settings
 from django.urls import path
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -32,7 +33,8 @@ class ViewSetImageSerializer(ImageSerializer):
 
 
 class CustomImagesAPIViewSet(ImagesAPIViewSet):
-    permission_classes = (IsAuthenticated,)
+    if settings.WAGTAILAPI_AUTHENTICATION:
+        permission_classes = (IsAuthenticated,)
 
     lookup_field = "uuid"
     base_serializer_class = ViewSetImageSerializer

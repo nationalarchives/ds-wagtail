@@ -29,7 +29,8 @@ logger = logging.getLogger(__name__)
 
 
 class CustomPagesAPIViewSet(PagesAPIViewSet):
-    permission_classes = (IsAuthenticated,)
+    if settings.WAGTAILAPI_AUTHENTICATION:
+        permission_classes = (IsAuthenticated,)
 
     known_query_parameters = PagesAPIViewSet.known_query_parameters.union(
         ["password", "author", "include_aliases", "descendant_of_path"]
