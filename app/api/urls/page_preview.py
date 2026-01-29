@@ -1,4 +1,6 @@
+from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from wagtail.api.v2.utils import BadRequestError
 from wagtail.api.v2.views import PagesAPIViewSet
@@ -6,6 +8,9 @@ from wagtail_headless_preview.models import PagePreview
 
 
 class PagePreviewAPIViewSet(PagesAPIViewSet):
+    if settings.WAGTAILAPI_AUTHENTICATION:
+        permission_classes = (IsAuthenticated,)
+
     known_query_parameters = PagesAPIViewSet.known_query_parameters.union(
         ["content_type", "token"]
     )
