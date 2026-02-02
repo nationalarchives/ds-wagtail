@@ -42,7 +42,6 @@ private_urls = [
     path("django-admin/", admin.site.urls),
     path("admin/", include(wagtailadmin_urls)),
     path("wagtail-documents/", include(wagtaildocs_urls)),
-    path("django/", admin.site.urls),
 ]
 
 # Update private URLs to use the "never cache" cache settings.
