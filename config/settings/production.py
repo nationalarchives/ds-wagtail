@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "app.generic_pages",
     "app.alerts",
     "app.articles",
+    "app.api",
     "app.blog",
     "app.people",
     "app.cookies",
@@ -68,8 +69,7 @@ INSTALLED_APPS = [
     "wagtail.contrib.table_block",
     "wagtail.embeds",
     "wagtail.sites",
-    # "wagtail.users",
-    "app.users.apps.CustomUsersAppConfig",  # Replace wagtail.users to hide users without passwords
+    "wagtail.users",
     "wagtail.snippets",
     "wagtail.documents",
     "wagtail.images",
@@ -96,7 +96,6 @@ INSTALLED_APPS = [
     "wagtail.api.v2",
     "wagtail.contrib.frontend_cache",
     "rest_framework",
-    "rest_framework.authtoken",
     "wagtail_headless_preview",
 ]
 
@@ -349,6 +348,6 @@ WAGTAILAPI_LIMIT_MAX = int(os.getenv("WAGTAILAPI_LIMIT_MAX", "0")) or None
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
-        "rest_framework.authentication.TokenAuthentication"
+        "app.api.auth.CustomTokenAuthentication",
     ],
 }
