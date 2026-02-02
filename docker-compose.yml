@@ -28,6 +28,7 @@ services:
       - WAGTAILAPI_IMAGES_BASE_URL=https://localhost
       - WAGTAILAPI_MEDIA_BASE_URL=https://localhost
       - REDIS_URL=redis://redis:6379/0
+      - WAGTAIL_2FA_REQUIRED=False
     volumes:
       - ./:/app
       - media:/media
