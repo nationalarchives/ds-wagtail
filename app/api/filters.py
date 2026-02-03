@@ -1,5 +1,6 @@
 import datetime
 
+from django.db.models import Q
 from rest_framework.filters import BaseFilterBackend
 from wagtail.api.v2.utils import BadRequestError
 from wagtail.models import Page, Site
@@ -134,6 +135,20 @@ class SiteFilter(BaseFilterBackend):
         if site:
             base_queryset = queryset
             queryset = base_queryset.descendant_of(site.root_page, inclusive=True)
+        else:
+            # No sites configured
+            queryset = queryset.none()
+
+        return queryset
+
+
+class RedirectsSiteFilter(BaseFilterBackend):
+    def filter_queryset(self, request, queryset, view):
+        site = get_site_from_request(request)
+
+        if site:
+            base_queryset = queryset
+            queryset = base_queryset.filter(Q(site=site) | Q(site=None))
         else:
             # No sites configured
             queryset = queryset.none()

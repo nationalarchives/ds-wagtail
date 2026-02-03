@@ -1,4 +1,5 @@
 from app.core.blocks.links import LinkBlock
+from app.ukgwa.serializers import ArchiveSearchComponentSerializer
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel
@@ -50,3 +51,78 @@ class FeaturedLinksMixin(models.Model):
                 heading="Featured links",
             )
         ]
+
+
+class SearchMixin(models.Model):
+    """
+    Add optional archive search functionality to a page.
+
+    Allows editors to associate a reusable ArchiveSearchComponent snippet with
+    the page, which can be rendered to provide web archive or social media archive
+    search capabilities.
+    """
+
+    search_configuration = models.ForeignKey(
+        "ArchiveSearchComponent",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        help_text=_("Select an archive search component to display on this page"),
+    )
+
+    api_fields = [
+        APIField("search_configuration", serializer=ArchiveSearchComponentSerializer()),
+    ]
+
+    settings_panels = [FieldPanel("search_configuration")]
+
+    class Meta:
+        abstract = True
+
+
+class SidebarNavigationMixin(models.Model):
+    """Mixin to add section navigation sidebar to pages."""
+
+    show_sidebar_navigation = models.BooleanField(
+        default=True,
+        help_text="Show a navigation sidebar of sibling pages within this section",
+    )
+
+    @property
+    def sidebar_navigation(self):
+        """Return section navigation data if enabled and parent is a SectionIndexPage."""
+        if not self.show_sidebar_navigation:
+            return None
+
+        parent = self.get_parent().specific
+
+        from app.ukgwa.models import SectionIndexPage
+
+        if not parent or not isinstance(parent, SectionIndexPage):
+            return None
+
+        subpages = [
+            {
+                "text": page.title,
+                "href": page.url,
+                "is_current": page.id == self.id,
+            }
+            for page in parent.subpages
+        ]
+        if not subpages:
+            return None
+        return {
+            "parent_page_title": parent.title,
+            "subpages": subpages,
+        }
+
+    class Meta:
+        abstract = True
+
+    settings_panels = [
+        FieldPanel("show_sidebar_navigation"),
+    ]
+
+    api_fields = [
+        APIField("sidebar_navigation"),
+    ]

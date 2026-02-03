@@ -252,7 +252,23 @@ class SidebarMixin(models.Model):
 
 
 class SocialMixin(models.Model):
-    """Mixin to add social media sharing options to a Page."""
+    """
+    Mixin to add social media sharing options to a Page.
+
+    API Field Building Blocks:
+    For flexible composition of api_meta_fields in child classes:
+
+    - `_teaser_image_square_api_field`: Square crop of teaser_image (requires teaser_image field)
+    - `_social_base_api_meta_fields`: SEO and social fields (works without teaser_image)
+
+    Child classes can include teaser_image_square or omit it:
+
+        # Include teaser_image_square (default)
+        api_meta_fields = SocialMixin.api_meta_fields
+
+        # Omit teaser_image_square (for pages without teaser_image)
+        api_meta_fields = SocialMixin._social_base_api_meta_fields
+    """
 
     search_image = models.ForeignKey(
         get_image_model_string(),
@@ -321,11 +337,13 @@ class SocialMixin(models.Model):
         ),
     ]
 
-    api_meta_fields = [
-        APIField(
-            "teaser_image_square",
-            serializer=ImageSerializer("fill-512x512", source="teaser_image"),
-        ),
+    # API field building blocks for flexible composition
+    _teaser_image_square_api_field = APIField(
+        "teaser_image_square",
+        serializer=ImageSerializer("fill-512x512", source="teaser_image"),
+    )
+
+    _social_base_api_meta_fields = [
         APIField("seo_title"),
         APIField("search_description"),
         APIField(
@@ -339,6 +357,8 @@ class SocialMixin(models.Model):
             serializer=ImageSerializer("fill-1200x630"),
         ),
     ]
+
+    api_meta_fields = [_teaser_image_square_api_field] + _social_base_api_meta_fields
 
 
 class CustomHeadlessPreviewMixin(HeadlessPreviewMixin):

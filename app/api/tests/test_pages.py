@@ -77,7 +77,7 @@ class APIResponseTest(WagtailPageTestCase):
             message="<p>Message</p>",
             active=True,
             cascade=True,
-            alert_level="high",
+            alert_level=Alert.AlertLevelChoices.HIGH,
         )
 
         self.test_media = EtnaMedia.objects.create(
