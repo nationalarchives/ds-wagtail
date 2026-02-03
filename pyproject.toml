@@ -6,30 +6,31 @@ authors = ["James Biggs <james.biggs@nationalarchives.gov.uk>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-Django = "^6.0"
-django-allauth = "^65.13"
-django-birdbath = "^2.0"
-django-redis = "^6.0"
-django-taggit = "^6.1"
-pillow-heif = "^1.1"
-psycopg2-binary = "^2.9"
-python = "^3.12"
-python-magic = "^0.4"
-sentry-sdk = "^2.47"
-wagtail = "^7.2"
-wagtail-factories = "^4.3"
+Django = "^6.0.1"
+django-allauth = "^65.14.0"
+django-birdbath = "^2.0.1"
+django-redis = "^6.0.0"
+django-taggit = "^6.1.0"
+pillow-heif = "^1.2.0"
+psycopg2-binary = "^2.9.11"
+python = "^3.14"
+python-magic = "^0.4.27"
+sentry-sdk = "^2.51.0"
+wagtail = "^7.3"
+wagtail-factories = "^4.3.0"
 wagtail-font-awesome-svg = "^2.0"
-wagtailmedia = "^0.17"
+wagtailmedia = "^0.17.2"
 wagtail-headless-preview = "^0.8.0"
-whitenoise = "^6.11"
-boto3 = "^1.42.1"
+whitenoise = "^6.11.0"
+boto3 = "^1.42.40"
 wagtail-2fa = "^1.7.1"
+django-otp = "1.6.1"  # Remove once wagtail-2fa is updated (https://github.com/labd/wagtail-2fa/issues/261)
 
 [tool.poetry.group.dev]
 optional = true
 
 [tool.poetry.group.dev.dependencies]
-responses = "^0.25"
+responses = "^0.25.8"
 pytest-django = "^4.11.1"
 
 [build-system]
