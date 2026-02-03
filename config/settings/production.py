@@ -336,7 +336,7 @@ EMAIL_USE_TLS = strtobool(os.getenv("EMAIL_USE_TLS", "True"))
 # EMAIL_SSL_KEYFILE = os.getenv("EMAIL_SSL_KEYFILE", None)
 # EMAIL_SSL_CERTFILE = os.getenv("EMAIL_SSL_CERTFILE", None)
 # EMAIL_TIMEOUT = os.getenv("EMAIL_TIMEOUT", None)
-EMAIL_SUBJECT_PREFIX = "[The National Archives Wagtail] "
+EMAIL_SUBJECT_PREFIX = f"[The National Archives Wagtail ({ENVIRONMENT_NAME})] "
 
 
 # -----------------------------------------------------------------------------
