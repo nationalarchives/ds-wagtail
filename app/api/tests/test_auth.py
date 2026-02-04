@@ -1,26 +1,7 @@
-from app.api.auth import CustomTokenAuthentication, TokenUser
+from app.api.auth import CustomTokenAuthentication
 from app.api.models import APIToken
 from django.test import RequestFactory, TestCase
 from rest_framework import exceptions
-
-
-class TokenUserTests(TestCase):
-    def test_token_user_attributes(self):
-        """Test TokenUser has correct authentication attributes."""
-        token = APIToken.objects.create(name="test-token")
-        user = TokenUser(token)
-
-        self.assertTrue(user.is_authenticated)
-        self.assertTrue(user.is_active)
-        self.assertFalse(user.is_anonymous)
-        self.assertEqual(user.token, token)
-
-    def test_token_user_string_representation(self):
-        """Test TokenUser string representation."""
-        token = APIToken.objects.create(name="test-service")
-        user = TokenUser(token)
-
-        self.assertEqual(str(user), "TokenUser(test-service)")
 
 
 class CustomTokenAuthenticationTests(TestCase):
@@ -41,9 +22,8 @@ class CustomTokenAuthenticationTests(TestCase):
 
         self.assertIsNotNone(result)
         user, token = result
-        self.assertIsInstance(user, TokenUser)
+        self.assertIsNone(user)
         self.assertEqual(token, self.active_token)
-        self.assertTrue(user.is_authenticated)
 
     def test_authenticate_with_no_token(self):
         """Test authentication returns None when no token provided."""
@@ -102,13 +82,12 @@ class CustomTokenAuthenticationTests(TestCase):
 
         self.assertIn("inactive or deleted", str(context.exception))
 
-    def test_authenticate_credentials_returns_token_user(self):
-        """Test authenticate_credentials returns TokenUser instance."""
+    def test_authenticate_credentials_returns_none_user(self):
+        """Test authenticate_credentials returns None for user."""
         user, token = self.auth.authenticate_credentials(str(self.active_token.key))
 
-        self.assertIsInstance(user, TokenUser)
+        self.assertIsNone(user)
         self.assertEqual(token, self.active_token)
-        self.assertEqual(user.token, self.active_token)
 
     def test_get_model_returns_api_token(self):
         """Test get_model returns APIToken model."""
