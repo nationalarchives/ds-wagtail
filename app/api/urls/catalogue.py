@@ -1,4 +1,5 @@
 from app.alerts.models import AlertSerializer
+from app.api.permissions import IsAPITokenAuthenticated
 from app.articles.models import ArticleIndexPage
 from app.collections.models import ExplorerIndexPage
 from app.core.models import BasePage
@@ -7,7 +8,6 @@ from app.core.serializers.pages import DefaultPageSerializer
 from app.home.models import HomePage
 from django.conf import settings
 from django.urls import path
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 from wagtail.models import Site
@@ -15,7 +15,9 @@ from wagtail.models import Site
 
 class CatalogueAPIViewSet(GenericViewSet):
     if settings.WAGTAILAPI_AUTHENTICATION:
-        permission_classes = (IsAuthenticated,)
+        permission_classes = (
+            IsAPITokenAuthenticated,
+        )
 
     model = BasePage
 
