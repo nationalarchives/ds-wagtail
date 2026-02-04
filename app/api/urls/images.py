@@ -34,9 +34,7 @@ class ViewSetImageSerializer(ImageSerializer):
 
 class CustomImagesAPIViewSet(ImagesAPIViewSet):
     if settings.WAGTAILAPI_AUTHENTICATION:
-        permission_classes = (
-            IsAPITokenAuthenticated,
-        )
+        permission_classes = (IsAPITokenAuthenticated,)
 
     lookup_field = "uuid"
     base_serializer_class = ViewSetImageSerializer

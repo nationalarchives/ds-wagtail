@@ -15,9 +15,7 @@ from wagtail.models import Site
 
 class CatalogueAPIViewSet(GenericViewSet):
     if settings.WAGTAILAPI_AUTHENTICATION:
-        permission_classes = (
-            IsAPITokenAuthenticated,
-        )
+        permission_classes = (IsAPITokenAuthenticated,)
 
     model = BasePage
 

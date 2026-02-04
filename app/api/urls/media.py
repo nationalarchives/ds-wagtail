@@ -1,11 +1,10 @@
+from app.api.permissions import IsAPITokenAuthenticated
 from django.conf import settings
 from django.urls import path
 from rest_framework.response import Response
 from wagtail.rich_text import expand_db_html
 from wagtailmedia.api.serializers import MediaItemSerializer
 from wagtailmedia.api.views import MediaAPIViewSet
-
-from app.api.permissions import IsAPITokenAuthenticated
 
 
 class CustomMediaItemSerializer(MediaItemSerializer):
@@ -31,9 +30,7 @@ class CustomMediaItemSerializer(MediaItemSerializer):
 
 class CustomMediaAPIViewSet(MediaAPIViewSet):
     if settings.WAGTAILAPI_AUTHENTICATION:
-        permission_classes = (
-            IsAPITokenAuthenticated,
-        )
+        permission_classes = (IsAPITokenAuthenticated,)
 
     lookup_field = "uuid"
     base_serializer_class = CustomMediaItemSerializer

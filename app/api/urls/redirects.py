@@ -1,17 +1,14 @@
+from app.api.permissions import IsAPITokenAuthenticated
 from django.conf import settings
 from wagtail.contrib.redirects.api import RedirectsAPIViewSet as BaseRedirectsAPIViewSet
 from wagtail.contrib.redirects.models import Redirect
-
-from app.api.permissions import IsAPITokenAuthenticated
 
 from ..filters import RedirectsSiteFilter
 
 
 class RedirectsAPIViewSet(BaseRedirectsAPIViewSet):
     if settings.WAGTAILAPI_AUTHENTICATION:
-        permission_classes = (
-            IsAPITokenAuthenticated,
-        )
+        permission_classes = (IsAPITokenAuthenticated,)
 
     model = Redirect
 

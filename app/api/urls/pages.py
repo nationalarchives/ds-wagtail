@@ -1,12 +1,12 @@
 import logging
 
+from app.api.permissions import IsAPITokenAuthenticated
 from app.core.serializers.pages import DefaultPageSerializer
 from django.conf import settings
 from django.db.models import Q
 from django.http import Http404
 from django.utils.crypto import constant_time_compare
 from rest_framework import status
-from app.api.permissions import IsAPITokenAuthenticated
 from rest_framework.response import Response
 from wagtail.api.v2.filters import (
     AncestorOfFilter,
@@ -30,9 +30,7 @@ logger = logging.getLogger(__name__)
 
 class CustomPagesAPIViewSet(PagesAPIViewSet):
     if settings.WAGTAILAPI_AUTHENTICATION:
-        permission_classes = (
-            IsAPITokenAuthenticated,
-        )
+        permission_classes = (IsAPITokenAuthenticated,)
 
     known_query_parameters = PagesAPIViewSet.known_query_parameters.union(
         ["password", "author", "include_aliases", "descendant_of_path"]
