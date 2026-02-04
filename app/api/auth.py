@@ -4,20 +4,6 @@ from rest_framework import exceptions
 from rest_framework.authentication import TokenAuthentication
 
 
-class TokenUser:
-    """A simple user-like object for token authentication without a real user."""
-
-    is_authenticated = True
-    is_active = True
-    is_anonymous = False
-
-    def __init__(self, token):
-        self.token = token
-
-    def __str__(self):
-        return f"TokenUser({self.token.name})"
-
-
 class CustomTokenAuthentication(TokenAuthentication):
     model = APIToken
 
@@ -31,5 +17,5 @@ class CustomTokenAuthentication(TokenAuthentication):
         if not token.active:
             raise exceptions.PermissionDenied(_("Token inactive or deleted."))
 
-        # Return a dummy TokenUser here - this is to avoid needing a real user model tied to the token
-        return (TokenUser(token), token)
+        # Return None here in place of the user object, as we're not assigning tokens to user accounts
+        return (None, token)
