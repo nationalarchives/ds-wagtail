@@ -30,6 +30,6 @@ class CustomTokenAuthentication(TokenAuthentication):
 
         if not token.active:
             raise exceptions.PermissionDenied(_("Token inactive or deleted."))
-    
+
         # Return a dummy TokenUser here - this is to avoid needing a real user model tied to the token
         return (TokenUser(token), token)

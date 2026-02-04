@@ -1,6 +1,6 @@
+import json
 import os
 import re
-import json
 from datetime import datetime, timezone
 from unittest.mock import patch
 
@@ -57,7 +57,7 @@ class APIResponseTest(WagtailPageTestCase):
     def setUpTestData(self):
         # Create API token for authentication
         self.api_token = APIToken.objects.create(name="test-token")
-        
+
         self.root_page = Site.objects.get(is_default_site=True).root_page
         self.root_page.host_name = "localhost"
         self.root_page.port = 80
@@ -381,27 +381,35 @@ class APIResponseTest(WagtailPageTestCase):
             normalized = {}
             for key, value in data.items():
                 # Normalize dynamic fields
-                if key == 'id' and isinstance(value, int):
+                if key == "id" and isinstance(value, int):
                     # Don't compare exact ID values, just verify it's an integer
                     # Use a consistent placeholder for comparison
-                    normalized[key] = 'ID_PLACEHOLDER'
-                elif key == 'uuid' and isinstance(value, str):
+                    normalized[key] = "ID_PLACEHOLDER"
+                elif key == "uuid" and isinstance(value, str):
                     normalized[key] = "UUID_PLACEHOLDER"
-                elif key in ['url', 'full_url', 'download_url', 'file', 'html_url', 'detail_url', 'href'] and isinstance(value, str):
+                elif key in [
+                    "url",
+                    "full_url",
+                    "download_url",
+                    "file",
+                    "html_url",
+                    "detail_url",
+                    "href",
+                ] and isinstance(value, str):
                     # Normalize image URLs and file paths
                     normalized_url = re.sub(
-                        r'/media/images/[a-zA-Z0-9_]+\.([a-fA-F0-9]{6,8}\.)?',
-                        '/media/images/image.',
-                        value
+                        r"/media/images/[a-zA-Z0-9_]+\.([a-fA-F0-9]{6,8}\.)?",
+                        "/media/images/image.",
+                        value,
                     )
                     normalized_url = re.sub(
-                        r'\.format-(jpeg|webp)\.(jpegquality|webpquality)-([0-9]+)[a-zA-Z0-9_]*\.(jpg|webp)',
-                        r'.format-\g<1>.\g<2>-\g<3>.\g<4>',
-                        normalized_url
+                        r"\.format-(jpeg|webp)\.(jpegquality|webpquality)-([0-9]+)[a-zA-Z0-9_]*\.(jpg|webp)",
+                        r".format-\g<1>.\g<2>-\g<3>.\g<4>",
+                        normalized_url,
                     )
                     # Normalize to relative URLs - strip any domain/scheme
                     # This handles both http://localhost/path and https://domain.com/path
-                    normalized_url = re.sub(r'^https?://[^/]+', '', normalized_url)
+                    normalized_url = re.sub(r"^https?://[^/]+", "", normalized_url)
                     normalized[key] = normalized_url
                 else:
                     normalized[key] = self.normalize_json_data(value, is_expected)
@@ -430,7 +438,9 @@ class APIResponseTest(WagtailPageTestCase):
                     self.fail(f"Invalid JSON: {e}")
 
                 # Normalize both datasets (IDs become placeholders)
-                expected_data = self.normalize_json_data(expected_data, is_expected=True)
+                expected_data = self.normalize_json_data(
+                    expected_data, is_expected=True
+                )
                 api_data = self.normalize_json_data(api_data, is_expected=False)
 
                 # Compare as Python objects (better diffs)
