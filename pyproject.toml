@@ -24,7 +24,7 @@ wagtail-headless-preview = "^0.8.0"
 whitenoise = "^6.11.0"
 boto3 = "^1.42.40"
 wagtail-2fa = "^1.7.1"
-django-otp = "1.6.1"  # Remove once wagtail-2fa is updated (https://github.com/labd/wagtail-2fa/issues/261)
+django-otp = "1.7.0"  # Remove once wagtail-2fa is updated (https://github.com/labd/wagtail-2fa/issues/261)
 
 [tool.poetry.group.dev]
 optional = true
