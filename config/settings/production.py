@@ -39,8 +39,6 @@ SECRET_KEY = os.getenv("SECRET_KEY", "")
 
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-
 SITE_ID = 1
 
 # Application definition
@@ -320,6 +318,27 @@ EXPANDED_RICH_TEXT_FEATURES = RESTRICTED_RICH_TEXT_FEATURES + [
 # Don't anonymise data by default, so we don't accidentally lose production data
 BIRDBATH_REQUIRED = False
 BIRDBATH_PROCESSORS = ["app.users.anonymisation.UserAnonymiser"]
+
+
+# -----------------------------------------------------------------------------
+# Email
+# -----------------------------------------------------------------------------
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+# WAGTAIL_EMAIL_MANAGEMENT_ENABLED = False  # Disable the ability for users to change their email address
+# WAGTAILADMIN_NOTIFICATION_USE_HTML = True
+WAGTAILADMIN_NOTIFICATION_INCLUDE_SUPERUSERS = False
+DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "wagtail@nationalarchives.gov.uk")
+EMAIL_HOST = os.getenv("EMAIL_HOST", None)
+EMAIL_PORT = os.getenv("EMAIL_PORT", 587)
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER", None)
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD", None)
+EMAIL_USE_TLS = strtobool(os.getenv("EMAIL_USE_TLS", "True"))
+# EMAIL_USE_SSL = strtobool(os.getenv("EMAIL_USE_SSL", "False"))
+# EMAIL_SSL_KEYFILE = os.getenv("EMAIL_SSL_KEYFILE", None)
+# EMAIL_SSL_CERTFILE = os.getenv("EMAIL_SSL_CERTFILE", None)
+# EMAIL_TIMEOUT = os.getenv("EMAIL_TIMEOUT", None)
+EMAIL_SUBJECT_PREFIX = f"[The National Archives Wagtail ({ENVIRONMENT_NAME})] "
+
 
 # -----------------------------------------------------------------------------
 # Cache settings
