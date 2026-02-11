@@ -4,11 +4,11 @@ from .models import APIToken
 
 
 class APITokenAdmin(admin.ModelAdmin):
-    list_display = ("name", "key", "active", "created")
-    list_filter = ("active", "created")
-    search_fields = ("name", "key")
-    readonly_fields = ("key", "created")
-    ordering = ("-created",)
+    list_display = ("name", "key", "active", "created", "updated")
+    list_filter = ("active", "created", "updated")
+    search_fields = ("name",)
+    readonly_fields = ("key", "created", "updated")
+    ordering = ("-updated",)
 
     fieldsets = (
         (None, {"fields": ("name", "active")}),
