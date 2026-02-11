@@ -3,7 +3,7 @@
 Use the `manage_api_token` management command to create, refresh, or delete API tokens used by the API auth flow.
 
 ```sh
-# Create a new token (or show the existing key if it already exists)
+# Create a new token
 manage manage_api_token my-service-name
 
 # Refresh an existing token (or create it if it does not exist)
