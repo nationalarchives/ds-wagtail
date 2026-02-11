@@ -2,7 +2,6 @@ import binascii
 import os
 
 from django.db import models
-from django.utils import timezone
 
 
 class APIToken(models.Model):
@@ -15,12 +14,11 @@ class APIToken(models.Model):
     key = models.CharField(max_length=40, unique=True)
     active = models.BooleanField(default=True)
     created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField()
+    updated = models.DateTimeField(auto_now=True)
 
     def save(self, *args, **kwargs):
         if not self.key:
             self.key = self.generate_key()
-        self.updated = timezone.now()
         return super().save(*args, **kwargs)
 
     @classmethod
