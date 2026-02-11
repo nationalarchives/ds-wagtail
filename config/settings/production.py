@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "app.generic_pages",
     "app.alerts",
     "app.articles",
+    "app.api",
     "app.blog",
     "app.people",
     "app.cookies",
@@ -371,4 +372,11 @@ WAGTAILFRONTENDCACHE = {
     },
 }
 
+WAGTAILAPI_AUTHENTICATION = strtobool(os.getenv("WAGTAILAPI_AUTHENTICATION", "True"))
 WAGTAILAPI_LIMIT_MAX = int(os.getenv("WAGTAILAPI_LIMIT_MAX", "0")) or None
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "app.api.auth.CustomTokenAuthentication",
+    ],
+}

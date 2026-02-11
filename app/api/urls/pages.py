@@ -1,5 +1,6 @@
 import logging
 
+from app.api.permissions import IsAPITokenAuthenticated
 from app.core.serializers.pages import DefaultPageSerializer
 from django.conf import settings
 from django.db.models import Q
@@ -28,6 +29,9 @@ logger = logging.getLogger(__name__)
 
 
 class CustomPagesAPIViewSet(PagesAPIViewSet):
+    if settings.WAGTAILAPI_AUTHENTICATION:
+        permission_classes = (IsAPITokenAuthenticated,)
+
     known_query_parameters = PagesAPIViewSet.known_query_parameters.union(
         ["password", "author", "include_aliases", "descendant_of_path"]
     )

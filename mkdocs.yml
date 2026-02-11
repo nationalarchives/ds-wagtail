@@ -3,6 +3,24 @@ repo_url: https://github.com/nationalarchives/ds-wagtail
 theme:
   name: material
   font: false
+nav:
+  - Home: index.md
+  - Development:
+      - Backend development: development/backend.md
+      - Contributing: development/contributing.md
+      - Dependencies: development/dependencies.md
+      - Fetching data: development/fetching-data.md
+      - Project conventions: development/project-conventions.md
+      - Version control: development/version-control.md
+  - Features:
+      - Search and record data: features/search-and-record-data.md
+  - Infrastructure:
+      - API tokens: infrastructure/api-tokens.md
+      - Configuring an environment: infrastructure/configuring-an-environment.md
+      - Environments: infrastructure/environments.md
+      - Scheduled tasks: infrastructure/scheduled-tasks.md
+      - Testing an environment: infrastructure/testing-an-environment.md
+  - Environment variables: env-vars.md
 markdown_extensions:
   - admonition
   - sane_lists
