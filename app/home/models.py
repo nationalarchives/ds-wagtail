@@ -1,5 +1,5 @@
 from app.core.blocks import FeaturedExternalLinkBlock, FeaturedPageBlock
-from app.core.models import BasePageWithRequiredIntro, HeroImageMixin
+from app.core.models import BasePageWithRequiredIntro
 from django.conf import settings
 from django.db import models
 from modelcluster.fields import ParentalKey
@@ -24,7 +24,7 @@ class MourningNotice(models.Model):
     ]
 
 
-class HomePage(HeroImageMixin, BasePageWithRequiredIntro):
+class HomePage(BasePageWithRequiredIntro):
     primary_promo = secondary_promos = StreamField(
         [
             ("featured_page", FeaturedPageBlock()),
@@ -44,26 +44,18 @@ class HomePage(HeroImageMixin, BasePageWithRequiredIntro):
         verbose_name="Secondary promo links",
     )
 
-    content_panels = (
-        BasePageWithRequiredIntro.content_panels
-        + HeroImageMixin.content_panels
-        + [
-            FieldPanel("primary_promo"),
-            FieldPanel("secondary_promos"),
-        ]
-    )
+    content_panels = BasePageWithRequiredIntro.content_panels + [
+        FieldPanel("primary_promo"),
+        FieldPanel("secondary_promos"),
+    ]
 
     settings_panels = BasePageWithRequiredIntro.settings_panels + [
         InlinePanel("mourning", label="Mourning Notice", max_num=1),
     ]
 
-    api_fields = (
-        BasePageWithRequiredIntro.api_fields
-        + HeroImageMixin.api_fields
-        + [
-            APIField("primary_promo"),
-            APIField("secondary_promos"),
-        ]
-    )
+    api_fields = BasePageWithRequiredIntro.api_fields + [
+        APIField("primary_promo"),
+        APIField("secondary_promos"),
+    ]
 
     max_count = 1
