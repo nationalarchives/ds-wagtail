@@ -1,26 +1,5 @@
 from typing import List, Tuple, Union
 
-from django.conf import settings
-from django.db import models
-from django.utils.functional import cached_property
-from django.utils.translation import gettext_lazy as _
-from modelcluster.contrib.taggit import ClusterTaggableManager
-from modelcluster.fields import ParentalKey
-from rest_framework import serializers
-from taggit.models import ItemBase, TagBase
-from wagtail.admin.panels import (
-    FieldPanel,
-    InlinePanel,
-    MultiFieldPanel,
-    PageChooserPanel,
-)
-from wagtail.api import APIField
-from wagtail.fields import RichTextField, StreamField
-from wagtail.images import get_image_model_string
-from wagtail.models import Orderable, Page
-from wagtail.search import index
-from wagtail.snippets.models import register_snippet
-
 from app.ciim.fields import RecordField
 from app.ciim.serializers import RecordSerializer
 from app.collections.models import TopicalPageMixin
@@ -41,6 +20,26 @@ from app.core.serializers import (
 )
 from app.core.utils import skos_id_from_text
 from app.people.models import AuthorPageMixin
+from django.conf import settings
+from django.db import models
+from django.utils.functional import cached_property
+from django.utils.translation import gettext_lazy as _
+from modelcluster.contrib.taggit import ClusterTaggableManager
+from modelcluster.fields import ParentalKey
+from rest_framework import serializers
+from taggit.models import ItemBase, TagBase
+from wagtail.admin.panels import (
+    FieldPanel,
+    InlinePanel,
+    MultiFieldPanel,
+    PageChooserPanel,
+)
+from wagtail.api import APIField
+from wagtail.fields import RichTextField, StreamField
+from wagtail.images import get_image_model_string
+from wagtail.models import Orderable, Page
+from wagtail.search import index
+from wagtail.snippets.models import register_snippet
 
 from .blocks import ArticlePageStreamBlock
 

@@ -1,7 +1,9 @@
 from urllib.parse import urljoin
 
+from app.api.urls import api_router
 from django.apps import apps
 from django.conf import settings
+from django.contrib import admin
 from django.http import HttpResponsePermanentRedirect
 from django.urls import include, path
 from django.utils.http import url_has_allowed_host_and_scheme
@@ -10,8 +12,6 @@ from wagtail import urls as wagtail_urls
 from wagtail.admin import urls as wagtailadmin_urls
 from wagtail.documents import urls as wagtaildocs_urls
 from wagtail.utils.urlpatterns import decorate_urlpatterns
-
-from app.api.urls import api_router
 
 
 def redirect_to_live_site(request):
@@ -39,6 +39,7 @@ if settings.DEBUG:
 private_urls = [
     path("healthcheck/", include("app.healthcheck.urls")),
     path("api/v2/", api_router.urls),
+    path("django-admin/", admin.site.urls),
     path("admin/", include(wagtailadmin_urls)),
     path("wagtail-documents/", include(wagtaildocs_urls)),
 ]

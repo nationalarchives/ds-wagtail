@@ -1,5 +1,5 @@
-ARG IMAGE=ghcr.io/nationalarchives/tna-python-django
-ARG IMAGE_TAG=latest
+ARG IMAGE=ghcr.io/nationalarchives/tna-python
+ARG IMAGE_TAG=1
 
 FROM "$IMAGE":"$IMAGE_TAG"
 
@@ -13,4 +13,10 @@ COPY --chown=app . .
 # Install dependencies
 RUN tna-build
 
-CMD ["tna-run", "config.wsgi:application"]
+# Collect static files
+RUN poetry run python /app/manage.py collectstatic --no-input --clear
+
+# Clean up build dependencies
+RUN tna-clean
+
+CMD ["tna-wsgi", "config.wsgi:application"]

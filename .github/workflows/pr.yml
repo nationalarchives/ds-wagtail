@@ -43,3 +43,10 @@ jobs:
         uses: ./.github/actions/python-tests
         with:
           codecov-token: ${{ secrets.CODECOV_TOKEN }}
+
+  check-formatting:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run tests
+        uses: ./.github/actions/check-formatting

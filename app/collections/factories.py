@@ -1,8 +1,7 @@
 import factory
-from wagtail_factories import ImageFactory
-
 from app.collections import models as app_models
 from app.core.factories import BasePageFactory
+from wagtail_factories import ImageFactory
 
 
 class ExplorerIndexPageFactory(BasePageFactory):

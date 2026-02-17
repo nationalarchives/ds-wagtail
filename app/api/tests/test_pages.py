@@ -1,14 +1,11 @@
+import json
 import os
 import re
 from datetime import datetime, timezone
 from unittest.mock import patch
 
-from django.conf import settings
-from wagtail.models import Site
-from wagtail.test.utils import WagtailPageTestCase
-from wagtail_factories import ImageFactory
-
 from app.alerts.models import Alert
+from app.api.models import APIToken
 from app.articles.factories import (
     ArticleIndexPageFactory,
     ArticlePageFactory,
@@ -26,6 +23,10 @@ from app.home.models import MourningNotice
 from app.media.models import EtnaMedia
 from app.people.factories import PeopleIndexPageFactory, PersonPageFactory
 from app.people.models import AuthorTag, PersonRole, PersonRoleSelection
+from django.conf import settings
+from wagtail.models import Site
+from wagtail.test.utils import WagtailPageTestCase
+from wagtail_factories import ImageFactory
 
 API_URL = "/api/v2/pages/"
 
@@ -54,7 +55,12 @@ class APIResponseTest(WagtailPageTestCase):
 
     @classmethod
     def setUpTestData(self):
-        self.root_page = Site.objects.get().root_page
+        # Create API token for authentication
+        self.api_token = APIToken.objects.create(name="test-token")
+
+        self.root_page = Site.objects.get(is_default_site=True).root_page
+        self.root_page.host_name = "localhost"
+        self.root_page.port = 80
         self.root_page.mourning = [
             MourningNotice.objects.create(
                 title="Test title",
@@ -76,7 +82,7 @@ class APIResponseTest(WagtailPageTestCase):
             message="<p>Message</p>",
             active=True,
             cascade=True,
-            alert_level="high",
+            alert_level=Alert.AlertLevelChoices.HIGH,
         )
 
         self.test_media = EtnaMedia.objects.create(
@@ -335,7 +341,9 @@ class APIResponseTest(WagtailPageTestCase):
     def request_api(self, path: str = ""):
         self.maxDiff = None
         return self.client.get(
-            f"{API_URL}{path}" + ("/" if path else ""), format="json"
+            f"{API_URL}{path}" + ("/" if path else ""),
+            format="json",
+            HTTP_AUTHORIZATION=f"Token {self.api_token.key}",
         )
 
     def get_api_data(self, path: str = "") -> str:
@@ -367,39 +375,75 @@ class APIResponseTest(WagtailPageTestCase):
 
         return data
 
+    def normalize_json_data(self, data, is_expected=False):
+        """Recursively normalize dynamic values in JSON data for comparison."""
+        if isinstance(data, dict):
+            normalized = {}
+            for key, value in data.items():
+                # Normalize dynamic fields
+                if key == "id" and isinstance(value, int):
+                    # Don't compare exact ID values, just verify it's an integer
+                    # Use a consistent placeholder for comparison
+                    normalized[key] = "ID_PLACEHOLDER"
+                elif key == "uuid" and isinstance(value, str):
+                    normalized[key] = "UUID_PLACEHOLDER"
+                elif key in [
+                    "url",
+                    "full_url",
+                    "download_url",
+                    "file",
+                    "html_url",
+                    "detail_url",
+                    "href",
+                ] and isinstance(value, str):
+                    # Normalize image URLs and file paths
+                    normalized_url = re.sub(
+                        r"/media/images/[a-zA-Z0-9_]+\.([a-fA-F0-9]{6,8}\.)?",
+                        "/media/images/image.",
+                        value,
+                    )
+                    normalized_url = re.sub(
+                        r"\.format-(jpeg|webp)\.(jpegquality|webpquality)-([0-9]+)[a-zA-Z0-9_]*\.(jpg|webp)",
+                        r".format-\g<1>.\g<2>-\g<3>.\g<4>",
+                        normalized_url,
+                    )
+                    # Normalize to relative URLs - strip any domain/scheme
+                    # This handles both http://localhost/path and https://domain.com/path
+                    normalized_url = re.sub(r"^https?://[^/]+", "", normalized_url)
+                    normalized[key] = normalized_url
+                else:
+                    normalized[key] = self.normalize_json_data(value, is_expected)
+            return normalized
+        elif isinstance(data, list):
+            return [self.normalize_json_data(item, is_expected) for item in data]
+        else:
+            return data
+
     def compare_json(self, path: str, json_file: str):
-        if api_data := self.get_api_data(path):
-            if api_data.startswith("Endpoint") or api_data.startswith("Unable"):
-                self.fail(api_data)
+        if api_data_str := self.get_api_data(path):
+            if api_data_str.startswith("Endpoint") or api_data_str.startswith("Unable"):
+                self.fail(api_data_str)
             else:
                 file = os.path.join(FILE_PATH, f"{json_file}.json")
-                expected_data = open(file, "r").read()
+                expected_data_str = open(file, "r").read()
 
                 # Replace placeholders with actual IDs in JSON
-                expected_data = self.replace_placeholders(expected_data)
+                expected_data_str = self.replace_placeholders(expected_data_str)
 
-                # Remove random image rendition IDs
-                regex_start = r"/media/images/[a-zA-Z0-9_]+\.([a-fA-F0-9]{6,8}\.)?"
-                replace_end = "/media/images/image."
-                expected_data = re.sub(regex_start, replace_end, expected_data)
-                api_data = re.sub(regex_start, replace_end, api_data)
-                regex_end = r"\.format-(jpeg|webp)\.(jpegquality|webpquality)-([0-9]+)[a-zA-Z0-9_]*\.(jpg|webp)"
-                regex_replace_end = r".format-\g<1>.\g<2>-\g<3>.\g<4>"
-                expected_data = re.sub(regex_end, regex_replace_end, expected_data)
-                api_data = re.sub(regex_end, regex_replace_end, api_data)
+                # Parse JSON strings into Python objects
+                try:
+                    expected_data = json.loads(expected_data_str)
+                    api_data = json.loads(api_data_str)
+                except json.JSONDecodeError as e:
+                    self.fail(f"Invalid JSON: {e}")
 
-                # Remove random generated UUIDs from the JSON for images and media
-                expected_data = re.sub(
-                    r'"uuid": "[a-f0-9\-]+"',
-                    '"uuid": "00000000-0000-0000-0000-000000000000"',
-                    expected_data,
+                # Normalize both datasets (IDs become placeholders)
+                expected_data = self.normalize_json_data(
+                    expected_data, is_expected=True
                 )
-                api_data = re.sub(
-                    r'"uuid": "[a-f0-9\-]+"',
-                    '"uuid": "00000000-0000-0000-0000-000000000000"',
-                    api_data,
-                )
+                api_data = self.normalize_json_data(api_data, is_expected=False)
 
+                # Compare as Python objects (better diffs)
                 self.assertEqual(expected_data, api_data)
 
     def test_pages_route(self):

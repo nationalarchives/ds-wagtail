@@ -1,3 +1,10 @@
+from app.alerts.models import AlertMixin
+from app.core.serializers import (
+    AliasOfSerializer,
+    ImageSerializer,
+    MourningSerializer,
+    RichTextSerializer,
+)
 from django.conf import settings
 
 # from django.core.exceptions import ValidationError
@@ -13,14 +20,6 @@ from wagtail.fields import RichTextField
 from wagtail.images import get_image_model_string
 from wagtail.models import Page
 from wagtail.search import index
-
-from app.alerts.models import AlertMixin
-from app.core.serializers import (
-    AliasOfSerializer,
-    ImageSerializer,
-    MourningSerializer,
-    RichTextSerializer,
-)
 
 from .mixins import CustomHeadlessPreviewMixin, SocialMixin
 
@@ -41,6 +40,38 @@ class BasePage(AlertMixin, SocialMixin, CustomHeadlessPreviewMixin, Page):
     An abstract base model that is used for all Page models within
     the project. Any common fields, Wagtail overrides or custom
     functionality can be added here.
+
+    Building Blocks for Flexible Composition:
+
+    Admin Panel Building Blocks:
+    - `_search_engine_panel`: Slug field panel
+    - `_short_title_panel`: Short title field panel
+    - `_teaser_panel`: Teaser text and image fields panel
+
+    API Meta Field Building Blocks:
+    - `_base_api_meta_fields`: Core meta fields (page_path, url, alias_of)
+    - `_teaser_api_meta_fields`: Teaser fields (teaser_text, teaser_image)
+
+    Child classes can compose custom promote_panels and api_meta_fields by
+    picking which building blocks to include. For example, to omit teaser_image:
+
+        class CustomPage(BasePage):
+            _custom_internal_panel = MultiFieldPanel([
+                FieldPanel("teaser_text"),
+                # Omit teaser_image
+            ], heading="Internal data")
+
+            promote_panels = [
+                BasePage._search_engine_panel,
+                BasePage._short_title_panel,
+                _custom_internal_panel,
+            ] + SocialMixin.promote_panels
+
+            api_meta_fields = (
+                BasePage._base_api_meta_fields
+                + [APIField("teaser_text")]  # Omit teaser_image
+                + SocialMixin._social_base_api_meta_fields
+            )
     """
 
     short_title = models.CharField(
@@ -72,27 +103,31 @@ class BasePage(AlertMixin, SocialMixin, CustomHeadlessPreviewMixin, Page):
 
     show_publish_date_in_search_results = False
 
-    promote_panels = [
-        MultiFieldPanel(
-            [
-                FieldPanel(
-                    "slug",
-                    help_text=_(
-                        "The name of the page as it will appear at the end of the URL"
-                    ),
-                    widget=SlugInput,
+    _search_engine_panel = MultiFieldPanel(
+        [
+            FieldPanel(
+                "slug",
+                help_text=_(
+                    "The name of the page as it will appear at the end of the URL"
                 ),
-            ],
-            _("For search engines"),
-        ),
-        FieldPanel("short_title"),
-        MultiFieldPanel(
-            [
-                FieldPanel("teaser_text"),
-                FieldPanel("teaser_image"),
-            ],
-            heading="Internal data",
-        ),
+                widget=SlugInput,
+            ),
+        ],
+        _("For search engines"),
+    )
+    _short_title_panel = FieldPanel("short_title")
+    _teaser_panel = MultiFieldPanel(
+        [
+            FieldPanel("teaser_text"),
+            FieldPanel("teaser_image"),
+        ],
+        heading="Internal data",
+    )
+
+    promote_panels = [
+        _search_engine_panel,
+        _short_title_panel,
+        _teaser_panel,
     ] + SocialMixin.promote_panels
 
     settings_panels = Page.settings_panels + AlertMixin.settings_panels
@@ -207,16 +242,23 @@ class BasePage(AlertMixin, SocialMixin, CustomHeadlessPreviewMixin, Page):
         ]
     )
 
-    api_meta_fields = [
+    _base_api_meta_fields = [
         APIField("page_path"),
         APIField("url"),
+        APIField("alias_of", serializer=AliasOfSerializer()),
+    ]
+
+    _teaser_api_meta_fields = [
         APIField("teaser_text"),
         APIField(
             "teaser_image",
             serializer=ImageSerializer("fill-600x400"),
         ),
-        APIField("alias_of", serializer=AliasOfSerializer()),
-    ] + SocialMixin.api_meta_fields
+    ]
+
+    api_meta_fields = (
+        _base_api_meta_fields + _teaser_api_meta_fields + SocialMixin.api_meta_fields
+    )
 
 
 class BasePageWithIntro(BasePage):

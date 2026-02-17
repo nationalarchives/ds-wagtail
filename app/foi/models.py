@@ -1,3 +1,4 @@
+from app.core.models import BasePage, BasePageWithRequiredIntro
 from django.db import models
 from django.utils.functional import cached_property
 from django.utils.text import slugify
@@ -6,8 +7,6 @@ from wagtail.api import APIField
 from wagtail.coreutils import find_available_slug
 from wagtail.fields import StreamField
 from wagtail.search import index
-
-from app.core.models import BasePage, BasePageWithRequiredIntro
 
 from .blocks import AnnexeStreamBlock, RequestStreamBlock, ResponseStreamBlock
 
@@ -145,5 +144,9 @@ class FoiRequestPage(BasePage):
                 self.teaser_text = new_teaser_text
             else:
                 self.teaser_text = f'{new_teaser_text[:teaser_text_max_length - 4]}..."'
+
+        if self.date:
+            # Change the date to the first of the month
+            self.date = self.date.replace(day=1)
 
         return super().save(*args, **kwargs)

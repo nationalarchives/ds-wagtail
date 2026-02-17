@@ -1,24 +1,7 @@
 from django.conf import settings
-from django.templatetags.static import static
-from django.utils.html import format_html
 from wagtail import hooks
 
 from .models.partner_logos import partner_logo_chooserviewset, partner_logo_modelviewset
-
-
-@hooks.register("insert_global_admin_css")
-def editor_css():
-    return format_html(
-        '<link rel="stylesheet" href="{}">', static("css/wagtail-overrides.css")
-    )
-
-
-@hooks.register("insert_editor_js")
-def editor_js():
-    return format_html(
-        '<script src="{}"></script>',
-        static("admin/js/inputLengthIndicators.js"),
-    )
 
 
 @hooks.register("insert_global_admin_css")
@@ -28,6 +11,10 @@ def global_admin_css():
         .sidebar-menu-item__link:focus,
         .sidebar-menu-item__link:hover {
             text-shadow: none;
+        }
+        /* Until https://github.com/labd/wagtail-2fa/pull/254 is merged and released */
+        .field-content > img {
+            background: #fff;
         }
     """
     if settings.ENVIRONMENT_NAME == "production":
@@ -51,7 +38,7 @@ def global_admin_css():
             --w-color-surface-menu-item-active: #00492c;
         }"""
         return f"<style>{static} {environment_colours}</style>"
-    return ""
+    return f"<style>{static}</style>"
 
 
 @hooks.register("register_icons")

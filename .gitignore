@@ -23,11 +23,6 @@ __pycache__
 # Node
 /node_modules/
 
-# coverage.py
-.coverage
-
-/coverage/
-
 # built docs
 /site/
 
@@ -38,4 +33,7 @@ config/settings/local.py
 .npm
 .nvm
 
-coverage.xml
+# dumped data from AWS
+dumps
+
+docker-compose.override.yml

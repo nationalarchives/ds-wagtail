@@ -1,5 +1,12 @@
 from datetime import timedelta
 
+from app.core.serializers import (
+    DateTimeSerializer,
+    DetailedImageSerializer,
+    ImageSerializer,
+    RichTextSerializer,
+)
+from app.core.styling import BrandColourChoices, HeroColourChoices, HeroLayoutChoices
 from django.db import models
 from django.http import HttpRequest
 from django.utils import timezone
@@ -15,14 +22,6 @@ from wagtail_headless_preview.models import (
     HeadlessPreviewMixin,
     get_client_root_url_from_site,
 )
-
-from app.core.serializers import (
-    DateTimeSerializer,
-    DetailedImageSerializer,
-    ImageSerializer,
-    RichTextSerializer,
-)
-from app.core.styling import BrandColourChoices, HeroColourChoices, HeroLayoutChoices
 
 from .forms import RequiredHeroImagePageForm
 
@@ -253,7 +252,23 @@ class SidebarMixin(models.Model):
 
 
 class SocialMixin(models.Model):
-    """Mixin to add social media sharing options to a Page."""
+    """
+    Mixin to add social media sharing options to a Page.
+
+    API Field Building Blocks:
+    For flexible composition of api_meta_fields in child classes:
+
+    - `_teaser_image_square_api_field`: Square crop of teaser_image (requires teaser_image field)
+    - `_social_base_api_meta_fields`: SEO and social fields (works without teaser_image)
+
+    Child classes can include teaser_image_square or omit it:
+
+        # Include teaser_image_square (default)
+        api_meta_fields = SocialMixin.api_meta_fields
+
+        # Omit teaser_image_square (for pages without teaser_image)
+        api_meta_fields = SocialMixin._social_base_api_meta_fields
+    """
 
     search_image = models.ForeignKey(
         get_image_model_string(),
@@ -322,11 +337,13 @@ class SocialMixin(models.Model):
         ),
     ]
 
-    api_meta_fields = [
-        APIField(
-            "teaser_image_square",
-            serializer=ImageSerializer("fill-512x512", source="teaser_image"),
-        ),
+    # API field building blocks for flexible composition
+    _teaser_image_square_api_field = APIField(
+        "teaser_image_square",
+        serializer=ImageSerializer("fill-512x512", source="teaser_image"),
+    )
+
+    _social_base_api_meta_fields = [
         APIField("seo_title"),
         APIField("search_description"),
         APIField(
@@ -341,13 +358,15 @@ class SocialMixin(models.Model):
         ),
     ]
 
+    api_meta_fields = [_teaser_image_square_api_field] + _social_base_api_meta_fields
+
 
 class CustomHeadlessPreviewMixin(HeadlessPreviewMixin):
     def get_client_root_url(self, request: HttpRequest) -> str:
         """
-        Finds the root URL of the page's site to allow that site's frontend to render the page preview.
-        If the page's site cannot be found, it falls back to the default site defined in settings.
+        Uses the WAGTAIL_HEADLESS_PREVIEW settings to determine the preview URL.
+        Falls back to the site from the request if the page has no specific site.
+        This respects the WAGTAIL_HEADLESS_PREVIEW_URL environment variable.
         """
-        if site := self.get_site():
-            return site.root_url + "/preview/"
-        return get_client_root_url_from_site(Site.find_for_request(request))
+        site = self.get_site() or Site.find_for_request(request)
+        return get_client_root_url_from_site(site)

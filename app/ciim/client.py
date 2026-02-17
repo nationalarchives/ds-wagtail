@@ -1,10 +1,9 @@
 import logging
 
+from app.core.json_api_client import JSONAPIClient
 from django.conf import settings
 from django.core.cache import cache
 from sentry_sdk import capture_message
-
-from app.core.json_api_client import JSONAPIClient
 
 logger = logging.getLogger(__name__)
 

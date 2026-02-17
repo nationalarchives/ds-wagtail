@@ -1,3 +1,6 @@
+from app.core.models import (
+    BasePageWithRequiredIntro,
+)
 from django.db import models
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
@@ -7,17 +10,14 @@ from wagtail.admin.panels import (
     PageChooserPanel,
 )
 from wagtail.api import APIField
-
-from app.core.models import (
-    BasePageWithRequiredIntro,
-)
+from wagtail.models import Orderable
 
 from ..serializers import (
     WhatsOnPageSelectionSerializer,
 )
 
 
-class WhatsOnPageSelection(models.Model):
+class WhatsOnPageSelection(Orderable):
     """
     This model is used to select a page to display on the What's On page.
     """
@@ -50,6 +50,7 @@ class WhatsOnPageSelection(models.Model):
 
     class Meta:
         verbose_name = _("selection")
+        ordering = ["sort_order"]
 
 
 class WhatsOnPage(BasePageWithRequiredIntro):

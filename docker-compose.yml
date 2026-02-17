@@ -3,27 +3,24 @@ services:
     build:
       context: .
       args:
-        IMAGE: ghcr.io/nationalarchives/tna-python-django-root
-        IMAGE_TAG: 0
-    volumes:
-      - ./:/app
-      - media:/media
+        IMAGE: ghcr.io/nationalarchives/tna-python-dev
+        IMAGE_TAG: latest
     depends_on:
       - db
       - redis
     ports:
       - 8000:8080
     environment:
-      - RUNTIME=develop
       - ENVIRONMENT_NAME=local
       - DJANGO_SETTINGS_MODULE=config.settings.develop
       - SECRET_KEY=abc123
-      - ALLOWED_HOSTS=localhost,host.docker.internal
+      - ALLOWED_HOSTS=localhost,host.docker.internal,wagtail.localhost
       - DEBUG=True
       - DATABASE_HOST=db
       - DATABASE_NAME=postgres
       - DATABASE_USER=postgres
       - DATABASE_PASSWORD=postgres
+      - WAGTAILAPI_AUTHENTICATION
       - DJANGO_SUPERUSER_PASSWORD=admin
       - DJANGO_SUPERUSER_USERNAME=admin
       - DJANGO_SUPERUSER_EMAIL=admin@tna.dev
@@ -31,44 +28,27 @@ services:
       - WAGTAILAPI_BASE_URL=http://host.docker.internal:8000
       - WAGTAILAPI_IMAGES_BASE_URL=https://localhost
       - WAGTAILAPI_MEDIA_BASE_URL=https://localhost
-      - WAGTAIL_HEADLESS_PREVIEW_URL=https://localhost/preview/
       - REDIS_URL=redis://redis:6379/0
-    env_file:
-      - path: .env
-        required: false
-      
+      - WAGTAIL_2FA_REQUIRED=False
+      - EMAIL_HOST
+      - EMAIL_HOST_USER
+      - EMAIL_HOST_PASSWORD
+    volumes:
+      - ./:/app
+      - media:/media
+    healthcheck:
+      start_period: 10s
+      start_interval: 2s
 
   db:
     image: postgres:16.0
     environment:
       - POSTGRES_PASSWORD=postgres
+    volumes:
+      - pgdata:/var/lib/postgresql/data
 
   redis:
     image: redis:latest
-
-  adminer:
-    image: adminer
-    restart: always
-    ports:
-      - 8002:8080
-
-  dev:
-    image: ghcr.io/nationalarchives/tna-python-dev:preview
-    environment:
-      - DJANGO_SETTINGS_MODULE=config.settings.test
-      - DATABASE_HOST=db
-      - DATABASE_NAME=test
-      - DATABASE_USER=postgres
-      - DATABASE_PASSWORD=postgres
-      - POSTGRES_DB=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-    volumes:
-      - ./:/app
-      - ./dev:/home/app/.local/bin/tasks
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - media:/media
-      - ~/.aws:/home/app/.aws
 
   docs:
     image: squidfunk/mkdocs-material
@@ -79,3 +59,4 @@ services:
 
 volumes:
   media:
+  pgdata:
