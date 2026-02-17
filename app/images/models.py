@@ -10,8 +10,6 @@ from wagtail.fields import RichTextField
 from wagtail.images.models import AbstractImage, AbstractRendition, Image
 from wagtail.search import index
 
-from app.core.serializers import RichTextSerializer
-
 
 class TranscriptionHeadingChoices(models.TextChoices):
     TRANSCRIPT = "transcript", _("Transcript")
