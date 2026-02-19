@@ -2,6 +2,8 @@ from app.api.filters import AuthorFilter, PublishedDateFilter
 from app.api.urls.pages import CustomPagesAPIViewSet
 from app.blog.models import BlogPostPage
 from app.core.serializers.pages import DefaultPageSerializer
+from django.db.models import Count
+from django.db.models.functions import ExtractMonth, ExtractYear
 from django.urls import path
 from rest_framework.response import Response
 
@@ -25,33 +27,26 @@ class BlogPostsAPIViewSet(CustomPagesAPIViewSet):
         queryset = self.get_queryset().public()
         self.check_query_parameters(queryset)
         queryset = self.filter_queryset(queryset).public()
-        years = set(queryset.values_list("published_date__year", flat=True))
-        years_count = [
-            {
-                "year": year,
-                "months": [
-                    {
-                        "month": month,
-                        "posts": queryset.filter(
-                            **{
-                                "published_date__year": year,
-                                "published_date__month": month,
-                            }
-                        ).count(),
-                    }
-                    for month in sorted(
-                        set(
-                            queryset.filter(
-                                **{"published_date__year": year}
-                            ).values_list("published_date__month", flat=True)
-                        )
-                    )
-                ],
-                "posts": queryset.filter(**{"published_date__year": year}).count(),
-            }
-            for year in sorted(years)
-        ]
-        return Response(years_count)
+
+        # Add computed fields/aggregates
+        monthly_counts = (
+            queryset.annotate(
+                year=ExtractYear("published_date"),
+                month=ExtractMonth("published_date"),
+            )
+            .values("year", "month")
+            .annotate(posts=Count("id"))  # Only count how many posts there are once
+            .order_by("year", "month")
+        )
+
+        years_dict = {}
+        for row in monthly_counts:
+            year, month, count = row["year"], row["month"], row["posts"]
+            acc = years_dict.setdefault(year, {"year": year, "months": [], "posts": 0})
+            acc["months"].append({"month": month, "posts": count})
+            acc["posts"] += count
+
+        return Response(list(years_dict.values()))
 
     def author_view(self, request):
         queryset = self.get_queryset().public()
