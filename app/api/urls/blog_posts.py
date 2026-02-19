@@ -47,7 +47,6 @@ class BlogPostsAPIViewSet(CustomPagesAPIViewSet):
             map["months"].append({"month": month, "posts": count})
             map["posts"] += count
 
-
         return Response(list(years_map.values()))
 
     def author_view(self, request):
