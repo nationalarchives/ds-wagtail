@@ -1,5 +1,8 @@
 from app.core.blocks.links import LinkBlock
-from app.ukgwa.serializers import ArchiveSearchComponentSerializer
+from app.ukgwa.serializers import (
+    ArchiveSearchComponentSerializer,
+    BookmarkletCTASerializer,
+)
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel
@@ -51,6 +54,31 @@ class FeaturedLinksMixin(models.Model):
                 heading="Featured links",
             )
         ]
+
+
+class BookmarkletMixin(models.Model):
+    """
+    Add optional bookmarklet to a page.
+
+    Allows editors to associate a reusable bookmarklet snippet with the page.
+    """
+
+    bookmarklet_cta = models.ForeignKey(
+        "BookmarkletCTASnippet",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        help_text=_("Select a bookmarklet CTA snippet to display on this page"),
+    )
+
+    api_fields = [
+        APIField("bookmarklet_cta", serializer=BookmarkletCTASerializer()),
+    ]
+
+    settings_panels = [FieldPanel("bookmarklet_cta")]
+
+    class Meta:
+        abstract = True
 
 
 class SearchMixin(models.Model):
