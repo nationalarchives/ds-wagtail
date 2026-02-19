@@ -39,14 +39,14 @@ class BlogPostsAPIViewSet(CustomPagesAPIViewSet):
             .order_by("year", "month")
         )
 
-        years_map = {}
+        years_dict = {}
         for row in monthly_counts:
             year, month, count = row["year"], row["month"], row["posts"]
-            acc = years_map.setdefault(year, {"year": year, "months": [], "posts": 0})
+            acc = years_dict.setdefault(year, {"year": year, "months": [], "posts": 0})
             acc["months"].append({"month": month, "posts": count})
             acc["posts"] += count
 
-        return Response(list(years_map.values()))
+        return Response(list(years_dict.values()))
 
     def author_view(self, request):
         queryset = self.get_queryset().public()
