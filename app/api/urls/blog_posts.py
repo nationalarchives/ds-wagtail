@@ -43,9 +43,9 @@ class BlogPostsAPIViewSet(CustomPagesAPIViewSet):
         years_map = {}
         for row in monthly_counts:
             year, month, count = row["year"], row["month"], row["posts"]
-            map = years_map.setdefault(year, {"year": year, "months": [], "posts": 0})
-            map["months"].append({"month": month, "posts": count})
-            map["posts"] += count
+            acc = years_map.setdefault(year, {"year": year, "months": [], "posts": 0})
+            acc["months"].append({"month": month, "posts": count})
+            acc["posts"] += count
 
         return Response(list(years_map.values()))
 
