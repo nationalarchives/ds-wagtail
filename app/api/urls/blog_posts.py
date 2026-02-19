@@ -24,10 +24,9 @@ class BlogPostsAPIViewSet(CustomPagesAPIViewSet):
     model = BlogPostPage
 
     def count_view(self, request):
-        # Build base queryset once excluding null fields
         queryset = self.get_queryset().public()
         self.check_query_parameters(queryset)
-        queryset = self.filter_queryset(queryset).public().exclude(published_date__isnull=True)
+        queryset = self.filter_queryset(queryset).public()
 
         # Add computed fields/aggregates
         monthly_counts = (
@@ -48,13 +47,8 @@ class BlogPostsAPIViewSet(CustomPagesAPIViewSet):
             map["months"].append({"month": month, "posts": count})
             map["posts"] += count
 
-        years_count = []
-        for year in sorted(years_map.keys()):
-            map = years_map[year]
-            map["months"] = sorted(map["months"], key=lambda mm: mm["month"])
-            years_count.append(map)
 
-        return Response(years_count)
+        return Response(list(years_map.values()))
 
     def author_view(self, request):
         queryset = self.get_queryset().public()
