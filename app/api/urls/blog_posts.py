@@ -3,7 +3,7 @@ from app.api.urls.pages import CustomPagesAPIViewSet
 from app.blog.models import BlogPostPage
 from app.core.serializers.pages import DefaultPageSerializer
 from django.db.models import Count
-from django.db.models.functions import ExtractYear, ExtractMonth
+from django.db.models.functions import ExtractMonth, ExtractYear
 from django.urls import path
 from rest_framework.response import Response
 
@@ -30,13 +30,12 @@ class BlogPostsAPIViewSet(CustomPagesAPIViewSet):
 
         # Add computed fields/aggregates
         monthly_counts = (
-            queryset
-            .annotate(
+            queryset.annotate(
                 year=ExtractYear("published_date"),
                 month=ExtractMonth("published_date"),
             )
             .values("year", "month")
-            .annotate(posts=Count("id")) # Only count how many posts there are once
+            .annotate(posts=Count("id"))  # Only count how many posts there are once
             .order_by("year", "month")
         )
 
