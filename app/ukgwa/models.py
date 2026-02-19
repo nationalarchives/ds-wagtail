@@ -4,12 +4,22 @@ from app.core.models import BasePageWithRequiredIntro, HeroImageMixin
 from app.core.models.basepage import BasePage
 from app.core.models.mixins import SocialMixin
 from app.ukgwa.blocks import InformationPageStreamBlock
-from app.ukgwa.mixins import FeaturedLinksMixin, SearchMixin, SidebarNavigationMixin
+from app.ukgwa.mixins import (
+    BookmarkletMixin,
+    FeaturedLinksMixin,
+    SearchMixin,
+    SidebarNavigationMixin,
+)
 from app.ukgwa.serializers import SubpagesSerializer
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from modelcluster.fields import ParentalKey
-from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
+from wagtail.admin.panels import (
+    FieldPanel,
+    InlinePanel,
+    MultiFieldPanel,
+    PageChooserPanel,
+)
 from wagtail.api import APIField
 from wagtail.fields import StreamField
 from wagtail.models import Page
@@ -176,7 +186,12 @@ class SectionIndexPage(SearchMixin, UKGWABasePage):
     settings_panels = UKGWABasePage.settings_panels + SearchMixin.settings_panels
 
 
-class InformationPage(FeaturedLinksMixin, SidebarNavigationMixin, UKGWABasePage):
+class InformationPage(
+    BookmarkletMixin,
+    FeaturedLinksMixin,
+    SidebarNavigationMixin,
+    UKGWABasePage,
+):
 
     parent_page_types = ["ukgwa.SectionIndexPage", "ukgwa.ListingPage"]
     subpage_types = []
@@ -191,6 +206,7 @@ class InformationPage(FeaturedLinksMixin, SidebarNavigationMixin, UKGWABasePage)
         UKGWABasePage.api_fields
         + FeaturedLinksMixin.api_fields
         + SidebarNavigationMixin.api_fields
+        + BookmarkletMixin.api_fields
         + [
             APIField("body"),
         ]
@@ -279,6 +295,63 @@ class ArchiveSearchComponent(models.Model):
         verbose_name_plural = _("Archive Search Components")
 
 
-class ListingPage(UKGWABasePage):
+class ListingPage(BookmarkletMixin, UKGWABasePage):
     parent_page_types = ["ukgwa.SectionIndexPage"]
     subpage_types = ["ukgwa.InformationPage"]
+
+    api_fields = UKGWABasePage.api_fields + BookmarkletMixin.api_fields
+
+    settings_panels = UKGWABasePage.settings_panels + BookmarkletMixin.settings_panels
+
+
+@register_snippet
+class BookmarkletCTASnippet(models.Model):
+    """
+    Add optional bookmarklet to a page.
+
+    Allows editors to associate a reusable bookmarklet snippet with the page.
+    """
+
+    name = models.CharField(
+        verbose_name=_("name"),
+        max_length=255,
+        help_text=_(
+            "Internal name to identify this bookmarklet snippet (not shown to users)"
+        ),
+    )
+    heading = models.CharField(
+        verbose_name=_("heading"),
+        max_length=255,
+        help_text=_("The heading text displayed at the top of the component"),
+    )
+    body = models.TextField(
+        verbose_name=_("body"),
+        help_text=_("Description text displayed below the heading"),
+    )
+    button_text = models.CharField(
+        verbose_name=_("button text"),
+        max_length=50,
+        default="Check UKGWA",
+        help_text=_("The text displayed on the CTA button"),
+    )
+    button_link = models.ForeignKey(
+        "wagtailcore.Page",
+        on_delete=models.PROTECT,
+        related_name="+",
+        help_text=_("The internal page the button will take users to"),
+    )
+
+    panels = [
+        FieldPanel("name"),  # Wagtail use only
+        FieldPanel("heading"),
+        FieldPanel("body"),
+        FieldPanel("button_text"),
+        PageChooserPanel("button_link", "ukgwa.InformationPage"),
+    ]
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = _("Bookmarklet CTA")
+        verbose_name_plural = _("Bookmarklet CTA")
