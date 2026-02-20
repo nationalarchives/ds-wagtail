@@ -223,6 +223,31 @@ class InformationPage(
     )
 
 
+class AToZArchivePage(UKGWABasePage, FeaturedLinksMixin):
+    """
+    Index page for A-to-Z content.
+
+    The archival content for this page type is produced by the frontend application.
+
+    This page type allows control of position in the page tree, and of fields inherited
+    from the base page class.
+    """
+
+    parent_page_types = ["ukgwa.UKGWAHomePage"]
+    subpage_types = []
+
+    max_count = 1
+
+    api_fields = UKGWABasePage.api_fields + FeaturedLinksMixin.api_fields
+
+    content_panels = (
+        UKGWABasePage.content_panels + FeaturedLinksMixin.get_featured_links_panels()
+    )
+
+    class Meta:
+        verbose_name = "A-Z Archive Page"
+
+
 @register_snippet
 class ArchiveSearchComponent(models.Model):
     """
