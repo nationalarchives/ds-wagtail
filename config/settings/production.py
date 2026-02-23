@@ -299,6 +299,25 @@ WAGTAILIMAGES_IMAGE_MODEL = "images.CustomImage"
 # CIIM API Client
 ROSETTA_API_URL = os.getenv("ROSETTA_API_URL")
 
+WAGTAILADMIN_RICH_TEXT_EDITORS = {
+
+
+    'default': {
+
+        'WIDGET': 'wagtail.admin.rich_text.DraftailRichTextArea',
+
+        'OPTIONS': {
+
+            'placeholder': "",
+
+            'features': ['bold', 'italic', 'link', 'sentences']
+
+        },
+
+    },
+
+}
+
 # Rich Text Features
 # https://docs.wagtail.io/en/stable/advanced_topics/customisation/page_editing_interface.html#limiting-features-in-a-rich-text-field
 INLINE_RICH_TEXT_FEATURES = [
