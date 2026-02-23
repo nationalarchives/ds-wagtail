@@ -268,11 +268,12 @@ class PersonPage(BasePage):
         Returns a list of role tags for the person.
         This is used to display the roles on the person's card.
         """
-        return [
+        role_tags = [
             {"slug": role.role.slug, "name": role.role.name}
             for role in self.roles.all()
             if role.role.display_on_card
         ]
+        return sorted(role_tags, key=lambda tag: tag["name"])
 
 
 class AuthorTag(models.Model):
