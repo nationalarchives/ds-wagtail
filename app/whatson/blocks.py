@@ -2,6 +2,7 @@ from app.core.blocks import (
     ContactBlock,
     InsetTextBlock,
     ParagraphBlock,
+    PartnerLogoListBlock,
     QuoteBlock,
     SubHeadingBlock,
 )
@@ -19,6 +20,7 @@ class SectionContentBlock(blocks.StreamBlock):
     contact = ContactBlock()
     inset_text = InsetTextBlock()
     paragraph = ParagraphBlock()
+    partner_logos = PartnerLogoListBlock()
     sub_heading = SubHeadingBlock()
 
 
