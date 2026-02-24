@@ -6,6 +6,9 @@ Use the `manage_api_token` management command to create, refresh, or delete API 
 # Create a new token
 manage manage_api_token my-service-name
 
+# Show an existing token
+manage manage_api_token my-service-name --show
+
 # Refresh an existing token (or create it if it does not exist)
 manage manage_api_token my-service-name --refresh
 
