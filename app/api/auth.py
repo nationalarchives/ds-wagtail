@@ -4,6 +4,15 @@ from rest_framework import exceptions
 from rest_framework.authentication import BaseAuthentication, TokenAuthentication
 
 
+class DummyUser:
+    """
+    A dummy user class to represent token-authenticated requests that are not associated with a specific user account.
+    This allows us to use DRF's authentication framework without requiring a user model for token authentication.
+    """
+
+    is_authenticated = True
+
+
 class CustomTokenAuthentication(TokenAuthentication):
     model = APIToken
 
@@ -17,8 +26,8 @@ class CustomTokenAuthentication(TokenAuthentication):
         if not token.active:
             raise exceptions.PermissionDenied(_("Token inactive or deleted."))
 
-        # Return None here in place of the user object, as we're not assigning tokens to user accounts
-        return (None, token)
+        # Return a DummyUser instance in place of the user object, as we're not assigning tokens to user accounts
+        return (DummyUser(), token)
 
 
 class UserAuthentication(BaseAuthentication):
