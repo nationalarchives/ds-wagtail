@@ -186,6 +186,11 @@ class BasePage(AlertMixin, SocialMixin, CustomHeadlessPreviewMixin, Page):
             return
 
         return url_parts[2]
+    
+    # Override private_page_options to allow only password-protected pages, as other 
+    # types of restriction are not compatible with the API and would require additional 
+    # handling to work properly.
+    private_page_options = ["password"]
 
     @property
     def full_url(self):
