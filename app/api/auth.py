@@ -39,7 +39,7 @@ class UserAuthentication(BaseAuthentication):
     def authenticate(self, request):
         # Check if the user is authenticated and is a staff member (i.e. has access to the Wagtail admin)
         user = getattr(getattr(request, "_request", None), "user", None)
-        if not user or not user.is_staff:
+        if not user or not user.is_authenticated:
             return None
 
         return (user, None)
