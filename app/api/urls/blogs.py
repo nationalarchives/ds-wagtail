@@ -14,7 +14,6 @@ class BlogsAPIViewSet(CustomPagesAPIViewSet):
         restricted_pages = [
             restriction.page
             for restriction in PageViewRestriction.objects.all().select_related("page")
-            if not restriction.accept_request(self.request)
         ]
         for restricted_page in restricted_pages:
             queryset = queryset.not_descendant_of(restricted_page, inclusive=True)
