@@ -4,16 +4,19 @@ Use the `manage_api_token` management command to create, refresh, or delete API 
 
 ```sh
 # Create a new token
-manage manage_api_token my-service-name
+poetry run python manage.py manage_api_token my-service-name
 
 # Show an existing token
-manage manage_api_token my-service-name --show
+poetry run python manage.py manage_api_token my-service-name --show
 
 # Refresh an existing token (or create it if it does not exist)
-manage manage_api_token my-service-name --refresh
+poetry run python manage.py manage_api_token my-service-name --refresh
 
 # Delete a token
-manage manage_api_token my-service-name --delete
+poetry run python manage.py manage_api_token my-service-name --delete
+
+# List existing tokens
+poetry run python manage.py manage_api_token my-service-name --list
 ```
 
 ## Notes

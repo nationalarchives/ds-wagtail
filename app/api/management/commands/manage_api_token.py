@@ -27,6 +27,11 @@ class Command(BaseCommand):
             action="store_true",
             help="Print the token key for the given identifier without modifying it (for existing tokens only)",
         )
+        parser.add_argument(
+            "--list",
+            action="store_true",
+            help="List all API tokens without modifying them (ignores identifier and other flags)",
+        )
 
     def _create_token(self, identifier, quiet=False):
         existing_token = APIToken.objects.filter(name=identifier).first()
@@ -74,8 +79,18 @@ class Command(BaseCommand):
         if not quiet:
             self.stdout.write(self.style.SUCCESS(f"Deleted API token for {identifier}"))
 
+    def _list_tokens(self):
+        tokens = APIToken.objects.all()
+        if tokens:
+            self.stdout.write(self.style.SUCCESS("API tokens:"))
+            for token in tokens:
+                self.stdout.write(f"- {token.name}")
+        else:
+            self.stdout.write("No API tokens found.")
+
     def handle(self, *args, **options):
         identifier = options["identifier"]
+        list = options["list"]
         delete = options["delete"]
         refresh = options["refresh"]
         show = options["show"]
@@ -84,7 +99,9 @@ class Command(BaseCommand):
         if not identifier:
             raise CommandError("Identifier (token name) is required")
 
-        if delete:
+        if list:
+            self._list_tokens()
+        elif delete:
             self._delete_token(identifier, quiet)
         elif refresh:
             self._refresh_token(identifier, quiet)
