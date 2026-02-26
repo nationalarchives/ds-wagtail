@@ -3,10 +3,12 @@ from django.core.management.base import BaseCommand, CommandError
 
 
 class Command(BaseCommand):
-    help = "Create or delete API tokens"
+    help = "Manage API tokens"
 
     def add_arguments(self, parser):
-        parser.add_argument("identifier", type=str, help="Name of the token")
+        parser.add_argument(
+            "identifier", type=str, default="", help="Name of the token"
+        )
         parser.add_argument(
             "--delete",
             action="store_true",
@@ -26,11 +28,6 @@ class Command(BaseCommand):
             "--show",
             action="store_true",
             help="Print the token key for the given identifier without modifying it (for existing tokens only)",
-        )
-        parser.add_argument(
-            "--list",
-            action="store_true",
-            help="List all API tokens without modifying them (ignores identifier and other flags)",
         )
 
     def _create_token(self, identifier, quiet=False):
@@ -79,31 +76,17 @@ class Command(BaseCommand):
         if not quiet:
             self.stdout.write(self.style.SUCCESS(f"Deleted API token for {identifier}"))
 
-    def _list_tokens(self):
-        tokens = APIToken.objects.all()
-        if tokens:
-            self.stdout.write(self.style.SUCCESS("API tokens:"))
-            for token in tokens:
-                self.stdout.write(f"- {token.name}")
-        else:
-            self.stdout.write("No API tokens found.")
-
     def handle(self, *args, **options):
         identifier = options["identifier"]
-        list = options["list"]
         delete = options["delete"]
         refresh = options["refresh"]
         show = options["show"]
         quiet = options["quiet"]
 
-        if list:
-            self._list_tokens()
-            return
-
         if not identifier:
             raise CommandError("Identifier (token name) is required")
 
-        elif delete:
+        if delete:
             self._delete_token(identifier, quiet)
         elif refresh:
             self._refresh_token(identifier, quiet)

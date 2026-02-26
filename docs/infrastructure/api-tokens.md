@@ -1,6 +1,6 @@
 # API tokens
 
-Use the `manage_api_token` management command to create, refresh, or delete API tokens used by the API auth flow.
+Use the `manage_api_token` and `list_api_tokens` management commands to create, refresh, or delete API tokens used by the API auth flow.
 
 ```sh
 # Create a new token
@@ -16,7 +16,7 @@ poetry run python manage.py manage_api_token my-service-name --refresh
 poetry run python manage.py manage_api_token my-service-name --delete
 
 # List existing tokens
-poetry run python manage.py manage_api_token my-service-name --list
+poetry run python manage.py list_api_tokens
 ```
 
 ## Notes
