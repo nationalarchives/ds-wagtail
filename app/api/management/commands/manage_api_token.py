@@ -3,10 +3,12 @@ from django.core.management.base import BaseCommand, CommandError
 
 
 class Command(BaseCommand):
-    help = "Create or delete API tokens"
+    help = "Manage API tokens"
 
     def add_arguments(self, parser):
-        parser.add_argument("identifier", type=str, help="Name of the token")
+        parser.add_argument(
+            "identifier", type=str, default="", help="Name of the token"
+        )
         parser.add_argument(
             "--delete",
             action="store_true",

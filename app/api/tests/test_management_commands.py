@@ -268,3 +268,43 @@ class ManageAPITokenCommandDeleteTests(TestCase):
             self.assertEqual(
                 cm.exception, CommandError("No API token found for nonexistent")
             )
+
+
+class ManageAPITokenCommandListTests(TestCase):
+    def test_list_tokens_no_tokens(self):
+        """Test listing tokens when none exist."""
+        out = StringIO()
+        call_command("list_api_tokens", stdout=out)
+
+        output = out.getvalue()
+        self.assertIn("No API tokens found.", output)
+
+    def test_list_tokens(self):
+        """Test listing existing tokens."""
+        APIToken.objects.create(name="service-1")
+        APIToken.objects.create(name="service-2")
+        APIToken.objects.create(name="service-3")
+
+        out = StringIO()
+        call_command("list_api_tokens", stdout=out)
+
+        output = out.getvalue()
+        self.assertIn("API tokens:", output)
+        self.assertIn("- service-1", output)
+        self.assertIn("- service-2", output)
+        self.assertIn("- service-3", output)
+
+    def test_list_tokens_quiet(self):
+        """Test listing existing tokens without human-readable output."""
+        APIToken.objects.create(name="service-1")
+        APIToken.objects.create(name="service-2")
+        APIToken.objects.create(name="service-3")
+
+        out = StringIO()
+        call_command("list_api_tokens", "--quiet", stdout=out)
+
+        output = out.getvalue()
+        self.assertNotIn("API tokens:", output)
+        self.assertIn("- service-1", output)
+        self.assertIn("- service-2", output)
+        self.assertIn("- service-3", output)
