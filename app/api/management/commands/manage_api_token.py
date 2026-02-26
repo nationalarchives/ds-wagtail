@@ -96,11 +96,13 @@ class Command(BaseCommand):
         show = options["show"]
         quiet = options["quiet"]
 
+        if list:
+            self._list_tokens()
+            return
+
         if not identifier:
             raise CommandError("Identifier (token name) is required")
 
-        if list:
-            self._list_tokens()
         elif delete:
             self._delete_token(identifier, quiet)
         elif refresh:
