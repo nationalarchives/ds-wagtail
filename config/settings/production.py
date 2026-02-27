@@ -300,22 +300,13 @@ WAGTAILIMAGES_IMAGE_MODEL = "images.CustomImage"
 ROSETTA_API_URL = os.getenv("ROSETTA_API_URL")
 
 WAGTAILADMIN_RICH_TEXT_EDITORS = {
-
-
-    'default': {
-
-        'WIDGET': 'wagtail.admin.rich_text.DraftailRichTextArea',
-
-        'OPTIONS': {
-
-            'placeholder': "",
-
-            'features': ['bold', 'italic', 'link', 'sentences']
-
+    "default": {
+        "WIDGET": "app.core.widgets.rich_text.CustomDraftailRichTextArea",
+        "OPTIONS": {
+            "placeholder": "",
+            "features": ["bold", "italic", "link", "sentences"],
         },
-
     },
-
 }
 
 # Rich Text Features
