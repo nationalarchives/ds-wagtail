@@ -65,7 +65,6 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
         restricted_pages = [
             restriction.page
             for restriction in PageViewRestriction.objects.all().select_related("page")
-            if not restriction.accept_request(self.request)
         ]
 
         # Exclude the restricted pages and their descendants from the queryset
