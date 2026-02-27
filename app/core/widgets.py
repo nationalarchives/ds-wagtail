@@ -1,5 +1,6 @@
 from wagtail.admin.rich_text.editors.draftail import DraftailRichTextArea
 
+
 class CustomDraftailRichTextArea(DraftailRichTextArea):
     """
     Custom Draftail Rich Text Area to remove placeholder text from RichTextFields/widgets.
