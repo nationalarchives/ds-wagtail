@@ -304,7 +304,6 @@ WAGTAILADMIN_RICH_TEXT_EDITORS = {
         "WIDGET": "app.core.widgets.rich_text.CustomDraftailRichTextArea",
         "OPTIONS": {
             "placeholder": "",
-            "features": ["bold", "italic", "link", "sentences"],
         },
     },
 }
