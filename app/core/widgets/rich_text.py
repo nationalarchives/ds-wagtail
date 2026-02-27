@@ -3,7 +3,10 @@ from wagtail.admin.rich_text.editors.draftail import DraftailRichTextArea
 
 class CustomDraftailRichTextArea(DraftailRichTextArea):
     """
-    Custom Draftail Rich Text Area to remove placeholder text from RichTextFields/widgets.
+    Project-specific subclass of Wagtail's DraftailRichTextArea.
+
+    Extend or override methods here for custom behaviour (JS init, features,
+    or value cleaning). Kept minimal to avoid breaking imports.
     """
 
     def __init__(self, *args, **kwargs):
