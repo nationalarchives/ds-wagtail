@@ -82,6 +82,65 @@ class ManageAPITokenCommandCreateTests(TestCase):
         self.assertIn("service-3", names)
 
 
+class ManageAPITokenCommandShowTests(TestCase):
+    def test_show_token_no_name(self):
+        """Test showing a new API token with no identifier."""
+        out = StringIO()
+        with self.assertRaises(CommandError) as cm:
+            call_command("manage_api_token", "--show", stdout=out)
+            self.assertEqual(
+                cm.exception, CommandError("Identifier (token name) is required")
+            )
+        self.assertEqual(APIToken.objects.count(), 0)
+
+    def test_show_token(self):
+        """Test showing an existing API token."""
+        token = APIToken.objects.create(name="test-service")
+        out = StringIO()
+        call_command("manage_api_token", "test-service", "--show", stdout=out)
+
+        self.assertEqual(APIToken.objects.count(), 1)
+        self.assertIsNotNone(token)
+        if token is not None:
+            self.assertIsNotNone(token.key)
+            self.assertTrue(len(token.key) > 0)
+            self.assertEqual(token.name, "test-service")
+            self.assertTrue(token.active)
+
+            output = out.getvalue()
+            self.assertIn("API token for test-service", output)
+            self.assertIn(token.key, output)
+
+    def test_show_token_quiet(self):
+        """Test showing an existing API token without human-readable output."""
+        token = APIToken.objects.create(name="test-service")
+        out = StringIO()
+        call_command(
+            "manage_api_token", "test-service", "--show", "--quiet", stdout=out
+        )
+
+        self.assertEqual(APIToken.objects.count(), 1)
+        self.assertIsNotNone(token)
+        if token is not None:
+            self.assertIsNotNone(token)
+            self.assertEqual(token.name, "test-service")
+            self.assertTrue(token.active)
+
+            output = out.getvalue()
+            self.assertNotIn("API token for test-service", output)
+            self.assertIn(token.key, output)
+
+    def test_show_nonexistent_token_raises_exception(self):
+        """Test showing a non-existent token shows error."""
+        out = StringIO()
+
+        with self.assertRaises(CommandError) as cm:
+            call_command("manage_api_token", "nonexistent", "--show", stdout=out)
+            self.assertEqual(
+                cm.exception, CommandError("No API token found for nonexistent")
+            )
+
+
 class ManageAPITokenCommandRefreshTests(TestCase):
     def test_refresh_token_no_name(self):
         """Test creating a new API token with no identifier."""
@@ -209,3 +268,43 @@ class ManageAPITokenCommandDeleteTests(TestCase):
             self.assertEqual(
                 cm.exception, CommandError("No API token found for nonexistent")
             )
+
+
+class ManageAPITokenCommandListTests(TestCase):
+    def test_list_tokens_no_tokens(self):
+        """Test listing tokens when none exist."""
+        out = StringIO()
+        call_command("list_api_tokens", stdout=out)
+
+        output = out.getvalue()
+        self.assertIn("No API tokens found.", output)
+
+    def test_list_tokens(self):
+        """Test listing existing tokens."""
+        APIToken.objects.create(name="service-1")
+        APIToken.objects.create(name="service-2")
+        APIToken.objects.create(name="service-3")
+
+        out = StringIO()
+        call_command("list_api_tokens", stdout=out)
+
+        output = out.getvalue()
+        self.assertIn("API tokens:", output)
+        self.assertIn("- service-1", output)
+        self.assertIn("- service-2", output)
+        self.assertIn("- service-3", output)
+
+    def test_list_tokens_quiet(self):
+        """Test listing existing tokens without human-readable output."""
+        APIToken.objects.create(name="service-1")
+        APIToken.objects.create(name="service-2")
+        APIToken.objects.create(name="service-3")
+
+        out = StringIO()
+        call_command("list_api_tokens", "--quiet", stdout=out)
+
+        output = out.getvalue()
+        self.assertNotIn("API tokens:", output)
+        self.assertIn("- service-1", output)
+        self.assertIn("- service-2", output)
+        self.assertIn("- service-3", output)

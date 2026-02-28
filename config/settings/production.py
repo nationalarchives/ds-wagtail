@@ -383,6 +383,6 @@ WAGTAILAPI_LIMIT_MAX = int(os.getenv("WAGTAILAPI_LIMIT_MAX", "0")) or None
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
-        "app.api.auth.CustomTokenAuthentication",
+        "app.api.auth.TokenOrUserAuthentication",
     ],
 }

@@ -3,10 +3,12 @@ from django.core.management.base import BaseCommand, CommandError
 
 
 class Command(BaseCommand):
-    help = "Create or delete API tokens"
+    help = "Manage API tokens"
 
     def add_arguments(self, parser):
-        parser.add_argument("identifier", type=str, help="Name of the token")
+        parser.add_argument(
+            "identifier", type=str, default="", help="Name of the token"
+        )
         parser.add_argument(
             "--delete",
             action="store_true",
@@ -22,12 +24,17 @@ class Command(BaseCommand):
             action="store_true",
             help="Don't print human-readable output, just the token key (for create/refresh)",
         )
+        parser.add_argument(
+            "--show",
+            action="store_true",
+            help="Print the token key for the given identifier without modifying it (for existing tokens only)",
+        )
 
     def _create_token(self, identifier, quiet=False):
         existing_token = APIToken.objects.filter(name=identifier).first()
         if existing_token:
             raise CommandError(
-                f"API token already exists for {identifier}, use --refresh to regenerate"
+                f"API token already exists for {identifier}, use --show to see it or --refresh to regenerate"
             )
 
         token = APIToken.objects.create(name=identifier)
@@ -52,6 +59,15 @@ class Command(BaseCommand):
                 )
         self.stdout.write(str(token.key))
 
+    def _show_token(self, identifier, quiet=False):
+        token = APIToken.objects.filter(name=identifier).first()
+        if token:
+            if not quiet:
+                self.stdout.write(self.style.SUCCESS(f"API token for {identifier}"))
+            self.stdout.write(str(token.key))
+        else:
+            raise CommandError(f"No API token found for {identifier}")
+
     def _delete_token(self, identifier, quiet=False):
         token = APIToken.objects.filter(name=identifier).first()
         if not token:
@@ -64,6 +80,7 @@ class Command(BaseCommand):
         identifier = options["identifier"]
         delete = options["delete"]
         refresh = options["refresh"]
+        show = options["show"]
         quiet = options["quiet"]
 
         if not identifier:
@@ -73,5 +90,7 @@ class Command(BaseCommand):
             self._delete_token(identifier, quiet)
         elif refresh:
             self._refresh_token(identifier, quiet)
+        elif show:
+            self._show_token(identifier, quiet)
         else:
             self._create_token(identifier, quiet)

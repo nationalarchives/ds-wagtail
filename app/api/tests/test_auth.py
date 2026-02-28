@@ -1,4 +1,4 @@
-from app.api.auth import CustomTokenAuthentication
+from app.api.auth import CustomTokenAuthentication, DummyUser
 from app.api.models import APIToken
 from django.test import RequestFactory, TestCase
 from rest_framework import exceptions
@@ -22,7 +22,7 @@ class CustomTokenAuthenticationTests(TestCase):
 
         self.assertIsNotNone(result)
         user, token = result
-        self.assertIsNone(user)
+        self.assertIsInstance(user, DummyUser)
         self.assertEqual(token, self.active_token)
 
     def test_authenticate_with_no_token(self):
@@ -82,11 +82,11 @@ class CustomTokenAuthenticationTests(TestCase):
 
         self.assertIn("inactive or deleted", str(context.exception))
 
-    def test_authenticate_credentials_returns_none_user(self):
-        """Test authenticate_credentials returns None for user."""
+    def test_authenticate_credentials_returns_dummy_user(self):
+        """Test authenticate_credentials returns DummyUser for user."""
         user, token = self.auth.authenticate_credentials(str(self.active_token.key))
 
-        self.assertIsNone(user)
+        self.assertIsInstance(user, DummyUser)
         self.assertEqual(token, self.active_token)
 
     def test_get_model_returns_api_token(self):
