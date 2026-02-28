@@ -302,9 +302,6 @@ ROSETTA_API_URL = os.getenv("ROSETTA_API_URL")
 WAGTAILADMIN_RICH_TEXT_EDITORS = {
     "default": {
         "WIDGET": "app.core.widgets.rich_text.CustomDraftailRichTextArea",
-        "OPTIONS": {
-            "placeholder": "",
-        },
     },
 }
 
