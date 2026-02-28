@@ -5,8 +5,8 @@ class CustomDraftailRichTextArea(DraftailRichTextArea):
     """
     Project-specific subclass of Wagtail's DraftailRichTextArea.
 
-    Extend or override methods here for custom behaviour (JS init, features,
-    or value cleaning). Kept minimal to avoid breaking imports.
+    Extend or override methods here for custom behaviour.
+    Kept minimal to avoid breaking imports.
     """
 
     def __init__(self, *args, **kwargs):
