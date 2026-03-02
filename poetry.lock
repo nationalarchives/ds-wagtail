@@ -354,14 +354,14 @@ taggit = ["django-taggit (>=3.1)"]
 
 [[package]]
 name = "django-otp"
-version = "1.6.1"
+version = "1.7.0"
 description = "A pluggable framework for adding two-factor authentication to Django using one-time passwords."
 optional = false
-python-versions = ">=3.7"
+python-versions = ">=3.8"
 groups = ["main"]
 files = [
-    {file = "django_otp-1.6.1-py3-none-any.whl", hash = "sha256:a632e126c9e6ffc5f961a1e0c2452ee0d7ed589073141a729f33915957177916"},
-    {file = "django_otp-1.6.1.tar.gz", hash = "sha256:68dafa008921fd418382492d81b717636d8cc1364e24e8f9222b72264adf3c5d"},
+    {file = "django_otp-1.7.0-py3-none-any.whl", hash = "sha256:406d2d7f797dc313569270e06d6c360c7d986c9f653eab80b190d663ed5f1133"},
+    {file = "django_otp-1.7.0.tar.gz", hash = "sha256:961ccf2d80a67303cb46d97427b16c476ee075acfa2b4c82a59d8f1e0745a454"},
 ]
 
 [package.dependencies]
@@ -1211,14 +1211,14 @@ crt = ["botocore[crt] (>=1.37.4,<2.0a0)"]
 
 [[package]]
 name = "sentry-sdk"
-version = "2.53.0"
+version = "2.54.0"
 description = "Python client for Sentry (https://sentry.io)"
 optional = false
 python-versions = ">=3.6"
 groups = ["main"]
 files = [
-    {file = "sentry_sdk-2.53.0-py2.py3-none-any.whl", hash = "sha256:46e1ed8d84355ae54406c924f6b290c3d61f4048625989a723fd622aab838899"},
-    {file = "sentry_sdk-2.53.0.tar.gz", hash = "sha256:6520ef2c4acd823f28efc55e43eb6ce2e6d9f954a95a3aa96b6fd14871e92b77"},
+    {file = "sentry_sdk-2.54.0-py2.py3-none-any.whl", hash = "sha256:fd74e0e281dcda63afff095d23ebcd6e97006102cdc8e78a29f19ecdf796a0de"},
+    {file = "sentry_sdk-2.54.0.tar.gz", hash = "sha256:2620c2575128d009b11b20f7feb81e4e4e8ae08ec1d36cbc845705060b45cc1b"},
 ]
 
 [package.dependencies]
@@ -1408,26 +1408,26 @@ testing = ["Jinja2 (>=3.0,<3.2)", "azure-mgmt-cdn (>=12.0,<13.0)", "azure-mgmt-f
 
 [[package]]
 name = "wagtail-2fa"
-version = "1.7.1"
+version = "1.8.0"
 description = "Two factor authentication for Wagtail"
 optional = false
-python-versions = ">=3.8"
+python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "wagtail-2fa-1.7.1.tar.gz", hash = "sha256:cbffe7c0fe939428e3aa41ca356d152a1e108cb6afc910102ec390d7a0255711"},
-    {file = "wagtail_2fa-1.7.1-py3-none-any.whl", hash = "sha256:98f8d2f1815420933b674745768b56f57579d8a0ee3e2ea1b077e89adeae36c2"},
+    {file = "wagtail_2fa-1.8.0-py3-none-any.whl", hash = "sha256:cfd3d2678c53f16f3af4b0f7587c1fd0508488cbf70bc0176151bcf2369a093f"},
+    {file = "wagtail_2fa-1.8.0.tar.gz", hash = "sha256:cd38f66a4d0ea6d63f3fa3d963ab24095f12f55c12340eab92df06a2339ce3a6"},
 ]
 
 [package.dependencies]
-Django = ">=3.2"
-django-otp = ">=0.8.1"
+Django = ">=5.2"
+django-otp = ">=1.7.0"
 qrcode = ">=6.1"
 six = ">=1.14.0"
-Wagtail = ">=4.1"
+Wagtail = ">=7.0"
 
 [package.extras]
-docs = ["sphinx (>=1.4.1)", "sphinx-rtd-theme (>=0.4.3)"]
-test = ["coverage (==5.5)", "flake8 (==3.9.2)", "flake8-blind-except (==0.2.0)", "flake8-debugger (==4.0.0)", "isort (==5.9.3)", "pytest (==6.2.4)", "pytest-cov (==2.12.1)", "pytest-django (==4.4.0)"]
+docs = ["sphinx (>=1.4.1)", "sphinx_rtd_theme (>=0.4.3)"]
+test = ["coverage (==5.5)", "flake8 (>=3.9.2)", "flake8-blind-except (>=0.2.0)", "flake8-debugger (>=4.0.0)", "isort (>=5.12.0)", "pytest (>=7.2.2)", "pytest-cov (>=2.12.1)", "pytest-django (>=4.4.0)"]
 
 [[package]]
 name = "wagtail-factories"
@@ -1544,4 +1544,4 @@ wand = ["Wand (>=0.6,<1.0)"]
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.14"
-content-hash = "c18d56269c74fa2e37c6c591bbd34852d62594a302c12432e8d0ab66409eb0ce"
+content-hash = "82bc3e59722f979daf7a7e7eeecbe336937df594c81eec3bd1137ae36b31efba"
