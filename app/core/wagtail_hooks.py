@@ -1,7 +1,40 @@
 from django.conf import settings
+from django.utils.translation import gettext_lazy as _
 from wagtail import hooks
+from wagtail.models import PAGE_PERMISSION_CODENAMES, PAGE_PERMISSION_TYPES
 
 from .models.partner_logos import partner_logo_chooserviewset, partner_logo_modelviewset
+
+# see /wagtail/models/pages.py
+PAGE_PERMISSION_TYPES.extend(
+    [
+        ("can_delete_pages", _("Delete"), _("Delete this page")),
+        ("can_unpublish_pages", _("Unpublish"), _("Unpublish this page")),
+    ]
+)
+PAGE_PERMISSION_CODENAMES.extend(["can_delete_pages", "can_unpublish_pages"])
+
+try:
+    from django.contrib.auth.models import Permission
+    from wagtail.users import forms as wagtail_users_forms
+
+    additional_permissions = ["can_delete_pages", "can_unpublish_pages"]
+    permissions_queryset = (
+        Permission.objects.filter(
+            content_type__app_label="wagtailcore",
+            content_type__model="page",
+            codename__in=list(PAGE_PERMISSION_CODENAMES) + additional_permissions,
+        )
+        .select_related("content_type")
+        .order_by("codename")
+    )
+
+    wagtail_users_forms.PagePermissionsForm.base_fields["permissions"].queryset = (
+        permissions_queryset
+    )
+except Exception:
+    # safe fallback for migrations
+    pass
 
 
 @hooks.register("insert_global_admin_css")

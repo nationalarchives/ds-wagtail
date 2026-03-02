@@ -266,6 +266,19 @@ class BasePage(AlertMixin, SocialMixin, CustomHeadlessPreviewMixin, Page):
     )
 
 
+def can_delete(self, user):
+    if not user.has_perm("wagtailcore.can_delete_pages"):
+        return False
+    return super().can_delete(user)
+
+
+def can_unpublish(self, user):
+    if not user.has_perm("wagtailcore.can_unpublish_pages"):
+        return False
+    # Fall back to Wagtail's default checks
+    return super().can_unpublish(user)
+
+
 class BasePageWithIntro(BasePage):
     """
     An abstract base model for more long-form content pages that
