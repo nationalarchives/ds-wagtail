@@ -132,8 +132,11 @@ class UKGWAHomePage(HeroImageMixin, SearchMixin, UKGWABasePage):
     """
 
     parent_page_types = ["wagtailcore.Page"]
-    subpage_types = ["ukgwa.SectionIndexPage", "ukgwa.InformationPage"]
-
+    subpage_types = [
+        "ukgwa.SectionIndexPage",
+        "ukgwa.InformationPage",
+        "ukgwa.AToZArchivePage",
+    ]
 
     content_panels = (
         UKGWABasePage.content_panels
@@ -188,6 +191,23 @@ class SectionIndexPage(SearchMixin, UKGWABasePage):
     settings_panels = UKGWABasePage.settings_panels + SearchMixin.settings_panels
 
 
+class ListingPage(BookmarkletMixin, SidebarNavigationMixin, UKGWABasePage):
+    parent_page_types = ["ukgwa.SectionIndexPage"]
+    subpage_types = ["ukgwa.InformationPage"]
+
+    api_fields = (
+        UKGWABasePage.api_fields
+        + SidebarNavigationMixin.api_fields
+        + BookmarkletMixin.api_fields
+    )
+
+    settings_panels = (
+        UKGWABasePage.settings_panels
+        + SidebarNavigationMixin.settings_panels
+        + BookmarkletMixin.settings_panels
+    )
+
+
 class InformationPage(
     BookmarkletMixin,
     FeaturedLinksMixin,
@@ -195,7 +215,11 @@ class InformationPage(
     UKGWABasePage,
 ):
 
-    parent_page_types = ["ukgwa.SectionIndexPage", "ukgwa.ListingPage"]
+    parent_page_types = [
+        "ukgwa.UKGWAHomePage",
+        "ukgwa.SectionIndexPage",
+        "ukgwa.ListingPage",
+    ]
     subpage_types = []
 
     body = StreamField(InformationPageStreamBlock, blank=True, null=True)
@@ -221,7 +245,9 @@ class InformationPage(
         + FeaturedLinksMixin.get_featured_links_panels()
     )
     settings_panels = (
-        UKGWABasePage.settings_panels + SidebarNavigationMixin.settings_panels
+        UKGWABasePage.settings_panels
+        + SidebarNavigationMixin.settings_panels
+        + BookmarkletMixin.settings_panels
     )
 
 
@@ -320,15 +346,6 @@ class ArchiveSearchComponent(models.Model):
     class Meta:
         verbose_name = _("Archive Search Component")
         verbose_name_plural = _("Archive Search Components")
-
-
-class ListingPage(BookmarkletMixin, UKGWABasePage):
-    parent_page_types = ["ukgwa.SectionIndexPage"]
-    subpage_types = ["ukgwa.InformationPage"]
-
-    api_fields = UKGWABasePage.api_fields + BookmarkletMixin.api_fields
-
-    settings_panels = UKGWABasePage.settings_panels + BookmarkletMixin.settings_panels
 
 
 @register_snippet
