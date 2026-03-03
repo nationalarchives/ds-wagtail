@@ -18,6 +18,8 @@ from .util import strtobool
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR = os.path.dirname(PROJECT_DIR)
 
+ENVIRONMENT_NAME = os.getenv("ENVIRONMENT_NAME", "production")
+
 WAGTAILADMIN_BASE_URL = os.getenv("WAGTAILADMIN_BASE_URL", "")
 WAGTAILAPI_IMAGES_BASE_URL = os.getenv("WAGTAILAPI_IMAGES_BASE_URL", "")
 WAGTAILAPI_MEDIA_BASE_URL = os.getenv("WAGTAILAPI_MEDIA_BASE_URL", "")
@@ -37,8 +39,6 @@ SECRET_KEY = os.getenv("SECRET_KEY", "")
 
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-
 SITE_ID = 1
 
 # Application definition
@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "app.generic_pages",
     "app.alerts",
     "app.articles",
+    "app.api",
     "app.blog",
     "app.people",
     "app.cookies",
@@ -96,6 +97,9 @@ INSTALLED_APPS = [
     "wagtail.contrib.frontend_cache",
     "rest_framework",
     "wagtail_headless_preview",
+    "wagtail_2fa",
+    "django_otp",
+    "django_otp.plugins.otp_totp",
 ]
 
 MIDDLEWARE = [
@@ -104,10 +108,11 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
+    "wagtail_2fa.middleware.VerifyUserMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django.middleware.security.SecurityMiddleware",
-    "whitenoise.middleware.WhiteNoiseMiddleware",
     "wagtail.contrib.redirects.middleware.RedirectMiddleware",
 ]
 
@@ -143,6 +148,11 @@ AUTHENTICATION_BACKENDS = [
     "allauth.account.auth_backends.AuthenticationBackend",
 ]
 
+WAGTAIL_2FA_REQUIRED = strtobool(os.getenv("WAGTAIL_2FA_REQUIRED", "True"))
+WAGTAIL_2FA_OTP_TOTP_NAME = (
+    f"National Archives Wagtail ({ENVIRONMENT_NAME.capitalize()})"
+)
+
 # django-allauth configuration
 ACCOUNT_LOGIN_METHODS = {"email"}
 ACCOUNT_SIGNUP_FIELDS = ["email*", "password1*", "password2*"]
@@ -169,7 +179,6 @@ LOGGING = {
 }
 
 SENTRY_DSN = os.getenv("SENTRY_DSN", "")
-ENVIRONMENT_NAME = os.getenv("ENVIRONMENT_NAME", "production")
 SENTRY_SAMPLE_RATE = float(os.getenv("SENTRY_SAMPLE_RATE", "0.1"))
 
 # Generated in the CI/CD process
@@ -310,6 +319,27 @@ EXPANDED_RICH_TEXT_FEATURES = RESTRICTED_RICH_TEXT_FEATURES + [
 BIRDBATH_REQUIRED = False
 BIRDBATH_PROCESSORS = ["app.users.anonymisation.UserAnonymiser"]
 
+
+# -----------------------------------------------------------------------------
+# Email
+# -----------------------------------------------------------------------------
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+# WAGTAIL_EMAIL_MANAGEMENT_ENABLED = False  # Disable the ability for users to change their email address
+# WAGTAILADMIN_NOTIFICATION_USE_HTML = True
+WAGTAILADMIN_NOTIFICATION_INCLUDE_SUPERUSERS = False
+DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "wagtail@nationalarchives.gov.uk")
+EMAIL_HOST = os.getenv("EMAIL_HOST", None)
+EMAIL_PORT = os.getenv("EMAIL_PORT", 587)
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER", None)
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD", None)
+EMAIL_USE_TLS = strtobool(os.getenv("EMAIL_USE_TLS", "True"))
+# EMAIL_USE_SSL = strtobool(os.getenv("EMAIL_USE_SSL", "False"))
+# EMAIL_SSL_KEYFILE = os.getenv("EMAIL_SSL_KEYFILE", None)
+# EMAIL_SSL_CERTFILE = os.getenv("EMAIL_SSL_CERTFILE", None)
+# EMAIL_TIMEOUT = os.getenv("EMAIL_TIMEOUT", None)
+EMAIL_SUBJECT_PREFIX = f"[The National Archives Wagtail ({ENVIRONMENT_NAME})] "
+
+
 # -----------------------------------------------------------------------------
 # Cache settings
 # -----------------------------------------------------------------------------
@@ -342,4 +372,11 @@ WAGTAILFRONTENDCACHE = {
     },
 }
 
+WAGTAILAPI_AUTHENTICATION = strtobool(os.getenv("WAGTAILAPI_AUTHENTICATION", "True"))
 WAGTAILAPI_LIMIT_MAX = int(os.getenv("WAGTAILAPI_LIMIT_MAX", "0")) or None
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "app.api.auth.TokenOrUserAuthentication",
+    ],
+}

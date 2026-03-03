@@ -17,3 +17,15 @@ class ArchiveSearchComponentSerializer(serializers.Serializer):
                 "archive_type": instance.archive_type,
             }
         return None
+
+
+class BookmarkletCTASerializer(serializers.Serializer):
+    def to_representation(self, instance):
+        if instance:
+            return {
+                "heading": instance.heading,
+                "body": instance.body,
+                "button_text": instance.button_text,
+                "button_link": instance.button_link.full_url,
+            }
+        return None

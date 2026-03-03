@@ -34,7 +34,7 @@ def global_admin_css():
             --w-color-surface-menu-item-active: #00492c;
         }"""
         return f"<style>{static} {environment_colours}</style>"
-    return ""
+    return f"<style>{static}</style>"
 
 
 @hooks.register("register_icons")

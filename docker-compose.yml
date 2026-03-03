@@ -4,7 +4,7 @@ services:
       context: .
       args:
         IMAGE: ghcr.io/nationalarchives/tna-python-dev
-        IMAGE_TAG: latest
+        IMAGE_TAG: preview
     depends_on:
       - db
       - redis
@@ -20,6 +20,7 @@ services:
       - DATABASE_NAME=postgres
       - DATABASE_USER=postgres
       - DATABASE_PASSWORD=postgres
+      - WAGTAILAPI_AUTHENTICATION
       - DJANGO_SUPERUSER_PASSWORD=admin
       - DJANGO_SUPERUSER_USERNAME=admin
       - DJANGO_SUPERUSER_EMAIL=admin@tna.dev
@@ -28,6 +29,10 @@ services:
       - WAGTAILAPI_IMAGES_BASE_URL=https://localhost
       - WAGTAILAPI_MEDIA_BASE_URL=https://localhost
       - REDIS_URL=redis://redis:6379/0
+      - WAGTAIL_2FA_REQUIRED=False
+      - EMAIL_HOST
+      - EMAIL_HOST_USER
+      - EMAIL_HOST_PASSWORD
     volumes:
       - ./:/app
       - media:/media

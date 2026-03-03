@@ -20,7 +20,7 @@ def get_site_from_request(request):
     if "site" in request.GET:
         # Optionally allow querying by port
         if ":" in request.GET["site"]:
-            (hostname, port) = request.GET["site"].split(":", 1)
+            hostname, port = request.GET["site"].split(":", 1)
             query = {
                 "hostname": hostname,
                 "port": port,

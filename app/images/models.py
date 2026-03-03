@@ -7,12 +7,8 @@ from django.utils.translation import gettext_lazy as _
 from modelcluster.models import ClusterableModel
 from wagtail.api import APIField
 from wagtail.fields import RichTextField
-from wagtail.images.models import AbstractImage, AbstractRendition
+from wagtail.images.models import AbstractImage, AbstractRendition, Image
 from wagtail.search import index
-
-DEFAULT_SENSITIVE_IMAGE_WARNING = (
-    "This image contains content which some people may find offensive or distressing."
-)
 
 
 class TranscriptionHeadingChoices(models.TextChoices):
@@ -114,29 +110,13 @@ class CustomImage(ClusterableModel, AbstractImage):
         APIField("translation", serializer=RichTextSerializer()),
     ]
 
-    @property
-    def sensitive_image_warning(self):
-        return (
-            self.custom_sensitive_image_warning.strip()
-            or DEFAULT_SENSITIVE_IMAGE_WARNING
-        )
-
-    admin_form_fields = [
-        "title",
-        "file",
-        "description",
-        "collection",
+    admin_form_fields = Image.admin_form_fields + (
         "copyright",
-        "tags",
-        "focal_point_x",
-        "focal_point_y",
-        "focal_point_width",
-        "focal_point_height",
         "transcription_heading",
         "transcription",
         "translation_heading",
         "translation",
-    ]
+    )
 
 
 class CustomImageRendition(AbstractRendition):
@@ -147,15 +127,9 @@ class CustomImageRendition(AbstractRendition):
     @property
     def full_url(self):
         url = self.url
-        if url.startswith("/"):
-            if (
-                hasattr(settings, "WAGTAILAPI_IMAGES_BASE_URL")
-                and settings.WAGTAILAPI_IMAGES_BASE_URL
-            ):
-                url = settings.WAGTAILAPI_IMAGES_BASE_URL + url
-            elif hasattr(settings, "WAGTAILADMIN_BASE_URL"):
-                url = settings.WAGTAILADMIN_BASE_URL + url
-        return url
+        if hasattr(settings, "WAGTAILAPI_IMAGES_BASE_URL") and url.startswith("/"):
+            return settings.WAGTAILAPI_IMAGES_BASE_URL + url
+        return super().full_url()
 
     class Meta:
         unique_together = (("image", "filter_spec", "focal_point_key"),)

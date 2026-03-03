@@ -1,5 +1,6 @@
 import logging
 
+from app.api.permissions import IsAPITokenAuthenticated
 from app.core.serializers.pages import DefaultPageSerializer
 from django.conf import settings
 from django.db.models import Q
@@ -28,6 +29,9 @@ logger = logging.getLogger(__name__)
 
 
 class CustomPagesAPIViewSet(PagesAPIViewSet):
+    if settings.WAGTAILAPI_AUTHENTICATION:
+        permission_classes = (IsAPITokenAuthenticated,)
+
     known_query_parameters = PagesAPIViewSet.known_query_parameters.union(
         ["password", "author", "include_aliases", "descendant_of_path"]
     )
@@ -61,7 +65,6 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
         restricted_pages = [
             restriction.page
             for restriction in PageViewRestriction.objects.all().select_related("page")
-            if not restriction.accept_request(self.request)
         ]
 
         # Exclude the restricted pages and their descendants from the queryset
@@ -142,7 +145,7 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
         if "site" in request.GET:
             # Optionally allow querying by port
             if ":" in request.GET["site"]:
-                (hostname, port) = request.GET["site"].split(":", 1)
+                hostname, port = request.GET["site"].split(":", 1)
                 query = {
                     "hostname": hostname,
                     "port": port,
@@ -191,7 +194,7 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
     def find_object(self, queryset, request):  # noqa: C901
         if "site" in request.GET:
             if ":" in request.GET["site"]:
-                (hostname, port) = request.GET["site"].split(":", 1)
+                hostname, port = request.GET["site"].split(":", 1)
                 query = {
                     "hostname": hostname,
                     "port": port,
