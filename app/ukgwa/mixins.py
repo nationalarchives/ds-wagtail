@@ -3,6 +3,7 @@ from app.ukgwa.serializers import (
     ArchiveSearchComponentSerializer,
     BookmarkletCTASerializer,
 )
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel
@@ -12,7 +13,9 @@ from wagtail.fields import StreamField
 
 class FeaturedLinksMixin(models.Model):
     """
-    Add a single featured links section to a page.
+    Add an optional featured links section to a page.
+
+    Either all fields must be populated (heading + exactly 3 links) or none.
 
     For pages requiring multiple featured links sections (like UKGWAHomePage which needs
     2), use the FeaturedLinksSection class with an InlinePanel instead.
@@ -21,16 +24,18 @@ class FeaturedLinksMixin(models.Model):
     featured_links_heading = models.CharField(
         verbose_name=_("featured links heading text"),
         max_length=100,
+        blank=True,
         help_text="A short heading for the featured links section",
     )
     featured_links = StreamField(
         [("link", LinkBlock())],
         verbose_name=_("featured links"),
-        min_num=3,
+        blank=True,
         max_num=3,
         use_json_field=True,
         help_text=_(
-            "Contains exactly three links. Each link can be to an internal page or an external URL."
+            "Exactly three links, or leave empty to hide this section. "
+            "Each link can be to an internal page or an external URL."
         ),
     )
 
@@ -41,6 +46,24 @@ class FeaturedLinksMixin(models.Model):
 
     class Meta:
         abstract = True
+
+    def clean(self):
+        super().clean()
+        has_heading = bool(self.featured_links_heading)
+        has_links = bool(self.featured_links)
+        errors = {}
+        if has_links and not has_heading:
+            errors["featured_links_heading"] = _(
+                "A heading is required when featured links are added."
+            )
+        if has_heading and not has_links:
+            errors["featured_links"] = _(
+                "Links are required when a heading is provided."
+            )
+        if has_links and len(self.featured_links) < 3:
+            errors["featured_links"] = _("Please add exactly 3 links.")
+        if errors:
+            raise ValidationError(errors)
 
     @staticmethod
     def get_featured_links_panels():
