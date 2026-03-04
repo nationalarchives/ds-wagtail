@@ -136,7 +136,10 @@ class SidebarNavigationMixin(models.Model):
 
     show_sidebar_navigation = models.BooleanField(
         default=True,
-        help_text="Show a navigation sidebar of sibling pages within this section",
+        help_text=_(
+            "Show a navigation sidebar of sibling pages within this section. "
+            "Only applies to direct children of a section index."
+        ),
     )
 
     @property
