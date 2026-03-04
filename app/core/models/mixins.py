@@ -22,6 +22,7 @@ from wagtail_headless_preview.models import (
     HeadlessPreviewMixin,
     get_client_root_url_from_site,
 )
+from django.conf import settings
 
 from .forms import RequiredHeroImagePageForm
 
@@ -63,18 +64,16 @@ class ContentWarningMixin(models.Model):
 class PublishedDateMixin(models.Model):
     """Mixin to add a published date to a Page."""
 
-    new_label_display_for_days = 21
-
     published_date = models.DateTimeField(
         verbose_name="Published date",
         help_text="The date the page was published to the public.",
         default=timezone.now,
     )
 
-    @cached_property
+    @property
     def is_newly_published(self):
         expiry_date = timezone.now().date() - timedelta(
-            days=self.new_label_display_for_days
+            days=settings.NEW_LABEL_DISPLAY_FOR_DAYS
         )
         if self.published_date:
             if self.published_date.date() > expiry_date:
