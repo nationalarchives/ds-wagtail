@@ -7,6 +7,7 @@ from app.core.serializers import (
     RichTextSerializer,
 )
 from app.core.styling import BrandColourChoices, HeroColourChoices, HeroLayoutChoices
+from django.conf import settings
 from django.db import models
 from django.http import HttpRequest
 from django.utils import timezone
@@ -22,7 +23,6 @@ from wagtail_headless_preview.models import (
     HeadlessPreviewMixin,
     get_client_root_url_from_site,
 )
-from django.conf import settings
 
 from .forms import RequiredHeroImagePageForm
 
@@ -70,7 +70,7 @@ class PublishedDateMixin(models.Model):
         default=timezone.now,
     )
 
-    @property
+    @cached_property
     def is_newly_published(self):
         expiry_date = timezone.now().date() - timedelta(
             days=settings.NEW_LABEL_DISPLAY_FOR_DAYS
