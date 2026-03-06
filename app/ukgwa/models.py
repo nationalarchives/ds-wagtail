@@ -173,7 +173,11 @@ class SectionIndexPage(SearchMixin, UKGWABasePage):
     """
 
     parent_page_types = ["ukgwa.UKGWAHomePage"]
-    subpage_types = ["ukgwa.InformationPage", "ukgwa.ListingPage"]
+    subpage_types = [
+        "ukgwa.InformationPage",
+        "ukgwa.ListingPage",
+        "ukgwa.AToZArchivePage",
+    ]
 
     @property
     def subpages(self):
@@ -261,7 +265,7 @@ class AToZArchivePage(UKGWABasePage, FeaturedLinksMixin):
     from the base page class.
     """
 
-    parent_page_types = ["ukgwa.UKGWAHomePage"]
+    parent_page_types = ["ukgwa.UKGWAHomePage", "ukgwa.SectionIndexPage"]
     subpage_types = []
 
     max_count = 1
