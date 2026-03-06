@@ -33,6 +33,9 @@ services:
       - EMAIL_HOST
       - EMAIL_HOST_USER
       - EMAIL_HOST_PASSWORD
+    env_file:
+      - path: .env
+        required: false
     volumes:
       - ./:/app
       - media:/media
