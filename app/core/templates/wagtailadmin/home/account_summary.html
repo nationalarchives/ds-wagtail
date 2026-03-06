@@ -18,15 +18,25 @@
                    target="_blank"
                    rel="noreferrer">
                     {% blocktrans trimmed %}
-                        Wagtail {{ current_version }} editor guide
+                        Get started with Wagtail
+                    {% endblocktrans %}
+                    {% icon name="link-external" classname="initial" %}
+                </a>
+            </li>
+            <li>
+                <a class="w-underline w-underline-offset-[3px] w-flex w-items-center w-gap-1"
+                   href="https://wagtail.nationalarchives.gov.uk/"
+                   target="_blank"
+                   rel="noreferrer">
+                    {% blocktrans trimmed %}
+                        National Archives Wagtail documentation
                     {% endblocktrans %}
                     {% icon name="link-external" classname="initial" %}
                 </a>
             </li>
             {% if BUILD_VERSION %}
                 <li>
-                    <a class="w-underline w-underline-offset-[3px]"
-                    href="https://github.com/nationalarchives/ds-wagtail/releases/tag/v{{ BUILD_VERSION }}">ds-wagtail version v{{ BUILD_VERSION }}</a>
+                    Build <code>{{ BUILD_VERSION }}</code>
                 </li>
             {% endif %}
         </ul>
