@@ -20,6 +20,7 @@ class ThemedAlertSerializer(serializers.Serializer):
     def to_representation(self, instance):
         if instance.active:
             return {
+                "title": instance.title,
                 "message": expand_db_html(instance.message),
                 "theme": instance.theme,
                 "cascade": instance.cascade,

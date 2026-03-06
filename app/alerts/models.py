@@ -17,7 +17,7 @@ class BaseAlert(models.Model):
     Alerts are preconfigured pieces of content that can be selected
     to display on pages with an alert field defined.
 
-    The message field is self-explanatory.
+    The title and message fields are self-explanatory.
 
     active: Only active alerts will be displayed. Alert snippets can
     be pre-prepared ready to be activated when required.
@@ -34,19 +34,23 @@ class BaseAlert(models.Model):
         max_length=100,
         help_text="The name of the alert to display in the CMS, for easier identification.",
     )
+    title = models.CharField(
+        max_length=50,
+        help_text="The short title of your alert which will show in bold at the top of the notification banner. E.g. 'Please note' or 'Important information'",
+    )
     message = RichTextField(features=settings.INLINE_RICH_TEXT_FEATURES)
     active = models.BooleanField(default=False)
     cascade = models.BooleanField(
         default=False, verbose_name="Show on current and all child pages"
     )
 
-    _name_panel = [FieldPanel("name")]
-    _content_panels = [
+    panels = [
+        FieldPanel("name"),
+        FieldPanel("title"),
         FieldPanel("message"),
         FieldPanel("active"),
         FieldPanel("cascade"),
     ]
-    panels = _name_panel + _content_panels
 
     uid = models.BigIntegerField(null=False, blank=True, editable=False)
 
@@ -91,7 +95,6 @@ class BaseAlertMixin(models.Model):
 class Alert(BaseAlert):
     """Extends BaseAlert adding alert levels.
 
-    title: Short title to display in notification banner
     alert_level: The level of importance of the alert. Choices are
     "Low", "Medium" and "High". The default is "Low".
     """
@@ -101,22 +104,13 @@ class Alert(BaseAlert):
         MEDIUM = "medium", "Medium"
         HIGH = "high", "High"
 
-    title = models.CharField(
-        max_length=50,
-        help_text="The short title of your alert which will show in bold at the top of the notification banner. E.g. 'Please note' or 'Important information'",
-    )
     alert_level = models.CharField(
         max_length=6, choices=AlertLevelChoices.choices, default=AlertLevelChoices.LOW
     )
 
-    panels = (
-        BaseAlert._name_panel
-        + [FieldPanel("title")]
-        + BaseAlert._content_panels
-        + [
-            FieldPanel("alert_level"),
-        ]
-    )
+    panels = BaseAlert.panels + [
+        FieldPanel("alert_level"),
+    ]
 
 
 class AlertMixin(BaseAlertMixin):
