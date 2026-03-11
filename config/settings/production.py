@@ -32,7 +32,7 @@ if not SECRET_KEY:
     )
 
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
-SECURE_SSL_REDIRECT = True
+# SECURE_SSL_REDIRECT = True  # TODO: Enable this once we're ready to enforce HTTPS at the container level
 
 SITE_ID = 1
 
