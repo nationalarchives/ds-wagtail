@@ -11,6 +11,16 @@ from django.core.exceptions import ValidationError
 from wagtail import blocks
 
 
+class BookmarkletBlock(blocks.StructBlock):
+    def get_api_representation(self, value, context=None):
+        return True
+
+    class Meta:
+        icon = "link"
+        label = "Bookmarklet"
+        help_text = "Adds a draggable bookmarklet button to the page."
+
+
 class SectionContentBlock(blocks.StreamBlock):
     call_to_action = CallToActionBlock()
     image = ContentImageBlock()
@@ -19,6 +29,12 @@ class SectionContentBlock(blocks.StreamBlock):
     sub_heading = SubHeadingBlock()
     sub_sub_heading = SubSubHeadingBlock()
     youtube_video = YouTubeBlock()
+    bookmarklet = BookmarkletBlock()
+
+    class Meta:
+        block_counts = {
+            "bookmarklet": {"max_num": 1},
+        }
 
 
 class ContentSectionBlock(blocks.StructBlock):
@@ -47,3 +63,15 @@ class InformationPageStreamBlock(SectionContentBlock):
     content_section = ContentSectionBlock()
     sub_heading = None
     sub_sub_heading = None
+
+    def clean(self, value, **kwargs):
+        clean = super().clean(value, **kwargs)
+        nested = [
+            block
+            for section in clean
+            if section.block_type == "content_section"
+            for block in section.value["content"]
+        ]
+        if sum(block.block_type == "bookmarklet" for block in [*clean, *nested]) > 1:
+            raise ValidationError("Only one bookmarklet block is allowed per page.")
+        return clean
