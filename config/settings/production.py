@@ -233,7 +233,6 @@ MEDIA_URL = "media/"
 
 WAGTAILMEDIA = {
     "MEDIA_MODEL": "media.EtnaMedia",
-    "MEDIA_FORM_BASE": "app.media.forms.BaseMediaForm",
     "AUDIO_EXTENSIONS": [
         # "aac",
         # "aiff",
