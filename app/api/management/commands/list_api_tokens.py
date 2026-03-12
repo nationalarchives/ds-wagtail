@@ -18,7 +18,9 @@ class Command(BaseCommand):
             if not quiet:
                 self.stdout.write(self.style.SUCCESS("API tokens:"))
             for token in tokens:
-                self.stdout.write(f"- {token.name}")
+                self.stdout.write(
+                    f"- {token.name}{' (active)' if token.active else ' (inactive)'}"
+                )
         else:
             self.stdout.write("No API tokens found.")
 

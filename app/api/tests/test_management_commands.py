@@ -270,6 +270,122 @@ class ManageAPITokenCommandDeleteTests(TestCase):
             )
 
 
+class ManageAPITokenCommandEnableDisableTests(TestCase):
+    def test_enable_token(self):
+        """Test enabling a token by name."""
+        APIToken.objects.create(name="test-service", active=False)
+        out = StringIO()
+
+        call_command("manage_api_token", "test-service", "--enable", stdout=out)
+
+        token = APIToken.objects.get(name="test-service")
+        self.assertTrue(token.active)
+        output = out.getvalue()
+        self.assertIn("Enabled API token for test-service", output)
+
+    def test_enable_token_already_active(self):
+        """Test enabling a token that is already active."""
+        APIToken.objects.create(name="test-service", active=True)
+        out = StringIO()
+
+        call_command("manage_api_token", "test-service", "--enable", stdout=out)
+
+        token = APIToken.objects.get(name="test-service")
+        self.assertTrue(token.active)
+        output = out.getvalue()
+        self.assertIn("Enabled API token for test-service", output)
+
+    def test_disable_token(self):
+        """Test disabling a token by name."""
+        APIToken.objects.create(name="test-service", active=True)
+        out = StringIO()
+
+        call_command("manage_api_token", "test-service", "--disable", stdout=out)
+
+        token = APIToken.objects.get(name="test-service")
+        self.assertFalse(token.active)
+        output = out.getvalue()
+        self.assertIn("Disabled API token for test-service", output)
+
+    def test_disable_token_already_inactive(self):
+        """Test disabling a token that is already inactive."""
+        APIToken.objects.create(name="test-service", active=False)
+        out = StringIO()
+
+        call_command("manage_api_token", "test-service", "--disable", stdout=out)
+
+        token = APIToken.objects.get(name="test-service")
+        self.assertFalse(token.active)
+        output = out.getvalue()
+        self.assertIn("Disabled API token for test-service", output)
+
+    def test_enable_token_quiet(self):
+        """Test enabling a token by name."""
+        APIToken.objects.create(name="test-service", active=False)
+        out = StringIO()
+
+        call_command(
+            "manage_api_token", "test-service", "--enable", "--quiet", stdout=out
+        )
+
+        token = APIToken.objects.get(name="test-service")
+        self.assertTrue(token.active)
+        output = out.getvalue()
+        self.assertEqual("", output)
+
+    def test_disable_token_quiet(self):
+        """Test disabling a token by name."""
+        APIToken.objects.create(name="test-service", active=True)
+        out = StringIO()
+
+        call_command(
+            "manage_api_token", "test-service", "--disable", "--quiet", stdout=out
+        )
+
+        token = APIToken.objects.get(name="test-service")
+        self.assertFalse(token.active)
+        output = out.getvalue()
+        self.assertEqual("", output)
+
+    def test_enable_token_no_name(self):
+        """Test enabling an API token with no identifier."""
+        out = StringIO()
+        with self.assertRaises(CommandError) as cm:
+            call_command("manage_api_token", "--enable", stdout=out)
+            self.assertEqual(
+                cm.exception, CommandError("Identifier (token name) is required")
+            )
+
+    def test_disable_token_no_name(self):
+        """Test disabling an API token with no identifier."""
+        out = StringIO()
+        with self.assertRaises(CommandError) as cm:
+            call_command("manage_api_token", "--disable", stdout=out)
+            self.assertEqual(
+                cm.exception, CommandError("Identifier (token name) is required")
+            )
+
+    def test_enable_nonexistent_token_raises_exception(self):
+        """Test enabling a non-existent token shows error."""
+        out = StringIO()
+
+        with self.assertRaises(CommandError) as cm:
+            call_command("manage_api_token", "nonexistent", "--enable", stdout=out)
+            self.assertEqual(
+                cm.exception, CommandError("No API token found for nonexistent")
+            )
+
+    def test_disable_nonexistent_token_raises_exception(self):
+        """Test disabling a non-existent token shows error."""
+        out = StringIO()
+
+        with self.assertRaises(CommandError) as cm:
+            call_command("manage_api_token", "nonexistent", "--disable", stdout=out)
+            self.assertEqual(
+                cm.exception, CommandError("No API token found for nonexistent")
+            )
+
+
 class ManageAPITokenCommandListTests(TestCase):
     def test_list_tokens_no_tokens(self):
         """Test listing tokens when none exist."""
