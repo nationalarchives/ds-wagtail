@@ -1,0 +1,13 @@
+"PLACEHOLDER OVERRIDE EMAIL TO TEST"
+
+{%- set subject = "Your application has been received" -%}
+{%- set panel = {
+  "title": "Application received",
+  "headingLevel": 1,
+  "headingSize": "l",
+  "body": "<p>Your reference number is <strong>0123456789</strong>.</p>"
+} -%}
+{%- set content = "<p>You will receive a response from us about your application within 10 working days.</p>" -%}
+{%- set signoff = "<p>If you have any questions regarding your enquiry, please email us at <a href=\"#\">enquiry@nationalarchives.gov.uk</a> or call <a href=\"#\">+44 (0) 20 8876 3444</a>, quoting your reference number.</p>" -%}
+
+{%- include "layouts/email.html" -%}
