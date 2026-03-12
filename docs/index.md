@@ -15,7 +15,7 @@ To get data and media from the host platform, check out [fetching data](./develo
 
 ## Updating this documentation
 
-The navigation for this this documentation is configured in [`mkdocs.yml`](https://github.com/nationalarchives/ds-wagtail/blob/main/). You can add new markdown files there to get them to appear in the navigation.
+The navigation for this this documentation is configured in [`mkdocs.yml`](https://github.com/nationalarchives/ds-wagtail/blob/main/mkdocs.yml). You can add new markdown files there to get them to appear in the navigation.
 
 You can preview changes locally by starting the `docs` container (if it isn't already running):
 
