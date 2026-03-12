@@ -1,4 +1,5 @@
 import os
+from sysconfig import get_path
 
 from django.core.exceptions import ImproperlyConfigured
 
@@ -22,7 +23,6 @@ WAGTAIL_HEADLESS_PREVIEW = {
     },
     "SERVE_BASE_URL": None,
 }
-
 DEBUG = False
 
 SECRET_KEY = os.getenv("SECRET_KEY", "")
@@ -115,12 +115,25 @@ ROOT_URLCONF = "config.urls"
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "").split(",")
 USE_X_FORWARDED_HOST = strtobool(os.getenv("USE_X_FORWARDED_HOST", "False"))
 
+GA4_ID = os.environ.get("GA4_ID", "")
+CONTAINER_IMAGE: str = os.environ.get("CONTAINER_IMAGE", "")
+COOKIE_DOMAIN: str = os.environ.get("COOKIE_DOMAIN", "")
+
 TEMPLATES = [
     {
-        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "BACKEND": "django.template.backends.jinja2.Jinja2",
         "DIRS": [
-            os.path.join(BASE_DIR, "app", "templates"),
+            os.path.join(BASE_DIR, "app/core/templates"),
+            os.path.join(get_path("platlib"), "tna_frontend_jinja/templates"),
         ],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "environment": "config.jinja2.environment",
+        },
+    },
+    {
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -128,8 +141,6 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-                "wagtail.contrib.settings.context_processors.settings",
-                "app.core.context_processors.settings_vars",
             ],
         },
     },
