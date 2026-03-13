@@ -1,7 +1,3 @@
-import json
-import re
-from datetime import datetime
-
 from django import template
 from django.conf import settings
 from django.templatetags.static import StaticNode
@@ -38,19 +34,6 @@ def url_for(view_name, *args, **kwargs):
 
 def environment(**options):
     env = Environment(**options)
-
-    TNA_FRONTEND_VERSION = ""
-    try:
-        with open(
-            "/app/node_modules/@nationalarchives/frontend/package.json",
-        ) as package_json:
-            try:
-                data = json.load(package_json)
-                TNA_FRONTEND_VERSION = data["version"] or ""
-            except ValueError:
-                pass
-    except FileNotFoundError:
-        pass
 
     env.globals.update(
         {
