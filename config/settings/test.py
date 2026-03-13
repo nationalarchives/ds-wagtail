@@ -21,6 +21,8 @@ INSTALLED_APPS.remove("birdbath")
 
 WAGTAIL_2FA_REQUIRED = False
 
+SECURE_SSL_REDIRECT = False
+
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
