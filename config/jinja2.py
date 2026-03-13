@@ -59,7 +59,6 @@ def environment(**options):
                 "WAGTAILADMIN_BASE_URL": settings.WAGTAILADMIN_BASE_URL,
             },
             "url_for": url_for,
-            "now_iso_8601": now_iso_8601,
         }
     )
     return env
