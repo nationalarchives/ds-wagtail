@@ -48,6 +48,10 @@ def now_iso_8601():
     return now_date
 
 
+def url_for(view_name, *args, **kwargs):
+    return reverse(view_name, args=args or None, kwargs=kwargs or None)
+
+
 def environment(**options):
     env = Environment(**options)
 
@@ -73,9 +77,10 @@ def environment(**options):
                 "CONTAINER_IMAGE": settings.CONTAINER_IMAGE,
                 "BUILD_VERSION": settings.BUILD_VERSION,
                 "TNA_FRONTEND_VERSION": TNA_FRONTEND_VERSION,
+                "WAGTAILADMIN_BASE_URL": settings.WAGTAILADMIN_BASE_URL,
                 "COOKIE_DOMAIN": settings.COOKIE_DOMAIN,
             },
-            "url_for": reverse,
+            "url_for": url_for,
             "now_iso_8601": now_iso_8601,
         }
     )
