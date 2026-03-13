@@ -24,7 +24,6 @@ from app.media.models import EtnaMedia
 from app.people.factories import PeopleIndexPageFactory, PersonPageFactory
 from app.people.models import AuthorTag, PersonRole, PersonRoleSelection
 from django.conf import settings
-from django.core.cache import cache
 from wagtail.models import Site
 from wagtail.test.utils import WagtailPageTestCase
 from wagtail_factories import ImageFactory
@@ -53,17 +52,6 @@ class APIResponseTest(WagtailPageTestCase):
     JSON if this is the case, but we should aim to keep the output
     as consistent as possible to avoid breaking changes on the front end.
     """
-
-    def setUp(self):
-        super().setUp()
-        cache.clear()
-        self.ciim_get_patcher = patch("app.ciim.client.CIIMClient.get")
-        self.mock_ciim_get = self.ciim_get_patcher.start()
-        self.mock_ciim_get.return_value = {"data": []}
-
-    def tearDown(self):
-        self.ciim_get_patcher.stop()
-        super().tearDown()
 
     @classmethod
     def setUpTestData(self):
