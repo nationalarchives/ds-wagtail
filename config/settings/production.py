@@ -116,10 +116,6 @@ ROOT_URLCONF = "config.urls"
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "").split(",")
 USE_X_FORWARDED_HOST = strtobool(os.getenv("USE_X_FORWARDED_HOST", "False"))
 
-GA4_ID = os.environ.get("GA4_ID", "")
-CONTAINER_IMAGE: str = os.environ.get("CONTAINER_IMAGE", "")
-COOKIE_DOMAIN: str = os.environ.get("COOKIE_DOMAIN", "")
-
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.jinja2.Jinja2",

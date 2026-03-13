@@ -32,22 +32,6 @@ def static_with_version(path, **kwargs):
     return StaticNodeWithVersion.handle_simple(path, **kwargs)
 
 
-def slugify(s):
-    if not s:
-        return s
-    s = s.lower().strip()
-    s = re.sub(r"[^\w\s-]", "", s)
-    s = re.sub(r"[\s_-]+", "-", s)
-    s = re.sub(r"^-+|-+$", "", s)
-    return s
-
-
-def now_iso_8601():
-    now = datetime.now()
-    now_date = now.strftime("%Y-%m-%dT%H:%M:%SZ")
-    return now_date
-
-
 def url_for(view_name, *args, **kwargs):
     return reverse(view_name, args=args or None, kwargs=kwargs or None)
 
@@ -72,17 +56,10 @@ def environment(**options):
         {
             "static": static_with_version,
             "app_config": {
-                "ENVIRONMENT_NAME": settings.ENVIRONMENT_NAME,
-                "GA4_ID": settings.GA4_ID,
-                "CONTAINER_IMAGE": settings.CONTAINER_IMAGE,
-                "BUILD_VERSION": settings.BUILD_VERSION,
-                "TNA_FRONTEND_VERSION": TNA_FRONTEND_VERSION,
                 "WAGTAILADMIN_BASE_URL": settings.WAGTAILADMIN_BASE_URL,
-                "COOKIE_DOMAIN": settings.COOKIE_DOMAIN,
             },
             "url_for": url_for,
             "now_iso_8601": now_iso_8601,
         }
     )
-    env.filters.update({"slugify": slugify})
     return env
