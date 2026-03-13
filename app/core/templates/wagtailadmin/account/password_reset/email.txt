@@ -25,6 +25,6 @@
     }
   ] -%}
 
-{%- set signoff = "<p>If you have any further issues, please contact Digital Services.</p>" -%}
+{%- set signoff = "<p>If you have any further issues, please contact the Digital Services Content Design Team.</p>" -%}
 
 {%- include "layouts/email.html" -%}
