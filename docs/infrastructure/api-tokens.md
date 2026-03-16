@@ -15,6 +15,12 @@ poetry run python manage.py manage_api_token my-service-name --refresh
 # Delete a token
 poetry run python manage.py manage_api_token my-service-name --delete
 
+# Disable a token
+poetry run python manage.py manage_api_token my-service-name --disable
+
+# Enable a token
+poetry run python manage.py manage_api_token my-service-name --enable
+
 # List existing tokens
 poetry run python manage.py list_api_tokens
 ```
