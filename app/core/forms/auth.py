@@ -9,5 +9,7 @@ class HtmlPasswordResetForm(PasswordResetForm):
         kwargs["html_email_template_name"] = (
             kwargs.get("html_email_template_name") or self.html_email_template_name
         )
-        kwargs["email_template_name"] = self.email_template_name
+        kwargs["email_template_name"] = (
+            kwargs.get("email_template_name") or self.email_template_name
+        )
         return super().save(*args, **kwargs)
