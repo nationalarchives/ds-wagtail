@@ -120,7 +120,7 @@ TEMPLATES = [
     {
         "BACKEND": "django.template.backends.jinja2.Jinja2",
         "DIRS": [
-            os.path.join(BASE_DIR, "app/core/templates"),
+            os.path.join(BASE_DIR, "app/core/templates/jinja2"),
             os.path.join(get_path("platlib"), "tna_frontend_jinja/templates"),
         ],
         "APP_DIRS": True,
