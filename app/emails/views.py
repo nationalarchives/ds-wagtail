@@ -1,5 +1,9 @@
 from types import SimpleNamespace
+
+from django.http import HttpResponse
 from django.shortcuts import render
+from django.template import engines
+
 
 def email(request):
 
@@ -10,8 +14,11 @@ def email(request):
         "domain": request.get_host(),
         "user": SimpleNamespace(
             USERNAME_FIELD="username",
-            get_username="MyUsername",
+            get_username=lambda: "MyUsername",
         ),
     }
 
-    return render(request, "wagtailadmin/account/password_reset/email.html", context)
+    template = engines["jinja2"].get_template(
+        "/wagtailadmin/account/password_reset/email.html"
+    )
+    return HttpResponse(template.render(context, request=request))
