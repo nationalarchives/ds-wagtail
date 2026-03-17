@@ -7,3 +7,5 @@
 {% endif %}
 
 {% trans "Please ignore this email if you did not request this change." %}
+
+{% trans "If you have any further issues, please contact the Digital Services Content Design Team." %}
