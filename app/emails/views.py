@@ -14,4 +14,4 @@ def email(request):
         ),
     }
 
-    return render(request, "wagtailadmin/account/password_reset/email.txt", context)
+    return render(request, "wagtailadmin/account/password_reset/email.html", context)
