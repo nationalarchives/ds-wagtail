@@ -4,7 +4,7 @@ from .production import *  # noqa: F401, F403
 from .util import strtobool
 
 DEBUG = strtobool(os.getenv("DEBUG", "False"))
-
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 SENTRY_SAMPLE_RATE = float(os.getenv("SENTRY_SAMPLE_RATE", "1.0"))
 
 try:
