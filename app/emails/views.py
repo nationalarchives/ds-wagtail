@@ -1,7 +1,6 @@
 from types import SimpleNamespace
 
 from django.http import HttpResponse
-from django.shortcuts import render
 from django.template import engines
 
 
@@ -19,6 +18,6 @@ def email(request):
     }
 
     template = engines["jinja2"].get_template(
-        "/wagtailadmin/account/password_reset/email.html"
+        "wagtailadmin/account/password_reset/email.html"
     )
     return HttpResponse(template.render(context, request=request))
