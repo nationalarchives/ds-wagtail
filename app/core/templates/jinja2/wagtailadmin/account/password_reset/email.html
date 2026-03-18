@@ -2,6 +2,8 @@
 {%- set base_url = app_config["WAGTAILADMIN_BASE_URL"] or (protocol ~ "://" ~ domain) -%}
 {%- set reset_url = base_url ~ reset_path -%}
 
+<meta name="tna.app.build-version" content="{{ app_config.BUILD_VERSION }}">
+
 {%- set subject = "The National Archives: Password Reset" -%}
 
 {%- set panel = {
