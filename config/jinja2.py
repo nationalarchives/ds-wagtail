@@ -40,6 +40,7 @@ def environment(**options):
             "static": static_with_version,
             "app_config": {
                 "WAGTAILADMIN_BASE_URL": settings.WAGTAILADMIN_BASE_URL,
+                "BUILD_VERSION": settings.BUILD_VERSION,
             },
             "url_for": url_for,
         }
