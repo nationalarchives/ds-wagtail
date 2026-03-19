@@ -179,6 +179,8 @@ class DescendantOfPathFilter(BaseFilterBackend):
                         if component
                     ]
                     site = Site.find_for_request(request)
+                    if site is None:
+                        raise BadRequestError("site not found for request")
                     try:
                         parent_page, _, _ = site.root_page.specific.route(
                             request, path_components
@@ -186,7 +188,9 @@ class DescendantOfPathFilter(BaseFilterBackend):
                     except Exception:
                         raise BadRequestError("ancestor page doesn't exist")
             except Page.DoesNotExist:
-                raise BadRequestError("ancestor page doesn't exist")
+                raise BadRequestError(
+                    "ancestor page doesn't exist or is not a descendant of the root page"
+                )
 
             queryset = queryset.descendant_of(parent_page)
 
