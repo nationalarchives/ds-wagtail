@@ -1,0 +1,41 @@
+{% extends 'wagtailadmin/notifications/base.html' %}
+{%- set page_title = revision.content_object.get_admin_display_title() -%}
+
+{%- set subject = "The National Archives: Page Submitted for Approval" -%}
+
+{% if page %}
+  {%- set panel = {
+    "title": "Page submitted",
+    "headingLevel": 1,
+    "headingSize": "l",
+    "body": "<p>The page <strong>" ~ page_title ~ "</strong> has been submitted for approval in moderation stage <strong>" ~ task.name ~ "</strong>.</p>"
+  } -%}
+
+  {%- set content = "<p>You can preview or edit the page with the buttons below:</p>" -%}
+
+  {%- set cta_buttons = [
+    {
+      "text": "Edit page",
+      "href": base_url ~ url_for('wagtailadmin_pages:edit', revision.content_object.id)
+    },
+    {
+      "text": "Preview page",
+      "href": base_url ~ url_for('wagtailadmin_pages:workflow_preview', revision.content_object.id, task.id)
+    }
+  ] -%}
+
+{% else %}
+  {%- set panel = {
+    "title": "Item submitted",
+    "headingLevel": 1,
+    "headingSize": "l",
+    "body": "<p>The {{ model_name }} <strong>" ~ object ~ "</strong> has been submitted for approval in moderation stage <strong>" ~ task.name ~ "</strong>.</p>"
+  } -%}
+
+{% endif %}
+
+{%- set signoff = "<p>If you have any issues, please contact the Digital Services Content Design Team.</p>" -%}
+
+{% block content %}
+{%- include "layouts/email.html" -%}
+{% endblock %}

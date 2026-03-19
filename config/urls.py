@@ -38,6 +38,7 @@ if settings.DEBUG:
 # Private URLs that are not meant to be cached.
 private_urls = [
     path("healthcheck/", include("app.healthcheck.urls")),
+    path("email/", include("app.emails.urls")),
     path("api/v2/", api_router.urls),
     path("django-admin/", admin.site.urls),
     path("admin/", include(wagtailadmin_urls)),

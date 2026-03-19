@@ -1,0 +1,27 @@
+{% extends 'wagtailadmin/notifications/base.html' %}
+{%- set page_title = revision.content_object.get_admin_display_title() -%}
+{%- set full_page_url = revision.content_object.full_url -%}
+
+{%- set subject = "The National Archives: Page Approved" -%}
+
+{%- set panel = {
+  "title": "Page approved",
+  "headingLevel": 1,
+  "headingSize": "l",
+  "body": "<p>The page <strong>" ~ page_title ~ "</strong> has been approved.</p>"
+} -%}
+
+{%- set content = "<p>You can view your page using the button below:</p>" -%}
+
+{%- set cta_buttons = [
+  {
+    "text": "View page",
+    "href": full_page_url
+  }
+] -%}
+
+{%- set signoff = "<p>If you have any issues, please contact the Digital Services Content Design Team.</p>" -%}
+
+{% block content %}
+{%- include "layouts/email.html" -%}
+{% endblock %}

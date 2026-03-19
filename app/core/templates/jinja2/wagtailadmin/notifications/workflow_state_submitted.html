@@ -1,0 +1,57 @@
+{% extends 'wagtailadmin/notifications/base.html' %}
+{%- set page_title = revision.content_object.get_admin_display_title() -%}
+
+{% if requested_by %}
+  {% set requester_name = requested_by.get_full_name() or requested_by.get_username() %}
+{% endif %}
+
+{%- set subject = "The National Archives: Page Submitted to Workflow" -%}
+
+{% if page %}
+  {% if requester_name %}
+    {%- set panel = {
+      "title": "Page submitted",
+      "headingLevel": 1,
+      "headingSize": "l",
+      "body": "<p>The page <strong>" ~ page_title ~ "</strong> has been submitted for moderation to workflow <strong>" ~ workflow.name ~ "</strong> by " ~ requester_name ~ ".</p>"
+    } -%}
+  {% else %}
+    {%- set panel = {
+      "title": "Page submitted",
+      "headingLevel": 1,
+      "headingSize": "l",
+      "body": "<p>The page <strong>" ~ page_title ~ "</strong> has been submitted for moderation to workflow <strong>" ~ workflow.name ~ "</strong>.</p>"
+    } -%}
+  {% endif %}
+
+  {%- set content = "<p>You can continue editing using the button below:</p>" -%}
+
+  {%- set cta_buttons = [
+    {
+      "text": "Edit page",
+      "href": base_url ~ url_for('wagtailadmin_pages:edit', revision.content_object.id)
+    }
+  ] -%}
+{% else %}
+  {% if requester_name %}
+    {%- set panel = {
+      "title": "Item submitted",
+      "headingLevel": 1,
+      "headingSize": "l",
+      "body": "<p>The {{ model_name }} <strong>" ~ object ~ "</strong> has been submitted for moderation to workflow <strong>" ~ workflow.name ~ "</strong> by {{ requester_name }}.</p>"
+    } -%}
+  {% else %}
+    {%- set panel = {
+      "title": "Item submitted",
+      "headingLevel": 1,
+      "headingSize": "l",
+      "body": "<p>The {{ model_name }} <strong>" ~ object ~ "</strong> has been submitted for moderation to workflow <strong>" ~ workflow.name ~ "</strong>.</p>"
+    } -%}
+  {% endif %}
+{% endif %}
+
+{%- set signoff = "<p>If you have any issues, please contact the Digital Services Content Design Team.</p>" -%}
+
+{% block content %}
+{%- include "layouts/email.html" -%}
+{% endblock %}
