@@ -1,0 +1,36 @@
+{% extends 'wagtailadmin/notifications/base.html' %}
+{%- set page_title = revision.content_object.get_admin_display_title() -%}
+
+{%- set subject = "The National Archives: Page Rejected in Moderation" -%}
+
+{% if page %}
+  {%- set panel = {
+    "title": "Page rejected",
+    "headingLevel": 1,
+    "headingSize": "l",
+    "body": "<p>The page <strong>" ~ page_title ~ "</strong> has been rejected in moderation stage <strong>" ~ task.name ~ "</strong>.</p>"
+  } -%}
+
+  {%- set content = "<p>You can continue editing the page using the button below:</p>" -%}
+
+  {%- set cta_buttons = [
+    {
+      "text": "Edit page",
+      "href": base_url ~ url_for('wagtailadmin_pages:edit', revision.content_object.id)
+    }
+  ] -%}
+
+{% else %}
+  {%- set panel = {
+    "title": "Item rejected",
+    "headingLevel": 1,
+    "headingSize": "l",
+    "body": "<p>The {{ model_name }} <strong>" ~ object ~ "</strong> has been rejected in moderation stage <strong>" ~ task.name ~ "</strong>.</p>"
+  } -%}
+{% endif %}
+
+{%- set signoff = "<p>If you have any issues, please contact the Digital Services Content Design Team.</p>" -%}
+
+{% block content %}
+{%- include "layouts/email.html" -%}
+{% endblock %}
