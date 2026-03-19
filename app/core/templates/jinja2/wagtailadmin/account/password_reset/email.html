@@ -15,17 +15,17 @@
 
 {%- set content -%}
   {% if user.USERNAME_FIELD != "email" %}
-     <p>Your username: <strong>{{ user.get_username }}</strong></p>
+    <p>Your username: <strong> {{ user.get_username() }} </strong></p>
   {% endif %}
   <p>To change your password, use the button below.</p>
 {%- endset -%}
 
-  {%- set cta_buttons = [
-    {
-      "text": "Reset your password",
-      "href": reset_url
-    }
-  ] -%}
+{%- set cta_buttons = [
+  {
+    "text": "Reset your password",
+    "href": reset_url
+  }
+] -%}
 
 {%- set signoff = "<p>If you have any further issues, please contact the Digital Services Content Design Team.</p>" -%}
 
