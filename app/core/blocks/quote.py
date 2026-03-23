@@ -13,6 +13,10 @@ class QuoteBlock(blocks.StructBlock):
     )
     attribution = blocks.CharBlock(required=False, max_length=100)
 
+    citation_url = blocks.URLBlock(
+        required=False, help_text="Optional citation source URL"
+    )
+
     class Meta:
         icon = "openquote"
         label = "Quote"
