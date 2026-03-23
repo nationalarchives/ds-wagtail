@@ -17,10 +17,12 @@ class QuoteBlock(blocks.StructBlock):
     attribution = blocks.CharBlock(required=False, max_length=100)
 
     citation_internal_link = APIPageChooserBlock(
-        required=False, help_text="Optional Page Citation: Reference another page published on the site"
+        required=False,
+        help_text="Optional Page Citation: Reference another page published on the site",
     )
     citation_external_link = blocks.URLBlock(
-        required=False, help_text="Optional External Citation: Add a URL here to refer to an external source"
+        required=False,
+        help_text="Optional External Citation: Add a URL here to refer to an external source",
     )
 
     def clean(self, value):
@@ -41,10 +43,39 @@ class QuoteBlock(blocks.StructBlock):
 
     def get_api_representation(self, value, context=None):
         representation = super().get_api_representation(value, context)
-        representation["href"] = (
-            value.get("citation_external_link")
-            or value["citation_internal_link"].full_url
+
+        internal_page = value.get("citation_internal_link")
+        external_url = value.get("citation_external_link")
+        citation_href = external_url or (
+            internal_page.full_url if internal_page else None
         )
+        has_attribution = bool(value.get("attribution"))
+
+        if has_attribution and external_url:
+            representation["attribution_link"] = external_url
+
+        if citation_href:
+            representation["cite"] = citation_href
+
+        citation_title = None
+        if internal_page:
+            internal_page_specific = internal_page.specific
+            citation_title = (
+                getattr(internal_page_specific, "short_title", None)
+                or getattr(internal_page_specific, "title", None)
+                or getattr(internal_page, "title", None)
+            )
+
+        if citation_title:
+            representation["citation_title"] = citation_title
+            representation["citation_link_text"] = (
+                f'(from "{citation_title}")'
+                if has_attribution
+                else f", {citation_title}"
+            )
+        elif external_url and not has_attribution:
+            representation["citation_link_text"] = "Source"
+
         return representation
 
     class Meta:
