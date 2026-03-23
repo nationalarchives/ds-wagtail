@@ -28,6 +28,7 @@ class HtmlPasswordResetForm(PasswordResetForm):
         from_email,
         to_email,
         html_email_template_name=None,
+        encoding='utf-8',
     ):
         subject = self._render_email_template(subject_template_name, context)
         subject = "".join(subject.splitlines())
