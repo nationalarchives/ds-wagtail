@@ -1,6 +1,9 @@
 from app.core.blocks.paragraph import APIRichTextBlock
 from django.conf import settings
+from django.core.exceptions import ValidationError
 from wagtail import blocks
+
+from .page_chooser import APIPageChooserBlock
 
 
 class QuoteBlock(blocks.StructBlock):
@@ -13,9 +16,36 @@ class QuoteBlock(blocks.StructBlock):
     )
     attribution = blocks.CharBlock(required=False, max_length=100)
 
-    citation_url = blocks.URLBlock(
-        required=False, help_text="Optional citation source URL"
+    citation_internal_link = APIPageChooserBlock(
+        required=False, help_text="Optional Page Citation: Reference another page published on the site"
     )
+    citation_external_link = blocks.URLBlock(
+        required=False, help_text="Optional External Citation: Add a URL here to refer to an external source"
+    )
+
+    def clean(self, value):
+        data = super().clean(value)
+
+        if data.get("citation_internal_link") and data.get("citation_external_link"):
+            raise ValidationError(
+                "You must provide either a page link or an external link, not both."
+            )
+        elif not (
+            data.get("citation_internal_link") or data.get("citation_external_link")
+        ):
+            raise ValidationError(
+                "You must provide either a page link or an external link."
+            )
+
+        return data
+
+    def get_api_representation(self, value, context=None):
+        representation = super().get_api_representation(value, context)
+        representation["href"] = (
+            value.get("citation_external_link")
+            or value["citation_internal_link"].full_url
+        )
+        return representation
 
     class Meta:
         icon = "openquote"
