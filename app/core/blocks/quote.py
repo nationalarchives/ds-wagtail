@@ -43,7 +43,6 @@ class QuoteBlock(blocks.StructBlock):
 
     def get_api_representation(self, value, context=None):
         representation = super().get_api_representation(value, context)
-
         internal_page = value.get("citation_internal_link")
         external_url = value.get("citation_external_link")
         citation_href = external_url or (
@@ -55,9 +54,8 @@ class QuoteBlock(blocks.StructBlock):
             representation["attribution_link"] = external_url
 
         if citation_href:
-            representation["cite"] = citation_href
+            representation["href"] = citation_href
 
-        citation_title = None
         if internal_page:
             internal_page_specific = internal_page.specific
             citation_title = (
@@ -65,15 +63,11 @@ class QuoteBlock(blocks.StructBlock):
                 or getattr(internal_page_specific, "title", None)
                 or getattr(internal_page, "title", None)
             )
+            if citation_title:
+                representation["citation_title"] = citation_title
+                representation["citation_link_text"] = f'(from "{citation_title}")'
 
-        if citation_title:
-            representation["citation_title"] = citation_title
-            representation["citation_link_text"] = (
-                f'(from "{citation_title}")'
-                if has_attribution
-                else f", {citation_title}"
-            )
-        elif external_url and not has_attribution:
+        if external_url and not has_attribution:
             representation["citation_link_text"] = "Source"
 
         return representation
