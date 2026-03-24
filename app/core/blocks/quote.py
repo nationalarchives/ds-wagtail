@@ -54,7 +54,7 @@ class QuoteBlock(blocks.StructBlock):
         citation = value.get("citation")
 
         if citation_href:
-            representation["href"] = citation_href
+            representation["citation_url"] = citation_href
 
         if internal_page:
             internal_page_specific = internal_page.specific
