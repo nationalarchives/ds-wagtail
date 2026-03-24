@@ -16,6 +16,8 @@ class QuoteBlock(blocks.StructBlock):
     )
     attribution = blocks.CharBlock(required=False, max_length=100)
 
+    citation = blocks.CharBlock(required=False, max_length=100)
+
     citation_internal_link = APIPageChooserBlock(
         required=False,
         help_text="Optional Page Citation: Reference another page published on the site",
@@ -48,27 +50,24 @@ class QuoteBlock(blocks.StructBlock):
         citation_href = external_url or (
             internal_page.full_url if internal_page else None
         )
-        has_attribution = bool(value.get("attribution"))
-
-        if has_attribution and external_url:
-            representation["attribution_link"] = external_url
+        citation_text_internal = None
+        citation = value.get("citation")
 
         if citation_href:
             representation["href"] = citation_href
 
         if internal_page:
             internal_page_specific = internal_page.specific
-            citation_title = (
+            citation_text_internal = (
                 getattr(internal_page_specific, "short_title", None)
                 or getattr(internal_page_specific, "title", None)
                 or getattr(internal_page, "title", None)
             )
-            if citation_title:
-                representation["citation_title"] = citation_title
-                representation["citation_link_text"] = f'(from "{citation_title}")'
+            if citation_text_internal:
+                representation["citation_internal"] = citation_text_internal
 
-        if external_url and not has_attribution:
-            representation["citation_link_text"] = "Source"
+        if citation:
+            representation["citation"] = citation
 
         return representation
 
