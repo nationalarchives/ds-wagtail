@@ -14,9 +14,13 @@ class QuoteBlock(blocks.StructBlock):
     quote = APIRichTextBlock(
         required=True, features=settings.RESTRICTED_RICH_TEXT_FEATURES
     )
-    attribution = blocks.CharBlock(required=False, max_length=100, help_text="e.g. Author")
+    attribution = blocks.CharBlock(
+        required=False, max_length=100, help_text="e.g. Author"
+    )
 
-    citation = blocks.CharBlock(required=False, max_length=100, help_text="e.g. Some Book")
+    citation = blocks.CharBlock(
+        required=False, max_length=100, help_text="e.g. Some Book"
+    )
 
     citation_internal_link = APIPageChooserBlock(
         required=False,
