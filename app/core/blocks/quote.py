@@ -14,17 +14,17 @@ class QuoteBlock(blocks.StructBlock):
     quote = APIRichTextBlock(
         required=True, features=settings.RESTRICTED_RICH_TEXT_FEATURES
     )
-    attribution = blocks.CharBlock(required=False, max_length=100)
+    attribution = blocks.CharBlock(required=False, max_length=100, help_text="e.g. Author")
 
-    citation = blocks.CharBlock(required=False, max_length=100)
+    citation = blocks.CharBlock(required=False, max_length=100, help_text="e.g. Some Book")
 
     citation_internal_link = APIPageChooserBlock(
         required=False,
-        help_text="Optional Page Citation: Reference another page published on the site",
+        help_text="Reference another page published on the site",
     )
     citation_external_link = blocks.URLBlock(
         required=False,
-        help_text="Optional External Citation: Add a URL here to refer to an external source",
+        help_text="Add a URL here to refer to an external source",
     )
 
     def clean(self, value):
