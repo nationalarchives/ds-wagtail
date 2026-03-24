@@ -157,9 +157,7 @@
                         "value": {
                             "quote": "<p data-block-key=\"xhdo0\">Quote text</p>",
                             "attribution": "John Smith",
-                            "citation": null,
-                            "citation_internal_link": null,
-                            "citation_external_link": null
+                            "citation": null
                         },
                         "id": "be9a28f4-0067-4922-a6fa-fd118b7c0be9"
                     },
