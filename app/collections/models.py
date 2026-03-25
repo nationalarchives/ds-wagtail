@@ -815,10 +815,10 @@ class TopicalPageMixin:
     @cached_property
     def topics(self) -> Tuple[TopicExplorerPage]:
         return tuple(
-            item.topic
-            for item in self.page_topics.select_related("topic").filter(
-                topic__live=True
-            )
+            TopicExplorerPage.objects.live()
+            .public()
+            .filter(topic_pages__page=self)
+            .order_by("topic_pages__sort_order")
         )
 
     @property
@@ -832,10 +832,10 @@ class TopicalPageMixin:
     @cached_property
     def time_periods(self) -> Tuple[TimePeriodExplorerPage]:
         return tuple(
-            item.time_period
-            for item in self.page_time_periods.select_related("time_period").filter(
-                time_period__live=True
-            )
+            TimePeriodExplorerPage.objects.live()
+            .public()
+            .filter(time_period_pages__page=self)
+            .order_by("time_period_pages__sort_order")
         )
 
     @property
