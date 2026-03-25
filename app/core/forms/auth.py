@@ -5,7 +5,6 @@ from django.core.mail import EmailMultiAlternatives
 from django.template import engines, loader
 from wagtail.admin.forms.auth import PasswordResetForm
 
-
 logger = logging.getLogger(__name__)
 
 
