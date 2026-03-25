@@ -46,17 +46,9 @@ class QuoteBlock(blocks.StructBlock):
         del representation["citation_internal_link"]
         del representation["citation_external_link"]
         internal_page = value.get("citation_internal_link")
-        citation_href = value.get("citation_external_link") or (
+        representation["citation_url"] = value.get("citation_external_link") or (
             internal_page.full_url if internal_page else None
         )
-
-        if citation_href:
-            representation["citation_url"] = citation_href
-
-        if internal_page:
-            citation_text_internal = internal_page.title
-            if citation_text_internal:
-                representation["citation_internal"] = citation_text_internal
 
         return representation
 
