@@ -44,11 +44,9 @@ class QuoteBlock(blocks.StructBlock):
     def get_api_representation(self, value, context=None):
         representation = super().get_api_representation(value, context)
         internal_link = representation.get("citation_internal_link")
-        representation["citation_url"] = representation.get("citation_external_link") or (
-            internal_link.get("full_url")
-            if internal_link
-            else None
-        )
+        representation["citation_url"] = representation.get(
+            "citation_external_link"
+        ) or (internal_link.get("full_url") if internal_link else None)
         del representation["citation_internal_link"]
         del representation["citation_external_link"]
         return representation
