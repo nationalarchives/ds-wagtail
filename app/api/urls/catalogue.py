@@ -37,19 +37,28 @@ class CatalogueAPIViewSet(GenericViewSet):
         )
 
         explorer_index = (
-            ExplorerIndexPage.objects.live().descendant_of(site.root_page).first()
+            ExplorerIndexPage.objects.live()
+            .public()
+            .descendant_of(site.root_page)
+            .first()
         )
         explore_the_collection_top_pages = (
-            explorer_index.get_children().all().live() if explorer_index else []
+            explorer_index.get_children().all().live().public()
+            if explorer_index
+            else []
         )
 
         article_index = (
-            ArticleIndexPage.objects.live().descendant_of(site.root_page).first()
+            ArticleIndexPage.objects.live()
+            .public()
+            .descendant_of(site.root_page)
+            .first()
         )
         explore_the_collection_latest_articles = (
             article_index.get_children()
             .all()
             .live()
+            .public()
             .order_by("-first_published_at")[:3]
             if article_index
             else []

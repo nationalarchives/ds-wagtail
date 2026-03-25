@@ -3,7 +3,7 @@ from app.core.blocks.links import LinkBlock
 from app.core.models import BasePageWithRequiredIntro, HeroImageMixin
 from app.core.models.basepage import BasePage
 from app.core.models.mixins import SocialMixin
-from app.ukgwa.blocks import InformationPageStreamBlock
+from app.ukgwa.blocks import InformationPageStreamBlock, LinkWithDescriptionBlock
 from app.ukgwa.mixins import (
     BookmarkletMixin,
     FeaturedLinksMixin,
@@ -179,6 +179,16 @@ class SectionIndexPage(SearchMixin, UKGWABasePage):
         "ukgwa.AToZArchivePage",
     ]
 
+    additional_links = StreamField(
+        [("link", LinkWithDescriptionBlock())],
+        blank=True,
+        use_json_field=True,
+        help_text=_(
+            "Optional links appended to the list of child pages. "
+            "Each link can be to an internal page or an external URL."
+        ),
+    )
+
     @property
     def subpages(self):
         return self.get_children().live().public().in_menu().specific()
@@ -188,9 +198,12 @@ class SectionIndexPage(SearchMixin, UKGWABasePage):
         + SearchMixin.api_fields
         + [
             APIField("subpages", serializer=SubpagesSerializer()),
+            APIField("additional_links"),
         ]
     )
-    content_panels = UKGWABasePage.content_panels
+    content_panels = UKGWABasePage.content_panels + [
+        FieldPanel("additional_links"),
+    ]
 
     settings_panels = UKGWABasePage.settings_panels + SearchMixin.settings_panels
 
