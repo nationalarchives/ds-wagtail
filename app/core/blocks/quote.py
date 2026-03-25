@@ -38,12 +38,6 @@ class QuoteBlock(blocks.StructBlock):
             raise ValidationError(
                 "You must provide either a page link or an external link, not both."
             )
-        elif not (
-            data.get("citation_internal_link") or data.get("citation_external_link")
-        ):
-            raise ValidationError(
-                "You must provide either a page link or an external link."
-            )
 
         return data
 
