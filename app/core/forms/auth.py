@@ -1,6 +1,12 @@
+import importlib
+import logging
+
 from django.core.mail import EmailMultiAlternatives
 from django.template import engines, loader
 from wagtail.admin.forms.auth import PasswordResetForm
+
+
+logger = logging.getLogger(__name__)
 
 
 class HtmlPasswordResetForm(PasswordResetForm):
@@ -38,6 +44,18 @@ class HtmlPasswordResetForm(PasswordResetForm):
         mail = EmailMultiAlternatives(subject, body, from_email, [to_email])
         if html_email_template_name:
             html_body = self._render_email_template(html_email_template_name, context)
+            try:
+                premailer_transform = importlib.import_module("premailer").transform
+                html_body = premailer_transform(
+                    html_body,
+                    allow_network=False,
+                    allow_loading_external_files=False,
+                    disable_validation=True,
+                )
+            except Exception:
+                logger.exception(
+                    "Failed to inline password reset email CSS; using original HTML"
+                )
             mail.attach_alternative(html_body, "text/html")
 
         mail.send()
