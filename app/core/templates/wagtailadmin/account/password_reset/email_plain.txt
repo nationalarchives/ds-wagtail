@@ -2,8 +2,6 @@
 {% trans "Please follow the link below to reset your password:" %}
 {% if base_url %}{{ base_url }}{% else %}{{ protocol }}://{{ domain }}{% endif %}{% url 'wagtailadmin_password_reset_confirm' uidb64=uid token=token %}
 
-<meta name="tna.app.build-version" content="{{ app_config.BUILD_VERSION }}">
-
 {% if user.USERNAME_FIELD != "email" %}
 {% trans "Your username (in case you've forgotten):" %} {{ user.get_username }}
 {% endif %}
