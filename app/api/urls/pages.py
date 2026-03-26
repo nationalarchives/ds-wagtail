@@ -238,15 +238,15 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
     def find_object(self, queryset, request):
         site = self._get_site_from_request(request)
 
-        if "html_path" in request.GET and site is not None:
-            path = self._resolve_redirect_path(request.GET["html_path"])
-            path_components = [component for component in path.split("/") if component]
+        if "html_path" not in request.GET or site is None:
+            return super().find_object(queryset, request)
+        
+        path = self._resolve_redirect_path(request.GET["html_path"])
+        path_components = [component for component in path.split("/") if component]
 
-            try:
-                page, _, _ = site.root_page.specific.route(request, path_components)
-            except Http404:
-                return
+        try:
+            page, _, _ = site.root_page.specific.route(request, path_components)
+        except Http404:
+            return
 
-            return page if queryset.filter(id=page.id).exists() else None
-
-        return super().find_object(queryset, request)
+        return page if queryset.filter(id=page.id).exists() else None
