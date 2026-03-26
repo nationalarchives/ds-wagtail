@@ -2,6 +2,7 @@ import time
 
 from django.conf import settings
 from django.db import models
+from django.utils import timezone
 from wagtail.admin.panels import FieldPanel
 from wagtail.api import APIField
 from wagtail.fields import RichTextField
@@ -43,6 +44,7 @@ class BaseAlert(models.Model):
     cascade = models.BooleanField(
         default=False, verbose_name="Show on current and all child pages"
     )
+    expires_at = models.DateTimeField(null=True, blank=True)
 
     panels = [
         FieldPanel("name"),
@@ -50,9 +52,18 @@ class BaseAlert(models.Model):
         FieldPanel("message"),
         FieldPanel("active"),
         FieldPanel("cascade"),
+        FieldPanel("expires_at"),
     ]
 
     uid = models.BigIntegerField(null=False, blank=True, editable=False)
+
+    @property
+    def is_active_now(self):
+        if not self.active:
+            return False
+        if self.expires_at is None:
+            return True
+        return self.expires_at > timezone.now()
 
     def __str__(self):
         return self.name
@@ -81,7 +92,7 @@ class BaseAlertMixin(models.Model):
                 return inherited_alert
 
         # No cascading parent alert, so use this page's own alert
-        if page_alert and page_alert.active:
+        if page_alert and page_alert.is_active_now:
             return page_alert
 
         # No alert found

@@ -4,7 +4,7 @@ from wagtail.rich_text import expand_db_html
 
 class AlertSerializer(serializers.Serializer):
     def to_representation(self, instance):
-        if instance.active:
+        if instance.is_active_now:
             return {
                 "title": instance.title,
                 "message": expand_db_html(instance.message),
@@ -18,7 +18,7 @@ class AlertSerializer(serializers.Serializer):
 
 class ThemedAlertSerializer(serializers.Serializer):
     def to_representation(self, instance):
-        if instance.active:
+        if instance.is_active_now:
             return {
                 "title": instance.title,
                 "message": expand_db_html(instance.message),
