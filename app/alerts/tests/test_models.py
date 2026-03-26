@@ -1,7 +1,72 @@
+from datetime import timedelta
+
 from app.alerts.models import Alert
+from app.alerts.serializers import AlertSerializer
 from app.generic_pages.factories import GeneralPageFactory
+from django.utils import timezone
 from wagtail.models import Site
 from wagtail.test.utils import WagtailPageTestCase
+
+
+class AlertActivityTests(WagtailPageTestCase):
+    def test_active_alert_without_expiry_is_active(self):
+        alert = Alert.objects.create(
+            name="No Expiry Alert",
+            title="Important",
+            message="This is a test",
+            active=True,
+            alert_level=Alert.AlertLevelChoices.MEDIUM,
+        )
+
+        self.assertTrue(alert.is_active_now)
+
+    def test_active_alert_with_future_expiry_is_active(self):
+        alert = Alert.objects.create(
+            name="Future Expiry Alert",
+            title="Important",
+            message="This is a test",
+            active=True,
+            expires_at=timezone.now() + timedelta(hours=1),
+            alert_level=Alert.AlertLevelChoices.MEDIUM,
+        )
+
+        self.assertTrue(alert.is_active_now)
+
+    def test_active_alert_with_past_expiry_is_inactive(self):
+        alert = Alert.objects.create(
+            name="Past Expiry Alert",
+            title="Important",
+            message="This is a test",
+            active=True,
+            expires_at=timezone.now() - timedelta(hours=1),
+            alert_level=Alert.AlertLevelChoices.MEDIUM,
+        )
+
+        self.assertFalse(alert.is_active_now)
+
+    def test_inactive_alert_with_future_expiry_is_inactive(self):
+        alert = Alert.objects.create(
+            name="Inactive Alert",
+            title="Important",
+            message="This is a test",
+            active=False,
+            expires_at=timezone.now() + timedelta(hours=1),
+            alert_level=Alert.AlertLevelChoices.MEDIUM,
+        )
+
+        self.assertFalse(alert.is_active_now)
+
+    def test_serializer_excludes_expired_alert(self):
+        alert = Alert.objects.create(
+            name="Expired Alert",
+            title="Important",
+            message="This is a test",
+            active=True,
+            expires_at=timezone.now() - timedelta(hours=1),
+            alert_level=Alert.AlertLevelChoices.MEDIUM,
+        )
+
+        self.assertIsNone(AlertSerializer().to_representation(alert))
 
 
 class AlertMixinCascadeTests(WagtailPageTestCase):
@@ -192,4 +257,32 @@ class AlertMixinCascadeTests(WagtailPageTestCase):
         self.child_page.save()
 
         # Child should display its own alert since parent is inactive
+        self.assertEqual(self.child_page.global_alert, child_alert)
+
+    def test_expired_parent_cascade_does_not_override_child(self):
+        """Expired parent alert with cascade should not override child's active alert"""
+        parent_alert = Alert.objects.create(
+            name="Parent Alert",
+            title="Parent",
+            message="Parent message",
+            active=True,
+            cascade=True,
+            expires_at=timezone.now() - timedelta(hours=1),
+            alert_level=Alert.AlertLevelChoices.HIGH,
+        )
+        child_alert = Alert.objects.create(
+            name="Child Alert",
+            title="Child",
+            message="Child message",
+            active=True,
+            cascade=False,
+            alert_level=Alert.AlertLevelChoices.LOW,
+        )
+
+        self.parent_page.alert = parent_alert
+        self.parent_page.save()
+
+        self.child_page.alert = child_alert
+        self.child_page.save()
+
         self.assertEqual(self.child_page.global_alert, child_alert)
