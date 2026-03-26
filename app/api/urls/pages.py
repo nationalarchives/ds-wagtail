@@ -218,12 +218,13 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
             return None
 
     def _resolve_redirect_path(self, path):
+        stripped_path = path.strip("/")
         redirects = Redirect.objects.filter(
             Q(old_path=path)
-            | Q(old_path=path.strip("/"))
-            | Q(old_path=f"/{path.strip('/')}")
-            | Q(old_path=f"{path.strip('/')}/")
-            | Q(old_path=f"/{path.strip('/')}/")
+            | Q(old_path=stripped_path)
+            | Q(old_path=f"/{stripped_path}")
+            | Q(old_path=f"{stripped_path}/")
+            | Q(old_path=f"/{stripped_path}/")
         )
 
         redirect = redirects.select_related("redirect_page").first()
