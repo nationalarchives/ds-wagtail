@@ -240,7 +240,7 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
 
         if "html_path" not in request.GET or site is None:
             return super().find_object(queryset, request)
-        
+
         path = self._resolve_redirect_path(request.GET["html_path"])
         path_components = [component for component in path.split("/") if component]
 
