@@ -30,10 +30,10 @@ class CodeBlock(blocks.StructBlock):
 
     def get_api_representation(self, value, context=None):
         return {
-            "language": value.language,
-            "escaped_code": escape(value.code),
-            "filename": value.filename,
-            "allow_copying": value.allow_copying,
+            "language": value["language"],
+            "escaped_code": escape(value["code"]),
+            "filename": value["filename"],
+            "allow_copying": value["allow_copying"],
         }
 
     class Meta:
