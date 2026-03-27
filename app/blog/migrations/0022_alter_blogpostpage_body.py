@@ -10,80 +10,50 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("generic_pages", "0051_alter_generalpage_body"),
+        ("blog", "0021_alter_blogfeedspage_short_title_and_more"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name="generalpage",
+            model_name="blogpostpage",
             name="body",
             field=wagtail.fields.StreamField(
                 [
-                    ("accordions", 10),
-                    ("button", 15),
-                    ("call_to_action", 17),
-                    ("code", 22),
-                    ("contact", 29),
-                    ("description_list", 33),
-                    ("details", 34),
-                    ("document", 6),
-                    ("do_dont_list", 41),
-                    ("featured_external_link", 47),
-                    ("featured_page", 50),
-                    ("image", 53),
-                    ("image_gallery", 55),
-                    ("inset_text", 57),
-                    ("media", 61),
-                    ("paragraph", 57),
-                    ("partner_logos", 65),
-                    ("people_listing", 67),
-                    ("quote", 69),
-                    ("record_links", 71),
-                    ("table", 73),
-                    ("warning_text", 74),
-                    ("youtube_video", 80),
-                    ("content_section", 87),
+                    ("call_to_action", 6),
+                    ("code", 11),
+                    ("contact", 18),
+                    ("document", 22),
+                    ("featured_external_link", 28),
+                    ("featured_page", 31),
+                    ("image", 34),
+                    ("image_gallery", 36),
+                    ("inset_text", 38),
+                    ("media", 42),
+                    ("paragraph", 38),
+                    ("partner_logos", 46),
+                    ("quote", 49),
+                    ("record_links", 51),
+                    ("table", 53),
+                    ("youtube_video", 59),
+                    ("content_section", 64),
                 ],
-                blank=True,
                 block_lookup={
-                    0: ("wagtail.blocks.CharBlock", (), {"required": True}),
-                    1: (
+                    0: (
                         "app.core.blocks.paragraph.APIRichTextBlock",
                         (),
                         {
                             "features": ["bold", "italic", "link", "ol", "ul"],
-                            "required": True,
+                            "max_length": 100,
                         },
                     ),
-                    2: ("wagtail.contrib.table_block.blocks.TableBlock", (), {}),
-                    3: (
-                        "wagtail.documents.blocks.DocumentChooserBlock",
-                        (),
-                        {"required": True},
-                    ),
-                    4: ("wagtail.blocks.StructBlock", [[("file", 3)]], {}),
-                    5: ("wagtail.blocks.ListBlock", (4,), {}),
-                    6: ("wagtail.blocks.StructBlock", [[("documents", 5)]], {}),
-                    7: (
-                        "wagtail.blocks.StreamBlock",
-                        [[("text", 1), ("table", 2), ("documents", 6)]],
-                        {},
-                    ),
-                    8: (
-                        "wagtail.blocks.StructBlock",
-                        [[("title", 0), ("body", 7)]],
-                        {},
-                    ),
-                    9: ("wagtail.blocks.ListBlock", (8,), {}),
-                    10: ("wagtail.blocks.StructBlock", [[("items", 9)]], {}),
-                    11: ("wagtail.blocks.CharBlock", (), {}),
-                    12: (
+                    1: ("wagtail.blocks.CharBlock", (), {}),
+                    2: (
                         "app.core.blocks.page_chooser.APIPageChooserBlock",
                         (),
                         {"required": False},
                     ),
-                    13: ("wagtail.blocks.URLBlock", (), {"required": False}),
-                    14: (
+                    3: ("wagtail.blocks.URLBlock", (), {"required": False}),
+                    4: (
                         "wagtail.blocks.BooleanBlock",
                         (),
                         {
@@ -92,32 +62,24 @@ class Migration(migrations.Migration):
                             "required": False,
                         },
                     ),
-                    15: (
+                    5: (
                         "wagtail.blocks.StructBlock",
                         [
                             [
-                                ("label", 11),
-                                ("link", 12),
-                                ("external_link", 13),
-                                ("accented", 14),
+                                ("label", 1),
+                                ("link", 2),
+                                ("external_link", 3),
+                                ("accented", 4),
                             ]
                         ],
                         {},
                     ),
-                    16: (
-                        "app.core.blocks.paragraph.APIRichTextBlock",
-                        (),
-                        {
-                            "features": ["bold", "italic", "link", "ol", "ul"],
-                            "max_length": 100,
-                        },
-                    ),
-                    17: (
+                    6: (
                         "wagtail.blocks.StructBlock",
-                        [[("body", 16), ("button", 15)]],
+                        [[("body", 0), ("button", 5)]],
                         {},
                     ),
-                    18: (
+                    7: (
                         "wagtail.blocks.ChoiceBlock",
                         [],
                         {
@@ -137,12 +99,12 @@ class Migration(migrations.Migration):
                             "label": "Language choice",
                         },
                     ),
-                    19: (
+                    8: (
                         "wagtail.blocks.TextBlock",
                         (),
                         {"help_text": "Add raw (unescaped) code here"},
                     ),
-                    20: (
+                    9: (
                         "wagtail.blocks.CharBlock",
                         (),
                         {
@@ -150,152 +112,101 @@ class Migration(migrations.Migration):
                             "required": False,
                         },
                     ),
-                    21: (
+                    10: (
                         "wagtail.blocks.BooleanBlock",
                         (),
                         {"default": False, "help_text": "Allow copy to clipboard"},
                     ),
-                    22: (
+                    11: (
                         "wagtail.blocks.StructBlock",
                         [
                             [
-                                ("language", 18),
-                                ("code", 19),
-                                ("filename", 20),
-                                ("allow_copying", 21),
+                                ("language", 7),
+                                ("code", 8),
+                                ("filename", 9),
+                                ("allow_copying", 10),
                             ]
                         ],
                         {},
                     ),
-                    23: (
+                    12: (
                         "app.core.blocks.paragraph.APIRichTextBlock",
                         (),
                         {"features": ["link"], "required": False},
                     ),
-                    24: (
+                    13: (
                         "wagtail.blocks.TextBlock",
                         (),
                         {"features": ["bold", "italic", "link"], "required": False},
                     ),
-                    25: ("wagtail.blocks.CharBlock", (), {"required": False}),
-                    26: (
+                    14: ("wagtail.blocks.CharBlock", (), {"required": False}),
+                    15: (
                         "app.core.blocks.paragraph.APIRichTextBlock",
                         (),
                         {"required": False},
                     ),
-                    27: ("wagtail.blocks.EmailBlock", (), {"required": False}),
-                    28: (
+                    16: ("wagtail.blocks.EmailBlock", (), {"required": False}),
+                    17: (
                         "app.core.blocks.paragraph.APIRichTextBlock",
                         (),
                         {"features": ["bold", "italic", "link"], "required": False},
                     ),
-                    29: (
+                    18: (
                         "wagtail.blocks.StructBlock",
                         [
                             [
-                                ("title", 11),
-                                ("body", 23),
-                                ("address", 24),
-                                ("telephone", 25),
-                                ("chat_link", 13),
-                                ("chat_note", 26),
-                                ("email", 27),
-                                ("website_link", 13),
-                                ("social_media", 28),
+                                ("title", 1),
+                                ("body", 12),
+                                ("address", 13),
+                                ("telephone", 14),
+                                ("chat_link", 3),
+                                ("chat_note", 15),
+                                ("email", 16),
+                                ("website_link", 3),
+                                ("social_media", 17),
                             ]
                         ],
                         {},
                     ),
-                    30: (
-                        "app.core.blocks.paragraph.APIRichTextBlock",
+                    19: (
+                        "wagtail.documents.blocks.DocumentChooserBlock",
                         (),
-                        {"features": ["bold", "italic", "link"]},
+                        {"required": True},
                     ),
-                    31: (
-                        "wagtail.blocks.StructBlock",
-                        [[("term", 0), ("detail", 30)]],
-                        {},
-                    ),
-                    32: ("wagtail.blocks.ListBlock", (31,), {}),
-                    33: ("wagtail.blocks.StructBlock", [[("items", 32)]], {}),
-                    34: (
-                        "wagtail.blocks.StructBlock",
-                        [[("title", 0), ("body", 1)]],
-                        {},
-                    ),
-                    35: (
-                        "wagtail.blocks.CharBlock",
-                        (),
-                        {
-                            "label": 'Custom do heading (defaults to "Do")',
-                            "max_length": 100,
-                            "required": False,
-                        },
-                    ),
-                    36: (
-                        "wagtail.blocks.StructBlock",
-                        [[("text", 30)]],
-                        {"icon": "check", "label": "Do item"},
-                    ),
-                    37: ("wagtail.blocks.ListBlock", (36,), {"label": "Dos"}),
-                    38: (
-                        "wagtail.blocks.CharBlock",
-                        (),
-                        {
-                            "label": "Custom don't heading (defaults to \"Don't\")",
-                            "max_length": 100,
-                            "required": False,
-                        },
-                    ),
-                    39: (
-                        "wagtail.blocks.StructBlock",
-                        [[("text", 30)]],
-                        {"icon": "cross", "label": "Don't item"},
-                    ),
-                    40: ("wagtail.blocks.ListBlock", (39,), {"label": "Don'ts"}),
-                    41: (
-                        "wagtail.blocks.StructBlock",
-                        [
-                            [
-                                ("do_heading", 35),
-                                ("do", 37),
-                                ("dont_heading", 38),
-                                ("dont", 40),
-                            ]
-                        ],
-                        {},
-                    ),
-                    42: (
+                    20: ("wagtail.blocks.StructBlock", [[("file", 19)]], {}),
+                    21: ("wagtail.blocks.ListBlock", (20,), {}),
+                    22: ("wagtail.blocks.StructBlock", [[("documents", 21)]], {}),
+                    23: (
                         "wagtail.blocks.CharBlock",
                         (),
                         {"label": "Supertitle", "max_length": 20, "required": False},
                     ),
-                    43: (
+                    24: (
                         "wagtail.blocks.CharBlock",
                         (),
                         {"label": "Title", "max_length": 100},
                     ),
-                    44: ("wagtail.blocks.CharBlock", (), {"label": "Description"}),
-                    45: ("wagtail.blocks.URLBlock", (), {"label": "URL"}),
-                    46: (
+                    25: ("wagtail.blocks.CharBlock", (), {"label": "Description"}),
+                    26: ("wagtail.blocks.URLBlock", (), {"label": "URL"}),
+                    27: (
                         "app.core.blocks.image.APIImageChooserBlock",
                         (),
                         {"label": "Image", "required": False},
                     ),
-                    47: (
+                    28: (
                         "wagtail.blocks.StructBlock",
                         [
                             [
-                                ("supertitle", 42),
-                                ("title", 43),
-                                ("description", 44),
-                                ("url", 45),
-                                ("image", 46),
+                                ("supertitle", 23),
+                                ("title", 24),
+                                ("description", 25),
+                                ("url", 26),
+                                ("image", 27),
                             ]
                         ],
                         {},
                     ),
-                    48: (
+                    29: (
                         "app.core.blocks.page_chooser.APIPageChooserBlock",
                         (),
                         {
@@ -304,7 +215,7 @@ class Migration(migrations.Migration):
                             "required": True,
                         },
                     ),
-                    49: (
+                    30: (
                         "wagtail.blocks.CharBlock",
                         (),
                         {
@@ -313,17 +224,17 @@ class Migration(migrations.Migration):
                             "required": False,
                         },
                     ),
-                    50: (
+                    31: (
                         "wagtail.blocks.StructBlock",
-                        [[("page", 48), ("teaser_text", 49)]],
+                        [[("page", 29), ("teaser_text", 30)]],
                         {},
                     ),
-                    51: (
+                    32: (
                         "app.core.blocks.image.APIImageChooserBlock",
                         (),
                         {"rendition_size": "max-900x900", "required": True},
                     ),
-                    52: (
+                    33: (
                         "app.core.blocks.paragraph.APIRichTextBlock",
                         (),
                         {
@@ -333,24 +244,24 @@ class Migration(migrations.Migration):
                             "required": False,
                         },
                     ),
-                    53: (
+                    34: (
                         "wagtail.blocks.StructBlock",
-                        [[("image", 51), ("caption", 52)]],
+                        [[("image", 32), ("caption", 33)]],
                         {},
                     ),
-                    54: ("wagtail.blocks.ListBlock", (53,), {}),
-                    55: (
+                    35: ("wagtail.blocks.ListBlock", (34,), {}),
+                    36: (
                         "wagtail.blocks.StructBlock",
-                        [[("title", 25), ("description", 28), ("images", 54)]],
+                        [[("title", 14), ("description", 17), ("images", 35)]],
                         {},
                     ),
-                    56: (
+                    37: (
                         "app.core.blocks.paragraph.APIRichTextBlock",
                         (),
                         {"features": ["bold", "italic", "link", "ol", "ul"]},
                     ),
-                    57: ("wagtail.blocks.StructBlock", [[("text", 56)]], {}),
-                    58: (
+                    38: ("wagtail.blocks.StructBlock", [[("text", 37)]], {}),
+                    39: (
                         "wagtail.blocks.CharBlock",
                         (),
                         {
@@ -358,7 +269,7 @@ class Migration(migrations.Migration):
                             "required": True,
                         },
                     ),
-                    59: (
+                    40: (
                         "app.core.blocks.image.APIImageChooserBlock",
                         (),
                         {
@@ -367,13 +278,13 @@ class Migration(migrations.Migration):
                             "required": False,
                         },
                     ),
-                    60: ("app.media.blocks.MediaChooserBlock", (), {}),
-                    61: (
+                    41: ("app.media.blocks.MediaChooserBlock", (), {}),
+                    42: (
                         "wagtail.blocks.StructBlock",
-                        [[("title", 58), ("thumbnail", 59), ("media", 60)]],
+                        [[("title", 39), ("thumbnail", 40), ("media", 41)]],
                         {},
                     ),
-                    62: (
+                    43: (
                         "wagtail.blocks.CharBlock",
                         (),
                         {
@@ -382,43 +293,42 @@ class Migration(migrations.Migration):
                             "required": False,
                         },
                     ),
-                    63: ("app.core.blocks.image.PartnerLogoChooserBlock", (), {}),
-                    64: (
+                    44: ("app.core.blocks.image.PartnerLogoChooserBlock", (), {}),
+                    45: (
                         "wagtail.blocks.ListBlock",
-                        (63,),
+                        (44,),
                         {"max_num": 4, "required": True},
                     ),
-                    65: (
+                    46: (
                         "wagtail.blocks.StructBlock",
-                        [[("lead_text", 62), ("logos", 64)]],
+                        [[("lead_text", 43), ("logos", 45)]],
                         {},
                     ),
-                    66: (
-                        "wagtail.snippets.blocks.SnippetChooserBlock",
-                        ("people.PersonRole",),
+                    47: (
+                        "app.core.blocks.paragraph.APIRichTextBlock",
+                        (),
                         {
-                            "help_text": "Select a role to filter people by their roles.",
-                            "label": "Role selection",
+                            "features": ["bold", "italic", "link", "ol", "ul"],
+                            "required": True,
                         },
                     ),
-                    67: ("wagtail.blocks.StructBlock", [[("role", 66)]], {}),
-                    68: (
+                    48: (
                         "wagtail.blocks.CharBlock",
                         (),
                         {"max_length": 100, "required": False},
                     ),
-                    69: (
+                    49: (
                         "wagtail.blocks.StructBlock",
-                        [[("quote", 1), ("attribution", 68)]],
+                        [[("quote", 47), ("attribution", 48)]],
                         {},
                     ),
-                    70: (
+                    50: (
                         "wagtail.blocks.ListBlock",
                         (app.ciim.blocks.RecordLinkBlock,),
                         {"label": "Items"},
                     ),
-                    71: ("wagtail.blocks.StructBlock", [[("items", 70)]], {}),
-                    72: (
+                    51: ("wagtail.blocks.StructBlock", [[("items", 50)]], {}),
+                    52: (
                         "wagtail.contrib.table_block.blocks.TableBlock",
                         (),
                         {
@@ -441,14 +351,13 @@ class Migration(migrations.Migration):
                             }
                         },
                     ),
-                    73: ("wagtail.blocks.StructBlock", [[("table", 72)]], {}),
-                    74: ("wagtail.blocks.StructBlock", [[("body", 56)]], {}),
-                    75: (
+                    53: ("wagtail.blocks.StructBlock", [[("table", 52)]], {}),
+                    54: (
                         "wagtail.blocks.CharBlock",
                         (),
                         {"label": "Title", "max_length": 100, "required": True},
                     ),
-                    76: (
+                    55: (
                         "wagtail.blocks.CharBlock",
                         (),
                         {
@@ -463,7 +372,7 @@ class Migration(migrations.Migration):
                             ],
                         },
                     ),
-                    77: (
+                    56: (
                         "app.core.blocks.image.APIImageChooserBlock",
                         (),
                         {
@@ -472,12 +381,12 @@ class Migration(migrations.Migration):
                             "required": True,
                         },
                     ),
-                    78: (
+                    57: (
                         "wagtail.blocks.RichTextBlock",
                         (),
                         {"label": "Transcript", "required": False},
                     ),
-                    79: (
+                    58: (
                         "wagtail.blocks.BooleanBlock",
                         (),
                         {
@@ -486,76 +395,61 @@ class Migration(migrations.Migration):
                             "required": False,
                         },
                     ),
-                    80: (
+                    59: (
                         "wagtail.blocks.StructBlock",
                         [
                             [
-                                ("title", 75),
-                                ("video_id", 76),
-                                ("preview_image", 77),
-                                ("transcript", 78),
-                                ("captions_available", 79),
+                                ("title", 54),
+                                ("video_id", 55),
+                                ("preview_image", 56),
+                                ("transcript", 57),
+                                ("captions_available", 58),
                             ]
                         ],
                         {},
                     ),
-                    81: (
+                    60: (
                         "wagtail.blocks.CharBlock",
                         (),
                         {"label": "Heading", "max_length": 100},
                     ),
-                    82: (
+                    61: (
                         "wagtail.blocks.CharBlock",
                         (),
                         {"label": "Sub-heading", "max_length": 100},
                     ),
-                    83: ("wagtail.blocks.StructBlock", [[("heading", 82)]], {}),
-                    84: (
-                        "wagtail.blocks.CharBlock",
-                        (),
-                        {"label": "Sub-sub-heading", "max_length": 100},
-                    ),
-                    85: ("wagtail.blocks.StructBlock", [[("heading", 84)]], {}),
-                    86: (
+                    62: ("wagtail.blocks.StructBlock", [[("heading", 61)]], {}),
+                    63: (
                         "wagtail.blocks.StreamBlock",
                         [
                             [
-                                ("accordions", 10),
-                                ("button", 15),
-                                ("call_to_action", 17),
-                                ("code", 22),
-                                ("contact", 29),
-                                ("description_list", 33),
-                                ("details", 34),
-                                ("document", 6),
-                                ("do_dont_list", 41),
-                                ("featured_external_link", 47),
-                                ("featured_page", 50),
-                                ("image", 53),
-                                ("image_gallery", 55),
-                                ("inset_text", 57),
-                                ("media", 61),
-                                ("paragraph", 57),
-                                ("partner_logos", 65),
-                                ("people_listing", 67),
-                                ("quote", 69),
-                                ("record_links", 71),
-                                ("sub_heading", 83),
-                                ("sub_sub_heading", 85),
-                                ("table", 73),
-                                ("warning_text", 74),
-                                ("youtube_video", 80),
+                                ("call_to_action", 6),
+                                ("code", 11),
+                                ("contact", 18),
+                                ("document", 22),
+                                ("featured_external_link", 28),
+                                ("featured_page", 31),
+                                ("image", 34),
+                                ("image_gallery", 36),
+                                ("inset_text", 38),
+                                ("media", 42),
+                                ("paragraph", 38),
+                                ("partner_logos", 46),
+                                ("quote", 49),
+                                ("record_links", 51),
+                                ("sub_heading", 62),
+                                ("table", 53),
+                                ("youtube_video", 59),
                             ]
                         ],
                         {"required": False},
                     ),
-                    87: (
+                    64: (
                         "wagtail.blocks.StructBlock",
-                        [[("heading", 81), ("content", 86)]],
+                        [[("heading", 60), ("content", 63)]],
                         {},
                     ),
                 },
-                null=True,
             ),
         ),
     ]
