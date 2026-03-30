@@ -20,9 +20,9 @@ class CodeBlock(blocks.StructBlock):
             ("yaml", "YAML"),
         ],
     )
-    code = blocks.TextBlock(help_text="Add raw (unescaped) code here")
+    code = blocks.TextBlock(max_length=500)
     filename = blocks.CharBlock(
-        required=False, help_text="Include file extension e.g. filename.html"
+        required=False, help_text="Include file extension e.g. filename.html", max_length=100
     )
     allow_copying = blocks.BooleanBlock(
         default=False, help_text="Allow copy to clipboard"
@@ -31,7 +31,7 @@ class CodeBlock(blocks.StructBlock):
     def get_api_representation(self, value, context=None):
         return {
             "language": value["language"],
-            "escaped_code": escape(value["code"]),
+            "code": escape(value["code"]),
             "filename": value["filename"],
             "allow_copying": value["allow_copying"],
         }
