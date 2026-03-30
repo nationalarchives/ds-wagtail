@@ -3,6 +3,7 @@ from datetime import timedelta
 from app.alerts.models import Alert
 from app.alerts.serializers import AlertSerializer
 from app.generic_pages.factories import GeneralPageFactory
+from django.core.exceptions import ValidationError
 from django.utils import timezone
 from wagtail.models import Site
 from wagtail.test.utils import WagtailPageTestCase
@@ -43,6 +44,7 @@ class AlertActivityTests(WagtailPageTestCase):
         )
 
         self.assertFalse(alert.is_active_now)
+        self.assertFalse(alert.active)
 
     def test_inactive_alert_with_future_expiry_is_inactive(self):
         alert = Alert.objects.create(
@@ -51,6 +53,58 @@ class AlertActivityTests(WagtailPageTestCase):
             message="This is a test",
             active=False,
             expires_at=timezone.now() + timedelta(hours=1),
+            alert_level=Alert.AlertLevelChoices.MEDIUM,
+        )
+
+        self.assertFalse(alert.is_active_now)
+
+    def test_inactive_alert_with_past_schedule_is_active(self):
+        alert = Alert.objects.create(
+            name="Scheduled Active Alert",
+            title="Important",
+            message="This is a test",
+            active=False,
+            schedule_at=timezone.now() - timedelta(hours=1),
+            alert_level=Alert.AlertLevelChoices.MEDIUM,
+        )
+
+        self.assertTrue(alert.is_active_now)
+        self.assertTrue(alert.active)
+
+    def test_active_alert_with_future_schedule_is_inactive(self):
+        alert = Alert.objects.create(
+            name="Scheduled Future Alert",
+            title="Important",
+            message="This is a test",
+            active=True,
+            schedule_at=timezone.now() + timedelta(hours=1),
+            alert_level=Alert.AlertLevelChoices.MEDIUM,
+        )
+
+        self.assertFalse(alert.is_active_now)
+        self.assertFalse(alert.active)
+
+    def test_scheduled_alert_with_future_expiry_is_active(self):
+        alert = Alert.objects.create(
+            name="Scheduled Window Alert",
+            title="Important",
+            message="This is a test",
+            active=False,
+            schedule_at=timezone.now() - timedelta(hours=1),
+            expires_at=timezone.now() + timedelta(hours=1),
+            alert_level=Alert.AlertLevelChoices.MEDIUM,
+        )
+
+        self.assertTrue(alert.is_active_now)
+
+    def test_scheduled_alert_with_past_expiry_is_inactive(self):
+        alert = Alert.objects.create(
+            name="Scheduled Expired Alert",
+            title="Important",
+            message="This is a test",
+            active=False,
+            schedule_at=timezone.now() - timedelta(hours=2),
+            expires_at=timezone.now() - timedelta(hours=1),
             alert_level=Alert.AlertLevelChoices.MEDIUM,
         )
 
@@ -67,6 +121,163 @@ class AlertActivityTests(WagtailPageTestCase):
         )
 
         self.assertIsNone(AlertSerializer().to_representation(alert))
+
+    def test_serializer_excludes_not_yet_scheduled_alert(self):
+        alert = Alert.objects.create(
+            name="Not Yet Scheduled Alert",
+            title="Important",
+            message="This is a test",
+            active=True,
+            schedule_at=timezone.now() + timedelta(hours=1),
+            alert_level=Alert.AlertLevelChoices.MEDIUM,
+        )
+
+        self.assertIsNone(AlertSerializer().to_representation(alert))
+
+    def test_validation_fails_when_now_not_between_schedule_and_expiry(self):
+        alert = Alert(
+            name="Invalid Window Alert",
+            title="Important",
+            message="This is a test",
+            active=True,
+            schedule_at=timezone.now() + timedelta(hours=1),
+            expires_at=timezone.now() + timedelta(hours=2),
+            alert_level=Alert.AlertLevelChoices.MEDIUM,
+        )
+
+        with self.assertRaises(ValidationError) as context:
+            alert.full_clean()
+
+        self.assertTrue(
+            any(
+                "This banner can only be set as active when the current time is "
+                "within its configured schedule/expiry window." in message
+                for message in context.exception.message_dict["active"]
+            )
+        )
+
+    def test_validation_passes_when_inactive_with_future_schedule_and_expiry(self):
+        alert = Alert(
+            name="Valid Future Window Alert",
+            title="Important",
+            message="This is a test",
+            active=False,
+            schedule_at=timezone.now() + timedelta(hours=1),
+            expires_at=timezone.now() + timedelta(hours=2),
+            alert_level=Alert.AlertLevelChoices.MEDIUM,
+        )
+
+        alert.full_clean()
+
+    def test_validation_fails_when_schedule_is_in_the_past(self):
+        alert = Alert(
+            name="Past Schedule Alert",
+            title="Important",
+            message="This is a test",
+            active=False,
+            schedule_at=timezone.now() - timedelta(hours=1),
+            expires_at=None,
+            alert_level=Alert.AlertLevelChoices.MEDIUM,
+        )
+
+        with self.assertRaises(ValidationError) as context:
+            alert.full_clean()
+
+        self.assertTrue(
+            any(
+                "Schedule date cannot be in the past." in message
+                for message in context.exception.message_dict["schedule_at"]
+            )
+        )
+
+    def test_validation_fails_when_active_before_schedule_with_no_expiry(self):
+        alert = Alert(
+            name="Invalid Schedule Only Alert",
+            title="Important",
+            message="This is a test",
+            active=True,
+            schedule_at=timezone.now() + timedelta(hours=1),
+            expires_at=None,
+            alert_level=Alert.AlertLevelChoices.MEDIUM,
+        )
+
+        with self.assertRaises(ValidationError) as context:
+            alert.full_clean()
+
+        self.assertTrue(
+            any(
+                "This banner can only be set as active when the current time is "
+                "within its configured schedule/expiry window." in message
+                for message in context.exception.message_dict["active"]
+            )
+        )
+
+    def test_validation_passes_when_inactive_with_future_schedule_and_no_expiry(self):
+        alert = Alert(
+            name="Valid Future Schedule Only Alert",
+            title="Important",
+            message="This is a test",
+            active=False,
+            schedule_at=timezone.now() + timedelta(hours=1),
+            expires_at=None,
+            alert_level=Alert.AlertLevelChoices.MEDIUM,
+        )
+
+        alert.full_clean()
+
+    def test_validation_fails_when_active_after_expiry_with_no_schedule(self):
+        alert = Alert(
+            name="Invalid Expiry Only Alert",
+            title="Important",
+            message="This is a test",
+            active=True,
+            schedule_at=None,
+            expires_at=timezone.now() - timedelta(hours=1),
+            alert_level=Alert.AlertLevelChoices.MEDIUM,
+        )
+
+        with self.assertRaises(ValidationError) as context:
+            alert.full_clean()
+
+        self.assertTrue(
+            any(
+                "This banner can only be set as active when the current time is "
+                "within its configured schedule/expiry window." in message
+                for message in context.exception.message_dict["active"]
+            )
+        )
+
+    def test_validation_passes_when_active_before_expiry_with_no_schedule(self):
+        alert = Alert(
+            name="Valid Expiry Only Alert",
+            title="Important",
+            message="This is a test",
+            active=True,
+            schedule_at=None,
+            expires_at=timezone.now() + timedelta(hours=1),
+            alert_level=Alert.AlertLevelChoices.MEDIUM,
+        )
+
+        alert.full_clean()
+
+    def test_validation_fails_when_schedule_is_not_before_expiry(self):
+        alert = Alert(
+            name="Invalid Window Order Alert",
+            title="Important",
+            message="This is a test",
+            active=False,
+            schedule_at=timezone.now() + timedelta(hours=2),
+            expires_at=timezone.now() + timedelta(hours=1),
+            alert_level=Alert.AlertLevelChoices.MEDIUM,
+        )
+
+        with self.assertRaises(ValidationError) as context:
+            alert.full_clean()
+
+        self.assertIn(
+            "Expiry date must be later than the schedule date.",
+            context.exception.message_dict["expires_at"],
+        )
 
 
 class AlertMixinCascadeTests(WagtailPageTestCase):
