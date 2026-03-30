@@ -72,14 +72,22 @@ class BaseAlert(models.Model):
     @property
     def is_active_now(self):
         now = timezone.now()
+        computed_active = self.active
 
-        # Scheduling and expiry are optional windows around the active flag.
+        # Still check active and update it to ensure checks against expiry and scheduled date don't happen when unnecessary  
         if self.schedule_at and now < self.schedule_at:
-            self.active = False
+            computed_active = False
         elif self.expires_at and now >= self.expires_at:
-            self.active = False
+            computed_active = False
         elif self.schedule_at and now >= self.schedule_at:
-            self.active = True
+            computed_active = True
+
+        if computed_active != self.active:
+            self.active = computed_active
+
+            # Update db using queryset update to avoid triggering save() and potential recursive calls to is_active_now
+            if self.pk:
+                self.__class__.objects.filter(pk=self.pk).update(active=self.active)
 
         return self.active
 
@@ -94,7 +102,8 @@ class BaseAlert(models.Model):
             raise ValidationError(
                 {
                     "schedule_at": (
-                        "Schedule date cannot be in the past. If you need to activate this banner immediately, please leave the schedule date blank and set the banner as active."
+                        "Schedule date cannot be in the past. If you need to activate this banner immediately, "
+                        "please leave the schedule date blank and set the banner as active."
                     )
                 }
             )

@@ -45,6 +45,8 @@ class AlertActivityTests(WagtailPageTestCase):
 
         self.assertFalse(alert.is_active_now)
         self.assertFalse(alert.active)
+        alert.refresh_from_db()
+        self.assertFalse(alert.active)
 
     def test_inactive_alert_with_future_expiry_is_inactive(self):
         alert = Alert.objects.create(
@@ -70,6 +72,8 @@ class AlertActivityTests(WagtailPageTestCase):
 
         self.assertTrue(alert.is_active_now)
         self.assertTrue(alert.active)
+        alert.refresh_from_db()
+        self.assertTrue(alert.active)
 
     def test_active_alert_with_future_schedule_is_inactive(self):
         alert = Alert.objects.create(
@@ -82,6 +86,8 @@ class AlertActivityTests(WagtailPageTestCase):
         )
 
         self.assertFalse(alert.is_active_now)
+        self.assertFalse(alert.active)
+        alert.refresh_from_db()
         self.assertFalse(alert.active)
 
     def test_scheduled_alert_with_future_expiry_is_active(self):
@@ -96,6 +102,8 @@ class AlertActivityTests(WagtailPageTestCase):
         )
 
         self.assertTrue(alert.is_active_now)
+        alert.refresh_from_db()
+        self.assertTrue(alert.active)
 
     def test_scheduled_alert_with_past_expiry_is_inactive(self):
         alert = Alert.objects.create(
@@ -109,6 +117,8 @@ class AlertActivityTests(WagtailPageTestCase):
         )
 
         self.assertFalse(alert.is_active_now)
+        alert.refresh_from_db()
+        self.assertFalse(alert.active)
 
     def test_serializer_excludes_expired_alert(self):
         alert = Alert.objects.create(
