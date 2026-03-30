@@ -86,6 +86,45 @@ class BaseAlert(models.Model):
     def __str__(self):
         return self.name
 
+    def clean(self):
+        super().clean()
+        now = timezone.now()
+
+        if self.schedule_at and self.schedule_at < now:
+            raise ValidationError(
+                {
+                    "schedule_at": (
+                        "Schedule date cannot be in the past. If you need to activate this banner immediately, please leave the schedule date blank and set the banner as active."
+                    )
+                }
+            )
+
+        if self.schedule_at and self.expires_at and self.schedule_at >= self.expires_at:
+            raise ValidationError(
+                {"expires_at": ("Expiry date must be later than the schedule date.")}
+            )
+
+        if self.active:
+            if self.schedule_at and now < self.schedule_at:
+                raise ValidationError(
+                    {
+                        "active": (
+                            "This banner can only be set as active when the current time is "
+                            "within its configured schedule/expiry window."
+                        )
+                    }
+                )
+
+            if self.expires_at and now >= self.expires_at:
+                raise ValidationError(
+                    {
+                        "active": (
+                            "This banner can only be set as active when the current time is "
+                            "within its configured schedule/expiry window."
+                        )
+                    }
+                )
+
     def save(self, *args, **kwargs):
         self.uid = round(time.time() * 1000)
         super().save(*args, **kwargs)
