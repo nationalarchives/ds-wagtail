@@ -1,3 +1,5 @@
+from urllib.parse import urlsplit
+
 from django.core.exceptions import ValidationError
 from django.forms.utils import ErrorList
 from wagtail import blocks
@@ -39,6 +41,13 @@ class LinkBlockStructValue(blocks.StructValue):
             return page.id
         else:
             return None
+
+    def external_domain(self):
+        if external_link := self.get("external_link"):
+            result = urlsplit(external_link, allow_fragments=False)
+            return result.hostname or ""
+
+        return ""
 
 
 class LinkValidationMixin:
@@ -92,6 +101,7 @@ class InternalLinkBlock(LinkValidationMixin, blocks.StructBlock):
             "text": value.text(),
             "is_page": value.is_page(),
             "page_id": value.page_id(),
+            "domain": value.external_domain(),
         }
 
     class Meta:
