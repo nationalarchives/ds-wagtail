@@ -1,6 +1,7 @@
 import time
 
 from django.conf import settings
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils import timezone
 from wagtail.admin.panels import FieldPanel
@@ -44,7 +45,17 @@ class BaseAlert(models.Model):
     cascade = models.BooleanField(
         default=False, verbose_name="Show on current and all child pages"
     )
-    expires_at = models.DateTimeField(null=True, blank=True)
+    schedule_at = models.DateTimeField(
+        null=True,
+        blank=True,
+        help_text="Set a start date for this banner. The banner will automatically be activated from this date. If left blank, the banner will remain inactive until manually activated.",
+    )
+
+    expires_at = models.DateTimeField(
+        null=True,
+        blank=True,
+        help_text="Set an expiry date for this banner. The banner will automatically be deactivated after this date. If left blank, the banner will remain active until manually deactivated.",
+    )
 
     panels = [
         FieldPanel("name"),
@@ -52,6 +63,7 @@ class BaseAlert(models.Model):
         FieldPanel("message"),
         FieldPanel("active"),
         FieldPanel("cascade"),
+        FieldPanel("schedule_at"),
         FieldPanel("expires_at"),
     ]
 
@@ -59,11 +71,17 @@ class BaseAlert(models.Model):
 
     @property
     def is_active_now(self):
-        if not self.active:
-            return False
-        if self.expires_at is None:
-            return True
-        return self.expires_at > timezone.now()
+        now = timezone.now()
+
+        # Scheduling and expiry are optional windows around the active flag.
+        if self.schedule_at and now < self.schedule_at:
+            self.active = False
+        elif self.expires_at and now >= self.expires_at:
+            self.active = False
+        elif self.schedule_at and now >= self.schedule_at:
+            self.active = True
+
+        return self.active
 
     def __str__(self):
         return self.name
