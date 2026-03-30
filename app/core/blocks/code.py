@@ -22,7 +22,9 @@ class CodeBlock(blocks.StructBlock):
     )
     code = blocks.TextBlock(max_length=500)
     filename = blocks.CharBlock(
-        required=False, help_text="Include file extension e.g. filename.html", max_length=100
+        required=False,
+        help_text="Include file extension e.g. filename.html",
+        max_length=100,
     )
     allow_copying = blocks.BooleanBlock(
         default=False, help_text="Allow copy to clipboard"
