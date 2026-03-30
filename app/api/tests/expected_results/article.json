@@ -164,7 +164,7 @@
                         "type": "code",
                         "value": {
                             "language": "python",
-                            "escaped_code": "def hello_world():\n    print(&quot;Hello, World!&quot;)\n\nhello_world()",
+                            "code": "def hello_world():\n    print(&quot;Hello, World!&quot;)\n\nhello_world()",
                             "filename": "hello.py",
                             "allow_copying": true
                         },
