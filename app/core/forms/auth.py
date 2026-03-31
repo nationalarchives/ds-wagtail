@@ -4,7 +4,7 @@ from wagtail.admin.forms.auth import PasswordResetForm
 
 
 class HtmlPasswordResetForm(PasswordResetForm):
-    html_email_template_name = "jinja2/wagtailadmin/account/password_reset/email.html"
+    html_email_template_name = "jinja2/wagtailadmin/account/password_reset/email_safe.html"
     email_template_name = "wagtailadmin/account/password_reset/email_plain.txt"
 
     # fallback to django templating if template isn't in jinja2 directory
