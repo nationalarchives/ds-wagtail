@@ -74,7 +74,7 @@ class BaseAlert(models.Model):
         now = timezone.now()
         computed_active = self.active
 
-        # Still check active and update it to ensure checks against expiry and scheduled date don't happen when unnecessary  
+        # Still check active and update it to ensure checks against expiry and scheduled date don't happen when unnecessary
         if self.schedule_at and now < self.schedule_at:
             computed_active = False
         elif self.expires_at and now >= self.expires_at:
