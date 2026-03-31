@@ -1,6 +1,7 @@
 from app.core.blocks import (
     CallToActionBlock,
     ContentImageBlock,
+    DocumentsBlock,
     ParagraphBlock,
     QuoteBlock,
     SubHeadingBlock,
@@ -44,14 +45,15 @@ class BookmarkletBlock(blocks.StructBlock):
 
 
 class SectionContentBlock(blocks.StreamBlock):
+    bookmarklet = BookmarkletBlock()
     call_to_action = CallToActionBlock()
+    document = DocumentsBlock()
     image = ContentImageBlock()
     paragraph = ParagraphBlock()
     quote = QuoteBlock()
     sub_heading = SubHeadingBlock()
     sub_sub_heading = SubSubHeadingBlock()
     youtube_video = YouTubeBlock()
-    bookmarklet = BookmarkletBlock()
 
     class Meta:
         block_counts = {
