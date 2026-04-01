@@ -308,6 +308,7 @@ INLINE_RICH_TEXT_FEATURES = [
     "bold",
     "italic",
     "link",
+    "code",
 ]
 RESTRICTED_RICH_TEXT_FEATURES = INLINE_RICH_TEXT_FEATURES + [
     "ol",
