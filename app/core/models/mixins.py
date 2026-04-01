@@ -7,6 +7,7 @@ from app.core.serializers import (
     RichTextSerializer,
 )
 from app.core.styling import BrandColourChoices, HeroColourChoices, HeroLayoutChoices
+from django.conf import settings
 from django.db import models
 from django.http import HttpRequest
 from django.utils import timezone
@@ -63,8 +64,6 @@ class ContentWarningMixin(models.Model):
 class PublishedDateMixin(models.Model):
     """Mixin to add a published date to a Page."""
 
-    new_label_display_for_days = 21
-
     published_date = models.DateTimeField(
         verbose_name="Published date",
         help_text="The date the page was published to the public.",
@@ -74,7 +73,7 @@ class PublishedDateMixin(models.Model):
     @cached_property
     def is_newly_published(self):
         expiry_date = timezone.now().date() - timedelta(
-            days=self.new_label_display_for_days
+            days=settings.NEW_LABEL_DISPLAY_FOR_DAYS
         )
         if self.published_date:
             if self.published_date.date() > expiry_date:

@@ -33,7 +33,7 @@ class BlogIndexPage(BasePageWithRequiredIntro):
         """
         Returns the blogs feeds page.
         """
-        return BlogFeedsPage.objects.all().live().first()
+        return BlogFeedsPage.objects.all().live().public().first()
 
     api_fields = BasePageWithRequiredIntro.api_fields + [
         APIField("blogs_feeds_page", serializer=DefaultPageSerializer()),
@@ -72,7 +72,7 @@ class BlogPage(HeroImageMixin, BasePageWithRequiredIntro):
         """
         Returns the blogs feeds page.
         """
-        return BlogFeedsPage.objects.all().live().first()
+        return BlogFeedsPage.objects.all().live().public().first()
 
     content_panels = (
         BasePageWithRequiredIntro.content_panels + HeroImageMixin.content_panels
@@ -197,14 +197,14 @@ class BlogFeedsPage(BasePage):
         """
         Returns the top-level blog index.
         """
-        return BlogIndexPage.objects.all().live().first()
+        return BlogIndexPage.objects.all().live().public().first()
 
     @cached_property
     def blogs(self):
         """
         Returns the top-level blogs that are not descendants of other blogs.
         """
-        all_blogs = BlogPage.objects.all().live()
+        all_blogs = BlogPage.objects.all().live().public()
         for blog in all_blogs:
             # Ignore all "sub-blogs" (BlogPages which are children of other BlogPages)
             all_blogs = all_blogs.not_descendant_of(blog, inclusive=False)

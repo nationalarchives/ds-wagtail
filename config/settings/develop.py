@@ -34,6 +34,7 @@ if DEBUG:
 
         DEBUG_TOOLBAR_CONFIG = {
             "SHOW_COLLAPSED": True,
+            "SHOW_TOOLBAR_CALLBACK": "config.settings.develop.show_toolbar",
         }
     except ImportError:
         pass
