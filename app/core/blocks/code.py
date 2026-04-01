@@ -6,6 +6,7 @@ from wagtail import blocks
 class CodeBlock(blocks.StructBlock):
     language = blocks.ChoiceBlock(
         label="Code language",
+        required=False,
         choices=[
             ("html", "HTML"),
             ("javascript", "JavaScript"),
@@ -32,12 +33,16 @@ class CodeBlock(blocks.StructBlock):
     )
 
     def get_api_representation(self, value, context=None):
-        return {
-            "language": value["language"],
+        representation = {
             "code": escape(value["code"]),
-            "filename": value["filename"],
             "allow_copying": value["allow_copying"],
         }
+        if value["language"]:
+            representation["language"] = value["language"]
+        if value["filename"]:
+            representation["filename"] = value["filename"]
+
+        return representation
 
     class Meta:
         icon = "code"
