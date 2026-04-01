@@ -38,7 +38,10 @@ class DocumentsBlock(blocks.StructBlock):
     A block for embedding multiple document files in a page.
     """
 
-    documents = blocks.ListBlock(DocumentBlock())
+    documents = blocks.ListBlock(
+        DocumentBlock(),
+        min_num=1,
+    )
 
     class Meta:
         icon = "doc-full"
