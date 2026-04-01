@@ -6,6 +6,7 @@ from unittest.mock import patch
 
 from app.alerts.models import Alert
 from app.api.models import APIToken
+from app.api.urls.pages import CustomPagesAPIViewSet
 from app.articles.factories import (
     ArticleIndexPageFactory,
     ArticlePageFactory,
@@ -24,6 +25,9 @@ from app.media.models import EtnaMedia
 from app.people.factories import PeopleIndexPageFactory, PersonPageFactory
 from app.people.models import AuthorTag, PersonRole, PersonRoleSelection
 from django.conf import settings
+from django.http import Http404
+from django.test import RequestFactory, TestCase
+from wagtail.api.v2.utils import BadRequestError
 from wagtail.models import Site
 from wagtail.test.utils import WagtailPageTestCase
 from wagtail_factories import ImageFactory
@@ -483,3 +487,227 @@ class APIResponseTest(WagtailPageTestCase):
         self.compare_json(
             str(self.record_article.id), f"{self.record_article.title}_serialized"
         )
+
+
+class CustomPagesAPIViewSetUnitTests(TestCase):
+    class RedirectPageStub:
+        def __init__(self, url):
+            self.url = url
+
+    class RedirectStub:
+        def __init__(self, redirect_page):
+            self.redirect_page = redirect_page
+
+    class RedirectsStub:
+        def __init__(self, redirect):
+            self.redirect = redirect
+
+        def select_related(self, *_args, **_kwargs):
+            return self
+
+        def first(self):
+            return self.redirect
+
+    class QuerysetStub:
+        def __init__(self, exists_result):
+            self.exists_result = exists_result
+            self.filter_kwargs = None
+
+        def filter(self, **kwargs):
+            self.filter_kwargs = kwargs
+            return self
+
+        def exists(self):
+            return self.exists_result
+
+    class PageStub:
+        def __init__(self, page_id):
+            self.id = page_id
+
+    class SpecificRootStub:
+        def __init__(self, route_result=None, route_exception=None):
+            self.route_result = route_result
+            self.route_exception = route_exception
+
+        def route(self, _request, _path_components):
+            if self.route_exception:
+                raise self.route_exception
+            return self.route_result
+
+    class RootPageStub:
+        def __init__(self, specific):
+            self.specific = specific
+
+    class SiteStub:
+        def __init__(self, specific):
+            self.root_page = CustomPagesAPIViewSetUnitTests.RootPageStub(specific)
+
+    class TestableViewSet(CustomPagesAPIViewSet):
+        def __init__(self, site=None, resolved_path="/resolved/"):
+            super().__init__()
+            self._test_site = site
+            self._test_resolved_path = resolved_path
+
+        def _get_site_from_request(self, _request):
+            return self._test_site
+
+        def _resolve_redirect_path(self, _path):
+            return self._test_resolved_path
+
+    def setUp(self):
+        self.viewset = CustomPagesAPIViewSet()
+        self.request_factory = RequestFactory()
+
+    def test_get_site_from_request_without_site_param_uses_find_for_request(self):
+        request = self.request_factory.get("/api/v2/pages/")
+        self.viewset.request = request
+        expected_site = object()
+
+        with patch("app.api.urls.pages.Site.find_for_request", return_value=expected_site) as mock_find:
+            result = self.viewset._get_site_from_request(request)
+
+        self.assertIs(result, expected_site)
+        mock_find.assert_called_once_with(request)
+
+    def test_get_site_from_request_with_hostname(self):
+        request = self.request_factory.get("/api/v2/pages/", {"site": "example.com"})
+        expected_site = object()
+
+        with patch("app.api.urls.pages.Site.objects.get", return_value=expected_site) as mock_get:
+            result = self.viewset._get_site_from_request(request)
+
+        self.assertIs(result, expected_site)
+        mock_get.assert_called_once_with(hostname="example.com")
+
+    def test_get_site_from_request_with_hostname_and_port(self):
+        request = self.request_factory.get(
+            "/api/v2/pages/", {"site": "example.com:8000"}
+        )
+        expected_site = object()
+
+        with patch("app.api.urls.pages.Site.objects.get", return_value=expected_site) as mock_get:
+            result = self.viewset._get_site_from_request(request)
+
+        self.assertIs(result, expected_site)
+        mock_get.assert_called_once_with(hostname="example.com", port="8000")
+
+    def test_get_site_from_request_multiple_results_raises_bad_request(self):
+        request = self.request_factory.get("/api/v2/pages/", {"site": "example.com"})
+
+        with patch(
+            "app.api.urls.pages.Site.objects.get",
+            side_effect=Site.MultipleObjectsReturned,
+        ):
+            with self.assertRaises(BadRequestError):
+                self.viewset._get_site_from_request(request)
+
+    def test_get_site_from_request_missing_site_returns_none(self):
+        request = self.request_factory.get("/api/v2/pages/", {"site": "missing.example.com"})
+
+        with patch(
+            "app.api.urls.pages.Site.objects.get",
+            side_effect=Site.DoesNotExist,
+        ):
+            result = self.viewset._get_site_from_request(request)
+
+        self.assertIsNone(result)
+
+    def test_resolve_redirect_path_returns_redirect_target(self):
+        redirect_page = self.RedirectPageStub(url="/new-path/")
+        redirect = self.RedirectStub(redirect_page=redirect_page)
+        redirects = self.RedirectsStub(redirect)
+
+        with patch("app.api.urls.pages.Redirect.objects.filter", return_value=redirects):
+            resolved = self.viewset._resolve_redirect_path("/old-path/")
+
+        self.assertEqual(resolved, "/new-path/")
+
+    def test_resolve_redirect_path_returns_original_when_not_found(self):
+        redirects = self.RedirectsStub(None)
+
+        with patch("app.api.urls.pages.Redirect.objects.filter", return_value=redirects):
+            resolved = self.viewset._resolve_redirect_path("/no-redirect/")
+
+        self.assertEqual(resolved, "/no-redirect/")
+
+    def test_find_object_delegates_to_super_when_html_path_missing(self):
+        request = self.request_factory.get("/api/v2/pages/")
+        queryset = object()
+        expected = object()
+        called = {"value": False}
+
+        def fake_super_find_object(_self, passed_queryset, passed_request):
+            called["value"] = True
+            self.assertIs(passed_queryset, queryset)
+            self.assertIs(passed_request, request)
+            return expected
+
+        viewset = self.TestableViewSet(site=object())
+
+        with patch(
+            "app.api.urls.pages.PagesAPIViewSet.find_object",
+            new=fake_super_find_object,
+        ):
+            result = viewset.find_object(queryset, request)
+
+        self.assertIs(result, expected)
+        self.assertTrue(called["value"])
+
+    def test_find_object_delegates_to_super_when_site_not_found(self):
+        request = self.request_factory.get("/api/v2/pages/", {"html_path": "/test/"})
+        queryset = object()
+        expected = object()
+        called = {"value": False}
+
+        def fake_super_find_object(_self, passed_queryset, passed_request):
+            called["value"] = True
+            self.assertIs(passed_queryset, queryset)
+            self.assertIs(passed_request, request)
+            return expected
+
+        viewset = self.TestableViewSet(site=None)
+
+        with patch(
+            "app.api.urls.pages.PagesAPIViewSet.find_object",
+            new=fake_super_find_object,
+        ):
+            result = viewset.find_object(queryset, request)
+
+        self.assertIs(result, expected)
+        self.assertTrue(called["value"])
+
+    def test_find_object_returns_page_when_route_matches_queryset(self):
+        request = self.request_factory.get("/api/v2/pages/", {"html_path": "/old-path/"})
+        queryset = self.QuerysetStub(exists_result=True)
+        page = self.PageStub(page_id=123)
+        specific = self.SpecificRootStub(route_result=(page, [], {}))
+        site = self.SiteStub(specific=specific)
+        viewset = self.TestableViewSet(site=site, resolved_path="/new-path/")
+
+        result = viewset.find_object(queryset, request)
+
+        self.assertIs(result, page)
+        self.assertEqual(queryset.filter_kwargs, {"id": 123})
+
+    def test_find_object_returns_none_when_route_raises_404(self):
+        request = self.request_factory.get("/api/v2/pages/", {"html_path": "/missing/"})
+        queryset = self.QuerysetStub(exists_result=True)
+        specific = self.SpecificRootStub(route_exception=Http404)
+        site = self.SiteStub(specific=specific)
+        viewset = self.TestableViewSet(site=site, resolved_path="/missing/")
+
+        result = viewset.find_object(queryset, request)
+
+        self.assertIsNone(result)
+
+    def test_find_object_returns_none_when_page_not_in_queryset(self):
+        request = self.request_factory.get("/api/v2/pages/", {"html_path": "/new-path/"})
+        queryset = self.QuerysetStub(exists_result=False)
+        page = self.PageStub(page_id=999)
+        specific = self.SpecificRootStub(route_result=(page, [], {}))
+        site = self.SiteStub(specific=specific)
+        viewset = self.TestableViewSet(site=site, resolved_path="/new-path/")
+
+        result = viewset.find_object(queryset, request)
+
+        self.assertIsNone(result)
