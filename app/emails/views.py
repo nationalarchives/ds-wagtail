@@ -1,7 +1,9 @@
 from types import SimpleNamespace
 
+from django.conf import settings
 from django.http import HttpResponse
 from django.template import engines
+from django.urls import reverse
 
 
 def email(request):
@@ -27,9 +29,19 @@ def email(request):
         )
     )
 
+    uid = "Mg"
+    token = "set-password-preview-token"
+    reset_path = reverse(
+        "wagtailadmin_password_reset_confirm",
+        kwargs={"uidb64": uid, "token": token},
+    )
+    base_url = getattr(settings, "WAGTAILADMIN_BASE_URL", None) or (
+        f"{request.scheme}://{request.get_host()}"
+    )
     context = {
-        "uid": "Mg",
-        "token": "set-password-preview-token",
+        "uid": uid,
+        "token": token,
+        "reset_url": base_url.rstrip("/") + reset_path,
         "protocol": request.scheme,
         "domain": request.get_host(),
         "revision": revision,
