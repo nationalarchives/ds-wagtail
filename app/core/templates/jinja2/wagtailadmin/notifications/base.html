@@ -1,7 +1,0 @@
-{%- set base_url = app_config["WAGTAILADMIN_BASE_URL"] or (protocol ~ "://" ~ domain) -%}
-{% set account_url = url_for("wagtailadmin_account") %}
-
-{%- block content -%}
-{%- endblock -%}
-
-<meta name="tna.app.build-version" content="{{ app_config.BUILD_VERSION }}">

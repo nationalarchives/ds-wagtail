@@ -1,0 +1,65 @@
+{% extends "wagtailadmin/account/email_safe_base.html" %}
+
+{%- set base_url = app_config["WAGTAILADMIN_BASE_URL"] or (protocol ~ "://" ~ domain) -%}
+{% set account_url = url_for("wagtailadmin_account") %}
+
+{% block title %}{{ subject | default("The National Archives") }}{% endblock %}
+
+{% block panel %}
+<tr>
+	<td style="padding:24px 24px 32px 24px;">
+		<table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" style="border-collapse:collapse; background-color:#00703c;">
+			<tr>
+				<td align="center" style="padding:32px 24px; font-size:19px; line-height:1.6; color:#ffffff; font-family:'Open Sans', 'Trebuchet MS', Arial, Helvetica, sans-serif; text-align:center;">
+					<h1 style="margin:0 0 16px 0; font-size:36px; line-height:1.25; font-weight:600; font-family:'Supria Sans Cond', 'Arial Narrow', 'Trebuchet MS', Arial, Helvetica, sans-serif; color:#ffffff; text-align:center;">{{ panel.title | default("Email from The National Archives") }}</h1>
+					{{ panel.body | default("") | safe }}
+				</td>
+			</tr>
+		</table>
+	</td>
+</tr>
+{% endblock %}
+
+{% block main_content %}
+<tr>
+	<td style="padding:0;">
+		<table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
+			{% if content is defined and content %}
+			<tr>
+				<td class="email-text" style="padding:24px 24px 0 24px; font-size:19px; line-height:1.6; color:#343338; font-family:'Open Sans', 'Trebuchet MS', Arial, Helvetica, sans-serif;">
+					{{ content | safe }}
+				</td>
+			</tr>
+			{% endif %}
+			{% if cta_buttons is defined and cta_buttons %}
+			<tr>
+				<td style="padding:32px 24px;">
+					{% for button in cta_buttons %}
+					<table role="presentation" border="0" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
+						<tr>
+							<td style="padding:0 0 12px 0;">
+								<table role="presentation" border="0" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
+									<tr>
+										<td class="email-cta-cell" bgcolor="#000000" style="border-radius:2px; background-color:#000000;">
+											<a class="email-cta-link" href="{{ button.href | e }}" style="display:inline-block; padding:12px 20px; font-size:19px; line-height:1.35; font-weight:bold; color:#ffffff; text-decoration:none; background-color:#000000; border:1px solid #000000; border-radius:2px;">{{ button.text | e }}</a>
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</table>
+					{% endfor %}
+				</td>
+			</tr>
+			{% endif %}
+			{% if signoff is defined and signoff %}
+			<tr>
+				<td class="email-text" style="padding:0 24px 24px 24px; font-size:19px; line-height:1.6; color:#343338; font-family:'Open Sans', 'Trebuchet MS', Arial, Helvetica, sans-serif;">
+					{{ signoff | safe }}
+				</td>
+			</tr>
+			{% endif %}
+		</table>
+	</td>
+</tr>
+{% endblock %}
