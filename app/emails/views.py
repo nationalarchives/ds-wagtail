@@ -78,9 +78,9 @@ def email(request):
     }
 
     template = engines["jinja2"].get_template(
-        "wagtailadmin/account/password_reset/password_reset_email.html"
+        # "wagtailadmin/account/password_reset/password_reset_email.html"
         # "wagtailadmin/account/password_reset/email_unsafe_jinja.html"
-        # "wagtailadmin/notifications/approved.html"
+        "wagtailadmin/notifications/approved.html"
         # "wagtailadmin/notifications/rejected.html"
         # "wagtailadmin/notifications/task_state_approved.html"
         # "wagtailadmin/notifications/task_state_rejected.html"
