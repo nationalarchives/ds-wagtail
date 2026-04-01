@@ -5,7 +5,7 @@ from wagtail import blocks
 
 class CodeBlock(blocks.StructBlock):
     language = blocks.ChoiceBlock(
-        label="Language choice",
+        label="Code language",
         choices=[
             ("html", "HTML"),
             ("javascript", "JavaScript"),
