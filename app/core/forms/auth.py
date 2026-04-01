@@ -55,7 +55,9 @@ class HtmlPasswordResetForm(PasswordResetForm):
             # Pre-compute reset_url in Python (matching the original wagtail
             # email.txt approach) so the Jinja2 template doesn't need url_for.
             html_context = {**context, "reset_url": self._build_reset_url(context)}
-            html_body = self._render_email_template(html_email_template_name, html_context)
+            html_body = self._render_email_template(
+                html_email_template_name, html_context
+            )
             mail.attach_alternative(html_body, "text/html")
 
         mail.send()
