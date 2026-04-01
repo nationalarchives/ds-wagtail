@@ -3,7 +3,7 @@ from django.conf import settings
 from django.templatetags.static import StaticNode
 from django.urls import reverse
 from django.utils.safestring import mark_safe
-from jinja2 import Environment
+from jinja2 import Environment, select_autoescape
 
 register = template.Library()
 
@@ -33,6 +33,7 @@ def url_for(view_name, *args, **kwargs):
 
 
 def environment(**options):
+    options.setdefault("autoescape", select_autoescape(["html"]))
     env = Environment(**options)
 
     env.globals.update(
