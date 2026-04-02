@@ -27,7 +27,7 @@ class AlertActivityTests(WagtailPageTestCase):
             title="Important",
             message="This is a test",
             active=True,
-            expires_at=timezone.now() + timedelta(hours=1),
+            active_to=timezone.now() + timedelta(hours=1),
             alert_level=Alert.AlertLevelChoices.MEDIUM,
         )
 
@@ -39,7 +39,7 @@ class AlertActivityTests(WagtailPageTestCase):
             title="Important",
             message="This is a test",
             active=True,
-            expires_at=timezone.now() - timedelta(hours=1),
+            active_to=timezone.now() - timedelta(hours=1),
             alert_level=Alert.AlertLevelChoices.MEDIUM,
         )
 
@@ -54,7 +54,7 @@ class AlertActivityTests(WagtailPageTestCase):
             title="Important",
             message="This is a test",
             active=False,
-            expires_at=timezone.now() + timedelta(hours=1),
+            active_to=timezone.now() + timedelta(hours=1),
             alert_level=Alert.AlertLevelChoices.MEDIUM,
         )
 
@@ -66,7 +66,7 @@ class AlertActivityTests(WagtailPageTestCase):
             title="Important",
             message="This is a test",
             active=False,
-            schedule_at=timezone.now() - timedelta(hours=1),
+            active_from=timezone.now() - timedelta(hours=1),
             alert_level=Alert.AlertLevelChoices.MEDIUM,
         )
 
@@ -81,7 +81,7 @@ class AlertActivityTests(WagtailPageTestCase):
             title="Important",
             message="This is a test",
             active=True,
-            schedule_at=timezone.now() + timedelta(hours=1),
+            active_from=timezone.now() + timedelta(hours=1),
             alert_level=Alert.AlertLevelChoices.MEDIUM,
         )
 
@@ -96,8 +96,8 @@ class AlertActivityTests(WagtailPageTestCase):
             title="Important",
             message="This is a test",
             active=False,
-            schedule_at=timezone.now() - timedelta(hours=1),
-            expires_at=timezone.now() + timedelta(hours=1),
+            active_from=timezone.now() - timedelta(hours=1),
+            active_to=timezone.now() + timedelta(hours=1),
             alert_level=Alert.AlertLevelChoices.MEDIUM,
         )
 
@@ -111,8 +111,8 @@ class AlertActivityTests(WagtailPageTestCase):
             title="Important",
             message="This is a test",
             active=False,
-            schedule_at=timezone.now() - timedelta(hours=2),
-            expires_at=timezone.now() - timedelta(hours=1),
+            active_from=timezone.now() - timedelta(hours=2),
+            active_to=timezone.now() - timedelta(hours=1),
             alert_level=Alert.AlertLevelChoices.MEDIUM,
         )
 
@@ -126,7 +126,7 @@ class AlertActivityTests(WagtailPageTestCase):
             title="Important",
             message="This is a test",
             active=True,
-            expires_at=timezone.now() - timedelta(hours=1),
+            active_to=timezone.now() - timedelta(hours=1),
             alert_level=Alert.AlertLevelChoices.MEDIUM,
         )
 
@@ -138,7 +138,7 @@ class AlertActivityTests(WagtailPageTestCase):
             title="Important",
             message="This is a test",
             active=True,
-            schedule_at=timezone.now() + timedelta(hours=1),
+            active_from=timezone.now() + timedelta(hours=1),
             alert_level=Alert.AlertLevelChoices.MEDIUM,
         )
 
@@ -150,8 +150,8 @@ class AlertActivityTests(WagtailPageTestCase):
             title="Important",
             message="This is a test",
             active=True,
-            schedule_at=timezone.now() + timedelta(hours=1),
-            expires_at=timezone.now() + timedelta(hours=2),
+            active_from=timezone.now() + timedelta(hours=1),
+            active_to=timezone.now() + timedelta(hours=2),
             alert_level=Alert.AlertLevelChoices.MEDIUM,
         )
 
@@ -172,8 +172,8 @@ class AlertActivityTests(WagtailPageTestCase):
             title="Important",
             message="This is a test",
             active=False,
-            schedule_at=timezone.now() + timedelta(hours=1),
-            expires_at=timezone.now() + timedelta(hours=2),
+            active_from=timezone.now() + timedelta(hours=1),
+            active_to=timezone.now() + timedelta(hours=2),
             alert_level=Alert.AlertLevelChoices.MEDIUM,
         )
 
@@ -185,8 +185,8 @@ class AlertActivityTests(WagtailPageTestCase):
             title="Important",
             message="This is a test",
             active=False,
-            schedule_at=timezone.now() - timedelta(hours=1),
-            expires_at=None,
+            active_from=timezone.now() - timedelta(hours=1),
+            active_to=None,
             alert_level=Alert.AlertLevelChoices.MEDIUM,
         )
 
@@ -196,7 +196,7 @@ class AlertActivityTests(WagtailPageTestCase):
         self.assertTrue(
             any(
                 "Schedule date cannot be in the past." in message
-                for message in context.exception.message_dict["schedule_at"]
+                for message in context.exception.message_dict["active_from"]
             )
         )
 
@@ -206,8 +206,8 @@ class AlertActivityTests(WagtailPageTestCase):
             title="Important",
             message="This is a test",
             active=True,
-            schedule_at=timezone.now() + timedelta(hours=1),
-            expires_at=None,
+            active_from=timezone.now() + timedelta(hours=1),
+            active_to=None,
             alert_level=Alert.AlertLevelChoices.MEDIUM,
         )
 
@@ -228,8 +228,8 @@ class AlertActivityTests(WagtailPageTestCase):
             title="Important",
             message="This is a test",
             active=False,
-            schedule_at=timezone.now() + timedelta(hours=1),
-            expires_at=None,
+            active_from=timezone.now() + timedelta(hours=1),
+            active_to=None,
             alert_level=Alert.AlertLevelChoices.MEDIUM,
         )
 
@@ -241,8 +241,8 @@ class AlertActivityTests(WagtailPageTestCase):
             title="Important",
             message="This is a test",
             active=True,
-            schedule_at=None,
-            expires_at=timezone.now() - timedelta(hours=1),
+            active_from=None,
+            active_to=timezone.now() - timedelta(hours=1),
             alert_level=Alert.AlertLevelChoices.MEDIUM,
         )
 
@@ -263,8 +263,8 @@ class AlertActivityTests(WagtailPageTestCase):
             title="Important",
             message="This is a test",
             active=True,
-            schedule_at=None,
-            expires_at=timezone.now() + timedelta(hours=1),
+            active_from=None,
+            active_to=timezone.now() + timedelta(hours=1),
             alert_level=Alert.AlertLevelChoices.MEDIUM,
         )
 
@@ -276,8 +276,8 @@ class AlertActivityTests(WagtailPageTestCase):
             title="Important",
             message="This is a test",
             active=False,
-            schedule_at=timezone.now() + timedelta(hours=2),
-            expires_at=timezone.now() + timedelta(hours=1),
+            active_from=timezone.now() + timedelta(hours=2),
+            active_to=timezone.now() + timedelta(hours=1),
             alert_level=Alert.AlertLevelChoices.MEDIUM,
         )
 
@@ -286,7 +286,7 @@ class AlertActivityTests(WagtailPageTestCase):
 
         self.assertIn(
             "Expiry date must be later than the schedule date.",
-            context.exception.message_dict["expires_at"],
+            context.exception.message_dict["active_to"],
         )
 
 
@@ -488,7 +488,7 @@ class AlertMixinCascadeTests(WagtailPageTestCase):
             message="Parent message",
             active=True,
             cascade=True,
-            expires_at=timezone.now() - timedelta(hours=1),
+            active_to=timezone.now() - timedelta(hours=1),
             alert_level=Alert.AlertLevelChoices.HIGH,
         )
         child_alert = Alert.objects.create(

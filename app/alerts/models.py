@@ -34,27 +34,30 @@ class BaseAlert(models.Model):
 
     name = models.CharField(
         max_length=100,
-        help_text="The name of the alert to display in the CMS, for easier identification.",
+        help_text="The name of the banner to display in the CMS, for easier identification.",
     )
     title = models.CharField(
         max_length=50,
-        help_text="The short title of your alert which will show in bold at the top of the notification banner. E.g. 'Please note' or 'Important information'",
+        help_text="The short title of your banner which will show in bold at the top of the notification banner. E.g. 'Please note' or 'Important information'",
     )
     message = RichTextField(features=settings.INLINE_RICH_TEXT_FEATURES)
-    active = models.BooleanField(default=False)
+    active = models.BooleanField(
+        default=False,
+        verbose_name="Publish",
+    )
     cascade = models.BooleanField(
         default=False, verbose_name="Show on current and all child pages"
     )
-    schedule_at = models.DateTimeField(
+    active_from = models.DateTimeField(
         null=True,
         blank=True,
-        help_text="Set a start date for this banner. The banner will automatically be activated from this date. If left blank, the banner will remain inactive until manually activated.",
+        help_text="If set, the banner will only be visible after this time.",
     )
 
-    expires_at = models.DateTimeField(
+    active_to = models.DateTimeField(
         null=True,
         blank=True,
-        help_text="Set an expiry date for this banner. The banner will automatically be deactivated after this date. If left blank, the banner will remain active until manually deactivated.",
+        help_text="If set, the banner will not be visible after this time.",
     )
 
     panels = [
@@ -63,8 +66,8 @@ class BaseAlert(models.Model):
         FieldPanel("message"),
         FieldPanel("active"),
         FieldPanel("cascade"),
-        FieldPanel("schedule_at"),
-        FieldPanel("expires_at"),
+        FieldPanel("active_from"),
+        FieldPanel("active_to"),
     ]
 
     uid = models.BigIntegerField(null=False, blank=True, editable=False)
@@ -74,13 +77,14 @@ class BaseAlert(models.Model):
         now = timezone.now()
         computed_active = self.active
 
-        # Still check active and update it to ensure checks against expiry and scheduled date don't happen when unnecessary
-        if self.schedule_at and now < self.schedule_at:
+        # Banner has not been published
+        if not computed_active:
+            return False
+
+        if self.active_from and now < self.active_from:
             computed_active = False
-        elif self.expires_at and now >= self.expires_at:
+        elif self.active_to and now >= self.active_to:
             computed_active = False
-        elif self.schedule_at and now >= self.schedule_at:
-            computed_active = True
 
         return computed_active
 
@@ -91,23 +95,23 @@ class BaseAlert(models.Model):
         super().clean()
         now = timezone.now()
 
-        if self.schedule_at and self.schedule_at < now:
+        if self.active_from and self.active_from < now:
             raise ValidationError(
                 {
-                    "schedule_at": (
-                        "Schedule date cannot be in the past. If you need to activate this banner immediately, "
+                    "active_from": (
+                        "Scheduled date cannot be in the past. If you need to activate this banner immediately, "
                         "please leave the schedule date blank and set the banner as active."
                     )
                 }
             )
 
-        if self.schedule_at and self.expires_at and self.schedule_at >= self.expires_at:
+        if self.active_from and self.active_to and self.active_from >= self.active_to:
             raise ValidationError(
-                {"expires_at": ("Expiry date must be later than the schedule date.")}
+                {"active_to": ("Expiry date must be later than the scheduled date.")}
             )
 
         if self.active:
-            if self.schedule_at and now < self.schedule_at:
+            if self.active_from and now < self.active_from:
                 raise ValidationError(
                     {
                         "active": (
@@ -117,7 +121,7 @@ class BaseAlert(models.Model):
                     }
                 )
 
-            if self.expires_at and now >= self.expires_at:
+            if self.active_to and now >= self.active_to:
                 raise ValidationError(
                     {
                         "active": (
