@@ -219,6 +219,16 @@ class APIResponseTest(WagtailPageTestCase):
                             },
                         },
                         {
+                            "id": "c8d4e6f7-8901-4a5b-c6d7-e8f9a0b1c2d3",
+                            "type": "code",
+                            "value": {
+                                "language": "python",
+                                "code": 'def hello_world():\n    print("Hello, World!")\n\nhello_world()',
+                                "filename": "hello.py",
+                                "allow_copying": True,
+                            },
+                        },
+                        {
                             "id": "854cdf5c-c645-4f3b-b5c6-c7920c5a3cd2",
                             "type": "sub_heading",
                             "value": {"heading": "Sub-heading text"},
