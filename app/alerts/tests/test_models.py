@@ -186,7 +186,7 @@ class AlertActivityTests(WagtailPageTestCase):
 
         self.assertTrue(
             any(
-                "Scheduled date cannot be in the past." in message
+                "Active from (scheduled) date cannot be in the past." in message
                 for message in context.exception.message_dict["active_from"]
             )
         )
@@ -258,7 +258,7 @@ class AlertActivityTests(WagtailPageTestCase):
             alert.full_clean()
 
         self.assertIn(
-            "Expiry date must be later than the scheduled date.",
+            "Active to (expiry) date must be later than the Active from (scheduled) date.",
             context.exception.message_dict["active_to"],
         )
 
