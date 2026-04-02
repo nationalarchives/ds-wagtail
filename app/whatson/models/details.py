@@ -468,7 +468,11 @@ class EventPage(RequiredHeroImageMixin, ContentWarningMixin, BasePageWithRequire
         """
         Returns the series this event page belongs to, if any.
         """
-        return [tag.series for tag in self.page_series_tags.all() if tag.series]
+        return [
+            series
+            for series in (tag.series for tag in self.page_series_tags.all())
+            if series and series.live and series.privacy == "public"
+        ]
 
     @cached_property
     def type_label(cls) -> str:
@@ -665,7 +669,11 @@ class DisplayPage(
         """
         Returns the series this event page belongs to, if any.
         """
-        return [tag.series for tag in self.page_series_tags.all() if tag.series]
+        return [
+            series
+            for series in (tag.series for tag in self.page_series_tags.all())
+            if series and series.live and series.privacy == "public"
+        ]
 
     @cached_property
     def type_label(cls) -> str:
@@ -1028,7 +1036,11 @@ class ExhibitionPage(
         """
         Returns the series this event page belongs to, if any.
         """
-        return [tag.series for tag in self.page_series_tags.all() if tag.series]
+        return [
+            series
+            for series in (tag.series for tag in self.page_series_tags.all())
+            if series and series.live and series.privacy == "public"
+        ]
 
     @cached_property
     def type_label(cls) -> str:

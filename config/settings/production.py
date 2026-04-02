@@ -258,6 +258,8 @@ WAGTAILMEDIA = {
     ],
 }
 
+NEW_LABEL_DISPLAY_FOR_DAYS = int(os.getenv("NEW_LABEL_DISPLAY_FOR_DAYS", 21))
+
 # Wagtail settings
 
 WAGTAIL_SITE_NAME = "The National Archives"
@@ -299,6 +301,7 @@ INLINE_RICH_TEXT_FEATURES = [
     "bold",
     "italic",
     "link",
+    "code",
 ]
 RESTRICTED_RICH_TEXT_FEATURES = INLINE_RICH_TEXT_FEATURES + [
     "ol",

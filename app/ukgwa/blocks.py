@@ -1,14 +1,37 @@
 from app.core.blocks import (
     CallToActionBlock,
     ContentImageBlock,
+    DocumentsBlock,
     ParagraphBlock,
     QuoteBlock,
     SubHeadingBlock,
     SubSubHeadingBlock,
     YouTubeBlock,
 )
+from app.core.blocks.links import LinkBlock
 from django.core.exceptions import ValidationError
 from wagtail import blocks
+
+
+class LinkWithDescriptionBlock(LinkBlock):
+    """
+    Extends LinkBlock with a required description field.
+    """
+
+    description = blocks.CharBlock(
+        label="Description",
+        required=True,
+        help_text="Required description shown beneath the link",
+    )
+
+    def get_api_representation(self, value, context=None):
+        rep = super().get_api_representation(value, context)
+        rep["description"] = value.get("description", "")
+        return rep
+
+    class Meta:
+        label = "Link"
+        icon = "link"
 
 
 class BookmarkletBlock(blocks.StructBlock):
@@ -22,14 +45,15 @@ class BookmarkletBlock(blocks.StructBlock):
 
 
 class SectionContentBlock(blocks.StreamBlock):
+    bookmarklet = BookmarkletBlock()
     call_to_action = CallToActionBlock()
+    document = DocumentsBlock()
     image = ContentImageBlock()
     paragraph = ParagraphBlock()
     quote = QuoteBlock()
     sub_heading = SubHeadingBlock()
     sub_sub_heading = SubSubHeadingBlock()
     youtube_video = YouTubeBlock()
-    bookmarklet = BookmarkletBlock()
 
     class Meta:
         block_counts = {
