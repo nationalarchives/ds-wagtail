@@ -100,7 +100,7 @@ class BaseAlert(models.Model):
                 {
                     "active_from": (
                         "Scheduled date cannot be in the past. If you need to activate this banner immediately, "
-                        "please leave the schedule date blank and set the banner as active."
+                        "please leave the schedule date blank and publish the banner."
                     )
                 }
             )
@@ -109,27 +109,6 @@ class BaseAlert(models.Model):
             raise ValidationError(
                 {"active_to": ("Expiry date must be later than the scheduled date.")}
             )
-
-        if self.active:
-            if self.active_from and now < self.active_from:
-                raise ValidationError(
-                    {
-                        "active": (
-                            "This banner can only be set as active when the current time is "
-                            "within its configured schedule/expiry window."
-                        )
-                    }
-                )
-
-            if self.active_to and now >= self.active_to:
-                raise ValidationError(
-                    {
-                        "active": (
-                            "This banner can only be set as active when the current time is "
-                            "within its configured schedule/expiry window."
-                        )
-                    }
-                )
 
     def save(self, *args, **kwargs):
         self.uid = round(time.time() * 1000)

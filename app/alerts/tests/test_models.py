@@ -44,9 +44,9 @@ class AlertActivityTests(WagtailPageTestCase):
         )
 
         self.assertFalse(alert.is_active_now)
-        self.assertFalse(alert.active)
+        self.assertTrue(alert.active)
         alert.refresh_from_db()
-        self.assertFalse(alert.active)
+        self.assertTrue(alert.active)
 
     def test_inactive_alert_with_future_expiry_is_inactive(self):
         alert = Alert.objects.create(
@@ -60,9 +60,9 @@ class AlertActivityTests(WagtailPageTestCase):
 
         self.assertFalse(alert.is_active_now)
 
-    def test_inactive_alert_with_past_schedule_is_active(self):
+    def test_unpublished_alert_with_past_schedule_is_inactive(self):
         alert = Alert.objects.create(
-            name="Scheduled Active Alert",
+            name="Unpublished Scheduled Alert",
             title="Important",
             message="This is a test",
             active=False,
@@ -70,10 +70,10 @@ class AlertActivityTests(WagtailPageTestCase):
             alert_level=Alert.AlertLevelChoices.MEDIUM,
         )
 
-        self.assertTrue(alert.is_active_now)
-        self.assertTrue(alert.active)
+        self.assertFalse(alert.is_active_now)
+        self.assertFalse(alert.active)
         alert.refresh_from_db()
-        self.assertTrue(alert.active)
+        self.assertFalse(alert.active)
 
     def test_active_alert_with_future_schedule_is_inactive(self):
         alert = Alert.objects.create(
@@ -86,13 +86,13 @@ class AlertActivityTests(WagtailPageTestCase):
         )
 
         self.assertFalse(alert.is_active_now)
-        self.assertFalse(alert.active)
+        self.assertTrue(alert.active)
         alert.refresh_from_db()
-        self.assertFalse(alert.active)
+        self.assertTrue(alert.active)
 
-    def test_scheduled_alert_with_future_expiry_is_active(self):
+    def test_unpublished_alert_with_open_window_is_inactive(self):
         alert = Alert.objects.create(
-            name="Scheduled Window Alert",
+            name="Unpublished Window Alert",
             title="Important",
             message="This is a test",
             active=False,
@@ -101,9 +101,9 @@ class AlertActivityTests(WagtailPageTestCase):
             alert_level=Alert.AlertLevelChoices.MEDIUM,
         )
 
-        self.assertTrue(alert.is_active_now)
+        self.assertFalse(alert.is_active_now)
         alert.refresh_from_db()
-        self.assertTrue(alert.active)
+        self.assertFalse(alert.active)
 
     def test_scheduled_alert_with_past_expiry_is_inactive(self):
         alert = Alert.objects.create(
@@ -144,9 +144,9 @@ class AlertActivityTests(WagtailPageTestCase):
 
         self.assertIsNone(AlertSerializer().to_representation(alert))
 
-    def test_validation_fails_when_now_not_between_schedule_and_expiry(self):
+    def test_validation_passes_when_active_with_future_schedule_and_expiry(self):
         alert = Alert(
-            name="Invalid Window Alert",
+            name="Valid Published Future Window Alert",
             title="Important",
             message="This is a test",
             active=True,
@@ -155,16 +155,7 @@ class AlertActivityTests(WagtailPageTestCase):
             alert_level=Alert.AlertLevelChoices.MEDIUM,
         )
 
-        with self.assertRaises(ValidationError) as context:
-            alert.full_clean()
-
-        self.assertTrue(
-            any(
-                "This banner can only be set as active when the current time is "
-                "within its configured schedule/expiry window." in message
-                for message in context.exception.message_dict["active"]
-            )
-        )
+        alert.full_clean()
 
     def test_validation_passes_when_inactive_with_future_schedule_and_expiry(self):
         alert = Alert(
@@ -195,14 +186,14 @@ class AlertActivityTests(WagtailPageTestCase):
 
         self.assertTrue(
             any(
-                "Schedule date cannot be in the past." in message
+                "Scheduled date cannot be in the past." in message
                 for message in context.exception.message_dict["active_from"]
             )
         )
 
-    def test_validation_fails_when_active_before_schedule_with_no_expiry(self):
+    def test_validation_passes_when_active_before_schedule_with_no_expiry(self):
         alert = Alert(
-            name="Invalid Schedule Only Alert",
+            name="Valid Published Future Schedule Alert",
             title="Important",
             message="This is a test",
             active=True,
@@ -211,16 +202,7 @@ class AlertActivityTests(WagtailPageTestCase):
             alert_level=Alert.AlertLevelChoices.MEDIUM,
         )
 
-        with self.assertRaises(ValidationError) as context:
-            alert.full_clean()
-
-        self.assertTrue(
-            any(
-                "This banner can only be set as active when the current time is "
-                "within its configured schedule/expiry window." in message
-                for message in context.exception.message_dict["active"]
-            )
-        )
+        alert.full_clean()
 
     def test_validation_passes_when_inactive_with_future_schedule_and_no_expiry(self):
         alert = Alert(
@@ -235,9 +217,9 @@ class AlertActivityTests(WagtailPageTestCase):
 
         alert.full_clean()
 
-    def test_validation_fails_when_active_after_expiry_with_no_schedule(self):
+    def test_validation_passes_when_active_after_expiry_with_no_schedule(self):
         alert = Alert(
-            name="Invalid Expiry Only Alert",
+            name="Valid Published Expired Alert",
             title="Important",
             message="This is a test",
             active=True,
@@ -246,16 +228,7 @@ class AlertActivityTests(WagtailPageTestCase):
             alert_level=Alert.AlertLevelChoices.MEDIUM,
         )
 
-        with self.assertRaises(ValidationError) as context:
-            alert.full_clean()
-
-        self.assertTrue(
-            any(
-                "This banner can only be set as active when the current time is "
-                "within its configured schedule/expiry window." in message
-                for message in context.exception.message_dict["active"]
-            )
-        )
+        alert.full_clean()
 
     def test_validation_passes_when_active_before_expiry_with_no_schedule(self):
         alert = Alert(
@@ -285,7 +258,7 @@ class AlertActivityTests(WagtailPageTestCase):
             alert.full_clean()
 
         self.assertIn(
-            "Expiry date must be later than the schedule date.",
+            "Expiry date must be later than the scheduled date.",
             context.exception.message_dict["active_to"],
         )
 
