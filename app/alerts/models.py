@@ -82,14 +82,7 @@ class BaseAlert(models.Model):
         elif self.schedule_at and now >= self.schedule_at:
             computed_active = True
 
-        if computed_active != self.active:
-            self.active = computed_active
-
-            # Update db using queryset update to avoid triggering save() and potential recursive calls to is_active_now
-            if self.pk:
-                self.__class__.objects.filter(pk=self.pk).update(active=self.active)
-
-        return self.active
+        return computed_active
 
     def __str__(self):
         return self.name
