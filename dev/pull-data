@@ -30,7 +30,8 @@ echo "Dumping the database..."
 docker compose exec -i db sh -c "psql -U postgres < /home/$DATABASE_DUMP"
 
 echo "Starting the app container..."
-docker compose restart app
+docker compose down app
+docker compose up app -d --wait
 
 echo "Running migrations..."
 docker compose exec app poetry run python /app/manage.py migrate
