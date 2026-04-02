@@ -563,7 +563,9 @@ class CustomPagesAPIViewSetUnitTests(TestCase):
         self.viewset.request = request
         expected_site = object()
 
-        with patch("app.api.urls.pages.Site.find_for_request", return_value=expected_site) as mock_find:
+        with patch(
+            "app.api.urls.pages.Site.find_for_request", return_value=expected_site
+        ) as mock_find:
             result = self.viewset._get_site_from_request(request)
 
         self.assertIs(result, expected_site)
@@ -573,7 +575,9 @@ class CustomPagesAPIViewSetUnitTests(TestCase):
         request = self.request_factory.get("/api/v2/pages/", {"site": "example.com"})
         expected_site = object()
 
-        with patch("app.api.urls.pages.Site.objects.get", return_value=expected_site) as mock_get:
+        with patch(
+            "app.api.urls.pages.Site.objects.get", return_value=expected_site
+        ) as mock_get:
             result = self.viewset._get_site_from_request(request)
 
         self.assertIs(result, expected_site)
@@ -585,7 +589,9 @@ class CustomPagesAPIViewSetUnitTests(TestCase):
         )
         expected_site = object()
 
-        with patch("app.api.urls.pages.Site.objects.get", return_value=expected_site) as mock_get:
+        with patch(
+            "app.api.urls.pages.Site.objects.get", return_value=expected_site
+        ) as mock_get:
             result = self.viewset._get_site_from_request(request)
 
         self.assertIs(result, expected_site)
@@ -602,7 +608,9 @@ class CustomPagesAPIViewSetUnitTests(TestCase):
                 self.viewset._get_site_from_request(request)
 
     def test_get_site_from_request_missing_site_returns_none(self):
-        request = self.request_factory.get("/api/v2/pages/", {"site": "missing.example.com"})
+        request = self.request_factory.get(
+            "/api/v2/pages/", {"site": "missing.example.com"}
+        )
 
         with patch(
             "app.api.urls.pages.Site.objects.get",
@@ -617,7 +625,9 @@ class CustomPagesAPIViewSetUnitTests(TestCase):
         redirect = self.RedirectStub(redirect_page=redirect_page)
         redirects = self.RedirectsStub(redirect)
 
-        with patch("app.api.urls.pages.Redirect.objects.filter", return_value=redirects):
+        with patch(
+            "app.api.urls.pages.Redirect.objects.filter", return_value=redirects
+        ):
             resolved = self.viewset._resolve_redirect_path("/old-path/")
 
         self.assertEqual(resolved, "/new-path/")
@@ -625,7 +635,9 @@ class CustomPagesAPIViewSetUnitTests(TestCase):
     def test_resolve_redirect_path_returns_original_when_not_found(self):
         redirects = self.RedirectsStub(None)
 
-        with patch("app.api.urls.pages.Redirect.objects.filter", return_value=redirects):
+        with patch(
+            "app.api.urls.pages.Redirect.objects.filter", return_value=redirects
+        ):
             resolved = self.viewset._resolve_redirect_path("/no-redirect/")
 
         self.assertEqual(resolved, "/no-redirect/")
@@ -677,7 +689,9 @@ class CustomPagesAPIViewSetUnitTests(TestCase):
         self.assertTrue(called["value"])
 
     def test_find_object_returns_page_when_route_matches_queryset(self):
-        request = self.request_factory.get("/api/v2/pages/", {"html_path": "/old-path/"})
+        request = self.request_factory.get(
+            "/api/v2/pages/", {"html_path": "/old-path/"}
+        )
         queryset = self.QuerysetStub(exists_result=True)
         page = self.PageStub(page_id=123)
         specific = self.SpecificRootStub(route_result=(page, [], {}))
@@ -701,7 +715,9 @@ class CustomPagesAPIViewSetUnitTests(TestCase):
         self.assertIsNone(result)
 
     def test_find_object_returns_none_when_page_not_in_queryset(self):
-        request = self.request_factory.get("/api/v2/pages/", {"html_path": "/new-path/"})
+        request = self.request_factory.get(
+            "/api/v2/pages/", {"html_path": "/new-path/"}
+        )
         queryset = self.QuerysetStub(exists_result=False)
         page = self.PageStub(page_id=999)
         specific = self.SpecificRootStub(route_result=(page, [], {}))
