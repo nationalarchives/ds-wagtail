@@ -1,4 +1,5 @@
 from .accordion import AccordionsBlock, DetailsBlock, SimplifiedAccordionBlock
+from .code import CodeBlock
 from .contact import ContactBlock
 from .cta import ButtonBlock, CallToActionBlock, LargeCardLinksBlock
 from .document import DocumentsBlock
@@ -26,6 +27,7 @@ __all__ = [
     "AccordionsBlock",
     "APIPageChooserBlock",
     "ButtonBlock",
+    "CodeBlock",
     "CallToActionBlock",
     "ContactBlock",
     "ContentImageBlock",

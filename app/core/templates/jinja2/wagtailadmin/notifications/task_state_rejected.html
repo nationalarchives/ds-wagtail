@@ -1,17 +1,11 @@
-{% extends 'wagtailadmin/notifications/moderation_email_base.html' %}
+{% extends 'wagtailadmin/shared/email_base.html' %}
 {%- set page_title = revision.content_object.get_admin_display_title() -%}
 
 {%- set subject = "The National Archives: Page Rejected in Moderation" -%}
 
 {% if page %}
-  {%- set panel = {
-    "title": "Page rejected",
-    "headingLevel": 1,
-    "headingSize": "l",
-    "body": "<p style=\"margin:0;\">The page <strong>" ~ page_title ~ "</strong> has been rejected in moderation stage <strong>" ~ task.name ~ "</strong>.</p>"
-  } -%}
 
-  {%- set content = "<p style=\"margin:0;\">You can continue editing the page using the button below.</p>" -%}
+  {%- set content = "<h3>Page rejected</h3><p>The page <strong>" ~ page_title ~ "</strong> has been rejected in moderation stage <strong>" ~ task.name ~ "</strong>.</p><p>You can continue editing the page using the button below.</p>" -%}
 
   {%- set cta_buttons = [
     {
@@ -25,8 +19,8 @@
     "title": "Item rejected",
     "headingLevel": 1,
     "headingSize": "l",
-    "body": "<p style=\"margin:0;\">The {{ model_name }} <strong>" ~ object ~ "</strong> has been rejected in moderation stage <strong>" ~ task.name ~ "</strong>.</p>"
+    "body": "<p>The {{ model_name }} <strong>" ~ object ~ "</strong> has been rejected in moderation stage <strong>" ~ task.name ~ "</strong>.</p>"
   } -%}
 {% endif %}
 
-{%- set signoff = "<p style=\"margin:0;\">If you have any issues, please contact the Digital Services Content Design Team.</p>" -%}
+{%- set signoff = "<p>If you have any issues, please contact the Digital Services Content Design Team.</p>" -%}

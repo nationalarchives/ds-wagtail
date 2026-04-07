@@ -1,4 +1,4 @@
-{% extends 'wagtailadmin/notifications/moderation_email_base.html' %}
+{% extends 'wagtailadmin/shared/email_base.html' %}
 {%- set page_title = revision.content_object.get_admin_display_title() -%}
 {%- set full_page_url = revision.content_object.full_url -%}
 
@@ -8,10 +8,10 @@
   "title": "Page approved",
   "headingLevel": 1,
   "headingSize": "l",
-  "body": "<p style=\"margin:0;\">The page <strong>" ~ page_title ~ "</strong> has been approved.</p>"
+  "body": "<p>The page <strong>" ~ page_title ~ "</strong> has been approved.</p>"
 } -%}
 
-{%- set content = "<p style=\"margin:0;\">You can view your page using the button below.</p>" -%}
+{%- set content = "<p>You can view your page using the button below.</p>" -%}
 
 {%- set cta_buttons = [
   {
@@ -20,4 +20,4 @@
   }
 ] -%}
 
-{%- set signoff = "<p style=\"margin:0;\">If you have any issues, please contact the Digital Services Content Design Team.</p>" -%}
+{%- set signoff = "<p>If you have any issues, please contact the Digital Services Content Design Team.</p>" -%}

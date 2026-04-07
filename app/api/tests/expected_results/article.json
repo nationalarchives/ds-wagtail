@@ -161,6 +161,16 @@
                         "id": "be9a28f4-0067-4922-a6fa-fd118b7c0be9"
                     },
                     {
+                        "type": "code",
+                        "value": {
+                            "language": "python",
+                            "code": "def hello_world():\n    print(\"Hello, World!\")\n\nhello_world()",
+                            "filename": "hello.py",
+                            "allow_copying": true
+                        },
+                        "id": "c8d4e6f7-8901-4a5b-c6d7-e8f9a0b1c2d3"
+                    },
+                    {
                         "type": "sub_heading",
                         "value": {
                             "heading": "Sub-heading text"
