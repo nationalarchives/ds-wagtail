@@ -1,4 +1,4 @@
-{% extends 'wagtailadmin/notifications/moderation_email_base.html' %}
+{% extends 'wagtailadmin/account/email_safe_base.html' %}
 {%- set page_title = revision.content_object.get_admin_display_title() -%}
 
 {% if task_state and task_state.finished_by %}
@@ -13,18 +13,18 @@
       "title": "Page rejected",
       "headingLevel": 1,
       "headingSize": "l",
-      "body": "<p style=\"margin:0;\">The page <strong>" ~ page_title ~ "</strong> has been rejected during <strong>" ~ task.name ~ "</strong> in workflow <strong>" ~ workflow.name ~ "</strong> by " ~ rejector_name ~ ".</p>" ~ (("<p style=\"margin:16px 0 0 0;\">Comment: " ~ comment ~ "</p>") if comment else "")
+      "body": "<p>The page <strong>" ~ page_title ~ "</strong> has been rejected during <strong>" ~ task.name ~ "</strong> in workflow <strong>" ~ workflow.name ~ "</strong> by " ~ rejector_name ~ ".</p>" ~ (("<p>Comment: " ~ comment ~ "</p>") if comment else "")
     } -%}
   {% else %}
     {%- set panel = {
       "title": "Page rejected",
       "headingLevel": 1,
       "headingSize": "l",
-      "body": "<p style=\"margin:0;\">The page <strong>" ~ page_title ~ "</strong> has been rejected during <strong>" ~ task.name ~ "</strong> in workflow <strong>" ~ workflow.name ~ "</strong>.</p>" ~ (("<p style=\"margin:16px 0 0 0;\">Comment: " ~ comment ~ "</p>") if comment else "")
+      "body": "<p>The page <strong>" ~ page_title ~ "</strong> has been rejected during <strong>" ~ task.name ~ "</strong> in workflow <strong>" ~ workflow.name ~ "</strong>.</p>" ~ (("<p>Comment: " ~ comment ~ "</p>") if comment else "")
     } -%}
   {% endif %}
 
-  {%- set content = "<p style=\"margin:0;\">You can continue editing using the button below.</p>" -%}
+  {%- set content = "<p>You can continue editing using the button below.</p>" -%}
 
   {%- set cta_buttons = [
     {
@@ -39,16 +39,16 @@
       "title": "Item rejected",
       "headingLevel": 1,
       "headingSize": "l",
-      "body": "<p style=\"margin:0;\">The {{ model_name }} <strong>" ~ object ~ "</strong> has been rejected during <strong>" ~ task.name ~ "</strong> in workflow <strong>" ~ workflow.name ~ "</strong> by {{ rejector_name }}.</p>" ~ (("<p style=\"margin:16px 0 0 0;\">Comment: " ~ comment ~ "</p>") if comment else "")
+      "body": "<p>The {{ model_name }} <strong>" ~ object ~ "</strong> has been rejected during <strong>" ~ task.name ~ "</strong> in workflow <strong>" ~ workflow.name ~ "</strong> by {{ rejector_name }}.</p>" ~ (("<p>Comment: " ~ comment ~ "</p>") if comment else "")
     } -%}
   {% else %}
     {%- set panel = {
       "title": "Item rejected",
       "headingLevel": 1,
       "headingSize": "l",
-      "body": "<p style=\"margin:0;\">The {{ model_name }} <strong>" ~ object ~ "</strong> has been rejected during <strong>" ~ task.name ~ "</strong> in workflow <strong>" ~ workflow.name ~ "</strong>.</p>" ~ (("<p style=\"margin:16px 0 0 0;\">Comment: " ~ comment ~ "</p>") if comment else "")
+      "body": "<p>The {{ model_name }} <strong>" ~ object ~ "</strong> has been rejected during <strong>" ~ task.name ~ "</strong> in workflow <strong>" ~ workflow.name ~ "</strong>.</p>" ~ (("<p>Comment: " ~ comment ~ "</p>") if comment else "")
     } -%}
   {% endif %}
 {% endif %}
 
-{%- set signoff = "<p style=\"margin:0;\">If you have any issues, please contact the Digital Services Content Design Team.</p>" -%}
+{%- set signoff = "<p>If you have any issues, please contact the Digital Services Content Design Team.</p>" -%}

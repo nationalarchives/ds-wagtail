@@ -1,6 +1,7 @@
 {%- set tna_logo_png_src = tna_logo_png_src or "https://design-system.nationalarchives.gov.uk/static/assets/images/icon-1024x1024.png" -%}
 {%- set tna_logo_svg_src = tna_logo_svg_src or "https://design-system.nationalarchives.gov.uk/static/assets/images/tna-square-logo.svg" -%}
 {%- set tna_footer_logo_png_src = tna_footer_logo_png_src or tna_logo_png_src -%}
+{%- set base_url = base_url or app_config["WAGTAILADMIN_BASE_URL"] or (protocol ~ "://" ~ domain) -%}
 
 <!doctype html>
 <html lang="en">
@@ -11,7 +12,7 @@
     <meta name="color-scheme" content="light dark">
     <meta name="supported-color-schemes" content="light dark">
     <meta name="tna.app.build-version" content="{{ app_config.BUILD_VERSION | e }}">
-    <title>{% block title %}Email from The National Archives{% endblock %}</title>
+    <title>{% block title %}{% if subject is defined and subject %}{{ subject }}{% else %}Email from The National Archives{% endif %}{% endblock %}</title>
     <style>
       @media (prefers-color-scheme: dark) {
         .email-page {
@@ -92,6 +93,20 @@
       [data-ogsc] .email-social-link {
         color: #00b0ff !important;
       }
+
+      .email-panel-body p,
+      .email-content-block p,
+      .email-signoff-block p {
+        margin: 0;
+      }
+
+      .email-content-block p + p {
+        margin-top: 24px;
+      }
+
+      .email-panel-body p + p {
+        margin-top: 16px;
+      }
     </style>
   </head>
   <body class="email-page" style="margin:0; padding:0; background-color:#f3f2f1; font-family:'Open Sans', 'Trebuchet MS', Arial, Helvetica, sans-serif; color:#343338;">
@@ -118,6 +133,20 @@
 
             <!-- Hero Panel -->
             {% block panel %}
+            {% if panel is defined and panel %}
+            <tr>
+              <td style="padding:24px 24px 32px 24px;">
+                <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#00703c" style="border-collapse:collapse; background-color:#00703c;">
+                  <tr>
+                    <td align="center" style="padding:32px 24px; font-size:19px; line-height:1.6; color:#ffffff; font-family:'Open Sans', 'Trebuchet MS', Arial, Helvetica, sans-serif; text-align:center;">
+                      <h1 style="margin:0 0 16px 0; font-size:36px; line-height:1.25; font-weight:600; font-family:'Supria Sans Cond', 'Arial Narrow', 'Trebuchet MS', Arial, Helvetica, sans-serif; color:#ffffff; text-align:center;">{{ panel.title | default("Email from The National Archives") }}</h1>
+                      <div class="email-panel-body" style="margin:0;">{{ panel.body | default("") | safe }}</div>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            {% else %}
             <tr>
               <td style="padding:24px 24px 32px 24px;">
                 <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#00703c" style="border-collapse:collapse; background-color:#00703c;">
@@ -130,10 +159,58 @@
                 </table>
               </td>
             </tr>
+            {% endif %}
             {% endblock %}
 
             <!-- Body Content -->
             {% block main_content %}
+            {% if (content is defined and content) or (cta_buttons is defined and cta_buttons) or (signoff is defined and signoff) %}
+            <tr>
+              <td style="padding:0;">
+                <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
+                  {% if content is defined and content %}
+                  <tr>
+                    <td class="email-text" style="padding:24px 24px 0 24px; font-size:19px; line-height:1.6; color:#343338; font-family:'Open Sans', 'Trebuchet MS', Arial, Helvetica, sans-serif;">
+                      <div class="email-content-block" style="margin:0;">{{ content | safe }}</div>
+                    </td>
+                  </tr>
+                  {% endif %}
+                  {% if cta_buttons is defined and cta_buttons %}
+                  <tr>
+                    <td style="padding:32px 24px;">
+                      {% for button in cta_buttons %}
+                      {% set button_href = button.href if button.href is defined else (button[1] if button is sequence and (button | length) > 1 else "") %}
+                      {% set button_text = button.text if button.text is defined else (button[0] if button is sequence and (button | length) > 0 else "") %}
+                      {% if button_href and button_text %}
+                      <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
+                        <tr>
+                          <td style="padding:0 0 12px 0;">
+                            <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
+                              <tr>
+                                <td class="email-cta-cell" bgcolor="#000000" style="border-radius:2px; background-color:#000000;">
+                                  <a class="email-cta-link" href="{{ button_href | e }}" style="display:inline-block; padding:12px 20px; font-size:19px; line-height:1.35; font-weight:bold; color:#ffffff; text-decoration:none; background-color:#000000; border:1px solid #000000; border-radius:2px;">{{ button_text | e }}</a>
+                                </td>
+                              </tr>
+                            </table>
+                          </td>
+                        </tr>
+                      </table>
+                      {% endif %}
+                      {% endfor %}
+                    </td>
+                  </tr>
+                  {% endif %}
+                  {% if signoff is defined and signoff %}
+                  <tr>
+                    <td class="email-text" style="padding:0 24px 24px 24px; font-size:19px; line-height:1.6; color:#343338; font-family:'Open Sans', 'Trebuchet MS', Arial, Helvetica, sans-serif;">
+                      <div class="email-signoff-block" style="margin:0;">{{ signoff | safe }}</div>
+                    </td>
+                  </tr>
+                  {% endif %}
+                </table>
+              </td>
+            </tr>
+            {% else %}
             <tr>
               <td style="padding:0;">
                 <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
@@ -141,6 +218,7 @@
                 </table>
               </td>
             </tr>
+            {% endif %}
             {% endblock %}
 
             <!-- Footer -->

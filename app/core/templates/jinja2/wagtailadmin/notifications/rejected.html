@@ -1,4 +1,4 @@
-{% extends 'wagtailadmin/notifications/moderation_email_base.html' %}
+{% extends 'wagtailadmin/account/email_safe_base.html' %}
 {%- set page_title = revision.content_object.get_admin_display_title() -%}
 {%- set edit_path = url_for('wagtailadmin_pages:edit', revision.content_object.id) -%}
 {%- set edit_url = base_url ~ edit_path -%}
@@ -9,10 +9,10 @@
   "title": "Page rejected",
   "headingLevel": 1,
   "headingSize": "l",
-  "body": "<p style=\"margin:0;\">The page <strong>" ~ page_title ~ "</strong> has been rejected.</p>"
+  "body": "<p>The page <strong>" ~ page_title ~ "</strong> has been rejected.</p>"
 } -%}
 
-{%- set content = "<p style=\"margin:0;\">You can edit your page using the button below.</p>" -%}
+{%- set content = "<p>You can edit your page using the button below.</p>" -%}
 
 {%- set cta_buttons = [
   {
@@ -21,4 +21,4 @@
   }
 ] -%}
 
-{%- set signoff = "<p style=\"margin:0;\">If you have any issues, please contact the Digital Services Content Design Team.</p>" -%}
+{%- set signoff = "<p>If you have any issues, please contact the Digital Services Content Design Team.</p>" -%}
