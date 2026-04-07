@@ -5,14 +5,7 @@
 
 {%- set subject = "The National Archives: Page Rejected" -%}
 
-{%- set panel = {
-  "title": "Page rejected",
-  "headingLevel": 1,
-  "headingSize": "l",
-  "body": "<p>The page <strong>" ~ page_title ~ "</strong> has been rejected.</p>"
-} -%}
-
-{%- set content = "<p>You can edit your page using the button below.</p>" -%}
+{%- set content = "<h3>Page rejected</h3><p>The page <strong>" ~ page_title ~ "</strong> has been rejected.</p><p>You can edit your page using the button below.</p>" -%}
 
 {%- set cta_buttons = [
   {

@@ -4,14 +4,8 @@
 {%- set subject = "The National Archives: Page Rejected in Moderation" -%}
 
 {% if page %}
-  {%- set panel = {
-    "title": "Page rejected",
-    "headingLevel": 1,
-    "headingSize": "l",
-    "body": "<p>The page <strong>" ~ page_title ~ "</strong> has been rejected in moderation stage <strong>" ~ task.name ~ "</strong>.</p>"
-  } -%}
 
-  {%- set content = "<p>You can continue editing the page using the button below.</p>" -%}
+  {%- set content = "<h3>Page rejected</h3><p>The page <strong>" ~ page_title ~ "</strong> has been rejected in moderation stage <strong>" ~ task.name ~ "</strong>.</p><p>You can continue editing the page using the button below.</p>" -%}
 
   {%- set cta_buttons = [
     {
