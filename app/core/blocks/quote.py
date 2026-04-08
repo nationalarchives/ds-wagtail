@@ -39,7 +39,7 @@ class AttributionCitationBlock(blocks.StructBlock):
     class Meta:
         icon = "edit"
         collapsed = True
-        label_format = "{attribution}, {citation}" #TODO: fix the comma here in display
+        label_format = "{attribution+"," if attribution} {citation}"
 
 
 class QuoteBlock(blocks.StructBlock):
