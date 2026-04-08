@@ -1,5 +1,7 @@
 {% extends 'wagtailadmin/shared/email_base.html' %}
-{%- set page_title = revision.content_object.get_admin_display_title() -%}
+{% if page %}
+  {%- set page_title = page.get_admin_display_title() -%}
+{% endif %}
 
 {%- set subject = "The National Archives: Page Approved in Workflow" -%}
 
@@ -16,7 +18,7 @@
   {%- set cta_buttons = [
     {
       "text": "View page",
-      "href": revision.content_object.full_url
+      "href": page.full_url
     }
   ] -%}
 
@@ -25,7 +27,7 @@
     "title": "Item approved",
     "headingLevel": 1,
     "headingSize": "l",
-    "body": "<p>The {{ model_name }} <strong>" ~ object ~ "</strong> has been approved in workflow <strong>" ~ workflow.name ~ "</strong>.</p>"
+    "body": "<p>The " ~ model_name ~ " <strong>" ~ object ~ "</strong> has been approved in workflow <strong>" ~ workflow.name ~ "</strong>.</p>"
   } -%}
 
 {% endif %}

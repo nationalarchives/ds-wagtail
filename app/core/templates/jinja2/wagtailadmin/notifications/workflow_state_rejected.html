@@ -1,5 +1,7 @@
 {% extends 'wagtailadmin/shared/email_base.html' %}
-{%- set page_title = revision.content_object.get_admin_display_title() -%}
+{% if page %}
+  {%- set page_title = page.get_admin_display_title() -%}
+{% endif %}
 
 {% if task_state and task_state.finished_by %}
   {% set rejector_name = task_state.finished_by.get_full_name() or task_state.finished_by.get_username() %}
@@ -29,7 +31,7 @@
   {%- set cta_buttons = [
     {
       "text": "Edit page",
-      "href": base_url ~ url_for('wagtailadmin_pages:edit', revision.content_object.id)
+      "href": base_url ~ url_for('wagtailadmin_pages:edit', page.id)
     }
   ] -%}
 
@@ -39,14 +41,14 @@
       "title": "Item rejected",
       "headingLevel": 1,
       "headingSize": "l",
-      "body": "<p>The {{ model_name }} <strong>" ~ object ~ "</strong> has been rejected during <strong>" ~ task.name ~ "</strong> in workflow <strong>" ~ workflow.name ~ "</strong> by {{ rejector_name }}.</p>" ~ (("<p>Comment: " ~ comment ~ "</p>") if comment else "")
+      "body": "<p>The " ~ model_name ~ " <strong>" ~ object ~ "</strong> has been rejected during <strong>" ~ task.name ~ "</strong> in workflow <strong>" ~ workflow.name ~ "</strong> by " ~ rejector_name ~ ".</p>" ~ (("<p>Comment: " ~ comment ~ "</p>") if comment else "")
     } -%}
   {% else %}
     {%- set panel = {
       "title": "Item rejected",
       "headingLevel": 1,
       "headingSize": "l",
-      "body": "<p>The {{ model_name }} <strong>" ~ object ~ "</strong> has been rejected during <strong>" ~ task.name ~ "</strong> in workflow <strong>" ~ workflow.name ~ "</strong>.</p>" ~ (("<p>Comment: " ~ comment ~ "</p>") if comment else "")
+      "body": "<p>The " ~ model_name ~ " <strong>" ~ object ~ "</strong> has been rejected during <strong>" ~ task.name ~ "</strong> in workflow <strong>" ~ workflow.name ~ "</strong>.</p>" ~ (("<p>Comment: " ~ comment ~ "</p>") if comment else "")
     } -%}
   {% endif %}
 {% endif %}
