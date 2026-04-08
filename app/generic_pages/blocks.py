@@ -29,30 +29,30 @@ from wagtail import blocks
 
 
 class SectionContentBlock(blocks.StreamBlock):
-    accordions = AccordionsBlock()
-    button = ButtonBlock()
-    call_to_action = CallToActionBlock()
-    contact = ContactBlock()
-    description_list = DescriptionListBlock(group="Lists")
-    details = DetailsBlock()
-    document = DocumentsBlock(group="Attachments")
-    do_dont_list = DoDontListBlock(group="Lists")
-    featured_external_link = FeaturedExternalLinkBlock()
-    featured_page = FeaturedPageBlock()
-    image = ContentImageBlock()
-    image_gallery = ImageGalleryBlock()
-    inset_text = InsetTextBlock(group="Text")
-    media = MediaBlock(group="Media")
-    paragraph = ParagraphBlock(group="Text")
-    partner_logos = PartnerLogoListBlock()
-    people_listing = PeopleListingBlock()
-    quote = QuoteBlock(group="Text")
-    record_links = RecordLinksBlock()
-    sub_heading = SubHeadingBlock()
-    sub_sub_heading = SubSubHeadingBlock()
-    table = ContentTableBlock()
-    warning_text = WarningTextBlock()
-    youtube_video = YouTubeBlock(group="Media")
+    accordions = AccordionsBlock(group="Structured and collapsible content")
+    button = ButtonBlock(group="Onward journeys")
+    call_to_action = CallToActionBlock(group="Onward journeys")
+    contact = ContactBlock(group="Onward journeys")
+    description_list = DescriptionListBlock(group="Structured and collapsible content")
+    details = DetailsBlock(group="Structured and collapsible content")
+    document = DocumentsBlock(group="Video, audio and downloads")
+    do_dont_list = DoDontListBlock(group="Emphasis")
+    featured_external_link = FeaturedExternalLinkBlock(group="Onward journeys")
+    featured_page = FeaturedPageBlock(group="Onward journeys")
+    image = ContentImageBlock(group="Images")
+    image_gallery = ImageGalleryBlock(group="Images")
+    inset_text = InsetTextBlock(group="Emphasis")
+    media = MediaBlock(group="Video, audio and downloads")
+    paragraph = ParagraphBlock(group="Basic text")
+    partner_logos = PartnerLogoListBlock(group="Images")
+    people_listing = PeopleListingBlock(group="Onward journeys")
+    quote = QuoteBlock(group="Basic text")
+    record_links = RecordLinksBlock(group="Onward journeys")
+    sub_heading = SubHeadingBlock(group="Basic text")
+    sub_sub_heading = SubSubHeadingBlock(group="Basic text")
+    table = ContentTableBlock(group="Structured and collapsible content")
+    warning_text = WarningTextBlock(group="Emphasis")
+    youtube_video = YouTubeBlock(group="Video, audio and downloads")
 
 
 class ContentSectionBlock(blocks.StructBlock):
@@ -61,6 +61,7 @@ class ContentSectionBlock(blocks.StructBlock):
 
     class Meta:
         label = "Section"
+        group = "Basic text"
 
     def clean(self, value):
         clean = super().clean(value)
