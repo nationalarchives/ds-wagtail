@@ -15,17 +15,17 @@ from wagtail import blocks
 
 
 class SectionContentBlock(blocks.StreamBlock):
-    code = CodeBlock()
-    featured_external_link = FeaturedExternalLinkBlock()
-    featured_page = FeaturedPageBlock()
-    image = ContentImageBlock()
-    image_gallery = ImageGalleryBlock()
-    media = MediaBlock()
-    paragraph = ParagraphBlock()
-    quote = QuoteBlock()
-    record_links = RecordLinksBlock()
-    sub_heading = SubHeadingBlock()
-    youtube_video = YouTubeBlock()
+    code = CodeBlock(group="Structured and collapsible content")
+    featured_external_link = FeaturedExternalLinkBlock(group="Onward journeys")
+    featured_page = FeaturedPageBlock(group="Onward journeys")
+    image = ContentImageBlock(group="Images")
+    image_gallery = ImageGalleryBlock(group="Images")
+    media = MediaBlock(group="Video, audio and downloads")
+    paragraph = ParagraphBlock(group="Basic text")
+    quote = QuoteBlock(group="Basic text")
+    record_links = RecordLinksBlock(group="Onward journeys")
+    sub_heading = SubHeadingBlock(group="Basic text")
+    youtube_video = YouTubeBlock(group="Video, audio and downloads")
 
 
 class ContentSectionBlock(blocks.StructBlock):
