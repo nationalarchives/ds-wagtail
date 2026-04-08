@@ -6,14 +6,27 @@ from wagtail import blocks
 from .page_chooser import APIPageChooserBlock
 
 
-class QuoteBlock(blocks.StructBlock):
-    """
-    Quote streamfield component
-    """
+class CitationLink(blocks.StructBlock):
 
-    quote = APIRichTextBlock(
-        required=True, features=settings.RESTRICTED_RICH_TEXT_FEATURES
+    citation_internal_link = APIPageChooserBlock(
+        label="Internal page",
+        required=False,
+        help_text="Reference another page published on the site",
     )
+    citation_external_link = blocks.URLBlock(
+        label="External link",
+        required=False,
+        help_text="Add a URL here to refer to an external source",
+    )
+
+    class Meta:
+        icon = "link"
+        collapsed = True
+        label_format = "(internal page or link)"
+
+
+class AttributionCitationBlock(blocks.StructBlock):
+
     attribution = blocks.CharBlock(
         required=False, max_length=100, help_text="e.g. Author"
     )
@@ -22,14 +35,25 @@ class QuoteBlock(blocks.StructBlock):
         required=False, max_length=100, help_text="e.g. Some Book"
     )
 
-    citation_internal_link = APIPageChooserBlock(
-        required=False,
-        help_text="Reference another page published on the site",
+    linked_source = CitationLink()
+
+    class Meta:
+        icon = "edit"
+        collapsed = True
+        label_format = "-- [Attribution], [Citation]"
+
+
+class QuoteBlock(blocks.StructBlock):
+    """
+    Quote streamfield component
+    """
+
+    quote = APIRichTextBlock(
+        required=True, features=settings.RESTRICTED_RICH_TEXT_FEATURES
     )
-    citation_external_link = blocks.URLBlock(
-        required=False,
-        help_text="Add a URL here to refer to an external source",
-    )
+
+    citation = AttributionCitationBlock(label="Attribution/Citation")
+
 
     def clean(self, value):
         data = super().clean(value)
@@ -49,11 +73,13 @@ class QuoteBlock(blocks.StructBlock):
         ) or (internal_link.get("full_url") if internal_link else None)
         del representation["citation_internal_link"]
         del representation["citation_external_link"]
+        print(representation)
         return representation
 
     class Meta:
         icon = "openquote"
         label = "Quote"
+        citation = AttributionCitationBlock()
 
 
 class ReviewBlock(blocks.StructBlock):
