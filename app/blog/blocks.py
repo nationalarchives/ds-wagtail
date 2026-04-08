@@ -46,6 +46,7 @@ class ContentSectionBlock(blocks.StructBlock):
 
     class Meta:
         label = "Section"
+        group = "Basic text"
 
 
 class BlogPostPageStreamBlock(SectionContentBlock):
