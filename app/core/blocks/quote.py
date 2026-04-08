@@ -22,25 +22,24 @@ class CitationLink(blocks.StructBlock):
     class Meta:
         icon = "link"
         collapsed = True
-        label_format = "(internal page or link)"
 
 
 class AttributionCitationBlock(blocks.StructBlock):
 
     attribution = blocks.CharBlock(
-        required=False, max_length=100, help_text="e.g. Author"
+        required=False, max_length=100, help_text="The name of the person being quoted. e.g. King Edward VIII"
     )
 
     citation = blocks.CharBlock(
-        required=False, max_length=100, help_text="e.g. Some Book"
+        required=False, max_length=100, help_text="The title of the work or document from which the quote is taken. e.g. Instrument of Abdication, 10 December 1936. Catalogue reference: PC 11/1"
     )
 
-    linked_source = CitationLink()
+    source_link = CitationLink()
 
     class Meta:
         icon = "edit"
         collapsed = True
-        label_format = "-- [Attribution], [Citation]"
+        label_format = "{attribution}, {citation}" #TODO: fix the comma here in display
 
 
 class QuoteBlock(blocks.StructBlock):
@@ -52,7 +51,7 @@ class QuoteBlock(blocks.StructBlock):
         required=True, features=settings.RESTRICTED_RICH_TEXT_FEATURES
     )
 
-    citation = AttributionCitationBlock(label="Attribution/Citation")
+    citation = AttributionCitationBlock(label="Source")
 
 
     def clean(self, value):
