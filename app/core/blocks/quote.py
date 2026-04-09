@@ -55,12 +55,16 @@ class QuoteBlock(blocks.StructBlock):
         required=True, features=settings.RESTRICTED_RICH_TEXT_FEATURES
     )
 
-    citation = AttributionCitationBlock(label="Source")
+    source = AttributionCitationBlock()
 
     def clean(self, value):
         data = super().clean(value)
+        source = data.get("source") or {}
+        source_link = source.get("source_link") or {}
 
-        if data.get("citation_internal_link") and data.get("citation_external_link"):
+        if source_link.get("citation_internal_link") and source_link.get(
+            "citation_external_link"
+        ):
             raise ValidationError(
                 "You must provide either a page link or an external link, not both."
             )
@@ -69,20 +73,23 @@ class QuoteBlock(blocks.StructBlock):
 
     def get_api_representation(self, value, context=None):
         representation = super().get_api_representation(value, context)
-        citation = representation.get("citation")
-        citation_link = citation.get("source_link")
-        internal_link = citation.get("citation_internal_link")
-        representation["attribution"] = citation.get("attribution")
-        representation["citation"] = citation.get("citation")
-        representation["citation_url"] = citation_link.get(
-            "citation_external_link"
-        ) or (internal_link.get("full_url") if internal_link else None)
-        return representation
+        source = representation.pop("source", {}) or {}
+
+        citation_link = source.get("source_link") or {}
+        internal_link = citation_link.get("citation_internal_link")
+
+        return {
+            "quote": representation.get("quote"),
+            "attribution": source.get("attribution"),
+            "citation": source.get("citation"),
+            "citation_url": citation_link.get("citation_external_link")
+            or (internal_link.get("full_url") if internal_link else None),
+        }
 
     class Meta:
         icon = "openquote"
         label = "Quote"
-        citation = AttributionCitationBlock()
+        source = AttributionCitationBlock()
 
 
 class ReviewBlock(blocks.StructBlock):
