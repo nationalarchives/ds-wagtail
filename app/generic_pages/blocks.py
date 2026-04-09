@@ -56,7 +56,6 @@ class SectionContentBlock(blocks.StreamBlock):
     warning_text = WarningTextBlock(group="Emphasis")
     youtube_video = YouTubeBlock(group="Video, audio and downloads")
 
-
 class ContentSectionBlock(blocks.StructBlock):
     heading = blocks.CharBlock(max_length=100, label="Heading")
     content = SectionContentBlock(required=False)
