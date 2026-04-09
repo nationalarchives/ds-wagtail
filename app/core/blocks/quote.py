@@ -27,11 +27,15 @@ class CitationLink(blocks.StructBlock):
 class AttributionCitationBlock(blocks.StructBlock):
 
     attribution = blocks.CharBlock(
-        required=False, max_length=100, help_text="The name of the person being quoted. e.g. King Edward VIII"
+        required=False,
+        max_length=100,
+        help_text="The name of the person being quoted. e.g. King Edward VIII",
     )
 
     citation = blocks.CharBlock(
-        required=False, max_length=100, help_text="The title of the work or document from which the quote is taken. e.g. Instrument of Abdication, 10 December 1936. Catalogue reference: PC 11/1"
+        required=False,
+        max_length=100,
+        help_text="The title of the work or document from which the quote is taken. e.g. Instrument of Abdication, 10 December 1936. Catalogue reference: PC 11/1",
     )
 
     source_link = CitationLink()
@@ -39,7 +43,7 @@ class AttributionCitationBlock(blocks.StructBlock):
     class Meta:
         icon = "edit"
         collapsed = True
-        label_format = "{attribution+"," if attribution} {citation}"
+        label_format = "{attribution+", " if attribution} {citation}"
 
 
 class QuoteBlock(blocks.StructBlock):
@@ -52,7 +56,6 @@ class QuoteBlock(blocks.StructBlock):
     )
 
     citation = AttributionCitationBlock(label="Source")
-
 
     def clean(self, value):
         data = super().clean(value)
