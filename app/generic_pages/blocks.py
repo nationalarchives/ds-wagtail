@@ -3,6 +3,7 @@ from app.core.blocks import (
     AccordionsBlock,
     ButtonBlock,
     CallToActionBlock,
+    CodeBlock,
     ContactBlock,
     ContentImageBlock,
     ContentTableBlock,
@@ -32,6 +33,7 @@ class SectionContentBlock(blocks.StreamBlock):
     accordions = AccordionsBlock()
     button = ButtonBlock()
     call_to_action = CallToActionBlock()
+    code = CodeBlock()
     contact = ContactBlock()
     description_list = DescriptionListBlock()
     details = DetailsBlock()

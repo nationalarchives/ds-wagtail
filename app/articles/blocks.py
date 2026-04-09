@@ -1,5 +1,6 @@
 from app.ciim.blocks import RecordLinksBlock
 from app.core.blocks import (
+    CodeBlock,
     ContentImageBlock,
     FeaturedExternalLinkBlock,
     FeaturedPageBlock,
@@ -14,6 +15,7 @@ from wagtail import blocks
 
 
 class SectionContentBlock(blocks.StreamBlock):
+    code = CodeBlock()
     featured_external_link = FeaturedExternalLinkBlock()
     featured_page = FeaturedPageBlock()
     image = ContentImageBlock()
