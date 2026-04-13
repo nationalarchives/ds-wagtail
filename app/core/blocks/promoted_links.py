@@ -65,6 +65,7 @@ class FeaturedExternalLinkBlock(blocks.StructBlock):
     class Meta:
         icon = "doc-full"
         label = "Featured external link"
+        group = "Onward journeys"
 
 
 class FeaturedPagesBlock(blocks.StreamBlock):
@@ -74,3 +75,4 @@ class FeaturedPagesBlock(blocks.StreamBlock):
     class Meta:
         icon = "doc-full"
         label = "Featured pages list"
+        group = "Onward journeys"

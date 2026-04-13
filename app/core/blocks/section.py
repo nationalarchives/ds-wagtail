@@ -15,3 +15,4 @@ class SubSubHeadingBlock(blocks.StructBlock):
     class Meta:
         icon = "heading"
         label = "Sub-sub-heading"
+        group = "Basic text"

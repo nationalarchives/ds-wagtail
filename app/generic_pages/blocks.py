@@ -63,6 +63,7 @@ class ContentSectionBlock(blocks.StructBlock):
 
     class Meta:
         label = "Section"
+        group = "Basic text"
 
     def clean(self, value):
         clean = super().clean(value)
