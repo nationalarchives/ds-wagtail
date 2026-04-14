@@ -1,5 +1,7 @@
-{% extends 'wagtailadmin/shared/email_base.html' %}
-{%- set page_title = revision.content_object.get_admin_display_title() -%}
+{% if page %}
+  {%- set page_title = page.get_admin_display_title() -%}
+{% endif %}
+
 
 {% if requested_by %}
   {% set requester_name = requested_by.get_full_name() or requested_by.get_username() %}
@@ -29,7 +31,7 @@
   {%- set cta_buttons = [
     {
       "text": "Edit page",
-      "href": base_url ~ url_for('wagtailadmin_pages:edit', revision.content_object.id)
+      "href": base_url ~ url_for('wagtailadmin_pages:edit', page.id)
     }
   ] -%}
 {% else %}
@@ -38,14 +40,14 @@
       "title": "Item submitted",
       "headingLevel": 1,
       "headingSize": "l",
-      "body": "<p>The {{ model_name }} <strong>" ~ object ~ "</strong> has been submitted for moderation to workflow <strong>" ~ workflow.name ~ "</strong> by {{ requester_name }}.</p>"
+      "body": "<p>The " ~ model_name ~ " <strong>" ~ object ~ "</strong> has been submitted for moderation to workflow <strong>" ~ workflow.name ~ "</strong> by " ~ requester_name ~ ".</p>"
     } -%}
   {% else %}
     {%- set panel = {
       "title": "Item submitted",
       "headingLevel": 1,
       "headingSize": "l",
-      "body": "<p>The {{ model_name }} <strong>" ~ object ~ "</strong> has been submitted for moderation to workflow <strong>" ~ workflow.name ~ "</strong>.</p>"
+      "body": "<p>The " ~ model_name ~ " <strong>" ~ object ~ "</strong> has been submitted for moderation to workflow <strong>" ~ workflow.name ~ "</strong>.</p>"
     } -%}
   {% endif %}
 {% endif %}

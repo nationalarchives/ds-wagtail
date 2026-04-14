@@ -1,17 +1,32 @@
 {% extends 'wagtailadmin/shared/email_base.html' %}
-{%- set page_title = revision.content_object.get_admin_display_title() -%}
-{%- set edit_path = url_for('wagtailadmin_pages:edit', revision.content_object.id) -%}
-{%- set edit_url = base_url ~ edit_path -%}
+{% if page %}
+  {%- set page_title = page.get_admin_display_title() -%}
+  {%- set edit_path = url_for('wagtailadmin_pages:edit', page.id) -%}
+  {%- set edit_url = base_url ~ edit_path -%}
+{% else %}
+  {%- set page_title = object -%}
+{% endif %}
 
 {%- set subject = "The National Archives: Page Rejected" -%}
 
-{%- set content = "<h3>Page rejected</h3><p>The page <strong>" ~ page_title ~ "</strong> has been rejected.</p><p>You can edit your page using the button below.</p>" -%}
+{% if page %}
+  {%- set content = "<h3>Page rejected</h3><p>The page <strong>" ~ page_title ~ "</strong> has been rejected.</p><p>You can edit your page using the button below.</p>" -%}
+{% else %}
+  {%- set panel = {
+    "title": "Item rejected",
+    "headingLevel": 1,
+    "headingSize": "l",
+    "body": "<p>The " ~ model_name ~ " <strong>" ~ object ~ "</strong> has been rejected.</p>"
+  } -%}
+{% endif %}
 
-{%- set cta_buttons = [
-  {
-    "text": "Edit page",
-    "href": edit_url
-  }
-] -%}
+{% if page %}
+  {%- set cta_buttons = [
+    {
+      "text": "Edit page",
+      "href": edit_url
+    }
+  ] -%}
+{% endif %}
 
 {%- set signoff = "<p>If you have any issues, please contact the Digital Services Content Design Team.</p>" -%}

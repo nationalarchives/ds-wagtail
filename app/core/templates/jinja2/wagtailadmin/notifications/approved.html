@@ -1,23 +1,39 @@
 {% extends 'wagtailadmin/shared/email_base.html' %}
-{%- set page_title = revision.content_object.get_admin_display_title() -%}
-{%- set full_page_url = revision.content_object.full_url -%}
+{% if page %}
+  {%- set page_title = page.get_admin_display_title() -%}
+  {%- set full_page_url = page.full_url -%}
+{% else %}
+  {%- set page_title = object -%}
+  {%- set full_page_url = "" -%}
+{% endif %}
 
 {%- set subject = "The National Archives: Page Approved" -%}
 
-{%- set panel = {
-  "title": "Page approved",
-  "headingLevel": 1,
-  "headingSize": "l",
-  "body": "<p>The page <strong>" ~ page_title ~ "</strong> has been approved.</p>"
-} -%}
+{% if page %}
+  {%- set panel = {
+    "title": "Page approved",
+    "headingLevel": 1,
+    "headingSize": "l",
+    "body": "<p>The page <strong>" ~ page_title ~ "</strong> has been approved.</p>"
+  } -%}
+{% else %}
+  {%- set panel = {
+    "title": "Item approved",
+    "headingLevel": 1,
+    "headingSize": "l",
+    "body": "<p>The " ~ model_name ~ " <strong>" ~ object ~ "</strong> has been approved.</p>"
+  } -%}
+{% endif %}
 
 {%- set content = "<p>You can view your page using the button below.</p>" -%}
 
-{%- set cta_buttons = [
-  {
-    "text": "View page",
-    "href": full_page_url
-  }
-] -%}
+{% if page and full_page_url %}
+  {%- set cta_buttons = [
+    {
+      "text": "View page",
+      "href": full_page_url
+    }
+  ] -%}
+{% endif %}
 
 {%- set signoff = "<p>If you have any issues, please contact the Digital Services Content Design Team.</p>" -%}

@@ -1,4 +1,5 @@
 import os
+from sysconfig import get_path
 
 from django.core.exceptions import ImproperlyConfigured
 
@@ -9,7 +10,7 @@ PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR = os.path.dirname(PROJECT_DIR)
 
 ENVIRONMENT_NAME = os.getenv("ENVIRONMENT_NAME", "production")
-
+BUILD_VERSION = os.getenv("BUILD_VERSION", "")
 WAGTAILADMIN_BASE_URL = os.getenv("WAGTAILADMIN_BASE_URL", "")
 WAGTAILAPI_IMAGES_BASE_URL = os.getenv("WAGTAILAPI_IMAGES_BASE_URL", "")
 WAGTAILAPI_MEDIA_BASE_URL = os.getenv("WAGTAILAPI_MEDIA_BASE_URL", "")
@@ -22,7 +23,6 @@ WAGTAIL_HEADLESS_PREVIEW = {
     },
     "SERVE_BASE_URL": None,
 }
-
 DEBUG = False
 
 SECRET_KEY = os.getenv("SECRET_KEY", "")
@@ -118,10 +118,19 @@ USE_X_FORWARDED_HOST = strtobool(os.getenv("USE_X_FORWARDED_HOST", "False"))
 
 TEMPLATES = [
     {
-        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "BACKEND": "django.template.backends.jinja2.Jinja2",
         "DIRS": [
-            os.path.join(BASE_DIR, "app", "templates"),
+            os.path.join(BASE_DIR, "app/core/templates/jinja2"),
+            os.path.join(get_path("platlib"), "tna_frontend_jinja/templates"),
         ],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "environment": "config.jinja2.environment",
+        },
+    },
+    {
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -129,8 +138,6 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-                "wagtail.contrib.settings.context_processors.settings",
-                "app.core.context_processors.settings_vars",
             ],
         },
     },
