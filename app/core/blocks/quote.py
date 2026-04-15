@@ -43,7 +43,7 @@ class AttributionCitationBlock(blocks.StructBlock):
     class Meta:
         icon = "edit"
         collapsed = True
-        label_format = "{attribution+", " if attribution} {citation}"
+        label_format = "{attribution} {citation}"
 
 
 class QuoteBlock(blocks.StructBlock):
@@ -73,23 +73,25 @@ class QuoteBlock(blocks.StructBlock):
 
     def get_api_representation(self, value, context=None):
         representation = super().get_api_representation(value, context)
-        source = representation.pop("source", {}) or {}
+        source = representation.get("source", {}) or {}
 
-        citation_link = source.get("source_link") or {}
-        internal_link = citation_link.get("citation_internal_link")
+        source_link = source.get("source_link") or {}
+
+        citation_url = source_link.get("citation_external_link")
+        if not citation_url:
+            internal_link = source_link.get("citation_internal_link") or {}
+            citation_url = internal_link.get("full_url")
 
         return {
             "quote": representation.get("quote"),
             "attribution": source.get("attribution"),
             "citation": source.get("citation"),
-            "citation_url": citation_link.get("citation_external_link")
-            or (internal_link.get("full_url") if internal_link else None),
+            "citation_url": citation_url,
         }
 
     class Meta:
         icon = "openquote"
         label = "Quote"
-        source = AttributionCitationBlock()
 
 
 class ReviewBlock(blocks.StructBlock):
