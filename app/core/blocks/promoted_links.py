@@ -31,6 +31,7 @@ class FeaturedPageBlock(blocks.StructBlock):
     class Meta:
         icon = "doc-full"
         label = "Featured page"
+        group = "Onward journeys"
 
 
 class FeaturedExternalLinkBlock(blocks.StructBlock):
