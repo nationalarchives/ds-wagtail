@@ -193,7 +193,7 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
 
     def _get_site_from_request(self, request):
         if "site" not in request.GET:
-            return Site.find_for_request(self.request)
+            return Site.find_for_request(request)
 
         site_string = request.GET["site"]
 
@@ -247,6 +247,8 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
         try:
             page, _, _ = site.root_page.specific.route(request, path_components)
         except Http404:
-            return
+             return super().find_object(queryset, request)
 
-        return page if queryset.filter(id=page.id).exists() else None
+         if queryset.filter(id=page.id).exists():
+             return page
+         return super().find_object(queryset, request)
