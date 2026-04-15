@@ -247,8 +247,8 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
         try:
             page, _, _ = site.root_page.specific.route(request, path_components)
         except Http404:
-             return super().find_object(queryset, request)
+            return super().find_object(queryset, request)
 
-         if queryset.filter(id=page.id).exists():
-             return page
-         return super().find_object(queryset, request)
+        if queryset.filter(id=page.id).exists():
+            return page
+        return super().find_object(queryset, request)
