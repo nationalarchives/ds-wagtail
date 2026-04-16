@@ -45,3 +45,4 @@ class CodeBlock(blocks.StructBlock):
     class Meta:
         icon = "code"
         label = "Code"
+        group = "Structured and collapsible content"
