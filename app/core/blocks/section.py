@@ -7,6 +7,7 @@ class SubHeadingBlock(blocks.StructBlock):
     class Meta:
         icon = "heading"
         label = "Sub-heading"
+        group = "Basic text"
 
 
 class SubSubHeadingBlock(blocks.StructBlock):
