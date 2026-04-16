@@ -191,54 +191,64 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
         "depth",
     ]
 
-    def find_object(self, queryset, request):  # noqa: C901
-        if "site" in request.GET:
-            if ":" in request.GET["site"]:
-                hostname, port = request.GET["site"].split(":", 1)
-                query = {
-                    "hostname": hostname,
-                    "port": port,
-                }
-            else:
-                query = {
-                    "hostname": request.GET["site"],
-                }
-            try:
-                site = Site.objects.get(**query)
-            except Site.MultipleObjectsReturned:
-                raise BadRequestError(
-                    "Your query returned multiple sites. Try adding a port number to your site filter."
-                )
-            except Site.DoesNotExist:
-                site = None
+    def _get_site_from_request(self, request):
+        if "site" not in request.GET:
+            return Site.find_for_request(request)
+
+        site_string = request.GET["site"]
+
+        if ":" in site_string:
+            hostname, port = site_string.split(":", 1)
+            query = {
+                "hostname": hostname,
+                "port": port,
+            }
         else:
-            site = Site.find_for_request(self.request)
+            query = {
+                "hostname": site_string,
+            }
 
-        if "html_path" in request.GET and site is not None:
-            path = request.GET["html_path"]
-
-            redirect_queryset = Redirect.objects.all()
-            redirects = redirect_queryset.filter(
-                Q(old_path=path)
-                | Q(old_path=path.strip("/"))
-                | Q(old_path=f"/{path.strip('/')}")
-                | Q(old_path=f"{path.strip('/')}/")
-                | Q(old_path=f"/{path.strip('/')}/")
+        try:
+            return Site.objects.get(**query)
+        except Site.MultipleObjectsReturned:
+            raise BadRequestError(
+                "Your query returned multiple sites. Try adding a port number to your site filter."
             )
-            if redirects.exists():
-                if redirects.get().redirect_page:
-                    if new_path := redirects.get().redirect_page.url:
-                        logger.info(f"Redirect detected: {path} ---> {new_path}")
-                        path = new_path
+        except Site.DoesNotExist:
+            return None
 
-            path_components = [component for component in path.split("/") if component]
+    def _resolve_redirect_path(self, path):
+        stripped_path = path.strip("/")
+        redirects = Redirect.objects.filter(
+            Q(old_path=path)
+            | Q(old_path=stripped_path)
+            | Q(old_path=f"/{stripped_path}")
+            | Q(old_path=f"{stripped_path}/")
+            | Q(old_path=f"/{stripped_path}/")
+        )
 
-            try:
-                page, _, _ = site.root_page.specific.route(request, path_components)
-            except Http404:
-                return
+        redirect = redirects.select_related("redirect_page").first()
+        if redirect and redirect.redirect_page and redirect.redirect_page.url:
+            new_path = redirect.redirect_page.url
+            logger.info(f"Redirect detected: {path} ---> {new_path}")
+            return new_path
 
-            if queryset.filter(id=page.id).exists():
-                return page
+        return path
 
+    def find_object(self, queryset, request):
+        site = self._get_site_from_request(request)
+
+        if "html_path" not in request.GET or site is None:
+            return super().find_object(queryset, request)
+
+        path = self._resolve_redirect_path(request.GET["html_path"])
+        path_components = [component for component in path.split("/") if component]
+
+        try:
+            page, _, _ = site.root_page.specific.route(request, path_components)
+        except Http404:
+            return super().find_object(queryset, request)
+
+        if queryset.filter(id=page.id).exists():
+            return page
         return super().find_object(queryset, request)
