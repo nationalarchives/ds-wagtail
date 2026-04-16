@@ -75,18 +75,16 @@ class BaseAlert(models.Model):
     @property
     def is_active_now(self):
         now = timezone.now()
-        computed_active = self.active
 
         # Banner has not been published
-        if not computed_active:
+        if not self.active:
+            return False
+        if self.active_from and now < self.active_from:
+            return False
+        elif self.active_to and now >= self.active_to:
             return False
 
-        if self.active_from and now < self.active_from:
-            computed_active = False
-        elif self.active_to and now >= self.active_to:
-            computed_active = False
-
-        return computed_active
+        return self.active
 
     def __str__(self):
         return self.name
