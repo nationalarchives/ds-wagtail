@@ -1,7 +1,9 @@
 import time
 
 from django.conf import settings
+from django.core.exceptions import ValidationError
 from django.db import models
+from django.utils import timezone
 from wagtail.admin.panels import FieldPanel
 from wagtail.api import APIField
 from wagtail.fields import RichTextField
@@ -32,16 +34,30 @@ class BaseAlert(models.Model):
 
     name = models.CharField(
         max_length=100,
-        help_text="The name of the alert to display in the CMS, for easier identification.",
+        help_text="The name of the banner to display in the CMS, for easier identification.",
     )
     title = models.CharField(
         max_length=50,
-        help_text="The short title of your alert which will show in bold at the top of the notification banner. E.g. 'Please note' or 'Important information'",
+        help_text="The short title of your banner which will show in bold at the top of the notification banner. E.g. 'Please note' or 'Important information'",
     )
     message = RichTextField(features=settings.INLINE_RICH_TEXT_FEATURES)
-    active = models.BooleanField(default=False)
+    active = models.BooleanField(
+        default=False,
+        verbose_name="Publish",
+    )
     cascade = models.BooleanField(
         default=False, verbose_name="Show on current and all child pages"
+    )
+    active_from = models.DateTimeField(
+        null=True,
+        blank=True,
+        help_text="If set, the banner will only be visible after this time.",
+    )
+
+    active_to = models.DateTimeField(
+        null=True,
+        blank=True,
+        help_text="If set, the banner will not be visible after this time.",
     )
 
     panels = [
@@ -50,12 +66,51 @@ class BaseAlert(models.Model):
         FieldPanel("message"),
         FieldPanel("active"),
         FieldPanel("cascade"),
+        FieldPanel("active_from"),
+        FieldPanel("active_to"),
     ]
 
     uid = models.BigIntegerField(null=False, blank=True, editable=False)
 
+    @property
+    def is_active_now(self):
+        now = timezone.now()
+
+        # Banner has not been published
+        if not self.active:
+            return False
+        if self.active_from and now < self.active_from:
+            return False
+        elif self.active_to and now >= self.active_to:
+            return False
+
+        return self.active
+
     def __str__(self):
         return self.name
+
+    def clean(self):
+        super().clean()
+        now = timezone.now()
+
+        if self.active_from and self.active_from < now:
+            raise ValidationError(
+                {
+                    "active_from": (
+                        "Active from (scheduled) date cannot be in the past. If you need to activate this banner immediately, "
+                        "please leave the date blank and publish the banner."
+                    )
+                }
+            )
+
+        if self.active_from and self.active_to and self.active_from >= self.active_to:
+            raise ValidationError(
+                {
+                    "active_to": (
+                        "Active to (expiry) date must be later than the Active from (scheduled) date."
+                    )
+                }
+            )
 
     def save(self, *args, **kwargs):
         self.uid = round(time.time() * 1000)
@@ -81,7 +136,7 @@ class BaseAlertMixin(models.Model):
                 return inherited_alert
 
         # No cascading parent alert, so use this page's own alert
-        if page_alert and page_alert.active:
+        if page_alert and page_alert.is_active_now:
             return page_alert
 
         # No alert found
