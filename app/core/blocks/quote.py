@@ -21,16 +21,9 @@ class CitationLink(blocks.StructBlock):
 
     class Meta:
         icon = "link"
-        collapsed = True
 
 
-class AttributionCitationBlock(blocks.StructBlock):
-
-    attribution = blocks.CharBlock(
-        required=False,
-        max_length=100,
-        help_text="The name of the person being quoted. e.g. King Edward VIII",
-    )
+class CitationBlock(blocks.StructBlock):
 
     citation = blocks.CharBlock(
         required=False,
@@ -55,7 +48,12 @@ class QuoteBlock(blocks.StructBlock):
         required=True, features=settings.RESTRICTED_RICH_TEXT_FEATURES
     )
 
-    source = AttributionCitationBlock()
+    attribution = blocks.CharBlock(
+        max_length=100,
+        help_text="The name of the person being quoted. e.g. King Edward VIII",
+    )
+
+    source = CitationBlock()
 
     def clean(self, value):
         data = super().clean(value)
