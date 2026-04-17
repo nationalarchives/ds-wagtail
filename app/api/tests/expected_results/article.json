@@ -84,7 +84,7 @@
         "title": "Test title",
         "message": "<p>Test message</p>"
     },
-    "intro": "<p>This is an article with <a href=\"https://localhost/\">a link to a page</a><page>",
+    "intro": "<p>This is an article with <a href=\"/\">a link to a page</a><page>",
     "hero_image_caption": "<p>Hero image caption</p>",
     "hero_image": {
         "id": 13,
