@@ -15,3 +15,4 @@ class ParagraphBlock(blocks.StructBlock):
     class Meta:
         icon = "paragraph"
         label = "Paragraph text"
+        group = "Basic text"

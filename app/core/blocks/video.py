@@ -30,6 +30,7 @@ class YouTubeBlock(blocks.StructBlock):
     class Meta:
         label = "YouTube Video"
         icon = "media"
+        group = "Video, audio and downloads"
 
 
 class MixedMediaBlock(blocks.StreamBlock):
@@ -39,3 +40,4 @@ class MixedMediaBlock(blocks.StreamBlock):
     class Meta:
         label = "Mixed Media"
         icon = "media"
+        group = "Video, audio and downloads"
