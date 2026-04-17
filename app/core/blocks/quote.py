@@ -90,6 +90,7 @@ class QuoteBlock(blocks.StructBlock):
     class Meta:
         icon = "openquote"
         label = "Quote"
+        group = "Basic text"
 
 
 class ReviewBlock(blocks.StructBlock):

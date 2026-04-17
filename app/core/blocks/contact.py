@@ -22,3 +22,4 @@ class ContactBlock(blocks.StructBlock):
     class Meta:
         icon = "mail"
         label = "Contact"
+        group = "Onward journeys"

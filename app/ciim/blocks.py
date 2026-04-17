@@ -51,3 +51,4 @@ class RecordLinksBlock(blocks.StructBlock):
 
     class Meta:
         icon = "box-archive"
+        group = "Onward journeys"
