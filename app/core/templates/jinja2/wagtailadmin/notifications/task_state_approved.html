@@ -1,4 +1,4 @@
-{% extends 'wagtailadmin/shared/email_base.html' %}
+{% extends 'layouts/email.html' %}
 {% if page %}
   {%- set edit_path = url_for('wagtailadmin_pages:edit', page.id) -%}
   {%- set page_title = page.get_admin_display_title() -%}
