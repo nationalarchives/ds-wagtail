@@ -35,7 +35,7 @@ class AttributionCitationBlock(blocks.StructBlock):
     citation = blocks.CharBlock(
         required=False,
         max_length=100,
-        help_text="The title of the work or document from which the quote is taken. e.g. Instrument of Abdication, 10 December 1936. Catalogue reference: PC 11/1",
+        help_text="The title of the work or document from which the quote is taken. e.g. The Telegraph, 23 June 1986",
     )
 
     source_link = CitationLink()
