@@ -64,6 +64,7 @@ class ContentImageBlock(blocks.StructBlock):
     class Meta:
         label = "Image"
         icon = "image"
+        group = "Images"
 
 
 class ImageGalleryBlock(blocks.StructBlock):
@@ -81,6 +82,7 @@ class ImageGalleryBlock(blocks.StructBlock):
     class Meta:
         label = "Image Gallery"
         icon = "image"
+        group = "Images"
 
 
 class PartnerLogoChooserBlock(
@@ -118,3 +120,4 @@ class PartnerLogoListBlock(blocks.StructBlock):
     class Meta:
         label = "Partner Logo List"
         icon = "image"
+        group = "Images"

@@ -68,6 +68,7 @@ class ButtonBlock(blocks.StructBlock):
     class Meta:
         icon = "link"
         label = "Button"
+        group = "Onward journeys"
 
 
 class CallToActionBlock(blocks.StructBlock):
@@ -79,3 +80,4 @@ class CallToActionBlock(blocks.StructBlock):
     class Meta:
         icon = "link"
         label = "Call to action"
+        group = "Onward journeys"
