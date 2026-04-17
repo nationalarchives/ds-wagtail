@@ -24,6 +24,7 @@ from app.media.models import EtnaMedia
 from app.people.factories import PeopleIndexPageFactory, PersonPageFactory
 from app.people.models import AuthorTag, PersonRole, PersonRoleSelection
 from django.conf import settings
+from django.core.cache import cache
 from wagtail.models import Site
 from wagtail.test.utils import WagtailPageTestCase
 from wagtail_factories import ImageFactory
@@ -211,7 +212,14 @@ class APIResponseTest(WagtailPageTestCase):
                             "type": "quote",
                             "value": {
                                 "quote": '<p data-block-key="xhdo0">Quote text</p>',
-                                "attribution": "John Smith",
+                                "source": {
+                                    "attribution": "John Smith",
+                                    "citation": None,
+                                    "source_link": {
+                                        "citation_internal_link": None,
+                                        "citation_external_link": "",
+                                    },
+                                },
                             },
                         },
                         {
@@ -460,6 +468,8 @@ class APIResponseTest(WagtailPageTestCase):
         self.compare_json("", "pages")
 
     def test_multiple_page_routes(self):
+        cache.delete(f"record_instance_{self.record_article.record}")
+
         for page in (
             self.article,
             self.focused_article,
