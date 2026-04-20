@@ -16,6 +16,8 @@ from wagtail.admin.panels import (
 from wagtail.api import APIField
 from wagtail.models import Orderable
 
+from .details import EducationSessionPage, KeyStageTag, TeachingResourcePage
+
 
 class EducationPage(BasePageWithRequiredIntro):
     """
@@ -92,13 +94,15 @@ class EducationPage(BasePageWithRequiredIntro):
     max_count = 1
 
     content_panels = BasePageWithRequiredIntro.content_panels + [
-        InlinePanel(
-            "education_page_selections",
-            heading=_("Page selections"),
-            help_text=_("Select pages to display on the Education page."),
-        ),
         MultiFieldPanel(
             [
+                InlinePanel(
+                    "teaching_resources_page_selections",
+                    heading=_("Teaching resources page selections"),
+                    help_text=_(
+                        "Select teaching resources pages to display on the Education landing page."
+                    ),
+                ),
                 FieldPanel("teaching_resources_teaser"),
                 PageChooserPanel("featured_teaching_resource"),
                 FieldPanel("featured_teaching_resource_teaser_override"),
@@ -107,6 +111,13 @@ class EducationPage(BasePageWithRequiredIntro):
         ),
         MultiFieldPanel(
             [
+                InlinePanel(
+                    "education_sessions_page_selections",
+                    heading=_("Education sessions page selections"),
+                    help_text=_(
+                        "Select education sessions pages to display on the Education landing page."
+                    ),
+                ),
                 FieldPanel("education_sessions_teaser"),
                 PageChooserPanel("featured_education_session"),
                 FieldPanel("featured_education_session_teaser_override"),
@@ -124,15 +135,16 @@ class EducationPage(BasePageWithRequiredIntro):
         verbose_name = _("Education landing page")
 
 
-class EducationPageSelection(Orderable):
+class TeachingResourcesPageSelection(Orderable):
     """
-    This model is used to select a page to display on the Education page.
+    This model is used to select a teaching resources listing page to display on
+    the Education landing page.
     """
 
     page = ParentalKey(
         "wagtailcore.Page",
         on_delete=models.CASCADE,
-        related_name="education_page_selections",
+        related_name="teaching_resources_page_selections",
     )
 
     selected_page = models.ForeignKey(
@@ -140,7 +152,7 @@ class EducationPageSelection(Orderable):
         on_delete=models.CASCADE,
         related_name="+",
         verbose_name=_("selected page"),
-        help_text=_("The page to display on the Education page."),
+        help_text=_("The page to display on the Education landing page."),
     )
 
     panels = [
@@ -148,11 +160,44 @@ class EducationPageSelection(Orderable):
             "selected_page",
             page_type=[
                 "education.TeachingResourcesListingPage",
+            ],
+        ),
+    ]
+
+    class Meta:
+        verbose_name = _("teaching resources selection")
+        ordering = ["sort_order"]
+
+
+class EducationSessionPageSelection(Orderable):
+    """
+    This model is used to select an education sessions listing page to display
+    on the Education landing page.
+    """
+
+    page = ParentalKey(
+        "wagtailcore.Page",
+        on_delete=models.CASCADE,
+        related_name="education_sessions_page_selections",
+    )
+
+    selected_page = models.ForeignKey(
+        "wagtailcore.Page",
+        on_delete=models.CASCADE,
+        related_name="+",
+        verbose_name=_("selected page"),
+        help_text=_("The page to display on the Education landing page."),
+    )
+
+    panels = [
+        PageChooserPanel(
+            "selected_page",
+            page_type=[
                 "education.EducationSessionsListingPage",
             ],
         ),
     ]
 
     class Meta:
-        verbose_name = _("selection")
+        verbose_name = _("education sessions selection")
         ordering = ["sort_order"]

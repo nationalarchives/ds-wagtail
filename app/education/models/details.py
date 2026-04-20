@@ -36,7 +36,7 @@ from wagtail.models import Orderable
 
 class KeyStageTag(Orderable):
     """
-    This model is used to tag education pages.
+    This model is used to tag Education pages.
     """
 
     page = ParentalKey(
