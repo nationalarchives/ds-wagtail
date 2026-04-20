@@ -1,17 +1,17 @@
+from .details import (
+    EducationSessionPage,
+    TeachingResourcePage,
+)
 from .landing import EducationPage
 from .listings import (
     EducationSessionsListingPage,
-    EducationResourcesListingPage,
-)
-from .details import (
-    EducationResourcePage,
-    EducationSessionPage,
+    TeachingResourcesListingPage,
 )
 
 __all__ = [
     "EducationPage",
-    "EducationResourcePage",
+    "TeachingResourcePage",
     "EducationSessionPage",
     "EducationSessionsListingPage",
-    "EducationResourcesListingPage",
+    "TeachingResourcesListingPage",
 ]

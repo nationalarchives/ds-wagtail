@@ -1,4 +1,3 @@
-
 from app.core.fields.choosers import PartnerLogoField
 from app.core.models import (
     AccentColourMixin,
@@ -28,12 +27,11 @@ from wagtail.admin.panels import (
     InlinePanel,
     MultiFieldPanel,
     ObjectList,
+    PageChooserPanel,
     TabbedInterface,
     TitleFieldPanel,
 )
-
 from wagtail.models import Orderable
-
 
 
 class KeyStageTag(Orderable):
@@ -66,6 +64,8 @@ class KeyStageTag(Orderable):
 
 
 class KeyStage(models.Model):
+    """A model per key stage"""
+
     name = models.CharField(
         max_length=255,
         verbose_name=_("name"),
@@ -85,14 +85,61 @@ class KeyStage(models.Model):
         return self.name
 
 
-class EducationResourcePage(BasePageWithRequiredIntro):
+class TeachingResourcePage(BasePageWithRequiredIntro):
+    """A page to display a teaching resource"""
+
+    key_stage = models.ForeignKey(
+        "education.KeyStage",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        verbose_name=_("key stage"),
+    )
+
     parent_page_types = [
-        "education.EducationResourcesListingPage",
+        "education.TeachingResourcesListingPage",
     ]
 
 
 class EducationSessionPage(BasePageWithRequiredIntro):
+    """A page to display an education session"""
+
+    key_stage = models.ForeignKey(
+        "education.KeyStage",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        verbose_name=_("key stage"),
+    )
+
     parent_page_types = [
         "education.EducationSessionsListingPage",
     ]
 
+
+class EducationReadMoreLink(Orderable):
+    """Navigation links for the Read more section"""
+
+    page = ParentalKey(
+        "education.EducationPage",
+        on_delete=models.CASCADE,
+        related_name="education_read_more_links",
+    )
+
+    selected_page = models.ForeignKey(
+        "wagtailcore.Page",
+        on_delete=models.CASCADE,
+        related_name="+",
+        verbose_name=_("selected page"),
+        help_text=_("Navigation to other sections within Education"),
+    )
+
+    panels = [
+        PageChooserPanel("selected_page"),
+    ]
+
+    class Meta:
+        verbose_name = _("read more link")
+        ordering = ["sort_order"]

@@ -6,7 +6,9 @@ from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
 from modelcluster.fields import ParentalKey
 from wagtail.admin.panels import (
+    FieldPanel,
     InlinePanel,
+    MultiFieldPanel,
     PageChooserPanel,
 )
 from wagtail.api import APIField
@@ -18,42 +20,71 @@ class EducationPage(BasePageWithRequiredIntro):
     A page for listing teaching resources and sessions.
     """
 
-  
-    # featured_teaching_resource = models.ForeignKey(  
-    #     "education.EducationResourcePage",  
-    #     null=True,  
-    #     blank=True,  
-    #     on_delete=models.SET_NULL,  
-    #     related_name="+",  
-    #     verbose_name=_("featured teaching resource"),  
-    #     help_text=_("Option to add a highlighted teaching resource, particularly for history months etc"),  
-    # )
-
-
-    # featured_education_session = models.ForeignKey(  
-    #     "education.EducationSessionPage",  
-    #     null=True,  
-    #     blank=True,  
-    #     on_delete=models.SET_NULL,  
-    #     related_name="+",  
-    #     verbose_name=_("featured education session"),  
-    #     help_text=_("Page picker to highlight a featured education session"),  
-    # )  
-
     @cached_property
     def type_label(cls) -> str:
         return "Education"
 
-    class Meta:
-        verbose_name = _("Education landing page")
+    # Teaching resources section
+    teaching_resources_teaser = models.TextField(
+        verbose_name=_("teaching resources teaser text"),
+        help_text=_(
+            "Short text under Explore teaching resources title to entice users to click through"
+        ),
+        blank=True,
+    )
 
+    featured_teaching_resource = models.ForeignKey(
+        "education.TeachingResourcePage",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        verbose_name=_("featured teaching resource"),
+        help_text=_(
+            "Option to add a highlighted teaching resource, particularly for history months etc"
+        ),
+    )
+
+    featured_teaching_resource_teaser_override = models.TextField(
+        verbose_name=_("teaching resource teaser text override"),
+        help_text=_("Override text for the featured teaching resource"),
+        blank=True,
+    )
+
+    # Education sessions section
+    education_sessions_teaser = models.TextField(
+        verbose_name=_("education sessions teaser text"),
+        help_text=_(
+            "Short text under Explore education sessions title to entice users to click through"
+        ),
+        blank=True,
+    )
+
+    featured_education_session = models.ForeignKey(
+        "education.EducationSessionPage",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        verbose_name=_("featured education session"),
+        help_text=_("Page picker to highlight a featured education session"),
+    )
+
+    featured_education_session_teaser_override = models.TextField(
+        verbose_name=_("education session teaser text override"),
+        help_text=_("Override text for the featured education session"),
+        blank=True,
+    )
+
+
+    # Panels, pages, parents and children
     parent_page_types = [
         "home.HomePage",
     ]
 
     subpage_types = [
         "education.EducationSessionsListingPage",
-        "education.EducationResourcesListingPage",
+        "education.TeachingResourcesListingPage",
     ]
 
     max_count = 1
@@ -64,7 +95,32 @@ class EducationPage(BasePageWithRequiredIntro):
             heading=_("Page selections"),
             help_text=_("Select pages to display on the Education page."),
         ),
+        MultiFieldPanel(
+            [
+                FieldPanel("teaching_resources_teaser"),
+                PageChooserPanel("featured_teaching_resource"),
+                FieldPanel("featured_teaching_resource_teaser_override"),
+            ],
+            heading=_("Teaching resources"),
+        ),
+        MultiFieldPanel(
+            [
+                FieldPanel("education_sessions_teaser"),
+                PageChooserPanel("featured_education_session"),
+                FieldPanel("featured_education_session_teaser_override"),
+            ],
+            heading=_("Education sessions"),
+        ),
+        InlinePanel(
+            "education_read_more_links",
+            heading=_("Read more"),
+            help_text=_("Navigation to other sections within Education"),
+        ),
     ]
+
+    class Meta:
+        verbose_name = _("Education landing page")
+
 
 class EducationPageSelection(Orderable):
     """
@@ -85,12 +141,11 @@ class EducationPageSelection(Orderable):
         help_text=_("The page to display on the Education page."),
     )
 
-#TODO: figure out what panels are needed
     panels = [
         PageChooserPanel(
             "selected_page",
             page_type=[
-                "education.EducationResourcesListingPage",
+                "education.TeachingResourcesListingPage",
                 "education.EducationSessionsListingPage",
             ],
         ),
@@ -99,6 +154,3 @@ class EducationPageSelection(Orderable):
     class Meta:
         verbose_name = _("selection")
         ordering = ["sort_order"]
-
-
-

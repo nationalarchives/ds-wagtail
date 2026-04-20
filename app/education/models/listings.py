@@ -25,6 +25,7 @@ class EducationSessionsListingPage(BasePageWithRequiredIntro):
     """
     A page for displaying education sessions.
     """
+
     @cached_property
     def type_label(cls) -> str:
         return "Education Session"
@@ -38,15 +39,16 @@ class EducationSessionsListingPage(BasePageWithRequiredIntro):
     ]
 
     class Meta:
-        verbose_name = _("Education Sessions Listing page")
+        verbose_name = _("Education Sessions listing page")
 
     max_count = 1
 
 
-class EducationResourcesListingPage(BasePageWithRequiredIntro):
+class TeachingResourcesListingPage(BasePageWithRequiredIntro):
     """
     A page for displaying education/teaching resources.
     """
+
     @cached_property
     def type_label(cls) -> str:
         return "Education Resource"
@@ -56,10 +58,10 @@ class EducationResourcesListingPage(BasePageWithRequiredIntro):
     ]
 
     subpage_types = [
-        "education.EducationResourcePage",
+        "education.TeachingResourcePage",
     ]
 
     class Meta:
-        verbose_name = _("Education Resources Listing page")
+        verbose_name = _("Education Resources listing page")
 
     max_count = 1
