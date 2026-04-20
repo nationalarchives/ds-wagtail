@@ -82,7 +82,7 @@ class QuoteBlock(blocks.StructBlock):
 
         return {
             "quote": representation.get("quote"),
-            "attribution": source.get("attribution"),
+            "attribution": representation.get("attribution"),
             "citation": source.get("citation"),
             "citation_url": citation_url,
         }
