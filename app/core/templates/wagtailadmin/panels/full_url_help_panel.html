@@ -1,0 +1,16 @@
+<fieldset>
+    <div
+        class="js-full-url-help"
+        data-initial-full-url="{% if self.instance and self.instance.full_url %}{{ self.instance.full_url }}{% endif %}"
+    >
+        {% if self.instance and self.instance.full_url %}
+        <p class="js-full-url-preview" hidden>
+            The full URL to this page will be <a class="js-full-url-preview-link" href="#"></a> after publishing.
+        </p>
+        {% else %}
+        <p>
+            The full URL to this page will be generated automatically based on the page's position in the page tree after saving.
+        </p>
+        {% endif %}
+    </div>
+</fieldset>
