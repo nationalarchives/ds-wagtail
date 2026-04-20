@@ -6,6 +6,7 @@ from app.core.models import (
 from app.core.serializers import (
     DefaultPageSerializer,
 )
+from app.core.utils import get_specific_listings
 from django.db import models
 from django.db.models import Q
 from django.utils import timezone
@@ -18,7 +19,6 @@ from wagtail.admin.panels import (
     PageChooserPanel,
 )
 from wagtail.api import APIField
-from wagtail.models import Page
 
 from ..serializers import (
     EventTypeSerializer,
@@ -28,35 +28,6 @@ from .details import (
     EventPage,
     ExhibitionPage,
 )
-
-
-def get_specific_listings(
-    page_types: list[Page] = [],
-    filters: dict | Q = None,
-    order_by: str = "start_date",
-    exclude: dict = {},
-    reverse: bool = False,
-) -> list:
-    """
-    Helper function to get a list of specific pages based on the provided page types, filters, and order by criteria.
-
-    This allows us to combine and compare different page types (like ExhibitionPage and DisplayPage) in a single query.
-
-    Currently used for listing events and exhibitions in various listing pages.
-    """
-    pages = []
-
-    for page_type in page_types:
-        queryset = page_type.objects.exclude(**exclude)
-        if isinstance(filters, dict) or filters is None:
-            queryset = queryset.filter(**(filters or {}))
-        else:  # Otherwise assume the filters are a Q object
-            queryset = queryset.filter(filters)
-        queryset = queryset.live().public().distinct()
-        pages.extend(queryset)
-
-    sorted_pages = sorted(pages, key=lambda x: getattr(x, order_by), reverse=reverse)
-    return sorted_pages
 
 
 class WhatsOnSeriesPage(BasePageWithRequiredIntro):
