@@ -80,6 +80,36 @@ class EducationPage(BasePageWithRequiredIntro):
         blank=True,
     )
 
+    @cached_property
+    def latest_teaching_resources(self) -> list:
+        """Returns 3 most recently published teaching resources"""
+        return get_specific_listings(
+            page_types=[TeachingResourcePage],
+            filters={},
+            order_by="first_published_at",
+            reverse=True,
+        )[:3]
+
+    @cached_property
+    def latest_education_sessions(self) -> list:
+        """Returns 3 upcoming sessions, or most recent if no upcoming"""
+
+        upcoming = get_specific_listings(
+            page_types=[EducationSessionPage],
+            filters={"start_date__gte": timezone.now()},
+            order_by="start_date",
+        )
+
+        if upcoming:
+            return upcoming[:3]
+
+        # If no upcoming, get most recent
+        return get_specific_listings(
+            page_types=[EducationSessionPage],
+            filters={},
+            order_by="start_date",
+            reverse=True,
+        )[:3]
 
     # Panels, pages, parents and children
     parent_page_types = [
