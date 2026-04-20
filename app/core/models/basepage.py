@@ -13,7 +13,7 @@ from django.db.models import options
 from django.utils.functional import cached_property
 from django.utils.text import capfirst
 from django.utils.translation import gettext_lazy as _
-from wagtail.admin.panels import FieldPanel, MultiFieldPanel
+from wagtail.admin.panels import FieldPanel, HelpPanel, MultiFieldPanel
 from wagtail.admin.widgets.slug import SlugInput
 from wagtail.api import APIField
 from wagtail.fields import RichTextField
@@ -111,6 +111,12 @@ class BasePage(AlertMixin, SocialMixin, CustomHeadlessPreviewMixin, Page):
                     "The name of the page as it will appear at the end of the URL"
                 ),
                 widget=SlugInput,
+            ),
+            HelpPanel(
+                template="wagtailadmin/panels/full_url_help_panel.html",
+                content=_(
+                    "The full URL to this page. This is generated automatically based on the page's position in the page tree."
+                ),
             ),
         ],
         _("For search engines"),
