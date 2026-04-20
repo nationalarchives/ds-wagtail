@@ -114,9 +114,7 @@ class BasePage(AlertMixin, SocialMixin, CustomHeadlessPreviewMixin, Page):
             ),
             HelpPanel(
                 template="wagtailadmin/panels/full_url_help_panel.html",
-                content=_(
-                    "The full URL to this page. This is generated automatically based on the page's position in the page tree."
-                ),
+                content="The full URL to this page. This is generated automatically based on the page's position in the page tree.",
             ),
         ],
         _("For search engines"),
