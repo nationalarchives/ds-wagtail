@@ -1,3 +1,5 @@
+// This function was written by CoPilot
+
 (function () {
   "use strict";
 
