@@ -48,34 +48,51 @@ class TeachingResourcesListingPage(BasePageWithRequiredIntro):
         return "Education Resource"
 
     # TODO: read-only panels for these how can this become a display panel? maybe it should be in both places?
-    @cached_property
-    def featured_resource(self):
-        # Get parent EducationPage
-        parent = self.get_parent()
+    # @cached_property
+    # def featured_resource(self):
+    #     # Get parent EducationPage
+    #     parent = self.get_parent()
 
-        if parent and hasattr(parent, "featured_teaching_resource"):
-            if parent.featured_teaching_resource:
-                return parent.featured_teaching_resource
+    #     if parent and hasattr(parent, "featured_teaching_resource"):
+    #         if parent.featured_teaching_resource:
+    #             return parent.featured_teaching_resource
 
-        # Default to most recently published resource
-        return (
-            TeachingResourcePage.objects.live()
-            .public()
-            .order_by("-first_published_at")
-            .first()
-        )
+    #     # Default to most recently published resource
+    #     return (
+    #         TeachingResourcePage.objects.live()
+    #         .public()
+    #         .order_by("-first_published_at")
+    #         .first()
+    #     )
 
-    @cached_property
-    def featured_resource_teaser(self):
-        parent = self.get_parent()
+    # @cached_property
+    # def featured_resource_teaser(self):
+    #     parent = self.get_parent()
 
-        if parent and hasattr(parent, "featured_teaching_resource_teaser_override"):
-            if parent.featured_teaching_resource_teaser_override:
-                return parent.featured_teaching_resource_teaser_override
+    #     if parent and hasattr(parent, "featured_teaching_resource_teaser_override"):
+    #         if parent.featured_teaching_resource_teaser_override:
+    #             return parent.featured_teaching_resource_teaser_override
 
-        return None
+    #     return None
 
-    # Education sessions section
+    featured_teaching_resource = models.ForeignKey(
+        "education.TeachingResourcePage",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        verbose_name=_("featured teaching resource"),
+        help_text=_(
+            "Option to add a highlighted teaching resource, particularly for history months etc"
+        ),
+    )
+
+    featured_teaching_resource_teaser_override = models.TextField(
+        verbose_name=_("Featured teaching resource teaser text override"),
+        help_text=_("Override text for the featured teaching resource"),
+        blank=True,
+    )
+
     web_archive_promo = RichTextField(
         verbose_name=_("web archive promo text"),
         help_text=_(
@@ -102,21 +119,15 @@ class TeachingResourcesListingPage(BasePageWithRequiredIntro):
     ]
 
     class Meta:
-        verbose_name = _("Education Resources listing page")
+        verbose_name = _("Teaching Resources listing page")
 
     max_count = 1
 
     content_panels = BasePageWithRequiredIntro.content_panels + [
         MultiFieldPanel(
             [
-                # TODO: implement this properly/figure out what's actually wanted
-                HelpPanel(
-                    content=_(
-                        "The featured teaching resource is selected from the parent "
-                        "<strong>Education landing page admin</strong>. If no resource is selected there, "
-                        "the most recently published resource will be shown automatically."
-                    ),
-                ),
+                PageChooserPanel("featured_teaching_resource"),
+                FieldPanel("featured_teaching_resource_teaser_override"),
             ],
             heading=_("Featured teaching resource"),
         ),
@@ -133,6 +144,22 @@ class EducationSessionsListingPage(BasePageWithRequiredIntro):
     @cached_property
     def type_label(cls) -> str:
         return "Education Session"
+
+    featured_education_session = models.ForeignKey(
+        "education.EducationSessionPage",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        verbose_name=_("featured education session"),
+        help_text=_("Page picker to highlight a featured education session"),
+    )
+
+    featured_education_session_teaser_override = models.TextField(
+        verbose_name=_("Featured education session teaser text override"),
+        help_text=_("Override text for the featured education session"),
+        blank=True,
+    )
 
     # TODO: should this be hardcoded? how does what's on do it
     newsletter_sign_up_text = models.TextField(
@@ -159,14 +186,8 @@ class EducationSessionsListingPage(BasePageWithRequiredIntro):
     content_panels = BasePageWithRequiredIntro.content_panels + [
         MultiFieldPanel(
             [
-                # TODO: implement this properly/figure out what's actually wanted
-                HelpPanel(
-                    content=_(
-                        "The featured education session is selected from the parent "
-                        "<strong>Education landing page admin</strong>. If no resource is selected there, "
-                        "the most recently published resource will be shown automatically."
-                    ),
-                ),
+                PageChooserPanel("featured_education_session"),
+                FieldPanel("featured_education_session_teaser_override"),
             ],
             heading=_("Featured education session"),
         ),

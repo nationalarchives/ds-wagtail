@@ -147,13 +147,6 @@ class EducationPage(BasePageWithRequiredIntro):
         MultiFieldPanel(
             [
                 PageChooserPanel("teaching_resource_listing_page"),
-                # InlinePanel(
-                #     "teaching_resources_page_selections",
-                #     heading=_("Teaching resources page selections"),
-                #     help_text=_(
-                #         "Select teaching resources pages to display on the Education landing page."
-                #     ),
-                # ),
                 FieldPanel("teaching_resources_teaser"),
                 MultiFieldPanel(
                     [
@@ -168,13 +161,6 @@ class EducationPage(BasePageWithRequiredIntro):
         MultiFieldPanel(
             [
                 PageChooserPanel("education_sessions_listing_page"),
-                # InlinePanel(
-                #     "education_sessions_page_selections",
-                #     heading=_("Education sessions page selections"),
-                #     help_text=_(
-                #         "Select education sessions pages to display on the Education landing page."
-                #     ),
-                # ),
                 FieldPanel("education_sessions_teaser"),
                 MultiFieldPanel(
                     [
