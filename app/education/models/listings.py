@@ -47,34 +47,6 @@ class TeachingResourcesListingPage(BasePageWithRequiredIntro):
     def type_label(cls) -> str:
         return "Education Resource"
 
-    # TODO: read-only panels for these how can this become a display panel? maybe it should be in both places?
-    # @cached_property
-    # def featured_resource(self):
-    #     # Get parent EducationPage
-    #     parent = self.get_parent()
-
-    #     if parent and hasattr(parent, "featured_teaching_resource"):
-    #         if parent.featured_teaching_resource:
-    #             return parent.featured_teaching_resource
-
-    #     # Default to most recently published resource
-    #     return (
-    #         TeachingResourcePage.objects.live()
-    #         .public()
-    #         .order_by("-first_published_at")
-    #         .first()
-    #     )
-
-    # @cached_property
-    # def featured_resource_teaser(self):
-    #     parent = self.get_parent()
-
-    #     if parent and hasattr(parent, "featured_teaching_resource_teaser_override"):
-    #         if parent.featured_teaching_resource_teaser_override:
-    #             return parent.featured_teaching_resource_teaser_override
-
-    #     return None
-
     featured_teaching_resource = models.ForeignKey(
         "education.TeachingResourcePage",
         null=True,
