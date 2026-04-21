@@ -1,29 +1,20 @@
-import datetime
-
 from app.core.models import (
     BasePageWithRequiredIntro,
 )
 from app.core.serializers import (
     DefaultPageSerializer,
+    RichTextSerializer,
 )
 from django.db import models
-from django.db.models import Q
-from django.utils import timezone
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
-from modelcluster.fields import ParentalKey
 from wagtail.admin.panels import (
     FieldPanel,
-    HelpPanel,
-    InlinePanel,
     MultiFieldPanel,
     PageChooserPanel,
 )
 from wagtail.api import APIField
 from wagtail.fields import RichTextField
-from wagtail.models import Page
-
-from .details import TeachingResourcePage
 
 # Search and filter [resources page]
 
@@ -107,6 +98,12 @@ class TeachingResourcesListingPage(BasePageWithRequiredIntro):
         FieldPanel("newsletter_sign_up_text"),
     ]
 
+    api_fields = BasePageWithRequiredIntro.api_fields + [
+        APIField("featured_resource", serializer=DefaultPageSerializer()),
+        APIField("featured_resource_teaser"),
+        APIField("web_archive_promo", serializer=RichTextSerializer()),
+        APIField("newsletter_sign_up_text"),
+    ]
 
 class EducationSessionsListingPage(BasePageWithRequiredIntro):
     """
@@ -165,3 +162,10 @@ class EducationSessionsListingPage(BasePageWithRequiredIntro):
         ),
         FieldPanel("newsletter_sign_up_text"),
     ]
+
+    api_fields = BasePageWithRequiredIntro.api_fields + [
+        APIField("featured_session", serializer=DefaultPageSerializer()),
+        APIField("featured_session_teaser"),
+        APIField("newsletter_sign_up_text"),
+    ]
+

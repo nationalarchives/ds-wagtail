@@ -1,37 +1,16 @@
-from app.core.fields.choosers import PartnerLogoField
 from app.core.models import (
-    AccentColourMixin,
     BasePageWithRequiredIntro,
-    ContentWarningMixin,
-    HeroLayoutMixin,
-    HeroStyleMixin,
-    LocationSerializer,
-    RequiredHeroImageMixin,
 )
-from app.core.serializers import (
-    DefaultPageSerializer,
-    RichTextSerializer,
-)
-from app.core.serializers.partner_logos import PartnerLogoSerializer
-from django.conf import settings
-from django.core.exceptions import ValidationError
 from django.db import models
-from django.utils import timezone
-from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
 from modelcluster.fields import ParentalKey
-from wagtail import blocks
 from wagtail.admin.panels import (
-    FieldPanel,
-    FieldRowPanel,
-    InlinePanel,
-    MultiFieldPanel,
-    ObjectList,
     PageChooserPanel,
-    TabbedInterface,
-    TitleFieldPanel,
 )
+from wagtail.api import APIField
 from wagtail.models import Orderable
+from wagtail.fields import RichTextField
+from ..serializers import KeyStageSerializer, ThemeSerializer, TimePeriodSerializer
 
 
 class KeyStageTag(Orderable):
@@ -164,6 +143,13 @@ class TeachingResourcePage(BasePageWithRequiredIntro):
     ]
 
 
+    api_fields = BasePageWithRequiredIntro.api_fields + [
+        APIField("key_stage", serializer=KeyStageSerializer()),
+        APIField("time_period", serializer=TimePeriodSerializer()),
+        APIField("theme", serializer=ThemeSerializer()),
+    ]
+
+
 class EducationSessionPage(BasePageWithRequiredIntro):
     """A page to display an education session"""
 
@@ -178,6 +164,8 @@ class EducationSessionPage(BasePageWithRequiredIntro):
 
     parent_page_types = [
         "education.EducationSessionsListingPage",
+    api_fields = BasePageWithRequiredIntro.api_fields + [
+        APIField("key_stage", serializer=KeyStageSerializer()),
     ]
 
 

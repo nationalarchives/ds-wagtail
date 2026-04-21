@@ -1,11 +1,11 @@
 from app.core.models import (
     BasePageWithRequiredIntro,
 )
+from app.core.serializers import DefaultPageSerializer
 from django.db import models
 from django.utils import timezone
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
-from modelcluster.fields import ParentalKey
 from wagtail.admin.panels import (
     FieldPanel,
     InlinePanel,
@@ -13,9 +13,8 @@ from wagtail.admin.panels import (
     PageChooserPanel,
 )
 from wagtail.api import APIField
-from wagtail.models import Orderable
 
-from .details import EducationSessionPage, KeyStageTag, TeachingResourcePage
+from .details import EducationSessionPage, TeachingResourcePage
 
 
 class EducationPage(BasePageWithRequiredIntro):
@@ -176,6 +175,23 @@ class EducationPage(BasePageWithRequiredIntro):
             "education_read_more_links",
             heading=_("Read more"),
             help_text=_("Navigation to other sections within Education"),
+        ),
+    ]
+
+    api_fields = BasePageWithRequiredIntro.api_fields + [
+        APIField("teaching_resource_listing_page", serializer=DefaultPageSerializer()),
+        APIField("teaching_resources_teaser"),
+        APIField("featured_teaching_resource", serializer=DefaultPageSerializer()),
+        APIField("featured_teaching_resource_teaser_override"),
+        APIField("education_sessions_listing_page", serializer=DefaultPageSerializer()),
+        APIField("education_sessions_teaser"),
+        APIField("featured_education_session", serializer=DefaultPageSerializer()),
+        APIField("featured_education_session_teaser_override"),
+        APIField(
+            "latest_teaching_resources", serializer=DefaultPageSerializer(many=True)
+        ),
+        APIField(
+            "latest_education_sessions", serializer=DefaultPageSerializer(many=True)
         ),
     ]
 
