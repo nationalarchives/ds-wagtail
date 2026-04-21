@@ -50,7 +50,7 @@ class EducationPage(BasePageWithRequiredIntro):
     )
 
     featured_teaching_resource_teaser_override = models.TextField(
-        verbose_name=_("teaching resource teaser text override"),
+        verbose_name=_("Featured teaching resource teaser text override"),
         help_text=_("Override text for the featured teaching resource"),
         blank=True,
     )
@@ -75,7 +75,7 @@ class EducationPage(BasePageWithRequiredIntro):
     )
 
     featured_education_session_teaser_override = models.TextField(
-        verbose_name=_("education session teaser text override"),
+        verbose_name=_("Featured education session teaser text override"),
         help_text=_("Override text for the featured education session"),
         blank=True,
     )
@@ -134,8 +134,13 @@ class EducationPage(BasePageWithRequiredIntro):
                     ),
                 ),
                 FieldPanel("teaching_resources_teaser"),
-                PageChooserPanel("featured_teaching_resource"),
-                FieldPanel("featured_teaching_resource_teaser_override"),
+                MultiFieldPanel(
+                    [
+                        PageChooserPanel("featured_teaching_resource"),
+                        FieldPanel("featured_teaching_resource_teaser_override"),
+                    ],
+                    heading=_("Featured"),
+                ),
             ],
             heading=_("Teaching resources"),
         ),
@@ -149,8 +154,13 @@ class EducationPage(BasePageWithRequiredIntro):
                     ),
                 ),
                 FieldPanel("education_sessions_teaser"),
-                PageChooserPanel("featured_education_session"),
-                FieldPanel("featured_education_session_teaser_override"),
+                MultiFieldPanel(
+                    [
+                        PageChooserPanel("featured_education_session"),
+                        FieldPanel("featured_education_session_teaser_override"),
+                    ],
+                    heading=_("Featured"),
+                ),
             ],
             heading=_("Education sessions"),
         ),
