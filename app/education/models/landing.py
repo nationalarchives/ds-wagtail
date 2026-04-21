@@ -26,6 +26,42 @@ class EducationPage(BasePageWithRequiredIntro):
     def type_label(cls) -> str:
         return "Education"
 
+    @cached_property
+    def latest_teaching_resources(self) -> list:
+        return list(
+            TeachingResourcePage.objects.live()
+            .public()
+            .order_by("-first_published_at")[:3]
+        )
+
+    @cached_property
+    def latest_education_sessions(self) -> list:
+        upcoming = (
+            EducationSessionPage.objects.live()
+            .public()
+            .filter(start_date__gte=timezone.now())
+            .order_by("start_date")
+        )
+
+        if upcoming.exists():
+            return list(upcoming[:3])
+
+        # If no upcoming, get most recent
+        return list(
+            EducationSessionPage.objects.live().public().order_by("-start_date")[:3]
+        )
+
+    parent_page_types = [
+        "home.HomePage",
+    ]
+
+    subpage_types = [
+        "education.EducationSessionsListingPage",
+        "education.TeachingResourcesListingPage",
+    ]
+
+    max_count = 1
+
     # Teaching resources section
     teaching_resource_listing_page = models.ForeignKey(
         "education.TeachingResourcesListingPage",
@@ -101,46 +137,6 @@ class EducationPage(BasePageWithRequiredIntro):
         help_text=_("Override text for the featured education session"),
         blank=True,
     )
-
-    @cached_property
-    def latest_teaching_resources(self) -> list:
-        """Returns 3 most recently published teaching resources"""
-        return list(
-            TeachingResourcePage.objects.live()
-            .public()
-            .order_by("-first_published_at")[:3]
-        )
-
-    @cached_property
-    def latest_education_sessions(self) -> list:
-        """Returns 3 upcoming sessions, or most recent if no upcoming"""
-
-        upcoming = (
-            EducationSessionPage.objects.live()
-            .public()
-            .filter(start_date__gte=timezone.now())
-            .order_by("start_date")
-        )
-
-        if upcoming.exists():
-            return list(upcoming[:3])
-
-        # If no upcoming, get most recent
-        return list(
-            EducationSessionPage.objects.live().public().order_by("-start_date")[:3]
-        )
-
-    # Panels, pages, parents and children
-    parent_page_types = [
-        "home.HomePage",
-    ]
-
-    subpage_types = [
-        "education.EducationSessionsListingPage",
-        "education.TeachingResourcesListingPage",
-    ]
-
-    max_count = 1
 
     content_panels = BasePageWithRequiredIntro.content_panels + [
         MultiFieldPanel(

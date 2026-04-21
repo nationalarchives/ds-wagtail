@@ -38,6 +38,16 @@ class TeachingResourcesListingPage(BasePageWithRequiredIntro):
     def type_label(cls) -> str:
         return "Education Resource"
 
+    parent_page_types = [
+        "education.EducationPage",
+    ]
+
+    subpage_types = [
+        "education.TeachingResourcePage",
+    ]
+
+    max_count = 1
+
     featured_teaching_resource = models.ForeignKey(
         "education.TeachingResourcePage",
         null=True,
@@ -73,19 +83,6 @@ class TeachingResourcesListingPage(BasePageWithRequiredIntro):
         blank=True,
     )
 
-    parent_page_types = [
-        "education.EducationPage",
-    ]
-
-    subpage_types = [
-        "education.TeachingResourcePage",
-    ]
-
-    class Meta:
-        verbose_name = _("Teaching Resources listing page")
-
-    max_count = 1
-
     content_panels = BasePageWithRequiredIntro.content_panels + [
         MultiFieldPanel(
             [
@@ -105,6 +102,10 @@ class TeachingResourcesListingPage(BasePageWithRequiredIntro):
         APIField("newsletter_sign_up_text"),
     ]
 
+    class Meta:
+        verbose_name = _("Teaching Resources listing page")
+
+
 class EducationSessionsListingPage(BasePageWithRequiredIntro):
     """
     A page for displaying education sessions.
@@ -113,6 +114,16 @@ class EducationSessionsListingPage(BasePageWithRequiredIntro):
     @cached_property
     def type_label(cls) -> str:
         return "Education Session"
+
+    parent_page_types = [
+        "education.EducationPage",
+    ]
+
+    subpage_types = [
+        "education.EducationSessionPage",
+    ]
+
+    max_count = 1
 
     featured_education_session = models.ForeignKey(
         "education.EducationSessionPage",
@@ -139,19 +150,6 @@ class EducationSessionsListingPage(BasePageWithRequiredIntro):
         blank=True,
     )
 
-    parent_page_types = [
-        "education.EducationPage",
-    ]
-
-    subpage_types = [
-        "education.EducationSessionPage",
-    ]
-
-    class Meta:
-        verbose_name = _("Education Sessions listing page")
-
-    max_count = 1
-
     content_panels = BasePageWithRequiredIntro.content_panels + [
         MultiFieldPanel(
             [
@@ -169,3 +167,5 @@ class EducationSessionsListingPage(BasePageWithRequiredIntro):
         APIField("newsletter_sign_up_text"),
     ]
 
+    class Meta:
+        verbose_name = _("Education Sessions listing page")
