@@ -1,35 +1,37 @@
+from app.core.blocks.image import APIImageChooserBlock
+from app.core.blocks.paragraph import APIRichTextBlock, ParagraphBlock
+from app.core.blocks.video import MixedMediaBlock, YouTubeBlock
 from app.core.models import (
     BasePageWithRequiredIntro,
 )
+from app.media.blocks import MediaBlock
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from modelcluster.fields import ParentalKey
+from wagtail import blocks
 from wagtail.admin.panels import (
+    FieldPanel,
+    InlinePanel,
+    MultiFieldPanel,
     PageChooserPanel,
 )
 from wagtail.api import APIField
+from wagtail.fields import StreamField
 from wagtail.models import Orderable
-from wagtail.fields import RichTextField
 
 from ..serializers import KeyStageSerializer, ThemeSerializer, TimePeriodSerializer
-
-
-
 
 # Key stage
 
 # Relevant key stage for the resource. Shows on page and also drives filters and search
 
-# Multi select. 
+# Multi select.
 
 # Taken from set taxonomy
 
 # MVP Education Taxonomy
- 
 
- 
-
- 
 
 # Time period
 
@@ -42,15 +44,12 @@ from ..serializers import KeyStageSerializer, ThemeSerializer, TimePeriodSeriali
 # Taken from set taxonomy
 
 # MVP Education Taxonomy
- 
+
 
 # Can only select one primary time period
 
 # Can select multiple secondary time periods
 
- 
-
- 
 
 # Theme
 
@@ -63,7 +62,7 @@ from ..serializers import KeyStageSerializer, ThemeSerializer, TimePeriodSeriali
 # Taken from set taxonomy
 
 # MVP Education Taxonomy
- 
+
 
 # Can only select one primary theme
 
@@ -165,6 +164,253 @@ class Theme(models.Model):
         return self.name
 
 
+class QuestionBlock(blocks.StreamBlock):
+    # question_heading = models.TextField(
+    #     verbose_name=_("question heading"),
+    #     help_text=_(
+    #         "A question relating to the resource"
+    #     ),
+    #     blank=True,
+    # )
+    question_answer = StreamField(
+        [
+            (
+                "question_answer",
+                ParagraphBlock(
+                    verbose_name=_("question heading"),
+                    help_text=_("A question relating to the resource"),
+                    blank=True,
+                ),
+            )
+        ]
+    )
+
+
+# TODO Source* do as inline panels so multiple can be added
+
+# A document or piece of media for the students to use. In most cases this will be an image or number of images, it may also be a piece of audio, a video or an external link to a resource hosted on a 3rd party platform.
+
+# Ability to add multiple sources to the page. Mandatory to have at least one.
+
+# Required to have atleast one source
+
+# TODO validation for how many sources
+
+# "AccordionsBlock",
+# "APIPageChooserBlock",
+# "ButtonBlock",
+# "CodeBlock",
+# "CallToActionBlock",
+# "ContactBlock",
+# "ContentImageBlock",
+# "ContentTableBlock",
+# "DescriptionListBlock",
+# "DetailsBlock",
+# "DocumentsBlock",
+# "DoDontListBlock",
+# "FeaturedExternalLinkBlock",
+# "FeaturedCollectionBlock",
+# "FeaturedPageBlock",
+# "FeaturedPagesBlock",
+# "ImageGalleryBlock",
+# "InsetTextBlock",
+# "PageListBlock",
+# "ParagraphBlock",
+# "PartnerLogoListBlock",
+# "PeopleListingBlock",
+# "LargeCardLinksBlock",
+# "MixedMediaBlock",
+# "QuoteBlock",
+# "ReviewBlock",
+# "ShopCollectionBlock",
+# "SimplifiedAccordionBlock",
+# "SubHeadingBlock",
+# "SubSubHeadingBlock",
+# "WarningTextBlock",
+# "YouTubeBlock",
+
+
+class Source(Orderable):
+    page = ParentalKey(
+        "education.TeachingResourcePage",
+        on_delete=models.CASCADE,
+        related_name="sources",
+    )
+
+    source_title = models.TextField(
+        verbose_name=_("sources title"),
+        help_text=_("A unique, descriptive title for the source."),
+        blank=True,
+    )
+
+    # Source Media TODO
+    source_image = StreamField(
+        [
+            (
+                "source_image",
+                APIImageChooserBlock(
+                    rendition_size="max-900x900",
+                    verbose_name=_("sources image"),
+                    help_text=_("An image for the source."),
+                    blank=True,
+                ),
+            )
+        ],
+        max_num=1,
+    )
+
+    source_media = StreamField(
+        [
+            (
+                "source_media",
+                MediaBlock(
+                    verbose_name=_("source media"),
+                    help_text=_("A piece of media for the source."),
+                    blank=True,
+                ),
+            )
+        ],
+        max_num=1,
+    )
+
+    source_video = StreamField(
+        MixedMediaBlock(
+            block_counts={"youtube": {"max_num": 1}, "media": {"max_num": 1}}
+        ),
+        verbose_name=_("source video"),
+        blank=True,
+        max_num=1,
+    )
+
+    source_youtube = StreamField(
+        [
+            (
+                "source_youtube",
+                YouTubeBlock(
+                    verbose_name=_("source youtube video"),
+                    help_text=_("A youtube video for the source."),
+                    blank=True,
+                ),
+            )
+        ],
+        max_num=1,
+    )
+
+    def clean(self):
+        super().clean()
+
+        selected_media_fields = [
+            field_name
+            for field_name in [
+                "source_image",
+                "source_media",
+                "source_youtube",
+                "source_video",
+            ]
+            if len(getattr(self, field_name) or []) > 0
+        ]
+
+        if len(selected_media_fields) > 1:
+            raise ValidationError(
+                {
+                    field_name: _(
+                        "Only one source type is allowed per source item."
+                    )
+                    for field_name in selected_media_fields
+                }
+            )
+
+    # Editor picks the media associated with the source.
+
+    # Can pick Image, Media, YouTube video.
+
+    # Multi select allowed
+
+    # Media will inherit and show on the page all relevant metadata e.g. transcript, translation, alt text, copyright
+
+    # Note - How to show if an image has an audio transcript?
+
+    # Media caption
+
+    # Option to add a caption to the source e.g. Catalogue reference.
+
+    # Note, if image has copyright metadata, this will show in the  caption field.
+
+    # Rich text - allow bold, italic
+
+    source_media_caption = StreamField(
+        [
+            (
+                "source_media_caption",
+                APIRichTextBlock(
+                    features=["bold", "italic"],
+                    help_text=("If provided, displays directly below the source."),
+                    required=False,
+                ),
+            )
+        ]
+    )
+
+    # Source link
+
+    # Option to add link to a resource on a 3rd party platform (e.g. mapping tool)
+
+    # Featured external link
+
+    # Featured link
+
+    source_media_featured_link = models.URLField(
+        verbose_name=_("source media featured link"),
+        help_text=_(
+            "Option to add link to a resource on a 3rd party platform (e.g. mapping tool)"
+        ),
+        blank=True,
+    )
+
+    # Source description
+
+    # An optional free text field to add in a fuller description of the source.
+
+    # Rich text - allow bold, italic, hyperlinks, bullets, numbered lists
+
+    source_description = StreamField(
+        [("source_description", APIRichTextBlock())],
+        help_text=(
+            "An optional free text field to add in a fuller description of the source."
+        ),
+        # required=False,
+    )
+
+    # Source questions
+
+    # A series of questions relating to each source.
+
+    # Note: Guidance from TBX, suggests a taxonomy for the question headings, but for ease of migration, use free text Subheadings.
+
+    # Paragraph text (rich text - Bold, Italics, Bulleted list, hyperlink)
+
+    # Subheadings
+
+    source_question = StreamField(
+        QuestionBlock(
+            verbose_name=("source question"),
+            help_text=("Add a series of questions relating to each source."),
+            # required=False,
+        )
+    )
+
+    panels = [
+        FieldPanel("source_title"),
+        FieldPanel("source_image"),
+        FieldPanel("source_media"),
+        FieldPanel("source_youtube"),
+        FieldPanel("source_media_caption"),
+        FieldPanel("source_media_featured_link"),
+        FieldPanel("source_description"),
+        FieldPanel("source_question"),
+    ]
+
+
 class TeachingResourcePage(BasePageWithRequiredIntro):
     """A page to display a teaching resource"""
 
@@ -172,12 +418,11 @@ class TeachingResourcePage(BasePageWithRequiredIntro):
         "education.TeachingResourcesListingPage",
     ]
 
-# Hero 
+    # Hero
 
-# TODO: Hero image
+    # TODO: Hero image
 
-# TODO: Enquiry question
-
+    # TODO: Enquiry question
 
     key_stage = models.ForeignKey(
         "education.KeyStage",
@@ -206,11 +451,11 @@ class TeachingResourcePage(BasePageWithRequiredIntro):
         verbose_name=_("theme"),
     )
 
-#Body
+    # Body
 
-#TODO ensure this is the right way to do this
-# H2
-# Plain text
+    # TODO ensure this is the right way to do this
+    # H2
+    # Plain text
 
     sources_title = models.TextField(
         verbose_name=_("sources title"),
@@ -220,259 +465,122 @@ class TeachingResourcePage(BasePageWithRequiredIntro):
         blank=True,
     )
 
-     sources_introduction = RichTextField(
+    sources_introduction = StreamField(
+        [("sources_introduction", APIRichTextBlock())],
         verbose_name=_("sources introduction"),
-        help_text=_(
-            "Optional text field to provide an introduction to the sources." 
-        ),
+        help_text=_("Optional text field to provide an introduction to the sources."),
         blank=True,
     )
 
- 
+    # Teacher’s Notes*
 
-# TODO Source* do as inline panels so multiple can be added 
+    # Free text field giving a general overview of what the resource contains and how it can be used.
 
-# A document or piece of media for the students to use. In most cases this will be an image or number of images, it may also be a piece of audio, a video or an external link to a resource hosted on a 3rd party platform. 
+    # Rich text -  allow bold, italic, hyperlinks, bullets, numbered lists
 
-# Ability to add multiple sources to the page. Mandatory to have at least one. 
 
- 
 
- 
 
-# Source title*
+    # Connections to the curriculum*
 
-# A unique, descriptive title for the source
+    # Area where editors can add a list of links to the curriculum, structured by Key stage
 
-     source_title = models.TextField(
-        verbose_name=_("sources title"),
-        help_text=_(
-            "A unique, descriptive title for the source."
-        ),
-        blank=True,
-    )
 
 
- 
 
-# Source media TODO
+    # Multi add connections:
 
-     source_image = models.TextField(
-        verbose_name=_("sources title"),
-        help_text=_(
-            "A unique, descriptive title for the source."
-        ),
-        blank=True,
-    )
+    # Key stage (select from Key stage taxonomy)
 
-     source_media = models.TextField(
-        verbose_name=_("sources title"),
-        help_text=_(
-            "A unique, descriptive title for the source."
-        ),
-        blank=True,
-    )
+    # Connection description  - Rich text field (bold, italic, hyperlink, bulleted list)
 
-     source_youtube = models.TextField(
-        verbose_name=_("sources title"),
-        help_text=_(
-            "A unique, descriptive title for the source."
-        ),
-        blank=True,
-    )
 
-# Editor picks the media associated with the source. 
 
-# Can pick Image, Media, YouTube video. 
 
-# Multi select allowed
+    # Extension activities
 
-# Media will inherit and show on the page all relevant metadata e.g. transcript, translation, alt text, copyright
+    # Optional section where editors can add in extra activities for teachers to try with their pupils
 
-# Note - How to show if an image has an audio transcript?
+    # Paragraph text
 
- 
+    # Subheadings
 
- 
+    # Featured page
 
-# Media caption
+    # Featured external link
 
-# Option to add a caption to the source e.g. Catalogue reference. 
 
-# Note, if image has copyright metadata, this will show in the  caption field.  
 
-# Rich text - allow bold, italic
 
-      source_media_caption = RichTextField(
-        verbose_name=_("sources title"),
-        help_text=_(
-            "Option to add a caption to the source e.g. Catalogue reference."
-        ),
-        blank=True,
-    )
+    # Background information
 
- 
+    # Section providing historical context to the teaching resource
 
-# Source link
+    # Paragraph text
 
-# Option to add link to a resource on a 3rd party platform (e.g. mapping tool)
+    # Subheadings
 
-# Featured external link
 
-# Featured link
 
-       source_media_link = RichTextField(
-        verbose_name=_("sources title"),
-        help_text=_(
-            "Option to add a caption to the source e.g. Catalogue reference."
-        ),
-        blank=True,
-    )
 
+    # Further information
 
- 
+    # Section providing links to other useful information.
+    # Title of section free text rather than hard coded to give editor flexibility
 
-# Source description
+    # Title*
 
-# An optional free text field to add in a fuller description of the source.
+    # Paragraph text
 
-# Rich text - allow bold, italic, hyperlinks, bullets, numbered lists
+    # Subheadings
 
- 
+    # Featured external links
 
- 
-
-# Source questions
-
-# A series of questions relating to each source. 
-
-# Note: Guidance from TBX, suggests a taxonomy for the question headings, but for ease of migration, use free text Subheadings. 
-
-# Paragraph text (rich text - Bold, Italics, Bulleted list, hyperlink)
-
-# Subheadings
-
- 
-
- 
-
- 
-
-
-
-# Teacher’s Notes*
-
-# Free text field giving a general overview of what the resource contains and how it can be used.  
-
-# Rich text -  allow bold, italic, hyperlinks, bullets, numbered lists
-
- 
-
- 
-
-# Connections to the curriculum*
-
-# Area where editors can add a list of links to the curriculum, structured by Key stage
-
-# Multi add connections:
-
-# Key stage (select from Key stage taxonomy)
-
-# Connection description  - Rich text field (bold, italic, hyperlink, bulleted list)
-
- 
-
- 
-
- 
-
- 
-
- 
-
-# Extension activities
-
-# Optional section where editors can add in extra activities for teachers to try with their pupils
-
-# Paragraph text 
-
-# Subheadings
-
-# Featured page
-
-# Featured external link
-
- 
-
- 
-
-# Background information
-
-# Section providing historical context to the teaching resource
-
-# Paragraph text
-
-# Subheadings
-
- 
-
- 
-
-# Further information
-
-# Section providing links to other useful information. 
-# Title of section free text rather than hard coded to give editor flexibility
-
-# Title* 
-
-# Paragraph text 
-
-# Subheadings
-
-# Featured external links
-
-# Featured page
-
-
+    # Featured page
 
     content_panels = BasePageWithRequiredIntro.content_panels + [
         MultiFieldPanel(
             [
-                PageChooserPanel("featured_teaching_resource"),
-                FieldPanel("featured_teaching_resource_teaser_override"),
+                FieldPanel("sources_title"),
+                FieldPanel("sources_introduction"),
+                InlinePanel(
+                    "sources",
+                    label=_("Source"),
+                    heading=_("Sources"),
+                    min_num=1,
+                ),
             ],
             heading=_("Sources"),
         ),
-        MultiFieldPanel(
-            [
-                PageChooserPanel("featured_teaching_resource"),
-                FieldPanel("featured_teaching_resource_teaser_override"),
-            ],
-            heading=_("Teacher's notes"),
-        ),
-        MultiFieldPanel(
-            [
-                PageChooserPanel("featured_teaching_resource"),
-                FieldPanel("featured_teaching_resource_teaser_override"),
-            ],
-            heading=_("Extension activities"),
-        ),
-        MultiFieldPanel(
-            [
-                PageChooserPanel("featured_teaching_resource"),
-                FieldPanel("featured_teaching_resource_teaser_override"),
-            ],
-            heading=_("Background information"),
-        ),
-        MultiFieldPanel(
-            [
-                PageChooserPanel("featured_teaching_resource"),
-                FieldPanel("featured_teaching_resource_teaser_override"),
-            ],
-            heading=_("Further reading"),
-        ),
+        # MultiFieldPanel(
+        #     [
+        #         PageChooserPanel("featured_teaching_resource"),
+        #         FieldPanel("featured_teaching_resource_teaser_override"),
+        #     ],
+        #     heading=_("Teacher's notes"),
+        # ),
+        # MultiFieldPanel(
+        #     [
+        #         PageChooserPanel("featured_teaching_resource"),
+        #         FieldPanel("featured_teaching_resource_teaser_override"),
+        #     ],
+        #     heading=_("Extension activities"),
+        # ),
+        # MultiFieldPanel(
+        #     [
+        #         PageChooserPanel("featured_teaching_resource"),
+        #         FieldPanel("featured_teaching_resource_teaser_override"),
+        #     ],
+        #     heading=_("Background information"),
+        # ),
+        # MultiFieldPanel(
+        #     [
+        #         PageChooserPanel("featured_teaching_resource"),
+        #         FieldPanel("featured_teaching_resource_teaser_override"),
+        #     ],
+        #     heading=_("Further reading"),
+        # ),
     ]
-
 
     api_fields = BasePageWithRequiredIntro.api_fields + [
         APIField("key_stage", serializer=KeyStageSerializer()),
@@ -480,19 +588,16 @@ class TeachingResourcePage(BasePageWithRequiredIntro):
         APIField("theme", serializer=ThemeSerializer()),
     ]
 
- 
 
- 
 # META TAB
 # Short title
 
- 
-# Internal data 
+
+# Internal data
 
 # Teaser text*
 
 # Teaser image
-
 
 
 class EducationSessionPage(BasePageWithRequiredIntro):
