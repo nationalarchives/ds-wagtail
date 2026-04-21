@@ -14,29 +14,40 @@ from django.utils.translation import gettext_lazy as _
 from modelcluster.fields import ParentalKey
 from wagtail.admin.panels import (
     FieldPanel,
+    HelpPanel,
     InlinePanel,
-    PageChooserPanel,
     MultiFieldPanel,
+    PageChooserPanel,
 )
 from wagtail.api import APIField
 from wagtail.models import Page
 from app.core.utils import get_specific_listings
+from wagtail.fields import RichTextField
 
-
-class EducationSessionsListingPage(BasePageWithRequiredIntro):
+# Search and filter [resources page]
 
 # Filter by:
 
+# Key stage
 
 # Time period
+
+# Theme
+
+# See taxonomy
+
+ 
+
+class TeachingResourcesListingPage(BasePageWithRequiredIntro):
     """
-    A page for displaying education sessions.
+    A page for displaying education/teaching resources.
     """
 
     @cached_property
     def type_label(cls) -> str:
         return "Education Resource"
 
+    #TODO: read-only panels for these how can this become a display panel? maybe it should be in both places?
     @cached_property
     def featured_resource(self):
         # Get parent EducationPage
@@ -65,6 +76,23 @@ class EducationSessionsListingPage(BasePageWithRequiredIntro):
         
         return None
 
+    # Education sessions section
+    web_archive_promo = RichTextField(
+        verbose_name=_("web archive promo text"),
+        help_text=_(
+            "Text block highlighting that old resources can be found in the web archive with a link to the archived old Education site. "
+        ),
+        blank=True,
+    )
+
+    #TODO: should this be hardcoded? how does what's on do it
+    newsletter_sign_up_text = models.TextField(
+        verbose_name=_("newsletter sign up text"),
+        help_text=_(
+            "Text block encouraging users to sign up for the education newsletter."
+        ),
+        blank=True,
+    )
 
     parent_page_types = [
         "education.EducationPage",
@@ -78,6 +106,24 @@ class EducationSessionsListingPage(BasePageWithRequiredIntro):
         verbose_name = _("Education Resources listing page")
 
     max_count = 1
+
+    content_panels = BasePageWithRequiredIntro.content_panels + [
+        MultiFieldPanel(
+            [   
+                #TODO: implement this properly/figure out what's actually wanted
+                HelpPanel(
+                    content=_(
+                        "The featured teaching resource is selected from the parent "
+                        "<strong>Education landing page admin</strong>. If no resource is selected there, "
+                        "the most recently published resource will be shown automatically."
+                    ),
+                ),
+            ],
+            heading=_("Featured teaching resource"),
+        ),
+        FieldPanel("web_archive_promo"),
+        FieldPanel("newsletter_sign_up_text"),
+    ]
 
 
 class EducationSessionsListingPage(BasePageWithRequiredIntro):
