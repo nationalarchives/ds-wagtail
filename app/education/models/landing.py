@@ -28,6 +28,18 @@ class EducationPage(BasePageWithRequiredIntro):
         return "Education"
 
     # Teaching resources section
+    teaching_resource_listing_page = models.ForeignKey(
+        "education.TeachingResourcesListingPage",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        verbose_name=_("teaching resource listing page"),
+        help_text=_(
+            "The teaching resource listing page to display on the Education landing page."
+        ),
+    )
+
     teaching_resources_teaser = models.TextField(
         verbose_name=_("teaching resources teaser text"),
         help_text=_(
@@ -55,6 +67,18 @@ class EducationPage(BasePageWithRequiredIntro):
     )
 
     # Education sessions section
+    education_sessions_listing_page = models.ForeignKey(
+        "education.EducationSessionsListingPage",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        verbose_name=_("education sessions listing page"),
+        help_text=_(
+            "The education sessions listing page to display on the Education landing page."
+        ),
+    )
+
     education_sessions_teaser = models.TextField(
         verbose_name=_("education sessions teaser text"),
         help_text=_(
@@ -122,13 +146,14 @@ class EducationPage(BasePageWithRequiredIntro):
     content_panels = BasePageWithRequiredIntro.content_panels + [
         MultiFieldPanel(
             [
-                InlinePanel(
-                    "teaching_resources_page_selections",
-                    heading=_("Teaching resources page selections"),
-                    help_text=_(
-                        "Select teaching resources pages to display on the Education landing page."
-                    ),
-                ),
+                PageChooserPanel("teaching_resource_listing_page"),
+                # InlinePanel(
+                #     "teaching_resources_page_selections",
+                #     heading=_("Teaching resources page selections"),
+                #     help_text=_(
+                #         "Select teaching resources pages to display on the Education landing page."
+                #     ),
+                # ),
                 FieldPanel("teaching_resources_teaser"),
                 MultiFieldPanel(
                     [
@@ -142,13 +167,14 @@ class EducationPage(BasePageWithRequiredIntro):
         ),
         MultiFieldPanel(
             [
-                InlinePanel(
-                    "education_sessions_page_selections",
-                    heading=_("Education sessions page selections"),
-                    help_text=_(
-                        "Select education sessions pages to display on the Education landing page."
-                    ),
-                ),
+                PageChooserPanel("education_sessions_listing_page"),
+                # InlinePanel(
+                #     "education_sessions_page_selections",
+                #     heading=_("Education sessions page selections"),
+                #     help_text=_(
+                #         "Select education sessions pages to display on the Education landing page."
+                #     ),
+                # ),
                 FieldPanel("education_sessions_teaser"),
                 MultiFieldPanel(
                     [
@@ -169,71 +195,3 @@ class EducationPage(BasePageWithRequiredIntro):
 
     class Meta:
         verbose_name = _("Education landing page")
-
-
-class TeachingResourcesPageSelection(Orderable):
-    """
-    This model is used to select a teaching resources listing page to display on
-    the Education landing page.
-    """
-
-    page = ParentalKey(
-        "wagtailcore.Page",
-        on_delete=models.CASCADE,
-        related_name="teaching_resources_page_selections",
-    )
-
-    selected_page = models.ForeignKey(
-        "wagtailcore.Page",
-        on_delete=models.CASCADE,
-        related_name="+",
-        verbose_name=_("selected page"),
-        help_text=_("The page to display on the Education landing page."),
-    )
-
-    panels = [
-        PageChooserPanel(
-            "selected_page",
-            page_type=[
-                "education.TeachingResourcesListingPage",
-            ],
-        ),
-    ]
-
-    class Meta:
-        verbose_name = _("teaching resources selection")
-        ordering = ["sort_order"]
-
-
-class EducationSessionPageSelection(Orderable):
-    """
-    This model is used to select an education sessions listing page to display
-    on the Education landing page.
-    """
-
-    page = ParentalKey(
-        "wagtailcore.Page",
-        on_delete=models.CASCADE,
-        related_name="education_sessions_page_selections",
-    )
-
-    selected_page = models.ForeignKey(
-        "wagtailcore.Page",
-        on_delete=models.CASCADE,
-        related_name="+",
-        verbose_name=_("selected page"),
-        help_text=_("The page to display on the Education landing page."),
-    )
-
-    panels = [
-        PageChooserPanel(
-            "selected_page",
-            page_type=[
-                "education.EducationSessionsListingPage",
-            ],
-        ),
-    ]
-
-    class Meta:
-        verbose_name = _("education sessions selection")
-        ordering = ["sort_order"]
