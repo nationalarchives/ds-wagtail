@@ -159,7 +159,6 @@ class TeachingResourcePage(BasePageWithRequiredIntro):
         verbose_name=_("theme"),
     )
 
-
     parent_page_types = [
         "education.TeachingResourcesListingPage",
     ]

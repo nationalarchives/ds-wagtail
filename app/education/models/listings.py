@@ -20,9 +20,10 @@ from wagtail.admin.panels import (
     PageChooserPanel,
 )
 from wagtail.api import APIField
-from wagtail.models import Page
-from app.core.utils import get_specific_listings
 from wagtail.fields import RichTextField
+from wagtail.models import Page
+
+from .details import TeachingResourcePage
 
 # Search and filter [resources page]
 
@@ -36,7 +37,6 @@ from wagtail.fields import RichTextField
 
 # See taxonomy
 
- 
 
 class TeachingResourcesListingPage(BasePageWithRequiredIntro):
     """
@@ -47,33 +47,32 @@ class TeachingResourcesListingPage(BasePageWithRequiredIntro):
     def type_label(cls) -> str:
         return "Education Resource"
 
-    #TODO: read-only panels for these how can this become a display panel? maybe it should be in both places?
+    # TODO: read-only panels for these how can this become a display panel? maybe it should be in both places?
     @cached_property
     def featured_resource(self):
         # Get parent EducationPage
         parent = self.get_parent()
-        
+
         if parent and hasattr(parent, "featured_teaching_resource"):
             if parent.featured_teaching_resource:
                 return parent.featured_teaching_resource
-        
+
         # Default to most recently published resource
-        recent_resources = get_specific_listings(
-            page_types=["education.TeachingResourcePage"],
-            filters={},
-            order_by="first_published_at",
-            reverse=True,
+        return (
+            TeachingResourcePage.objects.live()
+            .public()
+            .order_by("-first_published_at")
+            .first()
         )
-        return recent_resources[0] if recent_resources else None
 
     @cached_property
     def featured_resource_teaser(self):
         parent = self.get_parent()
-        
-        if parent and hasattr(parent, 'featured_teaching_resource_teaser_override'):
+
+        if parent and hasattr(parent, "featured_teaching_resource_teaser_override"):
             if parent.featured_teaching_resource_teaser_override:
                 return parent.featured_teaching_resource_teaser_override
-        
+
         return None
 
     # Education sessions section
@@ -85,7 +84,7 @@ class TeachingResourcesListingPage(BasePageWithRequiredIntro):
         blank=True,
     )
 
-    #TODO: should this be hardcoded? how does what's on do it
+    # TODO: should this be hardcoded? how does what's on do it
     newsletter_sign_up_text = models.TextField(
         verbose_name=_("newsletter sign up text"),
         help_text=_(
@@ -109,8 +108,8 @@ class TeachingResourcesListingPage(BasePageWithRequiredIntro):
 
     content_panels = BasePageWithRequiredIntro.content_panels + [
         MultiFieldPanel(
-            [   
-                #TODO: implement this properly/figure out what's actually wanted
+            [
+                # TODO: implement this properly/figure out what's actually wanted
                 HelpPanel(
                     content=_(
                         "The featured teaching resource is selected from the parent "
@@ -135,8 +134,7 @@ class EducationSessionsListingPage(BasePageWithRequiredIntro):
     def type_label(cls) -> str:
         return "Education Session"
 
-
-    #TODO: should this be hardcoded? how does what's on do it
+    # TODO: should this be hardcoded? how does what's on do it
     newsletter_sign_up_text = models.TextField(
         verbose_name=_("newsletter sign up text"),
         help_text=_(
@@ -160,8 +158,8 @@ class EducationSessionsListingPage(BasePageWithRequiredIntro):
 
     content_panels = BasePageWithRequiredIntro.content_panels + [
         MultiFieldPanel(
-            [   
-                #TODO: implement this properly/figure out what's actually wanted
+            [
+                # TODO: implement this properly/figure out what's actually wanted
                 HelpPanel(
                     content=_(
                         "The featured education session is selected from the parent "
