@@ -64,7 +64,51 @@ class KeyStageTag(Orderable):
 
 
 class KeyStage(models.Model):
-    """A model per key stage"""
+    """A model for key stage tags"""
+
+    name = models.CharField(
+        max_length=255,
+        verbose_name=_("name"),
+    )
+
+    slug = models.SlugField(
+        max_length=255,
+        verbose_name=_("slug"),
+        unique=True,
+    )
+
+    class Meta:
+        verbose_name = _("Key stage")
+        verbose_name_plural = _("Key stages")
+
+    def __str__(self):
+        return self.name
+
+
+class TimePeriod(models.Model):
+    """A model for time period tags"""
+
+    name = models.CharField(
+        max_length=255,
+        verbose_name=_("name"),
+    )
+
+    slug = models.SlugField(
+        max_length=255,
+        verbose_name=_("slug"),
+        unique=True,
+    )
+
+    class Meta:
+        verbose_name = _("Key stage")
+        verbose_name_plural = _("Key stages")
+
+    def __str__(self):
+        return self.name
+
+
+class Theme(models.Model):
+    """A model for theme tags"""
 
     name = models.CharField(
         max_length=255,
@@ -96,6 +140,25 @@ class TeachingResourcePage(BasePageWithRequiredIntro):
         related_name="+",
         verbose_name=_("key stage"),
     )
+
+    time_period = models.ForeignKey(
+        "education.TimePeriod",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        verbose_name=_("time period"),
+    )
+
+    theme = models.ForeignKey(
+        "education.Theme",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        verbose_name=_("theme"),
+    )
+
 
     parent_page_types = [
         "education.TeachingResourcesListingPage",
