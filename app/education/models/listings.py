@@ -135,6 +135,16 @@ class EducationSessionsListingPage(BasePageWithRequiredIntro):
     def type_label(cls) -> str:
         return "Education Session"
 
+
+    #TODO: should this be hardcoded? how does what's on do it
+    newsletter_sign_up_text = models.TextField(
+        verbose_name=_("newsletter sign up text"),
+        help_text=_(
+            "Text block encouraging users to sign up for the education newsletter."
+        ),
+        blank=True,
+    )
+
     parent_page_types = [
         "education.EducationPage",
     ]
@@ -147,3 +157,20 @@ class EducationSessionsListingPage(BasePageWithRequiredIntro):
         verbose_name = _("Education Sessions listing page")
 
     max_count = 1
+
+    content_panels = BasePageWithRequiredIntro.content_panels + [
+        MultiFieldPanel(
+            [   
+                #TODO: implement this properly/figure out what's actually wanted
+                HelpPanel(
+                    content=_(
+                        "The featured education session is selected from the parent "
+                        "<strong>Education landing page admin</strong>. If no resource is selected there, "
+                        "the most recently published resource will be shown automatically."
+                    ),
+                ),
+            ],
+            heading=_("Featured education session"),
+        ),
+        FieldPanel("newsletter_sign_up_text"),
+    ]
