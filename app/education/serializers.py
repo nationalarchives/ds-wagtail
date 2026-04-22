@@ -22,6 +22,6 @@ class CurriculumConnectionSerializer(serializers.Serializer):
         return {
             "key_stage": KeyStageSerializer().to_representation(instance.key_stage),
             "connection_description": RichTextSerializer().to_representation(
-                instance.connection_description
+                instance.curriculum_connection_description
             ),
         }

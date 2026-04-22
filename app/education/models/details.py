@@ -89,39 +89,6 @@ KEY_STAGE_NAME_CHOICES = [(choice.label, choice.label) for choice in KeyStageCho
 # Can select multiple secondary theme
 
 
-class KeyStageTag(Orderable):
-    """
-    This model is used to tag Education pages.
-    """
-
-    page = ParentalKey(
-        "wagtailcore.Page",
-        on_delete=models.CASCADE,
-        related_name="page_key_stage_tags",
-    )
-
-    key_stage = models.ForeignKey(
-        "education.KeyStage",
-        on_delete=models.CASCADE,
-        related_name="key_stage",
-        verbose_name=_("Key stage"),
-        help_text=_("The key stage of the page."),
-        limit_choices_to={"slug__in": KEY_STAGE_ALLOWED_SLUGS},
-        null=False,
-        blank=False,
-    )
-
-    panels = [
-        FieldPanel("key_stage"),
-    ]
-
-    class Meta:
-        verbose_name = _("Key stage")
-        verbose_name_plural = _("Key stages")
-
-    def __str__(self):
-        return f"{self.page.title}: {self.key_stage.name}"
-
 
 class KeyStage(models.Model):
     """A model for individual key stage tags"""
@@ -163,8 +130,8 @@ class TimePeriod(models.Model):
     )
 
     class Meta:
-        verbose_name = _("Key stage")
-        verbose_name_plural = _("Key stages")
+        verbose_name = _("Time period")
+        verbose_name_plural = _("Time periods")
 
     def __str__(self):
         return self.name
@@ -185,8 +152,8 @@ class Theme(models.Model):
     )
 
     class Meta:
-        verbose_name = _("Key stage")
-        verbose_name_plural = _("Key stages")
+        verbose_name = _("Theme")
+        verbose_name_plural = _("Themes")
 
     def __str__(self):
         return self.name
@@ -238,14 +205,14 @@ class Source(Orderable):
         blank=True,
     )
 
-    # Source Media TODO
+    # Source Media
     source_image = StreamField(
         [
             (
                 "source_image",
                 APIImageChooserBlock(
                     rendition_size="max-900x900",
-                    verbose_name=_("sources image"),
+                    verbose_name=_("source image"),
                     help_text=_("An image for the source."),
                     blank=True,
                 ),
@@ -265,15 +232,6 @@ class Source(Orderable):
                 ),
             )
         ],
-        max_num=1,
-    )
-
-    source_video = StreamField(
-        MixedMediaBlock(
-            block_counts={"youtube": {"max_num": 1}, "media": {"max_num": 1}}
-        ),
-        verbose_name=_("source video"),
-        blank=True,
         max_num=1,
     )
 
@@ -300,7 +258,6 @@ class Source(Orderable):
                 "source_image",
                 "source_media",
                 "source_youtube",
-                "source_video",
             ]
             if len(getattr(self, field_name) or []) > 0
         ]
@@ -314,20 +271,13 @@ class Source(Orderable):
             )
 
     source_media_caption = RichTextField(
-        verbose_name=_("source media caption"),
+        verbose_name=_("source caption"),
         help_text=_("If provided, displays directly below the source."),
         features=["bold", "italic"],
         blank=True,
     )
 
     # Source link
-
-    # Option to add link to a resource on a 3rd party platform (e.g. mapping tool)
-
-    # Featured external link
-
-    # Featured link
-
     source_media_featured_link = StreamField(
         [
             (
@@ -354,11 +304,6 @@ class Source(Orderable):
     )
 
     # Source description
-
-    # An optional free text field to add in a fuller description of the source.
-
-    # Rich text - allow bold, italic, hyperlinks, bullets, numbered lists
-
     source_description = RichTextField(
         verbose_name=_("source description"),
         help_text=_(
@@ -368,15 +313,6 @@ class Source(Orderable):
     )
 
     # Source questions
-
-    # A series of questions relating to each source.
-
-    # Note: Guidance from TBX, suggests a taxonomy for the question headings, but for ease of migration, use free text Subheadings.
-
-    # Paragraph text (rich text - Bold, Italics, Bulleted list, hyperlink)
-
-    # Subheadings
-
     source_question = StreamField(
         QuestionBlock(
             verbose_name=("source question"),
@@ -392,6 +328,7 @@ class Source(Orderable):
         FieldPanel("source_youtube"),
         FieldPanel("source_media_caption"),
         FieldPanel("source_media_featured_link"),
+        FieldPanel("source_media_featured_external_link"),
         FieldPanel("source_description"),
         FieldPanel("source_question"),
     ]
@@ -434,7 +371,6 @@ class TeachingResourcePage(BasePageWithRequiredIntro):
     ]
 
     # Hero
-
     hero_image = StreamField(
         [
             (
@@ -452,7 +388,6 @@ class TeachingResourcePage(BasePageWithRequiredIntro):
 
     enquiry_question = models.TextField(
         verbose_name=_("enquiry question"),
-        help_text=_("???"),  # TODO: what is this for, is textfield approp
         blank=True,
     )
 
@@ -485,11 +420,6 @@ class TeachingResourcePage(BasePageWithRequiredIntro):
     )
 
     # Body
-
-    # TODO ensure this is the right way to do this
-    # H2
-    # Plain text
-
     sources_title = models.TextField(
         verbose_name=_("sources title"),
         help_text=_(
@@ -507,11 +437,6 @@ class TeachingResourcePage(BasePageWithRequiredIntro):
     )
 
     # Teacher’s Notes*
-
-    # Free text field giving a general overview of what the resource contains and how it can be used.
-
-    # Rich text -  allow bold, italic, hyperlinks, bullets, numbered lists
-
     teachers_notes = StreamField(
         [("teachers_notes", APIRichTextBlock())],
         verbose_name=_("teachers notes"),
@@ -587,12 +512,7 @@ class TeachingResourcePage(BasePageWithRequiredIntro):
             ],
             heading=_("Sources"),
         ),
-        MultiFieldPanel(
-            [
-                FieldPanel("teachers_notes"),
-            ],
-            heading=_("Teacher's notes"),
-        ),
+        FieldPanel("teachers_notes"),
         MultiFieldPanel(
             [
                 InlinePanel(
@@ -604,18 +524,8 @@ class TeachingResourcePage(BasePageWithRequiredIntro):
             ],
             heading=_("Connections to the curriculum"),
         ),
-        MultiFieldPanel(
-            [
-                FieldPanel("extension_activities"),
-            ],
-            heading=_("Extension activities"),
-        ),
-        MultiFieldPanel(
-            [
-                FieldPanel("background_information"),
-            ],
-            heading=_("Background information"),
-        ),
+        FieldPanel("extension_activities"),
+        FieldPanel("background_information"),
         MultiFieldPanel(
             [
                 FieldPanel("further_information_title"),
@@ -656,8 +566,28 @@ class EducationSessionPage(BasePageWithRequiredIntro):
         limit_choices_to={"slug__in": KEY_STAGE_ALLOWED_SLUGS},
     )
 
+    time_period = models.ForeignKey(
+        "education.TimePeriod",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        verbose_name=_("time period"),
+    )
+
+    theme = models.ForeignKey(
+        "education.Theme",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        verbose_name=_("theme"),
+    )
+
     api_fields = BasePageWithRequiredIntro.api_fields + [
         APIField("key_stage", serializer=KeyStageSerializer()),
+        APIField("time_period", serializer=TimePeriodSerializer()),
+        APIField("theme", serializer=ThemeSerializer()),
     ]
 
 
