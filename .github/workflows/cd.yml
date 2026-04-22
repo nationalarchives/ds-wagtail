@@ -110,7 +110,6 @@ jobs:
           repository: nationalarchives/ds-infrastructure-web
           ref: main
           token: ${{ secrets.ACTIONS_GITHUB_TOKEN }}
-          persist-credentials: false
       - name: Set up git config
         run: |
           git config user.name "ds-wagtail"
