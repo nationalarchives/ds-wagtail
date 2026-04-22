@@ -3,68 +3,75 @@
   "$id": "https://www.nationalarchives.gov.uk/wagtail/image-rendition.schema.json",
   "title": "Image Rendition",
   "description": "An image rendition in a Wagtail page",
-  "type": "object",
-  "properties": {
-    "id": {
-      "description": "The ID of the image",
-      "type": "integer"
-    },
-    "uuid": {
-      "description": "The UUID of the image",
-      "type": "string"
-    },
-    "title": {
-      "description": "The title of the image",
-      "type": "string"
-    },
-    "description": {
-      "description": "The description of the image",
-      "type": "string"
-    },
-    "jpeg": {
-      "description": "The JPEG version of the image",
+  "anyOf": [
+    {
       "type": "object",
       "properties": {
-        "url": {
-          "description": "The URL of the JPEG image",
-          "type": "string"
-        },
-        "full_url": {
-          "description": "The full URL of the JPEG image",
-          "type": "string"
-        },
-        "width": {
-          "description": "The width of the JPEG image",
+        "id": {
+          "description": "The ID of the image",
           "type": "integer"
         },
-        "height": {
-          "description": "The height of the JPEG image",
-          "type": "integer"
+        "uuid": {
+          "description": "The UUID of the image",
+          "type": "string"
+        },
+        "title": {
+          "description": "The title of the image",
+          "type": "string"
+        },
+        "description": {
+          "description": "The description of the image",
+          "type": "string"
+        },
+        "jpeg": {
+          "description": "The JPEG version of the image",
+          "type": "object",
+          "properties": {
+            "url": {
+              "description": "The URL of the JPEG image",
+              "type": "string"
+            },
+            "full_url": {
+              "description": "The full URL of the JPEG image",
+              "type": "string"
+            },
+            "width": {
+              "description": "The width of the JPEG image",
+              "type": "integer"
+            },
+            "height": {
+              "description": "The height of the JPEG image",
+              "type": "integer"
+            }
+          }
+        },
+        "webp": {
+          "description": "The WebP version of the image",
+          "type": "object",
+          "properties": {
+            "url": {
+              "description": "The URL of the WebP image",
+              "type": "string"
+            },
+            "full_url": {
+              "description": "The full URL of the WebP image",
+              "type": "string"
+            },
+            "width": {
+              "description": "The width of the WebP image",
+              "type": "integer"
+            },
+            "height": {
+              "description": "The height of the WebP image",
+              "type": "integer"
+            }
+          }
         }
-      }
+      },
+      "required": ["id", "uuid", "title", "description", "jpeg", "webp"]
     },
-    "webp": {
-      "description": "The WebP version of the image",
-      "type": "object",
-      "properties": {
-        "url": {
-          "description": "The URL of the WebP image",
-          "type": "string"
-        },
-        "full_url": {
-          "description": "The full URL of the WebP image",
-          "type": "string"
-        },
-        "width": {
-          "description": "The width of the WebP image",
-          "type": "integer"
-        },
-        "height": {
-          "description": "The height of the WebP image",
-          "type": "integer"
-        }
-      }
+    {
+      "type": "null"
     }
-  },
-  "required": ["id", "uuid", "title", "description", "jpeg", "webp"]
+  ]
 }

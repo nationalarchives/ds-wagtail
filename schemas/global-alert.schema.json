@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://www.nationalarchives.gov.uk/wagtail/global-alert.schema.json",
+  "title": "Global Alert",
+  "description": "Wagtail global alerts",
+  "anyOf": [
+    {
+      "type": "object",
+      "properties": {
+        "title": {
+          "description": "The title of the global alert",
+          "type": "string"
+        },
+        "message": {
+          "description": "The message of the global alert",
+          "type": "string"
+        },
+        "alert_level": {
+          "description": "The level of the global alert",
+          "type": "string",
+          "enum": ["low", "medium", "high"]
+        },
+        "cascade": {
+          "description": "Whether the global alert should cascade to child pages",
+          "type": "boolean"
+        },
+        "uid": {
+          "description": "The UID of the global alert",
+          "type": "string"
+        }
+      },
+      "required": ["title", "message", "alert_level", "cascade", "uid"]
+    },
+    {
+      "type": "null"
+    }
+  ]
+}

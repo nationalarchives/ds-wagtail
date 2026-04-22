@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://www.nationalarchives.gov.uk/wagtail/global-notifications.schema.json",
+  "title": "Global Notifications",
+  "description": "Wagtail global notifications",
+  "properties": {
+    "global_alert": {
+      "description": "The global alert for the home page",
+      "$ref": "https://www.nationalarchives.gov.uk/wagtail/global-alert.schema.json"
+    },
+    "mourning_notice": {
+      "description": "The mourning notice",
+      "$ref": "https://www.nationalarchives.gov.uk/wagtail/mourning-notice.schema.json"
+    }
+  }
+}

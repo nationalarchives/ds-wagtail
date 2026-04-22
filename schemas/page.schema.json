@@ -146,39 +146,15 @@
         },
         "teaser_image": {
           "description": "The teaser image for the page",
-          "anyOf": [
-            {
-              "type": "object",
-              "$ref": "https://www.nationalarchives.gov.uk/wagtail/image-rendition.schema.json"
-            },
-            {
-              "type": "null"
-            }
-          ]
+          "$ref": "https://www.nationalarchives.gov.uk/wagtail/image-rendition.schema.json"
         },
         "teaser_image_square": {
           "description": "The square teaser image for the page",
-          "anyOf": [
-            {
-              "type": "object",
-              "$ref": "https://www.nationalarchives.gov.uk/wagtail/image-rendition.schema.json"
-            },
-            {
-              "type": "null"
-            }
-          ]
+          "$ref": "https://www.nationalarchives.gov.uk/wagtail/image-rendition.schema.json"
         },
         "search_image": {
           "description": "The search image for the page",
-          "anyOf": [
-            {
-              "type": "object",
-              "$ref": "https://www.nationalarchives.gov.uk/wagtail/image-rendition.schema.json"
-            },
-            {
-              "type": "null"
-            }
-          ]
+          "$ref": "https://www.nationalarchives.gov.uk/wagtail/image-rendition.schema.json"
         },
         "twitter_og_title": {
           "description": "The Twitter Open Graph title for the page",
@@ -190,15 +166,7 @@
         },
         "twitter_og_image": {
           "description": "The Twitter Open Graph image for the page",
-          "anyOf": [
-            {
-              "type": "object",
-              "$ref": "https://www.nationalarchives.gov.uk/wagtail/image-rendition.schema.json"
-            },
-            {
-              "type": "null"
-            }
-          ]
+          "$ref": "https://www.nationalarchives.gov.uk/wagtail/image-rendition.schema.json"
         },
         "breadcrumbs": {
           "description": "The breadcrumbs for the page",
@@ -246,6 +214,14 @@
         "twitter_og_image",
         "breadcrumbs"
       ]
+    },
+    "global_alert": {
+      "description": "The global alert for the page",
+      "$ref": "https://www.nationalarchives.gov.uk/wagtail/global-alert.schema.json"
+    },
+    "mourning_notice": {
+      "description": "The mourning notice",
+      "$ref": "https://www.nationalarchives.gov.uk/wagtail/mourning-notice.schema.json"
     }
   }
 }
