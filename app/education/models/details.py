@@ -26,19 +26,19 @@ from ..serializers import KeyStageSerializer, ThemeSerializer, TimePeriodSeriali
 
 
 KEY_STAGE_SLUG_CHOICES = (
-    ("key-stage-1", _("Key stage 1")),
-    ("key-stage-2", _("Key stage 2")),
-    ("key-stage-3", _("Key stage 3")),
-    ("key-stage-4", _("Key stage 4")),
-    ("key-stage-5", _("Key stage 5")),
+    ("key-stage-1", _("Key Stage 1 (ages 5–7)")),
+    ("key-stage-2", _("Key Stage 2 (ages 7–11)")),
+    ("key-stage-3", _("Key Stage 3 (ages 11–14)")),
+    ("key-stage-4", _("Key Stage 4 (ages 14–16)")),
+    ("key-stage-5", _("Key Stage 5 (ages 16-18)")),
 )
 
 KEY_STAGE_NAME_CHOICES = (
-    (_("Key stage 1"), _("Key stage 1")),
-    (_("Key stage 2"), _("Key stage 2")),
-    (_("Key stage 3"), _("Key stage 3")),
-    (_("Key stage 4"), _("Key stage 4")),
-    (_("Key stage 5"), _("Key stage 5")),
+    (_("Key Stage 1 (ages 5–7)"), _("Key Stage 1 (ages 5–7)")),
+    (_("Key Stage 2 (ages 7–11)"), _("Key Stage 2 (ages 7–11)")),
+    (_("Key Stage 3 (ages 11–14)"), _("Key Stage 3 (ages 11–14)")),
+    (_("Key Stage 4 (ages 14–16)"), _("Key Stage 4 (ages 14–16)")),
+    (_("Key Stage 5 (ages 16-18)"), _("Key Stage 5 (ages 16-18)")),
 )
 
 KEY_STAGE_ALLOWED_SLUGS = [choice[0] for choice in KEY_STAGE_SLUG_CHOICES]
