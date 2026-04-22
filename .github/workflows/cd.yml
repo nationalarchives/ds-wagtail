@@ -16,7 +16,7 @@ jobs:
     permissions:
       contents: read
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
       - name: Run tests
         uses: ./.github/actions/check-migrations
 
@@ -25,7 +25,7 @@ jobs:
     permissions:
       contents: read
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
       - name: Run tests
         uses: ./.github/actions/check-formatting
 
@@ -44,7 +44,7 @@ jobs:
           - 5432:5432
         options: --health-cmd pg_isready --health-interval 1s --health-timeout 3s --health-retries 10
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
       - name: Run tests
         uses: ./.github/actions/python-tests
         with:
@@ -60,7 +60,7 @@ jobs:
       packages: write
       contents: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
       - name: Generate version tag
         id: version-tag
         uses: nationalarchives/ds-docker-actions/.github/actions/get-version-tag@main
@@ -77,7 +77,7 @@ jobs:
           wiz-project-id: ${{ secrets.WIZ_PROJECT_DIGITALSERVICES }}
       - name: Create tag
         if: github.ref == 'refs/heads/main'
-        uses: actions/github-script@v5
+        uses: actions/github-script@211cb3fefb35a799baa5156f9321bb774fe56294 # v5.2.0
         with:
           script: |
             github.rest.git.createRef({
@@ -97,7 +97,7 @@ jobs:
       - build
     if: github.ref == 'refs/heads/main'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
         with:
           repository: nationalarchives/ds-infrastructure-web
           ref: main
