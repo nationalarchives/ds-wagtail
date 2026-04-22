@@ -25,23 +25,16 @@ from wagtail.models import Orderable
 from ..serializers import KeyStageSerializer, ThemeSerializer, TimePeriodSerializer
 
 
-KEY_STAGE_SLUG_CHOICES = (
-    ("key-stage-1", _("Key Stage 1 (ages 5–7)")),
-    ("key-stage-2", _("Key Stage 2 (ages 7–11)")),
-    ("key-stage-3", _("Key Stage 3 (ages 11–14)")),
-    ("key-stage-4", _("Key Stage 4 (ages 14–16)")),
-    ("key-stage-5", _("Key Stage 5 (ages 16-18)")),
-)
+class KeyStageChoices(models.TextChoices):
+    KEY_STAGE_1 = "key-stage-1", _("Key Stage 1 (ages 5–7)")
+    KEY_STAGE_2 = "key-stage-2", _("Key Stage 2 (ages 7–11)")
+    KEY_STAGE_3 = "key-stage-3", _("Key Stage 3 (ages 11–14)")
+    KEY_STAGE_4 = "key-stage-4", _("Key Stage 4 (ages 14–16)")
+    KEY_STAGE_5 = "key-stage-5", _("Key Stage 5 (ages 16-18)")
 
-KEY_STAGE_NAME_CHOICES = (
-    (_("Key Stage 1 (ages 5–7)"), _("Key Stage 1 (ages 5–7)")),
-    (_("Key Stage 2 (ages 7–11)"), _("Key Stage 2 (ages 7–11)")),
-    (_("Key Stage 3 (ages 11–14)"), _("Key Stage 3 (ages 11–14)")),
-    (_("Key Stage 4 (ages 14–16)"), _("Key Stage 4 (ages 14–16)")),
-    (_("Key Stage 5 (ages 16-18)"), _("Key Stage 5 (ages 16-18)")),
-)
 
-KEY_STAGE_ALLOWED_SLUGS = [choice[0] for choice in KEY_STAGE_SLUG_CHOICES]
+KEY_STAGE_ALLOWED_SLUGS = [choice.value for choice in KeyStageChoices]
+KEY_STAGE_NAME_CHOICES = [(choice.label, choice.label) for choice in KeyStageChoices]
 
 # Key stage
 
@@ -137,7 +130,7 @@ class KeyStage(models.Model):
     slug = models.SlugField(
         max_length=255,
         verbose_name=_("slug"),
-        choices=KEY_STAGE_SLUG_CHOICES,
+        choices=KeyStageChoices.choices,
         unique=True,
     )
 
