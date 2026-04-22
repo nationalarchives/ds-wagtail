@@ -19,10 +19,15 @@ from wagtail.admin.panels import (
     PageChooserPanel,
 )
 from wagtail.api import APIField
-from wagtail.fields import StreamField
+from wagtail.fields import RichTextField, StreamField
 from wagtail.models import Orderable
 
-from ..serializers import KeyStageSerializer, ThemeSerializer, TimePeriodSerializer
+from ..serializers import (
+    CurriculumConnectionSerializer,
+    KeyStageSerializer,
+    ThemeSerializer,
+    TimePeriodSerializer,
+)
 
 
 class KeyStageChoices(models.TextChoices):
@@ -335,9 +340,7 @@ class Source(Orderable):
         if len(selected_media_fields) > 1:
             raise ValidationError(
                 {
-                    field_name: _(
-                        "Only one source type is allowed per source item."
-                    )
+                    field_name: _("Only one source type is allowed per source item.")
                     for field_name in selected_media_fields
                 }
             )
@@ -360,17 +363,11 @@ class Source(Orderable):
 
     # Rich text - allow bold, italic
 
-    source_media_caption = StreamField(
-        [
-            (
-                "source_media_caption",
-                APIRichTextBlock(
-                    features=["bold", "italic"],
-                    help_text=("If provided, displays directly below the source."),
-                    required=False,
-                ),
-            )
-        ]
+    source_media_caption = RichTextField(
+        verbose_name=_("source media caption"),
+        help_text=_("If provided, displays directly below the source."),
+        features=["bold", "italic"],
+        blank=True,
     )
 
     # Source link
@@ -395,12 +392,10 @@ class Source(Orderable):
 
     # Rich text - allow bold, italic, hyperlinks, bullets, numbered lists
 
-    source_description = StreamField(
-        [("source_description", APIRichTextBlock())],
-        help_text=(
-            "An optional free text field to add in a fuller description of the source."
-        ),
-        # required=False,
+    source_description = RichTextField(
+        verbose_name=_("source description"),
+        help_text=_("An optional free text field to add in a fuller description of the source."),
+        blank=True,
     )
 
     # Source questions
@@ -449,20 +444,16 @@ class CurriculumConnection(Orderable):
         limit_choices_to={"slug__in": KEY_STAGE_ALLOWED_SLUGS},
     )
 
-    connection_description = StreamField(
-        [
-            (
-                "connection_description",
-                APIRichTextBlock(features=["bold", "italic", "link", "ul"]),
-            )
-        ],
+    curriculum_connection_description = RichTextField(
+        verbose_name=_("curriculum connection description"),
         help_text=_("Add the curriculum connection description."),
+        features=["bold", "italic", "link", "ul"],
         blank=True,
     )
 
     panels = [
         FieldPanel("key_stage"),
-        FieldPanel("connection_description"),
+        FieldPanel("curriculum_connection_description"),
     ]
 
 
@@ -486,14 +477,13 @@ class TeachingResourcePage(BasePageWithRequiredIntro):
                 ),
             )
         ],
+        null=True,
         max_num=1,
     )
 
     enquiry_question = models.TextField(
         verbose_name=_("enquiry question"),
-        help_text=_(
-            "???" #TODO: what is this for, is textfield approp
-        ),
+        help_text=_("???"),  # TODO: what is this for, is textfield approp
         blank=True,
     )
 
@@ -544,9 +534,8 @@ class TeachingResourcePage(BasePageWithRequiredIntro):
         verbose_name=_("sources introduction"),
         help_text=_("Optional text field to provide an introduction to the sources."),
         blank=True,
+        null=True,
     )
-
-
 
     # Teacher’s Notes*
 
@@ -554,23 +543,21 @@ class TeachingResourcePage(BasePageWithRequiredIntro):
 
     # Rich text -  allow bold, italic, hyperlinks, bullets, numbered lists
 
-
     teachers_notes = StreamField(
         [("teachers_notes", APIRichTextBlock())],
         verbose_name=_("teachers notes"),
-        help_text=_("A general overview of what the resource contains and how it can be used."),
+        help_text=_(
+            "A general overview of what the resource contains and how it can be used."
+        ),
         blank=True,
+        null=True,
     )
-
 
     # Multi add connections:
 
     # Key stage (select from Key stage taxonomy)
 
     # Connection description  - Rich text field (bold, italic, hyperlink, bulleted list)
-
-
-
 
     # Extension activities
 
@@ -599,9 +586,6 @@ class TeachingResourcePage(BasePageWithRequiredIntro):
         null=True,
     )
 
-
-
-
     # Background information
 
     # Section providing historical context to the teaching resource
@@ -621,9 +605,6 @@ class TeachingResourcePage(BasePageWithRequiredIntro):
         null=True,
     )
 
-
-
-
     # Further information
 
     # Section providing links to other useful information.
@@ -642,9 +623,7 @@ class TeachingResourcePage(BasePageWithRequiredIntro):
     further_information_title = models.CharField(
         max_length=255,
         verbose_name=_("further information title"),
-        help_text=_(
-            "Title of the further information section (required)."
-        ),
+        help_text=_("Title of the further information section (required)."),
         blank=True,
         null=True,
     )
@@ -718,6 +697,10 @@ class TeachingResourcePage(BasePageWithRequiredIntro):
         APIField("key_stage", serializer=KeyStageSerializer()),
         APIField("time_period", serializer=TimePeriodSerializer()),
         APIField("theme", serializer=ThemeSerializer()),
+        APIField(
+            "curriculum_connections",
+            serializer=CurriculumConnectionSerializer(many=True),
+        ),
         APIField("extension_activities"),
         APIField("background_information"),
         APIField("further_information_title"),
