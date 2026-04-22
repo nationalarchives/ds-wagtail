@@ -26,7 +26,7 @@
         },
         "uid": {
           "description": "The UID of the global alert",
-          "type": "string"
+          "type": "integer"
         }
       },
       "required": ["title", "message", "alert_level", "cascade", "uid"]
