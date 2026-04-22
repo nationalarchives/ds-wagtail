@@ -1,5 +1,7 @@
 from app.core.blocks.image import APIImageChooserBlock, ContentImageBlock
 from app.core.blocks.paragraph import APIRichTextBlock, ParagraphBlock
+from app.core.blocks.promoted_links import FeaturedExternalLinkBlock, FeaturedPageBlock
+from app.core.blocks.section import SubHeadingBlock
 from app.core.blocks.video import MixedMediaBlock, YouTubeBlock
 from app.core.models import (
     BasePageWithRequiredIntro,
@@ -265,7 +267,7 @@ class Source(Orderable):
     )
 
     source_title = models.TextField(
-        verbose_name=_("sources title"),
+        verbose_name=_("source title"),
         help_text=_("A unique, descriptive title for the source."),
         blank=True,
     )
@@ -589,6 +591,21 @@ class TeachingResourcePage(BasePageWithRequiredIntro):
 
     # Featured external link
 
+    extension_activities = StreamField(
+        [
+            ("paragraph", ParagraphBlock()),
+            ("sub_heading", SubHeadingBlock()),
+            ("featured_page", FeaturedPageBlock()),
+            ("featured_external_link", FeaturedExternalLinkBlock()),
+        ],
+        verbose_name=_("extension activities"),
+        help_text=_(
+            "Optional section where editors can add extra activities for teachers to try with their pupils."
+        ),
+        blank=True,
+        null=True,
+    )
+
 
 
 
@@ -599,6 +616,17 @@ class TeachingResourcePage(BasePageWithRequiredIntro):
     # Paragraph text
 
     # Subheadings
+
+    background_information = StreamField(
+        [
+            ("paragraph", ParagraphBlock()),
+            ("sub_heading", SubHeadingBlock()),
+        ],
+        verbose_name=_("background information"),
+        help_text=_("Section providing historical context to the teaching resource."),
+        blank=True,
+        null=True,
+    )
 
 
 
@@ -617,6 +645,29 @@ class TeachingResourcePage(BasePageWithRequiredIntro):
     # Featured external links
 
     # Featured page
+
+    further_information_title = models.CharField(
+        max_length=255,
+        verbose_name=_("further information title"),
+        help_text=_(
+            "Title of the further information section (required)."
+        ),
+        blank=True,
+        null=True,
+    )
+
+    further_information = StreamField(
+        [
+            ("paragraph", ParagraphBlock()),
+            ("sub_heading", SubHeadingBlock()),
+            ("featured_external_link", FeaturedExternalLinkBlock()),
+            ("featured_page", FeaturedPageBlock()),
+        ],
+        verbose_name=_("further information"),
+        help_text=_("Section providing links to other useful information."),
+        blank=True,
+        null=True,
+    )
 
     content_panels = BasePageWithRequiredIntro.content_panels + [
         MultiFieldPanel(
@@ -649,33 +700,35 @@ class TeachingResourcePage(BasePageWithRequiredIntro):
             ],
             heading=_("Connections to the curriculum"),
         ),
-        # MultiFieldPanel(
-        #     [
-        #         PageChooserPanel("featured_teaching_resource"),
-        #         FieldPanel("featured_teaching_resource_teaser_override"),
-        #     ],
-        #     heading=_("Extension activities"),
-        # ),
-        # MultiFieldPanel(
-        #     [
-        #         PageChooserPanel("featured_teaching_resource"),
-        #         FieldPanel("featured_teaching_resource_teaser_override"),
-        #     ],
-        #     heading=_("Background information"),
-        # ),
-        # MultiFieldPanel(
-        #     [
-        #         PageChooserPanel("featured_teaching_resource"),
-        #         FieldPanel("featured_teaching_resource_teaser_override"),
-        #     ],
-        #     heading=_("Further reading"),
-        # ),
+        MultiFieldPanel(
+            [
+                FieldPanel("extension_activities"),
+            ],
+            heading=_("Extension activities"),
+        ),
+        MultiFieldPanel(
+            [
+                FieldPanel("background_information"),
+            ],
+            heading=_("Background information"),
+        ),
+        MultiFieldPanel(
+            [
+                FieldPanel("further_information_title"),
+                FieldPanel("further_information"),
+            ],
+            heading=_("Further information"),
+        ),
     ]
 
     api_fields = BasePageWithRequiredIntro.api_fields + [
         APIField("key_stage", serializer=KeyStageSerializer()),
         APIField("time_period", serializer=TimePeriodSerializer()),
         APIField("theme", serializer=ThemeSerializer()),
+        APIField("extension_activities"),
+        APIField("background_information"),
+        APIField("further_information_title"),
+        APIField("further_information"),
     ]
 
 
