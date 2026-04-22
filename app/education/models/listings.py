@@ -96,8 +96,8 @@ class TeachingResourcesListingPage(BasePageWithRequiredIntro):
     ]
 
     api_fields = BasePageWithRequiredIntro.api_fields + [
-        APIField("featured_resource", serializer=DefaultPageSerializer()),
-        APIField("featured_resource_teaser"),
+        APIField("featured_teaching_resource", serializer=DefaultPageSerializer()),
+        APIField("featured_teaching_resource_teaser_override"),
         APIField("web_archive_promo", serializer=RichTextSerializer()),
         APIField("newsletter_sign_up_text"),
     ]
@@ -162,8 +162,8 @@ class EducationSessionsListingPage(BasePageWithRequiredIntro):
     ]
 
     api_fields = BasePageWithRequiredIntro.api_fields + [
-        APIField("featured_session", serializer=DefaultPageSerializer()),
-        APIField("featured_session_teaser"),
+        APIField("featured_education_session", serializer=DefaultPageSerializer()),
+        APIField("featured_education_session_teaser_override"),
         APIField("newsletter_sign_up_text"),
     ]
 
