@@ -21,69 +21,7 @@
       "type": "array",
       "items": {
         "type": "object",
-        "properties": {
-          "id": {
-            "description": "The ID of the page",
-            "type": "integer"
-          },
-          "title": {
-            "description": "The title of the page",
-            "type": "string"
-          },
-          "short_title": {
-            "description": "The short title of the page",
-            "type": ["string", "null"]
-          },
-          "page_path": {
-            "description": "The path of the page",
-            "type": "string"
-          },
-          "url": {
-            "description": "The URL of the page",
-            "type": "string"
-          },
-          "full_url": {
-            "description": "The full URL of the page",
-            "type": "string"
-          },
-          "type": {
-            "description": "The type of the page",
-            "type": "string"
-          },
-          "type_label": {
-            "description": "The label of the page type",
-            "type": ["string", "null"]
-          },
-          "teaser_text": {
-            "description": "The teaser text of the page",
-            "type": "string"
-          },
-          "teaser_image": {
-            "description": "The teaser image of the page",
-            "$ref": "https://www.nationalarchives.gov.uk/wagtail/image-rendition.schema.json"
-          },
-          "first_published_at": {
-            "description": "The first published date of the page",
-            "type": "string",
-            "format": "date-time"
-          },
-          "last_published_at": {
-            "description": "The last published date of the page",
-            "type": "string",
-            "format": "date-time"
-          }
-        },
-        "required": [
-          "id",
-          "title",
-          "page_path",
-          "url",
-          "full_url",
-          "type",
-          "teaser_text",
-          "first_published_at",
-          "last_published_at"
-        ]
+        "$ref": "https://www.nationalarchives.gov.uk/wagtail/page-summary.schema.json"
       },
       "uniqueItems": true
     }
