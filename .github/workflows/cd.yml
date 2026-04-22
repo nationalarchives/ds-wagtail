@@ -71,9 +71,9 @@ jobs:
           persist-credentials: false
       - name: Generate version tag
         id: version-tag
-        uses: nationalarchives/ds-docker-actions/.github/actions/get-version-tag@main
+        uses: nationalarchives/ds-docker-actions/.github/actions/get-version-tag@main # zizmor: ignore[unpinned-uses] Owned by The National Archives
       - name: Build Docker image
-        uses: nationalarchives/ds-docker-actions/.github/actions/build@main
+        uses: nationalarchives/ds-docker-actions/.github/actions/build@main # zizmor: ignore[unpinned-uses] Owned by The National Archives
         with:
           version: ${{ steps.version-tag.outputs.version-tag }}
           latest: ${{ github.ref == 'refs/heads/main' }}
