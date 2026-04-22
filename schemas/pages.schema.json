@@ -60,8 +60,15 @@
           },
           "teaser_image": {
             "description": "The teaser image of the page",
-            "type": ["object", "null"],
-            "$ref": "https://www.nationalarchives.gov.uk/wagtail/image-rendition.schema.json"
+            "anyOf": [
+              {
+                "type": "object",
+                "$ref": "https://www.nationalarchives.gov.uk/wagtail/image-rendition.schema.json"
+              },
+              {
+                "type": "null"
+              }
+            ]
           },
           "first_published_at": {
             "description": "The first published date of the page",

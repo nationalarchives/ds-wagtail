@@ -146,18 +146,39 @@
         },
         "teaser_image": {
           "description": "The teaser image for the page",
-          "type": ["object", "null"],
-          "$ref": "https://www.nationalarchives.gov.uk/wagtail/image-rendition.schema.json"
+          "anyOf": [
+            {
+              "type": "object",
+              "$ref": "https://www.nationalarchives.gov.uk/wagtail/image-rendition.schema.json"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "teaser_image_square": {
           "description": "The square teaser image for the page",
-          "type": ["object", "null"],
-          "$ref": "https://www.nationalarchives.gov.uk/wagtail/image-rendition.schema.json"
+          "anyOf": [
+            {
+              "type": "object",
+              "$ref": "https://www.nationalarchives.gov.uk/wagtail/image-rendition.schema.json"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "search_image": {
           "description": "The search image for the page",
-          "type": ["object", "null"],
-          "$ref": "https://www.nationalarchives.gov.uk/wagtail/image-rendition.schema.json"
+          "anyOf": [
+            {
+              "type": "object",
+              "$ref": "https://www.nationalarchives.gov.uk/wagtail/image-rendition.schema.json"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "twitter_og_title": {
           "description": "The Twitter Open Graph title for the page",
@@ -169,8 +190,15 @@
         },
         "twitter_og_image": {
           "description": "The Twitter Open Graph image for the page",
-          "type": ["object", "null"],
-          "$ref": "https://www.nationalarchives.gov.uk/wagtail/image-rendition.schema.json"
+          "anyOf": [
+            {
+              "type": "object",
+              "$ref": "https://www.nationalarchives.gov.uk/wagtail/image-rendition.schema.json"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "breadcrumbs": {
           "description": "The breadcrumbs for the page",
