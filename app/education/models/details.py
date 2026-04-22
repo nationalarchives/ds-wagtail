@@ -1,4 +1,4 @@
-from app.core.blocks.image import APIImageChooserBlock
+from app.core.blocks.image import APIImageChooserBlock, ContentImageBlock
 from app.core.blocks.paragraph import APIRichTextBlock, ParagraphBlock
 from app.core.blocks.video import MixedMediaBlock, YouTubeBlock
 from app.core.models import (
@@ -21,6 +21,25 @@ from wagtail.fields import StreamField
 from wagtail.models import Orderable
 
 from ..serializers import KeyStageSerializer, ThemeSerializer, TimePeriodSerializer
+
+
+KEY_STAGE_SLUG_CHOICES = (
+    ("key-stage-1", _("Key stage 1")),
+    ("key-stage-2", _("Key stage 2")),
+    ("key-stage-3", _("Key stage 3")),
+    ("key-stage-4", _("Key stage 4")),
+    ("key-stage-5", _("Key stage 5")),
+)
+
+KEY_STAGE_NAME_CHOICES = (
+    (_("Key stage 1"), _("Key stage 1")),
+    (_("Key stage 2"), _("Key stage 2")),
+    (_("Key stage 3"), _("Key stage 3")),
+    (_("Key stage 4"), _("Key stage 4")),
+    (_("Key stage 5"), _("Key stage 5")),
+)
+
+KEY_STAGE_ALLOWED_SLUGS = [choice[0] for choice in KEY_STAGE_SLUG_CHOICES]
 
 # Key stage
 
@@ -86,9 +105,14 @@ class KeyStageTag(Orderable):
         related_name="key_stage",
         verbose_name=_("Key stage"),
         help_text=_("The key stage of the page."),
+        limit_choices_to={"slug__in": KEY_STAGE_ALLOWED_SLUGS},
         null=False,
         blank=False,
     )
+
+    panels = [
+        FieldPanel("key_stage"),
+    ]
 
     class Meta:
         verbose_name = _("Key stage")
@@ -99,16 +123,19 @@ class KeyStageTag(Orderable):
 
 
 class KeyStage(models.Model):
-    """A model for key stage tags"""
+    """A model for individual key stage tags"""
 
     name = models.CharField(
         max_length=255,
         verbose_name=_("name"),
+        choices=KEY_STAGE_NAME_CHOICES,
+        unique=True,
     )
 
     slug = models.SlugField(
         max_length=255,
         verbose_name=_("slug"),
+        choices=KEY_STAGE_SLUG_CHOICES,
         unique=True,
     )
 
@@ -411,6 +438,39 @@ class Source(Orderable):
     ]
 
 
+class CurriculumConnection(Orderable):
+    page = ParentalKey(
+        "education.TeachingResourcePage",
+        on_delete=models.CASCADE,
+        related_name="curriculum_connections",
+    )
+
+    key_stage = models.ForeignKey(
+        "education.KeyStage",
+        on_delete=models.CASCADE,
+        related_name="+",
+        verbose_name=_("Key stage"),
+        help_text=_("The key stage for this curriculum connection."),
+        limit_choices_to={"slug__in": KEY_STAGE_ALLOWED_SLUGS},
+    )
+
+    connection_description = StreamField(
+        [
+            (
+                "connection_description",
+                APIRichTextBlock(features=["bold", "italic", "link", "ul"]),
+            )
+        ],
+        help_text=_("Add the curriculum connection description."),
+        blank=True,
+    )
+
+    panels = [
+        FieldPanel("key_stage"),
+        FieldPanel("connection_description"),
+    ]
+
+
 class TeachingResourcePage(BasePageWithRequiredIntro):
     """A page to display a teaching resource"""
 
@@ -420,9 +480,27 @@ class TeachingResourcePage(BasePageWithRequiredIntro):
 
     # Hero
 
-    # TODO: Hero image
+    hero_image = StreamField(
+        [
+            (
+                "hero_image",
+                ContentImageBlock(
+                    rendition_size="max-900x900",
+                    verbose_name=_("hero image"),
+                    blank=True,
+                ),
+            )
+        ],
+        max_num=1,
+    )
 
-    # TODO: Enquiry question
+    enquiry_question = models.TextField(
+        verbose_name=_("enquiry question"),
+        help_text=_(
+            "???" #TODO: what is this for, is textfield approp
+        ),
+        blank=True,
+    )
 
     key_stage = models.ForeignKey(
         "education.KeyStage",
@@ -431,6 +509,7 @@ class TeachingResourcePage(BasePageWithRequiredIntro):
         on_delete=models.SET_NULL,
         related_name="+",
         verbose_name=_("key stage"),
+        limit_choices_to={"slug__in": KEY_STAGE_ALLOWED_SLUGS},
     )
 
     time_period = models.ForeignKey(
@@ -472,6 +551,8 @@ class TeachingResourcePage(BasePageWithRequiredIntro):
         blank=True,
     )
 
+
+
     # Teacher’s Notes*
 
     # Free text field giving a general overview of what the resource contains and how it can be used.
@@ -479,13 +560,12 @@ class TeachingResourcePage(BasePageWithRequiredIntro):
     # Rich text -  allow bold, italic, hyperlinks, bullets, numbered lists
 
 
-
-
-    # Connections to the curriculum*
-
-    # Area where editors can add a list of links to the curriculum, structured by Key stage
-
-
+    teachers_notes = StreamField(
+        [("teachers_notes", APIRichTextBlock())],
+        verbose_name=_("teachers notes"),
+        help_text=_("A general overview of what the resource contains and how it can be used."),
+        blank=True,
+    )
 
 
     # Multi add connections:
@@ -552,13 +632,23 @@ class TeachingResourcePage(BasePageWithRequiredIntro):
             ],
             heading=_("Sources"),
         ),
-        # MultiFieldPanel(
-        #     [
-        #         PageChooserPanel("featured_teaching_resource"),
-        #         FieldPanel("featured_teaching_resource_teaser_override"),
-        #     ],
-        #     heading=_("Teacher's notes"),
-        # ),
+        MultiFieldPanel(
+            [
+                FieldPanel("teachers_notes"),
+            ],
+            heading=_("Teacher's notes"),
+        ),
+        MultiFieldPanel(
+            [
+                InlinePanel(
+                    "curriculum_connections",
+                    label=_("Curriculum connection"),
+                    heading=_("Connections to the curriculum"),
+                    min_num=1,
+                ),
+            ],
+            heading=_("Connections to the curriculum"),
+        ),
         # MultiFieldPanel(
         #     [
         #         PageChooserPanel("featured_teaching_resource"),
@@ -614,6 +704,7 @@ class EducationSessionPage(BasePageWithRequiredIntro):
         on_delete=models.SET_NULL,
         related_name="+",
         verbose_name=_("key stage"),
+        limit_choices_to={"slug__in": KEY_STAGE_ALLOWED_SLUGS},
     )
 
     api_fields = BasePageWithRequiredIntro.api_fields + [
