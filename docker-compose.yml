@@ -8,6 +8,7 @@ services:
     depends_on:
       - db
       - redis
+      - elasticsearch
     ports:
       - 8000:8080
     environment:
@@ -33,6 +34,9 @@ services:
       - EMAIL_HOST_USER
       - EMAIL_HOST_PASSWORD
       - NEW_LABEL_DISPLAY_FOR_DAYS=21
+      - WAGTAIL_SEARCH_BACKEND=elasticsearch
+      - WAGTAILSEARCH_URL=http://elasticsearch:9200
+      - WAGTAILSEARCH_INDEX_PREFIX=ds_wagtail_local
     volumes:
       - ./:/app
       - media:/media
@@ -50,6 +54,17 @@ services:
   redis:
     image: redis:latest
 
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.17.0
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    ports:
+      - 9200:9200
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+
   docs:
     image: squidfunk/mkdocs-material
     volumes:
@@ -60,3 +75,4 @@ services:
 volumes:
   media:
   pgdata:
+  esdata:
