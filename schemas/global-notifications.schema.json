@@ -12,5 +12,6 @@
       "description": "The mourning notice",
       "$ref": "https://www.nationalarchives.gov.uk/wagtail/mourning-notice.schema.json"
     }
-  }
+  },
+  "required": ["global_alert", "mourning_notice"]
 }
