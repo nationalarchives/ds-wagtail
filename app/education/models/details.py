@@ -1,4 +1,5 @@
 from app.core.blocks.image import APIImageChooserBlock, ContentImageBlock
+from app.core.blocks.page_chooser import APIPageChooserBlock
 from app.core.blocks.paragraph import APIRichTextBlock, ParagraphBlock
 from app.core.blocks.promoted_links import FeaturedExternalLinkBlock, FeaturedPageBlock
 from app.core.blocks.section import SubHeadingBlock
@@ -192,24 +193,24 @@ class Theme(models.Model):
 
 
 class QuestionBlock(blocks.StreamBlock):
-    # question_heading = models.TextField(
-    #     verbose_name=_("question heading"),
-    #     help_text=_(
-    #         "A question relating to the resource"
-    #     ),
-    #     blank=True,
-    # )
-    question_answer = StreamField(
+    question = blocks.StructBlock(
         [
             (
-                "question_answer",
-                ParagraphBlock(
-                    verbose_name=_("question heading"),
-                    help_text=_("A question relating to the resource"),
-                    blank=True,
+                "question_heading",
+                blocks.CharBlock(
+                    required=False,
+                    max_length=255,
                 ),
-            )
-        ]
+            ),
+            (
+                "guidance_for_teachers",
+                APIRichTextBlock(
+                    features=["bold", "italic", "link", "ol", "ul"],
+                    required=False,
+                ),
+            ),
+        ],
+        icon="help",
     )
 
 
@@ -222,39 +223,6 @@ class QuestionBlock(blocks.StreamBlock):
 # Required to have atleast one source
 
 # TODO validation for how many sources
-
-# "AccordionsBlock",
-# "APIPageChooserBlock",
-# "ButtonBlock",
-# "CodeBlock",
-# "CallToActionBlock",
-# "ContactBlock",
-# "ContentImageBlock",
-# "ContentTableBlock",
-# "DescriptionListBlock",
-# "DetailsBlock",
-# "DocumentsBlock",
-# "DoDontListBlock",
-# "FeaturedExternalLinkBlock",
-# "FeaturedCollectionBlock",
-# "FeaturedPageBlock",
-# "FeaturedPagesBlock",
-# "ImageGalleryBlock",
-# "InsetTextBlock",
-# "PageListBlock",
-# "ParagraphBlock",
-# "PartnerLogoListBlock",
-# "PeopleListingBlock",
-# "LargeCardLinksBlock",
-# "MixedMediaBlock",
-# "QuoteBlock",
-# "ReviewBlock",
-# "ShopCollectionBlock",
-# "SimplifiedAccordionBlock",
-# "SubHeadingBlock",
-# "SubSubHeadingBlock",
-# "WarningTextBlock",
-# "YouTubeBlock",
 
 
 class Source(Orderable):
@@ -345,24 +313,6 @@ class Source(Orderable):
                 }
             )
 
-    # Editor picks the media associated with the source.
-
-    # Can pick Image, Media, YouTube video.
-
-    # Multi select allowed
-
-    # Media will inherit and show on the page all relevant metadata e.g. transcript, translation, alt text, copyright
-
-    # Note - How to show if an image has an audio transcript?
-
-    # Media caption
-
-    # Option to add a caption to the source e.g. Catalogue reference.
-
-    # Note, if image has copyright metadata, this will show in the  caption field.
-
-    # Rich text - allow bold, italic
-
     source_media_caption = RichTextField(
         verbose_name=_("source media caption"),
         help_text=_("If provided, displays directly below the source."),
@@ -378,7 +328,24 @@ class Source(Orderable):
 
     # Featured link
 
-    source_media_featured_link = models.URLField(
+    source_media_featured_link = StreamField(
+        [
+            (
+                "source_media_featured_link",
+                APIPageChooserBlock(
+                    label="Internal page",
+                    required=False,
+                    page_type="wagtailcore.Page",
+                ),
+            )
+        ],
+        verbose_name=_("source media featured link"),
+        help_text=_("Reference another page published on the site"),
+        blank=True,
+        max_num=1,
+    )
+
+    source_media_featured_external_link = models.URLField(
         verbose_name=_("source media featured link"),
         help_text=_(
             "Option to add link to a resource on a 3rd party platform (e.g. mapping tool)"
@@ -394,7 +361,9 @@ class Source(Orderable):
 
     source_description = RichTextField(
         verbose_name=_("source description"),
-        help_text=_("An optional free text field to add in a fuller description of the source."),
+        help_text=_(
+            "An optional free text field to add in a fuller description of the source."
+        ),
         blank=True,
     )
 
@@ -411,9 +380,9 @@ class Source(Orderable):
     source_question = StreamField(
         QuestionBlock(
             verbose_name=("source question"),
-            help_text=("Add a series of questions relating to each source."),
-            # required=False,
-        )
+            help_text=("A series of questions relating to each source."),
+        ),
+        blank=True,
     )
 
     panels = [
@@ -553,24 +522,8 @@ class TeachingResourcePage(BasePageWithRequiredIntro):
         null=True,
     )
 
-    # Multi add connections:
-
-    # Key stage (select from Key stage taxonomy)
-
-    # Connection description  - Rich text field (bold, italic, hyperlink, bulleted list)
 
     # Extension activities
-
-    # Optional section where editors can add in extra activities for teachers to try with their pupils
-
-    # Paragraph text
-
-    # Subheadings
-
-    # Featured page
-
-    # Featured external link
-
     extension_activities = StreamField(
         [
             ("paragraph", ParagraphBlock()),
@@ -587,13 +540,6 @@ class TeachingResourcePage(BasePageWithRequiredIntro):
     )
 
     # Background information
-
-    # Section providing historical context to the teaching resource
-
-    # Paragraph text
-
-    # Subheadings
-
     background_information = StreamField(
         [
             ("paragraph", ParagraphBlock()),
@@ -606,20 +552,6 @@ class TeachingResourcePage(BasePageWithRequiredIntro):
     )
 
     # Further information
-
-    # Section providing links to other useful information.
-    # Title of section free text rather than hard coded to give editor flexibility
-
-    # Title*
-
-    # Paragraph text
-
-    # Subheadings
-
-    # Featured external links
-
-    # Featured page
-
     further_information_title = models.CharField(
         max_length=255,
         verbose_name=_("further information title"),
@@ -706,18 +638,6 @@ class TeachingResourcePage(BasePageWithRequiredIntro):
         APIField("further_information_title"),
         APIField("further_information"),
     ]
-
-
-# META TAB
-# Short title
-
-
-# Internal data
-
-# Teaser text*
-
-# Teaser image
-
 
 class EducationSessionPage(BasePageWithRequiredIntro):
     """A page to display an education session"""
