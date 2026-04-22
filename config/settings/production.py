@@ -276,7 +276,9 @@ if WAGTAIL_SEARCH_BACKEND == "elasticsearch":
             "BACKEND": "wagtail.search.backends.elasticsearch8",
             "URLS": [
                 url.strip()
-                for url in os.getenv("WAGTAILSEARCH_URL", "http://localhost:9200").split(",")
+                for url in os.getenv(
+                    "WAGTAILSEARCH_URL", "http://localhost:9200"
+                ).split(",")
                 if url.strip()
             ],
             "INDEX_PREFIX": os.getenv("WAGTAILSEARCH_INDEX_PREFIX", "wagtail"),
