@@ -1,6 +1,6 @@
 from app.core.blocks.image import APIImageChooserBlock, ContentImageBlock
 from app.core.blocks.page_chooser import APIPageChooserBlock
-from app.core.blocks.paragraph import APIRichTextBlock, ParagraphBlock
+from app.core.blocks.paragraph import APIRichTextBlock
 from app.core.blocks.promoted_links import FeaturedExternalLinkBlock, FeaturedPageBlock
 from app.core.blocks.section import SubHeadingBlock
 from app.core.blocks.video import MixedMediaBlock, YouTubeBlock
@@ -172,7 +172,7 @@ class QuestionBlock(blocks.StreamBlock):
             (
                 "guidance_for_teachers",
                 APIRichTextBlock(
-                    features=["bold", "italic", "link", "ol", "ul"],
+                    features=["bold", "italic", "link", "ul"],
                     required=False,
                 ),
             ),
@@ -309,6 +309,7 @@ class Source(Orderable):
         help_text=_(
             "An optional free text field to add in a fuller description of the source."
         ),
+        features=["bold", "italic", "link", "ol", "ul"],
         blank=True,
     )
 
@@ -429,7 +430,7 @@ class TeachingResourcePage(BasePageWithRequiredIntro):
     )
 
     sources_introduction = StreamField(
-        [("sources_introduction", APIRichTextBlock())],
+        [("sources_introduction", APIRichTextBlock(features=["bold", "italic", "link"]))],
         verbose_name=_("sources introduction"),
         help_text=_("Optional text field to provide an introduction to the sources."),
         blank=True,
@@ -438,7 +439,7 @@ class TeachingResourcePage(BasePageWithRequiredIntro):
 
     # Teacher’s Notes*
     teachers_notes = StreamField(
-        [("teachers_notes", APIRichTextBlock())],
+        [("teachers_notes", APIRichTextBlock(features=["bold", "italic", "link", "ol", "ul"]))],
         verbose_name=_("teachers notes"),
         help_text=_(
             "A general overview of what the resource contains and how it can be used."
@@ -451,7 +452,7 @@ class TeachingResourcePage(BasePageWithRequiredIntro):
     # Extension activities
     extension_activities = StreamField(
         [
-            ("paragraph", ParagraphBlock()),
+            ("paragraph", APIRichTextBlock(features=["bold", "italic", "link", "ol", "ul"])),
             ("sub_heading", SubHeadingBlock()),
             ("featured_page", FeaturedPageBlock()),
             ("featured_external_link", FeaturedExternalLinkBlock()),
@@ -467,7 +468,7 @@ class TeachingResourcePage(BasePageWithRequiredIntro):
     # Background information
     background_information = StreamField(
         [
-            ("paragraph", ParagraphBlock()),
+            ("paragraph", APIRichTextBlock(features=["bold", "italic", "link", "ol", "ul"])),
             ("sub_heading", SubHeadingBlock()),
         ],
         verbose_name=_("background information"),
@@ -487,7 +488,7 @@ class TeachingResourcePage(BasePageWithRequiredIntro):
 
     further_information = StreamField(
         [
-            ("paragraph", ParagraphBlock()),
+            ("paragraph", APIRichTextBlock(features=["bold", "italic", "link", "ol", "ul"])),
             ("sub_heading", SubHeadingBlock()),
             ("featured_external_link", FeaturedExternalLinkBlock()),
             ("featured_page", FeaturedPageBlock()),
