@@ -1,10 +1,8 @@
 from app.core.models import (
     BasePageWithRequiredIntro,
 )
-from app.core.serializers import (
-    DefaultPageSerializer,
-    RichTextSerializer,
-)
+from app.core.blocks.paragraph import APIRichTextBlock
+from app.core.serializers import DefaultPageSerializer
 from django.db import models
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
@@ -14,7 +12,7 @@ from wagtail.admin.panels import (
     PageChooserPanel,
 )
 from wagtail.api import APIField
-from wagtail.fields import RichTextField
+from wagtail.fields import StreamField
 
 # Search and filter [resources page]
 
@@ -66,15 +64,16 @@ class TeachingResourcesListingPage(BasePageWithRequiredIntro):
         blank=True,
     )
 
-    web_archive_promo = RichTextField(
+    web_archive_promo = StreamField(
+        [("web_archive_promo", APIRichTextBlock(features=["bold", "italic", "link"]))],
         verbose_name=_("web archive promo text"),
         help_text=_(
             "Text block highlighting that old resources can be found in the web archive with a link to the archived old Education site. "
         ),
         blank=True,
+        null=True,
     )
 
-    # TODO: should this be hardcoded? how does what's on do it
     newsletter_sign_up_text = models.TextField(
         verbose_name=_("newsletter sign up text"),
         help_text=_(
@@ -98,7 +97,7 @@ class TeachingResourcesListingPage(BasePageWithRequiredIntro):
     api_fields = BasePageWithRequiredIntro.api_fields + [
         APIField("featured_teaching_resource", serializer=DefaultPageSerializer()),
         APIField("featured_teaching_resource_teaser_override"),
-        APIField("web_archive_promo", serializer=RichTextSerializer()),
+        APIField("web_archive_promo"),
         APIField("newsletter_sign_up_text"),
     ]
 

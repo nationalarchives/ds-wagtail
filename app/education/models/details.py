@@ -3,11 +3,11 @@ from app.core.blocks.page_chooser import APIPageChooserBlock
 from app.core.blocks.paragraph import APIRichTextBlock
 from app.core.blocks.promoted_links import FeaturedExternalLinkBlock, FeaturedPageBlock
 from app.core.blocks.section import SubHeadingBlock
-from app.core.blocks.video import MixedMediaBlock, YouTubeBlock
+from app.core.blocks.video import YouTubeBlock
 from app.core.models import (
     BasePageWithRequiredIntro,
 )
-from app.media.blocks import MediaBlock
+from app.media.blocks import MediaChooserBlock
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -20,16 +20,16 @@ from wagtail.admin.panels import (
     PageChooserPanel,
 )
 from wagtail.api import APIField
-from wagtail.fields import RichTextField, StreamField
+from wagtail.fields import StreamField
 from wagtail.models import Orderable
 
 from ..serializers import (
     CurriculumConnectionSerializer,
     KeyStageSerializer,
+    SourceSerializer,
     ThemeSerializer,
     TimePeriodSerializer,
 )
-
 
 class KeyStageChoices(models.TextChoices):
     KEY_STAGE_1 = "key-stage-1", _("Key Stage 1 (ages 5–7)")
@@ -41,53 +41,6 @@ class KeyStageChoices(models.TextChoices):
 
 KEY_STAGE_ALLOWED_SLUGS = [choice.value for choice in KeyStageChoices]
 KEY_STAGE_NAME_CHOICES = [(choice.label, choice.label) for choice in KeyStageChoices]
-
-# Key stage
-
-# Relevant key stage for the resource. Shows on page and also drives filters and search
-
-# Multi select.
-
-# Taken from set taxonomy
-
-# MVP Education Taxonomy
-
-
-# Time period
-
-# Primary Time period
-
-# Secondary time periods
-
-# Relevant time periods for the resource. Shows on page and also drives filters and search
-
-# Taken from set taxonomy
-
-# MVP Education Taxonomy
-
-
-# Can only select one primary time period
-
-# Can select multiple secondary time periods
-
-
-# Theme
-
-# Primary Theme
-
-# Secondary Theme
-
-# Relevant themes for the resource. Shows on page and also drives filters and search
-
-# Taken from set taxonomy
-
-# MVP Education Taxonomy
-
-
-# Can only select one primary theme
-
-# Can select multiple secondary theme
-
 
 
 class KeyStage(models.Model):
@@ -180,16 +133,30 @@ class QuestionBlock(blocks.StreamBlock):
         icon="help",
     )
 
+# same as MediaBlock but without the title
+class SourceMediaBlock(blocks.StructBlock):
+    thumbnail = APIImageChooserBlock(
+        rendition_size="fill-960x540",
+        required=False,
+        help_text="A thumbnail image for the media block",
+    )
+    media = MediaChooserBlock()
 
-# TODO Source* do as inline panels so multiple can be added
+    class Meta:
+        help_text = "An embedded audio or video block"
+        icon = "play"
+        label = "Media"
+        group = "Video, audio and downloads"
 
-# A document or piece of media for the students to use. In most cases this will be an image or number of images, it may also be a piece of audio, a video or an external link to a resource hosted on a 3rd party platform.
+    def get_context(self, value, parent_context=None):
+        context = super().get_context(value, parent_context=parent_context)
+        context["src"] = value["media"].sources[0]["src"]
+        context["type"] = value["media"].sources[0]["type"]
+        return context
 
-# Ability to add multiple sources to the page. Mandatory to have at least one.
-
-# Required to have atleast one source
-
-# TODO validation for how many sources
+    @property
+    def admin_label(self):
+        return self.meta.label
 
 
 class Source(Orderable):
@@ -224,7 +191,7 @@ class Source(Orderable):
         [
             (
                 "source_media",
-                MediaBlock(
+                SourceMediaBlock(
                     verbose_name=_("source media"),
                     help_text=_("A piece of media for the source."),
                     blank=True,
@@ -246,32 +213,12 @@ class Source(Orderable):
         ],
     )
 
-    def clean(self):
-        super().clean()
-
-        selected_media_fields = [
-            field_name
-            for field_name in [
-                "source_image",
-                "source_media",
-                "source_youtube",
-            ]
-            if len(getattr(self, field_name) or []) > 0
-        ]
-
-        if len(selected_media_fields) > 1:
-            raise ValidationError(
-                {
-                    field_name: _("Only one source type is allowed per source item.")
-                    for field_name in selected_media_fields
-                }
-            )
-
-    source_media_caption = RichTextField(
+    source_media_caption = StreamField(
+        [("source_media_caption", APIRichTextBlock(features=["bold", "italic"]))],
         verbose_name=_("source caption"),
         help_text=_("If provided, displays directly below the source."),
-        features=["bold", "italic"],
         blank=True,
+        null=True,
     )
 
     # Source link
@@ -301,13 +248,19 @@ class Source(Orderable):
     )
 
     # Source description
-    source_description = RichTextField(
+    source_description = StreamField(
+        [
+            (
+                "source_description",
+                APIRichTextBlock(features=["bold", "italic", "link", "ol", "ul"]),
+            )
+        ],
         verbose_name=_("source description"),
         help_text=_(
             "An optional free text field to add in a fuller description of the source."
         ),
-        features=["bold", "italic", "link", "ol", "ul"],
         blank=True,
+        null=True,
     )
 
     # Source questions
@@ -348,11 +301,17 @@ class CurriculumConnection(Orderable):
         limit_choices_to={"slug__in": KEY_STAGE_ALLOWED_SLUGS},
     )
 
-    curriculum_connection_description = RichTextField(
+    curriculum_connection_description = StreamField(
+        [
+            (
+                "curriculum_connection_description",
+                APIRichTextBlock(features=["bold", "italic", "link", "ul"]),
+            )
+        ],
         verbose_name=_("curriculum connection description"),
         help_text=_("Add the curriculum connection description."),
-        features=["bold", "italic", "link", "ul"],
         blank=True,
+        null=True,
     )
 
     panels = [
@@ -386,6 +345,11 @@ class TeachingResourcePage(BasePageWithRequiredIntro):
 
     enquiry_question = models.TextField(
         verbose_name=_("enquiry question"),
+        blank=True,
+    )
+
+    introduction_text = models.TextField(
+        verbose_name=_("introduction text"),
         blank=True,
     )
 
@@ -497,6 +461,12 @@ class TeachingResourcePage(BasePageWithRequiredIntro):
     )
 
     content_panels = BasePageWithRequiredIntro.content_panels + [
+        FieldPanel("hero_image"),
+        FieldPanel("enquiry_question"),
+        FieldPanel("introduction_text"),
+        FieldPanel("key_stage"),
+        FieldPanel("time_period"),
+        FieldPanel("theme"),
         MultiFieldPanel(
             [
                 FieldPanel("sources_title"),
@@ -534,9 +504,15 @@ class TeachingResourcePage(BasePageWithRequiredIntro):
     ]
 
     api_fields = BasePageWithRequiredIntro.api_fields + [
+        APIField("hero_image"),
+        APIField("enquiry_question"),
         APIField("key_stage", serializer=KeyStageSerializer()),
         APIField("time_period", serializer=TimePeriodSerializer()),
         APIField("theme", serializer=ThemeSerializer()),
+        APIField("sources_title"),
+        APIField("sources_introduction"),
+        APIField("teachers_notes"),
+        APIField("sources", serializer=SourceSerializer(many=True)),
         APIField(
             "curriculum_connections",
             serializer=CurriculumConnectionSerializer(many=True),

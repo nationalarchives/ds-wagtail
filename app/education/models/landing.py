@@ -15,6 +15,7 @@ from wagtail.admin.panels import (
 from wagtail.api import APIField
 
 from .details import EducationSessionPage, TeachingResourcePage
+from ..serializers import EducationReadMoreLinkSerializer
 
 
 class EducationPage(BasePageWithRequiredIntro):
@@ -34,6 +35,7 @@ class EducationPage(BasePageWithRequiredIntro):
             .order_by("-first_published_at")[:3]
         )
 
+    # TODO: maybe remove cached_property? it will persist and maybe we don't want that
     @cached_property
     def latest_education_sessions(self) -> list:
         upcoming = (
@@ -188,6 +190,10 @@ class EducationPage(BasePageWithRequiredIntro):
         ),
         APIField(
             "latest_education_sessions", serializer=DefaultPageSerializer(many=True)
+        ),
+        APIField(
+            "education_read_more_links",
+            serializer=EducationReadMoreLinkSerializer(many=True),
         ),
     ]
 
