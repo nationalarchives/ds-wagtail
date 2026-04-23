@@ -43,7 +43,7 @@
       "type": "string"
     },
     "transcription": {
-      "description": "The heading for the image transcription",
+      "description": "The transcription of the image",
       "type": "string"
     },
     "translation_heading": {

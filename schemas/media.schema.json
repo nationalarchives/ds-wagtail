@@ -30,15 +30,15 @@
       "required": ["tags", "type"]
     },
     "title": {
-      "description": "The title of the image",
+      "description": "The title of the media item",
       "type": "string"
     },
     "width": {
-      "description": "The width of the image in pixels",
+      "description": "The width of the media item in pixels",
       "type": ["null", "integer"]
     },
     "height": {
-      "description": "The height of the image in pixels",
+      "description": "The height of the media item in pixels",
       "type": ["null", "integer"]
     },
     "media_type": {
@@ -59,7 +59,7 @@
           "type": "object",
           "properties": {
             "type": {
-              "description": "The title of the collection",
+              "description": "The type of the collection",
               "type": "string"
             }
           },
@@ -69,7 +69,7 @@
       "required": ["id", "meta"]
     },
     "uuid": {
-      "description": "The UUID of the image",
+      "description": "The UUID of the media item",
       "type": "string",
       "format": "uuid"
     },
@@ -89,7 +89,7 @@
     },
     "thumbnail": {
       "description": "The thumbnail image for the media item",
-      "type": "null"
+      "type": ["null", "string"]
     },
     "date": {
       "description": "The date the media item was created",
@@ -111,7 +111,7 @@
             "type": "string"
           },
           "transcript": {
-            "description": "The tags associated with the chapter",
+            "description": "The transcript of the chapter",
             "type": "string"
           }
         },
@@ -120,19 +120,19 @@
       "uniqueItems": true
     },
     "subtitles_file": {
-      "description": "",
+      "description": "The subtitles file for the media item",
       "type": ["null", "string"]
     },
     "subtitles_file_full_url": {
-      "description": "",
+      "description": "The full URL of the subtitles file",
       "type": ["null", "string"]
     },
     "chapters_file": {
-      "description": "",
+      "description": "The chapters file for the media item",
       "type": ["null", "string"]
     },
     "chapters_file_full_url": {
-      "description": "",
+      "description": "The full URL of the chapters file",
       "type": ["null", "string"]
     }
   },

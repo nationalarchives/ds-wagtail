@@ -84,7 +84,7 @@
           "required": ["type", "detail_url", "html_url"]
         },
         "parent": {
-          "description": "Alias page",
+          "description": "The parent page",
           "type": ["object", "null"],
           "properties": {
             "id": {
