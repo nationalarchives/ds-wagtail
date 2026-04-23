@@ -25,7 +25,9 @@ class ThemeSerializer(serializers.Serializer):
     slug = serializers.SlugField()
 
 
-class CurriculumConnectionSerializer(_StreamFieldRepresentationMixin, serializers.Serializer):
+class CurriculumConnectionSerializer(
+    _StreamFieldRepresentationMixin, serializers.Serializer
+):
     def to_representation(self, instance):
         if not instance:
             return None
@@ -47,9 +49,7 @@ class SourceSerializer(_StreamFieldRepresentationMixin, serializers.Serializer):
             "source_title": instance.source_title,
             "source_image": self._serialize_stream_field(instance, "source_image"),
             "source_media": self._serialize_stream_field(instance, "source_media"),
-            "source_youtube": self._serialize_stream_field(
-                instance, "source_youtube"
-            ),
+            "source_youtube": self._serialize_stream_field(instance, "source_youtube"),
             "source_media_caption": self._serialize_stream_field(
                 instance, "source_media_caption"
             ),

@@ -1,7 +1,7 @@
+from app.core.blocks.paragraph import APIRichTextBlock
 from app.core.models import (
     BasePageWithRequiredIntro,
 )
-from app.core.blocks.paragraph import APIRichTextBlock
 from app.core.serializers import DefaultPageSerializer
 from django.db import models
 from django.utils.functional import cached_property

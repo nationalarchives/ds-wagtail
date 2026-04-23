@@ -8,7 +8,6 @@ from app.core.models import (
     BasePageWithRequiredIntro,
 )
 from app.media.blocks import MediaChooserBlock
-from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from modelcluster.fields import ParentalKey
@@ -30,6 +29,7 @@ from ..serializers import (
     ThemeSerializer,
     TimePeriodSerializer,
 )
+
 
 class KeyStageChoices(models.TextChoices):
     KEY_STAGE_1 = "key-stage-1", _("Key Stage 1 (ages 5–7)")
@@ -132,6 +132,7 @@ class QuestionBlock(blocks.StreamBlock):
         ],
         icon="help",
     )
+
 
 # same as MediaBlock but without the title
 class SourceMediaBlock(blocks.StructBlock):
@@ -391,7 +392,12 @@ class TeachingResourcePage(BasePageWithRequiredIntro):
     )
 
     sources_introduction = StreamField(
-        [("sources_introduction", APIRichTextBlock(features=["bold", "italic", "link"]))],
+        [
+            (
+                "sources_introduction",
+                APIRichTextBlock(features=["bold", "italic", "link"]),
+            )
+        ],
         verbose_name=_("sources introduction"),
         help_text=_("Optional text field to provide an introduction to the sources."),
         blank=True,
@@ -400,7 +406,12 @@ class TeachingResourcePage(BasePageWithRequiredIntro):
 
     # Teacher’s Notes*
     teachers_notes = StreamField(
-        [("teachers_notes", APIRichTextBlock(features=["bold", "italic", "link", "ol", "ul"]))],
+        [
+            (
+                "teachers_notes",
+                APIRichTextBlock(features=["bold", "italic", "link", "ol", "ul"]),
+            )
+        ],
         verbose_name=_("teachers notes"),
         help_text=_(
             "A general overview of what the resource contains and how it can be used."
@@ -409,11 +420,13 @@ class TeachingResourcePage(BasePageWithRequiredIntro):
         null=True,
     )
 
-
     # Extension activities
     extension_activities = StreamField(
         [
-            ("paragraph", APIRichTextBlock(features=["bold", "italic", "link", "ol", "ul"])),
+            (
+                "paragraph",
+                APIRichTextBlock(features=["bold", "italic", "link", "ol", "ul"]),
+            ),
             ("sub_heading", SubHeadingBlock()),
             ("featured_page", FeaturedPageBlock()),
             ("featured_external_link", FeaturedExternalLinkBlock()),
@@ -429,7 +442,10 @@ class TeachingResourcePage(BasePageWithRequiredIntro):
     # Background information
     background_information = StreamField(
         [
-            ("paragraph", APIRichTextBlock(features=["bold", "italic", "link", "ol", "ul"])),
+            (
+                "paragraph",
+                APIRichTextBlock(features=["bold", "italic", "link", "ol", "ul"]),
+            ),
             ("sub_heading", SubHeadingBlock()),
         ],
         verbose_name=_("background information"),
@@ -449,7 +465,10 @@ class TeachingResourcePage(BasePageWithRequiredIntro):
 
     further_information = StreamField(
         [
-            ("paragraph", APIRichTextBlock(features=["bold", "italic", "link", "ol", "ul"])),
+            (
+                "paragraph",
+                APIRichTextBlock(features=["bold", "italic", "link", "ol", "ul"]),
+            ),
             ("sub_heading", SubHeadingBlock()),
             ("featured_external_link", FeaturedExternalLinkBlock()),
             ("featured_page", FeaturedPageBlock()),
@@ -522,6 +541,7 @@ class TeachingResourcePage(BasePageWithRequiredIntro):
         APIField("further_information_title"),
         APIField("further_information"),
     ]
+
 
 class EducationSessionPage(BasePageWithRequiredIntro):
     """A page to display an education session"""

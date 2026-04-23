@@ -14,8 +14,8 @@ from wagtail.admin.panels import (
 )
 from wagtail.api import APIField
 
-from .details import EducationSessionPage, TeachingResourcePage
 from ..serializers import EducationReadMoreLinkSerializer
+from .details import EducationSessionPage, TeachingResourcePage
 
 
 class EducationPage(BasePageWithRequiredIntro):
