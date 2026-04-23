@@ -52,11 +52,11 @@
           },
           "width": {
             "description": "The width of the image in pixels",
-            "type": "integer"
+            "type": "null"
           },
           "height": {
             "description": "The height of the image in pixels",
-            "type": "integer"
+            "type": "null"
           },
           "media_type": {
             "description": "The media type of the item",
