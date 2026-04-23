@@ -14,18 +14,6 @@ from wagtail.admin.panels import (
 from wagtail.api import APIField
 from wagtail.fields import StreamField
 
-# Search and filter [resources page]
-
-# Filter by:
-
-# Key stage
-
-# Time period
-
-# Theme
-
-# See taxonomy
-
 
 class TeachingResourcesListingPage(BasePageWithRequiredIntro):
     """
@@ -140,7 +128,6 @@ class EducationSessionsListingPage(BasePageWithRequiredIntro):
         blank=True,
     )
 
-    # TODO: should this be hardcoded? how does what's on do it
     newsletter_sign_up_text = models.TextField(
         verbose_name=_("newsletter sign up text"),
         help_text=_(
