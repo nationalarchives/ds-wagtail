@@ -30,7 +30,7 @@
           "date": {
             "description": "The date of the FOI request",
             "type": "string",
-            "format": "date-time"
+            "format": "date"
           },
           "reference": {
             "description": "The reference of the FOI request",
