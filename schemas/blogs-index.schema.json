@@ -1,0 +1,8 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://www.nationalarchives.gov.uk/wagtail/blogs-index.schema.json",
+  "title": "Blog index",
+  "description": "The blogs index in Wagtail",
+  "type": "object",
+  "$ref": "https://www.nationalarchives.gov.uk/wagtail/page-summary.schema.json"
+}

@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://www.nationalarchives.gov.uk/wagtail/foi.schema.json",
+  "title": "FOI list",
+  "description": "A list of FOI requests in Wagtail",
+  "type": "object",
+  "properties": {
+    "meta": {
+      "description": "Metadata about FOI requests in Wagtail",
+      "type": "object",
+      "properties": {
+        "total_count": {
+          "description": "The total number of FOI requests",
+          "type": "integer"
+        }
+      },
+      "required": ["total_count"]
+    },
+    "items": {
+      "description": "The items in the FOI request listings",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "https://www.nationalarchives.gov.uk/wagtail/page-summary.schema.json"
+          }
+        ],
+        "properties": {
+          "date": {
+            "description": "The date of the FOI request",
+            "type": "string",
+            "format": "date"
+          },
+          "reference": {
+            "description": "The reference of the FOI request",
+            "type": "string"
+          }
+        },
+        "required": ["date", "reference"]
+      },
+      "uniqueItems": true
+    }
+  },
+  "required": ["meta", "items"]
+}

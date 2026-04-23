@@ -1,0 +1,159 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://www.nationalarchives.gov.uk/wagtail/media.schema.json",
+  "title": "A single media item",
+  "description": "A single media item in Wagtail",
+  "type": "object",
+  "properties": {
+    "id": {
+      "description": "The ID of the media item",
+      "type": "integer"
+    },
+    "meta": {
+      "description": "Metadata about media items in Wagtail",
+      "type": "object",
+      "properties": {
+        "tags": {
+          "description": "The tags associated with the media item",
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "type": {
+          "description": "The type of the media item",
+          "type": "string",
+          "enum": ["media.EtnaMedia"]
+        }
+      },
+      "required": ["tags", "type"]
+    },
+    "title": {
+      "description": "The title of the media item",
+      "type": "string"
+    },
+    "width": {
+      "description": "The width of the media item in pixels",
+      "type": ["null", "integer"]
+    },
+    "height": {
+      "description": "The height of the media item in pixels",
+      "type": ["null", "integer"]
+    },
+    "media_type": {
+      "description": "The media type of the item",
+      "type": "string",
+      "enum": ["audio", "video"]
+    },
+    "collection": {
+      "description": "The collection the media item belongs to",
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "The ID of the collection",
+          "type": "integer"
+        },
+        "meta": {
+          "description": "Metadata about the collection",
+          "type": "object",
+          "properties": {
+            "type": {
+              "description": "The type of the collection",
+              "type": "string"
+            }
+          },
+          "required": ["type"]
+        }
+      },
+      "required": ["id", "meta"]
+    },
+    "uuid": {
+      "description": "The UUID of the media item",
+      "type": "string",
+      "format": "uuid"
+    },
+    "url": {
+      "description": "The URL of the media item",
+      "type": "string",
+      "format": "uri"
+    },
+    "full_url": {
+      "description": "The full URL of the media item",
+      "type": "string",
+      "format": "uri"
+    },
+    "audio_described_file": {
+      "description": "The audio described file for the media item",
+      "type": ["null", "string"]
+    },
+    "thumbnail": {
+      "description": "The thumbnail image for the media item",
+      "type": ["null", "string"]
+    },
+    "date": {
+      "description": "The date the media item was created",
+      "type": "string",
+      "format": "date-time"
+    },
+    "chapters": {
+      "description": "The chapters associated with the media item",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "time": {
+            "description": "The time of the chapter in seconds",
+            "type": "integer"
+          },
+          "heading": {
+            "description": "The heading of the chapter",
+            "type": "string"
+          },
+          "transcript": {
+            "description": "The transcript of the chapter",
+            "type": "string"
+          }
+        },
+        "required": ["time", "heading", "transcript"]
+      },
+      "uniqueItems": true
+    },
+    "subtitles_file": {
+      "description": "The subtitles file for the media item",
+      "type": ["null", "string"]
+    },
+    "subtitles_file_full_url": {
+      "description": "The full URL of the subtitles file",
+      "type": ["null", "string"]
+    },
+    "chapters_file": {
+      "description": "The chapters file for the media item",
+      "type": ["null", "string"]
+    },
+    "chapters_file_full_url": {
+      "description": "The full URL of the chapters file",
+      "type": ["null", "string"]
+    }
+  },
+  "required": [
+    "id",
+    "meta",
+    "title",
+    "width",
+    "height",
+    "media_type",
+    "collection",
+    "uuid",
+    "url",
+    "full_url",
+    "audio_described_file",
+    "thumbnail",
+    "date",
+    "chapters",
+    "subtitles_file",
+    "subtitles_file_full_url",
+    "chapters_file",
+    "chapters_file_full_url"
+  ]
+}
