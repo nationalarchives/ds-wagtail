@@ -1,0 +1,228 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://www.nationalarchives.gov.uk/wagtail/page.schema.json",
+  "title": "Page",
+  "description": "A page in Wagtail",
+  "type": "object",
+  "properties": {
+    "id": {
+      "description": "The unique identifier for the page",
+      "type": "integer"
+    },
+    "meta": {
+      "description": "Metadata about page in Wagtail",
+      "type": "object",
+      "properties": {
+        "type": {
+          "description": "The content type of the page",
+          "type": "string"
+        },
+        "detail_url": {
+          "description": "The API URL for the page",
+          "type": "string",
+          "format": "uri"
+        },
+        "html_url": {
+          "description": "The URL for the page on the website",
+          "type": "string",
+          "format": "uri"
+        },
+        "slug": {
+          "description": "The slug for the page",
+          "type": "string"
+        },
+        "show_in_menus": {
+          "description": "Whether the page is set to show in menus",
+          "type": "boolean"
+        },
+        "seo_title": {
+          "description": "The SEO title for the page",
+          "type": "string"
+        },
+        "search_description": {
+          "description": "The search description for the page",
+          "type": "string"
+        },
+        "first_published_at": {
+          "description": "The date and time when the page was first published",
+          "type": "string",
+          "format": "date-time"
+        },
+        "alias_of": {
+          "description": "Alias page",
+          "type": ["object", "null"],
+          "properties": {
+            "id": {
+              "description": "The ID of the page",
+              "type": "integer"
+            },
+            "meta": {
+              "description": "Metadata about page in Wagtail",
+              "type": "object",
+              "properties": {
+                "type": {
+                  "description": "The content type of the page",
+                  "type": "string"
+                },
+                "detail_url": {
+                  "description": "The API URL for the page",
+                  "type": "string",
+                  "format": "uri"
+                },
+                "html_url": {
+                  "description": "The URL for the page on the website",
+                  "type": "string",
+                  "format": "uri"
+                }
+              }
+            },
+            "title": {
+              "description": "The title of the page",
+              "type": "string"
+            }
+          },
+          "required": ["type", "detail_url", "html_url"]
+        },
+        "parent": {
+          "description": "The parent page",
+          "type": ["object", "null"],
+          "properties": {
+            "id": {
+              "description": "The ID of the page",
+              "type": "integer"
+            },
+            "meta": {
+              "description": "Metadata about page in Wagtail",
+              "type": "object",
+              "properties": {
+                "type": {
+                  "description": "The content type of the page",
+                  "type": "string"
+                },
+                "detail_url": {
+                  "description": "The API URL for the page",
+                  "type": "string",
+                  "format": "uri"
+                },
+                "html_url": {
+                  "description": "The URL for the page on the website",
+                  "type": "string",
+                  "format": "uri"
+                }
+              },
+              "required": ["type", "detail_url", "html_url"]
+            },
+            "title": {
+              "description": "The title of the page",
+              "type": "string"
+            }
+          }
+        },
+        "privacy": {
+          "description": "The privacy level of the page",
+          "type": "string"
+        },
+        "last_published_at": {
+          "description": "The date and time when the page was last published",
+          "type": "string",
+          "format": "date-time"
+        },
+        "url": {
+          "description": "The URL for the page on the website",
+          "type": "string",
+          "format": "uri"
+        },
+        "depth": {
+          "description": "The depth of the page in the page hierarchy",
+          "type": "integer"
+        },
+        "page_path": {
+          "description": "The path of the page in the page hierarchy",
+          "type": "string"
+        },
+        "teaser_text": {
+          "description": "The teaser text for the page",
+          "type": "string"
+        },
+        "teaser_image": {
+          "description": "The teaser image for the page",
+          "$ref": "https://www.nationalarchives.gov.uk/wagtail/image-rendition.schema.json"
+        },
+        "teaser_image_square": {
+          "description": "The square teaser image for the page",
+          "$ref": "https://www.nationalarchives.gov.uk/wagtail/image-rendition.schema.json"
+        },
+        "search_image": {
+          "description": "The search image for the page",
+          "$ref": "https://www.nationalarchives.gov.uk/wagtail/image-rendition.schema.json"
+        },
+        "twitter_og_title": {
+          "description": "The Twitter Open Graph title for the page",
+          "type": ["string", "null"]
+        },
+        "twitter_og_description": {
+          "description": "The Twitter Open Graph description for the page",
+          "type": ["string", "null"]
+        },
+        "twitter_og_image": {
+          "description": "The Twitter Open Graph image for the page",
+          "$ref": "https://www.nationalarchives.gov.uk/wagtail/image-rendition.schema.json"
+        },
+        "breadcrumbs": {
+          "description": "The breadcrumbs for the page",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "text": {
+                "description": "The text of the breadcrumb",
+                "type": "string"
+              },
+              "href": {
+                "description": "The URL of the breadcrumb",
+                "type": "string",
+                "format": "uri"
+              }
+            },
+            "required": ["text", "href"]
+          },
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "type",
+        "detail_url",
+        "html_url",
+        "slug",
+        "show_in_menus",
+        "seo_title",
+        "search_description",
+        "first_published_at",
+        "alias_of",
+        "parent",
+        "privacy",
+        "last_published_at",
+        "url",
+        "depth",
+        "page_path",
+        "teaser_text",
+        "teaser_image",
+        "teaser_image_square",
+        "search_image",
+        "twitter_og_title",
+        "twitter_og_description",
+        "twitter_og_image",
+        "breadcrumbs"
+      ]
+    },
+    "global_alert": {
+      "description": "The global alert for the page",
+      "$ref": "https://www.nationalarchives.gov.uk/wagtail/global-alert.schema.json"
+    },
+    "mourning_notice": {
+      "description": "The mourning notice",
+      "$ref": "https://www.nationalarchives.gov.uk/wagtail/mourning-notice.schema.json"
+    }
+  },
+  "required": ["id", "meta", "global_alert", "mourning_notice"]
+}

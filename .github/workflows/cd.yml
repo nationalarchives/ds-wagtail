@@ -16,7 +16,9 @@ jobs:
     permissions:
       contents: read
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
       - name: Run tests
         uses: ./.github/actions/check-migrations
 
@@ -25,7 +27,9 @@ jobs:
     permissions:
       contents: read
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
       - name: Run tests
         uses: ./.github/actions/check-formatting
 
@@ -44,7 +48,9 @@ jobs:
           - 5432:5432
         options: --health-cmd pg_isready --health-interval 1s --health-timeout 3s --health-retries 10
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
       - name: Run tests
         uses: ./.github/actions/python-tests
         with:
@@ -60,12 +66,14 @@ jobs:
       packages: write
       contents: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
       - name: Generate version tag
         id: version-tag
-        uses: nationalarchives/ds-docker-actions/.github/actions/get-version-tag@main
+        uses: nationalarchives/ds-docker-actions/.github/actions/get-version-tag@main # zizmor: ignore[unpinned-uses] Owned by The National Archives
       - name: Build Docker image
-        uses: nationalarchives/ds-docker-actions/.github/actions/build@main
+        uses: nationalarchives/ds-docker-actions/.github/actions/build@main # zizmor: ignore[unpinned-uses] Owned by The National Archives
         with:
           version: ${{ steps.version-tag.outputs.version-tag }}
           latest: ${{ github.ref == 'refs/heads/main' }}
@@ -77,7 +85,7 @@ jobs:
           wiz-project-id: ${{ secrets.WIZ_PROJECT_DIGITALSERVICES }}
       - name: Create tag
         if: github.ref == 'refs/heads/main'
-        uses: actions/github-script@v5
+        uses: actions/github-script@211cb3fefb35a799baa5156f9321bb774fe56294 # v5.2.0
         with:
           script: |
             github.rest.git.createRef({
@@ -97,7 +105,7 @@ jobs:
       - build
     if: github.ref == 'refs/heads/main'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           repository: nationalarchives/ds-infrastructure-web
           ref: main
