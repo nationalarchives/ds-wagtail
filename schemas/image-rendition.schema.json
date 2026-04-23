@@ -13,7 +13,8 @@
         },
         "uuid": {
           "description": "The UUID of the image",
-          "type": "string"
+          "type": "string",
+          "format": "uuid"
         },
         "title": {
           "description": "The title of the image",

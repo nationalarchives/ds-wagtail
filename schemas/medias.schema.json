@@ -1,0 +1,158 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://www.nationalarchives.gov.uk/wagtail/medias.schema.json",
+  "title": "List of media items",
+  "description": "A list of media items in Wagtail",
+  "type": "object",
+  "properties": {
+    "meta": {
+      "description": "Metadata about pages in Wagtail",
+      "type": "object",
+      "properties": {
+        "total_count": {
+          "description": "The total number of items in the page listings",
+          "type": "integer"
+        }
+      },
+      "required": ["total_count"]
+    },
+    "items": {
+      "description": "The items in the page listings",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "The ID of the media item",
+            "type": "integer"
+          },
+          "meta": {
+            "description": "Metadata about media items in Wagtail",
+            "type": "object",
+            "properties": {
+              "tags": {
+                "description": "The tags associated with the media item",
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "uniqueItems": true
+              },
+              "type": {
+                "description": "The type of the media item",
+                "type": "string",
+                "enum": ["media.EtnaMedia"]
+              }
+            },
+            "required": ["tags", "type"]
+          },
+          "title": {
+            "description": "The title of the image",
+            "type": "string"
+          },
+          "width": {
+            "description": "The width of the image in pixels",
+            "type": "integer"
+          },
+          "height": {
+            "description": "The height of the image in pixels",
+            "type": "integer"
+          },
+          "media_type": {
+            "description": "The media type of the item",
+            "type": "string",
+            "enum": ["audio", "video"]
+          },
+          "collection": {
+            "description": "The collection the media item belongs to",
+            "type": "object",
+            "properties": {
+              "id": {
+                "description": "The ID of the collection",
+                "type": "integer"
+              },
+              "meta": {
+                "description": "Metadata about the collection",
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "description": "The title of the collection",
+                    "type": "string"
+                  }
+                },
+                "required": ["type"]
+              }
+            },
+            "required": ["id", "meta"]
+          },
+          "thumbnail": {
+            "description": "The thumbnail image for the media item",
+            "type": "null"
+          },
+          "uuid": {
+            "description": "The UUID of the image",
+            "type": "string",
+            "format": "uuid"
+          },
+          "chapters": {
+            "description": "The chapters associated with the media item",
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "time": {
+                  "description": "The time of the chapter in seconds",
+                  "type": "integer"
+                },
+                "heading": {
+                  "description": "The heading of the chapter",
+                  "type": "string"
+                },
+                "transcript": {
+                  "description": "The tags associated with the chapter",
+                  "type": "string"
+                }
+              },
+              "required": ["time", "heading", "transcript"]
+            },
+            "uniqueItems": true
+          },
+          "subtitles_file": {
+            "description": "",
+            "type": ["null", "string"]
+          },
+          "subtitles_file_full_url": {
+            "description": "",
+            "type": ["null", "string"]
+          },
+          "chapters_file": {
+            "description": "",
+            "type": ["null", "string"]
+          },
+          "chapters_file_full_url": {
+            "description": "",
+            "type": ["null", "string"]
+          }
+        },
+        "required": [
+          "id",
+          "meta",
+          "title",
+          "width",
+          "height",
+          "media_type",
+          "collection",
+          "thumbnail",
+          "uuid",
+          "chapters",
+          "subtitles_file",
+          "subtitles_file_full_url",
+          "chapters_file",
+          "chapters_file_full_url"
+        ]
+      },
+      "uniqueItems": true
+    }
+  },
+  "required": ["meta", "items"]
+}
