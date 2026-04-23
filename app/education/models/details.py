@@ -218,7 +218,6 @@ class Source(Orderable):
                 ),
             )
         ],
-        max_num=1,
     )
 
     source_media = StreamField(
@@ -232,7 +231,6 @@ class Source(Orderable):
                 ),
             )
         ],
-        max_num=1,
     )
 
     source_youtube = StreamField(
@@ -246,7 +244,6 @@ class Source(Orderable):
                 ),
             )
         ],
-        max_num=1,
     )
 
     def clean(self):
