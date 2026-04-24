@@ -169,17 +169,20 @@ class QuoteBlockTests(SimpleTestCase):
 
 
 class ReviewBlockTests(SimpleTestCase):
-    @patch("wagtail.blocks.StructBlock.get_api_representation")
-    def test_get_api_representation_casts_stars_to_int(self, mock_super_representation):
+    def test_get_api_representation_casts_stars_to_int(self):
         block = ReviewBlock()
 
         for raw_stars, expected_stars in (("5", 5), ("0", 0)):
             with self.subTest(raw_stars=raw_stars, expected_stars=expected_stars):
-                mock_super_representation.return_value = _make_review_representation(
-                    raw_stars
+                value = block.to_python(
+                    {
+                        "quote": "<p>Great review</p>",
+                        "attribution": "Reviewer",
+                        "stars": int(raw_stars),
+                    }
                 )
 
-                representation = block.get_api_representation({"stars": raw_stars})
+                representation = block.get_api_representation(value)
 
                 self.assertEqual(representation["stars"], expected_stars)
 

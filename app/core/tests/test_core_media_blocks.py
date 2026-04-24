@@ -45,7 +45,7 @@ class APIImageChooserBlockTests(SimpleTestCase):
 class ImageGalleryBlockTests(SimpleTestCase):
     @patch("wagtail.blocks.StructBlock.get_api_representation")
     def test_get_api_representation_adds_image_count(self, mock_super_representation):
-        mock_super_representation.return_value = {"title": "Gallery"}
+        mock_super_representation.return_value = {"title": "Gallery", "images": []}
         block = ImageGalleryBlock()
         value = {"images": [object(), object(), object()]}
 
