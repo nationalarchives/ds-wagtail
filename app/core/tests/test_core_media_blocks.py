@@ -148,6 +148,28 @@ class ShopCollectionBlockTests(SimpleTestCase):
         mock_serializer_class.assert_called_once_with(rendition_size="fill-600x400")
         serializer.to_representation.assert_called_once_with(image)
 
+    @patch("app.core.blocks.shop.ImageSerializer")
+    @patch("app.core.blocks.image.DetailedImageSerializer")
+    def test_get_api_representation_keeps_small_rendition_key_when_serializer_returns_none(
+        self,
+        mock_detailed_serializer_class,
+        mock_serializer_class,
+    ):
+        image = object()
+        detailed_serializer = mock_detailed_serializer_class.return_value
+        detailed_serializer.to_representation.return_value = {"id": 99}
+        serializer = mock_serializer_class.return_value
+        serializer.to_representation.return_value = None
+        block = ShopCollectionBlock()
+
+        representation = block.get_api_representation(
+            self._make_value(background_image=image)
+        )
+
+        self.assertEqual(representation["background_image"], {"id": 99})
+        self.assertIn("background_image_small", representation)
+        self.assertIsNone(representation["background_image_small"])
+
     @patch("app.core.blocks.image.DetailedImageSerializer")
     def test_get_api_representation_without_background_image_omits_small_rendition(
         self, mock_detailed_serializer_class
