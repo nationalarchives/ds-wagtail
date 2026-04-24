@@ -1,13 +1,14 @@
 from django.test import TestCase
+from django.utils import timezone
 from wagtail.models import Site
 
 from ..factories import ArticlePageFactory, FocusedArticlePageFactory
 from ..models import ArticlePage, ArticleTag, FocusedArticlePage, TaggedArticle
 
 
-def _assign_tags(page, slugs):
+def _assign_cached_tags(page, slugs, tags_by_slug):
     page.tagged_items = [
-        TaggedArticle(tag=t) for t in ArticleTag.objects.filter(slug__in=slugs)
+        TaggedArticle(tag=tags_by_slug[slug]) for slug in slugs if slug in tags_by_slug
     ]
     page.save()
 
@@ -25,23 +26,37 @@ class SimilarItemsTestBase:
     page_factory = None
     page_model = None
 
-    def setUp(self):
+    @classmethod
+    def setUpTestData(cls):
         root = Site.objects.get(is_default_site=True).root_page
 
-        self.original_page = self.page_factory(title="Original", parent=root)
-        self.untagged_page = self.page_factory(title="Untagged", parent=root)
-        self.three_matches_page = self.page_factory(title="Three", parent=root)
-        self.two_matches_page = self.page_factory(title="Two", parent=root)
-        self.single_match_page = self.page_factory(title="Single", parent=root)
-        self.draft_page = self.page_factory(title="Draft", parent=root, live=False)
-        self.different_tags_page = self.page_factory(title="Different", parent=root)
+        cls.tags_by_slug = {
+            tag.slug: tag
+            for tag in ArticleTag.objects.filter(
+                slug__in=["americas", "army", "asia", "ufos", "witchcraft"]
+            )
+        }
 
-        for page in (self.original_page, self.three_matches_page, self.draft_page):
-            _assign_tags(page, ["americas", "army", "asia"])
+        cls.original_page = cls.page_factory(title="Original", parent=root)
+        cls.untagged_page = cls.page_factory(title="Untagged", parent=root)
+        cls.three_matches_page = cls.page_factory(title="Three", parent=root)
+        cls.two_matches_page = cls.page_factory(title="Two", parent=root)
+        cls.single_match_page = cls.page_factory(title="Single", parent=root)
+        cls.draft_page = cls.page_factory(title="Draft", parent=root, live=False)
+        cls.different_tags_page = cls.page_factory(title="Different", parent=root)
 
-        _assign_tags(self.two_matches_page, ["americas", "army"])
-        _assign_tags(self.single_match_page, ["americas"])
-        _assign_tags(self.different_tags_page, ["ufos", "witchcraft"])
+        for page in (cls.original_page, cls.three_matches_page, cls.draft_page):
+            _assign_cached_tags(page, ["americas", "army", "asia"], cls.tags_by_slug)
+
+        _assign_cached_tags(
+            cls.two_matches_page, ["americas", "army"], cls.tags_by_slug
+        )
+        _assign_cached_tags(cls.single_match_page, ["americas"], cls.tags_by_slug)
+        _assign_cached_tags(
+            cls.different_tags_page,
+            ["ufos", "witchcraft"],
+            cls.tags_by_slug,
+        )
 
     def test_similar_items_ranking(self):
         # Items are ordered by -first_published_at (newest first).
@@ -69,6 +84,45 @@ class SimilarItemsTestBase:
         test_page.article_tag_names = "foobar"
         with self.assertNumQueries(1):
             self.assertFalse(test_page.similar_items)
+
+    def test_similar_items_with_tied_publish_dates_returns_expected_set(self):
+        tied_time = timezone.now()
+        self.page_model.objects.filter(
+            id__in=[
+                self.three_matches_page.id,
+                self.two_matches_page.id,
+                self.single_match_page.id,
+            ]
+        ).update(first_published_at=tied_time)
+
+        test_page = self.page_model.objects.get(id=self.original_page.id)
+        related_ids = [page.id for page in test_page.similar_items]
+
+        self.assertEqual(len(related_ids), 3)
+        self.assertEqual(len(related_ids), len(set(related_ids)))
+        self.assertSetEqual(
+            set(related_ids),
+            {
+                self.three_matches_page.id,
+                self.two_matches_page.id,
+                self.single_match_page.id,
+            },
+        )
+
+    def test_similar_items_does_not_duplicate_results_with_duplicate_source_tags(self):
+        americas = self.tags_by_slug["americas"]
+        army = self.tags_by_slug["army"]
+        self.original_page.tagged_items = [
+            TaggedArticle(tag=americas),
+            TaggedArticle(tag=americas),
+            TaggedArticle(tag=army),
+        ]
+        self.original_page.save()
+
+        test_page = self.page_model.objects.get(id=self.original_page.id)
+        related_ids = [page.id for page in test_page.similar_items]
+
+        self.assertEqual(len(related_ids), len(set(related_ids)))
 
 
 class TestArticlePageSimilarItems(SimilarItemsTestBase, TestCase):

@@ -170,10 +170,8 @@ class ButtonBlockTests(SimpleTestCase):
 
 
 class LinkBlockTests(SimpleTestCase):
-    @patch("wagtail.blocks.StructBlock.clean")
-    def test_link_block_clean_requires_one_link_target(self, mock_super_clean):
+    def test_link_block_clean_requires_one_link_target(self):
         value = {"page": None, "title": "", "external_link": ""}
-        mock_super_clean.return_value = value
         block = LinkBlock()
 
         with self.assertRaises(StructBlockValidationError) as context:
@@ -182,14 +180,12 @@ class LinkBlockTests(SimpleTestCase):
         self.assertIn("page", context.exception.block_errors)
         self.assertIn("external_link", context.exception.block_errors)
 
-    @patch("wagtail.blocks.StructBlock.clean")
-    def test_link_block_clean_requires_title_for_external_link(self, mock_super_clean):
+    def test_link_block_clean_requires_title_for_external_link(self):
         value = {
             "page": None,
             "title": "",
             "external_link": "https://www.nationalarchives.gov.uk",
         }
-        mock_super_clean.return_value = value
         block = LinkBlock()
 
         with self.assertRaises(StructBlockValidationError) as context:
