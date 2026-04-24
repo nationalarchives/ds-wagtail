@@ -1,0 +1,104 @@
+from unittest.mock import patch
+
+from app.core.blocks.image import (
+    APIImageChooserBlock,
+    ImageGalleryBlock,
+    PartnerLogoChooserBlock,
+)
+from app.core.blocks.shop import ShopCollectionBlock
+from django.test import SimpleTestCase
+
+
+def _make_shop_representation(**overrides):
+    representation = {"title": "Shop"}
+    representation.update(overrides)
+    return representation
+
+
+class APIImageChooserBlockTests(SimpleTestCase):
+    @patch("app.core.blocks.image.DetailedImageSerializer")
+    def test_get_api_representation_uses_detailed_image_serializer(
+        self, mock_serializer_class
+    ):
+        image = object()
+        serializer = mock_serializer_class.return_value
+        serializer.to_representation.return_value = {"id": 1}
+        block = APIImageChooserBlock(
+            rendition_size="original",
+            jpeg_quality=90,
+            webp_quality=80,
+            background_colour="000",
+        )
+
+        representation = block.get_api_representation(image)
+
+        self.assertEqual(representation, {"id": 1})
+        mock_serializer_class.assert_called_once_with(
+            rendition_size="original",
+            jpeg_quality=90,
+            webp_quality=80,
+            background_colour="000",
+        )
+        serializer.to_representation.assert_called_once_with(image)
+
+
+class ImageGalleryBlockTests(SimpleTestCase):
+    @patch("wagtail.blocks.StructBlock.get_api_representation")
+    def test_get_api_representation_adds_image_count(self, mock_super_representation):
+        mock_super_representation.return_value = {"title": "Gallery"}
+        block = ImageGalleryBlock()
+        value = {"images": [object(), object(), object()]}
+
+        representation = block.get_api_representation(value)
+
+        self.assertEqual(representation["count"], 3)
+        self.assertEqual(representation["title"], "Gallery")
+
+
+class PartnerLogoChooserBlockTests(SimpleTestCase):
+    @patch("app.core.blocks.image.PartnerLogoSerializer")
+    def test_get_api_representation_uses_partner_logo_serializer(
+        self, mock_serializer_class
+    ):
+        logo = object()
+        serializer = mock_serializer_class.return_value
+        serializer.to_representation.return_value = {"name": "Partner"}
+        block = PartnerLogoChooserBlock()
+
+        representation = block.get_api_representation(logo)
+
+        self.assertEqual(representation, {"name": "Partner"})
+        serializer.to_representation.assert_called_once_with(logo)
+
+
+class ShopCollectionBlockTests(SimpleTestCase):
+    @patch("app.core.blocks.shop.ImageSerializer")
+    @patch("wagtail.blocks.StructBlock.get_api_representation")
+    def test_get_api_representation_adds_small_background_image(
+        self, mock_super_representation, mock_serializer_class
+    ):
+        mock_super_representation.return_value = _make_shop_representation()
+        image = object()
+        serializer = mock_serializer_class.return_value
+        serializer.to_representation.return_value = {"jpeg": {"url": "/small.jpg"}}
+        block = ShopCollectionBlock()
+
+        representation = block.get_api_representation({"background_image": image})
+
+        self.assertEqual(
+            representation["background_image_small"],
+            {"jpeg": {"url": "/small.jpg"}},
+        )
+        mock_serializer_class.assert_called_once_with(rendition_size="fill-600x400")
+        serializer.to_representation.assert_called_once_with(image)
+
+    @patch("wagtail.blocks.StructBlock.get_api_representation")
+    def test_get_api_representation_without_background_image_omits_small_rendition(
+        self, mock_super_representation
+    ):
+        mock_super_representation.return_value = _make_shop_representation()
+        block = ShopCollectionBlock()
+
+        representation = block.get_api_representation({"background_image": None})
+
+        self.assertNotIn("background_image_small", representation)

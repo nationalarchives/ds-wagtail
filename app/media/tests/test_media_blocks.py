@@ -33,6 +33,16 @@ def _make_media_value(**overrides):
     return SimpleNamespace(**defaults)
 
 
+def _make_chapter(time, heading, transcript):
+    return SimpleNamespace(
+        value={
+            "time": time,
+            "heading": heading,
+            "transcript": SimpleNamespace(source=transcript),
+        }
+    )
+
+
 class MediaChooserBlockTests(SimpleTestCase):
     @patch(
         "app.media.blocks.expand_db_html",
@@ -50,20 +60,8 @@ class MediaChooserBlockTests(SimpleTestCase):
             description="<p>Description</p>",
             transcript="<p>Transcript</p>",
             chapters=[
-                SimpleNamespace(
-                    value={
-                        "time": 20,
-                        "heading": "Part two",
-                        "transcript": SimpleNamespace(source="<p>Later</p>"),
-                    }
-                ),
-                SimpleNamespace(
-                    value={
-                        "time": 10,
-                        "heading": "Part one",
-                        "transcript": SimpleNamespace(source="<p>Earlier</p>"),
-                    }
-                ),
+                _make_chapter(20, "Part two", "<p>Later</p>"),
+                _make_chapter(10, "Part one", "<p>Earlier</p>"),
             ],
             width=1920,
             height=1080,
@@ -116,3 +114,23 @@ class MediaChooserBlockTests(SimpleTestCase):
         representation = block.get_api_representation(value)
 
         self.assertEqual(representation["chapters"], [])
+
+    @patch(
+        "app.media.blocks.expand_db_html",
+        side_effect=lambda value: f"expanded::{value}",
+    )
+    def test_get_api_representation_coerces_chapter_times_to_int(
+        self, mock_expand_db_html
+    ):
+        block = MediaChooserBlock()
+        value = _make_media_value(
+            chapters=[
+                _make_chapter("2", "Part two", "<p>Later</p>"),
+                _make_chapter("1", "Part one", "<p>Earlier</p>"),
+            ]
+        )
+
+        representation = block.get_api_representation(value)
+
+        self.assertEqual(representation["chapters"][0]["time"], 1)
+        self.assertEqual(representation["chapters"][1]["time"], 2)
