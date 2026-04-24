@@ -123,14 +123,22 @@ class MediaChooserBlockTests(SimpleTestCase):
         self, mock_expand_db_html
     ):
         block = MediaChooserBlock()
-        value = _make_media_value(
-            chapters=[
-                _make_chapter("2", "Part two", "<p>Later</p>"),
-                _make_chapter("1", "Part one", "<p>Earlier</p>"),
-            ]
-        )
 
-        representation = block.get_api_representation(value)
+        for raw_times, expected_times in (
+            (("2", "1"), [1, 2]),
+            (("20", "10"), [10, 20]),
+        ):
+            with self.subTest(raw_times=raw_times, expected_times=expected_times):
+                value = _make_media_value(
+                    chapters=[
+                        _make_chapter(raw_times[0], "Part two", "<p>Later</p>"),
+                        _make_chapter(raw_times[1], "Part one", "<p>Earlier</p>"),
+                    ]
+                )
 
-        self.assertEqual(representation["chapters"][0]["time"], 1)
-        self.assertEqual(representation["chapters"][1]["time"], 2)
+                representation = block.get_api_representation(value)
+
+                self.assertEqual(
+                    [chapter["time"] for chapter in representation["chapters"]],
+                    expected_times,
+                )

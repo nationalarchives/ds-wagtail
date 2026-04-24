@@ -75,41 +75,33 @@ class PeopleListingBlockTests(SimpleTestCase):
 
 class FeaturedPageBlockTests(SimpleTestCase):
     @patch("app.core.blocks.page_chooser.get_api_data")
-    def test_get_api_representation_overrides_page_teaser_text(self, mock_get_api_data):
-        page = object()
-        mock_get_api_data.return_value = {
-            "title": "Feature",
-            "teaser_text": "Original teaser",
-        }
-        block = FeaturedPageBlock()
-
-        representation = block.get_api_representation(
-            {"page": page, "teaser_text": "Override teaser"}
-        )
-
-        self.assertEqual(representation["page"]["teaser_text"], "Override teaser")
-        self.assertNotIn("teaser_text", representation)
-        mock_get_api_data.assert_called_once_with(
-            object=page,
-            required_api_fields=[],
-        )
-
-    @patch("app.core.blocks.page_chooser.get_api_data")
-    def test_get_api_representation_without_teaser_override_keeps_original(
+    def test_get_api_representation_handles_teaser_override_variants(
         self, mock_get_api_data
     ):
         page = object()
-        mock_get_api_data.return_value = {
-            "title": "Feature",
-            "teaser_text": "Original teaser",
-        }
         block = FeaturedPageBlock()
 
-        representation = block.get_api_representation({"page": page, "teaser_text": ""})
+        for teaser_text_input, expected_teaser_text in (
+            ("Override teaser", "Override teaser"),
+            ("", "Original teaser"),
+        ):
+            with self.subTest(
+                teaser_text_input=teaser_text_input,
+                expected_teaser_text=expected_teaser_text,
+            ):
+                mock_get_api_data.return_value = {
+                    "title": "Feature",
+                    "teaser_text": "Original teaser",
+                }
+                representation = block.get_api_representation(
+                    {"page": page, "teaser_text": teaser_text_input}
+                )
 
-        self.assertEqual(representation["page"]["teaser_text"], "Original teaser")
-        self.assertNotIn("teaser_text", representation)
-        mock_get_api_data.assert_called_once_with(
-            object=page,
-            required_api_fields=[],
-        )
+                self.assertEqual(
+                    representation["page"]["teaser_text"], expected_teaser_text
+                )
+                self.assertNotIn("teaser_text", representation)
+
+        self.assertEqual(mock_get_api_data.call_count, 2)
+        for call in mock_get_api_data.call_args_list:
+            self.assertEqual(call.kwargs, {"object": page, "required_api_fields": []})
