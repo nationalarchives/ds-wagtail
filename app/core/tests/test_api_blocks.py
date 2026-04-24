@@ -335,6 +335,25 @@ class LinkValidationMixinTests(SimpleTestCase):
 
 
 class QuoteBlockTests(SimpleTestCase):
+    @staticmethod
+    def _make_quote_super_return(
+        citation="Source title",
+        citation_internal_link=None,
+        citation_external_link="",
+    ):
+        """Build the dict that StructBlock.get_api_representation returns; vary only citation fields."""
+        return {
+            "quote": "Quote text",
+            "attribution": "Author",
+            "source": {
+                "citation": citation,
+                "source_link": {
+                    "citation_internal_link": citation_internal_link,
+                    "citation_external_link": citation_external_link,
+                },
+            },
+        }
+
     @patch("wagtail.blocks.StructBlock.clean")
     def test_clean_rejects_internal_and_external_citation_links(self, mock_super_clean):
         value = {
@@ -359,19 +378,10 @@ class QuoteBlockTests(SimpleTestCase):
     def test_get_api_representation_prefers_external_citation_url(
         self, mock_super_representation
     ):
-        mock_super_representation.return_value = {
-            "quote": "Quote text",
-            "attribution": "Author",
-            "source": {
-                "citation": "Source title",
-                "source_link": {
-                    "citation_internal_link": {
-                        "full_url": "https://example.com/internal"
-                    },
-                    "citation_external_link": "https://example.com/external",
-                },
-            },
-        }
+        mock_super_representation.return_value = self._make_quote_super_return(
+            citation_internal_link={"full_url": "https://example.com/internal"},
+            citation_external_link="https://example.com/external",
+        )
         block = QuoteBlock()
 
         representation = block.get_api_representation({})
@@ -390,17 +400,9 @@ class QuoteBlockTests(SimpleTestCase):
     def test_get_api_representation_falls_back_to_internal_citation_url(
         self, mock_super_representation
     ):
-        mock_super_representation.return_value = {
-            "quote": "Quote text",
-            "attribution": "Author",
-            "source": {
-                "citation": "Source title",
-                "source_link": {
-                    "citation_internal_link": {"full_url": "/about/"},
-                    "citation_external_link": "",
-                },
-            },
-        }
+        mock_super_representation.return_value = self._make_quote_super_return(
+            citation_internal_link={"full_url": "/about/"},
+        )
         block = QuoteBlock()
 
         representation = block.get_api_representation({})
@@ -411,17 +413,9 @@ class QuoteBlockTests(SimpleTestCase):
     def test_get_api_representation_returns_none_citation_url_when_no_links(
         self, mock_super_representation
     ):
-        mock_super_representation.return_value = {
-            "quote": "Quote text",
-            "attribution": "Author",
-            "source": {
-                "citation": None,
-                "source_link": {
-                    "citation_internal_link": None,
-                    "citation_external_link": "",
-                },
-            },
-        }
+        mock_super_representation.return_value = self._make_quote_super_return(
+            citation=None,
+        )
         block = QuoteBlock()
 
         representation = block.get_api_representation({})
@@ -521,13 +515,11 @@ class ShopCollectionBlockTests(SimpleTestCase):
 
 
 class DocumentBlockTests(SimpleTestCase):
-    @patch("wagtail.blocks.StructBlock.get_api_representation")
-    def test_get_api_representation_replaces_file_with_document_metadata(
-        self, mock_super_representation
-    ):
-        mock_super_representation.return_value = {"file": "placeholder"}
-        document = SimpleNamespace(
-            id=7,
+    @staticmethod
+    def _make_document(**overrides):
+        """Build a document SimpleNamespace with sensible defaults; override per-test."""
+        defaults = dict(
+            id=1,
             title="Guide",
             description="Helpful document",
             file_size=4096,
@@ -536,6 +528,15 @@ class DocumentBlockTests(SimpleTestCase):
             extent="4 pages",
             url="/documents/guide.pdf",
         )
+        defaults.update(overrides)
+        return SimpleNamespace(**defaults)
+
+    @patch("wagtail.blocks.StructBlock.get_api_representation")
+    def test_get_api_representation_replaces_file_with_document_metadata(
+        self, mock_super_representation
+    ):
+        mock_super_representation.return_value = {"file": "placeholder"}
+        document = self._make_document(id=7)
         block = DocumentBlock()
 
         representation = block.get_api_representation({"file": document})
@@ -570,15 +571,8 @@ class DocumentBlockTests(SimpleTestCase):
         self, mock_super_representation
     ):
         mock_super_representation.return_value = {"file": "placeholder"}
-        document = SimpleNamespace(
-            id=1,
-            title="Guide",
-            description="",
-            file_size=100,
-            pretty_file_size="100B",
-            file_extension="pdf",
-            extent=None,
-            url="/documents/guide.pdf",
+        document = self._make_document(
+            description="", file_size=100, pretty_file_size="100B", extent=None
         )
         block = DocumentBlock()
 
