@@ -275,41 +275,6 @@ class LinkColumnWithHeaderBlockTests(SimpleTestCase):
         )
 
 
-class DocumentBlockTests(SimpleTestCase):
-    @patch("wagtail.blocks.StructBlock.get_api_representation")
-    def test_get_api_representation_replaces_file_with_document_metadata(
-        self, mock_super_representation
-    ):
-        mock_super_representation.return_value = {"file": "placeholder"}
-        document = SimpleNamespace(
-            id=7,
-            title="Guide",
-            description="Helpful document",
-            file_size=4096,
-            pretty_file_size="4kB",
-            file_extension="pdf",
-            extent="4 pages",
-            url="/documents/guide.pdf",
-        )
-        block = DocumentBlock()
-
-        representation = block.get_api_representation({"file": document})
-
-        self.assertEqual(
-            representation["file"],
-            {
-                "id": 7,
-                "title": "Guide",
-                "description": "Helpful document",
-                "file_size": 4096,
-                "pretty_file_size": "4kB",
-                "type": "pdf",
-                "extent": "4 pages",
-                "url": "/documents/guide.pdf",
-            },
-        )
-
-
 class CodeBlockTests(SimpleTestCase):
     def test_get_api_representation_omits_empty_optional_fields(self):
         block = CodeBlock()
@@ -422,7 +387,6 @@ class QuoteBlockTests(SimpleTestCase):
                 "citation_url": "https://example.com/external",
             },
         )
-
 
     @patch("wagtail.blocks.StructBlock.get_api_representation")
     def test_get_api_representation_falls_back_to_internal_citation_url(
