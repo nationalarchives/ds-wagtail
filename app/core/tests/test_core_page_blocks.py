@@ -1,3 +1,9 @@
+"""Testing style:
+- Prefer real values where practical.
+- Patch only external boundaries (e.g. get_api_data, serializers).
+- Keep assertions focused on behavior contracts.
+"""
+
 from types import SimpleNamespace
 from unittest.mock import Mock, patch
 

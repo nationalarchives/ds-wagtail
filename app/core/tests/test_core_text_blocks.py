@@ -1,3 +1,9 @@
+"""Testing style:
+- Prefer real values for representation tests.
+- Patch only external boundaries or heavy superclass internals when necessary.
+- Use tiny builders for repeated nested payloads.
+"""
+
 from unittest.mock import patch
 
 from app.core.blocks.code import CodeBlock
@@ -182,3 +188,19 @@ class ReviewBlockTests(SimpleTestCase):
         representation = block.get_api_representation({"stars": "0"})
 
         self.assertEqual(representation["stars"], 0)
+
+    def test_get_api_representation_smoke_with_real_struct_value(self):
+        block = ReviewBlock()
+        value = block.to_python(
+            {
+                "quote": "<p>Great review</p>",
+                "attribution": "Reviewer",
+                "stars": 4,
+            }
+        )
+
+        representation = block.get_api_representation(value)
+
+        self.assertEqual(representation["stars"], 4)
+        self.assertIn("quote", representation)
+        self.assertIn("attribution", representation)

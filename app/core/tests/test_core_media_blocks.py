@@ -1,3 +1,9 @@
+"""Testing style:
+- Prefer real block values for smoke paths.
+- Patch serializer/network boundaries only.
+- Use superclass patching sparingly for nested block internals.
+"""
+
 from unittest.mock import patch
 
 from app.core.blocks.image import (
@@ -47,6 +53,21 @@ class ImageGalleryBlockTests(SimpleTestCase):
 
         self.assertEqual(representation["count"], 3)
         self.assertEqual(representation["title"], "Gallery")
+
+    def test_get_api_representation_smoke_with_real_value(self):
+        block = ImageGalleryBlock()
+        value = block.to_python(
+            {
+                "title": "Gallery",
+                "description": "",
+                "images": [],
+            }
+        )
+
+        representation = block.get_api_representation(value)
+
+        self.assertEqual(representation["count"], 0)
+        self.assertEqual(representation["images"], [])
 
 
 class PartnerLogoChooserBlockTests(SimpleTestCase):

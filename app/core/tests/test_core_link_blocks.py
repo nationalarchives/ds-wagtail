@@ -1,3 +1,9 @@
+"""Testing style:
+- Prefer real values for representation tests.
+- Use DB-backed TestCase only for validation paths that require real pages.
+- Keep mocks at external boundaries, not internal helper plumbing.
+"""
+
 from types import SimpleNamespace
 
 from app.core.blocks.cta import ButtonBlock
@@ -55,7 +61,7 @@ class PageValidationTestMixin:
         cls.linked_page = GeneralPageFactory(parent=root, title="Linked page")
 
 
-class ButtonBlockTests(PageValidationTestMixin, TestCase):
+class ButtonBlockValidationTests(PageValidationTestMixin, TestCase):
     def test_clean_rejects_both_page_and_external_link(self):
         value = {
             "label": "Read more",
@@ -89,6 +95,8 @@ class ButtonBlockTests(PageValidationTestMixin, TestCase):
             str(context.exception),
         )
 
+
+class ButtonBlockRepresentationTests(SimpleTestCase):
     def test_get_api_representation_prefers_external_link_and_defaults_accent(self):
         block = ButtonBlock()
         value = _make_button_value(
@@ -122,7 +130,7 @@ class ButtonBlockTests(PageValidationTestMixin, TestCase):
         )
 
 
-class LinkBlockTests(PageValidationTestMixin, TestCase):
+class LinkBlockValidationTests(PageValidationTestMixin, TestCase):
     def test_link_block_clean_requires_one_link_target(self):
         value = {"page": None, "title": "", "external_link": ""}
         block = LinkBlock()
@@ -160,6 +168,8 @@ class LinkBlockTests(PageValidationTestMixin, TestCase):
         self.assertIn("page", context.exception.block_errors)
         self.assertIn("external_link", context.exception.block_errors)
 
+
+class LinkBlockRepresentationTests(SimpleTestCase):
     def test_internal_link_get_api_representation_uses_struct_value_helpers(self):
         block = InternalLinkBlock()
         value = _LinkValue(url="/visit-us", text="Visit us", is_page=True, page_id=42)
