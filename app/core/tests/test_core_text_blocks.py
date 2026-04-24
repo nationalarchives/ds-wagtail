@@ -111,6 +111,41 @@ class QuoteBlockTests(SimpleTestCase):
             "either a page link or an external link, not both", str(context.exception)
         )
 
+    @patch("wagtail.blocks.StructBlock.clean")
+    def test_clean_allows_single_or_missing_citation_link(self, mock_super_clean):
+        block = QuoteBlock()
+
+        for value in (
+            {
+                "source": {
+                    "source_link": {
+                        "citation_internal_link": object(),
+                        "citation_external_link": "",
+                    }
+                }
+            },
+            {
+                "source": {
+                    "source_link": {
+                        "citation_internal_link": None,
+                        "citation_external_link": "https://example.com/source",
+                    }
+                }
+            },
+            {
+                "source": {
+                    "source_link": {
+                        "citation_internal_link": None,
+                        "citation_external_link": "",
+                    }
+                }
+            },
+        ):
+            with self.subTest(value=value):
+                mock_super_clean.return_value = value
+
+                self.assertEqual(block.clean(value), value)
+
     @patch("wagtail.blocks.StructBlock.get_api_representation")
     def test_get_api_representation_prefers_external_citation_url(
         self, mock_super_representation
