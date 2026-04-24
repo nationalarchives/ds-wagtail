@@ -213,6 +213,28 @@ class ReviewBlockTests(SimpleTestCase):
                 self.assertEqual(representation["stars"], expected_stars)
 
     @patch("wagtail.blocks.StructBlock.get_api_representation")
+    def test_get_api_representation_preserves_other_fields(
+        self, mock_super_representation
+    ):
+        block = ReviewBlock()
+        mock_super_representation.return_value = {
+            "quote": "<p>Great review</p>",
+            "attribution": "Reviewer",
+            "stars": "5",
+        }
+
+        representation = block.get_api_representation({"stars": "5"})
+
+        self.assertEqual(
+            representation,
+            {
+                "quote": "<p>Great review</p>",
+                "attribution": "Reviewer",
+                "stars": 5,
+            },
+        )
+
+    @patch("wagtail.blocks.StructBlock.get_api_representation")
     def test_get_api_representation_raises_for_invalid_stars(
         self, mock_super_representation
     ):
