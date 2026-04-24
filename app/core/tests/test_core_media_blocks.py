@@ -54,6 +54,22 @@ class ImageGalleryBlockTests(SimpleTestCase):
         self.assertEqual(representation["count"], 3)
         self.assertEqual(representation["title"], "Gallery")
 
+    @patch("wagtail.blocks.StructBlock.get_api_representation")
+    def test_get_api_representation_uses_value_images_for_count(
+        self, mock_super_representation
+    ):
+        mock_super_representation.return_value = {
+            "title": "Gallery",
+            "images": ["serialized-image"],
+        }
+        block = ImageGalleryBlock()
+        value = {"images": [object(), object(), object()]}
+
+        representation = block.get_api_representation(value)
+
+        self.assertEqual(representation["count"], 3)
+        self.assertEqual(representation["images"], ["serialized-image"])
+
     def test_get_api_representation_smoke_with_real_value(self):
         block = ImageGalleryBlock()
         value = block.to_python(
