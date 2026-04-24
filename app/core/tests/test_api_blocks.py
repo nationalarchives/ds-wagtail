@@ -24,6 +24,7 @@ from app.core.serializers import DefaultPageSerializer
 from django.core.exceptions import ValidationError
 from django.test import SimpleTestCase
 from wagtail.blocks.struct_block import StructBlockValidationError
+from wagtail.rich_text import RichText
 
 
 class APIRichTextBlockTests(SimpleTestCase):
@@ -31,7 +32,7 @@ class APIRichTextBlockTests(SimpleTestCase):
     def test_get_api_representation_expands_database_html(self, mock_expand_db_html):
         block = APIRichTextBlock()
 
-        representation = block.get_api_representation("<p>Stored</p>")
+        representation = block.get_api_representation(RichText("<p>Stored</p>"))
 
         self.assertEqual(representation, "<p>Expanded</p>")
         mock_expand_db_html.assert_called_once_with("<p>Stored</p>")
@@ -178,7 +179,8 @@ class LinkBlockTests(SimpleTestCase):
         with self.assertRaises(StructBlockValidationError) as context:
             block.clean(value)
 
-        self.assertIn("either a page or an external link", str(context.exception))
+        self.assertIn("page", context.exception.block_errors)
+        self.assertIn("external_link", context.exception.block_errors)
 
     @patch("wagtail.blocks.StructBlock.clean")
     def test_link_block_clean_requires_title_for_external_link(self, mock_super_clean):
@@ -193,9 +195,7 @@ class LinkBlockTests(SimpleTestCase):
         with self.assertRaises(StructBlockValidationError) as context:
             block.clean(value)
 
-        self.assertIn(
-            "You must specify the link title for external links", str(context.exception)
-        )
+        self.assertIn("title", context.exception.block_errors)
 
     def test_internal_link_get_api_representation_uses_struct_value_helpers(self):
         block = InternalLinkBlock()
@@ -330,7 +330,8 @@ class LinkValidationMixinTests(SimpleTestCase):
         with self.assertRaises(StructBlockValidationError) as context:
             block.clean(value)
 
-        self.assertIn("not both", str(context.exception))
+        self.assertIn("page", context.exception.block_errors)
+        self.assertIn("external_link", context.exception.block_errors)
 
 
 class QuoteBlockTests(SimpleTestCase):
