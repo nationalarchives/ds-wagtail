@@ -177,6 +177,24 @@ class ReviewBlockTests(SimpleTestCase):
 
                 self.assertEqual(representation["stars"], expected_stars)
 
+    @patch("wagtail.blocks.StructBlock.get_api_representation")
+    def test_get_api_representation_raises_for_invalid_stars(
+        self, mock_super_representation
+    ):
+        block = ReviewBlock()
+        mock_super_representation.return_value = {
+            "quote": "<p>Great review</p>",
+            "attribution": "Reviewer",
+            "stars": None,
+        }
+
+        for raw_stars, expected_exception in ((None, TypeError), ("bad", ValueError)):
+            with self.subTest(
+                raw_stars=raw_stars, expected_exception=expected_exception
+            ):
+                with self.assertRaises(expected_exception):
+                    block.get_api_representation({"stars": raw_stars})
+
     def test_get_api_representation_smoke_with_real_struct_value(self):
         block = ReviewBlock()
         value = block.to_python(
