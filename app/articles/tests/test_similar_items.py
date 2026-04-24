@@ -71,6 +71,10 @@ class SimilarItemsTestBase:
                     self.two_matches_page.id,
                     self.three_matches_page.id,
                 ],
+                msg=(
+                    "similar_items should be ordered by most recent publish date "
+                    "(newest first) and exclude drafts"
+                ),
             )
 
     def test_all_queries_prevented_when_article_tag_names_is_blank(self):
@@ -98,8 +102,16 @@ class SimilarItemsTestBase:
         test_page = self.page_model.objects.get(id=self.original_page.id)
         related_ids = [page.id for page in test_page.similar_items]
 
-        self.assertEqual(len(related_ids), 3)
-        self.assertEqual(len(related_ids), len(set(related_ids)))
+        self.assertEqual(
+            len(related_ids),
+            3,
+            msg="expected exactly 3 related items when three tied candidates exist",
+        )
+        self.assertEqual(
+            len(related_ids),
+            len(set(related_ids)),
+            msg="similar_items should not contain duplicates when publish dates tie",
+        )
         self.assertSetEqual(
             set(related_ids),
             {
@@ -107,6 +119,7 @@ class SimilarItemsTestBase:
                 self.two_matches_page.id,
                 self.single_match_page.id,
             },
+            msg="tied publish dates should still return the same three matching pages",
         )
 
     def test_similar_items_does_not_duplicate_results_with_duplicate_source_tags(self):
@@ -122,7 +135,11 @@ class SimilarItemsTestBase:
         test_page = self.page_model.objects.get(id=self.original_page.id)
         related_ids = [page.id for page in test_page.similar_items]
 
-        self.assertEqual(len(related_ids), len(set(related_ids)))
+        self.assertEqual(
+            len(related_ids),
+            len(set(related_ids)),
+            msg="duplicate source tags should not produce duplicate related pages",
+        )
 
 
 class TestArticlePageSimilarItems(SimilarItemsTestBase, TestCase):
