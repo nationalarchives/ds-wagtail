@@ -43,14 +43,6 @@ def _make_quote_representation(
     }
 
 
-def _make_review_representation(stars):
-    return {
-        "quote": "Loved it",
-        "attribution": "Reviewer",
-        "stars": stars,
-    }
-
-
 class APIRichTextBlockTests(SimpleTestCase):
     @patch("app.core.blocks.paragraph.expand_db_html", return_value="<p>Expanded</p>")
     def test_get_api_representation_expands_database_html(self, mock_expand_db_html):
@@ -169,20 +161,19 @@ class QuoteBlockTests(SimpleTestCase):
 
 
 class ReviewBlockTests(SimpleTestCase):
-    def test_get_api_representation_casts_stars_to_int(self):
+    @patch("wagtail.blocks.StructBlock.get_api_representation")
+    def test_get_api_representation_casts_stars_to_int(self, mock_super_representation):
         block = ReviewBlock()
 
         for raw_stars, expected_stars in (("5", 5), ("0", 0)):
             with self.subTest(raw_stars=raw_stars, expected_stars=expected_stars):
-                value = block.to_python(
-                    {
-                        "quote": "<p>Great review</p>",
-                        "attribution": "Reviewer",
-                        "stars": int(raw_stars),
-                    }
-                )
+                mock_super_representation.return_value = {
+                    "quote": "<p>Great review</p>",
+                    "attribution": "Reviewer",
+                    "stars": raw_stars,
+                }
 
-                representation = block.get_api_representation(value)
+                representation = block.get_api_representation({"stars": raw_stars})
 
                 self.assertEqual(representation["stars"], expected_stars)
 
