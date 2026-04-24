@@ -30,4 +30,4 @@ class BookmarkletBlockTests(SimpleTestCase):
 
         representation = block.get_api_representation({})
 
-        self.assertTrue(representation)
+        self.assertIs(representation, True)

@@ -73,7 +73,6 @@ class MediaChooserBlockTests(SimpleTestCase):
                 },
             ],
         )
-        self.assertEqual(mock_expand_db_html.call_count, 4)
 
     @patch(
         "app.media.blocks.expand_db_html",

@@ -67,10 +67,7 @@ class APIImageChooserBlockTests(SimpleTestCase):
 class ImageGalleryBlockTests(SimpleTestCase):
     @patch("wagtail.blocks.StructBlock.get_api_representation")
     def test_get_api_representation_adds_image_count(self, mock_super_representation):
-        mock_super_representation.return_value = {
-            "title": "Gallery",
-            "images": [{"image": {"id": 1}}],
-        }
+        mock_super_representation.return_value = {"title": "Gallery"}
         block = ImageGalleryBlock()
         value = {"images": [object(), object(), object()]}
 
@@ -173,10 +170,10 @@ class ButtonBlockTests(SimpleTestCase):
 
 class LinkBlockTests(SimpleTestCase):
     @patch("wagtail.blocks.StructBlock.clean")
-    def test_internal_link_clean_requires_one_link_target(self, mock_super_clean):
+    def test_link_block_clean_requires_one_link_target(self, mock_super_clean):
         value = {"page": None, "title": "", "external_link": ""}
         mock_super_clean.return_value = value
-        block = InternalLinkBlock()
+        block = LinkBlock()
 
         with self.assertRaises(StructBlockValidationError) as context:
             block.clean(value)
@@ -328,7 +325,7 @@ class LinkValidationMixinTests(SimpleTestCase):
             "external_link": "https://example.com",
         }
         mock_super_clean.return_value = value
-        block = InternalLinkBlock()
+        block = LinkBlock()
 
         with self.assertRaises(StructBlockValidationError) as context:
             block.clean(value)
