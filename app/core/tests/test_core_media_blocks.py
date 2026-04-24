@@ -9,12 +9,6 @@ from app.core.blocks.shop import ShopCollectionBlock
 from django.test import SimpleTestCase
 
 
-def _make_shop_representation(**overrides):
-    representation = {"title": "Shop"}
-    representation.update(overrides)
-    return representation
-
-
 class APIImageChooserBlockTests(SimpleTestCase):
     @patch("app.core.blocks.image.DetailedImageSerializer")
     def test_get_api_representation_uses_detailed_image_serializer(
@@ -72,33 +66,62 @@ class PartnerLogoChooserBlockTests(SimpleTestCase):
 
 
 class ShopCollectionBlockTests(SimpleTestCase):
+    @staticmethod
+    def _make_value(**overrides):
+        value = {
+            "title": "Shop",
+            "description": "Description",
+            "cta_text": "Shop now",
+            "url": "https://example.com/shop",
+            "background_image": object(),
+        }
+        value.update(overrides)
+        return value
+
     @patch("app.core.blocks.shop.ImageSerializer")
-    @patch("wagtail.blocks.StructBlock.get_api_representation")
+    @patch("app.core.blocks.image.DetailedImageSerializer")
     def test_get_api_representation_adds_small_background_image(
-        self, mock_super_representation, mock_serializer_class
+        self,
+        mock_detailed_serializer_class,
+        mock_serializer_class,
     ):
-        mock_super_representation.return_value = _make_shop_representation()
         image = object()
+        detailed_serializer = mock_detailed_serializer_class.return_value
+        detailed_serializer.to_representation.return_value = {"id": 99}
         serializer = mock_serializer_class.return_value
         serializer.to_representation.return_value = {"jpeg": {"url": "/small.jpg"}}
         block = ShopCollectionBlock()
 
-        representation = block.get_api_representation({"background_image": image})
+        representation = block.get_api_representation(
+            self._make_value(background_image=image)
+        )
 
+        self.assertEqual(representation["background_image"], {"id": 99})
         self.assertEqual(
             representation["background_image_small"],
             {"jpeg": {"url": "/small.jpg"}},
         )
+        mock_detailed_serializer_class.assert_called_once_with(
+            rendition_size="fill-1800x720",
+            jpeg_quality=60,
+            webp_quality=70,
+            background_colour="fff",
+        )
+        detailed_serializer.to_representation.assert_called_once_with(image)
         mock_serializer_class.assert_called_once_with(rendition_size="fill-600x400")
         serializer.to_representation.assert_called_once_with(image)
 
-    @patch("wagtail.blocks.StructBlock.get_api_representation")
+    @patch("app.core.blocks.image.DetailedImageSerializer")
     def test_get_api_representation_without_background_image_omits_small_rendition(
-        self, mock_super_representation
+        self, mock_detailed_serializer_class
     ):
-        mock_super_representation.return_value = _make_shop_representation()
+        detailed_serializer = mock_detailed_serializer_class.return_value
+        detailed_serializer.to_representation.return_value = None
         block = ShopCollectionBlock()
 
-        representation = block.get_api_representation({"background_image": None})
+        representation = block.get_api_representation(
+            self._make_value(background_image=None)
+        )
 
+        self.assertIsNone(representation["background_image"])
         self.assertNotIn("background_image_small", representation)

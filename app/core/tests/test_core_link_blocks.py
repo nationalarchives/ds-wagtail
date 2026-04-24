@@ -1,5 +1,4 @@
 from types import SimpleNamespace
-from unittest.mock import patch
 
 from app.core.blocks.cta import ButtonBlock
 from app.core.blocks.links import (
@@ -7,9 +6,11 @@ from app.core.blocks.links import (
     LinkBlock,
     LinkColumnWithHeaderBlock,
 )
+from app.generic_pages.factories import GeneralPageFactory
 from django.core.exceptions import ValidationError
-from django.test import SimpleTestCase
+from django.test import SimpleTestCase, TestCase
 from wagtail.blocks.struct_block import StructBlockValidationError
+from wagtail.models import Site
 
 
 class _LinkValue:
@@ -47,16 +48,21 @@ def _make_button_value(**overrides):
     return value
 
 
-class ButtonBlockTests(SimpleTestCase):
-    @patch("wagtail.blocks.StructBlock.clean")
-    def test_clean_rejects_both_page_and_external_link(self, mock_super_clean):
+class PageValidationTestMixin:
+    @classmethod
+    def setUpTestData(cls):
+        root = Site.objects.get(is_default_site=True).root_page
+        cls.linked_page = GeneralPageFactory(parent=root, title="Linked page")
+
+
+class ButtonBlockTests(PageValidationTestMixin, TestCase):
+    def test_clean_rejects_both_page_and_external_link(self):
         value = {
             "label": "Read more",
-            "link": object(),
+            "link": self.linked_page,
             "external_link": "https://example.com",
             "accented": False,
         }
-        mock_super_clean.return_value = value
         block = ButtonBlock()
 
         with self.assertRaises(ValidationError) as context:
@@ -66,15 +72,13 @@ class ButtonBlockTests(SimpleTestCase):
             "either a page link or an external link, not both", str(context.exception)
         )
 
-    @patch("wagtail.blocks.StructBlock.clean")
-    def test_clean_requires_a_link(self, mock_super_clean):
+    def test_clean_requires_a_link(self):
         value = {
             "label": "Read more",
             "link": None,
             "external_link": "",
             "accented": False,
         }
-        mock_super_clean.return_value = value
         block = ButtonBlock()
 
         with self.assertRaises(ValidationError) as context:
@@ -118,7 +122,7 @@ class ButtonBlockTests(SimpleTestCase):
         )
 
 
-class LinkBlockTests(SimpleTestCase):
+class LinkBlockTests(PageValidationTestMixin, TestCase):
     def test_link_block_clean_requires_one_link_target(self):
         value = {"page": None, "title": "", "external_link": ""}
         block = LinkBlock()
@@ -142,11 +146,23 @@ class LinkBlockTests(SimpleTestCase):
 
         self.assertIn("title", context.exception.block_errors)
 
+    def test_link_block_clean_rejects_both_page_and_external_link(self):
+        value = {
+            "page": self.linked_page,
+            "title": "Both set",
+            "external_link": "https://example.com",
+        }
+        block = LinkBlock()
+
+        with self.assertRaises(StructBlockValidationError) as context:
+            block.clean(value)
+
+        self.assertIn("page", context.exception.block_errors)
+        self.assertIn("external_link", context.exception.block_errors)
+
     def test_internal_link_get_api_representation_uses_struct_value_helpers(self):
         block = InternalLinkBlock()
-        value = _LinkValue(
-            url="/visit-us", text="Visit us", is_page=True, page_id=42
-        )
+        value = _LinkValue(url="/visit-us", text="Visit us", is_page=True, page_id=42)
 
         representation = block.get_api_representation(value)
 
@@ -208,21 +224,3 @@ class LinkColumnWithHeaderBlockTests(SimpleTestCase):
                 ],
             },
         )
-
-
-class LinkValidationMixinTests(SimpleTestCase):
-    @patch("wagtail.blocks.StructBlock.clean")
-    def test_clean_rejects_both_page_and_external_link(self, mock_super_clean):
-        value = {
-            "page": object(),
-            "title": "Both set",
-            "external_link": "https://example.com",
-        }
-        mock_super_clean.return_value = value
-        block = LinkBlock()
-
-        with self.assertRaises(StructBlockValidationError) as context:
-            block.clean(value)
-
-        self.assertIn("page", context.exception.block_errors)
-        self.assertIn("external_link", context.exception.block_errors)

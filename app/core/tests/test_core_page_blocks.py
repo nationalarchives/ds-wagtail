@@ -8,17 +8,6 @@ from app.core.serializers import DefaultPageSerializer
 from django.test import SimpleTestCase
 
 
-def _make_featured_page_representation(
-    page_teaser_text="Original teaser", teaser_text="", **overrides
-):
-    representation = {
-        "page": {"title": "Feature", "teaser_text": page_teaser_text},
-        "teaser_text": teaser_text,
-    }
-    representation.update(overrides)
-    return representation
-
-
 class APIPageChooserBlockTests(SimpleTestCase):
     @patch("app.core.blocks.page_chooser.get_api_data")
     def test_get_api_representation_passes_required_api_fields(self, mock_get_api_data):
@@ -79,33 +68,42 @@ class PeopleListingBlockTests(SimpleTestCase):
 
 
 class FeaturedPageBlockTests(SimpleTestCase):
-    @patch("wagtail.blocks.StructBlock.get_api_representation")
-    def test_get_api_representation_overrides_page_teaser_text(
-        self, mock_super_representation
-    ):
-        mock_super_representation.return_value = _make_featured_page_representation(
-            page_teaser_text="Original teaser",
-            teaser_text="Override teaser",
-        )
+    @patch("app.core.blocks.page_chooser.get_api_data")
+    def test_get_api_representation_overrides_page_teaser_text(self, mock_get_api_data):
+        page = object()
+        mock_get_api_data.return_value = {
+            "title": "Feature",
+            "teaser_text": "Original teaser",
+        }
         block = FeaturedPageBlock()
 
         representation = block.get_api_representation(
-            {"page": object(), "teaser_text": "Override teaser"}
+            {"page": page, "teaser_text": "Override teaser"}
         )
 
         self.assertEqual(representation["page"]["teaser_text"], "Override teaser")
         self.assertNotIn("teaser_text", representation)
+        mock_get_api_data.assert_called_once_with(
+            object=page,
+            required_api_fields=[],
+        )
 
-    @patch("wagtail.blocks.StructBlock.get_api_representation")
+    @patch("app.core.blocks.page_chooser.get_api_data")
     def test_get_api_representation_without_teaser_override_keeps_original(
-        self, mock_super_representation
+        self, mock_get_api_data
     ):
-        mock_super_representation.return_value = _make_featured_page_representation()
+        page = object()
+        mock_get_api_data.return_value = {
+            "title": "Feature",
+            "teaser_text": "Original teaser",
+        }
         block = FeaturedPageBlock()
 
-        representation = block.get_api_representation(
-            {"page": object(), "teaser_text": ""}
-        )
+        representation = block.get_api_representation({"page": page, "teaser_text": ""})
 
         self.assertEqual(representation["page"]["teaser_text"], "Original teaser")
         self.assertNotIn("teaser_text", representation)
+        mock_get_api_data.assert_called_once_with(
+            object=page,
+            required_api_fields=[],
+        )
