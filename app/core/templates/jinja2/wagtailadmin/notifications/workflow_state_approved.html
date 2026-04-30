@@ -1,0 +1,35 @@
+{% extends 'layouts/email.html' %}
+{% if page %}
+  {%- set page_title = page.get_admin_display_title() -%}
+{% endif %}
+
+{%- set subject = "The National Archives: Page Approved in Workflow" -%}
+
+{% if page %}
+  {%- set panel = {
+    "title": "Page approved",
+    "headingLevel": 1,
+    "headingSize": "l",
+    "body": "<p>The page <strong>" ~ page_title ~ "</strong> has been approved in workflow <strong>" ~ workflow.name ~ "</strong>.</p>"
+  } -%}
+
+  {%- set content = "<p>You can view your page using the button below.</p>" -%}
+
+  {%- set cta_buttons = [
+    {
+      "text": "View page",
+      "href": page.full_url
+    }
+  ] -%}
+
+{% else %}
+  {%- set panel = {
+    "title": "Item approved",
+    "headingLevel": 1,
+    "headingSize": "l",
+    "body": "<p>The " ~ model_name ~ " <strong>" ~ object ~ "</strong> has been approved in workflow <strong>" ~ workflow.name ~ "</strong>.</p>"
+  } -%}
+
+{% endif %}
+
+{%- set signoff = "<p>If you have any issues, please contact the Digital Services Content Design Team.</p>" -%}

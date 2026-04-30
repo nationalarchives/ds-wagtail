@@ -1,0 +1,68 @@
+{% extends 'layouts/email.html' %}
+{%- set page_title = page.get_admin_display_title() -%}
+{% set editor_name = editor.get_full_name() or editor.get_username() %}
+{%- set edit_path = url_for('wagtailadmin_pages:edit', page.id) -%}
+{%- set edit_url = base_url ~ edit_path -%}
+
+{%- set subject = "The National Archives: Comments Updated on " ~ page_title -%}
+
+{%- set panel = {
+  "title": "New comments",
+  "headingLevel": 1,
+  "headingSize": "l",
+  "body": "<p>" ~ editor_name ~ " has updated comments on <strong>" ~ page_title ~ "</strong>.</p>"
+} -%}
+
+{%- set content -%}
+  {% if new_comments %}
+    <h3 style="margin:0 0 12px 0; font-size:19px; line-height:1.4; font-weight:700;">New comments</h3>
+    <ul style="margin:0 0 16px 24px; padding:0;">
+      {% for comment in new_comments %}
+        <li style="margin:0 0 8px 0;">{{ comment.text }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+  {% if resolved_comments %}
+    <h3 style="margin:0 0 12px 0; font-size:19px; line-height:1.4; font-weight:700;">Resolved comments</h3>
+    <ul style="margin:0 0 16px 24px; padding:0;">
+      {% for comment in resolved_comments %}
+        <li style="margin:0 0 8px 0;">{{ comment.text }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+  {% if deleted_comments %}
+    <h3 style="margin:0 0 12px 0; font-size:19px; line-height:1.4; font-weight:700;">Deleted comments</h3>
+    <ul style="margin:0 0 16px 24px; padding:0;">
+      {% for comment in deleted_comments %}
+        <li style="margin:0 0 8px 0;">{{ comment.text }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+  {% if replied_comments %}
+    <h3 style="margin:0 0 12px 0; font-size:19px; line-height:1.4; font-weight:700;">New replies</h3>
+    <ul style="margin:0 0 16px 24px; padding:0;">
+      {% for thread in replied_comments %}
+        <li style="margin:0 0 8px 0;">
+          New replies to: {{ thread.comment.text }}
+          <ul style="margin:8px 0 0 24px; padding:0;">
+            {% for reply in thread.replies %}
+              <li style="margin:0 0 8px 0;">{{ reply.text }}</li>
+            {% endfor %}
+          </ul>
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+{%- endset -%}
+
+{%- set cta_buttons = [
+  {
+    "text": "Edit page",
+    "href": edit_url
+  }
+] -%}
+
+{%- set signoff = "<p>If you have any issues, please contact the Digital Services Content Design Team.</p>" -%}

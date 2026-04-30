@@ -24,6 +24,7 @@ wagtail-headless-preview = "^0.8.0"
 whitenoise = "^6.11.0"
 boto3 = "^1.42.40"
 wagtail-2fa = "^1.8.0"
+tna-frontend-jinja = "^0.39.0"
 
 [tool.poetry.group.dev]
 optional = true

@@ -1,0 +1,35 @@
+{% extends 'layouts/email.html' %}
+{% if page %}
+  {%- set edit_path = url_for('wagtailadmin_pages:edit', page.id) -%}
+  {%- set page_title = page.get_admin_display_title() -%}
+{% endif %}
+
+{%- set subject = "The National Archives: Page Approved in Moderation" -%}
+
+{% if page %}
+  {%- set panel = {
+    "title": "Page approved in stage " ~ task.name,
+    "headingLevel": 1,
+    "headingSize": "l",
+    "body": "<p>The page <strong>" ~ page_title ~ "</strong> has been approved in moderation stage <strong>" ~ task.name ~ "</strong>.</p>"
+  } -%}
+
+  {%- set content = "<p>You can continue editing the page using the button below.</p>" -%}
+
+  {%- set cta_buttons = [
+    {
+      "text": "Edit page",
+      "href": base_url ~ edit_path
+    }
+  ] -%}
+
+{% else %}
+  {%- set panel = {
+    "title": "Item approved in stage",
+    "headingLevel": 1,
+    "headingSize": "l",
+    "body": "<p>The " ~ model_name ~ " <strong>" ~ object ~ "</strong> has been approved in moderation stage <strong>" ~ task.name ~ "</strong>.</p>"
+  } -%}
+{% endif %}
+
+{%- set signoff = "<p>If you have any issues, please contact the Digital Services Content Design Team.</p>" -%}
