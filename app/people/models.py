@@ -293,11 +293,14 @@ class AuthorTag(models.Model):
     )
 
 
-class AuthorPageMixin:
+class AuthorPageMixin(models.Model):
     """
     A mixin for pages that uses the ``AuthorTag`` model
     in order to be associated with an author.
     """
+
+    class Meta:
+        abstract = True
 
     @classmethod
     def get_authors_inlinepanel(cls, max_num=6):
