@@ -7,7 +7,6 @@ from app.core.blocks.video import YouTubeBlock
 from app.core.models import (
     BasePageWithRequiredIntro,
 )
-from app.media.blocks import MediaChooserBlock
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from modelcluster.fields import ParentalKey
@@ -15,7 +14,6 @@ from wagtail.admin.panels import (
     FieldPanel,
     InlinePanel,
     MultiFieldPanel,
-    PageChooserPanel,
 )
 from wagtail.api import APIField
 from wagtail.fields import StreamField
@@ -114,6 +112,7 @@ class Theme(models.Model):
     def __str__(self):
         return self.name
 
+
 class Source(Orderable):
     page = ParentalKey(
         "education.TeachingResourcePage",
@@ -125,7 +124,7 @@ class Source(Orderable):
         verbose_name=_("source title"),
         help_text=_("A unique, descriptive title for the source."),
         blank=True,
-        max_length=160
+        max_length=160,
     )
 
     # Source Media
@@ -302,7 +301,7 @@ class TeachingResourcePage(BasePageWithRequiredIntro):
     enquiry_question = models.CharField(
         verbose_name=_("enquiry question"),
         blank=True,
-        max_length-160,
+        max_length=160,
     )
 
     key_stage = models.ForeignKey(
@@ -535,4 +534,3 @@ class EducationSessionPage(BasePageWithRequiredIntro):
         APIField("time_period", serializer=TimePeriodSerializer()),
         APIField("theme", serializer=ThemeSerializer()),
     ]
-

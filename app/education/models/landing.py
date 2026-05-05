@@ -6,6 +6,7 @@ from django.db import models
 from django.utils import timezone
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
+from modelcluster.fields import ParentalKey
 from wagtail.admin.panels import (
     FieldPanel,
     InlinePanel,
@@ -13,6 +14,7 @@ from wagtail.admin.panels import (
     PageChooserPanel,
 )
 from wagtail.api import APIField
+from wagtail.models import Orderable
 
 from ..serializers import EducationReadMoreLinkSerializer
 from .details import EducationSessionPage, TeachingResourcePage
@@ -124,7 +126,7 @@ class EducationPage(BasePageWithRequiredIntro):
             "Short text under Explore education sessions title to entice users to click through"
         ),
         blank=True,
-        max_length-160,
+        max_length=160,
     )
 
     featured_education_session = models.ForeignKey(
@@ -203,6 +205,7 @@ class EducationPage(BasePageWithRequiredIntro):
 
     class Meta:
         verbose_name = _("Education landing page")
+
 
 class EducationReadMoreLink(Orderable):
     """Navigation links for the Read more section"""
