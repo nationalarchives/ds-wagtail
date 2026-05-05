@@ -1580,7 +1580,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name="educationpage",
-            name="teaching_resource_listing_page",
+            name="teaching_resources_listing_page",
             field=models.ForeignKey(
                 blank=True,
                 help_text="The teaching resource listing page to display on the Education landing page.",

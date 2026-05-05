@@ -11,7 +11,6 @@ from app.media.blocks import MediaChooserBlock
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from modelcluster.fields import ParentalKey
-from wagtail import blocks
 from wagtail.admin.panels import (
     FieldPanel,
     InlinePanel,
@@ -22,6 +21,10 @@ from wagtail.api import APIField
 from wagtail.fields import StreamField
 from wagtail.models import Orderable
 
+from ..blocks import (
+    QuestionBlock,
+    SourceMediaBlock,
+)
 from ..serializers import (
     CurriculumConnectionSerializer,
     KeyStageSerializer,
@@ -110,55 +113,6 @@ class Theme(models.Model):
 
     def __str__(self):
         return self.name
-
-
-class QuestionBlock(blocks.StreamBlock):
-    question = blocks.StructBlock(
-        [
-            (
-                "question_heading",
-                blocks.CharBlock(
-                    required=False,
-                    max_length=255,
-                ),
-            ),
-            (
-                "guidance_for_teachers",
-                APIRichTextBlock(
-                    features=["bold", "italic", "link", "ul"],
-                    required=False,
-                ),
-            ),
-        ],
-        icon="help",
-    )
-
-
-# same as MediaBlock but without the title
-class SourceMediaBlock(blocks.StructBlock):
-    thumbnail = APIImageChooserBlock(
-        rendition_size="fill-960x540",
-        required=False,
-        help_text="A thumbnail image for the media block",
-    )
-    media = MediaChooserBlock()
-
-    class Meta:
-        help_text = "An embedded audio or video block"
-        icon = "play"
-        label = "Media"
-        group = "Video, audio and downloads"
-
-    def get_context(self, value, parent_context=None):
-        context = super().get_context(value, parent_context=parent_context)
-        context["src"] = value["media"].sources[0]["src"]
-        context["type"] = value["media"].sources[0]["type"]
-        return context
-
-    @property
-    def admin_label(self):
-        return self.meta.label
-
 
 class Source(Orderable):
     page = ParentalKey(
@@ -349,11 +303,6 @@ class TeachingResourcePage(BasePageWithRequiredIntro):
         blank=True,
     )
 
-    introduction_text = models.TextField(
-        verbose_name=_("introduction text"),
-        blank=True,
-    )
-
     key_stage = models.ForeignKey(
         "education.KeyStage",
         null=True,
@@ -458,7 +407,7 @@ class TeachingResourcePage(BasePageWithRequiredIntro):
     further_information_title = models.CharField(
         max_length=255,
         verbose_name=_("further information title"),
-        help_text=_("Title of the further information section (required)."),
+        help_text=_("Title of the further information section."),
         blank=True,
         null=True,
     )
@@ -584,28 +533,3 @@ class EducationSessionPage(BasePageWithRequiredIntro):
         APIField("theme", serializer=ThemeSerializer()),
     ]
 
-
-class EducationReadMoreLink(Orderable):
-    """Navigation links for the Read more section"""
-
-    page = ParentalKey(
-        "education.EducationPage",
-        on_delete=models.CASCADE,
-        related_name="education_read_more_links",
-    )
-
-    selected_page = models.ForeignKey(
-        "wagtailcore.Page",
-        on_delete=models.CASCADE,
-        related_name="+",
-        verbose_name=_("selected page"),
-        help_text=_("Navigation to other sections within Education"),
-    )
-
-    panels = [
-        PageChooserPanel("selected_page"),
-    ]
-
-    class Meta:
-        verbose_name = _("read more link")
-        ordering = ["sort_order"]

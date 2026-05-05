@@ -65,7 +65,7 @@ class EducationPage(BasePageWithRequiredIntro):
     max_count = 1
 
     # Teaching resources section
-    teaching_resource_listing_page = models.ForeignKey(
+    teaching_resources_listing_page = models.ForeignKey(
         "education.TeachingResourcesListingPage",
         null=True,
         blank=True,
@@ -143,14 +143,14 @@ class EducationPage(BasePageWithRequiredIntro):
     content_panels = BasePageWithRequiredIntro.content_panels + [
         MultiFieldPanel(
             [
-                PageChooserPanel("teaching_resource_listing_page"),
+                PageChooserPanel("teaching_resources_listing_page"),
                 FieldPanel("teaching_resources_teaser"),
                 MultiFieldPanel(
                     [
                         PageChooserPanel("featured_teaching_resource"),
                         FieldPanel("featured_teaching_resource_teaser_override"),
                     ],
-                    heading=_("Featured"),
+                    heading=_("Featured resource"),
                 ),
             ],
             heading=_("Teaching resources"),
@@ -164,7 +164,7 @@ class EducationPage(BasePageWithRequiredIntro):
                         PageChooserPanel("featured_education_session"),
                         FieldPanel("featured_education_session_teaser_override"),
                     ],
-                    heading=_("Featured"),
+                    heading=_("Featured session"),
                 ),
             ],
             heading=_("Education sessions"),
@@ -177,7 +177,7 @@ class EducationPage(BasePageWithRequiredIntro):
     ]
 
     api_fields = BasePageWithRequiredIntro.api_fields + [
-        APIField("teaching_resource_listing_page", serializer=DefaultPageSerializer()),
+        APIField("teaching_resources_listing_page", serializer=DefaultPageSerializer()),
         APIField("teaching_resources_teaser"),
         APIField("featured_teaching_resource", serializer=DefaultPageSerializer()),
         APIField("featured_teaching_resource_teaser_override"),
@@ -199,3 +199,28 @@ class EducationPage(BasePageWithRequiredIntro):
 
     class Meta:
         verbose_name = _("Education landing page")
+
+class EducationReadMoreLink(Orderable):
+    """Navigation links for the Read more section"""
+
+    page = ParentalKey(
+        "education.EducationPage",
+        on_delete=models.CASCADE,
+        related_name="education_read_more_links",
+    )
+
+    selected_page = models.ForeignKey(
+        "wagtailcore.Page",
+        on_delete=models.CASCADE,
+        related_name="+",
+        verbose_name=_("selected page"),
+        help_text=_("Navigation to other sections within Education"),
+    )
+
+    panels = [
+        PageChooserPanel("selected_page"),
+    ]
+
+    class Meta:
+        verbose_name = _("read more link")
+        ordering = ["sort_order"]
