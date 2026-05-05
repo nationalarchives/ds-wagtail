@@ -3,6 +3,7 @@
   "$id": "https://www.nationalarchives.gov.uk/wagtail/global-notifications.schema.json",
   "title": "Global Notifications",
   "description": "Wagtail global notifications",
+  "type": "object",
   "properties": {
     "global_alert": {
       "description": "The global alert for the home page",
