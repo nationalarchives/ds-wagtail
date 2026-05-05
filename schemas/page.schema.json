@@ -222,7 +222,27 @@
     "mourning_notice": {
       "description": "The mourning notice",
       "$ref": "https://www.nationalarchives.gov.uk/wagtail/mourning-notice.schema.json"
+    },
+    "title": {
+      "type": "string",
+      "description": "The title of the home page"
+    },
+    "short_title": {
+      "type": "string",
+      "description": "A shorter version of the title for the home page"
+    },
+    "type_label": {
+      "type": ["string", "null"],
+      "description": "A label for the type of the page"
     }
   },
-  "required": ["id", "meta", "global_alert", "mourning_notice"]
+  "required": [
+    "id",
+    "meta",
+    "global_alert",
+    "mourning_notice",
+    "title",
+    "short_title",
+    "type_label"
+  ]
 }

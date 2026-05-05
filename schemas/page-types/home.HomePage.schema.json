@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://www.nationalarchives.gov.uk/wagtail/page-types/home.HomePage.schema.json",
+  "title": "Home page",
+  "description": "A home page in Wagtail",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "https://www.nationalarchives.gov.uk/wagtail/page.schema.json"
+    }
+  ],
+  "properties": {
+    "intro": {
+      "type": "string",
+      "description": "An introduction to the home page"
+    },
+    "primary_promo": {
+      "type": "array",
+      "description": "The primary promotional content for the home page",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "The type of the primary promotional content",
+            "enum": ["featured_page", "featured_external_link"]
+          },
+          "value": {
+            "type": "object",
+            "description": "The value of the primary promotional content",
+            "properties": {
+              "page": {
+                "$ref": "https://www.nationalarchives.gov.uk/wagtail/page-summary.schema.json"
+              }
+            }
+          },
+          "id": {
+            "type": "string",
+            "description": "The unique identifier for the primary promotional content"
+          }
+        },
+        "required": ["type", "value", "id"]
+      }
+    },
+    "secondary_promos": {
+      "type": "array",
+      "description": "The secondary promotional content for the home page",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "The type of the secondary promotional content",
+            "enum": ["featured_page", "featured_external_link"]
+          },
+          "value": {
+            "type": "object",
+            "description": "The value of the secondary promotional content",
+            "properties": {
+              "page": {
+                "$ref": "https://www.nationalarchives.gov.uk/wagtail/page-summary.schema.json"
+              }
+            }
+          },
+          "id": {
+            "type": "string",
+            "description": "The unique identifier for the secondary promotional content"
+          }
+        },
+        "required": ["type", "value", "id"]
+      }
+    }
+  },
+  "required": ["intro", "primary_promo", "secondary_promos"]
+}
