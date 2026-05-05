@@ -29,6 +29,7 @@
           "description": "The latest articles section",
           "type": "array",
           "items": {
+            "type": "object",
             "allOf": [
               {
                 "$ref": "https://www.nationalarchives.gov.uk/wagtail/page-summary.schema.json"
@@ -44,8 +45,7 @@
           "uniqueItems": true
         }
       },
-      "required": ["top_pages", "latest_articles"],
-      "uniqueItems": true
+      "required": ["top_pages", "latest_articles"]
     }
   },
   "required": ["global_alert", "mourning_notice", "explore_the_collection"]

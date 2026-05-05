@@ -57,6 +57,13 @@ services:
     ports:
       - 8001:8000
 
+  schemas:
+    image: nginx:latest
+    volumes:
+      - ./schemas:/usr/share/nginx/html:ro
+    ports:
+      - 65493:80
+
 volumes:
   media:
   pgdata:
