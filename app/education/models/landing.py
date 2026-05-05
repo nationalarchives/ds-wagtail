@@ -77,12 +77,13 @@ class EducationPage(BasePageWithRequiredIntro):
         ),
     )
 
-    teaching_resources_teaser = models.TextField(
+    teaching_resources_teaser = models.CharField(
         verbose_name=_("teaching resources teaser text"),
         help_text=_(
             "Short text under Explore teaching resources title to entice users to click through"
         ),
         blank=True,
+        max_length=160,
     )
 
     featured_teaching_resource = models.ForeignKey(
@@ -97,10 +98,11 @@ class EducationPage(BasePageWithRequiredIntro):
         ),
     )
 
-    featured_teaching_resource_teaser_override = models.TextField(
+    featured_teaching_resource_teaser_override = models.CharField(
         verbose_name=_("Featured teaching resource teaser text override"),
         help_text=_("Override text for the featured teaching resource"),
         blank=True,
+        max_length=160,
     )
 
     # Education sessions section
@@ -116,12 +118,13 @@ class EducationPage(BasePageWithRequiredIntro):
         ),
     )
 
-    education_sessions_teaser = models.TextField(
+    education_sessions_teaser = models.CharField(
         verbose_name=_("education sessions teaser text"),
         help_text=_(
             "Short text under Explore education sessions title to entice users to click through"
         ),
         blank=True,
+        max_length-160,
     )
 
     featured_education_session = models.ForeignKey(
@@ -134,10 +137,11 @@ class EducationPage(BasePageWithRequiredIntro):
         help_text=_("Page picker to highlight a featured education session"),
     )
 
-    featured_education_session_teaser_override = models.TextField(
+    featured_education_session_teaser_override = models.CharField(
         verbose_name=_("Featured education session teaser text override"),
         help_text=_("Override text for the featured education session"),
         blank=True,
+        max_length=160,
     )
 
     content_panels = BasePageWithRequiredIntro.content_panels + [

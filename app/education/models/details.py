@@ -121,10 +121,11 @@ class Source(Orderable):
         related_name="sources",
     )
 
-    source_title = models.TextField(
+    source_title = models.CharField(
         verbose_name=_("source title"),
         help_text=_("A unique, descriptive title for the source."),
         blank=True,
+        max_length=160
     )
 
     # Source Media
@@ -298,9 +299,10 @@ class TeachingResourcePage(BasePageWithRequiredIntro):
         max_num=1,
     )
 
-    enquiry_question = models.TextField(
+    enquiry_question = models.CharField(
         verbose_name=_("enquiry question"),
         blank=True,
+        max_length-160,
     )
 
     key_stage = models.ForeignKey(
@@ -332,12 +334,13 @@ class TeachingResourcePage(BasePageWithRequiredIntro):
     )
 
     # Body
-    sources_title = models.TextField(
+    sources_title = models.CharField(
         verbose_name=_("sources title"),
         help_text=_(
             "Title of the main section of the page. In most cases ‘Investigate the sources’"
         ),
         blank=True,
+        max_length=160,
     )
 
     sources_introduction = StreamField(

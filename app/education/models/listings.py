@@ -46,10 +46,11 @@ class TeachingResourcesListingPage(BasePageWithRequiredIntro):
         ),
     )
 
-    featured_teaching_resource_teaser_override = models.TextField(
+    featured_teaching_resource_teaser_override = models.CharField(
         verbose_name=_("Featured teaching resource teaser text override"),
         help_text=_("Override text for the featured teaching resource"),
         blank=True,
+        max_length=160,
     )
 
     web_archive_promo = StreamField(
@@ -62,12 +63,13 @@ class TeachingResourcesListingPage(BasePageWithRequiredIntro):
         null=True,
     )
 
-    newsletter_sign_up_text = models.TextField(
+    newsletter_sign_up_text = models.CharField(
         verbose_name=_("newsletter sign up text"),
         help_text=_(
             "Text block encouraging users to sign up for the education newsletter."
         ),
         blank=True,
+        max_length=200,
     )
 
     content_panels = BasePageWithRequiredIntro.content_panels + [
@@ -122,18 +124,20 @@ class EducationSessionsListingPage(BasePageWithRequiredIntro):
         help_text=_("Page picker to highlight a featured education session"),
     )
 
-    featured_education_session_teaser_override = models.TextField(
+    featured_education_session_teaser_override = models.CharField(
         verbose_name=_("Featured education session teaser text override"),
         help_text=_("Override text for the featured education session"),
         blank=True,
+        max_length=160,
     )
 
-    newsletter_sign_up_text = models.TextField(
+    newsletter_sign_up_text = models.CharField(
         verbose_name=_("newsletter sign up text"),
         help_text=_(
             "Text block encouraging users to sign up for the education newsletter."
         ),
         blank=True,
+        max_length=160,
     )
 
     content_panels = BasePageWithRequiredIntro.content_panels + [
