@@ -767,13 +767,16 @@ class PageTimePeriod(Orderable):
     )
 
 
-class TopicalPageMixin:
+class TopicalPageMixin(models.Model):
     """
     A mixin for pages that use the ``PageTopic`` and ``PageTimePeriod`` models
     in order to be associated with one or many topics/time periods. It simply
     adds a few properies to support robust, efficient access the related topic
     and time period pages.
     """
+
+    class Meta:
+        abstract = True
 
     api_fields = [
         APIField(
