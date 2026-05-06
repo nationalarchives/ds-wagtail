@@ -147,6 +147,8 @@ WAGTAIL_2FA_OTP_TOTP_NAME = (
     f"National Archives Wagtail ({ENVIRONMENT_NAME.capitalize()})"
 )
 
+WAGTAIL_AUTOSAVE_INTERVAL = int(os.getenv("WAGTAIL_AUTOSAVE_INTERVAL", "0"))  # Disabled (0) by default
+
 # django-allauth configuration
 ACCOUNT_LOGIN_METHODS = {"email"}
 ACCOUNT_SIGNUP_FIELDS = ["email*", "password1*", "password2*"]
