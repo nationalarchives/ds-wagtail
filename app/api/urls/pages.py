@@ -36,13 +36,6 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
         ["password", "author", "include_aliases", "descendant_of_path"]
     )
 
-    # TODO: Remove this when Wagtail is updated
-    # https://github.com/wagtail/wagtail/pull/12141
-    find_query_parameters = [
-        "id",
-        "html_path",
-    ]
-
     # Copied from wagtail.api.v2.views.PagesAPIViewSet
     # to allow insertion of AliasFilter before SearchFilter
     filter_backends = [
