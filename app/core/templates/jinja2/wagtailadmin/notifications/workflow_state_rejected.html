@@ -1,0 +1,56 @@
+{% extends 'layouts/email.html' %}
+{% if page %}
+  {%- set page_title = page.get_admin_display_title() -%}
+{% endif %}
+
+{% if task_state and task_state.finished_by %}
+  {% set rejector_name = task_state.finished_by.get_full_name() or task_state.finished_by.get_username() %}
+{% endif %}
+
+{%- set subject = "The National Archives: Page Rejected in Workflow" -%}
+
+{% if page %}
+  {% if rejector_name %}
+    {%- set panel = {
+      "title": "Page rejected",
+      "headingLevel": 1,
+      "headingSize": "l",
+      "body": "<p>The page <strong>" ~ page_title ~ "</strong> has been rejected during <strong>" ~ task.name ~ "</strong> in workflow <strong>" ~ workflow.name ~ "</strong> by " ~ rejector_name ~ ".</p>" ~ (("<p>Comment: " ~ comment ~ "</p>") if comment else "")
+    } -%}
+  {% else %}
+    {%- set panel = {
+      "title": "Page rejected",
+      "headingLevel": 1,
+      "headingSize": "l",
+      "body": "<p>The page <strong>" ~ page_title ~ "</strong> has been rejected during <strong>" ~ task.name ~ "</strong> in workflow <strong>" ~ workflow.name ~ "</strong>.</p>" ~ (("<p>Comment: " ~ comment ~ "</p>") if comment else "")
+    } -%}
+  {% endif %}
+
+  {%- set content = "<p>You can continue editing using the button below.</p>" -%}
+
+  {%- set cta_buttons = [
+    {
+      "text": "Edit page",
+      "href": base_url ~ url_for('wagtailadmin_pages:edit', page.id)
+    }
+  ] -%}
+
+{% else %}
+  {% if rejector_name %}
+    {%- set panel = {
+      "title": "Item rejected",
+      "headingLevel": 1,
+      "headingSize": "l",
+      "body": "<p>The " ~ model_name ~ " <strong>" ~ object ~ "</strong> has been rejected during <strong>" ~ task.name ~ "</strong> in workflow <strong>" ~ workflow.name ~ "</strong> by " ~ rejector_name ~ ".</p>" ~ (("<p>Comment: " ~ comment ~ "</p>") if comment else "")
+    } -%}
+  {% else %}
+    {%- set panel = {
+      "title": "Item rejected",
+      "headingLevel": 1,
+      "headingSize": "l",
+      "body": "<p>The " ~ model_name ~ " <strong>" ~ object ~ "</strong> has been rejected during <strong>" ~ task.name ~ "</strong> in workflow <strong>" ~ workflow.name ~ "</strong>.</p>" ~ (("<p>Comment: " ~ comment ~ "</p>") if comment else "")
+    } -%}
+  {% endif %}
+{% endif %}
+
+{%- set signoff = "<p>If you have any issues, please contact the Digital Services Content Design Team.</p>" -%}
