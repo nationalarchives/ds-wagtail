@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://www.nationalarchives.gov.uk/wagtail/pages.schema.json",
+  "title": "Page list",
+  "description": "A list of pages in Wagtail",
+  "type": "object",
+  "properties": {
+    "meta": {
+      "description": "Metadata about pages in Wagtail",
+      "type": "object",
+      "properties": {
+        "total_count": {
+          "description": "The total number of items in the page listings",
+          "type": "integer"
+        }
+      },
+      "required": ["total_count"]
+    },
+    "items": {
+      "description": "The items in the page listings",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "$ref": "https://www.nationalarchives.gov.uk/wagtail/page-summary.schema.json"
+      },
+      "uniqueItems": true
+    }
+  },
+  "required": ["meta", "items"]
+}

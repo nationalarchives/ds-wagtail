@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://www.nationalarchives.gov.uk/wagtail/catalogue-landing.schema.json",
+  "title": "Catalogue landing page",
+  "description": "Content for the catalogue landing page",
+  "type": "object",
+  "properties": {
+    "global_alert": {
+      "description": "The global alert for the page",
+      "$ref": "https://www.nationalarchives.gov.uk/wagtail/global-alert.schema.json"
+    },
+    "mourning_notice": {
+      "description": "The mourning notice",
+      "$ref": "https://www.nationalarchives.gov.uk/wagtail/mourning-notice.schema.json"
+    },
+    "explore_the_collection": {
+      "description": "The explore the collection section",
+      "type": "object",
+      "properties": {
+        "top_pages": {
+          "description": "The top pages section",
+          "type": "array",
+          "items": {
+            "$ref": "https://www.nationalarchives.gov.uk/wagtail/page-summary.schema.json"
+          },
+          "uniqueItems": true
+        },
+        "latest_articles": {
+          "description": "The latest articles section",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "https://www.nationalarchives.gov.uk/wagtail/page-summary.schema.json"
+              }
+            ],
+            "properties": {
+              "is_newly_published": {
+                "description": "Whether the page is newly published",
+                "type": "boolean"
+              }
+            }
+          },
+          "uniqueItems": true
+        }
+      },
+      "required": ["top_pages", "latest_articles"]
+    }
+  },
+  "required": ["global_alert", "mourning_notice", "explore_the_collection"]
+}

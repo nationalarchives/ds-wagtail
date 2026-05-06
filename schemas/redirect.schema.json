@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://www.nationalarchives.gov.uk/wagtail/redirect.schema.json",
+  "title": "Redirect",
+  "description": "A redirect in Wagtail",
+  "type": "object",
+  "properties": {
+    "id": {
+      "description": "The ID of the redirect",
+      "type": "integer"
+    },
+    "meta": {
+      "description": "Metadata about redirects in Wagtail",
+      "type": "object",
+      "properties": {
+        "type": {
+          "description": "The type of the redirect",
+          "type": "string",
+          "enum": ["wagtailredirects.Redirect"]
+        },
+        "detail_url": {
+          "description": "The URL of the redirect detail endpoint",
+          "type": "string",
+          "format": "uri"
+        }
+      },
+      "required": ["type", "detail_url"]
+    },
+    "old_path": {
+      "description": "The old path of the redirect",
+      "type": "string"
+    },
+    "location": {
+      "description": "The new path of the redirect",
+      "type": "string"
+    },
+    "is_permanent": {
+      "description": "Whether the redirect is permanent",
+      "type": "boolean"
+    }
+  },
+  "required": ["meta", "old_path", "location", "is_permanent"]
+}
