@@ -44,7 +44,8 @@
               "description": "The height of the JPEG image",
               "type": "integer"
             }
-          }
+          },
+          "required": ["url", "full_url", "width", "height"]
         },
         "webp": {
           "description": "The WebP version of the image",
@@ -66,7 +67,8 @@
               "description": "The height of the WebP image",
               "type": "integer"
             }
-          }
+          },
+          "required": ["url", "full_url", "width", "height"]
         }
       },
       "required": ["id", "uuid", "title", "description", "jpeg", "webp"]
