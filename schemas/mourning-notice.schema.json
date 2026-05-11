@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://www.nationalarchives.gov.uk/wagtail/mourning-notice.schema.json",
+  "title": "Mourning Notice",
+  "description": "Wagtail mourning notices",
+  "anyOf": [
+    {
+      "type": "object",
+      "properties": {
+        "title": {
+          "description": "The title of the mourning notice",
+          "type": "string"
+        },
+        "message": {
+          "description": "The message of the mourning notice",
+          "type": "string"
+        }
+      },
+      "required": ["title", "message"]
+    },
+    {
+      "type": "null"
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://www.nationalarchives.gov.uk/wagtail/events.schema.json",
+  "title": "Event list",
+  "description": "A list of events in Wagtail",
+  "type": "object",
+  "properties": {
+    "meta": {
+      "description": "Metadata about events in Wagtail",
+      "type": "object",
+      "properties": {
+        "total_count": {
+          "description": "The total number of items in the event listings",
+          "type": "integer"
+        }
+      },
+      "required": ["total_count"]
+    },
+    "items": {
+      "description": "The items in the event listings",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "https://www.nationalarchives.gov.uk/wagtail/page-summary.schema.json"
+          }
+        ],
+        "properties": {
+          "start_date": {
+            "description": "The start date of the event",
+            "type": "string",
+            "format": "date-time"
+          },
+          "end_date": {
+            "description": "The end date of the event",
+            "type": "string",
+            "format": "date-time"
+          },
+          "min_price": {
+            "description": "The minimum price of the event",
+            "type": "number"
+          },
+          "max_price": {
+            "description": "The maximum price of the event",
+            "type": "number"
+          },
+          "short_location": {
+            "description": "The short location of the event",
+            "type": "string"
+          }
+        },
+        "required": [
+          "start_date",
+          "end_date",
+          "min_price",
+          "max_price",
+          "short_location"
+        ]
+      },
+      "uniqueItems": true
+    }
+  },
+  "required": ["meta", "items"]
+}
