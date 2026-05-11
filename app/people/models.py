@@ -16,6 +16,7 @@ from wagtail.api import APIField
 from wagtail.fields import RichTextField, StreamField
 from wagtail.images import get_image_model_string
 from wagtail.models import Page
+from wagtail.search import index
 from wagtail.snippets.models import register_snippet
 
 from .blocks import ResearchSummaryStreamBlock
@@ -236,6 +237,14 @@ class PersonPage(BasePage):
         APIField("archived_blog_url"),
     ]
 
+    search_fields = BasePage.search_fields + [
+        index.SearchField("first_name", boost=1),
+        index.SearchField("last_name", boost=1),
+        index.SearchField("role"),
+        index.SearchField("summary"),
+        index.SearchField("research_summary"),
+    ]
+
     @cached_property
     def authored_focused_articles(self):
         from app.articles.models import FocusedArticlePage
@@ -341,6 +350,8 @@ class AuthorPageMixin(models.Model):
             serializer=DefaultPageSerializer(required_api_fields=["image"], many=True),
         )
     ]
+
+    search_fields = [index.SearchField("author_names")]
 
 
 class ExternalAuthorTag(models.Model):
