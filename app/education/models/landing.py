@@ -40,15 +40,15 @@ class EducationPage(BasePageWithRequiredIntro):
     # TODO: maybe remove cached_property? it will persist and maybe we don't want that
     @cached_property
     def latest_education_sessions(self) -> list:
-        upcoming = (
+        upcoming = list(
             EducationSessionPage.objects.live()
             .public()
             .filter(start_date__gte=timezone.now())
-            .order_by("start_date")
+            .order_by("start_date")[:3]
         )
 
-        if upcoming.exists():
-            return list(upcoming[:3])
+        if upcoming:
+            return upcoming
 
         # If no upcoming, get most recent
         return list(
