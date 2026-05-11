@@ -25,21 +25,6 @@ class ThemeSerializer(serializers.Serializer):
     slug = serializers.SlugField()
 
 
-class CurriculumConnectionSerializer(
-    _StreamFieldRepresentationMixin, serializers.Serializer
-):
-    def to_representation(self, instance):
-        if not instance:
-            return None
-
-        return {
-            "key_stage": KeyStageSerializer().to_representation(instance.key_stage),
-            "connection_description": self._serialize_stream_field(
-                instance, "curriculum_connection_description"
-            ),
-        }
-
-
 class SourceSerializer(_StreamFieldRepresentationMixin, serializers.Serializer):
     def to_representation(self, instance):
         if not instance:

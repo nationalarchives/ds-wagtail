@@ -7,6 +7,7 @@ from app.core.blocks.video import YouTubeBlock
 from app.core.models import (
     BasePageWithRequiredIntro,
 )
+from app.core.serializers import RichTextSerializer
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from modelcluster.fields import ParentalKey
@@ -16,7 +17,7 @@ from wagtail.admin.panels import (
     MultiFieldPanel,
 )
 from wagtail.api import APIField
-from wagtail.fields import StreamField
+from wagtail.fields import RichTextField, StreamField
 from wagtail.models import Orderable
 
 from ..blocks import (
@@ -241,13 +242,8 @@ class CurriculumConnection(Orderable):
         help_text=_("The key stage for this curriculum connection."),
     )
 
-    curriculum_connection_description = StreamField(
-        [
-            (
-                "curriculum_connection_description",
-                APIRichTextBlock(features=["bold", "italic", "link", "ul"]),
-            )
-        ],
+    curriculum_connection_description = RichTextField(
+        features=["bold", "italic", "link", "ul"],
         verbose_name=_("curriculum connection description"),
         help_text=_("Add the curriculum connection description."),
         blank=True,
@@ -466,10 +462,7 @@ class TeachingResourcePage(BasePageWithRequiredIntro):
         APIField("sources_introduction"),
         APIField("teachers_notes"),
         APIField("sources", serializer=SourceSerializer(many=True)),
-        APIField(
-            "curriculum_connections",
-            serializer=CurriculumConnectionSerializer(many=True),
-        ),
+        APIField("curriculum_connection_description", serializer=RichTextSerializer()),
         APIField("extension_activities"),
         APIField("background_information"),
         APIField("further_information_title"),
