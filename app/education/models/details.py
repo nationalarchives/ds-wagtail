@@ -421,16 +421,11 @@ class TeachingResourcePage(BasePageWithRequiredIntro):
             heading=_("Sources"),
         ),
         FieldPanel("teachers_notes"),
-        MultiFieldPanel(
-            [
-                InlinePanel(
-                    "curriculum_connections",
-                    label=_("Curriculum connection"),
-                    heading=_("Connections to the curriculum"),
-                    min_num=1,
-                ),
-            ],
+        InlinePanel(
+            "curriculum_connections",
+            label=_("Curriculum connection"),
             heading=_("Connections to the curriculum"),
+            min_num=1,
         ),
         FieldPanel("extension_activities"),
         FieldPanel("background_information"),
