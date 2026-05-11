@@ -31,6 +31,7 @@ from ..serializers import (
     TimePeriodSerializer,
 )
 
+
 class KeyStage(models.Model):
     """A model for individual key stage tags"""
 
