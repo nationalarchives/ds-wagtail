@@ -31,33 +31,18 @@ from ..serializers import (
     TimePeriodSerializer,
 )
 
-
-class KeyStageChoices(models.TextChoices):
-    KEY_STAGE_1 = "key-stage-1", _("Key Stage 1 (ages 5–7)")
-    KEY_STAGE_2 = "key-stage-2", _("Key Stage 2 (ages 7–11)")
-    KEY_STAGE_3 = "key-stage-3", _("Key Stage 3 (ages 11–14)")
-    KEY_STAGE_4 = "key-stage-4", _("Key Stage 4 (ages 14–16)")
-    KEY_STAGE_5 = "key-stage-5", _("Key Stage 5 (ages 16-18)")
-
-
-KEY_STAGE_ALLOWED_SLUGS = [choice.value for choice in KeyStageChoices]
-KEY_STAGE_NAME_CHOICES = [(choice.label, choice.label) for choice in KeyStageChoices]
-
-
 class KeyStage(models.Model):
     """A model for individual key stage tags"""
 
     name = models.CharField(
         max_length=255,
         verbose_name=_("name"),
-        choices=KEY_STAGE_NAME_CHOICES,
         unique=True,
     )
 
     slug = models.SlugField(
         max_length=255,
         verbose_name=_("slug"),
-        choices=KeyStageChoices.choices,
         unique=True,
     )
 
@@ -253,7 +238,6 @@ class CurriculumConnection(Orderable):
         related_name="+",
         verbose_name=_("Key stage"),
         help_text=_("The key stage for this curriculum connection."),
-        limit_choices_to={"slug__in": KEY_STAGE_ALLOWED_SLUGS},
     )
 
     curriculum_connection_description = StreamField(
@@ -311,7 +295,6 @@ class TeachingResourcePage(BasePageWithRequiredIntro):
         on_delete=models.SET_NULL,
         related_name="+",
         verbose_name=_("key stage"),
-        limit_choices_to={"slug__in": KEY_STAGE_ALLOWED_SLUGS},
     )
 
     time_period = models.ForeignKey(
@@ -507,7 +490,6 @@ class EducationSessionPage(BasePageWithRequiredIntro):
         on_delete=models.SET_NULL,
         related_name="+",
         verbose_name=_("key stage"),
-        limit_choices_to={"slug__in": KEY_STAGE_ALLOWED_SLUGS},
     )
 
     time_period = models.ForeignKey(
