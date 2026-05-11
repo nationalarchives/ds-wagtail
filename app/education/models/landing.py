@@ -34,7 +34,6 @@ class EducationPage(BasePageWithRequiredIntro):
             TeachingResourcePage.objects.live().public().order_by("-published_date")[:3]
         )
 
-    # TODO: maybe remove cached_property? it will persist and maybe we don't want that
     @cached_property
     def latest_education_sessions(self) -> list:
         return list(
