@@ -407,9 +407,6 @@ class TeachingResourcePage(BasePageWithRequiredIntro):
     content_panels = BasePageWithRequiredIntro.content_panels + [
         FieldPanel("hero_image"),
         FieldPanel("enquiry_question"),
-        FieldPanel("key_stage"),
-        FieldPanel("time_period"),
-        FieldPanel("theme"),
         MultiFieldPanel(
             [
                 FieldPanel("sources_title"),
@@ -444,6 +441,12 @@ class TeachingResourcePage(BasePageWithRequiredIntro):
             ],
             heading=_("Further information"),
         ),
+    ]
+
+    promote_panels = BasePageWithRequiredIntro.promote_panels + [
+        FieldPanel("key_stage"),
+        FieldPanel("time_period"),
+        FieldPanel("theme"),
     ]
 
     api_fields = BasePageWithRequiredIntro.api_fields + [
