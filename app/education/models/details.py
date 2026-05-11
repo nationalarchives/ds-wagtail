@@ -6,6 +6,9 @@ from app.core.blocks.section import SubHeadingBlock
 from app.core.blocks.video import YouTubeBlock
 from app.core.models import (
     BasePageWithRequiredIntro,
+    # HeroImageMixin,
+    PublishedDateMixin,
+    # RequiredHeroImageMixin,
 )
 from app.core.serializers import RichTextSerializer
 from django.db import models
@@ -31,9 +34,10 @@ from ..serializers import (
     TimePeriodSerializer,
 )
 
+# TODO: sort panel order on promote tabs
 
 class KeyStage(models.Model):
-    """A model for individual key stage tags"""
+    """A model for individual key stage tags - choices are populated by migrations/0002_seed_key_stages.py"""
 
     name = models.CharField(
         max_length=255,
@@ -255,7 +259,7 @@ class CurriculumConnection(Orderable):
     ]
 
 
-class TeachingResourcePage(BasePageWithRequiredIntro):
+class TeachingResourcePage(BasePageWithRequiredIntro, PublishedDateMixin):
     """A page to display a teaching resource"""
 
     parent_page_types = [
@@ -438,11 +442,15 @@ class TeachingResourcePage(BasePageWithRequiredIntro):
         ),
     ]
 
-    promote_panels = BasePageWithRequiredIntro.promote_panels + [
-        FieldPanel("key_stage"),
-        FieldPanel("time_period"),
-        FieldPanel("theme"),
-    ]
+    promote_panels = (
+        BasePageWithRequiredIntro.promote_panels
+        + PublishedDateMixin.promote_panels
+        + [
+            FieldPanel("key_stage"),
+            FieldPanel("time_period"),
+            FieldPanel("theme"),
+        ]
+    )
 
     api_fields = BasePageWithRequiredIntro.api_fields + [
         APIField("hero_image"),
@@ -462,7 +470,7 @@ class TeachingResourcePage(BasePageWithRequiredIntro):
     ]
 
 
-class EducationSessionPage(BasePageWithRequiredIntro):
+class EducationSessionPage(BasePageWithRequiredIntro, PublishedDateMixin):
     """A page to display an education session"""
 
     parent_page_types = [
@@ -494,6 +502,16 @@ class EducationSessionPage(BasePageWithRequiredIntro):
         on_delete=models.SET_NULL,
         related_name="+",
         verbose_name=_("theme"),
+    )
+
+    promote_panels = (
+        BasePageWithRequiredIntro.promote_panels
+        + PublishedDateMixin.promote_panels
+        + [
+            FieldPanel("key_stage"),
+            FieldPanel("time_period"),
+            FieldPanel("theme"),
+        ]
     )
 
     api_fields = BasePageWithRequiredIntro.api_fields + [
