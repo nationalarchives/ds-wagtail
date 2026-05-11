@@ -322,13 +322,8 @@ class TeachingResourcePage(BasePageWithRequiredIntro):
         max_length=160,
     )
 
-    sources_introduction = StreamField(
-        [
-            (
-                "sources_introduction",
-                APIRichTextBlock(features=["bold", "italic", "link"]),
-            )
-        ],
+    sources_introduction = RichTextField(
+        features=["bold", "italic", "link"],
         verbose_name=_("sources introduction"),
         help_text=_("Optional text field to provide an introduction to the sources."),
         blank=True,
@@ -459,7 +454,7 @@ class TeachingResourcePage(BasePageWithRequiredIntro):
         APIField("time_period", serializer=TimePeriodSerializer()),
         APIField("theme", serializer=ThemeSerializer()),
         APIField("sources_title"),
-        APIField("sources_introduction"),
+        APIField("sources_introduction", serializer=RichTextSerializer()),
         APIField("teachers_notes"),
         APIField("sources", serializer=SourceSerializer(many=True)),
         APIField("curriculum_connection_description", serializer=RichTextSerializer()),
