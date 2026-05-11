@@ -3,7 +3,6 @@ from app.core.models import (
 )
 from app.core.serializers import DefaultPageSerializer
 from django.db import models
-from django.utils import timezone
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
 from modelcluster.fields import ParentalKey
@@ -32,9 +31,7 @@ class EducationPage(BasePageWithRequiredIntro):
     @cached_property
     def latest_teaching_resources(self) -> list:
         return list(
-            TeachingResourcePage.objects.live()
-            .public()
-            .order_by("-published_date")[:3]
+            TeachingResourcePage.objects.live().public().order_by("-published_date")[:3]
         )
 
     # TODO: maybe remove cached_property? it will persist and maybe we don't want that
