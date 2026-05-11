@@ -25,7 +25,6 @@ from ..blocks import (
     SourceMediaBlock,
 )
 from ..serializers import (
-    CurriculumConnectionSerializer,
     KeyStageSerializer,
     SourceSerializer,
     ThemeSerializer,

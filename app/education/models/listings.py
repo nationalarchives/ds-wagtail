@@ -20,10 +20,6 @@ class TeachingResourcesListingPage(BasePageWithRequiredIntro):
     A page for displaying education/teaching resources.
     """
 
-    @cached_property
-    def type_label(cls) -> str:
-        return "Education Resource"
-
     parent_page_types = [
         "education.EducationPage",
     ]
@@ -99,10 +95,6 @@ class EducationSessionsListingPage(BasePageWithRequiredIntro):
     """
     A page for displaying education sessions.
     """
-
-    @cached_property
-    def type_label(cls) -> str:
-        return "Education Session"
 
     parent_page_types = [
         "education.EducationPage",
