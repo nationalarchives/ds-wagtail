@@ -6,9 +6,8 @@ from app.core.blocks.section import SubHeadingBlock
 from app.core.blocks.video import YouTubeBlock
 from app.core.models import (
     BasePageWithRequiredIntro,
-    # HeroImageMixin,
     PublishedDateMixin,
-    # RequiredHeroImageMixin,
+    RequiredHeroImageMixin,
 )
 from app.core.serializers import RichTextSerializer
 from django.db import models
@@ -259,28 +258,12 @@ class CurriculumConnection(Orderable):
     ]
 
 
-class TeachingResourcePage(BasePageWithRequiredIntro, PublishedDateMixin):
+class TeachingResourcePage(BasePageWithRequiredIntro, PublishedDateMixin, RequiredHeroImageMixin):
     """A page to display a teaching resource"""
 
     parent_page_types = [
         "education.TeachingResourcesListingPage",
     ]
-
-    # Hero
-    hero_image = StreamField(
-        [
-            (
-                "hero_image",
-                ContentImageBlock(
-                    rendition_size="max-900x900",
-                    verbose_name=_("hero image"),
-                    blank=True,
-                ),
-            )
-        ],
-        null=True,
-        max_num=1,
-    )
 
     enquiry_question = models.CharField(
         verbose_name=_("enquiry question"),
@@ -408,39 +391,42 @@ class TeachingResourcePage(BasePageWithRequiredIntro, PublishedDateMixin):
         null=True,
     )
 
-    content_panels = BasePageWithRequiredIntro.content_panels + [
-        FieldPanel("hero_image"),
-        FieldPanel("enquiry_question"),
-        MultiFieldPanel(
-            [
-                FieldPanel("sources_title"),
-                FieldPanel("sources_introduction"),
-                InlinePanel(
-                    "sources",
-                    label=_("Source"),
-                    heading=_("Sources"),
-                    min_num=1,
-                ),
-            ],
-            heading=_("Sources"),
-        ),
-        FieldPanel("teachers_notes"),
-        InlinePanel(
-            "curriculum_connections",
-            label=_("Curriculum connection"),
-            heading=_("Connections to the curriculum"),
-            min_num=1,
-        ),
-        FieldPanel("extension_activities"),
-        FieldPanel("background_information"),
-        MultiFieldPanel(
-            [
-                FieldPanel("further_information_title"),
-                FieldPanel("further_information"),
-            ],
-            heading=_("Further information"),
-        ),
-    ]
+    content_panels = (
+        BasePageWithRequiredIntro.content_panels
+        + RequiredHeroImageMixin.content_panels
+        + [
+            FieldPanel("enquiry_question"),
+            MultiFieldPanel(
+                [
+                    FieldPanel("sources_title"),
+                    FieldPanel("sources_introduction"),
+                    InlinePanel(
+                        "sources",
+                        label=_("Source"),
+                        heading=_("Sources"),
+                        min_num=1,
+                    ),
+                ],
+                heading=_("Sources"),
+            ),
+            FieldPanel("teachers_notes"),
+            InlinePanel(
+                "curriculum_connections",
+                label=_("Curriculum connection"),
+                heading=_("Connections to the curriculum"),
+                min_num=1,
+            ),
+            FieldPanel("extension_activities"),
+            FieldPanel("background_information"),
+            MultiFieldPanel(
+                [
+                    FieldPanel("further_information_title"),
+                    FieldPanel("further_information"),
+                ],
+                heading=_("Further information"),
+            ),
+        ]
+    )
 
     promote_panels = (
         BasePageWithRequiredIntro.promote_panels
