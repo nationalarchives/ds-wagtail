@@ -4,12 +4,10 @@ from app.core.models import (
 )
 from app.core.serializers import DefaultPageSerializer
 from django.db import models
-from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
 from wagtail.admin.panels import (
     FieldPanel,
     MultiFieldPanel,
-    PageChooserPanel,
 )
 from wagtail.api import APIField
 from wagtail.fields import StreamField
