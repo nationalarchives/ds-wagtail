@@ -75,7 +75,7 @@ class TeachingResourcesListingPage(BasePageWithRequiredIntro):
     content_panels = BasePageWithRequiredIntro.content_panels + [
         MultiFieldPanel(
             [
-                PageChooserPanel("featured_teaching_resource"),
+                FieldPanel("featured_teaching_resource"),
                 FieldPanel("featured_teaching_resource_teaser_override"),
             ],
             heading=_("Featured teaching resource"),
