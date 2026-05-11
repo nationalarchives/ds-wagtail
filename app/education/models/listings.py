@@ -57,15 +57,6 @@ class TeachingResourcesListingPage(BasePageWithRequiredIntro):
         null=True,
     )
 
-    newsletter_sign_up_text = models.CharField(
-        verbose_name=_("newsletter sign up text"),
-        help_text=_(
-            "Text block encouraging users to sign up for the education newsletter."
-        ),
-        blank=True,
-        max_length=200,
-    )
-
     content_panels = BasePageWithRequiredIntro.content_panels + [
         MultiFieldPanel(
             [
@@ -75,14 +66,12 @@ class TeachingResourcesListingPage(BasePageWithRequiredIntro):
             heading=_("Featured teaching resource"),
         ),
         FieldPanel("web_archive_promo"),
-        FieldPanel("newsletter_sign_up_text"),
     ]
 
     api_fields = BasePageWithRequiredIntro.api_fields + [
         APIField("featured_teaching_resource", serializer=DefaultPageSerializer()),
         APIField("featured_teaching_resource_teaser_override"),
         APIField("web_archive_promo"),
-        APIField("newsletter_sign_up_text"),
     ]
 
     class Meta:
@@ -121,15 +110,6 @@ class EducationSessionsListingPage(BasePageWithRequiredIntro):
         max_length=160,
     )
 
-    newsletter_sign_up_text = models.CharField(
-        verbose_name=_("newsletter sign up text"),
-        help_text=_(
-            "Text block encouraging users to sign up for the education newsletter."
-        ),
-        blank=True,
-        max_length=160,
-    )
-
     content_panels = BasePageWithRequiredIntro.content_panels + [
         MultiFieldPanel(
             [
@@ -138,13 +118,11 @@ class EducationSessionsListingPage(BasePageWithRequiredIntro):
             ],
             heading=_("Featured education session"),
         ),
-        FieldPanel("newsletter_sign_up_text"),
     ]
 
     api_fields = BasePageWithRequiredIntro.api_fields + [
         APIField("featured_education_session", serializer=DefaultPageSerializer()),
         APIField("featured_education_session_teaser_override"),
-        APIField("newsletter_sign_up_text"),
     ]
 
     class Meta:
