@@ -1,4 +1,4 @@
-from app.core.blocks.image import APIImageChooserBlock, ContentImageBlock
+from app.core.blocks.image import APIImageChooserBlock
 from app.core.blocks.page_chooser import APIPageChooserBlock
 from app.core.blocks.paragraph import APIRichTextBlock
 from app.core.blocks.promoted_links import FeaturedExternalLinkBlock, FeaturedPageBlock
@@ -34,6 +34,7 @@ from ..serializers import (
 )
 
 # TODO: sort panel order on promote tabs
+
 
 class KeyStage(models.Model):
     """A model for individual key stage tags - choices are populated by migrations/0002_seed_key_stages.py"""
@@ -258,7 +259,9 @@ class CurriculumConnection(Orderable):
     ]
 
 
-class TeachingResourcePage(BasePageWithRequiredIntro, PublishedDateMixin, RequiredHeroImageMixin):
+class TeachingResourcePage(
+    BasePageWithRequiredIntro, PublishedDateMixin, RequiredHeroImageMixin
+):
     """A page to display a teaching resource"""
 
     parent_page_types = [
