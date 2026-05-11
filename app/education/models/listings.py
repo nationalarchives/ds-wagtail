@@ -143,7 +143,7 @@ class EducationSessionsListingPage(BasePageWithRequiredIntro):
     content_panels = BasePageWithRequiredIntro.content_panels + [
         MultiFieldPanel(
             [
-                PageChooserPanel("featured_education_session"),
+                FieldPanel("featured_education_session"),
                 FieldPanel("featured_education_session_teaser_override"),
             ],
             heading=_("Featured education session"),
