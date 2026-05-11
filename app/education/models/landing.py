@@ -34,7 +34,7 @@ class EducationPage(BasePageWithRequiredIntro):
         return list(
             TeachingResourcePage.objects.live()
             .public()
-            .order_by("-first_published_at")[:3]
+            .order_by("-published_date")[:3]
         )
 
     # TODO: maybe remove cached_property? it will persist and maybe we don't want that
