@@ -83,6 +83,14 @@
     justify-content: flex-end;
 }
 
+.tree-node__status {
+    display: inline-flex;
+    align-items: center;
+    min-width: 4.5rem;
+    justify-content: center;
+    text-align: center;
+}
+
 @media (max-width: 1024px) {
     .tree-node__row {
         grid-template-columns: 1.5rem 1fr;
