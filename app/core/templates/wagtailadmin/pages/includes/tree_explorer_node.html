@@ -4,7 +4,7 @@
         <details class="tree-node__details">
             <summary
                 class="tree-node__row tree-node__row--summary"
-                aria-label="{% blocktrans trimmed with title=node.page.get_admin_display_title %}Toggle {{ title }} children{% endblocktrans %}"
+                aria-label="{% blocktrans trimmed with title=node.title %}Toggle {{ title }} children{% endblocktrans %}"
             >
                 <span class="tree-node__chevron" aria-hidden="true"></span>
                 {% include "wagtailadmin/pages/includes/tree_explorer_node_content.html" with node=node %}

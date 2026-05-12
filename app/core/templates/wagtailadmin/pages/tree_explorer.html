@@ -17,6 +17,12 @@
             <button type="button" class="button button-secondary" data-tree-action="collapse-all">{% trans "Collapse all" %}</button>
         </div>
 
+        {% if debug %}
+            <p class="help-block help-info">
+                Cache: {{ tree_cache_status }} | Data load: {{ tree_data_time_ms|floatformat:2 }}ms | Key: {{ tree_cache_key }}
+            </p>
+        {% endif %}
+
         <ul class="tree-explorer__list" role="tree">
             {% for node in tree_nodes %}
                 {% include "wagtailadmin/pages/includes/tree_explorer_node.html" with node=node level=1 %}

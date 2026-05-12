@@ -4,7 +4,7 @@ from django.templatetags.static import static
 from wagtail import hooks
 from wagtail.admin.menu import AdminOnlyMenuItem
 
-from .admin_views import tree_explorer_view
+from .admin_views import invalidate_tree_explorer_cache, tree_explorer_view
 
 from .models.partner_logos import partner_logo_chooserviewset, partner_logo_modelviewset
 
@@ -96,3 +96,16 @@ def register_tree_explorer_menu_item():
         icon_name="list-ul",
         order=150,
     )
+
+
+def _invalidate_tree_explorer(*args, **kwargs):
+    invalidate_tree_explorer_cache()
+
+
+hooks.register("after_create_page")(_invalidate_tree_explorer)
+hooks.register("after_edit_page")(_invalidate_tree_explorer)
+hooks.register("after_delete_page")(_invalidate_tree_explorer)
+hooks.register("after_move_page")(_invalidate_tree_explorer)
+hooks.register("after_copy_page")(_invalidate_tree_explorer)
+hooks.register("after_publish_page")(_invalidate_tree_explorer)
+hooks.register("after_unpublish_page")(_invalidate_tree_explorer)
