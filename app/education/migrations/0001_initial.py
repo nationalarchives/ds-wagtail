@@ -153,7 +153,7 @@ class Migration(migrations.Migration):
                     ),
                 ),
                 (
-                    "teaching_resources_teaser",
+                    "teaching_resources_teaser_override",
                     models.CharField(
                         blank=True,
                         help_text="Short text under Explore teaching resources title to entice users to click through",
@@ -171,7 +171,7 @@ class Migration(migrations.Migration):
                     ),
                 ),
                 (
-                    "education_sessions_teaser",
+                    "education_sessions_teaser_override",
                     models.CharField(
                         blank=True,
                         help_text="Short text under Explore education sessions title to entice users to click through",

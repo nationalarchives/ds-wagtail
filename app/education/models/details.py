@@ -539,7 +539,7 @@ class EducationSessionPage(
     # Start date  and End date
     # hlep taxt placeholder, should be put at start of panel if so
 
-    start_date = models.DateTimeField(
+    start_date = models.DateField(
         verbose_name=_("start date"),
         null=True,
         editable=False,
@@ -548,7 +548,7 @@ class EducationSessionPage(
         ),
     )
 
-    end_date = models.DateTimeField(
+    end_date = models.DateField(
         verbose_name=_("end date"),
         null=True,
         editable=False,
@@ -598,9 +598,9 @@ class EducationSessionPage(
 
     # price - Schema.org Property
 
-    session_price = (
-        None  # - schema.org?? is there a price model? whatson uses min and max,
-    )
+    session_price = None  # Optional float
+
+    # TOFO:Add validation
     # or is this just a preferred currency format
     session_price_detail = models.CharField(  # TODO- conditionally required,
         verbose_name=_("session price detail"),
@@ -825,6 +825,17 @@ class EducationSessionPage(
     # More education sessions  - handled by frontend? use cached property to get them from taxonomies?
     # then allow override using the selected pages from related_education_sessions via RelatedEducationSessions
 
+    # TODO: think about adding key details tab ala /services/ds-wagtail/app/whatson/models/details.py: for key details bar lol
+
+    #     edit_handler = TabbedInterface(
+    #         [
+    #             ObjectList(content_panels, heading="Content"),
+    #             ObjectList(key_details_panels, heading="Key details"),
+    #             ObjectList(promote_panels, heading="Promote"),
+    #             ObjectList(BasePageWithRequiredIntro.settings_panels, heading="Settings"),
+    #         ]
+    #     )
+
     content_panels = (
         BasePageWithRequiredIntro.content_panels
         + RequiredHeroImageMixin.content_panels
@@ -853,8 +864,8 @@ class EducationSessionPage(
                             ),
                             FieldPanel("session_regions"),
                             FieldPanel("session_postal_address"),
-                            FieldPanel("session_reccomended_for"),
-                            FieldPanel("session_duration"),
+                            # FieldPanel("session_reccomended_for"),
+                            # FieldPanel("session_duration"),
                             FieldPanel("session_booking_link"),
                         ],
                         heading=_("Session description"),

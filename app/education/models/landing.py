@@ -64,7 +64,7 @@ class EducationPage(BasePageWithRequiredIntro):
         ),
     )
 
-    teaching_resources_teaser = models.CharField(
+    teaching_resources_teaser_override = models.CharField(
         verbose_name=_("teaching resources teaser text"),
         help_text=_(
             "Short text under Explore teaching resources title to entice users to click through"
@@ -105,7 +105,7 @@ class EducationPage(BasePageWithRequiredIntro):
         ),
     )
 
-    education_sessions_teaser = models.CharField(
+    education_sessions_teaser_override = models.CharField(
         verbose_name=_("education sessions teaser text"),
         help_text=_(
             "Short text under Explore education sessions title to entice users to click through"
@@ -135,7 +135,7 @@ class EducationPage(BasePageWithRequiredIntro):
         MultiFieldPanel(
             [
                 PageChooserPanel("teaching_resources_listing_page"),
-                FieldPanel("teaching_resources_teaser"),
+                FieldPanel("teaching_resources_teaser_override"),
                 MultiFieldPanel(
                     [
                         PageChooserPanel("featured_teaching_resource"),
@@ -148,7 +148,7 @@ class EducationPage(BasePageWithRequiredIntro):
         MultiFieldPanel(
             [
                 PageChooserPanel("education_sessions_listing_page"),
-                FieldPanel("education_sessions_teaser"),
+                FieldPanel("education_sessions_teaser_override"),
                 MultiFieldPanel(
                     [
                         PageChooserPanel("featured_education_session"),
@@ -167,11 +167,11 @@ class EducationPage(BasePageWithRequiredIntro):
 
     api_fields = BasePageWithRequiredIntro.api_fields + [
         APIField("teaching_resources_listing_page", serializer=DefaultPageSerializer()),
-        APIField("teaching_resources_teaser"),
+        APIField("teaching_resources_teaser_override"),
         APIField("featured_teaching_resource", serializer=DefaultPageSerializer()),
         APIField("featured_teaching_resource_teaser_override"),
         APIField("education_sessions_listing_page", serializer=DefaultPageSerializer()),
-        APIField("education_sessions_teaser"),
+        APIField("education_sessions_teaser_override"),
         APIField("featured_education_session", serializer=DefaultPageSerializer()),
         APIField("featured_education_session_teaser_override"),
         APIField(
