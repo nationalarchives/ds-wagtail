@@ -1,13 +1,13 @@
+from time import perf_counter
+
 from django.apps import apps
 from django.conf import settings
 from django.core.cache import cache
 from django.shortcuts import render
 from django.utils.encoding import force_str
-from time import perf_counter
 from wagtail.admin.auth import require_admin_access
 from wagtail.models import Page
 from wagtail.permission_policies.pages import PagePermissionPolicy
-
 
 TREE_EXPLORER_CACHE_NAMESPACE = "core:wagtail:tree_explorer:v3"
 TREE_EXPLORER_CACHE_VERSION_KEY = f"{TREE_EXPLORER_CACHE_NAMESPACE}:version"
@@ -122,7 +122,9 @@ def get_tree_nodes(user):
 @require_admin_access
 def tree_explorer_view(request):
     """Render a full page tree with in-place accordion expansion."""
-    tree_nodes, cache_status, tree_data_time_ms, cache_key = get_tree_nodes(request.user)
+    tree_nodes, cache_status, tree_data_time_ms, cache_key = get_tree_nodes(
+        request.user
+    )
     response = render(
         request,
         "wagtailadmin/pages/tree_explorer.html",

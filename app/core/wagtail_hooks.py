@@ -1,11 +1,10 @@
 from django.conf import settings
-from django.urls import path, reverse
 from django.templatetags.static import static
+from django.urls import path, reverse
 from wagtail import hooks
 from wagtail.admin.menu import MenuItem
 
 from .admin_views import invalidate_tree_explorer_cache, tree_explorer_view
-
 from .models.partner_logos import partner_logo_chooserviewset, partner_logo_modelviewset
 
 
