@@ -326,13 +326,8 @@ class TeachingResourcePage(
     )
 
     # Teacher’s Notes*
-    teachers_notes = StreamField(
-        [
-            (
-                "teachers_notes",
-                APIRichTextBlock(features=["bold", "italic", "link", "ol", "ul"]),
-            )
-        ],
+    teachers_notes = RichTextField(
+        features=["bold", "italic", "link", "ol", "ul"],
         verbose_name=_("teachers notes"),
         help_text=_(
             "A general overview of what the resource contains and how it can be used."
