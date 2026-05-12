@@ -2,7 +2,7 @@ from django.conf import settings
 from django.urls import path, reverse
 from django.templatetags.static import static
 from wagtail import hooks
-from wagtail.admin.menu import AdminOnlyMenuItem
+from wagtail.admin.menu import MenuItem
 
 from .admin_views import invalidate_tree_explorer_cache, tree_explorer_view
 
@@ -90,7 +90,7 @@ def register_tree_explorer_admin_urls():
 
 @hooks.register("register_admin_menu_item")
 def register_tree_explorer_menu_item():
-    return AdminOnlyMenuItem(
+    return MenuItem(
         "Site tree",
         reverse("tree_explorer"),
         icon_name="list-ul",
