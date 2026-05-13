@@ -119,7 +119,9 @@ def get_tree_nodes(user, request):
 @require_admin_access
 def tree_explorer_view(request):
     """Render a full page tree with in-place accordion expansion."""
-    tree_nodes, cache_status, tree_data_time_ms, cache_key = get_tree_nodes(request.user, request)
+    tree_nodes, cache_status, tree_data_time_ms, cache_key = get_tree_nodes(
+        request.user, request
+    )
     response = render(
         request,
         "wagtailadmin/pages/tree_explorer.html",
