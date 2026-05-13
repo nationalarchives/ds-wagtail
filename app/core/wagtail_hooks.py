@@ -97,14 +97,10 @@ def register_tree_explorer_menu_item():
     )
 
 
-def _invalidate_tree_explorer(*args, **kwargs):
-    invalidate_tree_explorer_cache()
-
-
-hooks.register("after_create_page")(_invalidate_tree_explorer)
-hooks.register("after_edit_page")(_invalidate_tree_explorer)
-hooks.register("after_delete_page")(_invalidate_tree_explorer)
-hooks.register("after_move_page")(_invalidate_tree_explorer)
-hooks.register("after_copy_page")(_invalidate_tree_explorer)
-hooks.register("after_publish_page")(_invalidate_tree_explorer)
-hooks.register("after_unpublish_page")(_invalidate_tree_explorer)
+hooks.register("after_create_page")(invalidate_tree_explorer_cache)
+hooks.register("after_edit_page")(invalidate_tree_explorer_cache)
+hooks.register("after_delete_page")(invalidate_tree_explorer_cache)
+hooks.register("after_move_page")(invalidate_tree_explorer_cache)
+hooks.register("after_copy_page")(invalidate_tree_explorer_cache)
+hooks.register("after_publish_page")(invalidate_tree_explorer_cache)
+hooks.register("after_unpublish_page")(invalidate_tree_explorer_cache)

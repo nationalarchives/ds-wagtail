@@ -1,5 +1,3 @@
-from time import perf_counter
-
 from django.apps import apps
 from django.conf import settings
 from django.core.cache import cache
@@ -14,7 +12,9 @@ TREE_EXPLORER_CACHE_TIMEOUT = getattr(settings, "TREE_EXPLORER_CACHE_TIMEOUT", 3
 PAGE_PERMISSION_POLICY = PagePermissionPolicy()
 
 
-def invalidate_tree_explorer_cache():
+def invalidate_tree_explorer_cache(
+    *args, **kwargs
+):  # We don't need args/kwargs, but the signal handlers will pass them in, so we need to accept them as parameters.
     delete_pattern = getattr(cache, "delete_pattern", None)
     if callable(delete_pattern):
         delete_pattern(f"{TREE_EXPLORER_CACHE_NAMESPACE}:u*")
@@ -103,36 +103,24 @@ def _build_tree_nodes(user, request):
 
 
 def get_tree_nodes(user, request):
-    start_time = perf_counter()
     cache_key = _get_tree_cache_key(user)
     tree_nodes = cache.get(cache_key)
     if tree_nodes is not None:
-        elapsed_ms = (perf_counter() - start_time) * 1000
-        return tree_nodes, "hit", elapsed_ms, cache_key
+        return tree_nodes
 
     tree_nodes = _build_tree_nodes(user, request)
     cache.set(cache_key, tree_nodes, timeout=TREE_EXPLORER_CACHE_TIMEOUT)
-    elapsed_ms = (perf_counter() - start_time) * 1000
-    return tree_nodes, "miss", elapsed_ms, cache_key
+    return tree_nodes
 
 
 @require_admin_access
 def tree_explorer_view(request):
     """Render a full page tree with in-place accordion expansion."""
-    tree_nodes, cache_status, tree_data_time_ms, cache_key = get_tree_nodes(
-        request.user, request
-    )
-    response = render(
+    tree_nodes = get_tree_nodes(request.user, request)
+    return render(
         request,
         "wagtailadmin/pages/tree_explorer.html",
         {
             "tree_nodes": tree_nodes,
-            "tree_cache_status": cache_status,
-            "tree_data_time_ms": tree_data_time_ms,
-            "tree_cache_key": cache_key,
         },
     )
-    response["X-Tree-Explorer-Cache"] = cache_status
-    response["X-Tree-Explorer-Data-Time-Ms"] = f"{tree_data_time_ms:.2f}"
-    response["X-Tree-Explorer-Cache-Key"] = cache_key
-    return response
