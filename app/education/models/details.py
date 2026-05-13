@@ -445,7 +445,10 @@ class TeachingResourcePage(
 
     @cached_property
     def key_stages(self):
-        return [tag.key_stage for tag in self.education_keystage_tags.select_related("key_stage")]
+        return [
+            tag.key_stage
+            for tag in self.education_keystage_tags.select_related("key_stage")
+        ]
 
     @cached_property
     def time_periods(self):
@@ -676,7 +679,10 @@ class EducationSessionPage(
 
     @cached_property
     def key_stages(self):
-        return [tag.key_stage for tag in self.education_keystage_tags.select_related("key_stage")]
+        return [
+            tag.key_stage
+            for tag in self.education_keystage_tags.select_related("key_stage")
+        ]
 
     @cached_property
     def time_periods(self):

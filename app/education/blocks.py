@@ -1,5 +1,4 @@
 from app.core.blocks.paragraph import APIRichTextBlock
-from app.core.blocks.video import YouTubeBlock
 from app.media.blocks import MediaBlock
 from wagtail import blocks
 

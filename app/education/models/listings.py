@@ -1,4 +1,3 @@
-from app.core.blocks.paragraph import APIRichTextBlock
 from app.core.models import (
     BasePageWithRequiredIntro,
 )
@@ -10,7 +9,6 @@ from wagtail.admin.panels import (
     MultiFieldPanel,
 )
 from wagtail.api import APIField
-from wagtail.fields import StreamField
 
 
 class TeachingResourcesListingPage(BasePageWithRequiredIntro):
