@@ -1,3 +1,4 @@
+import wagtail.blocks
 from app.core.blocks.image import (
     APIImageChooserBlock,
     ImageGalleryBlock,
@@ -124,67 +125,101 @@ class Source(Orderable):
         max_length=160,
     )
 
-    # Source Media
-    source_image = StreamField(
-        [
-            (
-                "source_image",
-                APIImageChooserBlock(
-                    rendition_size="max-900x900",
-                    verbose_name=_("source image"),
-                    help_text=_("An image for the source."),
-                    blank=True,
-                ),
-            )
-        ],
-    )
-
+    # Source Media — choose one type; caption is always included
     source_media = StreamField(
         [
             (
+                "source_image",
+                wagtail.blocks.StructBlock(
+                    [
+                        (
+                            "image",
+                            APIImageChooserBlock(
+                                rendition_size="max-900x900",
+                                help_text=_("An image for the source."),
+                            ),
+                        ),
+                        (
+                            "caption",
+                            APIRichTextBlock(
+                                features=["bold", "italic"],
+                                required=False,
+                                help_text=_("Caption displayed below the image."),
+                            ),
+                        ),
+                    ],
+                    label=_("Image"),
+                ),
+            ),
+            (
                 "source_media",
                 SourceMediaBlock(
-                    verbose_name=_("source media"),
-                    help_text=_("A piece of media for the source."),
-                    blank=True,
+                    help_text=_("A piece of audio or video media for the source."),
                 ),
-            )
+            ),
+            (
+                "source_youtube",
+                wagtail.blocks.StructBlock(
+                    [
+                        (
+                            "youtube",
+                            YouTubeBlock(
+                                help_text=_("A YouTube video for the source."),
+                            ),
+                        ),
+                        (
+                            "caption",
+                            APIRichTextBlock(
+                                features=["bold", "italic"],
+                                required=False,
+                                help_text=_("Caption displayed below the video."),
+                            ),
+                        ),
+                    ],
+                    label=_("YouTube"),
+                ),
+            ),
         ],
+        verbose_name=_("source media"),
+        help_text=_(
+            "Choose one media type for this source. A caption can be added for each."
+        ),
+        blank=True,
+        null=True,
     )
 
-
-    # source_media_caption = StreamField(
-    #     [("source_media_caption", APIRichTextBlock(features=["bold", "italic"]))],
-    #     verbose_name=_("source caption"),
-    #     help_text=_("If provided, displays directly below the source."),
-    #     blank=True,
-    #     null=True,
-    # )
-
-    # Source link
+    # Source link — choose internal or external
     source_media_featured_link = StreamField(
         [
             (
-                "source_media_featured_link",
+                "internal_page",
                 APIPageChooserBlock(
-                    label="Internal page",
-                    required=False,
+                    label=_("Internal page"),
                     page_type="wagtailcore.Page",
+                    help_text=_("Link to a page published on the site"),
                 ),
-            )
+            ),
+            (
+                "external_link",
+                wagtail.blocks.StructBlock(
+                    [
+                        (
+                            "url",
+                            wagtail.blocks.URLBlock(
+                                help_text=_(
+                                    "Link to a resource on a 3rd party platform (e.g. mapping tool)"
+                                ),
+                            ),
+                        ),
+                    ],
+                    label=_("External link"),
+                ),
+            ),
         ],
         verbose_name=_("source media featured link"),
-        help_text=_("Reference another page published on the site"),
+        help_text=_("Choose internal or external link for this source"),
         blank=True,
         max_num=1,
-    )
-
-    source_media_featured_external_link = models.URLField(
-        verbose_name=_("source media featured link"),
-        help_text=_(
-            "Option to add link to a resource on a 3rd party platform (e.g. mapping tool)"
-        ),
-        blank=True,
     )
 
     # Source description
@@ -214,12 +249,8 @@ class Source(Orderable):
 
     panels = [
         FieldPanel("source_title"),
-        FieldPanel("source_image"),
         FieldPanel("source_media"),
-        FieldPanel("source_youtube"),
-        FieldPanel("source_media_caption"),
         FieldPanel("source_media_featured_link"),
-        FieldPanel("source_media_featured_external_link"),
         FieldPanel("source_description"),
         FieldPanel("source_question"),
     ]
@@ -240,7 +271,7 @@ class CurriculumConnection(Orderable):
         help_text=_("The key stage for this curriculum connection."),
     )
 
-    curriculum_connection_description = RichTextField(
+    description = RichTextField(
         features=["bold", "italic", "link", "ul"],
         verbose_name=_("curriculum connection description"),
         help_text=_("Add the curriculum connection description."),
@@ -250,7 +281,7 @@ class CurriculumConnection(Orderable):
 
     panels = [
         FieldPanel("key_stage"),
-        FieldPanel("curriculum_connection_description"),
+        FieldPanel("description"),
     ]
 
 
@@ -523,19 +554,17 @@ class EducationSessionPage(
     # Start date  and End date
     # hlep taxt placeholder, should be put at start of panel if so
 
-    start_date = models.DateField(
+    session_start_date = models.DateField(
         verbose_name=_("start date"),
         null=True,
-        editable=False,
         help_text=_(
             "If neither start nor end date is added this will default to 'All Year'"
         ),
     )
 
-    end_date = models.DateField(
+    session_end_date = models.DateField(
         verbose_name=_("end date"),
         null=True,
-        editable=False,
         help_text=_(
             "If neither start nor end date is added this will default to 'All Year'"
         ),
@@ -729,10 +758,10 @@ class EducationSessionPage(
                     rendition_size="max-900x900",
                     verbose_name=_("partner logo"),
                     help_text=_("An image for the partner logo."),
-                    blank=True,
                 ),
             )
         ],
+        blank=True,
     )
     # - Quote
     session_quote = StreamField(
@@ -741,11 +770,10 @@ class EducationSessionPage(
                 "session_quote",
                 QuoteBlock(
                     help_text=_("A quote with an attribution related to the session."),
-                    blank=True,
-                    null=True,
                 ),
             )
         ],
+        blank=True,
     )
     # - Inset text TODO: clarify this for better naming but for now
     inset_text = RichTextField(
@@ -763,10 +791,10 @@ class EducationSessionPage(
     # Area headed ‘Connection to the curriculum' (title hard coded) where specific connections to the curriculum can be listed. Note these is more specific connections than the themes (e.g. might specify exam board), so is a free text area.
 
     # Rich text - Italic, bold, bulleted lists, numbered lists, links
-    curriculum_connection_description = StreamField(
+    session_curriculum_connection_description = StreamField(
         [
             (
-                "curriculum_connection_description",
+                "session_curriculum_connection_description",
                 APIRichTextBlock(features=settings.RESTRICTED_RICH_TEXT_FEATURES),
             )
         ],
@@ -824,8 +852,8 @@ class EducationSessionPage(
         BasePageWithRequiredIntro.content_panels
         + RequiredHeroImageMixin.content_panels
         + [
-            FieldPanel("start_date"),  # TODO: default to all year
-            FieldPanel("end_date"),
+            FieldPanel("session_start_date"),  # TODO: default to all year
+            FieldPanel("session_end_date"),
             MultiFieldPanel(
                 [
                     MultiFieldPanel(
@@ -833,7 +861,6 @@ class EducationSessionPage(
                             # FieldPanel("session_price"), #make this multifield panel?
                             MultiFieldPanel(
                                 [
-                                    FieldPanel("session_price"),
                                     FieldPanel("session_price_detail"),
                                 ],
                                 heading=_("Session price"),
@@ -841,13 +868,10 @@ class EducationSessionPage(
                             MultiFieldPanel(
                                 [  # TODO: sort this out - location and duration linked
                                     # does this need to be multifield? probs not look at spec to double chec no other firleds
-                                    InlinePanel("session_location"),
                                     FieldPanel("session_location_duration"),
                                 ],
                                 heading=_("Session location"),
                             ),
-                            FieldPanel("session_regions"),
-                            FieldPanel("session_postal_address"),
                             # FieldPanel("session_reccomended_for"),
                             # FieldPanel("session_duration"),
                             FieldPanel("session_booking_link"),
@@ -871,7 +895,7 @@ class EducationSessionPage(
                         ],
                         heading=_("Session description"),
                     ),
-                    FieldPanel("curriculum_connection_description"),
+                    FieldPanel("session_curriculum_connection_description"),
                     FieldPanel("session_highlights"),
                 ]
             ),

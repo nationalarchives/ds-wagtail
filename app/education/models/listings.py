@@ -55,13 +55,11 @@ class TeachingResourcesListingPage(BasePageWithRequiredIntro):
             ],
             heading=_("Featured teaching resource"),
         ),
-        FieldPanel("web_archive_promo"),
     ]
 
     api_fields = BasePageWithRequiredIntro.api_fields + [
         APIField("featured_teaching_resource", serializer=DefaultPageSerializer()),
         APIField("featured_teaching_resource_teaser_override"),
-        APIField("web_archive_promo"),
     ]
 
     class Meta:

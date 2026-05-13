@@ -1,4 +1,5 @@
 from app.core.blocks.paragraph import APIRichTextBlock
+from app.core.blocks.video import YouTubeBlock
 from app.media.blocks import MediaBlock
 from wagtail import blocks
 
@@ -27,3 +28,4 @@ class QuestionBlock(blocks.StreamBlock):
 
 class SourceMediaBlock(MediaBlock):
     title = None
+    caption = APIRichTextBlock(features=["bold", "italic"], required=False)
