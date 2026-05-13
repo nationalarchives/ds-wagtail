@@ -6,7 +6,11 @@
 <span class="tree-node__actions">
     <a class="button button-small button-secondary" href="{% url 'wagtailadmin_pages:edit' node.page_id %}">{% trans "Edit" %}</a>
     {% if node.live %}
-        <span class="w-status tree-node__status">{% trans "Live" %}</span>
+        {% if node.live_url %}
+            <a class="w-status tree-node__status" href="{{ node.live_url }}" target="_blank" rel="noopener noreferrer">{% trans "Live" %}</a>
+        {% else %}
+            <span class="w-status tree-node__status">{% trans "Live" %}</span>
+        {% endif %}
     {% else %}
         <span class="w-status tree-node__status">{% trans "Draft" %}</span>
     {% endif %}

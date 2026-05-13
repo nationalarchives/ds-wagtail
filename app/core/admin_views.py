@@ -9,29 +9,19 @@ from wagtail.admin.auth import require_admin_access
 from wagtail.models import Page
 from wagtail.permission_policies.pages import PagePermissionPolicy
 
-TREE_EXPLORER_CACHE_NAMESPACE = "core:wagtail:tree_explorer:v3"
-TREE_EXPLORER_CACHE_VERSION_KEY = f"{TREE_EXPLORER_CACHE_NAMESPACE}:version"
+TREE_EXPLORER_CACHE_NAMESPACE = "core:wagtail:tree_explorer"
 TREE_EXPLORER_CACHE_TIMEOUT = getattr(settings, "TREE_EXPLORER_CACHE_TIMEOUT", 300)
 PAGE_PERMISSION_POLICY = PagePermissionPolicy()
 
 
 def invalidate_tree_explorer_cache():
-    try:
-        cache.incr(TREE_EXPLORER_CACHE_VERSION_KEY)
-    except ValueError:
-        cache.set(TREE_EXPLORER_CACHE_VERSION_KEY, 2, timeout=None)
-
-
-def _get_tree_cache_version():
-    version = cache.get(TREE_EXPLORER_CACHE_VERSION_KEY)
-    if version is None:
-        version = 1
-        cache.set(TREE_EXPLORER_CACHE_VERSION_KEY, version, timeout=None)
-    return version
+    delete_pattern = getattr(cache, "delete_pattern", None)
+    if callable(delete_pattern):
+        delete_pattern(f"{TREE_EXPLORER_CACHE_NAMESPACE}:u*")
 
 
 def _get_tree_cache_key(user):
-    return f"{TREE_EXPLORER_CACHE_NAMESPACE}:u{user.pk}:v{_get_tree_cache_version()}"
+    return f"{TREE_EXPLORER_CACHE_NAMESPACE}:u{user.pk}"
 
 
 def _get_page_verbose_name(app_label, model_name, cached_labels):
@@ -52,9 +42,9 @@ def _get_page_verbose_name(app_label, model_name, cached_labels):
     return label
 
 
-def _build_tree_nodes(user):
+def _build_tree_nodes(user, request):
     explorable_pages = PAGE_PERMISSION_POLICY.explorable_instances(user)
-    rows = (
+    pages = list(
         explorable_pages.select_related("content_type")
         .values(
             "id",
@@ -68,11 +58,17 @@ def _build_tree_nodes(user):
         .order_by("path")
     )
 
+    live_urls = {}
+    live_page_ids = [row["id"] for row in pages if row["live"]]
+    if live_page_ids:
+        for page in Page.objects.filter(id__in=live_page_ids).only("id", "url_path"):
+            live_urls[page.id] = page.get_url(request=request)
+
     nodes_by_path = {}
     root_nodes = []
     cached_labels = {}
 
-    for row in rows:
+    for row in pages:
         node = {
             "page_id": row["id"],
             "title": row["title"],
@@ -82,6 +78,7 @@ def _build_tree_nodes(user):
                 cached_labels,
             ),
             "live": row["live"],
+            "live_url": live_urls.get(row["id"]),
             "children": [],
         }
         nodes_by_path[row["path"]] = node
@@ -105,7 +102,7 @@ def _build_tree_nodes(user):
     return root_nodes
 
 
-def get_tree_nodes(user):
+def get_tree_nodes(user, request):
     start_time = perf_counter()
     cache_key = _get_tree_cache_key(user)
     tree_nodes = cache.get(cache_key)
@@ -113,7 +110,7 @@ def get_tree_nodes(user):
         elapsed_ms = (perf_counter() - start_time) * 1000
         return tree_nodes, "hit", elapsed_ms, cache_key
 
-    tree_nodes = _build_tree_nodes(user)
+    tree_nodes = _build_tree_nodes(user, request)
     cache.set(cache_key, tree_nodes, timeout=TREE_EXPLORER_CACHE_TIMEOUT)
     elapsed_ms = (perf_counter() - start_time) * 1000
     return tree_nodes, "miss", elapsed_ms, cache_key
@@ -122,9 +119,7 @@ def get_tree_nodes(user):
 @require_admin_access
 def tree_explorer_view(request):
     """Render a full page tree with in-place accordion expansion."""
-    tree_nodes, cache_status, tree_data_time_ms, cache_key = get_tree_nodes(
-        request.user
-    )
+    tree_nodes, cache_status, tree_data_time_ms, cache_key = get_tree_nodes(request.user, request)
     response = render(
         request,
         "wagtailadmin/pages/tree_explorer.html",
