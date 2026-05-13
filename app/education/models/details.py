@@ -15,6 +15,7 @@ from app.core.models import (
     RequiredHeroImageMixin,
 )
 from app.core.serializers import RichTextSerializer
+from django.conf.settings import RESTRICTED_RICH_TEXT_FEATURES
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from modelcluster.fields import ParentalKey
@@ -203,7 +204,7 @@ class Source(Orderable):
         [
             (
                 "source_description",
-                APIRichTextBlock(features=["bold", "italic", "link", "ol", "ul"]),
+                APIRichTextBlock(features=RESTRICTED_RICH_TEXT_FEATURES),
             )
         ],
         verbose_name=_("source description"),
@@ -327,7 +328,7 @@ class TeachingResourcePage(
 
     # Teacher’s Notes*
     teachers_notes = RichTextField(
-        features=["bold", "italic", "link", "ol", "ul"],
+        features=RESTRICTED_RICH_TEXT_FEATURES,
         verbose_name=_("teachers notes"),
         help_text=_(
             "A general overview of what the resource contains and how it can be used."
@@ -341,7 +342,7 @@ class TeachingResourcePage(
         [
             (
                 "paragraph",
-                APIRichTextBlock(features=["bold", "italic", "link", "ol", "ul"]),
+                APIRichTextBlock(features=RESTRICTED_RICH_TEXT_FEATURES),
             ),
             ("sub_heading", SubHeadingBlock()),
             ("featured_page", FeaturedPageBlock()),
@@ -360,7 +361,7 @@ class TeachingResourcePage(
         [
             (
                 "paragraph",
-                APIRichTextBlock(features=["bold", "italic", "link", "ol", "ul"]),
+                APIRichTextBlock(features=),
             ),
             ("sub_heading", SubHeadingBlock()),
         ],
@@ -383,7 +384,7 @@ class TeachingResourcePage(
         [
             (
                 "paragraph",
-                APIRichTextBlock(features=["bold", "italic", "link", "ol", "ul"]),
+                APIRichTextBlock(features=RESTRICTED_RICH_TEXT_FEATURES),
             ),
             ("sub_heading", SubHeadingBlock()),
             ("featured_external_link", FeaturedExternalLinkBlock()),
@@ -778,7 +779,7 @@ class EducationSessionPage(
         [
             (
                 "curriculum_connection_description",
-                APIRichTextBlock(features=["bold", "italic", "link", "ol", "ul"]),
+                APIRichTextBlock(features=RESTRICTED_RICH_TEXT_FEATURES),
             )
         ],
         verbose_name=_("source description"),
