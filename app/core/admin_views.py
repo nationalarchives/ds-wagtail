@@ -79,6 +79,7 @@ def _build_tree_nodes(user, request):
             ),
             "live": row["live"],
             "live_url": live_urls.get(row["id"]),
+            "child_count": 0,
             "children": [],
         }
         nodes_by_path[row["path"]] = node
@@ -98,6 +99,7 @@ def _build_tree_nodes(user, request):
             continue
 
         parent["children"].append(node)
+        parent["child_count"] += 1
 
     return root_nodes
 

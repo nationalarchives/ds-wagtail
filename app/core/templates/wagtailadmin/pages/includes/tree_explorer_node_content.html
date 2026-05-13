@@ -1,7 +1,9 @@
 {% load i18n wagtailadmin_tags %}
-<a class="tree-node__title" href="{% url 'wagtailadmin_explore' node.page_id %}">{{ node.title }}</a>
+<a class="tree-node__title" href="{% url 'wagtailadmin_explore' node.page_id %}">{{ node.title }}{% if node.child_count %} ({{ node.child_count }}){% endif %}</a>
 
-<span class="tree-node__meta">{{ node.verbose_name }}</span>
+<span class="tree-node__meta">
+    {{ node.verbose_name }}
+</span>
 
 <span class="tree-node__actions">
     <a class="button button-small button-secondary" href="{% url 'wagtailadmin_pages:edit' node.page_id %}">{% trans "Edit" %}</a>
