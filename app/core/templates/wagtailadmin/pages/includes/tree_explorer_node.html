@@ -1,5 +1,5 @@
 {% load i18n wagtailadmin_tags %}
-<li class="tree-node" role="treeitem" aria-level="{{ level }}">
+<li class="tree-node">
     {% if node.children %}
         <details class="tree-node__details">
             <summary
@@ -10,9 +10,9 @@
                 {% include "wagtailadmin/pages/includes/tree_explorer_node_content.html" with node=node %}
             </summary>
 
-            <ul class="tree-node__children" role="group">
+            <ul class="tree-node__children">
                 {% for child in node.children %}
-                    {% include "wagtailadmin/pages/includes/tree_explorer_node.html" with node=child level=level|add:1 %}
+                    {% include "wagtailadmin/pages/includes/tree_explorer_node.html" with node=child %}
                 {% endfor %}
             </ul>
         </details>

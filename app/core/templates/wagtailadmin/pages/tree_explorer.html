@@ -17,9 +17,9 @@
             <button type="button" class="button button-secondary" data-tree-action="collapse-all">{% trans "Collapse all" %}</button>
         </div>
 
-        <ul class="tree-explorer__list" role="tree">
+        <ul class="tree-explorer__list">
             {% for node in tree_nodes %}
-                {% include "wagtailadmin/pages/includes/tree_explorer_node.html" with node=node level=1 %}
+                {% include "wagtailadmin/pages/includes/tree_explorer_node.html" with node=node %}
             {% endfor %}
         </ul>
     </div>
