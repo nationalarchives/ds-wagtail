@@ -47,16 +47,6 @@ class TeachingResourcesListingPage(BasePageWithRequiredIntro):
         max_length=160,
     )
 
-    web_archive_promo = StreamField(
-        [("web_archive_promo", APIRichTextBlock(features=["bold", "italic", "link"]))],
-        verbose_name=_("web archive promo text"),
-        help_text=_(
-            "Text block highlighting that old resources can be found in the web archive with a link to the archived old Education site. "
-        ),
-        blank=True,
-        null=True,
-    )
-
     content_panels = BasePageWithRequiredIntro.content_panels + [
         MultiFieldPanel(
             [
