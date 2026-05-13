@@ -29,7 +29,11 @@ def _get_page_verbose_name(app_label, model_name, cached_labels):
     if key in cached_labels:
         return cached_labels[key]
 
-    model = apps.get_model(app_label, model_name)
+    try:
+        model = apps.get_model(app_label, model_name)
+    except LookupError:
+        model = None
+
     if model is None:
         label = model_name.replace("_", " ")
     elif hasattr(model, "get_verbose_name"):
