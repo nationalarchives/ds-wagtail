@@ -42,7 +42,7 @@ def _get_page_verbose_name(app_label, model_name, cached_labels):
     return label
 
 
-def _build_tree_nodes(user, request):
+def _build_tree_nodes(user):
     explorable_pages = PAGE_PERMISSION_POLICY.explorable_instances(user)
     pages = list(
         explorable_pages.select_related("content_type")
@@ -62,7 +62,11 @@ def _build_tree_nodes(user, request):
     live_page_ids = [row["id"] for row in pages if row["live"]]
     if live_page_ids:
         for page in Page.objects.filter(id__in=live_page_ids).only("id", "url_path"):
-            live_urls[page.id] = page.get_url(request=request)
+            url_parts = page.get_url_parts()
+            if url_parts is not None:
+                _, root_url, page_path = url_parts
+                if root_url and page_path:
+                    live_urls[page.id] = f"{root_url}{page_path}"
 
     nodes_by_path = {}
     root_nodes = []
@@ -104,13 +108,13 @@ def _build_tree_nodes(user, request):
     return root_nodes
 
 
-def get_tree_nodes(user, request):
+def get_tree_nodes(user):
     cache_key = _get_tree_cache_key(user)
     tree_nodes = cache.get(cache_key)
     if tree_nodes is not None:
         return tree_nodes
 
-    tree_nodes = _build_tree_nodes(user, request)
+    tree_nodes = _build_tree_nodes(user)
     cache.set(cache_key, tree_nodes, timeout=TREE_EXPLORER_CACHE_TIMEOUT)
     return tree_nodes
 
@@ -118,7 +122,7 @@ def get_tree_nodes(user, request):
 @require_admin_access
 def tree_explorer_view(request):
     """Render a full page tree with in-place accordion expansion."""
-    tree_nodes = get_tree_nodes(request.user, request)
+    tree_nodes = get_tree_nodes(request.user)
     return render(
         request,
         "wagtailadmin/pages/tree_explorer.html",
