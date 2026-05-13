@@ -266,7 +266,7 @@ class CurriculumConnection(Orderable):
 
 
 class TeachingResourcePage(
-    BasePageWithRequiredIntro, PublishedDateMixin, RequiredHeroImageMixin
+    PublishedDateMixin, RequiredHeroImageMixin, BasePageWithRequiredIntro
 ):
     """A page to display a teaching resource"""
 
@@ -488,7 +488,7 @@ class RelatedEducationSessions(Orderable):
 
 
 class EducationSessionPage(
-    BasePageWithRequiredIntro, PublishedDateMixin, RequiredHeroImageMixin
+    PublishedDateMixin, RequiredHeroImageMixin, BasePageWithRequiredIntro
 ):
     """A page to display an education session"""
 
