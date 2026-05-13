@@ -13,11 +13,18 @@ class _StreamFieldRepresentationMixin:
 class KeyStageSerializer(serializers.Serializer):
     name = serializers.CharField()
     slug = serializers.SlugField()
+    stage = serializers.IntegerField(allow_null=True)
+    age_range = serializers.CharField(allow_blank=True)
+    public_key_stage = serializers.CharField()
+    short_key_stage = serializers.CharField()
+    public_age_range = serializers.CharField()
 
 
 class TimePeriodSerializer(serializers.Serializer):
     name = serializers.CharField()
     slug = serializers.SlugField()
+    date_from = serializers.DateField(allow_null=True)
+    date_to = serializers.DateField(allow_null=True)
 
 
 class ThemeSerializer(serializers.Serializer):

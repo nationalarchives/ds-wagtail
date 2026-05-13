@@ -18,6 +18,7 @@ from app.core.models import (
 from app.core.serializers import RichTextSerializer
 from django.conf import settings
 from django.db import models
+from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
 from modelcluster.fields import ParentalKey
 from wagtail.admin.panels import (
@@ -53,6 +54,20 @@ class KeyStage(models.Model):
         unique=True,
     )
 
+    stage = models.PositiveSmallIntegerField(
+        verbose_name=_("stage"),
+        help_text=_("Numeric key stage value, e.g. 2, 3, 4."),
+        null=True,
+        blank=True,
+    )
+
+    age_range = models.CharField(
+        max_length=64,
+        verbose_name=_("age range"),
+        help_text=_("Age range text, e.g. 5-7 or 7-11."),
+        blank=True,
+    )
+
     slug = models.SlugField(
         max_length=255,
         verbose_name=_("slug"),
@@ -63,8 +78,26 @@ class KeyStage(models.Model):
         verbose_name = _("Key stage")
         verbose_name_plural = _("Key stages")
 
+    @cached_property
+    def public_key_stage(self):
+        if self.stage is None:
+            return self.name
+        return f"Key stage {self.stage}"
+
+    @cached_property
+    def short_key_stage(self):
+        if self.stage is None:
+            return self.name
+        return f"KS{self.stage}"
+
+    @cached_property
+    def public_age_range(self):
+        if not self.age_range:
+            return ""
+        return f"Ages {self.age_range}"
+
     def __str__(self):
-        return self.name
+        return self.public_key_stage
 
 
 class TimePeriod(models.Model):
@@ -73,12 +106,25 @@ class TimePeriod(models.Model):
     name = models.CharField(
         max_length=255,
         verbose_name=_("name"),
+        unique=True,
     )
 
     slug = models.SlugField(
         max_length=255,
         verbose_name=_("slug"),
         unique=True,
+    )
+
+    date_from = models.DateField(
+        verbose_name=_("date from"),
+        null=True,
+        blank=True,
+    )
+
+    date_to = models.DateField(
+        verbose_name=_("date to"),
+        null=True,
+        blank=True,
     )
 
     class Meta:
@@ -95,6 +141,7 @@ class Theme(models.Model):
     name = models.CharField(
         max_length=255,
         verbose_name=_("name"),
+        unique=True,
     )
 
     slug = models.SlugField(
@@ -109,6 +156,102 @@ class Theme(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class BaseKeyStageTag(Orderable):
+    key_stage = models.ForeignKey(
+        "education.KeyStage",
+        on_delete=models.CASCADE,
+        related_name="+",
+        verbose_name=_("key stage"),
+    )
+
+    panels = [
+        FieldPanel("key_stage"),
+    ]
+
+    class Meta:
+        abstract = True
+
+
+class TeachingResourcePageKeyStageTag(BaseKeyStageTag):
+    page = ParentalKey(
+        "education.TeachingResourcePage",
+        on_delete=models.CASCADE,
+        related_name="education_keystage_tags",
+    )
+
+
+class BaseTimePeriodTag(Orderable):
+    time_period = models.ForeignKey(
+        "education.TimePeriod",
+        on_delete=models.CASCADE,
+        related_name="+",
+        verbose_name=_("time period"),
+    )
+
+    panels = [
+        FieldPanel("time_period"),
+    ]
+
+    class Meta:
+        abstract = True
+
+
+class TeachingResourcePageTimePeriodTag(BaseTimePeriodTag):
+    page = ParentalKey(
+        "education.TeachingResourcePage",
+        on_delete=models.CASCADE,
+        related_name="education_time_period_tags",
+    )
+
+
+class BaseThemeTag(Orderable):
+    theme = models.ForeignKey(
+        "education.Theme",
+        on_delete=models.CASCADE,
+        related_name="+",
+        verbose_name=_("theme"),
+    )
+
+    panels = [
+        FieldPanel("theme"),
+    ]
+
+    class Meta:
+        abstract = True
+
+
+class TeachingResourcePageThemeTag(BaseThemeTag):
+    page = ParentalKey(
+        "education.TeachingResourcePage",
+        on_delete=models.CASCADE,
+        related_name="education_theme_tags",
+    )
+
+
+class EducationSessionPageKeyStageTag(BaseKeyStageTag):
+    page = ParentalKey(
+        "education.EducationSessionPage",
+        on_delete=models.CASCADE,
+        related_name="education_keystage_tags",
+    )
+
+
+class EducationSessionPageTimePeriodTag(BaseTimePeriodTag):
+    page = ParentalKey(
+        "education.EducationSessionPage",
+        on_delete=models.CASCADE,
+        related_name="education_time_period_tags",
+    )
+
+
+class EducationSessionPageThemeTag(BaseThemeTag):
+    page = ParentalKey(
+        "education.EducationSessionPage",
+        on_delete=models.CASCADE,
+        related_name="education_theme_tags",
+    )
 
 
 class Source(Orderable):
@@ -300,32 +443,32 @@ class TeachingResourcePage(
         max_length=160,
     )
 
-    key_stage = models.ForeignKey(
-        "education.KeyStage",
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="+",
-        verbose_name=_("key stage"),
-    )
+    @cached_property
+    def key_stages(self):
+        return [tag.key_stage for tag in self.education_keystage_tags.select_related("key_stage")]
 
-    time_period = models.ForeignKey(
-        "education.TimePeriod",
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="+",
-        verbose_name=_("time period"),
-    )
+    @cached_property
+    def time_periods(self):
+        return [
+            tag.time_period
+            for tag in self.education_time_period_tags.select_related("time_period")
+        ]
 
-    theme = models.ForeignKey(
-        "education.Theme",
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="+",
-        verbose_name=_("theme"),
-    )
+    @cached_property
+    def themes(self):
+        return [tag.theme for tag in self.education_theme_tags.select_related("theme")]
+
+    @cached_property
+    def key_stage(self):
+        return self.key_stages[0] if self.key_stages else None
+
+    @cached_property
+    def time_period(self):
+        return self.time_periods[0] if self.time_periods else None
+
+    @cached_property
+    def theme(self):
+        return self.themes[0] if self.themes else None
 
     # Body
     sources_title = models.CharField(
@@ -456,9 +599,21 @@ class TeachingResourcePage(
         BasePageWithRequiredIntro.promote_panels
         + PublishedDateMixin.promote_panels
         + [
-            FieldPanel("key_stage"),
-            FieldPanel("time_period"),
-            FieldPanel("theme"),
+            InlinePanel(
+                "education_keystage_tags",
+                label=_("Key stage"),
+                heading=_("Key stages"),
+            ),
+            InlinePanel(
+                "education_time_period_tags",
+                label=_("Time period"),
+                heading=_("Time periods"),
+            ),
+            InlinePanel(
+                "education_theme_tags",
+                label=_("Theme"),
+                heading=_("Themes"),
+            ),
         ]
     )
 
@@ -468,6 +623,9 @@ class TeachingResourcePage(
         APIField("key_stage", serializer=KeyStageSerializer()),
         APIField("time_period", serializer=TimePeriodSerializer()),
         APIField("theme", serializer=ThemeSerializer()),
+        APIField("key_stages", serializer=KeyStageSerializer(many=True)),
+        APIField("time_periods", serializer=TimePeriodSerializer(many=True)),
+        APIField("themes", serializer=ThemeSerializer(many=True)),
         APIField("sources_title"),
         APIField("sources_introduction", serializer=RichTextSerializer()),
         APIField("teachers_notes"),
@@ -516,32 +674,32 @@ class EducationSessionPage(
         "education.EducationSessionsListingPage",
     ]
 
-    key_stage = models.ForeignKey(
-        "education.KeyStage",
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="+",
-        verbose_name=_("key stage"),
-    )
+    @cached_property
+    def key_stages(self):
+        return [tag.key_stage for tag in self.education_keystage_tags.select_related("key_stage")]
 
-    time_period = models.ForeignKey(
-        "education.TimePeriod",
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="+",
-        verbose_name=_("time period"),
-    )
+    @cached_property
+    def time_periods(self):
+        return [
+            tag.time_period
+            for tag in self.education_time_period_tags.select_related("time_period")
+        ]
 
-    theme = models.ForeignKey(
-        "education.Theme",
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="+",
-        verbose_name=_("theme"),
-    )
+    @cached_property
+    def themes(self):
+        return [tag.theme for tag in self.education_theme_tags.select_related("theme")]
+
+    @cached_property
+    def key_stage(self):
+        return self.key_stages[0] if self.key_stages else None
+
+    @cached_property
+    def time_period(self):
+        return self.time_periods[0] if self.time_periods else None
+
+    @cached_property
+    def theme(self):
+        return self.themes[0] if self.themes else None
 
     # Page title* - default
 
@@ -899,9 +1057,6 @@ class EducationSessionPage(
                     FieldPanel("session_highlights"),
                 ]
             ),
-            FieldPanel("key_stage"),
-            FieldPanel("time_period"),
-            FieldPanel("theme"),
             InlinePanel(
                 "related_education_sessions",
                 heading=_("More education sessions"),
@@ -916,9 +1071,21 @@ class EducationSessionPage(
         BasePageWithRequiredIntro.promote_panels
         + PublishedDateMixin.promote_panels
         + [
-            FieldPanel("key_stage"),
-            FieldPanel("time_period"),
-            FieldPanel("theme"),
+            InlinePanel(
+                "education_keystage_tags",
+                label=_("Key stage"),
+                heading=_("Key stages"),
+            ),
+            InlinePanel(
+                "education_time_period_tags",
+                label=_("Time period"),
+                heading=_("Time periods"),
+            ),
+            InlinePanel(
+                "education_theme_tags",
+                label=_("Theme"),
+                heading=_("Themes"),
+            ),
         ]
     )
 
@@ -926,4 +1093,7 @@ class EducationSessionPage(
         APIField("key_stage", serializer=KeyStageSerializer()),
         APIField("time_period", serializer=TimePeriodSerializer()),
         APIField("theme", serializer=ThemeSerializer()),
+        APIField("key_stages", serializer=KeyStageSerializer(many=True)),
+        APIField("time_periods", serializer=TimePeriodSerializer(many=True)),
+        APIField("themes", serializer=ThemeSerializer(many=True)),
     ]
