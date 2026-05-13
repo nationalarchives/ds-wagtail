@@ -66,7 +66,7 @@ class TreeExplorerTests(TestCase):
         GroupPagePermission.objects.create(
             group=editors_group,
             page=cls.allowed_index,
-            permission_type="edit",
+            permission_type="change",
         )
 
     def setUp(self):
