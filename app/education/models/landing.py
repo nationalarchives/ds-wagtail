@@ -16,7 +16,8 @@ from wagtail.api import APIField
 from wagtail.models import Orderable
 
 from ..serializers import EducationReadMoreLinkSerializer
-from .details import EducationSessionPage, TeachingResourcePage
+from .resources import TeachingResourcePage
+from .sessions import EducationSessionPage
 
 
 class EducationPage(BasePageWithRequiredIntro):

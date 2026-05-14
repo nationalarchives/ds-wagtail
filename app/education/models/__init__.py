@@ -1,12 +1,10 @@
-from .details import (
-    EducationSessionPage,
-    TeachingResourcePage,
-)
 from .landing import EducationPage
 from .listings import (
     EducationSessionsListingPage,
     TeachingResourcesListingPage,
 )
+from .resources import TeachingResourcePage
+from .sessions import EducationSessionPage
 
 __all__ = [
     "EducationPage",
