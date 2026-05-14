@@ -186,13 +186,8 @@ class Source(Orderable):
     )
 
     # Source description
-    source_description = StreamField(
-        [
-            (
-                "source_description",
-                APIRichTextBlock(features=settings.RESTRICTED_RICH_TEXT_FEATURES),
-            )
-        ],
+    source_description = RichTextField(
+        features=settings.RESTRICTED_RICH_TEXT_FEATURES,
         verbose_name=_("source description"),
         help_text=_(
             "An optional free text field to add in a fuller description of the source."
@@ -200,6 +195,7 @@ class Source(Orderable):
         blank=True,
         null=True,
     )
+
 
     # Source questions
     source_question = StreamField(
