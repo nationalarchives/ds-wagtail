@@ -1048,12 +1048,12 @@ class ExhibitionPage(
         Overrides the type_label method from BasePage, to return the correct
         type label for the exhibition page.
         """
-        if cls.start_date:
-            if cls.start_date > timezone.now().date():
-                return "Upcoming exhibition"
-        if cls.end_date:
-            if cls.end_date < timezone.now().date():
-                return "Past exhibition"
+        today = timezone.now().date()
+
+        if cls.start_date and cls.start_date > today:
+            return "Upcoming exhibition"
+        if cls.end_date and cls.end_date < today:
+            return "Past exhibition"
         return "Exhibition"
 
     @cached_property
