@@ -30,14 +30,15 @@ THEMES = [
     ("significant-people-places-and-events", "Significant people, places and events"),
 ]
 
+# Tuple: (slug, name, date_from, date_to, available_for_resources)
 TIME_PERIODS = [
-    ("early-civilisations-pre-900", "Early civilisations (pre 900)", None, date(900, 1, 1)),
-    ("medieval-900-1485", "Medieval (900-1485)", date(900, 1, 1), date(1485, 12, 31)),
-    ("early-modern-1485-1750", "Early modern (1485-1750)", date(1485, 1, 1), date(1750, 12, 31)),
-    ("industrial-revolution-1750-1901", "Industrial revolution (1750-1901)", date(1750, 1, 1), date(1901, 12, 31)),
-    ("early-twentieth-century-1901-1945", "Early Twentieth Century (1901-1945)", date(1901, 1, 1), date(1945, 12, 31)),
-    ("post-war-and-modern-1945-present", "Post-War and modern (1945- present)", date(1945, 1, 1), None),
-    ("cross-period", "Cross period", None, None),
+    ("early-civilisations-pre-900", "Early civilisations (pre 900)", None, date(900, 1, 1), False),
+    ("medieval-900-1485", "Medieval (900-1485)", date(900, 1, 1), date(1485, 12, 31), True),
+    ("early-modern-1485-1750", "Early modern (1485-1750)", date(1485, 1, 1), date(1750, 12, 31), True),
+    ("industrial-revolution-1750-1901", "Industrial revolution (1750-1901)", date(1750, 1, 1), date(1901, 12, 31), True),
+    ("early-twentieth-century-1901-1945", "Early Twentieth Century (1901-1945)", date(1901, 1, 1), date(1945, 12, 31), True),
+    ("post-war-and-modern-1945-present", "Post-War and modern (1945- present)", date(1945, 1, 1), None, True),
+    ("cross-period", "Cross period", None, None, True),
 ]
 
 
@@ -74,7 +75,7 @@ def seed_time_periods(apps, schema_editor):
     TimePeriod = apps.get_model("education", "TimePeriod")
     time_period_field_names = {field.name for field in TimePeriod._meta.fields}
 
-    for slug, name, date_from, date_to in TIME_PERIODS:
+    for slug, name, date_from, date_to, available_for_resources in TIME_PERIODS:
         defaults = {"name": name}
 
         if "date_from" in time_period_field_names:
@@ -82,6 +83,9 @@ def seed_time_periods(apps, schema_editor):
 
         if "date_to" in time_period_field_names:
             defaults["date_to"] = date_to
+
+        if "available_for_resources" in time_period_field_names:
+            defaults["available_for_resources"] = available_for_resources
 
         TimePeriod.objects.update_or_create(
             slug=slug,

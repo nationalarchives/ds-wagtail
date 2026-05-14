@@ -127,6 +127,12 @@ class TimePeriod(models.Model):
         blank=True,
     )
 
+    available_for_resources = models.BooleanField(
+        default=True,
+        verbose_name=_("available for resources"),
+        help_text=_("Whether this time period can be tagged on teaching resources."),
+    )
+
     class Meta:
         verbose_name = _("Time period")
         verbose_name_plural = _("Time periods")
@@ -203,6 +209,14 @@ class TeachingResourcePageTimePeriodTag(BaseTimePeriodTag):
         "education.TeachingResourcePage",
         on_delete=models.CASCADE,
         related_name="education_time_period_tags",
+    )
+
+    time_period = models.ForeignKey(
+        "education.TimePeriod",
+        on_delete=models.CASCADE,
+        related_name="+",
+        verbose_name=_("time period"),
+        limit_choices_to={"available_for_resources": True},
     )
 
 
