@@ -4,6 +4,7 @@ from app.core.blocks.image import (
 )
 from app.core.blocks.paragraph import APIRichTextBlock
 from app.core.blocks.quote import QuoteBlock
+from app.core.blocks import InsetTextBlock
 from app.core.models import (
     BasePageWithRequiredIntro,
     PublishedDateMixin,
@@ -37,7 +38,6 @@ from .details import (
 
 # TODO: sort panel order on promote tabs
 
-
 class EducationSessionPageKeyStageTag(BaseKeyStageTag):
     page = ParentalKey(
         "education.EducationSessionPage",
@@ -61,6 +61,83 @@ class EducationSessionPageThemeTag(BaseThemeTag):
         related_name="education_theme_tags",
     )
 
+class SessionLocation(Orderable):
+    """Locations where an education session can be offered"""
+    
+    page = ParentalKey(
+        "education.EducationSessionPage",
+        on_delete=models.CASCADE,
+        related_name="session_locations",
+    )
+
+    at_tna = models.BooleanField(
+        default=False,
+        verbose_name=_("at The National Archives"),
+        help_text=_("Check if this venue is at The National Archives."),
+    )
+
+    online = models.BooleanField(
+        default=False,
+        verbose_name=_("online venue"),
+        help_text=_("Check if this is an online venue."),
+    )
+
+    at_your_school = models.BooleanField(
+        default=False,
+        verbose_name=_("At your school"),
+        help_text=_("Check if this is at a school."),
+    )
+
+    location_name = models.CharField(
+        max_length=255,
+        verbose_name=_("location name"),
+        help_text=_("Venue name"),
+    )
+    
+    address_line_1 = models.CharField(
+        max_length=255,
+        verbose_name=_("address line 1"),
+        blank=True,
+    )
+    
+    address_line_2 = models.CharField(
+        max_length=255,
+        verbose_name=_("address line 2"),
+        blank=True,
+    )
+    
+    postcode = models.CharField(
+        max_length=20,
+        verbose_name=_("postcode"),
+        blank=True,
+    )
+
+
+    
+    duration = models.CharField(
+        max_length=160,
+        verbose_name=_("duration"),
+        help_text=_("e.g. '1 hour', '2 hours', '1 to 2 hours'"),
+        blank=True,
+    )
+    
+    panels = [
+        FieldPanel("at_tna"),
+        FieldPanel("online"),
+        FieldPanel("at_your_school"),
+        FieldPanel("location_name"),
+        FieldPanel("address_line_1"),
+        FieldPanel("address_line_2"),
+        FieldPanel("postcode"),
+        FieldPanel("duration"),
+    ]
+    
+    class Meta:
+        verbose_name = _("session location")
+        ordering = ["sort_order"]
+    
+    def __str__(self):
+        return self.location_name
 
 # TODO: make this more generic? This is lifted from EducationReadMoreLink just as PoC and I don't like that
 class RelatedEducationSessions(Orderable):
@@ -97,6 +174,14 @@ class EducationSessionPage(
     parent_page_types = [
         "education.EducationSessionsListingPage",
     ]
+
+
+    class SessionRegions(models.TextChoices):
+        SOUTH_EAST_LONDON = "south_east_london", "South East and London"
+        SOUTH_WEST = "south_west", "South West"
+        MIDLANDS = "midlands", "Midlands"
+        NORTH_EAST = "north_east", "North East"
+        NORTH_WEST = "north_west", "North West"
 
     @cached_property
     def key_stages(self):
@@ -142,6 +227,7 @@ class EducationSessionPage(
     session_start_date = models.DateField(
         verbose_name=_("start date"),
         null=True,
+        blank=True,
         help_text=_(
             "If neither start nor end date is added this will default to 'All Year'"
         ),
@@ -150,36 +236,11 @@ class EducationSessionPage(
     session_end_date = models.DateField(
         verbose_name=_("end date"),
         null=True,
+        blank=True,
         help_text=_(
             "If neither start nor end date is added this will default to 'All Year'"
         ),
     )
-
-    # Optional field - Not all sessions have a specific date/dates
-
-    # TODO: Default to ‘All year' if no start and end date is added.
-    # [tick box? date optional?]
-
-    # or
-
-    # pick a start and end date from a date picker.
-
-    # startDate - Schema.org Property
-
-    # endDate - Schema.org Property
-
-    # TODO:
-    # Key stage
-
-    # Pull from metadata
-
-    # snippets? hard coded? models?
-
-    # Time period
-
-    # Pull from metadata
-
-    # Theme
 
     # Pull from metadata
 
@@ -196,10 +257,13 @@ class EducationSessionPage(
 
     # price - Schema.org Property
 
-    session_price = None  # Optional float
+    session_price = models.FloatField(
+        default=0, 
+        verbose_name='session price'
+    )
 
-    # TOFO:Add validation
-    # or is this just a preferred currency format
+    # TOFO:Add validation, detail conditionally required
+
     session_price_detail = models.CharField(  # TODO- conditionally required,
         verbose_name=_("session price detail"),
         help_text=_("An explanation of the price."),
@@ -209,7 +273,7 @@ class EducationSessionPage(
 
     # Location*
 
-    session_location = None
+    # session_location = 
     # write migration to seed choices? Maybe not, these could change a lot given recent talks?
 
     # Ability to add one or more locations to the session
@@ -245,58 +309,30 @@ class EducationSessionPage(
 
     # Duration [free text}
 
-    session_location_duration = models.CharField(
-        verbose_name=_("session duration"),
-        help_text=_("A clear description of the session duration."),
-        blank=True,
-        max_length=160,
-    )
+    # session_duration = models.CharField(
+    #     verbose_name=_("session duration"),
+    #     help_text=_("A clear description of the session duration."),
+    #     blank=True,
+    #     max_length=160,
+    # )
 
     # Region
-    # [Regions:
-    # South East and London
-    # South West
-    # Midlands
-    # North East
-    # North West ]
+    session_regions = models.CharField(
+        max_length=50,
+        choices=SessionRegions.choices,
+        verbose_name=_("Regions"),
+        help_text=_("The regions where the session is offered."),
+        blank=True,
+        null=True,
+    )
 
-    session_regions = None
-
-    # PostalAddress - Schema.org Type (postalCode)
-    session_postal_address = None
     # Recommended for*
 
     # Key stage link
 
     # Pull from Key Stage metadata
-    session_reccomended_for = None  # required
-
-    # Duration
-
-    # How long each session is. This will vary depending on location so will pull info from the location info above.
-
-    # Shows in front end in format of:
-
-    # At [venue name] – [duration]
-
-    # e.g. Online – 1 hour
-
-    # At The National Archives – 2 hours
-
-    # At The Discovery Museum – 1 hour
-
-    # At your school – 1 to 2 hours
-
-    # Location text:
-    # either ‘online’ 'At the National Archives, or Venue Name from location info
-
-    # Duration text: duration from location info (see above)
-
-    session_duration = None
 
     # Booking link
-
-    # Link to book tickets. In most cases the same Eventbrite link, but some will have their own specific link
 
     session_booking_link = models.URLField(
         null=True,
@@ -304,10 +340,6 @@ class EducationSessionPage(
         help_text="Link to booking page",
         verbose_name="Booking link",
     )
-
-    # On front end, text will say ‘Book now’
-
-    # Add link
 
     # ----------Event section
 
@@ -361,15 +393,26 @@ class EducationSessionPage(
         blank=True,
     )
     # - Inset text TODO: clarify this for better naming but for now
-    inset_text = RichTextField(
-        features=["bold", "italic", "link", "ul"],
-        verbose_name=_("inset text"),
-        help_text=_(
-            "Inset text - TODO ask for better decsription of this? where it sits etc"
-        ),
+    inset_text = StreamField(
+        [
+            (
+                "inset_text",
+                InsetTextBlock(
+                    features=["bold", "italic", "link", "ul"],
+                    verbose_name=_("inset text"),
+                    help_text=_(
+                        "Inset text - TODO ask for better decsription of this? where it sits etc"
+                    ),
+                    blank=True,
+                    null=True,
+                )
+            )
+        ],
         blank=True,
-        null=True,
+        null=True
     )
+
+
 
     # Connections to the curriculum - not the same as in resources? but assuming they're repeatable?
 
@@ -383,7 +426,7 @@ class EducationSessionPage(
                 APIRichTextBlock(features=settings.RESTRICTED_RICH_TEXT_FEATURES),
             )
         ],
-        verbose_name=_("source description"),
+        verbose_name=_("curriculum connection description"),
         help_text=_(
             "An optional free text field to add in a fuller description of the source."
         ),
@@ -422,7 +465,7 @@ class EducationSessionPage(
     # More education sessions  - handled by frontend? use cached property to get them from taxonomies?
     # then allow override using the selected pages from related_education_sessions via RelatedEducationSessions
 
-    # TODO: think about adding key details tab ala /services/ds-wagtail/app/whatson/models/details.py: for key details bar lol
+    # TODO: think about adding key details tab ala /services/ds-wagtail/app/whatson/models/details.py: for key details bar
 
     #     edit_handler = TabbedInterface(
     #         [
@@ -446,22 +489,28 @@ class EducationSessionPage(
                             # FieldPanel("session_price"), #make this multifield panel?
                             MultiFieldPanel(
                                 [
+                                    FieldPanel("session_price"),
                                     FieldPanel("session_price_detail"),
                                 ],
                                 heading=_("Session price"),
                             ),
-                            MultiFieldPanel(
-                                [  # TODO: sort this out - location and duration linked
-                                    # does this need to be multifield? probs not look at spec to double chec no other firleds
-                                    FieldPanel("session_location_duration"),
-                                ],
-                                heading=_("Session location"),
+                            InlinePanel(
+                                "session_locations",
+                                label=_("Location"),
+                                heading=_("Session locations"),
+                                min_num=1,
                             ),
-                            # FieldPanel("session_reccomended_for"),
-                            # FieldPanel("session_duration"),
+                            # MultiFieldPanel(
+                            #     [  # TODO: sort this out - location and duration linked
+                            #         # does this need to be multifield? probs not look at spec to double chec no other firleds
+                            #         # FieldPanel("session_location"),
+                            #         # FieldPanel("session_duration"),
+                            #         # FieldPanel("session_regions"),
+                            #     ],
+                            #     heading=_("Session location"),
+                            # ),
                             FieldPanel("session_booking_link"),
                         ],
-                        heading=_("Session description"),
                     ),
                     # FieldPanel("curriculum_connection_description"),
                     # FieldPanel("session_highlights"),
