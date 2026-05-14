@@ -78,6 +78,15 @@ class KeyStage(models.Model):
         verbose_name = _("Key stage")
         verbose_name_plural = _("Key stages")
 
+    @property
+    def display_name(self):
+        if self.stage and self.age_range:
+            return f"Key Stage {self.stage} (ages {self.age_range})"
+        elif self.stage:
+            return f"Key Stage {self.stage}"
+        else:
+            return self.name
+
     @cached_property
     def public_key_stage(self):
         if self.stage is None:
@@ -97,7 +106,7 @@ class KeyStage(models.Model):
         return f"Ages {self.age_range}"
 
     def __str__(self):
-        return self.public_key_stage
+        return self.display_name
 
 
 class TimePeriod(models.Model):
