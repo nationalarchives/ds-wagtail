@@ -196,7 +196,6 @@ class Source(Orderable):
         null=True,
     )
 
-
     # Source questions
     source_question = StreamField(
         QuestionBlock(
