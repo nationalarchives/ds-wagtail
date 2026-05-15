@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
@@ -77,3 +78,31 @@ class RelatedPageLinkBase(Orderable):
     class Meta:
         abstract = True
         ordering = ["sort_order"]
+
+
+class TagDuplicateCheckMixin:
+    """Mixin to validate that the same tag isn't added twice to a page."""
+
+    #These will be overridden by subclass
+    FK_FIELD_NAME = None
+    FIELD_LABEL = None
+
+    def clean(self):
+        super().clean()
+        if self.FK_FIELD_NAME and getattr(self, f"{self.FK_FIELD_NAME}_id"):
+            fk_value = getattr(self, self.FK_FIELD_NAME)
+            duplicate = (
+                self.__class__.objects.filter(
+                    page=self.page, **{self.FK_FIELD_NAME: fk_value}
+                )
+                .exclude(pk=self.pk)
+                .exists()
+            )
+            if duplicate:
+                raise ValidationError(
+                    {
+                        self.FK_FIELD_NAME: _(
+                            "This {label} has already been added."
+                        ).format(label=self.FIELD_LABEL)
+                    }
+                )

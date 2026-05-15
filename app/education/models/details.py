@@ -1,9 +1,10 @@
-from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
 from wagtail.admin.panels import FieldPanel
 from wagtail.models import Orderable
+
+from .mixins import TagDuplicateCheckMixin
 
 # TODO serializers and API
 
@@ -138,7 +139,10 @@ class Theme(models.Model):
         return self.name
 
 
-class BaseKeyStageTag(Orderable):
+class BaseKeyStageTag(TagDuplicateCheckMixin, Orderable):
+    FK_FIELD_NAME = "key_stage"
+    FIELD_LABEL = _("key stage")
+
     key_stage = models.ForeignKey(
         "education.KeyStage",
         on_delete=models.CASCADE,
@@ -150,24 +154,14 @@ class BaseKeyStageTag(Orderable):
         FieldPanel("key_stage"),
     ]
 
-    def clean(self):
-        super().clean()
-        if self.key_stage_id:
-            duplicate = (
-                self.__class__.objects.filter(page=self.page, key_stage=self.key_stage)
-                .exclude(pk=self.pk)
-                .exists()
-            )
-            if duplicate:
-                raise ValidationError(
-                    {"key_stage": _("This key stage has already been added.")}
-                )
-
     class Meta:
         abstract = True
 
 
-class BaseTimePeriodTag(Orderable):
+class BaseTimePeriodTag(TagDuplicateCheckMixin, Orderable):
+    FK_FIELD_NAME = "time_period"
+    FIELD_LABEL = _("time period")
+
     time_period = models.ForeignKey(
         "education.TimePeriod",
         on_delete=models.CASCADE,
@@ -179,26 +173,14 @@ class BaseTimePeriodTag(Orderable):
         FieldPanel("time_period"),
     ]
 
-    def clean(self):
-        super().clean()
-        if self.time_period_id:
-            duplicate = (
-                self.__class__.objects.filter(
-                    page=self.page, time_period=self.time_period
-                )
-                .exclude(pk=self.pk)
-                .exists()
-            )
-            if duplicate:
-                raise ValidationError(
-                    {"time_period": _("This time period has already been added.")}
-                )
-
     class Meta:
         abstract = True
 
 
-class BaseThemeTag(Orderable):
+class BaseThemeTag(TagDuplicateCheckMixin, Orderable):
+    FK_FIELD_NAME = "theme"
+    FIELD_LABEL = _("theme")
+
     theme = models.ForeignKey(
         "education.Theme",
         on_delete=models.CASCADE,
@@ -209,19 +191,6 @@ class BaseThemeTag(Orderable):
     panels = [
         FieldPanel("theme"),
     ]
-
-    def clean(self):
-        super().clean()
-        if self.theme_id:
-            duplicate = (
-                self.__class__.objects.filter(page=self.page, theme=self.theme)
-                .exclude(pk=self.pk)
-                .exists()
-            )
-            if duplicate:
-                raise ValidationError(
-                    {"theme": _("This theme has already been added.")}
-                )
 
     class Meta:
         abstract = True
