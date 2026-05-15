@@ -13,9 +13,9 @@ from wagtail.admin.panels import (
     PageChooserPanel,
 )
 from wagtail.api import APIField
-from wagtail.models import Orderable
 
 from ..serializers import EducationReadMoreLinkSerializer
+from .mixins import RelatedPageLinkBase
 from .resources import TeachingResourcePage
 from .sessions import EducationSessionPage
 
@@ -191,7 +191,7 @@ class EducationPage(BasePageWithRequiredIntro):
         verbose_name = _("Education landing page")
 
 
-class EducationReadMoreLink(Orderable):
+class EducationReadMoreLink(RelatedPageLinkBase):
     """Navigation links for the Read more section"""
 
     page = ParentalKey(
@@ -200,18 +200,7 @@ class EducationReadMoreLink(Orderable):
         related_name="education_read_more_links",
     )
 
-    selected_page = models.ForeignKey(
-        "wagtailcore.Page",
-        on_delete=models.CASCADE,
-        related_name="+",
-        verbose_name=_("selected page"),
-        help_text=_("Navigation to other sections within Education"),
-    )
-
-    panels = [
-        PageChooserPanel("selected_page"),
-    ]
+    panels = RelatedPageLinkBase.panels
 
     class Meta:
         verbose_name = _("read more link")
-        ordering = ["sort_order"]

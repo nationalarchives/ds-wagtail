@@ -1,5 +1,8 @@
+from django.db import models
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
+from wagtail.admin.panels import PageChooserPanel
+from wagtail.models import Orderable
 from wagtail.admin.panels import InlinePanel
 
 
@@ -54,3 +57,23 @@ class EducationTaxonomyMixin:
                 heading=_("Themes"),
             ),
         ]
+
+
+class RelatedPageLinkBase(Orderable):
+    """Reusable orderable link model for selecting related pages."""
+
+    selected_page = models.ForeignKey(
+        "wagtailcore.Page",
+        on_delete=models.CASCADE,
+        related_name="+",
+        verbose_name=_("selected page"),
+        help_text=_("Navigation to a related page"),
+    )
+
+    panels = [
+        PageChooserPanel("selected_page"),
+    ]
+
+    class Meta:
+        abstract = True
+        ordering = ["sort_order"]

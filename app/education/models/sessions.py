@@ -20,7 +20,6 @@ from wagtail.admin.panels import (
     FieldPanel,
     InlinePanel,
     MultiFieldPanel,
-    PageChooserPanel,
 )
 from wagtail.api import APIField
 from wagtail.fields import StreamField
@@ -36,7 +35,7 @@ from .details import (
     BaseThemeTag,
     BaseTimePeriodTag,
 )
-from .mixins import EducationTaxonomyMixin
+from .mixins import EducationTaxonomyMixin, RelatedPageLinkBase
 
 # TODO: sort panel order on promote tabs
 
@@ -206,8 +205,7 @@ class SessionLocation(Orderable):
             return self.display_name
 
 
-# TODO: make this more generic? This is lifted from EducationReadMoreLink just as PoC and I don't like that
-class RelatedEducationSessions(Orderable):
+class RelatedEducationSessions(RelatedPageLinkBase):
     """Links to take users to related educaiton sessions"""
 
     page = ParentalKey(
@@ -216,21 +214,10 @@ class RelatedEducationSessions(Orderable):
         related_name="related_education_sessions",
     )
 
-    selected_page = models.ForeignKey(
-        "wagtailcore.Page",
-        on_delete=models.CASCADE,
-        related_name="+",
-        verbose_name=_("selected page"),
-        help_text=_("Navigation to other Education sessions"),
-    )
-
-    panels = [
-        PageChooserPanel("selected_page"),
-    ]
+    panels = RelatedPageLinkBase.panels
 
     class Meta:
         verbose_name = _("related education session")
-        ordering = ["sort_order"]
 
 
 class EducationSessionPage(
@@ -244,17 +231,6 @@ class EducationSessionPage(
     parent_page_types = [
         "education.EducationSessionsListingPage",
     ]
-
-    # Page title* - default
-
-    # Hero image* - mixin
-
-    # Introductory text* -  mixin
-
-    # Rich text formatting (bold, italics, links)
-
-    # Start date  and End date
-    # hlep taxt placeholder, should be put at start of panel if so
 
     session_start_date = models.DateField(
         verbose_name=_("start date"),
@@ -381,20 +357,6 @@ class EducationSessionPage(
 
     # Contact us - contact us component?
 
-    # Area where users can find out where to get support with their booking
-
-    # Will be the same in most cases but some will have different contact info.
-
-    # Make them fill it in every time. Copy the Contact us component
-
-    # Text
-
-    # email
-
-    # phone number
-
-    # Newsletter to be handled in the frontend
-
     # More education sessions  - handled by frontend? use cached property to get them from taxonomies?
     # then allow override using the selected pages from related_education_sessions via RelatedEducationSessions
 
@@ -437,7 +399,7 @@ class EducationSessionPage(
         BasePageWithRequiredIntro.content_panels
         + RequiredHeroImageMixin.content_panels
         + [
-            FieldPanel("session_start_date"),  # TODO: default to all year
+            FieldPanel("session_start_date"),
             FieldPanel("session_end_date"),
             MultiFieldPanel(
                 [
