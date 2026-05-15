@@ -1,25 +1,5 @@
 from typing import List, Tuple, Union
 
-from app.ciim.fields import RecordField
-from app.ciim.serializers import RecordSerializer
-from app.collections.models import TopicalPageMixin
-from app.core.blocks import FeaturedCollectionBlock
-from app.core.models import (
-    BasePageWithRequiredIntro,
-    ContentWarningMixin,
-    HeroImageMixin,
-    PublishedDateMixin,
-    RequiredHeroImageMixin,
-)
-from app.core.serializers import (
-    DefaultPageSerializer,
-    DetailedImageSerializer,
-    ImageSerializer,
-    RichTextSerializer,
-    TaggableSerializer,
-)
-from app.core.utils import skos_id_from_text
-from app.people.models import AuthorPageMixin
 from django.conf import settings
 from django.db import models
 from django.utils.functional import cached_property
@@ -40,6 +20,27 @@ from wagtail.images import get_image_model_string
 from wagtail.models import Orderable, Page
 from wagtail.search import index
 from wagtail.snippets.models import register_snippet
+
+from app.ciim.fields import RecordField
+from app.ciim.serializers import RecordSerializer
+from app.collections.models import TopicalPageMixin
+from app.core.blocks import FeaturedCollectionBlock
+from app.core.models import (
+    BasePageWithRequiredIntro,
+    ContentWarningMixin,
+    HeroImageMixin,
+    PublishedDateMixin,
+    RequiredHeroImageMixin,
+)
+from app.core.serializers import (
+    DefaultPageSerializer,
+    DetailedImageSerializer,
+    ImageSerializer,
+    RichTextSerializer,
+    TaggableSerializer,
+)
+from app.core.utils import skos_id_from_text
+from app.people.models import AuthorPageMixin
 
 from .blocks import ArticlePageStreamBlock
 
@@ -517,7 +518,6 @@ class RecordArticlePage(
     ArticleTagMixin,
     BasePageWithRequiredIntro,
 ):
-
     parent_page_types = ["articles.ArticleIndexPage"]
     subpage_types = []
 

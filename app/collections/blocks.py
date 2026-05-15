@@ -1,5 +1,6 @@
-from app.core.blocks import LargeCardLinksBlock
 from wagtail import blocks
+
+from app.core.blocks import LargeCardLinksBlock
 
 
 class ExplorerIndexPageStreamBlock(blocks.StreamBlock):

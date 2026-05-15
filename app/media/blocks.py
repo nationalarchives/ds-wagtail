@@ -1,7 +1,8 @@
-from app.core.blocks.image import APIImageChooserBlock
 from wagtail import blocks
 from wagtail.rich_text import expand_db_html
 from wagtailmedia.blocks import AbstractMediaChooserBlock
+
+from app.core.blocks.image import APIImageChooserBlock
 
 
 class MediaChooserBlock(AbstractMediaChooserBlock):

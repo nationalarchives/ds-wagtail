@@ -1,0 +1,10 @@
+extend = "/home/app/ruff.toml"
+
+extend-exclude = [
+    "migrations"
+]
+
+[lint]
+ignore = [
+    "B904"  # raise-without-from-inside-except
+]

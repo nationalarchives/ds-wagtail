@@ -1,10 +1,3 @@
-from app.alerts.models import AlertMixin
-from app.core.serializers import (
-    AliasOfSerializer,
-    ImageSerializer,
-    MourningSerializer,
-    RichTextSerializer,
-)
 from django.conf import settings
 
 # from django.core.exceptions import ValidationError
@@ -20,6 +13,14 @@ from wagtail.fields import RichTextField
 from wagtail.images import get_image_model_string
 from wagtail.models import Page
 from wagtail.search import index
+
+from app.alerts.models import AlertMixin
+from app.core.serializers import (
+    AliasOfSerializer,
+    ImageSerializer,
+    MourningSerializer,
+    RichTextSerializer,
+)
 
 from .mixins import CustomHeadlessPreviewMixin, SocialMixin
 

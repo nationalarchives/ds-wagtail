@@ -1,22 +1,5 @@
 from typing import Optional, Tuple
 
-import app.articles.models as ArticleModels
-from app.ciim.fields import RecordField
-from app.ciim.serializers import RecordSerializer
-from app.core.models import (
-    BasePage,
-    BasePageWithRequiredIntro,
-    ContentWarningMixin,
-    RequiredHeroImageMixin,
-)
-from app.core.serializers import (
-    DefaultPageSerializer,
-    DetailedImageSerializer,
-    ImageSerializer,
-    RichTextSerializer,
-    SimplePageSerializer,
-)
-from app.core.utils import skos_id_from_text
 from django.conf import settings
 from django.db import models
 from django.utils.functional import cached_property
@@ -34,6 +17,24 @@ from wagtail.fields import RichTextField, StreamField
 from wagtail.images import get_image_model_string
 from wagtail.models import Orderable, Page
 from wagtail.search import index
+
+import app.articles.models as ArticleModels
+from app.ciim.fields import RecordField
+from app.ciim.serializers import RecordSerializer
+from app.core.models import (
+    BasePage,
+    BasePageWithRequiredIntro,
+    ContentWarningMixin,
+    RequiredHeroImageMixin,
+)
+from app.core.serializers import (
+    DefaultPageSerializer,
+    DetailedImageSerializer,
+    ImageSerializer,
+    RichTextSerializer,
+    SimplePageSerializer,
+)
+from app.core.utils import skos_id_from_text
 
 from .blocks import (
     ExplorerIndexPageStreamBlock,
@@ -187,9 +188,9 @@ class ExplorerIndexPageSelectionSerializer(serializers.Serializer):
             if instance.teaser_text:
                 representation["selected_page"]["teaser_text"] = instance.teaser_text
             if instance.teaser_image:
-                representation["selected_page"][
-                    "teaser_image"
-                ] = ImageSerializer().to_representation(instance.teaser_image)
+                representation["selected_page"]["teaser_image"] = (
+                    ImageSerializer().to_representation(instance.teaser_image)
+                )
             if instance.cta_label:
                 representation["cta_label"] = instance.cta_label
             return representation

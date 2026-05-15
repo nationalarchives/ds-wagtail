@@ -30,15 +30,14 @@ class Command(BaseCommand):
             new_app_name = new_app_name[0]
             print(f"Renaming {old_app_name} to {new_app_name}, please wait...")
             cursor.execute(
-                "SELECT * FROM django_content_type " f"where app_label='{new_app_name}'"
+                f"SELECT * FROM django_content_type where app_label='{new_app_name}'"
             )
 
             has_already_been_ran = cursor.fetchone()
 
             if has_already_been_ran:
                 logger.info(
-                    "Rename has already been done, exiting without "
-                    "making any changes"
+                    "Rename has already been done, exiting without making any changes"
                 )
                 print("Nothing to rename. Exiting.")
                 return None
@@ -56,8 +55,7 @@ class Command(BaseCommand):
             models.update(apps.all_models[old_app_name])
 
             cursor.execute(
-                f"SELECT * FROM  django_content_type "
-                f"WHERE app_label='{new_app_name}'"
+                f"SELECT * FROM  django_content_type WHERE app_label='{new_app_name}'"
             )
             app_content_types = cursor.fetchall()
 
@@ -73,9 +71,7 @@ class Command(BaseCommand):
                 )
 
                 print(f"Renaming table from: {old_table_name} to: {new_table_name}.")
-                query = (
-                    f'ALTER TABLE "{old_table_name}" ' f'RENAME TO "{new_table_name}"'
-                )
+                query = f'ALTER TABLE "{old_table_name}" RENAME TO "{new_table_name}"'
 
                 try:
                     cursor.execute(query)

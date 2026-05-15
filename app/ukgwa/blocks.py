@@ -1,3 +1,6 @@
+from django.core.exceptions import ValidationError
+from wagtail import blocks
+
 from app.core.blocks import (
     CallToActionBlock,
     ContentImageBlock,
@@ -9,8 +12,6 @@ from app.core.blocks import (
     YouTubeBlock,
 )
 from app.core.blocks.links import LinkBlock
-from django.core.exceptions import ValidationError
-from wagtail import blocks
 
 
 class LinkWithDescriptionBlock(LinkBlock):

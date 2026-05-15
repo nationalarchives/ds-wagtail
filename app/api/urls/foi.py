@@ -1,7 +1,8 @@
+from wagtail.models import PageViewRestriction
+
 from app.api.urls.pages import CustomPagesAPIViewSet
 from app.core.serializers.pages import DefaultPageSerializer
 from app.foi.models import FoiRequestPage
-from wagtail.models import PageViewRestriction
 
 
 class FreedomOfInformationRequestsAPIViewSet(CustomPagesAPIViewSet):

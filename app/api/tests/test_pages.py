@@ -4,6 +4,12 @@ import re
 from datetime import datetime, timezone
 from unittest.mock import patch
 
+from django.conf import settings
+from django.core.cache import cache
+from wagtail.models import Site
+from wagtail.test.utils import WagtailPageTestCase
+from wagtail_factories import ImageFactory
+
 from app.alerts.models import Alert
 from app.api.models import APIToken
 from app.articles.factories import (
@@ -23,11 +29,6 @@ from app.home.models import MourningNotice
 from app.media.models import EtnaMedia
 from app.people.factories import PeopleIndexPageFactory, PersonPageFactory
 from app.people.models import AuthorTag, PersonRole, PersonRoleSelection
-from django.conf import settings
-from django.core.cache import cache
-from wagtail.models import Site
-from wagtail.test.utils import WagtailPageTestCase
-from wagtail_factories import ImageFactory
 
 API_URL = "/api/v2/pages/"
 

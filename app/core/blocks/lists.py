@@ -1,7 +1,8 @@
-from app.core.serializers import DefaultPageSerializer
 from django.conf import settings
 from wagtail import blocks
 from wagtail.snippets.blocks import SnippetChooserBlock
+
+from app.core.serializers import DefaultPageSerializer
 
 from .paragraph import APIRichTextBlock
 

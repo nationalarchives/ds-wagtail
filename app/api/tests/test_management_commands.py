@@ -1,9 +1,10 @@
 from io import StringIO
 
-from app.api.models import APIToken
 from django.core.management import call_command
 from django.core.management.base import CommandError
 from django.test import TestCase
+
+from app.api.models import APIToken
 
 
 class ManageAPITokenCommandCreateTests(TestCase):
