@@ -6,7 +6,7 @@ from wagtail.models import Orderable
 
 
 class EducationTaxonomyMixin:
-
+    """Reusable education taxonomy for common cached properties and panels."""
     @cached_property
     def key_stages(self):
         return [
