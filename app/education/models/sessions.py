@@ -25,6 +25,7 @@ from wagtail.api import APIField
 from wagtail.fields import StreamField
 from wagtail.models import Orderable
 
+from ..blocks import VenueDetailsBlock
 from ..serializers import (
     KeyStageSerializer,
     ThemeSerializer,
@@ -60,50 +61,6 @@ class EducationSessionPageThemeTag(BaseThemeTag):
         on_delete=models.CASCADE,
         related_name="education_theme_tags",
     )
-
-
-class VenueDetailsBlock(blocks.StructBlock):
-    venue_name = blocks.CharBlock(
-        required=False,
-        max_length=255,
-        label=_("Venue name"),
-        help_text=_("Required only when location type is Custom venue."),
-    )
-
-    class SessionRegions(models.TextChoices):
-        SOUTH_EAST_LONDON = "south_east_london", "South East and London"
-        SOUTH_WEST = "south_west", "South West"
-        MIDLANDS = "midlands", "Midlands"
-        NORTH_EAST = "north_east", "North East"
-        NORTH_WEST = "north_west", "North West"
-
-    session_regions = blocks.ChoiceBlock(
-        choices=SessionRegions.choices,
-        label=_("Regions"),
-        help_text=_("The regions where the session is offered."),
-        required=False,
-    )
-
-    address_line_1 = blocks.CharBlock(
-        required=False,
-        max_length=255,
-        label=_("Address line 1"),
-    )
-    address_line_2 = blocks.CharBlock(
-        required=False,
-        max_length=255,
-        label=_("Address line 2"),
-    )
-    postcode = blocks.CharBlock(
-        required=False,
-        max_length=20,
-        label=_("Postcode"),
-    )
-
-    class Meta:
-        icon = "home"
-        label = _("Additional venue details")
-        classname = "collapsed"
 
 
 class SessionLocation(Orderable):
