@@ -81,7 +81,7 @@ class Source(Orderable):
         related_name="sources",
     )
 
-    source_title = models.CharField(
+    title = models.CharField(
         verbose_name=_("source title"),
         help_text=_("A unique, descriptive title for the source."),
         blank=True,
@@ -89,7 +89,7 @@ class Source(Orderable):
     )
 
     # Source Media — choose one type; caption is always included
-    source_media = StreamField(
+    media = StreamField(
         [
             (
                 "source_image",
@@ -152,7 +152,7 @@ class Source(Orderable):
     )
 
     # Source link — choose internal or external
-    source_media_featured_link = StreamField(
+    media_featured_link = StreamField(
         [
             (
                 "internal_page",
@@ -186,7 +186,7 @@ class Source(Orderable):
     )
 
     # Source description
-    source_description = RichTextField(
+    description = RichTextField(
         features=settings.RESTRICTED_RICH_TEXT_FEATURES,
         verbose_name=_("source description"),
         help_text=_(
@@ -197,20 +197,20 @@ class Source(Orderable):
     )
 
     # Source questions
-    source_question = StreamField(
+    question = StreamField(
         QuestionBlock(
             verbose_name=("source question"),
-            help_text=("A series of questions relating to each source."),
+            help_text=("A series of questions relating to the source."),
         ),
         blank=True,
     )
 
     panels = [
-        FieldPanel("source_title"),
-        FieldPanel("source_media"),
-        FieldPanel("source_media_featured_link"),
-        FieldPanel("source_description"),
-        FieldPanel("source_question"),
+        FieldPanel("title"),
+        FieldPanel("media"),
+        FieldPanel("media_featured_link"),
+        FieldPanel("description"),
+        FieldPanel("question"),
     ]
 
 
