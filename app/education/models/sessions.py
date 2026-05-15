@@ -13,7 +13,6 @@ from app.core.models import (
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
-from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
 from modelcluster.fields import ParentalKey
 from wagtail import blocks
@@ -37,6 +36,7 @@ from .details import (
     BaseThemeTag,
     BaseTimePeriodTag,
 )
+from .mixins import EducationTaxonomyMixin
 
 # TODO: sort panel order on promote tabs
 
@@ -234,43 +234,16 @@ class RelatedEducationSessions(Orderable):
 
 
 class EducationSessionPage(
-    PublishedDateMixin, RequiredHeroImageMixin, BasePageWithRequiredIntro
+    EducationTaxonomyMixin,
+    PublishedDateMixin,
+    RequiredHeroImageMixin,
+    BasePageWithRequiredIntro,
 ):
     """A page to display an education session"""
 
     parent_page_types = [
         "education.EducationSessionsListingPage",
     ]
-
-    @cached_property
-    def key_stages(self):
-        return [
-            tag.key_stage
-            for tag in self.education_keystage_tags.select_related("key_stage")
-        ]
-
-    @cached_property
-    def time_periods(self):
-        return [
-            tag.time_period
-            for tag in self.education_time_period_tags.select_related("time_period")
-        ]
-
-    @cached_property
-    def themes(self):
-        return [tag.theme for tag in self.education_theme_tags.select_related("theme")]
-
-    @cached_property
-    def key_stage(self):
-        return self.key_stages[0] if self.key_stages else None
-
-    @cached_property
-    def time_period(self):
-        return self.time_periods[0] if self.time_periods else None
-
-    @cached_property
-    def theme(self):
-        return self.themes[0] if self.themes else None
 
     # Page title* - default
 
@@ -509,23 +482,7 @@ class EducationSessionPage(
     promote_panels = (
         BasePageWithRequiredIntro.promote_panels
         + PublishedDateMixin.promote_panels
-        + [
-            InlinePanel(
-                "education_keystage_tags",
-                label=_("Key stage"),
-                heading=_("Key stages"),
-            ),
-            InlinePanel(
-                "education_time_period_tags",
-                label=_("Time period"),
-                heading=_("Time periods"),
-            ),
-            InlinePanel(
-                "education_theme_tags",
-                label=_("Theme"),
-                heading=_("Themes"),
-            ),
-        ]
+        + EducationTaxonomyMixin.taxonomy_promote_panels()
     )
 
     api_fields = BasePageWithRequiredIntro.api_fields + [
