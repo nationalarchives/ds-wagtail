@@ -52,16 +52,13 @@ class JSONAPIClient:
         except HTTPError:
             if response.status_code == 400:
                 raise APIClientError("Bad request", response=response)
-            elif response.status_code == 401:
+            if response.status_code == 401:
                 raise PermissionDenied("Unauthorized request")
-            elif response.status_code == 403:
+            if response.status_code == 403:
                 raise PermissionDenied("Forbidden")
-            elif response.status_code == 404:
+            if response.status_code == 404:
                 raise Http404("Resource not found")
-            else:
-                raise Exception(
-                    f"Request failed with status code {response.status_code}"
-                )
+            raise Exception(f"Request failed with status code {response.status_code}")
         except Exception:
             raise Exception("Request failed")
         try:

@@ -40,7 +40,7 @@ class Command(BaseCommand):
                     "Rename has already been done, exiting without making any changes"
                 )
                 print("Nothing to rename. Exiting.")
-                return None
+                return
 
             cursor.execute(
                 f"UPDATE django_content_type SET app_label='{new_app_name}' "

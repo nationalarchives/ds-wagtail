@@ -108,15 +108,14 @@ class LinkItemSerializer(serializers.Serializer):
     def to_representation(self, instance):
         if instance.internal_page:
             return DefaultPageSerializer().to_representation(instance.internal_page)
-        else:
-            return {
-                "title": instance.title,
-                "teaser_image": ImageSerializer().to_representation(instance.image),
-                "teaser_text": instance.description,
-                "url": instance.url,
-                "full_url": instance.url,
-                "type_label": "External",
-            }
+        return {
+            "title": instance.title,
+            "teaser_image": ImageSerializer().to_representation(instance.image),
+            "teaser_text": instance.description,
+            "url": instance.url,
+            "full_url": instance.url,
+            "type_label": "External",
+        }
 
 
 class HubPage(HeroImageMixin, BasePageWithIntro):

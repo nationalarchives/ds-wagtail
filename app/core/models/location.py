@@ -195,9 +195,9 @@ class Location(models.Model):
     def __str__(self):
         if self.at_tna:
             return f"{self.space_name} - The National Archives"
-        elif self.online:
+        if self.online:
             return f"{self.space_name} - Online"
-        elif self.address_line_1:
+        if self.address_line_1:
             return f"{self.space_name} - {self.address_line_1}"
         return f"{self.space_name}"
 

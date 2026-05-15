@@ -459,10 +459,9 @@ class EventPage(RequiredHeroImageMixin, ContentWarningMixin, BasePageWithRequire
         if location := self.location:
             if location.online:
                 return "Online"
-            elif location.at_tna:
+            if location.at_tna:
                 return "The National Archives, Kew"
-            else:
-                return location.address_line_1 or location.space_name or "In-person"
+            return location.address_line_1 or location.space_name or "In-person"
 
     @cached_property
     def series(self):
@@ -695,10 +694,9 @@ class DisplayPage(
         if location := self.location:
             if location.online:
                 return "Online"
-            elif location.at_tna:
+            if location.at_tna:
                 return "The National Archives, Kew"
-            else:
-                return location.address_line_1 or location.space_name or "In-person"
+            return location.address_line_1 or location.space_name or "In-person"
 
     class Meta:
         verbose_name = _("display page")
@@ -1065,10 +1063,9 @@ class ExhibitionPage(
         if location := self.location:
             if location.online:
                 return "Online"
-            elif location.at_tna:
+            if location.at_tna:
                 return "The National Archives, Kew"
-            else:
-                return location.address_line_1 or location.space_name or "In-person"
+            return location.address_line_1 or location.space_name or "In-person"
 
     class Meta:
         verbose_name = _("exhibition page")

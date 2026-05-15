@@ -186,9 +186,9 @@ class BasePage(AlertMixin, SocialMixin, CustomHeadlessPreviewMixin, Page):
         else:
             url_parts = self.alias_of.get_url_parts()
 
-        if url_parts is None or url_parts[1] is None and url_parts[2] is None:
+        if url_parts is None or (url_parts[1] is None and url_parts[2] is None):
             # page is not routable
-            return
+            return None
 
         return url_parts[2]
 
@@ -207,8 +207,7 @@ class BasePage(AlertMixin, SocialMixin, CustomHeadlessPreviewMixin, Page):
         """
         if self.alias_of is None:
             return self.get_full_url()
-        else:
-            return self.alias_of.get_full_url()
+        return self.alias_of.get_full_url()
 
     @property
     def url(self):
@@ -220,8 +219,7 @@ class BasePage(AlertMixin, SocialMixin, CustomHeadlessPreviewMixin, Page):
         """
         if self.alias_of is None:
             return self.get_url()
-        else:
-            return self.alias_of.get_url()
+        return self.alias_of.get_url()
 
     page_path = property(get_page_path)
 

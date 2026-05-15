@@ -8,10 +8,10 @@ __all__ = [
     "AliasOfSerializer",
     "DateTimeSerializer",
     "DefaultPageSerializer",
-    "SimplePageSerializer",
     "DetailedImageSerializer",
     "ImageSerializer",
     "MourningSerializer",
     "RichTextSerializer",
+    "SimplePageSerializer",
     "TaggableSerializer",
 ]

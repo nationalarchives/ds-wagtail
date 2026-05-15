@@ -1,4 +1,4 @@
-from typing import List, Tuple, Union
+from typing import Union
 
 from django.conf import settings
 from django.db import models
@@ -265,7 +265,7 @@ class ArticlePage(
     @cached_property
     def similar_items(
         self,
-    ) -> Tuple[Union["ArticlePage", "FocusedArticlePage", "RecordArticlePage"], ...]:
+    ) -> tuple[Union["ArticlePage", "FocusedArticlePage", "RecordArticlePage"], ...]:
         """
         Returns a maximum of three ArticlePages that are tagged with at least
         one of the same ArticleTags. Items should be ordered by the number
@@ -296,7 +296,7 @@ class ArticlePage(
     @cached_property
     def latest_items(
         self,
-    ) -> List[Union["ArticlePage", "FocusedArticlePage", "RecordArticlePage"]]:
+    ) -> list[Union["ArticlePage", "FocusedArticlePage", "RecordArticlePage"]]:
         """
         Return the three most recently published ArticlePages,
         excluding this object.
@@ -419,7 +419,7 @@ class FocusedArticlePage(
     @cached_property
     def similar_items(
         self,
-    ) -> Tuple[Union["ArticlePage", "FocusedArticlePage", "RecordArticlePage"], ...]:
+    ) -> tuple[Union["ArticlePage", "FocusedArticlePage", "RecordArticlePage"], ...]:
         """
         Returns a maximum of three ArticlePages that are tagged with at least
         one of the same ArticleTags. Items should be ordered by the number
@@ -450,7 +450,7 @@ class FocusedArticlePage(
     @cached_property
     def latest_items(
         self,
-    ) -> List[Union["ArticlePage", "FocusedArticlePage", "RecordArticlePage"]]:
+    ) -> list[Union["ArticlePage", "FocusedArticlePage", "RecordArticlePage"]]:
         """
         Return the three most recently published ArticlePages,
         excluding this object.

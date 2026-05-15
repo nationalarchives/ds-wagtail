@@ -39,8 +39,7 @@ class LinkBlockStructValue(blocks.StructValue):
     def page_id(self):
         if page := self.get("page"):
             return page.id
-        else:
-            return None
+        return None
 
     def external_domain(self):
         if external_link := self.get("external_link"):
