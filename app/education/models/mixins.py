@@ -83,7 +83,7 @@ class RelatedPageLinkBase(Orderable):
 class TagDuplicateCheckMixin:
     """Mixin to validate that the same tag isn't added twice to a page."""
 
-    #These will be overridden by subclass
+    # These will be overridden by subclass
     FK_FIELD_NAME = None
     FIELD_LABEL = None
 
