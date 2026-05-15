@@ -37,8 +37,6 @@ from .details import (
 )
 from .mixins import EducationTaxonomyMixin, RelatedPageLinkBase
 
-# TODO: sort panel order on promote tabs
-
 
 class EducationSessionPageKeyStageTag(BaseKeyStageTag):
     page = ParentalKey(
@@ -356,9 +354,6 @@ class EducationSessionPage(
     )
 
     # Contact us - contact us component?
-
-    # More education sessions  - handled by frontend? use cached property to get them from taxonomies?
-    # then allow override using the selected pages from related_education_sessions via RelatedEducationSessions
 
     # TODO: think about adding key details tab ala /services/ds-wagtail/app/whatson/models/details.py: for key details bar
 

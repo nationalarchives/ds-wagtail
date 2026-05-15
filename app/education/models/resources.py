@@ -1,10 +1,6 @@
-import wagtail.blocks
-from app.core.blocks.image import APIImageChooserBlock
-from app.core.blocks.page_chooser import APIPageChooserBlock
 from app.core.blocks.paragraph import APIRichTextBlock
 from app.core.blocks.promoted_links import FeaturedExternalLinkBlock, FeaturedPageBlock
 from app.core.blocks.section import SubHeadingBlock
-from app.core.blocks.video import YouTubeBlock
 from app.core.models import (
     BasePageWithRequiredIntro,
     PublishedDateMixin,
@@ -26,6 +22,7 @@ from wagtail.models import Orderable
 
 from ..blocks import (
     QuestionBlock,
+    SourceFeaturedLinkBlock,
     SourceMediaBlock,
 )
 from ..serializers import (
@@ -88,61 +85,8 @@ class Source(Orderable):
         max_length=160,
     )
 
-    # Source Media — choose one type; caption is always included
     media = StreamField(
-        [
-            (
-                "source_image",
-                wagtail.blocks.StructBlock(
-                    [
-                        (
-                            "image",
-                            APIImageChooserBlock(
-                                rendition_size="max-900x900",
-                                help_text=_("An image for the source."),
-                            ),
-                        ),
-                        (
-                            "caption",
-                            APIRichTextBlock(
-                                features=["bold", "italic"],
-                                required=False,
-                                help_text=_("Caption displayed below the image."),
-                            ),
-                        ),
-                    ],
-                    label=_("Image"),
-                ),
-            ),
-            (
-                "source_media",
-                SourceMediaBlock(
-                    help_text=_("A piece of audio or video media for the source."),
-                ),
-            ),
-            (
-                "source_youtube",
-                wagtail.blocks.StructBlock(
-                    [
-                        (
-                            "youtube",
-                            YouTubeBlock(
-                                help_text=_("A YouTube video for the source."),
-                            ),
-                        ),
-                        (
-                            "caption",
-                            APIRichTextBlock(
-                                features=["bold", "italic"],
-                                required=False,
-                                help_text=_("Caption displayed below the video."),
-                            ),
-                        ),
-                    ],
-                    label=_("YouTube"),
-                ),
-            ),
-        ],
+        SourceMediaBlock(),
         verbose_name=_("source media"),
         help_text=_(
             "Choose one media type for this source. A caption can be added for each."
@@ -151,41 +95,14 @@ class Source(Orderable):
         null=True,
     )
 
-    # Source link — choose internal or external
-    media_featured_link = StreamField(
-        [
-            (
-                "internal_page",
-                APIPageChooserBlock(
-                    label=_("Internal page"),
-                    page_type="wagtailcore.Page",
-                    help_text=_("Link to a page published on the site"),
-                ),
-            ),
-            (
-                "external_link",
-                wagtail.blocks.StructBlock(
-                    [
-                        (
-                            "url",
-                            wagtail.blocks.URLBlock(
-                                help_text=_(
-                                    "Link to a resource on a 3rd party platform (e.g. mapping tool)"
-                                ),
-                            ),
-                        ),
-                    ],
-                    label=_("External link"),
-                ),
-            ),
-        ],
+    featured_link = StreamField(
+        SourceFeaturedLinkBlock(),
         verbose_name=_("source media featured link"),
         help_text=_("Choose internal or external link for this source"),
         blank=True,
         max_num=1,
     )
 
-    # Source description
     description = RichTextField(
         features=settings.RESTRICTED_RICH_TEXT_FEATURES,
         verbose_name=_("source description"),
@@ -196,7 +113,6 @@ class Source(Orderable):
         null=True,
     )
 
-    # Source questions
     question = StreamField(
         QuestionBlock(
             verbose_name=("source question"),
@@ -208,7 +124,7 @@ class Source(Orderable):
     panels = [
         FieldPanel("title"),
         FieldPanel("media"),
-        FieldPanel("media_featured_link"),
+        FieldPanel("featured_link"),
         FieldPanel("description"),
         FieldPanel("question"),
     ]
@@ -261,7 +177,6 @@ class TeachingResourcePage(
         max_length=160,
     )
 
-    # Body
     sources_title = models.CharField(
         verbose_name=_("sources title"),
         help_text=_(
@@ -279,7 +194,6 @@ class TeachingResourcePage(
         null=True,
     )
 
-    # Teacher’s Notes*
     teachers_notes = RichTextField(
         features=settings.RESTRICTED_RICH_TEXT_FEATURES,
         verbose_name=_("teachers notes"),
@@ -290,7 +204,6 @@ class TeachingResourcePage(
         null=True,
     )
 
-    # Extension activities
     extension_activities = StreamField(
         [
             (
@@ -309,7 +222,6 @@ class TeachingResourcePage(
         null=True,
     )
 
-    # Background information
     background_information = StreamField(
         [
             (
@@ -324,7 +236,6 @@ class TeachingResourcePage(
         null=True,
     )
 
-    # Further information
     further_information_title = models.CharField(
         max_length=255,
         verbose_name=_("further information title"),

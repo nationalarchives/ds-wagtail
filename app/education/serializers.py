@@ -39,24 +39,20 @@ class SourceSerializer(_StreamFieldRepresentationMixin, serializers.Serializer):
 
         return {
             "title": instance.title,
-            "image": self._serialize_stream_field(instance, "source_image"),
-            "media": self._serialize_stream_field(instance, "source_media"),
-            "youtube": self._serialize_stream_field(instance, "source_youtube"),
+            "image": self._serialize_stream_field(instance, "image"),
+            "media": self._serialize_stream_field(instance, "media"),
+            "youtube": self._serialize_stream_field(instance, "youtube"),
             "media_caption": self._serialize_stream_field(
-                instance, "source_media_caption"
+                instance, "media_caption"
             ),
             "source_featured_link": self._serialize_stream_field(
-                instance, "source_media_featured_link"
+                instance, "source_featured_link"
             ),
             "source_featured_external_link": (
-                instance.source_media_featured_external_link
+                instance.source_featured_external_link
             ),
-            "description": self._serialize_stream_field(
-                instance, "source_description"
-            ),
-            "question": self._serialize_stream_field(
-                instance, "source_question"
-            ),
+            "description": self._serialize_stream_field(instance, "description"),
+            "question": self._serialize_stream_field(instance, "question"),
         }
 
 
