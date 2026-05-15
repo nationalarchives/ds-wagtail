@@ -369,18 +369,6 @@ class EducationSessionPage(
     def clean(self):
         super().clean()
 
-        has_intro_block = any(
-            block.block_type == "session_intro" for block in self.session_description
-        )
-        if not has_intro_block:
-            raise ValidationError(
-                {
-                    "session_description": _(
-                        "Add at least one Title and description block to session content."
-                    )
-                }
-            )
-
         if self.session_price is not None and not self.session_price_detail:
             raise ValidationError(
                 {
