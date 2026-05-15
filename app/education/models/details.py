@@ -1,12 +1,12 @@
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
 from wagtail.admin.panels import FieldPanel
-from django.core.exceptions import ValidationError
 from wagtail.models import Orderable
 
 # TODO serializers and API
-# TODO: sort panel order on promote tabs
+
 
 class KeyStage(models.Model):
     """A model for individual key stage tags - choices are populated by migrations/0002_seed_key_stages.py"""
@@ -87,16 +87,18 @@ class TimePeriod(models.Model):
         unique=True,
     )
 
-    date_from = models.DateField(
-        verbose_name=_("date from"),
+    year_from = models.PositiveIntegerField(
+        verbose_name=_("year from"),
         null=True,
         blank=True,
+        help_text=_("Starting year, e.g. 1485"),
     )
 
-    date_to = models.DateField(
-        verbose_name=_("date to"),
+    year_to = models.PositiveIntegerField(
+        verbose_name=_("year to"),
         null=True,
         blank=True,
+        help_text=_("Ending year, e.g. 1750"),
     )
 
     available_for_resources = models.BooleanField(
@@ -181,7 +183,9 @@ class BaseTimePeriodTag(Orderable):
         super().clean()
         if self.time_period_id:
             duplicate = (
-                self.__class__.objects.filter(page=self.page, time_period=self.time_period)
+                self.__class__.objects.filter(
+                    page=self.page, time_period=self.time_period
+                )
                 .exclude(pk=self.pk)
                 .exists()
             )
@@ -189,6 +193,7 @@ class BaseTimePeriodTag(Orderable):
                 raise ValidationError(
                     {"time_period": _("This time period has already been added.")}
                 )
+
     class Meta:
         abstract = True
 
