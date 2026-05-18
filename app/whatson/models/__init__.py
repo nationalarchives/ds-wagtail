@@ -10,14 +10,14 @@ from .listings import (
 )
 
 __all__ = [
-    "EventPage",
     "DisplayPage",
+    "EventPage",
+    "EventsListingPage",
     "ExhibitionPage",
+    "ExhibitionsListingPage",
     "WhatsOnCategoryPage",
-    "WhatsOnSeriesPage",
     "WhatsOnDateListingPage",
     "WhatsOnLocationListingPage",
-    "EventsListingPage",
-    "ExhibitionsListingPage",
     "WhatsOnPage",
+    "WhatsOnSeriesPage",
 ]

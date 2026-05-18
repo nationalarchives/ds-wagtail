@@ -1,3 +1,5 @@
+from wagtail import blocks
+
 from app.ciim.blocks import RecordLinksBlock
 from app.core.blocks import (
     CallToActionBlock,
@@ -17,7 +19,6 @@ from app.core.blocks import (
     YouTubeBlock,
 )
 from app.media.blocks import MediaBlock
-from wagtail import blocks
 
 
 class SectionContentBlock(blocks.StreamBlock):

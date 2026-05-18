@@ -1,3 +1,9 @@
+from django.db import models
+from django.utils.functional import cached_property
+from wagtail.admin.panels import FieldPanel
+from wagtail.api import APIField
+from wagtail.fields import RichTextField, StreamField
+
 from app.core.models import (
     BasePage,
     BasePageWithRequiredIntro,
@@ -7,11 +13,6 @@ from app.core.models import (
 )
 from app.core.serializers.pages import DefaultPageSerializer
 from app.people.models import AuthorPageMixin, ExternalAuthorMixin
-from django.db import models
-from django.utils.functional import cached_property
-from wagtail.admin.panels import FieldPanel
-from wagtail.api import APIField
-from wagtail.fields import RichTextField, StreamField
 
 from .blocks import BlogPostPageStreamBlock
 

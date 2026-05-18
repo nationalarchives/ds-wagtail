@@ -1,10 +1,11 @@
-from app.api.permissions import IsAPITokenAuthenticated
-from app.core.serializers.images import image_generator
 from django.conf import settings
 from django.urls import path
 from rest_framework.response import Response
 from wagtail.images.api.v2.serializers import ImageSerializer
 from wagtail.images.api.v2.views import ImagesAPIViewSet
+
+from app.api.permissions import IsAPITokenAuthenticated
+from app.core.serializers.images import image_generator
 
 
 class ViewSetImageSerializer(ImageSerializer):

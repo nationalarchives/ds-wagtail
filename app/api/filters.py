@@ -46,7 +46,7 @@ class PublishedDateFilter(BaseFilterBackend):
         try:
             year = int(request.GET["year"])
             if year < 0:
-                raise ValueError()
+                raise ValueError
         except ValueError:
             raise BadRequestError("year must be a positive integer")
         return year
@@ -55,7 +55,7 @@ class PublishedDateFilter(BaseFilterBackend):
         try:
             month = int(request.GET["month"])
             if month < 1 or month > 12:
-                raise ValueError()
+                raise ValueError
         except ValueError:
             raise BadRequestError("month must be a positive integer between 1-12")
         return month
@@ -75,7 +75,7 @@ class AuthorFilter(BaseFilterBackend):
             try:
                 author = request.GET["author"]
                 if not author:
-                    raise ValueError()
+                    raise ValueError
             except ValueError:
                 raise BadRequestError("you must provide an author name")
             queryset = queryset.filter(**{"author_tags__author__slug": author})
@@ -206,7 +206,7 @@ class LocationFilter(BaseFilterBackend):
     def filter_queryset(self, request, queryset, view):
         if "online" in request.GET:
             return queryset.filter(location__online=True)
-        elif "at_tna" in request.GET:
+        if "at_tna" in request.GET:
             return queryset.filter(location__at_tna=True)
         return queryset
 
