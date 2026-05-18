@@ -33,7 +33,7 @@ from .details import (
     BaseThemeTag,
     BaseTimePeriodTag,
 )
-from .mixins import EducationTaxonomyMixin, RelatedPageLinkBase
+from .mixins import EducationTaxonomyMixin
 
 
 class EducationSessionPageKeyStageTag(BaseKeyStageTag):
@@ -157,7 +157,7 @@ class SessionLocation(Orderable):
         return self.display_label
 
 
-class RelatedEducationSessions(RelatedPageLinkBase):
+class RelatedEducationSessions(Orderable):
     """Links to take users to related education sessions"""
 
     page = ParentalKey(
@@ -166,10 +166,16 @@ class RelatedEducationSessions(RelatedPageLinkBase):
         related_name="related_education_sessions",
     )
 
-    panels = RelatedPageLinkBase.panels
+    selected_page = models.ForeignKey(
+        "education.EducationSessionPage",
+        on_delete=models.CASCADE,
+        related_name="+",
+        verbose_name=_("selected page"),
+    )
 
     class Meta:
         verbose_name = _("related education session")
+        ordering = ["sort_order"]
 
 
 class EducationSessionPage(
