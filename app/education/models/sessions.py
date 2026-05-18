@@ -22,7 +22,7 @@ from app.core.models import (
     RequiredHeroImageMixin,
 )
 
-from ..blocks import SessionDescriptionBlock, VenueDetailsBlock
+from ..blocks import SessionDescriptionBlock
 from ..serializers import (
     KeyStageSerializer,
     ThemeSerializer,
@@ -67,6 +67,13 @@ class SessionLocation(Orderable):
         YOUR_SCHOOL = "your_school", _("At your school")
         CUSTOM = "custom", _("Custom venue")
 
+    class Regions(models.TextChoices):
+        SOUTH_EAST_LONDON = "south_east", "South East and London"
+        SOUTH_WEST = "south_west", "South West"
+        MIDLANDS = "midlands", "Midlands"
+        NORTH_EAST = "north_east", "North East"
+        NORTH_WEST = "north_west", "North West"
+
     page = ParentalKey(
         "education.EducationSessionPage",
         on_delete=models.CASCADE,
@@ -81,27 +88,67 @@ class SessionLocation(Orderable):
         null=True,
     )
 
-    session_duration = models.CharField(
-        verbose_name=_("session duration"),
+    duration = models.CharField(
+        verbose_name=_("duration"),
         help_text=_(
-            "A clear description of the session duration, e.g. 1 hour, 1 to 2 hours."
+            "A clear description of the session duration for this location, e.g. 1 hour, 1 to 2 hours."
         ),
         blank=True,
+        null=True,
         max_length=160,
     )
 
-    venue_details = StreamField(
-        [("venue_details", VenueDetailsBlock())],
+    region = models.CharField(
+        max_length=32,
+        choices=Regions.choices,
+        verbose_name=_("region"),
+        help_text=_("The region where the session is offered. Required for schools and custom venues."),
+        null=True,
         blank=True,
-        max_num=1,
-        use_json_field=True,
-        verbose_name=_("venue details"),
+    )
+
+    venue_name = models.CharField(
+        blank=True,
+        null=True,
+        max_length=255,
+        verbose_name=_("Venue name"),
+        help_text=_("Required only when location type is Custom venue."),
+    )
+    address_line_1 = models.CharField(
+        blank=True,
+        null=True,
+        max_length=255,
+        verbose_name=_("Address line 1"),
+        help_text=_("Required only when location type is Custom venue."),
+    )
+    address_line_2 = models.CharField(
+        blank=True,
+        null=True,
+        max_length=255,
+        verbose_name=_("Address line 2"),
+        help_text=_("Required only when location type is Custom venue."),
+    )
+    postcode = models.CharField(
+        blank=True,
+        null=True,
+        max_length=20,
+        verbose_name=_("Postcode"),
+        help_text=_("Required only when location type is Custom venue."),
     )
 
     panels = [
         FieldPanel("location_type"),
-        FieldPanel("session_duration"),
-        FieldPanel("venue_details"),
+        FieldPanel("duration"),
+        FieldPanel("region"),
+        MultiFieldPanel(
+            [
+                FieldPanel("venue_name"),
+                FieldPanel("address_line_1"),
+                FieldPanel("address_line_2"),
+                FieldPanel("postcode"),
+            ],
+            heading=_("Custom venue address details"),
+        ),
     ]
 
     class Meta:
@@ -111,37 +158,46 @@ class SessionLocation(Orderable):
 
     def clean(self):
         super().clean()
+        errors = {}
 
-        venue_data = {}
-        if self.venue_details:
-            venue_data = self.venue_details[0].value
-
-        venue_name = (venue_data.get("venue_name") or "").strip()
-        address_line_1 = (venue_data.get("address_line_1") or "").strip()
-        address_line_2 = (venue_data.get("address_line_2") or "").strip()
-        postcode = (venue_data.get("postcode") or "").strip()
-        session_regions = venue_data.get("session_regions")
+        venue_name = (self.venue_name or "").strip()
+        address_line_1 = (self.address_line_1 or "").strip()
+        address_line_2 = (self.address_line_2 or "").strip()
+        postcode = (self.postcode or "").strip()
+        region = (self.region or "").strip()
 
         has_venue_details = any([venue_name, address_line_1, address_line_2, postcode])
+        location_requires_region = self.location_type in [
+            self.LocationType.YOUR_SCHOOL,
+            self.LocationType.CUSTOM,
+        ]
 
-        if self.location_type == self.LocationType.CUSTOM and not venue_name:
-            raise ValidationError(
-                {"venue_details": _("Venue name is required for custom venue.")}
+        if self.location_type == self.LocationType.CUSTOM:
+            if not venue_name:
+                errors["venue_name"] = _("Venue name is required for custom venue.")
+            if not address_line_1:
+                errors["address_line_1"] = _(
+                    "Address line 1 is required for custom venue."
+                )
+            if not postcode:
+                errors["postcode"] = _("Postcode is required for custom venue.")
+        elif has_venue_details:
+            errors["venue_name"] = _(
+                "Venue details should only be provided for custom venue location type."
             )
 
-        if self.location_type == self.LocationType.CUSTOM and not session_regions:
-            raise ValidationError(
-                {"venue_details": _("Region is required for custom venue.")}
+        if location_requires_region and not region:
+            errors["region"] = _(
+                "Region is required for school or custom venue location types."
+            )
+        elif region and not location_requires_region:
+            errors["region"] = _(
+                "Region should only be provided for school or custom venue location types."
             )
 
-        if self.location_type != self.LocationType.CUSTOM and has_venue_details:
-            raise ValidationError(
-                {
-                    "venue_details": _(
-                        "Leave venue details empty unless location type is Custom venue."
-                    )
-                }
-            )
+        if errors:
+            raise ValidationError(errors)
+        
 
     @property
     def display_label(self):
