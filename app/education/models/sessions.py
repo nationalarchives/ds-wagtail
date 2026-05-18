@@ -187,7 +187,7 @@ class EducationSessionPage(
         "education.EducationSessionsListingPage",
     ]
 
-    session_start_date = models.DateField(
+    start_date = models.DateField(
         verbose_name=_("start date"),
         null=True,
         blank=True,
@@ -196,7 +196,7 @@ class EducationSessionPage(
         ),
     )
 
-    session_end_date = models.DateField(
+    end_date = models.DateField(
         verbose_name=_("end date"),
         null=True,
         blank=True,
@@ -205,11 +205,11 @@ class EducationSessionPage(
         ),
     )
 
-    session_price = models.FloatField(
+    price = models.FloatField(
         null=True, blank=True, verbose_name=_("session price")
     )
 
-    session_price_detail = models.CharField(
+    price_detail = models.CharField(
         verbose_name=_("session price detail"),
         help_text=_(
             "An explanation of the price. Required if session price is filled in."
@@ -218,7 +218,7 @@ class EducationSessionPage(
         max_length=160,
     )
 
-    session_booking_link = models.URLField(
+    booking_link = models.URLField(
         null=True,
         blank=True,
         help_text="Link to booking page",
