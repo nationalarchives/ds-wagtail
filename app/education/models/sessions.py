@@ -303,19 +303,6 @@ class EducationSessionPage(
         max_num=1,
     )
 
-    # Contact us - contact us component?
-
-    # TODO: think about adding key details tab ala /services/ds-wagtail/app/whatson/models/details.py: for key details bar
-
-    #     edit_handler = TabbedInterface(
-    #         [
-    #             ObjectList(content_panels, heading="Content"),
-    #             ObjectList(key_details_panels, heading="Key details"),
-    #             ObjectList(promote_panels, heading="Promote"),
-    #             ObjectList(BasePageWithRequiredIntro.settings_panels, heading="Settings"),
-    #         ]
-    #     )
-
     def clean(self):
         super().clean()
 
@@ -332,44 +319,44 @@ class EducationSessionPage(
         BasePageWithRequiredIntro.content_panels
         + RequiredHeroImageMixin.content_panels
         + [
-            FieldPanel("session_start_date"),
-            FieldPanel("session_end_date"),
             MultiFieldPanel(
                 [
-                    MultiFieldPanel(
-                        [
-                            MultiFieldPanel(
-                                [
-                                    FieldPanel("session_price"),
-                                    FieldPanel("session_price_detail"),
-                                ],
-                                heading=_("Session price"),
-                            ),
-                            InlinePanel(
-                                "session_locations",
-                                label=_("Location"),
-                                heading=_("Session locations"),
-                                min_num=1,
-                            ),
-                            FieldPanel("session_booking_link"),
-                        ],
-                    ),
-                ],
-                heading=_("Session key details bar"),
-            ),
-            MultiFieldPanel(
-                [
-                    FieldPanel("session_description"),
-                    FieldPanel("session_curriculum_connection_description"),
-                    FieldPanel("session_highlights"),
+                    FieldPanel("description"),
+                    FieldPanel("curriculum_connection_description"),
+                    FieldPanel("highlights"),
                 ]
             ),
             InlinePanel(
                 "related_education_sessions",
                 heading=_("More education sessions"),
                 help_text=_(
-                    "Education sessions that are selected to be shown in the related education sesisons section"
+                    "Education sessions that are selected to be shown in the related education sessions section"
                 ),
+            ),
+        ]
+    )
+
+    key_details_panels = (
+        [
+            MultiFieldPanel(
+                [
+                    FieldPanel("start_date"),
+                    FieldPanel("end_date"),
+                    MultiFieldPanel(
+                        [
+                            FieldPanel("price"),
+                            FieldPanel("price_detail"),
+                        ],
+                        heading=_("Session price"),
+                    ),
+                    InlinePanel(
+                        "session_locations",
+                        label=_("Location"),
+                        heading=_("Session locations"),
+                        min_num=1,
+                    ),
+                    FieldPanel("booking_link"),
+                ],
             ),
         ]
     )
@@ -389,3 +376,12 @@ class EducationSessionPage(
         APIField("time_periods", serializer=TimePeriodSerializer(many=True)),
         APIField("themes", serializer=ThemeSerializer(many=True)),
     ]
+
+    edit_handler = TabbedInterface(
+        [
+            ObjectList(content_panels, heading="Content"),
+            ObjectList(key_details_panels, heading="Key details"),
+            ObjectList(promote_panels, heading="Promote"),
+            ObjectList(BasePageWithRequiredIntro.settings_panels, heading="Settings"),
+        ]
+    )
