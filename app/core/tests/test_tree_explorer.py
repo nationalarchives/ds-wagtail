@@ -1,5 +1,12 @@
 from unittest.mock import patch
 
+from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Group, Permission
+from django.core.cache import cache
+from django.test import TestCase
+from django.urls import reverse
+from wagtail.models import GroupPagePermission, Site
+
 from app.articles.factories import ArticleIndexPageFactory, ArticlePageFactory
 from app.core.admin_views import (
     TREE_EXPLORER_CACHE_NAMESPACE,
@@ -7,12 +14,6 @@ from app.core.admin_views import (
     get_tree_nodes,
     invalidate_tree_explorer_cache,
 )
-from django.contrib.auth import get_user_model
-from django.contrib.auth.models import Group, Permission
-from django.core.cache import cache
-from django.test import TestCase
-from django.urls import reverse
-from wagtail.models import GroupPagePermission, Site
 
 
 class TreeExplorerTests(TestCase):
