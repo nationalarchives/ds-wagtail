@@ -1,5 +1,6 @@
-from app.api.models import APIToken
 from django.core.management.base import BaseCommand, CommandError
+
+from app.api.models import APIToken
 
 
 class Command(BaseCommand):

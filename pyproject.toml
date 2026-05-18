@@ -24,6 +24,7 @@ wagtail-headless-preview = "^0.8.0"
 whitenoise = "^6.12.0"
 boto3 = "^1.43.4"
 wagtail-2fa = "^1.8.0"
+tna-utilities = "^1.5.0"
 
 [tool.poetry.group.dev]
 optional = true
@@ -35,24 +36,6 @@ pytest-django = "^4.11.1"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
-
-[tool.black]
-line-length = 88
-exclude = '''
-/(
-  | \.eggs
-  | \.git
-  | \.mypy_cache
-  | \.venv
-  | __pycache__
-  | _build
-  | build
-  | docs
-  | venv
-  | node_modules
-  | migrations
-)/
-'''
 
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "config.settings.test"

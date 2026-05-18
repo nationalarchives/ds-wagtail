@@ -1,4 +1,3 @@
-from app.core.models import BasePage, BasePageWithRequiredIntro
 from django.db import models
 from django.utils.functional import cached_property
 from django.utils.text import slugify
@@ -7,6 +6,8 @@ from wagtail.api import APIField
 from wagtail.coreutils import find_available_slug
 from wagtail.fields import StreamField
 from wagtail.search import index
+
+from app.core.models import BasePage, BasePageWithRequiredIntro
 
 from .blocks import AnnexeStreamBlock, RequestStreamBlock, ResponseStreamBlock
 
@@ -136,14 +137,16 @@ class FoiRequestPage(BasePage):
             if len(new_short_title) <= short_title_max_length:
                 self.short_title = new_short_title
             else:
-                self.short_title = f"{new_short_title[:short_title_max_length - 3]}..."
+                self.short_title = f"{new_short_title[: short_title_max_length - 3]}..."
 
             new_teaser_text = f'Freedom of information request: "{self.title}"'
             teaser_text_max_length = self._meta.get_field("teaser_text").max_length
             if len(new_teaser_text) <= teaser_text_max_length:
                 self.teaser_text = new_teaser_text
             else:
-                self.teaser_text = f'{new_teaser_text[:teaser_text_max_length - 4]}..."'
+                self.teaser_text = (
+                    f'{new_teaser_text[: teaser_text_max_length - 4]}..."'
+                )
 
         if self.date:
             # Change the date to the first of the month
