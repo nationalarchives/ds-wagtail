@@ -72,6 +72,7 @@ class SourceQuestionBlock(blocks.StreamBlock):
         icon="help",
     )
 
+
 class SectionContentBlock(blocks.StreamBlock):
     description = ParagraphBlock()
     partner_logo = PartnerLogoChooserBlock()
@@ -86,4 +87,3 @@ class SessionDescriptionBlock(blocks.StructBlock):
     class Meta:
         label = "Section"
         group = "Basic text"
-

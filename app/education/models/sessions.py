@@ -102,7 +102,9 @@ class SessionLocation(Orderable):
         max_length=32,
         choices=Regions.choices,
         verbose_name=_("region"),
-        help_text=_("The region where the session is offered. Required for schools and custom venues."),
+        help_text=_(
+            "The region where the session is offered. Required for schools and custom venues."
+        ),
         null=True,
         blank=True,
     )
@@ -201,7 +203,6 @@ class SessionLocation(Orderable):
         if errors:
             raise ValidationError(errors)
 
-
     @property
     def display_label(self):
         if self.location_type == self.LocationType.CUSTOM:
@@ -267,15 +268,11 @@ class EducationSessionPage(
         ),
     )
 
-    price = models.FloatField(
-        null=True, blank=True, verbose_name=_("price")
-    )
+    price = models.FloatField(null=True, blank=True, verbose_name=_("price"))
 
     price_detail = models.CharField(
         verbose_name=_("price detail"),
-        help_text=_(
-            "An explanation of the price. Required if price is filled in."
-        ),
+        help_text=_("An explanation of the price. Required if price is filled in."),
         blank=True,
         max_length=160,
     )
@@ -324,11 +321,7 @@ class EducationSessionPage(
             )
         if self.price is None and self.price_detail:
             raise ValidationError(
-                {
-                    "price": _(
-                        "Price is required when price detail is specified."
-                    )
-                }
+                {"price": _("Price is required when price detail is specified.")}
             )
 
     content_panels = (
@@ -352,30 +345,28 @@ class EducationSessionPage(
         ]
     )
 
-    key_details_panels = (
-        [
-            MultiFieldPanel(
-                [
-                    FieldPanel("start_date"),
-                    FieldPanel("end_date"),
-                    MultiFieldPanel(
-                        [
-                            FieldPanel("price"),
-                            FieldPanel("price_detail"),
-                        ],
-                        heading=_("Session price"),
-                    ),
-                    InlinePanel(
-                        "session_locations",
-                        label=_("Location"),
-                        heading=_("Session locations"),
-                        min_num=1,
-                    ),
-                    FieldPanel("booking_link"),
-                ],
-            ),
-        ]
-    )
+    key_details_panels = [
+        MultiFieldPanel(
+            [
+                FieldPanel("start_date"),
+                FieldPanel("end_date"),
+                MultiFieldPanel(
+                    [
+                        FieldPanel("price"),
+                        FieldPanel("price_detail"),
+                    ],
+                    heading=_("Session price"),
+                ),
+                InlinePanel(
+                    "session_locations",
+                    label=_("Location"),
+                    heading=_("Session locations"),
+                    min_num=1,
+                ),
+                FieldPanel("booking_link"),
+            ],
+        ),
+    ]
 
     promote_panels = (
         PublishedDateMixin.promote_panels
