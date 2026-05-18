@@ -227,7 +227,7 @@ class EducationSessionPage(
         verbose_name=_("description"),
         blank=True,
         null=True,
-        max_num=1,
+        min_num=1,
     )
 
     curriculum_connection_description = RichTextField(
