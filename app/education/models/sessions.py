@@ -225,13 +225,6 @@ class EducationSessionPage(
         verbose_name="Booking link",
     )
 
-    session_title = blocks.CharBlock(
-        required=True,
-        max_length=160,
-        label=_("Session title"),
-        help_text=_("A unique, descriptive title for the session."),
-    )
-
     session_description = StreamField(
         [
             (
