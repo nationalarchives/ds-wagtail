@@ -1,3 +1,4 @@
+from django.conf import settings
 from wagtail import blocks
 
 from app.core.blocks import (
@@ -51,26 +52,26 @@ class SourceFeaturedLinkBlock(blocks.StreamBlock):
         label = "Source featured link"
 
 
-class SourceQuestionBlock(blocks.StreamBlock):
-    question = blocks.StructBlock(
-        [
-            (
-                "question_heading",
-                blocks.CharBlock(
-                    required=False,
-                    max_length=255,
-                ),
-            ),
-            (
-                "question_description",
-                APIRichTextBlock(
-                    features=["bold", "italic", "link", "ul"],
-                    required=False,
-                ),
-            ),
-        ],
-        icon="help",
+class SourceQuestionItemBlock(blocks.StructBlock):
+    question_heading = blocks.CharBlock(
+        required=False,
+        max_length=255,
     )
+    question_description = APIRichTextBlock(
+        features=settings.RESTRICTED_RICH_TEXT_FEATURES,
+        required=False,
+    )
+
+    class Meta:
+        icon = "help"
+        label = "Question"
+
+
+class SourceQuestionBlock(blocks.StreamBlock):
+    question = SourceQuestionItemBlock()
+
+    class Meta:
+        label = "Source question"
 
 
 class SectionContentBlock(blocks.StreamBlock):
