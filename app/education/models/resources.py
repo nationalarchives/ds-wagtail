@@ -1,12 +1,3 @@
-from app.core.blocks.paragraph import APIRichTextBlock
-from app.core.blocks.promoted_links import FeaturedExternalLinkBlock, FeaturedPageBlock
-from app.core.blocks.section import SubHeadingBlock
-from app.core.models import (
-    BasePageWithRequiredIntro,
-    PublishedDateMixin,
-    RequiredHeroImageMixin,
-)
-from app.core.serializers import RichTextSerializer
 from django.conf import settings
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -19,6 +10,16 @@ from wagtail.admin.panels import (
 from wagtail.api import APIField
 from wagtail.fields import RichTextField, StreamField
 from wagtail.models import Orderable
+
+from app.core.blocks.paragraph import APIRichTextBlock
+from app.core.blocks.promoted_links import FeaturedExternalLinkBlock, FeaturedPageBlock
+from app.core.blocks.section import SubHeadingBlock
+from app.core.models import (
+    BasePageWithRequiredIntro,
+    PublishedDateMixin,
+    RequiredHeroImageMixin,
+)
+from app.core.serializers import RichTextSerializer
 
 from ..blocks import (
     SourceFeaturedLinkBlock,
