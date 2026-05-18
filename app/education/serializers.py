@@ -23,8 +23,8 @@ class KeyStageSerializer(serializers.Serializer):
 class TimePeriodSerializer(serializers.Serializer):
     name = serializers.CharField()
     slug = serializers.SlugField()
-    date_from = serializers.DateField(allow_null=True)
-    date_to = serializers.DateField(allow_null=True)
+    year_from = serializers.IntegerField(allow_null=True)
+    year_to = serializers.IntegerField(allow_null=True)
 
 
 class ThemeSerializer(serializers.Serializer):
@@ -39,14 +39,24 @@ class SourceSerializer(_StreamFieldRepresentationMixin, serializers.Serializer):
 
         return {
             "title": instance.title,
-            "image": self._serialize_stream_field(instance, "image"),
             "media": self._serialize_stream_field(instance, "media"),
-            "youtube": self._serialize_stream_field(instance, "youtube"),
-            "media_caption": self._serialize_stream_field(instance, "media_caption"),
-            "source_featured_link": self._serialize_stream_field(
-                instance, "source_featured_link"
-            ),
-            "source_featured_external_link": (instance.source_featured_external_link),
+            "featured_link": self._serialize_stream_field(instance, "featured_link"),
+            "description": self._serialize_stream_field(instance, "description"),
+            "question": self._serialize_stream_field(instance, "question"),
+        }
+
+
+class CurriculumConnectionSerializer(
+    _StreamFieldRepresentationMixin, serializers.Serializer
+):
+    def to_representation(self, instance):
+        if not instance:
+            return None
+
+        return {
+            "title": instance.title,
+            "media": self._serialize_stream_field(instance, "media"),
+            "featured_link": self._serialize_stream_field(instance, "featured_link"),
             "description": self._serialize_stream_field(instance, "description"),
             "question": self._serialize_stream_field(instance, "question"),
         }

@@ -1764,7 +1764,7 @@ class Migration(migrations.Migration):
                                 [
                                     [
                                         ("question_heading", 0),
-                                        ("guidance_for_teachers", 1),
+                                        ("question_description", 1),
                                     ]
                                 ],
                                 {"icon": "help"},

@@ -7,6 +7,7 @@ from django.utils.translation import gettext_lazy as _
 from wagtail.admin.panels import (
     FieldPanel,
     MultiFieldPanel,
+    PageChooserPanel,
 )
 from wagtail.api import APIField
 
@@ -48,7 +49,7 @@ class TeachingResourcesListingPage(BasePageWithRequiredIntro):
     content_panels = BasePageWithRequiredIntro.content_panels + [
         MultiFieldPanel(
             [
-                FieldPanel("featured_teaching_resource"),
+                PageChooserPanel("featured_teaching_resource"),
                 FieldPanel("featured_teaching_resource_teaser_override"),
             ],
             heading=_("Featured teaching resource"),
@@ -99,7 +100,7 @@ class EducationSessionsListingPage(BasePageWithRequiredIntro):
     content_panels = BasePageWithRequiredIntro.content_panels + [
         MultiFieldPanel(
             [
-                FieldPanel("featured_education_session"),
+                PageChooserPanel("featured_education_session"),
                 FieldPanel("featured_education_session_teaser_override"),
             ],
             heading=_("Featured education session"),

@@ -21,7 +21,7 @@ from wagtail.fields import RichTextField, StreamField
 from wagtail.models import Orderable
 
 from ..blocks import (
-    QuestionBlock,
+    SourceQuestionBlock,
     SourceFeaturedLinkBlock,
     SourceMediaBlock,
 )
@@ -114,7 +114,7 @@ class Source(Orderable):
     )
 
     question = StreamField(
-        QuestionBlock(
+        SourceQuestionBlock(
             verbose_name=("source question"),
             help_text=("A series of questions relating to the source."),
         ),
@@ -316,7 +316,6 @@ class TeachingResourcePage(
         APIField("sources_introduction", serializer=RichTextSerializer()),
         APIField("teachers_notes"),
         APIField("sources", serializer=SourceSerializer(many=True)),
-        APIField("curriculum_connection_description", serializer=RichTextSerializer()),
         APIField("extension_activities"),
         APIField("background_information"),
         APIField("further_information_title"),

@@ -8,28 +8,7 @@ from django.utils.translation import gettext_lazy as _
 from wagtail import blocks
 
 
-# Resources
-class QuestionBlock(blocks.StreamBlock):
-    question = blocks.StructBlock(
-        [
-            (
-                "question_heading",
-                blocks.CharBlock(
-                    required=False,
-                    max_length=255,
-                ),
-            ),
-            (
-                "guidance_for_teachers",
-                APIRichTextBlock(
-                    features=["bold", "italic", "link", "ul"],
-                    required=False,
-                ),
-            ),
-        ],
-        icon="help",
-    )
-
+# Resources - Source
 
 class SourceImageWithCaptionBlock(blocks.StructBlock):
     image = APIImageChooserBlock(
@@ -64,6 +43,27 @@ class SourceFeaturedLinkBlock(blocks.StreamBlock):
 
     class Meta:
         label = "Source featured link"
+
+class SourceQuestionBlock(blocks.StreamBlock):
+    question = blocks.StructBlock(
+        [
+            (
+                "question_heading",
+                blocks.CharBlock(
+                    required=False,
+                    max_length=255,
+                ),
+            ),
+            (
+                "question_description",
+                APIRichTextBlock(
+                    features=["bold", "italic", "link", "ul"],
+                    required=False,
+                ),
+            ),
+        ],
+        icon="help",
+    )
 
 
 # Sessions
