@@ -388,9 +388,10 @@ class EducationSessionPage(
     )
 
     api_fields = BasePageWithRequiredIntro.api_fields + [
-        APIField("key_stage", serializer=KeyStageSerializer()),
-        APIField("time_period", serializer=TimePeriodSerializer()),
-        APIField("theme", serializer=ThemeSerializer()),
+        # TODO: primary tags?
+        # APIField("key_stage", serializer=KeyStageSerializer()),
+        # APIField("time_period", serializer=TimePeriodSerializer()),
+        # APIField("theme", serializer=ThemeSerializer()),
         APIField("key_stages", serializer=KeyStageSerializer(many=True)),
         APIField("time_periods", serializer=TimePeriodSerializer(many=True)),
         APIField("themes", serializer=ThemeSerializer(many=True)),

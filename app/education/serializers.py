@@ -15,7 +15,6 @@ class KeyStageSerializer(serializers.Serializer):
     slug = serializers.SlugField()
     stage = serializers.IntegerField(allow_null=True)
     age_range = serializers.CharField(allow_blank=True)
-    public_key_stage = serializers.CharField()
     short_key_stage = serializers.CharField()
     public_age_range = serializers.CharField()
 

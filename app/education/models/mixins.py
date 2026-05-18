@@ -27,17 +27,18 @@ class EducationTaxonomyMixin:
     def themes(self):
         return [tag.theme for tag in self.education_theme_tags.select_related("theme")]
 
-    @cached_property
-    def key_stage(self):
-        return self.key_stages[0] if self.key_stages else None
+    # TODO: Primary tags??? Technically there could be more than one? e.g. keystages
+    # @cached_property
+    # def key_stage(self):
+    #     return self.key_stages[0] if self.key_stages else None
 
-    @cached_property
-    def time_period(self):
-        return self.time_periods[0] if self.time_periods else None
+    # @cached_property
+    # def time_period(self):
+    #     return self.time_periods[0] if self.time_periods else None
 
-    @cached_property
-    def theme(self):
-        return self.themes[0] if self.themes else None
+    # @cached_property
+    # def theme(self):
+    #     return self.themes[0] if self.themes else None
 
     @staticmethod
     def taxonomy_promote_panels():
