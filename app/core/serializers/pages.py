@@ -2,7 +2,7 @@ from rest_framework import serializers
 from rest_framework.fields import empty
 
 
-def get_api_fields(object, required_api_fields: list = []) -> list:
+def get_api_fields(object, required_api_fields: list = None) -> list:
     """
     Get the selected fields (required_api_fields) from the object's api_fields
     attribute, and return them as a list of APIField instances. APIFields are
@@ -13,6 +13,8 @@ def get_api_fields(object, required_api_fields: list = []) -> list:
     but not in the API representation of a page, you should add them to the
     `default_api_fields` attribute of the page model.
     """
+    if required_api_fields is None:
+        required_api_fields = []
     fields = []
     if default_api_fields := object.default_api_fields:
         fields.extend(default_api_fields)
@@ -43,7 +45,7 @@ def get_field_data(object, field) -> any:
     return None
 
 
-def get_api_data(object, required_api_fields: list = []) -> dict:
+def get_api_data(object, required_api_fields: list = None) -> dict:
     """
     This function takes a list of required_api_fields which are the fields
     to be passed to the `get_api_fields` function, and then uses the list
@@ -52,6 +54,8 @@ def get_api_data(object, required_api_fields: list = []) -> dict:
     serializers that are attached to them to convert the data to something
     useful to the front-end.
     """
+    if required_api_fields is None:
+        required_api_fields = []
     api_representation = {}
     if object:
         specific = object.specific
@@ -66,7 +70,9 @@ def get_api_data(object, required_api_fields: list = []) -> dict:
 
 
 class DefaultPageSerializer(serializers.Serializer):
-    def __init__(self, instance=None, data=empty, required_api_fields=[], **kwargs):
+    def __init__(self, instance=None, data=empty, required_api_fields=None, **kwargs):
+        if required_api_fields is None:
+            required_api_fields = []
         self.required_api_fields = required_api_fields
         super().__init__(instance=instance, data=data, **kwargs)
 

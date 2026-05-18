@@ -1,3 +1,5 @@
+from wagtail import blocks
+
 from app.core.blocks import (
     ContentTableBlock,
     DescriptionListBlock,
@@ -7,7 +9,6 @@ from app.core.blocks import (
     ParagraphBlock,
     SubHeadingBlock,
 )
-from wagtail import blocks
 
 
 class RequestContentBlock(blocks.StreamBlock):
