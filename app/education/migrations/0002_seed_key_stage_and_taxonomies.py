@@ -48,12 +48,8 @@ def seed_key_stages(apps, schema_editor):
 
     for slug, name, stage, age_range in KEY_STAGES:
         defaults = {"name": name}
-
-        if "stage" in key_stage_field_names:
-            defaults["stage"] = stage
-
-        if "age_range" in key_stage_field_names:
-            defaults["age_range"] = age_range
+        defaults["stage"] = stage
+        defaults["age_range"] = age_range
 
         KeyStage.objects.update_or_create(
             slug=slug,
