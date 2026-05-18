@@ -145,23 +145,23 @@ class SessionLocation(Orderable):
                     )
                 }
             )
-
-        @property
-        def display_name(self):
-            if self.location_type == self.LocationType.CUSTOM:
-                if self.venue_details:
-                    venue_name = self.venue_details[0].value.get("venue_name")
-                    if venue_name:
-                        return venue_name
-                return self.get_location_type_display()
+        
+    @property
+    def display_label(self):
+        if self.location_type == self.LocationType.CUSTOM:
+            if self.venue_details:
+                venue_name = self.venue_details[0].value.get("venue_name")
+                if venue_name:
+                    return venue_name
             return self.get_location_type_display()
+        return self.get_location_type_display()
 
-        def __str__(self):
-            return self.display_name
+    def __str__(self):
+        return self.display_label
 
 
 class RelatedEducationSessions(RelatedPageLinkBase):
-    """Links to take users to related educaiton sessions"""
+    """Links to take users to related education sessions"""
 
     page = ParentalKey(
         "education.EducationSessionPage",
