@@ -114,6 +114,7 @@ class SessionLocation(Orderable):
         verbose_name=_("Venue name"),
         help_text=_("Required only when location type is Custom venue."),
     )
+
     address_line_1 = models.CharField(
         blank=True,
         null=True,
@@ -121,6 +122,7 @@ class SessionLocation(Orderable):
         verbose_name=_("Address line 1"),
         help_text=_("Required only when location type is Custom venue."),
     )
+
     address_line_2 = models.CharField(
         blank=True,
         null=True,
@@ -128,6 +130,7 @@ class SessionLocation(Orderable):
         verbose_name=_("Address line 2"),
         help_text=_("Required only when location type is Custom venue."),
     )
+
     postcode = models.CharField(
         blank=True,
         null=True,
@@ -197,7 +200,7 @@ class SessionLocation(Orderable):
 
         if errors:
             raise ValidationError(errors)
-        
+
 
     @property
     def display_label(self):
