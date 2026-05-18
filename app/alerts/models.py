@@ -79,9 +79,9 @@ class BaseAlert(models.Model):
         # Banner has not been published
         if not self.active:
             return False
-        if self.active_from and now < self.active_from:
-            return False
-        elif self.active_to and now >= self.active_to:
+        if (self.active_from and now < self.active_from) or (
+            self.active_to and now >= self.active_to
+        ):
             return False
 
         return self.active

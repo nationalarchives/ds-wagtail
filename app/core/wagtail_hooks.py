@@ -24,14 +24,14 @@ def global_admin_css():
             --w-color-surface-menu-item-active: #6b2710;
         }"""
         return f"<style>{static} {environment_colours}</style>"
-    elif settings.ENVIRONMENT_NAME == "staging":
+    if settings.ENVIRONMENT_NAME == "staging":
         environment_colours = """
         :root {
             --w-color-surface-menus: #323334;
             --w-color-surface-menu-item-active: #262627;
         }"""
         return f"<style>{static} {environment_colours}</style>"
-    elif settings.ENVIRONMENT_NAME == "develop":
+    if settings.ENVIRONMENT_NAME == "develop":
         environment_colours = """
         :root {
             --w-color-surface-menus: #00623b;

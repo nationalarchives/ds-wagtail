@@ -49,7 +49,7 @@ class ButtonBlock(blocks.StructBlock):
             raise ValidationError(
                 "You must provide either a page link or an external link, not both."
             )
-        elif not (data.get("link") or data.get("external_link")):
+        if not (data.get("link") or data.get("external_link")):
             raise ValidationError(
                 "You must provide either a page link or an external link."
             )

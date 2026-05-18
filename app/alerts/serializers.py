@@ -12,8 +12,7 @@ class AlertSerializer(serializers.Serializer):
                 "cascade": instance.cascade,
                 "uid": instance.uid,
             }
-        else:
-            return None
+        return None
 
 
 class ThemedAlertSerializer(serializers.Serializer):
@@ -26,5 +25,4 @@ class ThemedAlertSerializer(serializers.Serializer):
                 "cascade": instance.cascade,
                 "uid": instance.uid,
             }
-        else:
-            return None
+        return None

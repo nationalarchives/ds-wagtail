@@ -1,18 +1,22 @@
-from app.api.filters import AuthorFilter, PublishedDateFilter
-from app.api.urls.pages import CustomPagesAPIViewSet
-from app.blog.models import BlogPostPage
-from app.core.serializers.pages import DefaultPageSerializer
 from django.db.models import Count
 from django.db.models.functions import ExtractMonth, ExtractYear
 from django.urls import path
 from rest_framework.response import Response
 
+from app.api.filters import AuthorFilter, PublishedDateFilter
+from app.api.urls.pages import CustomPagesAPIViewSet
+from app.blog.models import BlogPostPage
+from app.core.serializers.pages import DefaultPageSerializer
+
 
 class BlogPostsAPIViewSet(CustomPagesAPIViewSet):
-    filter_backends = [
-        PublishedDateFilter,
-        AuthorFilter,
-    ] + CustomPagesAPIViewSet.filter_backends  # Needs to be last as it includes SearchFilter which needs to be last
+    filter_backends = (
+        [
+            PublishedDateFilter,
+            AuthorFilter,
+        ]
+        + CustomPagesAPIViewSet.filter_backends
+    )  # Needs to be last as it includes SearchFilter which needs to be last
     known_query_parameters = CustomPagesAPIViewSet.known_query_parameters.union(
         [
             "year",

@@ -1,3 +1,6 @@
+from django.core.exceptions import ValidationError
+from wagtail import blocks
+
 from app.core.blocks import (
     CallToActionBlock,
     ContentImageBlock,
@@ -9,8 +12,6 @@ from app.core.blocks import (
     YouTubeBlock,
 )
 from app.core.blocks.links import LinkBlock
-from django.core.exceptions import ValidationError
-from wagtail import blocks
 
 
 class LinkWithDescriptionBlock(LinkBlock):
@@ -76,7 +77,7 @@ class ContentSectionBlock(blocks.StructBlock):
             block_type = block.block_type
             if block_type == "sub_heading":
                 break  # Found a sub-heading first; any subsequent headings are valid.
-            elif block_type == "sub_sub_heading":
+            if block_type == "sub_sub_heading":
                 raise ValidationError(
                     "A sub-sub-heading was found before any sub-headings."
                 )

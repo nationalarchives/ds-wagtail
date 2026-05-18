@@ -1,5 +1,6 @@
-from app.core.serializers import DefaultPageSerializer
 from rest_framework import serializers
+
+from app.core.serializers import DefaultPageSerializer
 
 
 class SubpagesSerializer(serializers.Serializer):
