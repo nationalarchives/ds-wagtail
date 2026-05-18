@@ -322,6 +322,14 @@ class EducationSessionPage(
                     )
                 }
             )
+        if self.price is None and self.price_detail:
+            raise ValidationError(
+                {
+                    "price": _(
+                        "Price is required when price detail is specified."
+                    )
+                }
+            )
 
     content_panels = (
         BasePageWithRequiredIntro.content_panels
@@ -370,8 +378,8 @@ class EducationSessionPage(
     )
 
     promote_panels = (
-        BasePageWithRequiredIntro.promote_panels
-        + PublishedDateMixin.promote_panels
+        PublishedDateMixin.promote_panels
+        + BasePageWithRequiredIntro.promote_panels
         + EducationTaxonomyMixin.taxonomy_promote_panels()
     )
 

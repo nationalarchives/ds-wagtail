@@ -299,8 +299,8 @@ class TeachingResourcePage(
     )
 
     promote_panels = (
-        BasePageWithRequiredIntro.promote_panels
-        + PublishedDateMixin.promote_panels
+        PublishedDateMixin.promote_panels
+        + BasePageWithRequiredIntro.promote_panels
         + EducationTaxonomyMixin.taxonomy_promote_panels()
     )
 
