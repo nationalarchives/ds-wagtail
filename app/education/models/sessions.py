@@ -1,31 +1,28 @@
-from app.core.blocks import InsetTextBlock
+from django.core.exceptions import ValidationError
+from django.db import models
+from django.utils.translation import gettext_lazy as _
+from modelcluster.fields import ParentalKey
+from wagtail.admin.panels import (
+    FieldPanel,
+    InlinePanel,
+    MultiFieldPanel,
+    ObjectList,
+    TabbedInterface,
+)
+from wagtail.api import APIField
+from wagtail.fields import RichTextField, StreamField
+from wagtail.models import Orderable
+
 from app.core.blocks.image import (
     ImageGalleryBlock,
-    PartnerLogoChooserBlock,
 )
-from app.core.blocks.paragraph import APIRichTextBlock
-from app.core.blocks.quote import QuoteBlock
 from app.core.models import (
     BasePageWithRequiredIntro,
     PublishedDateMixin,
     RequiredHeroImageMixin,
 )
-from django.conf import settings
-from django.core.exceptions import ValidationError
-from django.db import models
-from django.utils.translation import gettext_lazy as _
-from modelcluster.fields import ParentalKey
-from wagtail import blocks
-from wagtail.admin.panels import (
-    FieldPanel,
-    InlinePanel,
-    MultiFieldPanel,
-)
-from wagtail.api import APIField
-from wagtail.fields import StreamField
-from wagtail.models import Orderable
 
-from ..blocks import VenueDetailsBlock
+from ..blocks import SessionDescriptionBlock, VenueDetailsBlock
 from ..serializers import (
     KeyStageSerializer,
     ThemeSerializer,
@@ -145,7 +142,7 @@ class SessionLocation(Orderable):
                     )
                 }
             )
-        
+
     @property
     def display_label(self):
         if self.location_type == self.LocationType.CUSTOM:
@@ -225,79 +222,25 @@ class EducationSessionPage(
         verbose_name="Booking link",
     )
 
-    session_description = StreamField(
-        [
-            (
-                "heading",
-                APIRichTextBlock(
-                    features=["bold", "italic", "link", "ul"],
-                    required=True,
-                    label=_("Heading"),
-                    help_text=_("Add the session description."),
-                ),
-            ),
-            (
-                "paragraph",
-                APIRichTextBlock(
-                    features=["bold", "italic", "link", "ul"],
-                    required=True,
-                    label=_("Paragraph"),
-                    help_text=_("Add the session description."),
-                ),
-            ),
-            (
-                "partner_logo",
-                PartnerLogoChooserBlock(
-                    rendition_size="max-900x900",
-                    verbose_name=_("partner logo"),
-                    help_text=_("An image for the partner logo."),
-                ),
-            ),
-            (
-                "session_quote",
-                QuoteBlock(
-                    help_text=_("A quote with an attribution related to the session."),
-                ),
-            ),
-            (
-                "inset_text",
-                InsetTextBlock(
-                    features=["bold", "italic", "link", "ul"],
-                    verbose_name=_("inset text"),
-                    help_text=_(
-                        "Inset text - TODO ask for better decsription of this? where it sits etc"
-                    ),
-                    blank=True,
-                    null=True,
-                ),
-            ),
-        ],
-        verbose_name=_("session description"),
-        help_text=_(
-            "Add one title and description block, then optionally add logo, quote, and inset text blocks."
-        ),
+    description = StreamField(
+        [("description", SessionDescriptionBlock())],
+        verbose_name=_("description"),
         blank=True,
         null=True,
         max_num=1,
     )
 
-    session_curriculum_connection_description = StreamField(
-        [
-            (
-                "session_curriculum_connection_description",
-                APIRichTextBlock(features=settings.RESTRICTED_RICH_TEXT_FEATURES),
-            )
-        ],
+    curriculum_connection_description = RichTextField(
         verbose_name=_("curriculum connection description"),
         help_text=_(
-            "An optional free text field to add in a fuller description of the source."
+            "A description of how the session connects to the curriculum. This is optional but can help teachers understand the relevance of the session to their teaching."
         ),
         blank=True,
         null=True,
     )
 
-    session_highlights = StreamField(
-        [("session_highlights", ImageGalleryBlock())],
+    highlights = StreamField(
+        [("highlights", ImageGalleryBlock())],
         blank=True,
         help_text=_("Optional image gallery to show what to expect from the session."),
         max_num=1,
@@ -306,10 +249,10 @@ class EducationSessionPage(
     def clean(self):
         super().clean()
 
-        if self.session_price is not None and not self.session_price_detail:
+        if self.price is not None and not self.price_detail:
             raise ValidationError(
                 {
-                    "session_price_detail": _(
+                    "price_detail": _(
                         "Price detail is required when a session price is specified."
                     )
                 }

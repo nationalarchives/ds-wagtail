@@ -1,11 +1,19 @@
-from app.core.blocks.image import APIImageChooserBlock
-from app.core.blocks.paragraph import APIRichTextBlock
-from app.core.blocks.promoted_links import FeaturedExternalLinkBlock, FeaturedPageBlock
-from app.core.blocks.video import YouTubeBlock
-from app.media.blocks import MediaBlock
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from wagtail import blocks
+
+from app.core.blocks import (
+    APIImageChooserBlock,
+    APIRichTextBlock,
+    FeaturedExternalLinkBlock,
+    FeaturedPageBlock,
+    InsetTextBlock,
+    ParagraphBlock,
+    PartnerLogoChooserBlock,
+    QuoteBlock,
+    YouTubeBlock,
+)
+from app.media.blocks import MediaBlock
 
 # Resources - Source
 
@@ -110,3 +118,21 @@ class VenueDetailsBlock(blocks.StructBlock):
         icon = "home"
         label = _("Additional venue details")
         classname = "collapsed"
+
+
+
+class SectionContentBlock(blocks.StreamBlock):
+    description = ParagraphBlock()
+    partner_logo = PartnerLogoChooserBlock()
+    quote = QuoteBlock()
+    inset_text = InsetTextBlock()
+
+
+class SessionDescriptionBlock(blocks.StructBlock):
+    heading = blocks.CharBlock(max_length=100, label="Heading")
+    content = SectionContentBlock(required=False)
+
+    class Meta:
+        label = "Section"
+        group = "Basic text"
+
