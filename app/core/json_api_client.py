@@ -21,9 +21,9 @@ class JSONAPIClient:
     A client for interacting with a JSON API, which can be extended for specific APIs.
     """
 
-    def __init__(self, api_url: str, params: dict = {}):
+    def __init__(self, api_url: str, params: dict | None = None):
         self.api_url: str = api_url
-        self.params: dict = params
+        self.params: dict = params if params is not None else {}
 
     def add_parameter(self, key: str, value: str | int | bool):
         self.params[key] = value
@@ -31,8 +31,8 @@ class JSONAPIClient:
     def add_parameters(self, params: dict):
         self.params |= params
 
-    def get(self, path: str = "/", headers: dict = None) -> dict:
-        url = f"{self.api_url}/{path.lstrip("/")}"
+    def get(self, path: str = "/", headers: dict | None = None) -> dict:
+        url = f"{self.api_url}/{path.lstrip('/')}"
 
         if headers is None:
             headers = {
@@ -52,16 +52,13 @@ class JSONAPIClient:
         except HTTPError:
             if response.status_code == 400:
                 raise APIClientError("Bad request", response=response)
-            elif response.status_code == 401:
+            if response.status_code == 401:
                 raise PermissionDenied("Unauthorized request")
-            elif response.status_code == 403:
+            if response.status_code == 403:
                 raise PermissionDenied("Forbidden")
-            elif response.status_code == 404:
+            if response.status_code == 404:
                 raise Http404("Resource not found")
-            else:
-                raise Exception(
-                    f"Request failed with status code {response.status_code}"
-                )
+            raise Exception(f"Request failed with status code {response.status_code}")
         except Exception:
             raise Exception("Request failed")
         try:

@@ -1,7 +1,8 @@
-from app.api.auth import CustomTokenAuthentication, DummyUser
-from app.api.models import APIToken
 from django.test import RequestFactory, TestCase
 from rest_framework import exceptions
+
+from app.api.auth import CustomTokenAuthentication, DummyUser
+from app.api.models import APIToken
 
 
 class CustomTokenAuthenticationTests(TestCase):

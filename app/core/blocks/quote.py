@@ -1,13 +1,13 @@
-from app.core.blocks.paragraph import APIRichTextBlock
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from wagtail import blocks
+
+from app.core.blocks.paragraph import APIRichTextBlock
 
 from .page_chooser import APIPageChooserBlock
 
 
 class CitationLink(blocks.StructBlock):
-
     citation_internal_link = APIPageChooserBlock(
         label="Internal page",
         required=False,
@@ -24,7 +24,6 @@ class CitationLink(blocks.StructBlock):
 
 
 class CitationBlock(blocks.StructBlock):
-
     citation = blocks.CharBlock(
         required=False,
         max_length=100,

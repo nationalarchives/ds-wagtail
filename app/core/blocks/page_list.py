@@ -1,4 +1,5 @@
-from typing import Any, Optional, Sequence
+from collections.abc import Sequence
+from typing import Any
 
 from django.utils.functional import cached_property
 from wagtail import blocks
@@ -22,10 +23,10 @@ class PageListBlock(blocks.ListBlock):
     def __init__(
         self,
         *page_types: str,
-        exclude_drafts: Optional[bool] = True,
-        exclude_private: Optional[bool] = True,
-        select_related: Optional[Sequence[str]] = None,
-        prefetch_related: Optional[Sequence[Any]] = None,
+        exclude_drafts: bool | None = True,
+        exclude_private: bool | None = True,
+        select_related: Sequence[str] | None = None,
+        prefetch_related: Sequence[Any] | None = None,
         **kwargs,
     ):
         self.page_types = page_types

@@ -1,16 +1,3 @@
-from app.alerts.models import ThemedAlertMixin
-from app.core.blocks.links import LinkBlock
-from app.core.models import BasePageWithRequiredIntro, HeroImageMixin
-from app.core.models.basepage import BasePage
-from app.core.models.mixins import SocialMixin
-from app.ukgwa.blocks import InformationPageStreamBlock, LinkWithDescriptionBlock
-from app.ukgwa.mixins import (
-    BookmarkletMixin,
-    FeaturedLinksMixin,
-    SearchMixin,
-    SidebarNavigationMixin,
-)
-from app.ukgwa.serializers import SubpagesSerializer
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from modelcluster.fields import ParentalKey
@@ -25,6 +12,20 @@ from wagtail.fields import StreamField
 from wagtail.models import Page
 from wagtail.search import index
 from wagtail.snippets.models import register_snippet
+
+from app.alerts.models import ThemedAlertMixin
+from app.core.blocks.links import LinkBlock
+from app.core.models import BasePageWithRequiredIntro, HeroImageMixin
+from app.core.models.basepage import BasePage
+from app.core.models.mixins import SocialMixin
+from app.ukgwa.blocks import InformationPageStreamBlock, LinkWithDescriptionBlock
+from app.ukgwa.mixins import (
+    BookmarkletMixin,
+    FeaturedLinksMixin,
+    SearchMixin,
+    SidebarNavigationMixin,
+)
+from app.ukgwa.serializers import SubpagesSerializer
 
 
 class FeaturedLinksSection(models.Model):
@@ -231,7 +232,6 @@ class InformationPage(
     SidebarNavigationMixin,
     UKGWABasePage,
 ):
-
     parent_page_types = [
         "ukgwa.UKGWAHomePage",
         "ukgwa.SectionIndexPage",
