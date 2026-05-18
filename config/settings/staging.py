@@ -1,7 +1,8 @@
 import os
 
+from tna_utilities import strtobool
+
 from .production import *
-from .util import strtobool
 
 DEBUG = strtobool(os.getenv("DEBUG", "False"))
 
