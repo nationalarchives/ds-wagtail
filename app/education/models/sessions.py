@@ -66,7 +66,7 @@ class EducationSessionPageThemeTag(BaseThemeTag):
 class SessionLocation(Orderable):
     class LocationType(models.TextChoices):
         ONLINE = "online", _("Online")
-        NATIONAL_ARCHIVES = "national_archives", _("At the National Archives")
+        NATIONAL_ARCHIVES = "national_archives", _("At The National Archives")
         YOUR_SCHOOL = "your_school", _("At your school")
         CUSTOM = "custom", _("Custom venue")
 
