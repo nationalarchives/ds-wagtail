@@ -46,16 +46,7 @@ class KeyStage(models.Model):
     def display_name(self):
         if self.stage and self.age_range:
             return f"Key Stage {self.stage} (ages {self.age_range})"
-        elif self.stage:
-            return f"Key Stage {self.stage}"
-        else:
-            return self.name
-
-    @cached_property
-    def public_key_stage(self):
-        if self.stage is None:
-            return self.name
-        return f"Key stage {self.stage}"
+        return self.name
 
     @cached_property
     def short_key_stage(self):
