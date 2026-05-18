@@ -21,9 +21,9 @@ from wagtail.fields import RichTextField, StreamField
 from wagtail.models import Orderable
 
 from ..blocks import (
-    SourceQuestionBlock,
     SourceFeaturedLinkBlock,
     SourceMediaBlock,
+    SourceQuestionBlock,
 )
 from ..serializers import (
     KeyStageSerializer,

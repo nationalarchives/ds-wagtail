@@ -7,8 +7,8 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from wagtail import blocks
 
-
 # Resources - Source
+
 
 class SourceImageWithCaptionBlock(blocks.StructBlock):
     image = APIImageChooserBlock(
@@ -43,6 +43,7 @@ class SourceFeaturedLinkBlock(blocks.StreamBlock):
 
     class Meta:
         label = "Source featured link"
+
 
 class SourceQuestionBlock(blocks.StreamBlock):
     question = blocks.StructBlock(
