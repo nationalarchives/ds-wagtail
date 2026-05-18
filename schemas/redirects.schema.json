@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://www.nationalarchives.gov.uk/wagtail/redirects.schema.json",
+  "title": "Redirect list",
+  "description": "A list of redirects in Wagtail",
+  "type": "object",
+  "properties": {
+    "meta": {
+      "description": "Metadata about redirects in Wagtail",
+      "type": "object",
+      "properties": {
+        "total_count": {
+          "description": "The total number of items in the redirects list",
+          "type": "integer"
+        }
+      },
+      "required": ["total_count"]
+    },
+    "items": {
+      "description": "The items in the redirects list",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "$ref": "https://www.nationalarchives.gov.uk/wagtail/redirect.schema.json"
+      },
+      "uniqueItems": true
+    }
+  },
+  "required": ["meta", "items"]
+}

@@ -212,8 +212,8 @@ class APIResponseTest(WagtailPageTestCase):
                             "type": "quote",
                             "value": {
                                 "quote": '<p data-block-key="xhdo0">Quote text</p>',
+                                "attribution": "John Smith",
                                 "source": {
-                                    "attribution": "John Smith",
                                     "citation": None,
                                     "source_link": {
                                         "citation_internal_link": None,

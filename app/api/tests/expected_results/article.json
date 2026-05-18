@@ -156,7 +156,7 @@
                         "type": "quote",
                         "value": {
                             "quote": "<p data-block-key=\"xhdo0\">Quote text</p>",
-                            "attribution": null,
+                            "attribution": "John Smith",
                             "citation": null,
                             "citation_url": null
                         },

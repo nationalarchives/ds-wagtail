@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.templatetags.static import static
 from wagtail import hooks
 
 from .models.partner_logos import partner_logo_chooserviewset, partner_logo_modelviewset
@@ -65,3 +66,8 @@ def register_admin_viewset():
 @hooks.register("register_admin_viewset")
 def register_viewset():
     return partner_logo_chooserviewset
+
+
+@hooks.register("insert_editor_js")
+def insert_editor_js():
+    return f'<script src="{static("core/js/full_url_preview.js")}"></script>'

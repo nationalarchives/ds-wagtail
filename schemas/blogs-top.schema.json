@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://www.nationalarchives.gov.uk/wagtail/blogs-top.schema.json",
+  "title": "Top-level blog list",
+  "description": "A list of top-level blogs in Wagtail",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "$ref": "https://www.nationalarchives.gov.uk/wagtail/page-summary.schema.json"
+  },
+  "uniqueItems": true
+}

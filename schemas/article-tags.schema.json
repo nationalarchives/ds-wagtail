@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://www.nationalarchives.gov.uk/wagtail/article-tags.schema.json",
+  "title": "Article tags",
+  "description": "Content for article tags",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "allOf": [
+      {
+        "$ref": "https://www.nationalarchives.gov.uk/wagtail/page-summary.schema.json"
+      }
+    ],
+    "properties": {
+      "is_newly_published": {
+        "description": "Whether the page is newly published",
+        "type": "boolean"
+      }
+    },
+    "required": ["is_newly_published"]
+  }
+}
