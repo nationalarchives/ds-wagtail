@@ -209,13 +209,13 @@ class EducationSessionPage(
     )
 
     price = models.FloatField(
-        null=True, blank=True, verbose_name=_("session price")
+        null=True, blank=True, verbose_name=_("price")
     )
 
     price_detail = models.CharField(
-        verbose_name=_("session price detail"),
+        verbose_name=_("price detail"),
         help_text=_(
-            "An explanation of the price. Required if session price is filled in."
+            "An explanation of the price. Required if price is filled in."
         ),
         blank=True,
         max_length=160,
@@ -224,8 +224,8 @@ class EducationSessionPage(
     booking_link = models.URLField(
         null=True,
         blank=True,
-        help_text="Link to booking page",
-        verbose_name="Booking link",
+        help_text=_("Link to booking page"),
+        verbose_name=_("Booking link"),
     )
 
     description = StreamField(
