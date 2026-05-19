@@ -16,6 +16,7 @@ from app.core.blocks.promoted_links import FeaturedExternalLinkBlock, FeaturedPa
 from app.core.blocks.section import SubHeadingBlock
 from app.core.models import (
     BasePageWithRequiredIntro,
+    ContentWarningMixin,
     PublishedDateMixin,
     RequiredHeroImageMixin,
 )
@@ -164,6 +165,7 @@ class TeachingResourcePage(
     EducationTaxonomyMixin,
     PublishedDateMixin,
     RequiredHeroImageMixin,
+    ContentWarningMixin,
     BasePageWithRequiredIntro,
 ):
     """A page to display a teaching resource"""
@@ -264,6 +266,7 @@ class TeachingResourcePage(
     content_panels = (
         BasePageWithRequiredIntro.content_panels
         + RequiredHeroImageMixin.content_panels
+        + ContentWarningMixin.content_panels
         + [
             FieldPanel("enquiry_question"),
             MultiFieldPanel(
