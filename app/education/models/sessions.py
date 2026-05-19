@@ -68,7 +68,7 @@ class SessionLocation(Orderable):
         CUSTOM = "custom", _("Custom venue")
 
     class Regions(models.TextChoices):
-        SOUTH_EAST_LONDON = "south_east", "South East and London"
+        SOUTH_EAST = "south_east", "South East and London"
         SOUTH_WEST = "south_west", "South West"
         MIDLANDS = "midlands", "Midlands"
         NORTH_EAST = "north_east", "North East"
