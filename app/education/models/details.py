@@ -99,12 +99,32 @@ class TimePeriod(models.Model):
         help_text=_("Whether this time period can be tagged on teaching resources."),
     )
 
+    @cached_property
+    def display_year_range(self):
+        if self.year_from is None and self.year_to is None:
+            return ""
+
+        if self.year_from is None:
+            return f"pre {self.year_to}"
+
+        if self.year_to is None:
+            return f"{self.year_from} - present"
+
+        return f"{self.year_from}-{self.year_to}"
+
+    @cached_property
+    def display_name(self):
+        year_range = self.display_year_range
+        if year_range:
+            return f"{self.name} ({year_range})"
+        return self.name
+
     class Meta:
         verbose_name = _("Time period")
         verbose_name_plural = _("Time periods")
 
     def __str__(self):
-        return self.name
+        return self.display_name
 
 
 class Theme(models.Model):

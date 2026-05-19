@@ -6,11 +6,17 @@ from .document import DocumentsBlock
 from .featured_content import (
     FeaturedCollectionBlock,
 )
-from .image import ContentImageBlock, ImageGalleryBlock, PartnerLogoListBlock
+from .image import (
+    APIImageChooserBlock,
+    ContentImageBlock,
+    ImageGalleryBlock,
+    PartnerLogoChooserBlock,
+    PartnerLogoListBlock,
+)
 from .lists import DescriptionListBlock, DoDontListBlock, PeopleListingBlock
 from .page_chooser import APIPageChooserBlock
 from .page_list import PageListBlock
-from .paragraph import ParagraphBlock
+from .paragraph import APIRichTextBlock, ParagraphBlock
 from .promoted_links import (
     FeaturedExternalLinkBlock,
     FeaturedPageBlock,
@@ -24,6 +30,8 @@ from .text import InsetTextBlock, WarningTextBlock
 from .video import MixedMediaBlock, YouTubeBlock
 
 __all__ = [
+    "APIImageChooserBlock",
+    "APIRichTextBlock",
     "APIPageChooserBlock",
     "AccordionsBlock",
     "ButtonBlock",
@@ -46,6 +54,7 @@ __all__ = [
     "MixedMediaBlock",
     "PageListBlock",
     "ParagraphBlock",
+    "PartnerLogoChooserBlock",
     "PartnerLogoListBlock",
     "PeopleListingBlock",
     "QuoteBlock",

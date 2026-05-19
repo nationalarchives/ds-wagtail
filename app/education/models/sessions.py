@@ -1,31 +1,28 @@
-from app.core.blocks import InsetTextBlock
+from django.core.exceptions import ValidationError
+from django.db import models
+from django.utils.translation import gettext_lazy as _
+from modelcluster.fields import ParentalKey
+from wagtail.admin.panels import (
+    FieldPanel,
+    InlinePanel,
+    MultiFieldPanel,
+    ObjectList,
+    TabbedInterface,
+)
+from wagtail.api import APIField
+from wagtail.fields import RichTextField, StreamField
+from wagtail.models import Orderable
+
 from app.core.blocks.image import (
     ImageGalleryBlock,
-    PartnerLogoChooserBlock,
 )
-from app.core.blocks.paragraph import APIRichTextBlock
-from app.core.blocks.quote import QuoteBlock
 from app.core.models import (
     BasePageWithRequiredIntro,
     PublishedDateMixin,
     RequiredHeroImageMixin,
 )
-from django.conf import settings
-from django.core.exceptions import ValidationError
-from django.db import models
-from django.utils.translation import gettext_lazy as _
-from modelcluster.fields import ParentalKey
-from wagtail import blocks
-from wagtail.admin.panels import (
-    FieldPanel,
-    InlinePanel,
-    MultiFieldPanel,
-)
-from wagtail.api import APIField
-from wagtail.fields import StreamField
-from wagtail.models import Orderable
 
-from ..blocks import VenueDetailsBlock
+from ..blocks import SessionDescriptionBlock
 from ..serializers import (
     KeyStageSerializer,
     ThemeSerializer,
@@ -36,7 +33,7 @@ from .details import (
     BaseThemeTag,
     BaseTimePeriodTag,
 )
-from .mixins import EducationTaxonomyMixin, RelatedPageLinkBase
+from .mixins import EducationTaxonomyMixin
 
 
 class EducationSessionPageKeyStageTag(BaseKeyStageTag):
@@ -66,9 +63,16 @@ class EducationSessionPageThemeTag(BaseThemeTag):
 class SessionLocation(Orderable):
     class LocationType(models.TextChoices):
         ONLINE = "online", _("Online")
-        NATIONAL_ARCHIVES = "national_archives", _("At the National Archives")
+        NATIONAL_ARCHIVES = "national_archives", _("At The National Archives")
         YOUR_SCHOOL = "your_school", _("At your school")
         CUSTOM = "custom", _("Custom venue")
+
+    class Regions(models.TextChoices):
+        SOUTH_EAST = "south_east", "South East and London"
+        SOUTH_WEST = "south_west", "South West"
+        MIDLANDS = "midlands", "Midlands"
+        NORTH_EAST = "north_east", "North East"
+        NORTH_WEST = "north_west", "North West"
 
     page = ParentalKey(
         "education.EducationSessionPage",
@@ -84,27 +88,72 @@ class SessionLocation(Orderable):
         null=True,
     )
 
-    session_duration = models.CharField(
-        verbose_name=_("session duration"),
+    duration = models.CharField(
+        verbose_name=_("duration"),
         help_text=_(
-            "A clear description of the session duration, e.g. 1 hour, 1 to 2 hours."
+            "A clear description of the session duration for this location, e.g. 1 hour, 1 to 2 hours."
         ),
         blank=True,
+        null=True,
         max_length=160,
     )
 
-    venue_details = StreamField(
-        [("venue_details", VenueDetailsBlock())],
+    region = models.CharField(
+        max_length=32,
+        choices=Regions.choices,
+        verbose_name=_("region"),
+        help_text=_(
+            "The region where the session is offered. Required for schools and custom venues."
+        ),
+        null=True,
         blank=True,
-        max_num=1,
-        use_json_field=True,
-        verbose_name=_("venue details"),
+    )
+
+    venue_name = models.CharField(
+        blank=True,
+        null=True,
+        max_length=255,
+        verbose_name=_("Venue name"),
+        help_text=_("Required only when location type is Custom venue."),
+    )
+
+    address_line_1 = models.CharField(
+        blank=True,
+        null=True,
+        max_length=255,
+        verbose_name=_("Address line 1"),
+        help_text=_("Required only when location type is Custom venue."),
+    )
+
+    address_line_2 = models.CharField(
+        blank=True,
+        null=True,
+        max_length=255,
+        verbose_name=_("Address line 2"),
+        help_text=_("Required only when location type is Custom venue."),
+    )
+
+    postcode = models.CharField(
+        blank=True,
+        null=True,
+        max_length=20,
+        verbose_name=_("Postcode"),
+        help_text=_("Required only when location type is Custom venue."),
     )
 
     panels = [
         FieldPanel("location_type"),
-        FieldPanel("session_duration"),
-        FieldPanel("venue_details"),
+        FieldPanel("duration"),
+        FieldPanel("region"),
+        MultiFieldPanel(
+            [
+                FieldPanel("venue_name"),
+                FieldPanel("address_line_1"),
+                FieldPanel("address_line_2"),
+                FieldPanel("postcode"),
+            ],
+            heading=_("Custom venue address details"),
+        ),
     ]
 
     class Meta:
@@ -114,54 +163,62 @@ class SessionLocation(Orderable):
 
     def clean(self):
         super().clean()
+        errors = {}
 
-        venue_data = {}
-        if self.venue_details:
-            venue_data = self.venue_details[0].value
-
-        venue_name = (venue_data.get("venue_name") or "").strip()
-        address_line_1 = (venue_data.get("address_line_1") or "").strip()
-        address_line_2 = (venue_data.get("address_line_2") or "").strip()
-        postcode = (venue_data.get("postcode") or "").strip()
-        session_regions = venue_data.get("session_regions")
+        venue_name = (self.venue_name or "").strip()
+        address_line_1 = (self.address_line_1 or "").strip()
+        address_line_2 = (self.address_line_2 or "").strip()
+        postcode = (self.postcode or "").strip()
+        region = (self.region or "").strip()
 
         has_venue_details = any([venue_name, address_line_1, address_line_2, postcode])
+        location_requires_region = self.location_type in [
+            self.LocationType.YOUR_SCHOOL,
+            self.LocationType.CUSTOM,
+        ]
 
-        if self.location_type == self.LocationType.CUSTOM and not venue_name:
-            raise ValidationError(
-                {"venue_details": _("Venue name is required for custom venue.")}
+        if self.location_type == self.LocationType.CUSTOM:
+            if not venue_name:
+                errors["venue_name"] = _("Venue name is required for custom venue.")
+            if not address_line_1:
+                errors["address_line_1"] = _(
+                    "Address line 1 is required for custom venue."
+                )
+            if not postcode:
+                errors["postcode"] = _("Postcode is required for custom venue.")
+        elif has_venue_details:
+            errors["venue_name"] = _(
+                "Venue details should only be provided for custom venue location type."
             )
 
-        if self.location_type == self.LocationType.CUSTOM and not session_regions:
-            raise ValidationError(
-                {"venue_details": _("Region is required for custom venue.")}
+        if location_requires_region and not region:
+            errors["region"] = _(
+                "Region is required for school or custom venue location types."
+            )
+        elif region and not location_requires_region:
+            errors["region"] = _(
+                "Region should only be provided for school or custom venue location types."
             )
 
-        if self.location_type != self.LocationType.CUSTOM and has_venue_details:
-            raise ValidationError(
-                {
-                    "venue_details": _(
-                        "Leave venue details empty unless location type is Custom venue."
-                    )
-                }
-            )
+        if errors:
+            raise ValidationError(errors)
 
-        @property
-        def display_name(self):
-            if self.location_type == self.LocationType.CUSTOM:
-                if self.venue_details:
-                    venue_name = self.venue_details[0].value.get("venue_name")
-                    if venue_name:
-                        return venue_name
-                return self.get_location_type_display()
+    @property
+    def display_label(self):
+        if self.location_type == self.LocationType.CUSTOM:
+            if self.venue_details:
+                venue_name = self.venue_details[0].value.get("venue_name")
+                if venue_name:
+                    return venue_name
             return self.get_location_type_display()
+        return self.get_location_type_display()
 
-        def __str__(self):
-            return self.display_name
+    def __str__(self):
+        return self.display_label
 
 
-class RelatedEducationSessions(RelatedPageLinkBase):
-    """Links to take users to related educaiton sessions"""
+class RelatedEducationSessions(Orderable):
+    """Links to take users to related education sessions"""
 
     page = ParentalKey(
         "education.EducationSessionPage",
@@ -169,10 +226,16 @@ class RelatedEducationSessions(RelatedPageLinkBase):
         related_name="related_education_sessions",
     )
 
-    panels = RelatedPageLinkBase.panels
+    selected_page = models.ForeignKey(
+        "education.EducationSessionPage",
+        on_delete=models.CASCADE,
+        related_name="+",
+        verbose_name=_("selected page"),
+    )
 
     class Meta:
         verbose_name = _("related education session")
+        ordering = ["sort_order"]
 
 
 class EducationSessionPage(
@@ -187,7 +250,7 @@ class EducationSessionPage(
         "education.EducationSessionsListingPage",
     ]
 
-    session_start_date = models.DateField(
+    start_date = models.DateField(
         verbose_name=_("start date"),
         null=True,
         blank=True,
@@ -196,7 +259,7 @@ class EducationSessionPage(
         ),
     )
 
-    session_end_date = models.DateField(
+    end_date = models.DateField(
         verbose_name=_("end date"),
         null=True,
         blank=True,
@@ -205,185 +268,109 @@ class EducationSessionPage(
         ),
     )
 
-    session_price = models.FloatField(
-        null=True, blank=True, verbose_name=_("session price")
-    )
+    price = models.FloatField(null=True, blank=True, verbose_name=_("price"))
 
-    session_price_detail = models.CharField(
-        verbose_name=_("session price detail"),
-        help_text=_(
-            "An explanation of the price. Required if session price is filled in."
-        ),
+    price_detail = models.CharField(
+        verbose_name=_("price detail"),
+        help_text=_("An explanation of the price. Required if price is filled in."),
         blank=True,
         max_length=160,
     )
 
-    session_booking_link = models.URLField(
+    booking_link = models.URLField(
         null=True,
         blank=True,
-        help_text="Link to booking page",
-        verbose_name="Booking link",
+        help_text=_("Link to booking page"),
+        verbose_name=_("Booking link"),
     )
 
-    session_title = blocks.CharBlock(
-        required=True,
-        max_length=160,
-        label=_("Session title"),
-        help_text=_("A unique, descriptive title for the session."),
-    )
-
-    session_description = StreamField(
-        [
-            (
-                "heading",
-                APIRichTextBlock(
-                    features=["bold", "italic", "link", "ul"],
-                    required=True,
-                    label=_("Heading"),
-                    help_text=_("Add the session description."),
-                ),
-            ),
-            (
-                "paragraph",
-                APIRichTextBlock(
-                    features=["bold", "italic", "link", "ul"],
-                    required=True,
-                    label=_("Paragraph"),
-                    help_text=_("Add the session description."),
-                ),
-            ),
-            (
-                "partner_logo",
-                PartnerLogoChooserBlock(
-                    rendition_size="max-900x900",
-                    verbose_name=_("partner logo"),
-                    help_text=_("An image for the partner logo."),
-                ),
-            ),
-            (
-                "session_quote",
-                QuoteBlock(
-                    help_text=_("A quote with an attribution related to the session."),
-                ),
-            ),
-            (
-                "inset_text",
-                InsetTextBlock(
-                    features=["bold", "italic", "link", "ul"],
-                    verbose_name=_("inset text"),
-                    help_text=_(
-                        "Inset text - TODO ask for better decsription of this? where it sits etc"
-                    ),
-                    blank=True,
-                    null=True,
-                ),
-            ),
-        ],
-        verbose_name=_("session description"),
-        help_text=_(
-            "Add one title and description block, then optionally add logo, quote, and inset text blocks."
-        ),
+    description = StreamField(
+        [("description", SessionDescriptionBlock())],
+        verbose_name=_("description"),
         blank=True,
         null=True,
-        max_num=1,
+        min_num=1,
     )
 
-    session_curriculum_connection_description = StreamField(
-        [
-            (
-                "session_curriculum_connection_description",
-                APIRichTextBlock(features=settings.RESTRICTED_RICH_TEXT_FEATURES),
-            )
-        ],
+    curriculum_connection_description = RichTextField(
         verbose_name=_("curriculum connection description"),
         help_text=_(
-            "An optional free text field to add in a fuller description of the source."
+            "A description of how the session connects to the curriculum. This is optional but can help teachers understand the relevance of the session to their teaching."
         ),
         blank=True,
         null=True,
     )
 
-    session_highlights = StreamField(
-        [("session_highlights", ImageGalleryBlock())],
+    highlights = StreamField(
+        [("highlights", ImageGalleryBlock())],
         blank=True,
         help_text=_("Optional image gallery to show what to expect from the session."),
         max_num=1,
     )
 
-    # Contact us - contact us component?
-
-    # TODO: think about adding key details tab ala /services/ds-wagtail/app/whatson/models/details.py: for key details bar
-
-    #     edit_handler = TabbedInterface(
-    #         [
-    #             ObjectList(content_panels, heading="Content"),
-    #             ObjectList(key_details_panels, heading="Key details"),
-    #             ObjectList(promote_panels, heading="Promote"),
-    #             ObjectList(BasePageWithRequiredIntro.settings_panels, heading="Settings"),
-    #         ]
-    #     )
-
     def clean(self):
         super().clean()
 
-        if self.session_price is not None and not self.session_price_detail:
+        if self.price is not None and not self.price_detail:
             raise ValidationError(
                 {
-                    "session_price_detail": _(
+                    "price_detail": _(
                         "Price detail is required when a session price is specified."
                     )
                 }
+            )
+        if self.price is None and self.price_detail:
+            raise ValidationError(
+                {"price": _("Price is required when price detail is specified.")}
             )
 
     content_panels = (
         BasePageWithRequiredIntro.content_panels
         + RequiredHeroImageMixin.content_panels
         + [
-            FieldPanel("session_start_date"),
-            FieldPanel("session_end_date"),
             MultiFieldPanel(
                 [
-                    MultiFieldPanel(
-                        [
-                            MultiFieldPanel(
-                                [
-                                    FieldPanel("session_price"),
-                                    FieldPanel("session_price_detail"),
-                                ],
-                                heading=_("Session price"),
-                            ),
-                            InlinePanel(
-                                "session_locations",
-                                label=_("Location"),
-                                heading=_("Session locations"),
-                                min_num=1,
-                            ),
-                            FieldPanel("session_booking_link"),
-                        ],
-                    ),
-                ],
-                heading=_("Session key details bar"),
-            ),
-            MultiFieldPanel(
-                [
-                    FieldPanel("session_description"),
-                    FieldPanel("session_curriculum_connection_description"),
-                    FieldPanel("session_highlights"),
+                    FieldPanel("description"),
+                    FieldPanel("curriculum_connection_description"),
+                    FieldPanel("highlights"),
                 ]
             ),
             InlinePanel(
                 "related_education_sessions",
                 heading=_("More education sessions"),
                 help_text=_(
-                    "Education sessions that are selected to be shown in the related education sesisons section"
+                    "Education sessions that are selected to be shown in the related education sessions section"
                 ),
             ),
         ]
     )
 
+    key_details_panels = [
+        MultiFieldPanel(
+            [
+                FieldPanel("start_date"),
+                FieldPanel("end_date"),
+                MultiFieldPanel(
+                    [
+                        FieldPanel("price"),
+                        FieldPanel("price_detail"),
+                    ],
+                    heading=_("Session price"),
+                ),
+                InlinePanel(
+                    "session_locations",
+                    label=_("Location"),
+                    heading=_("Session locations"),
+                    min_num=1,
+                ),
+                FieldPanel("booking_link"),
+            ],
+        ),
+    ]
+
     promote_panels = (
-        BasePageWithRequiredIntro.promote_panels
-        + PublishedDateMixin.promote_panels
+        PublishedDateMixin.promote_panels
+        + BasePageWithRequiredIntro.promote_panels
         + EducationTaxonomyMixin.taxonomy_promote_panels()
     )
 
@@ -396,3 +383,12 @@ class EducationSessionPage(
         APIField("time_periods", serializer=TimePeriodSerializer(many=True)),
         APIField("themes", serializer=ThemeSerializer(many=True)),
     ]
+
+    edit_handler = TabbedInterface(
+        [
+            ObjectList(content_panels, heading="Content"),
+            ObjectList(key_details_panels, heading="Key details"),
+            ObjectList(promote_panels, heading="Promote"),
+            ObjectList(BasePageWithRequiredIntro.settings_panels, heading="Settings"),
+        ]
+    )

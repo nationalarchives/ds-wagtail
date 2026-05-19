@@ -1,6 +1,5 @@
 # etna:allowAlterField
 
-from datetime import date
 
 from django.db import migrations
 
@@ -32,12 +31,12 @@ THEMES = [
 
 # Tuple: (slug, name, year_from, year_to, available_for_resources)
 TIME_PERIODS = [
-    ("early-civilisations-pre-900", "Early civilisations (pre 900)", None, 900, False),
-    ("medieval-900-1485", "Medieval (900-1485)", 900, 1485, True),
-    ("early-modern-1485-1750", "Early modern (1485-1750)", 1485, 1750, True),
-    ("industrial-revolution-1750-1901", "Industrial revolution (1750-1901)", 1750, 1901, True),
-    ("early-twentieth-century-1901-1945", "Early Twentieth Century (1901-1945)", 1901, 1945, True),
-    ("post-war-and-modern-1945-present", "Post-War and modern (1945- present)", 1945, None, True),
+    ("early-civilisations", "Early civilisations", None, 900, False),
+    ("medieval", "Medieval", 900, 1485, True),
+    ("early-modern", "Early modern", 1485, 1750, True),
+    ("industrial-revolution", "Industrial revolution", 1750, 1901, True),
+    ("early-twentieth-century", "Early Twentieth Century", 1901, 1945, True),
+    ("post-war-and-modern", "Post-War and modern", 1945, None, True),
     ("cross-period", "Cross period", None, None, True),
 ]
 

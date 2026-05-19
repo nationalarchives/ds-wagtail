@@ -1,7 +1,3 @@
-from app.core.models import (
-    BasePageWithRequiredIntro,
-)
-from app.core.serializers import DefaultPageSerializer
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from wagtail.admin.panels import (
@@ -10,6 +6,11 @@ from wagtail.admin.panels import (
     PageChooserPanel,
 )
 from wagtail.api import APIField
+
+from app.core.models import (
+    BasePageWithRequiredIntro,
+)
+from app.core.serializers import DefaultPageSerializer
 
 
 class TeachingResourcesListingPage(BasePageWithRequiredIntro):
