@@ -5,7 +5,7 @@ from .paragraph import APIRichTextBlock
 
 
 class ContactBlock(blocks.StructBlock):
-    title = blocks.CharBlock()
+    title = blocks.CharBlock(verbose_name="Title")
     body = APIRichTextBlock(required=False, features=["link"])
     address = blocks.TextBlock(
         required=False, features=settings.INLINE_RICH_TEXT_FEATURES
