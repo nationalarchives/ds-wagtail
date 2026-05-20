@@ -324,14 +324,15 @@ class EducationSessionPage(
             raise ValidationError(
                 {"price": _("Price is required when price detail is specified.")}
             )
-if (
-    self.start_date is not None
-    and self.end_date is not None
-    and self.start_date >= self.end_date
-):
-    raise ValidationError(
-        {"end_date": _("End date must be later than start date.")}
-    )
+        if (
+            self.start_date is not None
+            and self.end_date is not None
+            and self.start_date >= self.end_date
+        ):
+            raise ValidationError(
+                {"end_date": _("End date must be later than start date.")}
+            )
+
     content_panels = (
         BasePageWithRequiredIntro.content_panels
         + RequiredHeroImageMixin.content_panels
