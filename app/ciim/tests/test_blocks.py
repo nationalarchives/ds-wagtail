@@ -1,7 +1,8 @@
 from unittest.mock import patch
 
-from app.ciim.blocks import RecordChooserBlock
 from django.test import SimpleTestCase
+
+from app.ciim.blocks import RecordChooserBlock
 
 
 class RecordChooserBlockTests(SimpleTestCase):

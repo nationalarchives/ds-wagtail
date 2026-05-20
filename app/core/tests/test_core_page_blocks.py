@@ -7,11 +7,12 @@
 from types import SimpleNamespace
 from unittest.mock import Mock, patch
 
+from django.test import SimpleTestCase
+
 from app.core.blocks.lists import PeopleListingBlock
 from app.core.blocks.page_chooser import APIPageChooserBlock
 from app.core.blocks.promoted_links import FeaturedPageBlock
 from app.core.serializers import DefaultPageSerializer
-from django.test import SimpleTestCase
 
 
 class APIPageChooserBlockTests(SimpleTestCase):

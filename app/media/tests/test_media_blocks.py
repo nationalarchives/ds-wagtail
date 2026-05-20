@@ -1,8 +1,9 @@
 from types import SimpleNamespace
 from unittest.mock import patch
 
-from app.media.blocks import MediaChooserBlock
 from django.test import SimpleTestCase
+
+from app.media.blocks import MediaChooserBlock
 
 
 def _make_media_value(**overrides):

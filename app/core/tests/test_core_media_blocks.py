@@ -6,13 +6,14 @@
 
 from unittest.mock import patch
 
+from django.test import SimpleTestCase
+
 from app.core.blocks.image import (
     APIImageChooserBlock,
     ImageGalleryBlock,
     PartnerLogoChooserBlock,
 )
 from app.core.blocks.shop import ShopCollectionBlock
-from django.test import SimpleTestCase
 
 
 class APIImageChooserBlockTests(SimpleTestCase):

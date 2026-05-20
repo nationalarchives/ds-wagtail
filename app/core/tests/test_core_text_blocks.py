@@ -6,12 +6,13 @@
 
 from unittest.mock import patch
 
-from app.core.blocks.code import CodeBlock
-from app.core.blocks.paragraph import APIRichTextBlock
-from app.core.blocks.quote import QuoteBlock, ReviewBlock
 from django.core.exceptions import ValidationError
 from django.test import SimpleTestCase
 from wagtail.rich_text import RichText
+
+from app.core.blocks.code import CodeBlock
+from app.core.blocks.paragraph import APIRichTextBlock
+from app.core.blocks.quote import QuoteBlock, ReviewBlock
 
 
 def _make_code_value(**overrides):

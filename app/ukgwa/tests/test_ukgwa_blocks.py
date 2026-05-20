@@ -1,7 +1,8 @@
 from unittest.mock import patch
 
-from app.ukgwa.blocks import BookmarkletBlock, LinkWithDescriptionBlock
 from django.test import SimpleTestCase
+
+from app.ukgwa.blocks import BookmarkletBlock, LinkWithDescriptionBlock
 
 
 def _make_link_representation(**overrides):

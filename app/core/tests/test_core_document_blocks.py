@@ -1,8 +1,9 @@
 from types import SimpleNamespace
 from unittest.mock import patch
 
-from app.core.blocks.document import DocumentBlock
 from django.test import SimpleTestCase
+
+from app.core.blocks.document import DocumentBlock
 
 
 class DocumentBlockTests(SimpleTestCase):

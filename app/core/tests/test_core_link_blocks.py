@@ -6,6 +6,11 @@
 
 from types import SimpleNamespace
 
+from django.core.exceptions import ValidationError
+from django.test import SimpleTestCase, TestCase
+from wagtail.blocks.struct_block import StructBlockValidationError
+from wagtail.models import Site
+
 from app.core.blocks.cta import ButtonBlock
 from app.core.blocks.links import (
     InternalLinkBlock,
@@ -13,10 +18,6 @@ from app.core.blocks.links import (
     LinkColumnWithHeaderBlock,
 )
 from app.generic_pages.factories import GeneralPageFactory
-from django.core.exceptions import ValidationError
-from django.test import SimpleTestCase, TestCase
-from wagtail.blocks.struct_block import StructBlockValidationError
-from wagtail.models import Site
 
 
 class _LinkValue:
