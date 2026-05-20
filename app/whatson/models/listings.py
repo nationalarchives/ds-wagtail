@@ -218,6 +218,7 @@ class WhatsOnCategoryPage(BasePageWithRequiredIntro):
                 "end_date__gte": timezone.now(),
             },
             order_by="start_date",
+            exclude={"pk": self.featured_page_id},
         )
 
     @cached_property
@@ -469,6 +470,7 @@ class EventsListingPage(BasePageWithRequiredIntro):
             page_types=[EventPage],
             filters={"end_date__gte": timezone.now()},
             order_by="start_date",
+            exclude={"pk": self.featured_page_id},
         )
 
     @cached_property
