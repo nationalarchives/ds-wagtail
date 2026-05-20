@@ -1,7 +1,10 @@
 from django.conf import settings
 from django.templatetags.static import static
+from django.urls import path, reverse
 from wagtail import hooks
+from wagtail.admin.menu import MenuItem
 
+from .admin_views import invalidate_tree_explorer_cache, tree_explorer_view
 from .models.partner_logos import partner_logo_chooserviewset, partner_logo_modelviewset
 
 
@@ -71,3 +74,33 @@ def register_viewset():
 @hooks.register("insert_editor_js")
 def insert_editor_js():
     return f'<script src="{static("core/js/full_url_preview.js")}"></script>'
+
+
+@hooks.register("register_admin_urls")
+def register_tree_explorer_admin_urls():
+    return [
+        path(
+            "tree-explorer/",
+            tree_explorer_view,
+            name="tree_explorer",
+        ),
+    ]
+
+
+@hooks.register("register_admin_menu_item")
+def register_tree_explorer_menu_item():
+    return MenuItem(
+        "Site tree",
+        reverse("tree_explorer"),
+        icon_name="list-ul",
+        order=150,
+    )
+
+
+hooks.register("after_create_page")(invalidate_tree_explorer_cache)
+hooks.register("after_edit_page")(invalidate_tree_explorer_cache)
+hooks.register("after_delete_page")(invalidate_tree_explorer_cache)
+hooks.register("after_move_page")(invalidate_tree_explorer_cache)
+hooks.register("after_copy_page")(invalidate_tree_explorer_cache)
+hooks.register("after_publish_page")(invalidate_tree_explorer_cache)
+hooks.register("after_unpublish_page")(invalidate_tree_explorer_cache)
