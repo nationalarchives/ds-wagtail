@@ -51,7 +51,9 @@ class APIImageChooserBlock(ImageChooserBlock):
 
 
 class ContentImageBlock(blocks.StructBlock):
-    image = APIImageChooserBlock(rendition_size="max-900x900", required=True, verbose_name="Image")
+    image = APIImageChooserBlock(
+        rendition_size="max-900x900", required=True, verbose_name="Image"
+    )
     caption = APIRichTextBlock(
         features=["bold", "italic", "link"],
         help_text=(
