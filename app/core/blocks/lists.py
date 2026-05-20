@@ -34,7 +34,7 @@ class DoDontListBlock(blocks.StructBlock):
 
 
 class DescriptionListItemBlock(blocks.StructBlock):
-    term = blocks.CharBlock(required=True)
+    term = blocks.CharBlock(required=True, verbose_name="Term")
     detail = APIRichTextBlock(features=settings.INLINE_RICH_TEXT_FEATURES)
 
     class Meta:
