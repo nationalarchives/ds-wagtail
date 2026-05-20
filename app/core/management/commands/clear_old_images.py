@@ -1,8 +1,9 @@
 from datetime import timedelta
 
-from app.images.models import CustomImage
 from django.core.management.base import BaseCommand
 from django.utils import timezone
+
+from app.images.models import CustomImage
 
 
 class Command(BaseCommand):

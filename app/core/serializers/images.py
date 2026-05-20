@@ -7,8 +7,10 @@ def image_generator(
     jpeg_quality=60,
     webp_quality=70,
     background_colour=None,
-    formats=["jpeg", "webp"],
+    formats=None,
 ):
+    if formats is None:
+        formats = ["jpeg", "webp"]
     if not original_image:
         return None
 
@@ -76,10 +78,12 @@ class ImageSerializer(Serializer):
         jpeg_quality=60,
         webp_quality=70,
         background_colour="fff",
-        formats=["jpeg", "webp"],
+        formats=None,
         *args,
         **kwargs,
     ):
+        if formats is None:
+            formats = ["jpeg", "webp"]
         self.rendition_size = rendition_size
         self.jpeg_quality = jpeg_quality
         self.webp_quality = webp_quality

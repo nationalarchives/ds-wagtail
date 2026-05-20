@@ -1,0 +1,19 @@
+{% load i18n wagtailadmin_tags %}
+<a class="tree-node__title" href="{% url 'wagtailadmin_explore' node.page_id %}">{{ node.title }}{% if node.child_count %} ({{ node.child_count }}){% endif %}</a>
+
+<span class="tree-node__meta">
+    {{ node.verbose_name }}
+</span>
+
+<span class="tree-node__actions">
+    <a class="button button-small button-secondary" href="{% url 'wagtailadmin_pages:edit' node.page_id %}">{% trans "Edit" %}</a>
+    {% if node.live %}
+        {% if node.live_url %}
+            <a class="w-status tree-node__status" href="{{ node.live_url }}" target="_blank" rel="noopener noreferrer">{% trans "Live" %}</a>
+        {% else %}
+            <span class="w-status tree-node__status">{% trans "Live" %}</span>
+        {% endif %}
+    {% else %}
+        <span class="w-status tree-node__status">{% trans "Draft" %}</span>
+    {% endif %}
+</span>

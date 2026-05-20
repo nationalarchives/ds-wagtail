@@ -1,12 +1,13 @@
 from datetime import timedelta
 
-from app.alerts.models import Alert
-from app.alerts.serializers import AlertSerializer
-from app.generic_pages.factories import GeneralPageFactory
 from django.core.exceptions import ValidationError
 from django.utils import timezone
 from wagtail.models import Site
 from wagtail.test.utils import WagtailPageTestCase
+
+from app.alerts.models import Alert
+from app.alerts.serializers import AlertSerializer
+from app.generic_pages.factories import GeneralPageFactory
 
 
 class AlertActivityTests(WagtailPageTestCase):

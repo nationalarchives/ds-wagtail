@@ -1,7 +1,8 @@
-from app.articles.models import FocusedArticlePage
-from app.images.models import CustomImage
 from django.test import TestCase
 from wagtail.models import Site
+
+from app.articles.models import FocusedArticlePage
+from app.images.models import CustomImage
 
 from ..models import AuthorTag, PeopleIndexPage, PersonPage
 

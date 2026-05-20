@@ -1,10 +1,3 @@
-from app.alerts.models import AlertMixin
-from app.core.serializers import (
-    AliasOfSerializer,
-    ImageSerializer,
-    MourningSerializer,
-    RichTextSerializer,
-)
 from django.conf import settings
 
 # from django.core.exceptions import ValidationError
@@ -20,6 +13,14 @@ from wagtail.fields import RichTextField
 from wagtail.images import get_image_model_string
 from wagtail.models import Page
 from wagtail.search import index
+
+from app.alerts.models import AlertMixin
+from app.core.serializers import (
+    AliasOfSerializer,
+    ImageSerializer,
+    MourningSerializer,
+    RichTextSerializer,
+)
 
 from .mixins import CustomHeadlessPreviewMixin, SocialMixin
 
@@ -185,9 +186,9 @@ class BasePage(AlertMixin, SocialMixin, CustomHeadlessPreviewMixin, Page):
         else:
             url_parts = self.alias_of.get_url_parts()
 
-        if url_parts is None or url_parts[1] is None and url_parts[2] is None:
+        if url_parts is None or (url_parts[1] is None and url_parts[2] is None):
             # page is not routable
-            return
+            return None
 
         return url_parts[2]
 
@@ -206,8 +207,7 @@ class BasePage(AlertMixin, SocialMixin, CustomHeadlessPreviewMixin, Page):
         """
         if self.alias_of is None:
             return self.get_full_url()
-        else:
-            return self.alias_of.get_full_url()
+        return self.alias_of.get_full_url()
 
     @property
     def url(self):
@@ -219,8 +219,7 @@ class BasePage(AlertMixin, SocialMixin, CustomHeadlessPreviewMixin, Page):
         """
         if self.alias_of is None:
             return self.get_url()
-        else:
-            return self.alias_of.get_url()
+        return self.alias_of.get_url()
 
     page_path = property(get_page_path)
 

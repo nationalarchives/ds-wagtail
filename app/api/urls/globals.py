@@ -1,3 +1,10 @@
+from django.conf import settings
+from django.urls import path
+from rest_framework.response import Response
+from rest_framework.viewsets import GenericViewSet
+from wagtail.api.v2.serializers import StreamField as StreamFieldSerializer
+from wagtail.models import Site
+
 from app.alerts.models import AlertSerializer
 from app.api.permissions import IsAPITokenAuthenticated
 from app.api.utils import get_site_from_request
@@ -5,12 +12,6 @@ from app.core.models import BasePage
 from app.core.serializers import MourningSerializer
 from app.home.models import HomePage
 from app.navigation.models import NavigationSettings
-from django.conf import settings
-from django.urls import path
-from rest_framework.response import Response
-from rest_framework.viewsets import GenericViewSet
-from wagtail.api.v2.serializers import StreamField as StreamFieldSerializer
-from wagtail.models import Site
 
 
 class GlobalsAPIViewSet(GenericViewSet):
