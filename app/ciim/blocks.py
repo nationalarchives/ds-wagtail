@@ -48,7 +48,9 @@ class RecordLinkBlock(blocks.StructBlock):
 
 
 class RecordLinksBlock(blocks.StructBlock):
-    items = blocks.ListBlock(RecordLinkBlock, label=_("Items"), verbose_name=_("Record links"))
+    items = blocks.ListBlock(
+        RecordLinkBlock, label=_("Items"), verbose_name=_("Record links")
+    )
 
     class Meta:
         icon = "box-archive"
