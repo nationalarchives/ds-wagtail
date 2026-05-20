@@ -1,4 +1,3 @@
-from django.core.exceptions import ValidationError
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
 from wagtail.admin.panels import InlinePanel
@@ -43,45 +42,50 @@ class EducationTaxonomyMixin:
         return [
             InlinePanel(
                 "education_keystage_tags",
-                label=_("Key stage"),
+                label=_("Key stage tag"),
                 heading=_("Key stages"),
             ),
             InlinePanel(
                 "education_time_period_tags",
-                label=_("Time period"),
+                label=_("Time period tag"),
                 heading=_("Time periods"),
             ),
             InlinePanel(
                 "education_theme_tags",
-                label=_("Theme"),
+                label=_("Theme tag"),
                 heading=_("Themes"),
             ),
         ]
 
 
 class TagDuplicateCheckMixin:
-    """Mixin to validate that the same tag isn't added twice to a page."""
+    """Mixin to silently remove duplicate tags for the same FK on the same page.
+    Wagtail saves inline panel children before the parent, so validation-on-clean
+    is unreliable. Instead, duplicates are automatically removed after save.
+    """
 
     # These will be overridden by subclass
     FK_FIELD_NAME = None
     FIELD_LABEL = None
 
-    def clean(self):
-        super().clean()
-        if self.FK_FIELD_NAME and getattr(self, f"{self.FK_FIELD_NAME}_id"):
-            fk_value = getattr(self, self.FK_FIELD_NAME)
-            duplicate = (
-                self.__class__.objects.filter(
-                    page=self.page, **{self.FK_FIELD_NAME: fk_value}
-                )
-                .exclude(pk=self.pk)
-                .exists()
-            )
-            if duplicate:
-                raise ValidationError(
-                    {
-                        self.FK_FIELD_NAME: _(
-                            "This {label} has already been added."
-                        ).format(label=self.FIELD_LABEL)
-                    }
-                )
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+
+        # After save, remove any other instances with the same page_id and FK value
+        if not self.FK_FIELD_NAME:
+            return
+
+        page_id = getattr(self, "page_id", None)
+        fk_id = getattr(self, f"{self.FK_FIELD_NAME}_id", None)
+
+        if not page_id or not fk_id:
+            return
+
+        # Delete any other instances (excluding this one) with the same page and FK
+        duplicates = self.__class__.objects.filter(
+            page_id=page_id,
+            **{f"{self.FK_FIELD_NAME}_id": fk_id},
+        ).exclude(pk=self.pk)
+
+        if duplicates.exists():
+            duplicates.delete()

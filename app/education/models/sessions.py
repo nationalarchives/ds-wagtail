@@ -274,6 +274,7 @@ class EducationSessionPage(
         verbose_name=_("price detail"),
         help_text=_("An explanation of the price. Required if price is filled in."),
         blank=True,
+        null=True,
         max_length=160,
     )
 
