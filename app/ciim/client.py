@@ -3,7 +3,6 @@ import logging
 from django.conf import settings
 from django.core.cache import cache
 from sentry_sdk import capture_message
-
 from tna_utilities.api import SimpleJsonApiClient
 
 logger = logging.getLogger(__name__)
