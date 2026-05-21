@@ -62,8 +62,7 @@ class CurriculumConnectionSerializer(
         }
 
 
-# TODO: make more generic to use as a further links that can be overridden
-class EducationReadMoreLinkSerializer(serializers.Serializer):
+class LinkedPageSerializer(serializers.Serializer):
     def to_representation(self, instance):
         if not instance:
             return None
