@@ -21,10 +21,13 @@ from app.core.models import (
     PublishedDateMixin,
     RequiredHeroImageMixin,
 )
+from app.core.serializers import RichTextSerializer
 
 from ..blocks import SessionDescriptionBlock
 from ..serializers import (
     KeyStageSerializer,
+    LinkedPageSerializer,
+    SessionLocationSerializer,
     ThemeSerializer,
     TimePeriodSerializer,
 )
@@ -388,6 +391,22 @@ class EducationSessionPage(
         # APIField("key_stage", serializer=KeyStageSerializer()),
         # APIField("time_period", serializer=TimePeriodSerializer()),
         # APIField("theme", serializer=ThemeSerializer()),
+        APIField("hero_image"),
+        APIField("hero_image_small"),
+        APIField("hero_image_caption", serializer=RichTextSerializer()),
+        APIField("start_date"),
+        APIField("end_date"),
+        APIField("price"),
+        APIField("price_detail"),
+        APIField("booking_link"),
+        APIField("description"),
+        APIField("curriculum_connection_description", serializer=RichTextSerializer()),
+        APIField("highlights"),
+        APIField("session_locations", serializer=SessionLocationSerializer(many=True)),
+        APIField(
+            "related_education_sessions",
+            serializer=LinkedPageSerializer(many=True),
+        ),
         APIField("key_stages", serializer=KeyStageSerializer(many=True)),
         APIField("time_periods", serializer=TimePeriodSerializer(many=True)),
         APIField("themes", serializer=ThemeSerializer(many=True)),

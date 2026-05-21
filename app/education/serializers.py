@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from app.core.serializers import DefaultPageSerializer
+from app.core.serializers import DefaultPageSerializer, RichTextSerializer
 
 
 class _StreamFieldRepresentationMixin:
@@ -59,6 +59,27 @@ class CurriculumConnectionSerializer(
             "featured_link": self._serialize_stream_field(instance, "featured_link"),
             "description": self._serialize_stream_field(instance, "description"),
             "question": self._serialize_stream_field(instance, "question"),
+
+
+class SessionLocationSerializer(serializers.Serializer):
+    def to_representation(self, instance):
+        if not instance:
+            return None
+
+        return {
+            "location_type": instance.location_type,
+            "location_type_display": instance.get_location_type_display()
+            if instance.location_type
+            else None,
+            "duration": instance.duration,
+            "region": instance.region,
+            "region_display": instance.get_region_display()
+            if instance.region
+            else None,
+            "venue_name": instance.venue_name,
+            "address_line_1": instance.address_line_1,
+            "address_line_2": instance.address_line_2,
+            "postcode": instance.postcode,
         }
 
 
