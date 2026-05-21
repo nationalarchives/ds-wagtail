@@ -49,6 +49,9 @@ class APIImageChooserBlock(ImageChooserBlock):
         )
         return serializer.to_representation(value)
 
+    class Meta:
+        group = "Video, audio and downloads"
+
 
 class ContentImageBlock(blocks.StructBlock):
     image = APIImageChooserBlock(rendition_size="max-900x900", required=True)
