@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "app.ciim",
     "app.collections",
     "app.core",
+    "app.education",
     "app.foi",
     "app.highlights",
     "app.home",
