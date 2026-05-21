@@ -17,15 +17,17 @@ class CIIMClient(SimpleJsonApiClient):
     Client for interacting with the CIIM API.
     """
 
-    def __init__(self, api_url: str = settings.ROSETTA_API_URL, default_params: dict = None):
-        if params is None:
-            params = {}
-        super().__init__(api_url, default_params=params)
+    def __init__(
+        self, api_url: str = settings.ROSETTA_API_URL, default_params: dict = None
+    ):
+        if default_params is None:
+            default_params = {}
+        super().__init__(api_url, default_params=default_params)
         self.add_default_parameter("filter", "@datatype.base:record")
 
     def get(self, path: str = "/", default_headers: dict = None) -> dict:
         try:
-            return super().get(path=path, default_headers=headers)
+            return super().get(path=path, default_headers=default_headers)
         except Exception:
             capture_message(
                 "CIIMClient.get: Failed to fetch data from CIIM API", level="error"
@@ -36,7 +38,7 @@ class CIIMClient(SimpleJsonApiClient):
         """
         Get a single record instance from the CIIM API.
         """
-        id = self.params.get("id")
+        id = self.default_params.get("id")
         if not id:
             return None
 
