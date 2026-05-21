@@ -41,7 +41,7 @@ class SourceSerializer(_StreamFieldRepresentationMixin, serializers.Serializer):
             "title": instance.title,
             "media": self._serialize_stream_field(instance, "media"),
             "featured_link": self._serialize_stream_field(instance, "featured_link"),
-            "description": self._serialize_stream_field(instance, "description"),
+            "description": RichTextSerializer().to_representation(instance.description),
             "question": self._serialize_stream_field(instance, "question"),
         }
 
@@ -54,11 +54,9 @@ class CurriculumConnectionSerializer(
             return None
 
         return {
-            "title": instance.title,
-            "media": self._serialize_stream_field(instance, "media"),
-            "featured_link": self._serialize_stream_field(instance, "featured_link"),
-            "description": self._serialize_stream_field(instance, "description"),
-            "question": self._serialize_stream_field(instance, "question"),
+            "key_stage": KeyStageSerializer().to_representation(instance.key_stage),
+            "description": RichTextSerializer().to_representation(instance.description),
+        }
 
 
 class SessionLocationSerializer(serializers.Serializer):

@@ -28,6 +28,7 @@ from ..blocks import (
     SourceQuestionBlock,
 )
 from ..serializers import (
+    CurriculumConnectionSerializer,
     KeyStageSerializer,
     SourceSerializer,
     ThemeSerializer,
@@ -309,7 +310,14 @@ class TeachingResourcePage(
 
     api_fields = BasePageWithRequiredIntro.api_fields + [
         APIField("hero_image"),
+        APIField("hero_image_small"),
+        APIField("hero_image_caption", serializer=RichTextSerializer()),
+        APIField("custom_warning_text", serializer=RichTextSerializer()),
         APIField("enquiry_question"),
+        APIField(
+            "curriculum_connections",
+            serializer=CurriculumConnectionSerializer(many=True),
+        ),
         # TODO: primary tags?
         # APIField("key_stage", serializer=KeyStageSerializer()),
         # APIField("time_period", serializer=TimePeriodSerializer()),
@@ -319,7 +327,7 @@ class TeachingResourcePage(
         APIField("themes", serializer=ThemeSerializer(many=True)),
         APIField("sources_title"),
         APIField("sources_introduction", serializer=RichTextSerializer()),
-        APIField("teachers_notes"),
+        APIField("teachers_notes", serializer=RichTextSerializer()),
         APIField("sources", serializer=SourceSerializer(many=True)),
         APIField("extension_activities"),
         APIField("background_information"),
