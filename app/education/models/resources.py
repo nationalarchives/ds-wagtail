@@ -309,10 +309,6 @@ class TeachingResourcePage(
     )
 
     api_fields = BasePageWithRequiredIntro.api_fields + [
-        APIField("hero_image"),
-        APIField("hero_image_small"),
-        APIField("hero_image_caption", serializer=RichTextSerializer()),
-        APIField("custom_warning_text", serializer=RichTextSerializer()),
         APIField("enquiry_question"),
         APIField(
             "curriculum_connections",
