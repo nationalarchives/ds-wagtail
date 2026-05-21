@@ -4,7 +4,7 @@ from django.conf import settings
 from django.core.cache import cache
 from sentry_sdk import capture_message
 
-from app.core.json_api_client import JSONAPIClient
+from tna_utilities.api import SimpleJsonApiClient
 
 logger = logging.getLogger(__name__)
 
@@ -13,20 +13,20 @@ DEFAULT_SUMMARY_TITLE = "[unknown]"
 DEFAULT_IAID = None
 
 
-class CIIMClient(JSONAPIClient):
+class CIIMClient(SimpleJsonApiClient):
     """
     Client for interacting with the CIIM API.
     """
 
-    def __init__(self, api_url: str = settings.ROSETTA_API_URL, params: dict = None):
+    def __init__(self, api_url: str = settings.ROSETTA_API_URL, default_params: dict = None):
         if params is None:
             params = {}
-        super().__init__(api_url, params=params)
-        self.add_parameter("filter", "@datatype.base:record")
+        super().__init__(api_url, default_params=params)
+        self.add_default_parameter("filter", "@datatype.base:record")
 
-    def get(self, path: str = "/", headers: dict = None) -> dict:
+    def get(self, path: str = "/", default_headers: dict = None) -> dict:
         try:
-            return super().get(path=path, headers=headers)
+            return super().get(path=path, default_headers=headers)
         except Exception:
             capture_message(
                 "CIIMClient.get: Failed to fetch data from CIIM API", level="error"
@@ -52,7 +52,7 @@ class CIIMClient(JSONAPIClient):
             f'Getting record instance from CIIM API for ID "{id}"',
         )
 
-        response = self.get(path="/get", headers={})
+        response = self.get(path="/get", default_headers={})
 
         if not response or not response.get("data"):
             return {
