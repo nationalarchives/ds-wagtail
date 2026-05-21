@@ -28,7 +28,6 @@ from ..blocks import (
     SourceQuestionBlock,
 )
 from ..serializers import (
-    CurriculumConnectionSerializer,
     KeyStageSerializer,
     SourceSerializer,
     ThemeSerializer,

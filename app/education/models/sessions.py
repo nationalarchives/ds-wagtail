@@ -21,13 +21,10 @@ from app.core.models import (
     PublishedDateMixin,
     RequiredHeroImageMixin,
 )
-from app.core.serializers import RichTextSerializer
 
 from ..blocks import SessionDescriptionBlock
 from ..serializers import (
     KeyStageSerializer,
-    LinkedPageSerializer,
-    SessionLocationSerializer,
     ThemeSerializer,
     TimePeriodSerializer,
 )
