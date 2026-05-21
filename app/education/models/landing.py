@@ -49,6 +49,8 @@ class EducationPage(BasePageWithRequiredIntro):
     subpage_types = [
         "education.EducationSessionsListingPage",
         "education.TeachingResourcesListingPage",
+        "generic_pages.GeneralPage",
+        "generic_pages.HubPage",
     ]
 
     max_count = 1

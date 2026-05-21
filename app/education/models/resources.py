@@ -26,6 +26,7 @@ from ..blocks import (
     SourceFeaturedLinkBlock,
     SourceMediaBlock,
     SourceQuestionBlock,
+    TeachersNotesBlock,
 )
 from ..serializers import (
     KeyStageSerializer,
@@ -197,8 +198,8 @@ class TeachingResourcePage(
         null=True,
     )
 
-    teachers_notes = RichTextField(
-        features=settings.RESTRICTED_RICH_TEXT_FEATURES,
+    teachers_notes = StreamField(
+        TeachersNotesBlock(),
         verbose_name=_("teachers notes"),
         help_text=_(
             "A general overview of what the resource contains and how it can be used."
