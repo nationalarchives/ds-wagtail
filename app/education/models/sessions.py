@@ -386,28 +386,24 @@ class EducationSessionPage(
         + EducationTaxonomyMixin.taxonomy_promote_panels()
     )
 
-    api_fields = BasePageWithRequiredIntro.api_fields + [
-        # TODO: primary tags?
-        # APIField("key_stage", serializer=KeyStageSerializer()),
-        # APIField("time_period", serializer=TimePeriodSerializer()),
-        # APIField("theme", serializer=ThemeSerializer()),
-        APIField("start_date"),
-        APIField("end_date"),
-        APIField("price"),
-        APIField("price_detail"),
-        APIField("booking_link"),
-        APIField("description"),
-        APIField("curriculum_connection_description", serializer=RichTextSerializer()),
-        APIField("highlights"),
-        APIField("session_locations", serializer=SessionLocationSerializer(many=True)),
-        APIField(
-            "related_education_sessions",
-            serializer=LinkedPageSerializer(many=True),
-        ),
-        APIField("key_stages", serializer=KeyStageSerializer(many=True)),
-        APIField("time_periods", serializer=TimePeriodSerializer(many=True)),
-        APIField("themes", serializer=ThemeSerializer(many=True)),
-    ]
+    api_fields = (
+        BasePageWithRequiredIntro.api_fields
+        + RequiredHeroImageMixin.api_fields
+        + [
+            PublishedDateMixin.get_published_date_apifield(),
+            PublishedDateMixin.get_is_newly_published_apifield(),
+            APIField("last_published_at"),
+        ]
+        + [
+            # TODO: primary tags?
+            # APIField("key_stage", serializer=KeyStageSerializer()),
+            # APIField("time_period", serializer=TimePeriodSerializer()),
+            # APIField("theme", serializer=ThemeSerializer()),
+            APIField("key_stages", serializer=KeyStageSerializer(many=True)),
+            APIField("time_periods", serializer=TimePeriodSerializer(many=True)),
+            APIField("themes", serializer=ThemeSerializer(many=True)),
+        ]
+    )
 
     edit_handler = TabbedInterface(
         [
