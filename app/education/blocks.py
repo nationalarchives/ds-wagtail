@@ -34,7 +34,7 @@ class SourceMediaWithCaptionBlock(MediaBlock):
     caption = APIRichTextBlock(features=["bold", "italic"], required=False)
 
 
-class SourceYouTubeWithCaptionBlock(MediaBlock):
+class SourceYouTubeWithCaptionBlock(blocks.StreamBlock):
     youtube = YouTubeBlock()
     caption = APIRichTextBlock(features=["bold", "italic"], required=False)
 
