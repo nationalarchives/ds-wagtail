@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     "app.foi",
     "app.highlights",
     "app.home",
+    "app.search",
     "app.ukgwa",
     "app.images",
     "app.media",
