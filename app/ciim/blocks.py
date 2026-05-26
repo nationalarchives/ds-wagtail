@@ -1,8 +1,9 @@
-from app.core.blocks.image import APIImageChooserBlock
 from django.utils.translation import gettext_lazy as _
 from wagtail import blocks
 from wagtail.api import APIField
 from wagtail.blocks import CharBlock
+
+from app.core.blocks.image import APIImageChooserBlock
 
 from .client import CIIMClient
 
@@ -51,3 +52,4 @@ class RecordLinksBlock(blocks.StructBlock):
 
     class Meta:
         icon = "box-archive"
+        group = "Onward journeys"

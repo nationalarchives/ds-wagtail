@@ -1,11 +1,5 @@
 import datetime
 
-from app.core.models import (
-    BasePageWithRequiredIntro,
-)
-from app.core.serializers import (
-    DefaultPageSerializer,
-)
 from django.db import models
 from django.db.models import Q
 from django.utils import timezone
@@ -20,6 +14,13 @@ from wagtail.admin.panels import (
 from wagtail.api import APIField
 from wagtail.models import Page
 
+from app.core.models import (
+    BasePageWithRequiredIntro,
+)
+from app.core.serializers import (
+    DefaultPageSerializer,
+)
+
 from ..serializers import (
     EventTypeSerializer,
 )
@@ -31,10 +32,10 @@ from .details import (
 
 
 def get_specific_listings(
-    page_types: list[Page] = [],
+    page_types: list[Page] = None,
     filters: dict | Q = None,
     order_by: str = "start_date",
-    exclude: dict = {},
+    exclude: dict = None,
     reverse: bool = False,
 ) -> list:
     """
@@ -44,6 +45,10 @@ def get_specific_listings(
 
     Currently used for listing events and exhibitions in various listing pages.
     """
+    if exclude is None:
+        exclude = {}
+    if page_types is None:
+        page_types = []
     pages = []
 
     for page_type in page_types:
@@ -213,6 +218,7 @@ class WhatsOnCategoryPage(BasePageWithRequiredIntro):
                 "end_date__gte": timezone.now(),
             },
             order_by="start_date",
+            exclude={"pk": self.featured_page_id},
         )
 
     @cached_property
@@ -357,23 +363,22 @@ class WhatsOnDateListingPage(BasePageWithRequiredIntro):
                 filters={"end_date__gte": timezone.now()},
                 order_by="start_date",
             )
-        else:
-            filters = Q(
-                sessions__start__gte=timezone.now(),
-                sessions__start__lte=(
-                    timezone.now() + datetime.timedelta(days=self.days - 1)
-                ),
-            ) | Q(
-                start_date__lte=timezone.now(),
-                various_dates=True,
-                end_date__gte=timezone.now(),
-            )
+        filters = Q(
+            sessions__start__gte=timezone.now(),
+            sessions__start__lte=(
+                timezone.now() + datetime.timedelta(days=self.days - 1)
+            ),
+        ) | Q(
+            start_date__lte=timezone.now(),
+            various_dates=True,
+            end_date__gte=timezone.now(),
+        )
 
-            return get_specific_listings(
-                page_types=[EventPage],
-                filters=filters,
-                order_by="start_date",
-            )
+        return get_specific_listings(
+            page_types=[EventPage],
+            filters=filters,
+            order_by="start_date",
+        )
 
     @cached_property
     def exhibition_listings(self) -> list:
@@ -387,16 +392,15 @@ class WhatsOnDateListingPage(BasePageWithRequiredIntro):
                 filters={"end_date__gte": timezone.now()},
                 order_by="start_date",
             )
-        else:
-            return get_specific_listings(
-                page_types=[ExhibitionPage, DisplayPage],
-                filters={
-                    "start_date__lte": timezone.now()
-                    + datetime.timedelta(days=self.days - 1),
-                    "end_date__gte": timezone.now(),
-                },
-                order_by="start_date",
-            )
+        return get_specific_listings(
+            page_types=[ExhibitionPage, DisplayPage],
+            filters={
+                "start_date__lte": timezone.now()
+                + datetime.timedelta(days=self.days - 1),
+                "end_date__gte": timezone.now(),
+            },
+            order_by="start_date",
+        )
 
     @cached_property
     def type_label(cls) -> str:
@@ -466,6 +470,7 @@ class EventsListingPage(BasePageWithRequiredIntro):
             page_types=[EventPage],
             filters={"end_date__gte": timezone.now()},
             order_by="start_date",
+            exclude={"pk": self.featured_page_id},
         )
 
     @cached_property

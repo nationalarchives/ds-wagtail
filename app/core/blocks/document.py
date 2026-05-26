@@ -46,3 +46,4 @@ class DocumentsBlock(blocks.StructBlock):
     class Meta:
         icon = "doc-full"
         label = "Documents"
+        group = "Video, audio and downloads"

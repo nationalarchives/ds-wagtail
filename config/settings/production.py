@@ -2,8 +2,7 @@ import os
 from sysconfig import get_path
 
 from django.core.exceptions import ImproperlyConfigured
-
-from .util import strtobool
+from tna_utilities import strtobool
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -12,7 +11,6 @@ BASE_DIR = os.path.dirname(PROJECT_DIR)
 ENVIRONMENT_NAME = os.getenv("ENVIRONMENT_NAME", "production")
 BUILD_VERSION = os.getenv("BUILD_VERSION", "")
 WAGTAILADMIN_BASE_URL = os.getenv("WAGTAILADMIN_BASE_URL", "")
-WAGTAILAPI_IMAGES_BASE_URL = os.getenv("WAGTAILAPI_IMAGES_BASE_URL", "")
 WAGTAILAPI_MEDIA_BASE_URL = os.getenv("WAGTAILAPI_MEDIA_BASE_URL", "")
 WAGTAILAPI_BASE_URL = os.getenv("WAGTAILAPI_BASE_URL", WAGTAILADMIN_BASE_URL)
 WAGTAIL_HEADLESS_PREVIEW = {
@@ -50,6 +48,7 @@ INSTALLED_APPS = [
     "app.ciim",
     "app.collections",
     "app.core",
+    "app.education",
     "app.foi",
     "app.highlights",
     "app.home",
@@ -155,6 +154,10 @@ WAGTAIL_2FA_OTP_TOTP_NAME = (
     f"National Archives Wagtail ({ENVIRONMENT_NAME.capitalize()})"
 )
 
+WAGTAIL_AUTOSAVE_INTERVAL = int(
+    os.getenv("WAGTAIL_AUTOSAVE_INTERVAL", "0")
+)  # Disabled (0) by default
+
 # django-allauth configuration
 ACCOUNT_LOGIN_METHODS = {"email"}
 ACCOUNT_SIGNUP_FIELDS = ["email*", "password1*", "password2*"]
@@ -176,7 +179,7 @@ LOGGING = {
     },
     "root": {
         "handlers": ["console"],
-        "level": "WARNING",
+        "level": os.environ.get("LOG_LEVEL", "warning").upper(),
     },
 }
 

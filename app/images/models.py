@@ -1,6 +1,5 @@
 import uuid
 
-from app.core.serializers import RichTextSerializer
 from django.conf import settings
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -9,6 +8,8 @@ from wagtail.api import APIField
 from wagtail.fields import RichTextField
 from wagtail.images.models import AbstractImage, AbstractRendition, Image
 from wagtail.search import index
+
+from app.core.serializers import RichTextSerializer
 
 
 class TranscriptionHeadingChoices(models.TextChoices):
@@ -127,8 +128,8 @@ class CustomImageRendition(AbstractRendition):
     @property
     def full_url(self):
         url = self.url
-        if hasattr(settings, "WAGTAILAPI_IMAGES_BASE_URL") and url.startswith("/"):
-            return settings.WAGTAILAPI_IMAGES_BASE_URL + url
+        if hasattr(settings, "WAGTAILAPI_MEDIA_BASE_URL") and url.startswith("/"):
+            return settings.WAGTAILAPI_MEDIA_BASE_URL + url
         return super().full_url()
 
     class Meta:

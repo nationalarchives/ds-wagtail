@@ -1,7 +1,8 @@
-from app.core.blocks.image import APIImageChooserBlock
 from wagtail import blocks
 from wagtail.rich_text import expand_db_html
 from wagtailmedia.blocks import AbstractMediaChooserBlock
+
+from app.core.blocks.image import APIImageChooserBlock
 
 
 class MediaChooserBlock(AbstractMediaChooserBlock):
@@ -74,6 +75,7 @@ class MediaBlock(blocks.StructBlock):
         help_text = "An embedded audio or video block"
         icon = "play"
         label = "Media"
+        group = "Video, audio and downloads"
 
     def get_context(self, value, parent_context=None):
         context = super().get_context(value, parent_context=parent_context)

@@ -1,5 +1,8 @@
+from wagtail import blocks
+
 from app.ciim.blocks import RecordLinksBlock
 from app.core.blocks import (
+    CodeBlock,
     ContentImageBlock,
     FeaturedExternalLinkBlock,
     FeaturedPageBlock,
@@ -10,10 +13,10 @@ from app.core.blocks import (
     YouTubeBlock,
 )
 from app.media.blocks import MediaBlock
-from wagtail import blocks
 
 
 class SectionContentBlock(blocks.StreamBlock):
+    code = CodeBlock()
     featured_external_link = FeaturedExternalLinkBlock()
     featured_page = FeaturedPageBlock()
     image = ContentImageBlock()
@@ -32,6 +35,7 @@ class ContentSectionBlock(blocks.StructBlock):
 
     class Meta:
         label = "Section"
+        group = "Basic text"
 
 
 class ArticlePageStreamBlock(blocks.StreamBlock):

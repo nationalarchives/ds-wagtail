@@ -1,8 +1,12 @@
+from django.core.exceptions import ValidationError
+from wagtail import blocks
+
 from app.ciim.blocks import RecordLinksBlock
 from app.core.blocks import (
     AccordionsBlock,
     ButtonBlock,
     CallToActionBlock,
+    CodeBlock,
     ContactBlock,
     ContentImageBlock,
     ContentTableBlock,
@@ -24,14 +28,13 @@ from app.core.blocks import (
     YouTubeBlock,
 )
 from app.media.blocks import MediaBlock
-from django.core.exceptions import ValidationError
-from wagtail import blocks
 
 
 class SectionContentBlock(blocks.StreamBlock):
     accordions = AccordionsBlock()
     button = ButtonBlock()
     call_to_action = CallToActionBlock()
+    code = CodeBlock()
     contact = ContactBlock()
     description_list = DescriptionListBlock()
     details = DetailsBlock()
@@ -61,6 +64,7 @@ class ContentSectionBlock(blocks.StructBlock):
 
     class Meta:
         label = "Section"
+        group = "Basic text"
 
     def clean(self, value):
         clean = super().clean(value)

@@ -19,7 +19,6 @@
 | `DJANGO_SUPERUSER_EMAIL`             | ?       | `?`                | `?`             | `?`             |
 | `WAGTAILADMIN_BASE_URL`              | ?       | `?`                | `?`             | `?`             |
 | `WAGTAILAPI_BASE_URL`                | ?       | `?`                | `?`             | `?`             |
-| `WAGTAILAPI_IMAGES_BASE_URL`         | ?       | `?`                | `?`             | `?`             |
 | `WAGTAILAPI_MEDIA_BASE_URL`          | ?       | `?`                | `?`             | `?`             |
 | `WAGTAIL_HEADLESS_PREVIEW_URL`       | ?       | `?`                | `?`             | `?`             |
 | `REDIS_URL`                          | ?       | `?`                | `?`             | `?`             |

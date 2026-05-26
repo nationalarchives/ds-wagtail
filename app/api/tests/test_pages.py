@@ -4,6 +4,12 @@ import re
 from datetime import datetime, timezone
 from unittest.mock import patch
 
+from django.conf import settings
+from django.core.cache import cache
+from wagtail.models import Site
+from wagtail.test.utils import WagtailPageTestCase
+from wagtail_factories import ImageFactory
+
 from app.alerts.models import Alert
 from app.api.models import APIToken
 from app.articles.factories import (
@@ -23,10 +29,6 @@ from app.home.models import MourningNotice
 from app.media.models import EtnaMedia
 from app.people.factories import PeopleIndexPageFactory, PersonPageFactory
 from app.people.models import AuthorTag, PersonRole, PersonRoleSelection
-from django.conf import settings
-from wagtail.models import Site
-from wagtail.test.utils import WagtailPageTestCase
-from wagtail_factories import ImageFactory
 
 API_URL = "/api/v2/pages/"
 
@@ -212,6 +214,23 @@ class APIResponseTest(WagtailPageTestCase):
                             "value": {
                                 "quote": '<p data-block-key="xhdo0">Quote text</p>',
                                 "attribution": "John Smith",
+                                "source": {
+                                    "citation": None,
+                                    "source_link": {
+                                        "citation_internal_link": None,
+                                        "citation_external_link": "",
+                                    },
+                                },
+                            },
+                        },
+                        {
+                            "id": "c8d4e6f7-8901-4a5b-c6d7-e8f9a0b1c2d3",
+                            "type": "code",
+                            "value": {
+                                "language": "python",
+                                "code": 'def hello_world():\n    print("Hello, World!")\n\nhello_world()',
+                                "filename": "hello.py",
+                                "allow_copying": True,
                             },
                         },
                         {
@@ -414,10 +433,9 @@ class APIResponseTest(WagtailPageTestCase):
                 else:
                     normalized[key] = self.normalize_json_data(value, is_expected)
             return normalized
-        elif isinstance(data, list):
+        if isinstance(data, list):
             return [self.normalize_json_data(item, is_expected) for item in data]
-        else:
-            return data
+        return data
 
     def compare_json(self, path: str, json_file: str):
         if api_data_str := self.get_api_data(path):
@@ -425,7 +443,7 @@ class APIResponseTest(WagtailPageTestCase):
                 self.fail(api_data_str)
             else:
                 file = os.path.join(FILE_PATH, f"{json_file}.json")
-                expected_data_str = open(file, "r").read()
+                expected_data_str = open(file).read()
 
                 # Replace placeholders with actual IDs in JSON
                 expected_data_str = self.replace_placeholders(expected_data_str)
@@ -450,6 +468,8 @@ class APIResponseTest(WagtailPageTestCase):
         self.compare_json("", "pages")
 
     def test_multiple_page_routes(self):
+        cache.delete(f"record_instance_{self.record_article.record}")
+
         for page in (
             self.article,
             self.focused_article,

@@ -1,6 +1,9 @@
+from wagtail import blocks
+
 from app.ciim.blocks import RecordLinksBlock
 from app.core.blocks import (
     CallToActionBlock,
+    CodeBlock,
     ContactBlock,
     ContentImageBlock,
     ContentTableBlock,
@@ -16,11 +19,11 @@ from app.core.blocks import (
     YouTubeBlock,
 )
 from app.media.blocks import MediaBlock
-from wagtail import blocks
 
 
 class SectionContentBlock(blocks.StreamBlock):
     call_to_action = CallToActionBlock()
+    code = CodeBlock()
     contact = ContactBlock()
     document = DocumentsBlock()
     featured_external_link = FeaturedExternalLinkBlock()
@@ -44,6 +47,7 @@ class ContentSectionBlock(blocks.StructBlock):
 
     class Meta:
         label = "Section"
+        group = "Basic text"
 
 
 class BlogPostPageStreamBlock(SectionContentBlock):

@@ -1,6 +1,6 @@
 import os
 
-from .production import *  # noqa: F401, F403
+from .production import *
 from .production import BASE_DIR, INSTALLED_APPS
 
 ENVIRONMENT_NAME = "test"
@@ -10,7 +10,6 @@ DEBUG = True
 SECRET_KEY = "abc123"
 
 WAGTAILADMIN_BASE_URL = "http://localhost"
-WAGTAILAPI_IMAGES_BASE_URL = "http://localhost"
 WAGTAILAPI_MEDIA_BASE_URL = "http://localhost"
 
 ALLOWED_HOSTS = ["*"]

@@ -49,7 +49,7 @@ class ButtonBlock(blocks.StructBlock):
             raise ValidationError(
                 "You must provide either a page link or an external link, not both."
             )
-        elif not (data.get("link") or data.get("external_link")):
+        if not (data.get("link") or data.get("external_link")):
             raise ValidationError(
                 "You must provide either a page link or an external link."
             )
@@ -68,6 +68,7 @@ class ButtonBlock(blocks.StructBlock):
     class Meta:
         icon = "link"
         label = "Button"
+        group = "Onward journeys"
 
 
 class CallToActionBlock(blocks.StructBlock):
@@ -79,3 +80,4 @@ class CallToActionBlock(blocks.StructBlock):
     class Meta:
         icon = "link"
         label = "Call to action"
+        group = "Onward journeys"

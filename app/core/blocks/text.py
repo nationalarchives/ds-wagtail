@@ -10,6 +10,7 @@ class InsetTextBlock(blocks.StructBlock):
     class Meta:
         icon = "indent"
         label = "Inset text"
+        group = "Emphasis"
 
 
 class WarningTextBlock(blocks.StructBlock):
@@ -18,3 +19,4 @@ class WarningTextBlock(blocks.StructBlock):
     class Meta:
         icon = "warning"
         label = "Warning text"
+        group = "Emphasis"

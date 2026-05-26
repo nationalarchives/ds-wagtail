@@ -1,6 +1,7 @@
-from app.media.blocks import MediaBlock
 from django.core.validators import RegexValidator
 from wagtail import blocks
+
+from app.media.blocks import MediaBlock
 
 from .image import APIImageChooserBlock
 
@@ -30,6 +31,7 @@ class YouTubeBlock(blocks.StructBlock):
     class Meta:
         label = "YouTube Video"
         icon = "media"
+        group = "Video, audio and downloads"
 
 
 class MixedMediaBlock(blocks.StreamBlock):
@@ -39,3 +41,4 @@ class MixedMediaBlock(blocks.StreamBlock):
     class Meta:
         label = "Mixed Media"
         icon = "media"
+        group = "Video, audio and downloads"

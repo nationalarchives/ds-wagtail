@@ -1,15 +1,22 @@
 from .accordion import AccordionsBlock, DetailsBlock, SimplifiedAccordionBlock
+from .code import CodeBlock
 from .contact import ContactBlock
 from .cta import ButtonBlock, CallToActionBlock, LargeCardLinksBlock
 from .document import DocumentsBlock
 from .featured_content import (
     FeaturedCollectionBlock,
 )
-from .image import ContentImageBlock, ImageGalleryBlock, PartnerLogoListBlock
+from .image import (
+    APIImageChooserBlock,
+    ContentImageBlock,
+    ImageGalleryBlock,
+    PartnerLogoChooserBlock,
+    PartnerLogoListBlock,
+)
 from .lists import DescriptionListBlock, DoDontListBlock, PeopleListingBlock
 from .page_chooser import APIPageChooserBlock
 from .page_list import PageListBlock
-from .paragraph import ParagraphBlock
+from .paragraph import APIRichTextBlock, ParagraphBlock
 from .promoted_links import (
     FeaturedExternalLinkBlock,
     FeaturedPageBlock,
@@ -23,29 +30,33 @@ from .text import InsetTextBlock, WarningTextBlock
 from .video import MixedMediaBlock, YouTubeBlock
 
 __all__ = [
-    "AccordionsBlock",
+    "APIImageChooserBlock",
+    "APIRichTextBlock",
     "APIPageChooserBlock",
+    "AccordionsBlock",
     "ButtonBlock",
     "CallToActionBlock",
+    "CodeBlock",
     "ContactBlock",
     "ContentImageBlock",
     "ContentTableBlock",
     "DescriptionListBlock",
     "DetailsBlock",
-    "DocumentsBlock",
     "DoDontListBlock",
-    "FeaturedExternalLinkBlock",
+    "DocumentsBlock",
     "FeaturedCollectionBlock",
+    "FeaturedExternalLinkBlock",
     "FeaturedPageBlock",
     "FeaturedPagesBlock",
     "ImageGalleryBlock",
     "InsetTextBlock",
-    "PageListBlock",
-    "ParagraphBlock",
-    "PartnerLogoListBlock",
-    "PeopleListingBlock",
     "LargeCardLinksBlock",
     "MixedMediaBlock",
+    "PageListBlock",
+    "ParagraphBlock",
+    "PartnerLogoChooserBlock",
+    "PartnerLogoListBlock",
+    "PeopleListingBlock",
     "QuoteBlock",
     "ReviewBlock",
     "ShopCollectionBlock",

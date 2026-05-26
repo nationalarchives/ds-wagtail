@@ -1,7 +1,8 @@
-from app.core.serializers import DefaultPageSerializer
 from django.conf import settings
 from wagtail import blocks
 from wagtail.snippets.blocks import SnippetChooserBlock
+
+from app.core.serializers import DefaultPageSerializer
 
 from .paragraph import APIRichTextBlock
 
@@ -29,6 +30,7 @@ class DoDontListBlock(blocks.StructBlock):
     class Meta:
         icon = "tasks"
         label = "Do/Don't List"
+        group = "Emphasis"
 
 
 class DescriptionListItemBlock(blocks.StructBlock):
@@ -38,6 +40,7 @@ class DescriptionListItemBlock(blocks.StructBlock):
     class Meta:
         icon = "list-ul"
         label = "Description List Item"
+        group = "Structured and collapsible content"
 
 
 class DescriptionListBlock(blocks.StructBlock):
@@ -46,6 +49,7 @@ class DescriptionListBlock(blocks.StructBlock):
     class Meta:
         icon = "list-ul"
         label = "Description List"
+        group = "Structured and collapsible content"
 
 
 class PeopleListingBlock(blocks.StructBlock):
@@ -87,3 +91,4 @@ class PeopleListingBlock(blocks.StructBlock):
     class Meta:
         icon = "user"
         label = "People Listing"
+        group = "Onward journeys"

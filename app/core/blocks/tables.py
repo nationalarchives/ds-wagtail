@@ -26,3 +26,4 @@ class ContentTableBlock(blocks.StructBlock):
     class Meta:
         icon = "table"
         label = "Table"
+        group = "Structured and collapsible content"

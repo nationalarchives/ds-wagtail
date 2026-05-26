@@ -8,6 +8,9 @@ class APIRichTextBlock(blocks.RichTextBlock):
         representation = super().get_api_representation(value, context)
         return expand_db_html(representation)
 
+    class Meta:
+        group = "Basic text"
+
 
 class ParagraphBlock(blocks.StructBlock):
     text = APIRichTextBlock(features=settings.RESTRICTED_RICH_TEXT_FEATURES)
@@ -15,3 +18,4 @@ class ParagraphBlock(blocks.StructBlock):
     class Meta:
         icon = "paragraph"
         label = "Paragraph text"
+        group = "Basic text"

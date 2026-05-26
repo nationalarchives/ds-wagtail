@@ -41,6 +41,9 @@ class SimplifiedAccordionBlock(blocks.StructBlock):
 class AccordionsBlock(blocks.StructBlock):
     items = blocks.ListBlock(AccordionBlock())
 
+    class Meta:
+        group = "Structured and collapsible content"
+
 
 class DetailsBlock(blocks.StructBlock):
     title = blocks.CharBlock(required=True)
@@ -51,3 +54,4 @@ class DetailsBlock(blocks.StructBlock):
     class Meta:
         icon = "terminal"
         label = "Details"
+        group = "Structured and collapsible content"

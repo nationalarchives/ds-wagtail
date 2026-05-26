@@ -1,6 +1,7 @@
+from wagtail import blocks
+
 from app.core.blocks.image import APIImageChooserBlock
 from app.core.blocks.page_chooser import APIPageChooserBlock
-from wagtail import blocks
 
 
 class FeaturedPageBlock(blocks.StructBlock):
@@ -31,6 +32,7 @@ class FeaturedPageBlock(blocks.StructBlock):
     class Meta:
         icon = "doc-full"
         label = "Featured page"
+        group = "Onward journeys"
 
 
 class FeaturedExternalLinkBlock(blocks.StructBlock):
@@ -65,6 +67,7 @@ class FeaturedExternalLinkBlock(blocks.StructBlock):
     class Meta:
         icon = "doc-full"
         label = "Featured external link"
+        group = "Onward journeys"
 
 
 class FeaturedPagesBlock(blocks.StreamBlock):
@@ -74,3 +77,4 @@ class FeaturedPagesBlock(blocks.StreamBlock):
     class Meta:
         icon = "doc-full"
         label = "Featured pages list"
+        group = "Onward journeys"

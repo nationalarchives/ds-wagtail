@@ -1,0 +1,16 @@
+extend = "/home/app/ruff.toml"
+
+extend-exclude = [
+    "migrations"
+]
+
+[lint]
+ignore = [
+    "B904"   # raise-without-from-inside-except
+]
+
+[lint.per-file-ignores]
+"config/settings/*" = [
+    "F403",  # undefined-local-with-import-star
+    "F405"   # undefined-local-with-import-star-usage
+]

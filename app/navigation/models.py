@@ -1,11 +1,12 @@
+from wagtail.admin.panels import FieldPanel
+from wagtail.contrib.settings.models import BaseSiteSetting, register_setting
+from wagtail.fields import StreamField
+
 from app.core.blocks.links import (
     InternalLinkBlock,
     LinkBlock,
     LinkColumnWithHeaderBlock,
 )
-from wagtail.admin.panels import FieldPanel
-from wagtail.contrib.settings.models import BaseSiteSetting, register_setting
-from wagtail.fields import StreamField
 
 
 @register_setting(icon="list-ul")

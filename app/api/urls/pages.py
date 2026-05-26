@@ -1,7 +1,5 @@
 import logging
 
-from app.api.permissions import IsAPITokenAuthenticated
-from app.core.serializers.pages import DefaultPageSerializer
 from django.conf import settings
 from django.db.models import Q
 from django.http import Http404
@@ -23,6 +21,9 @@ from wagtail.api.v2.views import PagesAPIViewSet
 from wagtail.contrib.redirects.models import Redirect
 from wagtail.models import Page, PageViewRestriction, Site
 
+from app.api.permissions import IsAPITokenAuthenticated
+from app.core.serializers.pages import DefaultPageSerializer
+
 from ..filters import AliasFilter, DescendantOfPathFilter
 
 logger = logging.getLogger(__name__)
@@ -35,13 +36,6 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
     known_query_parameters = PagesAPIViewSet.known_query_parameters.union(
         ["password", "author", "include_aliases", "descendant_of_path"]
     )
-
-    # TODO: Remove this when Wagtail is updated
-    # https://github.com/wagtail/wagtail/pull/12141
-    find_query_parameters = [
-        "id",
-        "html_path",
-    ]
 
     # Copied from wagtail.api.v2.views.PagesAPIViewSet
     # to allow insertion of AliasFilter before SearchFilter
@@ -71,7 +65,7 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
         for restricted_page in restricted_pages:
             queryset = queryset.not_descendant_of(restricted_page, inclusive=True)
 
-        if "author" in request.GET and request.GET["author"]:
+        if request.GET.get("author"):
             queryset = queryset.filter(author_tags__author=request.GET["author"])
 
         self.check_query_parameters(queryset)
@@ -116,14 +110,12 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
                         request.GET["password"], restriction.password
                     ):
                         return Response(data)
-                    else:
-                        data = restricted_data | {"message": "Incorrect password."}
-                        return Response(data)
-                else:
-                    data = restricted_data | {
-                        "message": "Password required to view this resource.",
-                    }
+                    data = restricted_data | {"message": "Incorrect password."}
                     return Response(data)
+                data = restricted_data | {
+                    "message": "Password required to view this resource.",
+                }
+                return Response(data)
         data = restricted_data | {
             "message": "Selected privacy mode is not compatible with this API.",
         }
@@ -191,7 +183,7 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
         "depth",
     ]
 
-    def find_object(self, queryset, request):  # noqa: C901
+    def find_object(self, queryset, request):
         if "site" in request.GET:
             if ":" in request.GET["site"]:
                 hostname, port = request.GET["site"].split(":", 1)
@@ -236,7 +228,7 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
             try:
                 page, _, _ = site.root_page.specific.route(request, path_components)
             except Http404:
-                return
+                return None
 
             if queryset.filter(id=page.id).exists():
                 return page

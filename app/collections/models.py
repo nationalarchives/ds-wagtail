@@ -1,4 +1,20 @@
-from typing import Optional, Tuple
+from django.conf import settings
+from django.db import models
+from django.utils.functional import cached_property
+from django.utils.translation import gettext_lazy as _
+from modelcluster.fields import ParentalKey
+from rest_framework import serializers
+from wagtail.admin.panels import (
+    FieldPanel,
+    InlinePanel,
+    MultiFieldPanel,
+    PageChooserPanel,
+)
+from wagtail.api import APIField
+from wagtail.fields import RichTextField, StreamField
+from wagtail.images import get_image_model_string
+from wagtail.models import Orderable, Page
+from wagtail.search import index
 
 import app.articles.models as ArticleModels
 from app.ciim.fields import RecordField
@@ -17,23 +33,6 @@ from app.core.serializers import (
     SimplePageSerializer,
 )
 from app.core.utils import skos_id_from_text
-from django.conf import settings
-from django.db import models
-from django.utils.functional import cached_property
-from django.utils.translation import gettext_lazy as _
-from modelcluster.fields import ParentalKey
-from rest_framework import serializers
-from wagtail.admin.panels import (
-    FieldPanel,
-    InlinePanel,
-    MultiFieldPanel,
-    PageChooserPanel,
-)
-from wagtail.api import APIField
-from wagtail.fields import RichTextField, StreamField
-from wagtail.images import get_image_model_string
-from wagtail.models import Orderable, Page
-from wagtail.search import index
 
 from .blocks import (
     ExplorerIndexPageStreamBlock,
@@ -187,9 +186,9 @@ class ExplorerIndexPageSelectionSerializer(serializers.Serializer):
             if instance.teaser_text:
                 representation["selected_page"]["teaser_text"] = instance.teaser_text
             if instance.teaser_image:
-                representation["selected_page"][
-                    "teaser_image"
-                ] = ImageSerializer().to_representation(instance.teaser_image)
+                representation["selected_page"]["teaser_image"] = (
+                    ImageSerializer().to_representation(instance.teaser_image)
+                )
             if instance.cta_label:
                 representation["cta_label"] = instance.cta_label
             return representation
@@ -517,7 +516,7 @@ class TopicExplorerPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
         )
 
     @cached_property
-    def related_page_pks(self) -> Tuple[int]:
+    def related_page_pks(self) -> tuple[int]:
         """
         Returns a list of ids of pages that have used the `PageTopic` inline
         to indicate a relationship with this topic. The values are ordered by:
@@ -709,7 +708,7 @@ class TimePeriodExplorerPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
         )
 
     @cached_property
-    def related_page_pks(self) -> Tuple[int]:
+    def related_page_pks(self) -> tuple[int]:
         """
         Returns a list of ids of pages that have used the `PageTimePeriod` inline
         to indicate a relationship with this time period. The values are ordered by:
@@ -791,7 +790,7 @@ class TopicalPageMixin:
     ]
 
     @classmethod
-    def get_time_periods_inlinepanel(cls, max_num: Optional[int] = 4) -> InlinePanel:
+    def get_time_periods_inlinepanel(cls, max_num: int | None = 4) -> InlinePanel:
         return InlinePanel(
             "page_time_periods",
             heading=_("Related time periods"),
@@ -802,7 +801,7 @@ class TopicalPageMixin:
         )
 
     @classmethod
-    def get_topics_inlinepanel(cls, max_num: Optional[int] = 4) -> InlinePanel:
+    def get_topics_inlinepanel(cls, max_num: int | None = 4) -> InlinePanel:
         return InlinePanel(
             "page_topics",
             heading=_("Related topics"),
@@ -813,7 +812,7 @@ class TopicalPageMixin:
         )
 
     @cached_property
-    def topics(self) -> Tuple[TopicExplorerPage]:
+    def topics(self) -> tuple[TopicExplorerPage]:
         return tuple(
             TopicExplorerPage.objects.live()
             .public()
@@ -830,7 +829,7 @@ class TopicalPageMixin:
         return ", ".join(item.title for item in self.topics)
 
     @cached_property
-    def time_periods(self) -> Tuple[TimePeriodExplorerPage]:
+    def time_periods(self) -> tuple[TimePeriodExplorerPage]:
         return tuple(
             TimePeriodExplorerPage.objects.live()
             .public()

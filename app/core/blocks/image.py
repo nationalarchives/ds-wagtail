@@ -1,10 +1,11 @@
+from django.conf import settings
+from wagtail import blocks
+from wagtail.images.blocks import ImageChooserBlock
+
 from app.core.blocks.paragraph import APIRichTextBlock
 from app.core.models.partner_logos import partner_logo_chooserviewset
 from app.core.serializers.images import DetailedImageSerializer
 from app.core.serializers.partner_logos import PartnerLogoSerializer
-from django.conf import settings
-from wagtail import blocks
-from wagtail.images.blocks import ImageChooserBlock
 
 
 class APIImageChooserBlock(ImageChooserBlock):
@@ -48,6 +49,9 @@ class APIImageChooserBlock(ImageChooserBlock):
         )
         return serializer.to_representation(value)
 
+    class Meta:
+        group = "Video, audio and downloads"
+
 
 class ContentImageBlock(blocks.StructBlock):
     image = APIImageChooserBlock(rendition_size="max-900x900", required=True)
@@ -64,6 +68,7 @@ class ContentImageBlock(blocks.StructBlock):
     class Meta:
         label = "Image"
         icon = "image"
+        group = "Images"
 
 
 class ImageGalleryBlock(blocks.StructBlock):
@@ -81,6 +86,7 @@ class ImageGalleryBlock(blocks.StructBlock):
     class Meta:
         label = "Image Gallery"
         icon = "image"
+        group = "Images"
 
 
 class PartnerLogoChooserBlock(
@@ -118,3 +124,4 @@ class PartnerLogoListBlock(blocks.StructBlock):
     class Meta:
         label = "Partner Logo List"
         icon = "image"
+        group = "Images"
