@@ -1,7 +1,8 @@
-from app.api.permissions import IsAPITokenAuthenticated
 from django.conf import settings
 from wagtail.contrib.redirects.api import RedirectsAPIViewSet as BaseRedirectsAPIViewSet
 from wagtail.contrib.redirects.models import Redirect
+
+from app.api.permissions import IsAPITokenAuthenticated
 
 from ..filters import RedirectsSiteFilter
 

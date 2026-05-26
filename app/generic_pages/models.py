@@ -1,8 +1,3 @@
-from app.core.models import BasePageWithIntro, HeroImageMixin, SidebarMixin
-from app.core.serializers import (
-    DefaultPageSerializer,
-    ImageSerializer,
-)
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -13,6 +8,12 @@ from wagtail.api import APIField
 from wagtail.fields import StreamField
 from wagtail.images import get_image_model_string
 from wagtail.models import Orderable
+
+from app.core.models import BasePageWithIntro, HeroImageMixin, SidebarMixin
+from app.core.serializers import (
+    DefaultPageSerializer,
+    ImageSerializer,
+)
 
 from .blocks import GeneralPageStreamBlock, HubPageStreamBlock
 
@@ -107,15 +108,14 @@ class LinkItemSerializer(serializers.Serializer):
     def to_representation(self, instance):
         if instance.internal_page:
             return DefaultPageSerializer().to_representation(instance.internal_page)
-        else:
-            return {
-                "title": instance.title,
-                "teaser_image": ImageSerializer().to_representation(instance.image),
-                "teaser_text": instance.description,
-                "url": instance.url,
-                "full_url": instance.url,
-                "type_label": "External",
-            }
+        return {
+            "title": instance.title,
+            "teaser_image": ImageSerializer().to_representation(instance.image),
+            "teaser_text": instance.description,
+            "url": instance.url,
+            "full_url": instance.url,
+            "type_label": "External",
+        }
 
 
 class HubPage(HeroImageMixin, BasePageWithIntro):

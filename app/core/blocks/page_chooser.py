@@ -1,5 +1,6 @@
-from app.core.serializers.pages import get_api_data
 from wagtail import blocks
+
+from app.core.serializers.pages import get_api_data
 
 
 class APIPageChooserBlock(blocks.PageChooserBlock):
@@ -8,9 +9,11 @@ class APIPageChooserBlock(blocks.PageChooserBlock):
         page_type=None,
         can_choose_root=False,
         target_model=None,
-        required_api_fields=[],
+        required_api_fields=None,
         **kwargs,
     ):
+        if required_api_fields is None:
+            required_api_fields = []
         self.required_api_fields = required_api_fields
         super().__init__(
             page_type=page_type,

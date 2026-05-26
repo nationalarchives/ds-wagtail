@@ -1,9 +1,10 @@
 import logging
 
-from app.core.json_api_client import JSONAPIClient
 from django.conf import settings
 from django.core.cache import cache
 from sentry_sdk import capture_message
+
+from app.core.json_api_client import JSONAPIClient
 
 logger = logging.getLogger(__name__)
 
@@ -17,7 +18,9 @@ class CIIMClient(JSONAPIClient):
     Client for interacting with the CIIM API.
     """
 
-    def __init__(self, api_url: str = settings.ROSETTA_API_URL, params: dict = {}):
+    def __init__(self, api_url: str = settings.ROSETTA_API_URL, params: dict = None):
+        if params is None:
+            params = {}
         super().__init__(api_url, params=params)
         self.add_parameter("filter", "@datatype.base:record")
 

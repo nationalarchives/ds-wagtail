@@ -1,3 +1,26 @@
+from django.conf import settings
+from django.core.exceptions import ValidationError
+from django.db import models
+from django.utils import timezone
+from django.utils.functional import cached_property
+from django.utils.translation import gettext_lazy as _
+from modelcluster.fields import ParentalKey
+from wagtail import blocks
+from wagtail.admin.panels import (
+    FieldPanel,
+    FieldRowPanel,
+    InlinePanel,
+    MultiFieldPanel,
+    ObjectList,
+    TabbedInterface,
+    TitleFieldPanel,
+)
+from wagtail.api import APIField
+from wagtail.fields import RichTextField, StreamField
+from wagtail.images import get_image_model_string
+from wagtail.models import Orderable
+from wagtail.snippets.models import register_snippet
+
 from app.core.blocks import (
     FeaturedExternalLinkBlock,
     FeaturedPagesBlock,
@@ -21,28 +44,6 @@ from app.core.serializers import (
     RichTextSerializer,
 )
 from app.core.serializers.partner_logos import PartnerLogoSerializer
-from django.conf import settings
-from django.core.exceptions import ValidationError
-from django.db import models
-from django.utils import timezone
-from django.utils.functional import cached_property
-from django.utils.translation import gettext_lazy as _
-from modelcluster.fields import ParentalKey
-from wagtail import blocks
-from wagtail.admin.panels import (
-    FieldPanel,
-    FieldRowPanel,
-    InlinePanel,
-    MultiFieldPanel,
-    ObjectList,
-    TabbedInterface,
-    TitleFieldPanel,
-)
-from wagtail.api import APIField
-from wagtail.fields import RichTextField, StreamField
-from wagtail.images import get_image_model_string
-from wagtail.models import Orderable
-from wagtail.snippets.models import register_snippet
 
 from ..blocks import EventPageStreamBlock, ExhibitionPageStreamBlock
 from ..serializers import (
@@ -458,10 +459,9 @@ class EventPage(RequiredHeroImageMixin, ContentWarningMixin, BasePageWithRequire
         if location := self.location:
             if location.online:
                 return "Online"
-            elif location.at_tna:
+            if location.at_tna:
                 return "The National Archives, Kew"
-            else:
-                return location.address_line_1 or location.space_name or "In-person"
+            return location.address_line_1 or location.space_name or "In-person"
 
     @cached_property
     def series(self):
@@ -694,10 +694,9 @@ class DisplayPage(
         if location := self.location:
             if location.online:
                 return "Online"
-            elif location.at_tna:
+            if location.at_tna:
                 return "The National Archives, Kew"
-            else:
-                return location.address_line_1 or location.space_name or "In-person"
+            return location.address_line_1 or location.space_name or "In-person"
 
     class Meta:
         verbose_name = _("display page")
@@ -1048,9 +1047,12 @@ class ExhibitionPage(
         Overrides the type_label method from BasePage, to return the correct
         type label for the exhibition page.
         """
-        if cls.end_date:
-            if cls.end_date < timezone.now().date():
-                return "Past exhibition"
+        today = timezone.now().date()
+
+        if cls.start_date and cls.start_date > today:
+            return "Upcoming exhibition"
+        if cls.end_date and cls.end_date < today:
+            return "Past exhibition"
         return "Exhibition"
 
     @cached_property
@@ -1061,10 +1063,9 @@ class ExhibitionPage(
         if location := self.location:
             if location.online:
                 return "Online"
-            elif location.at_tna:
+            if location.at_tna:
                 return "The National Archives, Kew"
-            else:
-                return location.address_line_1 or location.space_name or "In-person"
+            return location.address_line_1 or location.space_name or "In-person"
 
     class Meta:
         verbose_name = _("exhibition page")

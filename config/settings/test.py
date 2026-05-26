@@ -1,6 +1,6 @@
 import os
 
-from .production import *  # noqa: F401, F403
+from .production import *
 from .production import BASE_DIR, INSTALLED_APPS
 
 ENVIRONMENT_NAME = "test"

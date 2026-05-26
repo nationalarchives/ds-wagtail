@@ -1,10 +1,3 @@
-from app.core.models import BasePage
-from app.core.serializers import (
-    DefaultPageSerializer,
-    ImageSerializer,
-    RichTextSerializer,
-    SimplePageSerializer,
-)
 from django.conf import settings
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
@@ -18,6 +11,14 @@ from wagtail.images import get_image_model_string
 from wagtail.models import Page
 from wagtail.search import index
 from wagtail.snippets.models import register_snippet
+
+from app.core.models import BasePage
+from app.core.serializers import (
+    DefaultPageSerializer,
+    ImageSerializer,
+    RichTextSerializer,
+    SimplePageSerializer,
+)
 
 from .blocks import ResearchSummaryStreamBlock
 

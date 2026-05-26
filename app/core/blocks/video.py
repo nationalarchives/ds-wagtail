@@ -1,6 +1,7 @@
-from app.media.blocks import MediaBlock
 from django.core.validators import RegexValidator
 from wagtail import blocks
+
+from app.media.blocks import MediaBlock
 
 from .image import APIImageChooserBlock
 

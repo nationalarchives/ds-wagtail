@@ -1,7 +1,3 @@
-from app.core.blocks import (
-    SimplifiedAccordionBlock,
-)
-from app.core.serializers import ImageSerializer
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -12,6 +8,11 @@ from wagtail.api import APIField
 from wagtail.api.v2.serializers import StreamField as StreamFieldSerializer
 from wagtail.fields import StreamField
 from wagtail.snippets.models import register_snippet
+
+from app.core.blocks import (
+    SimplifiedAccordionBlock,
+)
+from app.core.serializers import ImageSerializer
 
 
 @register_snippet
@@ -194,9 +195,9 @@ class Location(models.Model):
     def __str__(self):
         if self.at_tna:
             return f"{self.space_name} - The National Archives"
-        elif self.online:
+        if self.online:
             return f"{self.space_name} - Online"
-        elif self.address_line_1:
+        if self.address_line_1:
             return f"{self.space_name} - {self.address_line_1}"
         return f"{self.space_name}"
 
