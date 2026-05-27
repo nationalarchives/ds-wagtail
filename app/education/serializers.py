@@ -32,9 +32,11 @@ class SourceSerializer(serializers.Serializer):
     description = RichTextSerializer()
     question = StreamFieldSerializer()
 
+
 class CurriculumConnectionSerializer(serializers.Serializer):
     key_stage = KeyStageSerializer()
     description = RichTextSerializer()
+
 
 class SessionLocationSerializer(serializers.Serializer):
     def to_representation(self, instance):

@@ -28,11 +28,11 @@ from ..blocks import (
     SourceQuestionBlock,
 )
 from ..serializers import (
+    CurriculumConnectionSerializer,
     KeyStageSerializer,
     SourceSerializer,
     ThemeSerializer,
     TimePeriodSerializer,
-    CurriculumConnectionSerializer,
 )
 from .details import (
     BaseKeyStageTag,
@@ -330,7 +330,10 @@ class TeachingResourcePage(
             APIField("sources_introduction", serializer=RichTextSerializer()),
             APIField("sources", serializer=SourceSerializer(many=True)),
             APIField("teachers_notes"),
-            APIField("curriculum_connections", serializer=CurriculumConnectionSerializer(many=True)),
+            APIField(
+                "curriculum_connections",
+                serializer=CurriculumConnectionSerializer(many=True),
+            ),
             APIField("extension_activities"),
             APIField("background_information"),
             APIField("further_information_title"),
