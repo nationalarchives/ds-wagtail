@@ -1,15 +1,7 @@
 from rest_framework import serializers
 
 from app.core.serializers import DefaultPageSerializer, RichTextSerializer
-
-
-class _StreamFieldRepresentationMixin:
-    @staticmethod
-    def _serialize_stream_field(instance, field_name):
-        field = instance._meta.get_field(field_name)
-        stream_value = getattr(instance, field_name)
-        return field.stream_block.get_api_representation(stream_value, context={})
-
+from wagtail.api.v2.serializers import StreamField
 
 class KeyStageSerializer(serializers.Serializer):
     name = serializers.CharField()
@@ -32,32 +24,16 @@ class ThemeSerializer(serializers.Serializer):
     slug = serializers.SlugField()
 
 
-class SourceSerializer(_StreamFieldRepresentationMixin, serializers.Serializer):
-    def to_representation(self, instance):
-        if not instance:
-            return None
+class SourceSerializer(serializers.Serializer):
+    title = serializers.CharField()
+    media = StreamField()
+    featured_link = StreamField()
+    description = RichTextSerializer()
+    question = StreamField()
 
-        return {
-            "title": instance.title,
-            "media": self._serialize_stream_field(instance, "media"),
-            "featured_link": self._serialize_stream_field(instance, "featured_link"),
-            "description": RichTextSerializer().to_representation(instance.description),
-            "question": self._serialize_stream_field(instance, "question"),
-        }
-
-
-class CurriculumConnectionSerializer(
-    _StreamFieldRepresentationMixin, serializers.Serializer
-):
-    def to_representation(self, instance):
-        if not instance:
-            return None
-
-        return {
-            "key_stage": KeyStageSerializer().to_representation(instance.key_stage),
-            "description": RichTextSerializer().to_representation(instance.description),
-        }
-
+class CurriculumConnectionSerializer(serializers.Serializer):
+    key_stage = KeyStageSerializer()
+    description = RichTextSerializer()
 
 class SessionLocationSerializer(serializers.Serializer):
     def to_representation(self, instance):

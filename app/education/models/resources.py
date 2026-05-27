@@ -314,7 +314,6 @@ class TeachingResourcePage(
         + [
             PublishedDateMixin.get_published_date_apifield(),
             PublishedDateMixin.get_is_newly_published_apifield(),
-            APIField("last_published_at"),
         ]
         + [
             APIField("hero_image"),
@@ -328,8 +327,9 @@ class TeachingResourcePage(
             APIField("themes", serializer=ThemeSerializer(many=True)),
             APIField("sources_title"),
             APIField("sources_introduction", serializer=RichTextSerializer()),
-            APIField("teachers_notes"),
             APIField("sources", serializer=SourceSerializer(many=True)),
+            APIField("teachers_notes"),
+            APIField("curriculum_connections", serializer=CurriculumConnectionSerializer(many=True)),
             APIField("extension_activities"),
             APIField("background_information"),
             APIField("further_information_title"),
