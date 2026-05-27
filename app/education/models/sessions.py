@@ -21,10 +21,13 @@ from app.core.models import (
     PublishedDateMixin,
     RequiredHeroImageMixin,
 )
+from app.core.serializers import RichTextSerializer
 
 from ..blocks import SessionDescriptionBlock
 from ..serializers import (
     KeyStageSerializer,
+    LinkedPageSerializer,
+    SessionLocationSerializer,
     ThemeSerializer,
     TimePeriodSerializer,
 )
@@ -389,9 +392,25 @@ class EducationSessionPage(
         + [
             PublishedDateMixin.get_published_date_apifield(),
             PublishedDateMixin.get_is_newly_published_apifield(),
-            APIField("last_published_at"),
         ]
         + [
+            APIField("description"),
+            APIField(
+                "curriculum_connection_description", serializer=RichTextSerializer()
+            ),
+            APIField("highlights"),
+            APIField(
+                "related_education_sessions", serializer=LinkedPageSerializer(many=True)
+            ),
+            APIField("start_date"),
+            APIField("end_date"),
+            APIField("price"),
+            APIField("price_detail"),
+            APIField(
+                "session_locations",
+                serializer=SessionLocationSerializer(many=True),
+            ),
+            APIField("booking_link"),
             # TODO: primary tags?
             # APIField("key_stage", serializer=KeyStageSerializer()),
             # APIField("time_period", serializer=TimePeriodSerializer()),
