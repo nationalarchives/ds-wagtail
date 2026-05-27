@@ -1,7 +1,8 @@
 from rest_framework import serializers
+from wagtail.api.v2.serializers import StreamField as StreamFieldSerializer
 
 from app.core.serializers import DefaultPageSerializer, RichTextSerializer
-from wagtail.api.v2.serializers import StreamField
+
 
 class KeyStageSerializer(serializers.Serializer):
     name = serializers.CharField()
@@ -26,10 +27,10 @@ class ThemeSerializer(serializers.Serializer):
 
 class SourceSerializer(serializers.Serializer):
     title = serializers.CharField()
-    media = StreamField()
-    featured_link = StreamField()
+    media = StreamFieldSerializer()
+    featured_link = StreamFieldSerializer()
     description = RichTextSerializer()
-    question = StreamField()
+    question = StreamFieldSerializer()
 
 class CurriculumConnectionSerializer(serializers.Serializer):
     key_stage = KeyStageSerializer()

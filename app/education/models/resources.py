@@ -32,6 +32,7 @@ from ..serializers import (
     SourceSerializer,
     ThemeSerializer,
     TimePeriodSerializer,
+    CurriculumConnectionSerializer,
 )
 from .details import (
     BaseKeyStageTag,
