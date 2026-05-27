@@ -294,6 +294,7 @@ class EducationSessionPage(
     )
 
     curriculum_connection_description = RichTextField(
+        features=("italic", "bold", "ol", "ul", "link"),
         verbose_name=_("curriculum connection description"),
         help_text=_(
             "A description of how the session connects to the curriculum. This is optional but can help teachers understand the relevance of the session to their teaching."
