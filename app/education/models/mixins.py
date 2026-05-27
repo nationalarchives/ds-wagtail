@@ -10,9 +10,9 @@ class EducationTaxonomyMixin:
     def key_stages(self):
         return [
             tag.key_stage
-            for tag in self.education_keystage_tags.select_related("key_stage").order_by(
-                "key_stage__stage", "key_stage__name"
-            )
+            for tag in self.education_keystage_tags.select_related(
+                "key_stage"
+            ).order_by("key_stage__stage", "key_stage__name")
         ]
 
     @cached_property
@@ -21,7 +21,9 @@ class EducationTaxonomyMixin:
             tag.time_period
             for tag in self.education_time_period_tags.select_related(
                 "time_period"
-            ).order_by("time_period__year_from", "time_period__year_to", "time_period__name")
+            ).order_by(
+                "time_period__year_from", "time_period__year_to", "time_period__name"
+            )
         ]
 
     @cached_property
