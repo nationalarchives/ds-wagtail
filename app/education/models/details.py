@@ -6,8 +6,6 @@ from wagtail.models import Orderable
 
 from .mixins import TagDuplicateCheckMixin
 
-# TODO serializers and API
-
 
 class KeyStage(models.Model):
     """A model for individual key stage tags - choices are populated by migrations/0002_seed_key_stages.py"""
@@ -41,6 +39,7 @@ class KeyStage(models.Model):
     class Meta:
         verbose_name = _("Key stage")
         verbose_name_plural = _("Key stages")
+        ordering = ["stage", "name"]
 
     @property
     def display_name(self):
@@ -122,6 +121,7 @@ class TimePeriod(models.Model):
     class Meta:
         verbose_name = _("Time period")
         verbose_name_plural = _("Time periods")
+        ordering = ["year_from", "year_to", "name"]
 
     def __str__(self):
         return self.display_name
@@ -145,6 +145,7 @@ class Theme(models.Model):
     class Meta:
         verbose_name = _("Theme")
         verbose_name_plural = _("Themes")
+        ordering = ["name"]
 
     def __str__(self):
         return self.name
