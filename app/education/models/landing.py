@@ -17,7 +17,7 @@ from app.core.models import (
 )
 from app.core.serializers import DefaultPageSerializer
 
-from ..serializers import EducationReadMoreLinkSerializer
+from ..serializers import LinkedPageSerializer
 from .resources import TeachingResourcePage
 from .sessions import EducationSessionPage
 
@@ -191,7 +191,7 @@ class EducationPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
         ),
         APIField(
             "education_read_more_links",
-            serializer=EducationReadMoreLinkSerializer(many=True),
+            serializer=LinkedPageSerializer(many=True),
         ),
     ]
 
