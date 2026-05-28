@@ -12,6 +12,7 @@ from app.core.blocks import (
     QuoteBlock,
     YouTubeBlock,
 )
+from app.core.blocks.section import SubHeadingBlock
 from app.media.blocks import MediaBlock
 
 # Resources - Source
@@ -33,7 +34,7 @@ class SourceMediaWithCaptionBlock(MediaBlock):
     caption = APIRichTextBlock(features=["bold", "italic"], required=False)
 
 
-class SourceYouTubeWithCaptionBlock(MediaBlock):
+class SourceYouTubeWithCaptionBlock(blocks.StructBlock):
     youtube = YouTubeBlock()
     caption = APIRichTextBlock(features=["bold", "italic"], required=False)
 
@@ -78,6 +79,12 @@ class SourceQuestionBlock(blocks.StreamBlock):
 
     class Meta:
         label = "Source question"
+
+
+class TeachersNotesBlock(blocks.StreamBlock):
+    notes = ParagraphBlock()
+    subheading = SubHeadingBlock()
+    inset_text = InsetTextBlock()
 
 
 class SectionContentBlock(blocks.StreamBlock):

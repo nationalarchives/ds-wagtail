@@ -13,6 +13,7 @@ from wagtail.models import Orderable
 
 from app.core.models import (
     BasePageWithRequiredIntro,
+    RequiredHeroImageMixin,
 )
 from app.core.serializers import DefaultPageSerializer
 
@@ -21,7 +22,7 @@ from .resources import TeachingResourcePage
 from .sessions import EducationSessionPage
 
 
-class EducationPage(BasePageWithRequiredIntro):
+class EducationPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
     """
     A page for listing teaching resources and sessions.
     """
@@ -49,22 +50,11 @@ class EducationPage(BasePageWithRequiredIntro):
     subpage_types = [
         "education.EducationSessionsListingPage",
         "education.TeachingResourcesListingPage",
+        "generic_pages.GeneralPage",
+        "generic_pages.HubPage",
     ]
 
     max_count = 1
-
-    # Teaching resources section
-    teaching_resources_listing_page = models.ForeignKey(
-        "education.TeachingResourcesListingPage",
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="+",
-        verbose_name=_("teaching resource listing page"),
-        help_text=_(
-            "The teaching resource listing page to display on the Education landing page."
-        ),
-    )
 
     teaching_resources_teaser_override = models.CharField(
         verbose_name=_("teaching resources teaser text"),
@@ -94,19 +84,6 @@ class EducationPage(BasePageWithRequiredIntro):
         max_length=160,
     )
 
-    # Education sessions section
-    education_sessions_listing_page = models.ForeignKey(
-        "education.EducationSessionsListingPage",
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="+",
-        verbose_name=_("education sessions listing page"),
-        help_text=_(
-            "The education sessions listing page to display on the Education landing page."
-        ),
-    )
-
     education_sessions_teaser_override = models.CharField(
         verbose_name=_("education sessions teaser text"),
         help_text=_(
@@ -133,39 +110,43 @@ class EducationPage(BasePageWithRequiredIntro):
         max_length=160,
     )
 
-    content_panels = BasePageWithRequiredIntro.content_panels + [
-        MultiFieldPanel(
-            [
-                PageChooserPanel("teaching_resources_listing_page"),
-                FieldPanel("teaching_resources_teaser_override"),
-                MultiFieldPanel(
-                    [
-                        PageChooserPanel("featured_teaching_resource"),
-                        FieldPanel("featured_teaching_resource_teaser_override"),
-                    ],
-                ),
-            ],
-            heading=_("Teaching resources"),
-        ),
-        MultiFieldPanel(
-            [
-                PageChooserPanel("education_sessions_listing_page"),
-                FieldPanel("education_sessions_teaser_override"),
-                MultiFieldPanel(
-                    [
-                        PageChooserPanel("featured_education_session"),
-                        FieldPanel("featured_education_session_teaser_override"),
-                    ],
-                ),
-            ],
-            heading=_("Education sessions"),
-        ),
-        InlinePanel(
-            "education_read_more_links",
-            heading=_("Read more"),
-            help_text=_("Navigation to other sections within Education"),
-        ),
-    ]
+    content_panels = (
+        BasePageWithRequiredIntro.content_panels
+        + RequiredHeroImageMixin.content_panels
+        + [
+            MultiFieldPanel(
+                [
+                    PageChooserPanel("teaching_resources_listing_page"),
+                    FieldPanel("teaching_resources_teaser_override"),
+                    MultiFieldPanel(
+                        [
+                            PageChooserPanel("featured_teaching_resource"),
+                            FieldPanel("featured_teaching_resource_teaser_override"),
+                        ],
+                    ),
+                ],
+                heading=_("Teaching resources"),
+            ),
+            MultiFieldPanel(
+                [
+                    PageChooserPanel("education_sessions_listing_page"),
+                    FieldPanel("education_sessions_teaser_override"),
+                    MultiFieldPanel(
+                        [
+                            PageChooserPanel("featured_education_session"),
+                            FieldPanel("featured_education_session_teaser_override"),
+                        ],
+                    ),
+                ],
+                heading=_("Education sessions"),
+            ),
+            InlinePanel(
+                "education_read_more_links",
+                heading=_("Read more"),
+                help_text=_("Navigation to other sections within Education"),
+            ),
+        ]
+    )
 
     api_fields = BasePageWithRequiredIntro.api_fields + [
         APIField("teaching_resources_listing_page", serializer=DefaultPageSerializer()),
