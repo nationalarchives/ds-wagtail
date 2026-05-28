@@ -56,19 +56,6 @@ class EducationPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
 
     max_count = 1
 
-    # Teaching resources section
-    teaching_resources_listing_page = models.ForeignKey(
-        "education.TeachingResourcesListingPage",
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="+",
-        verbose_name=_("teaching resource listing page"),
-        help_text=_(
-            "The teaching resource listing page to display on the Education landing page."
-        ),
-    )
-
     teaching_resources_teaser_override = models.CharField(
         verbose_name=_("teaching resources teaser text"),
         help_text=_(
@@ -95,19 +82,6 @@ class EducationPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
         help_text=_("Override text for the featured teaching resource"),
         blank=True,
         max_length=160,
-    )
-
-    # Education sessions section
-    education_sessions_listing_page = models.ForeignKey(
-        "education.EducationSessionsListingPage",
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="+",
-        verbose_name=_("education sessions listing page"),
-        help_text=_(
-            "The education sessions listing page to display on the Education landing page."
-        ),
     )
 
     education_sessions_teaser_override = models.CharField(
