@@ -252,7 +252,7 @@ class EducationSessionPage(
 
     @cached_property
     def type_label(cls) -> str:
-        return "Education Session"
+        return "Education session"
 
     parent_page_types = [
         "education.EducationSessionsListingPage",

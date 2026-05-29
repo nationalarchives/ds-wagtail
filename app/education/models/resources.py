@@ -174,7 +174,7 @@ class TeachingResourcePage(
 
     @cached_property
     def type_label(cls) -> str:
-        return "Teaching Resource"
+        return "Teaching resource"
 
     parent_page_types = [
         "education.TeachingResourcesListingPage",
