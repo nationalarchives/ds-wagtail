@@ -1,5 +1,6 @@
 from django.core.exceptions import ValidationError
 from django.db import models
+from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
 from modelcluster.fields import ParentalKey
 from wagtail.admin.panels import (
@@ -248,6 +249,10 @@ class EducationSessionPage(
     BasePageWithRequiredIntro,
 ):
     """A page to display an education session"""
+
+    @cached_property
+    def type_label(cls) -> str:
+        return "Education session"
 
     parent_page_types = [
         "education.EducationSessionsListingPage",
