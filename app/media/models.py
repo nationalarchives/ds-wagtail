@@ -146,6 +146,7 @@ class EtnaMedia(AbstractMedia):
         "title",
         "date",
         "file",
+        "thumbnail",
         "audio_described_file",
         "alternate_version_link",
         "alternate_version_type",
