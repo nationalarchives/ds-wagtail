@@ -166,6 +166,12 @@ class BlogPostPage(
         ]
     )
 
+    search_fields = (
+        BasePageWithRequiredIntro.search_fields
+        + AuthorPageMixin.search_fields
+        + PublishedDateMixin.search_fields
+    )
+
     class Meta:
         verbose_name = "Blog post page"
         verbose_name_plural = "Blog post pages"

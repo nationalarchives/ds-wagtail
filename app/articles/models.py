@@ -215,6 +215,7 @@ class ArticlePage(
     search_fields = (
         BasePageWithRequiredIntro.search_fields
         + ArticleTagMixin.search_fields
+        + PublishedDateMixin.search_fields
         + [
             index.SearchField("body"),
             index.SearchField("topic_names", boost=1),
@@ -366,6 +367,8 @@ class FocusedArticlePage(
     search_fields = (
         BasePageWithRequiredIntro.search_fields
         + ArticleTagMixin.search_fields
+        + AuthorPageMixin.search_fields
+        + PublishedDateMixin.search_fields
         + [
             index.SearchField("body"),
             index.SearchField("topic_names", boost=1),
@@ -646,6 +649,7 @@ class RecordArticlePage(
     search_fields = (
         BasePageWithRequiredIntro.search_fields
         + ArticleTagMixin.search_fields
+        + PublishedDateMixin.search_fields
         + [
             index.SearchField("date_text"),
             index.SearchField("about"),
