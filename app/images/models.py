@@ -32,9 +32,7 @@ class CustomImage(ClusterableModel, AbstractImage):
     title = models.CharField(
         max_length=255,
         verbose_name="title",
-        help_text=(
-            "The descriptive name of the image. If this image features in a highlights gallery, this title will be visible on the page."
-        ),
+        help_text="The descriptive name of the image. If this image features in a highlights gallery, this title will be visible on the page.",
     )
 
     description = models.CharField(
@@ -48,9 +46,7 @@ class CustomImage(ClusterableModel, AbstractImage):
         verbose_name="copyright",
         blank=True,
         max_length=200,
-        help_text=(
-            "Credit for images not owned by TNA. Do not include the copyright symbol."
-        ),
+        help_text="Credit for images not owned by TNA. Do not include the copyright symbol.",
         features=settings.INLINE_RICH_TEXT_FEATURES,
     )
 
@@ -74,9 +70,7 @@ class CustomImage(ClusterableModel, AbstractImage):
         max_length=30,
         choices=TranslationHeadingChoices.choices,
         default=TranslationHeadingChoices.TRANSLATION,
-        help_text=(
-            'If the original transcription language is some earlier form of English, choose "Modern English". If not, choose “Translation”.'
-        ),
+        help_text='If the original transcription language is some earlier form of English, choose "Modern English". If not, choose “Translation”.',
     )
 
     translation = RichTextField(
@@ -84,9 +78,7 @@ class CustomImage(ClusterableModel, AbstractImage):
         features=["bold", "italic", "ol", "ul"],
         blank=True,
         max_length=1500,
-        help_text=(
-            "An optional English / Modern English translation of the transcription."
-        ),
+        help_text="An optional English / Modern English translation of the transcription.",
     )
 
     def usage_count(self):

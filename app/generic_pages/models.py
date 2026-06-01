@@ -122,9 +122,7 @@ class HubPage(HeroImageMixin, BasePageWithIntro):
 
     plain_cards_list = models.BooleanField(
         default=False,
-        help_text=(
-            "If checked, the links will be displayed as a list of plain cards, without images."
-        ),
+        help_text="If checked, the links will be displayed as a list of plain cards, without images.",
     )
 
     content_panels = (

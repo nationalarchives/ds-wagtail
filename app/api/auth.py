@@ -21,10 +21,10 @@ class CustomTokenAuthentication(TokenAuthentication):
         try:
             token = model.objects.get(key=key)
         except model.DoesNotExist:
-            raise exceptions.AuthenticationFailed(("Invalid token."))
+            raise exceptions.AuthenticationFailed("Invalid token.")
 
         if not token.active:
-            raise exceptions.PermissionDenied(("Token inactive or deleted."))
+            raise exceptions.PermissionDenied("Token inactive or deleted.")
 
         # Return a DummyUser instance in place of the user object, as we're not assigning tokens to user accounts
         return (DummyUser(), token)

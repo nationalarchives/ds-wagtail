@@ -93,9 +93,7 @@ class SessionLocation(Orderable):
 
     duration = models.CharField(
         verbose_name="duration",
-        help_text=(
-            "A clear description of the session duration for this location, e.g. 1 hour, 1 to 2 hours."
-        ),
+        help_text="A clear description of the session duration for this location, e.g. 1 hour, 1 to 2 hours.",
         blank=True,
         null=True,
         max_length=160,
@@ -105,9 +103,7 @@ class SessionLocation(Orderable):
         max_length=32,
         choices=Regions.choices,
         verbose_name="region",
-        help_text=(
-            "The region where the session is offered. Required for schools and custom venues."
-        ),
+        help_text="The region where the session is offered. Required for schools and custom venues.",
         null=True,
         blank=True,
     )
@@ -261,18 +257,14 @@ class EducationSessionPage(
         verbose_name="start date",
         null=True,
         blank=True,
-        help_text=(
-            "If neither start nor end date is added this will default to 'All Year'"
-        ),
+        help_text="If neither start nor end date is added this will default to 'All Year'",
     )
 
     end_date = models.DateField(
         verbose_name="end date",
         null=True,
         blank=True,
-        help_text=(
-            "If neither start nor end date is added this will default to 'All Year'"
-        ),
+        help_text="If neither start nor end date is added this will default to 'All Year'",
     )
 
     price = models.FloatField(null=True, blank=True, verbose_name="price")
@@ -302,9 +294,7 @@ class EducationSessionPage(
 
     curriculum_connection_description = RichTextField(
         verbose_name="curriculum connection description",
-        help_text=(
-            "A description of how the session connects to the curriculum. This is optional but can help teachers understand the relevance of the session to their teaching."
-        ),
+        help_text="A description of how the session connects to the curriculum. This is optional but can help teachers understand the relevance of the session to their teaching.",
         blank=True,
         null=True,
     )
@@ -354,9 +344,7 @@ class EducationSessionPage(
             InlinePanel(
                 "related_education_sessions",
                 heading="More education sessions",
-                help_text=(
-                    "Education sessions that are selected to be shown in the related education sessions section"
-                ),
+                help_text="Education sessions that are selected to be shown in the related education sessions section",
             ),
         ]
     )

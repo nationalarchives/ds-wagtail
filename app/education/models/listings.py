@@ -34,9 +34,7 @@ class TeachingResourcesListingPage(BasePageWithRequiredIntro):
         on_delete=models.SET_NULL,
         related_name="+",
         verbose_name="featured teaching resource",
-        help_text=(
-            "Option to add a highlighted teaching resource, particularly for history months etc"
-        ),
+        help_text="Option to add a highlighted teaching resource, particularly for history months etc",
     )
 
     featured_teaching_resource_teaser_override = models.CharField(

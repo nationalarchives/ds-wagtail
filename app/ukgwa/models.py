@@ -52,9 +52,7 @@ class FeaturedLinksSection(models.Model):
         min_num=3,
         max_num=3,
         use_json_field=True,
-        help_text=(
-            "Contains exactly three links. Each link can be to an internal page or an external URL."
-        ),
+        help_text="Contains exactly three links. Each link can be to an internal page or an external URL.",
     )
 
     panels = [
@@ -183,10 +181,8 @@ class SectionIndexPage(SearchMixin, UKGWABasePage):
         [("link", LinkWithDescriptionBlock())],
         blank=True,
         use_json_field=True,
-        help_text=(
-            "Optional links appended to the list of child pages. "
-            "Each link can be to an internal page or an external URL."
-        ),
+        help_text="Optional links appended to the list of child pages. "
+        "Each link can be to an internal page or an external URL.",
     )
 
     @property
@@ -308,23 +304,17 @@ class ArchiveSearchComponent(models.Model):
     name = models.CharField(
         verbose_name="name",
         max_length=255,
-        help_text=(
-            "Internal name to identify this search component (not shown to users)"
-        ),
+        help_text="Internal name to identify this search component (not shown to users)",
     )
     heading = models.CharField(
         verbose_name="heading",
         max_length=255,
-        help_text=(
-            "The heading text displayed above the search bar (e.g. 'Web Archive Search')"
-        ),
+        help_text="The heading text displayed above the search bar (e.g. 'Web Archive Search')",
     )
     help_text = models.TextField(
         verbose_name="help text",
         blank=True,
-        help_text=(
-            "Optional guidance text displayed below the search box to help users understand what they can search for"
-        ),
+        help_text="Optional guidance text displayed below the search box to help users understand what they can search for",
     )
     button_text = models.CharField(
         verbose_name="button text",
@@ -336,9 +326,7 @@ class ArchiveSearchComponent(models.Model):
         verbose_name="archive type",
         max_length=20,
         choices=ArchiveTypes.choices,
-        help_text=(
-            "Select whether this component searches the Web Archive or Social Media Archive"
-        ),
+        help_text="Select whether this component searches the Web Archive or Social Media Archive",
     )
 
     panels = [
@@ -375,9 +363,7 @@ class BookmarkletCTASnippet(models.Model):
     name = models.CharField(
         verbose_name="name",
         max_length=255,
-        help_text=(
-            "Internal name to identify this bookmarklet snippet (not shown to users)"
-        ),
+        help_text="Internal name to identify this bookmarklet snippet (not shown to users)",
     )
     heading = models.CharField(
         verbose_name="heading",

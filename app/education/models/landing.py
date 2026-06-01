@@ -81,16 +81,12 @@ class EducationPage(BasePageWithRequiredIntro):
         on_delete=models.SET_NULL,
         related_name="+",
         verbose_name="teaching resource listing page",
-        help_text=(
-            "The teaching resource listing page to display on the Education landing page."
-        ),
+        help_text="The teaching resource listing page to display on the Education landing page.",
     )
 
     teaching_resources_teaser_override = models.CharField(
         verbose_name="teaching resources teaser text",
-        help_text=(
-            "Short text under Explore teaching resources title to entice users to click through"
-        ),
+        help_text="Short text under Explore teaching resources title to entice users to click through",
         blank=True,
         max_length=160,
     )
@@ -102,9 +98,7 @@ class EducationPage(BasePageWithRequiredIntro):
         on_delete=models.SET_NULL,
         related_name="+",
         verbose_name="featured teaching resource",
-        help_text=(
-            "Option to add a highlighted teaching resource, particularly for history months etc"
-        ),
+        help_text="Option to add a highlighted teaching resource, particularly for history months etc",
     )
 
     featured_teaching_resource_teaser_override = models.CharField(
@@ -122,16 +116,12 @@ class EducationPage(BasePageWithRequiredIntro):
         on_delete=models.SET_NULL,
         related_name="+",
         verbose_name="education sessions listing page",
-        help_text=(
-            "The education sessions listing page to display on the Education landing page."
-        ),
+        help_text="The education sessions listing page to display on the Education landing page.",
     )
 
     education_sessions_teaser_override = models.CharField(
         verbose_name="education sessions teaser text",
-        help_text=(
-            "Short text under Explore education sessions title to entice users to click through"
-        ),
+        help_text="Short text under Explore education sessions title to entice users to click through",
         blank=True,
         max_length=160,
     )

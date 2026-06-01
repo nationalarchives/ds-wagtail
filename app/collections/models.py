@@ -56,9 +56,7 @@ class Highlight(Orderable):
     title = models.CharField(
         max_length=255,
         verbose_name="title",
-        help_text=(
-            "The descriptive name of the image. If this image features in a highlights gallery, this title will be visible on the page."
-        ),
+        help_text="The descriptive name of the image. If this image features in a highlights gallery, this title will be visible on the page.",
     )
 
     record = RecordField(
@@ -66,9 +64,7 @@ class Highlight(Orderable):
         db_index=True,
         blank=False,
         null=False,
-        help_text=(
-            "If the image relates to a specific record, select that record here."
-        ),
+        help_text="If the image relates to a specific record, select that record here.",
     )
     record.wagtail_reference_index_ignore = True
 
@@ -82,10 +78,8 @@ class Highlight(Orderable):
 
     description = RichTextField(
         verbose_name="description",
-        help_text=(
-            "This text will appear in highlights galleries. A 100-300 word "
-            "description of the story of the record and why it is significant."
-        ),
+        help_text="This text will appear in highlights galleries. A 100-300 word "
+        "description of the story of the record and why it is significant.",
         blank=False,
         null=False,
         features=settings.RESTRICTED_RICH_TEXT_FEATURES,
@@ -120,17 +114,13 @@ class ExplorerIndexPageSelection(Orderable):
     title = models.CharField(
         max_length=255,
         blank=True,
-        help_text=(
-            "Optional title for the selected page. If left blank, the page title will be used."
-        ),
+        help_text="Optional title for the selected page. If left blank, the page title will be used.",
     )
 
     teaser_text = models.CharField(
         max_length=255,
         blank=True,
-        help_text=(
-            "Optional teaser text for the selected page. If left blank, the page's teaser text will be displayed."
-        ),
+        help_text="Optional teaser text for the selected page. If left blank, the page's teaser text will be displayed.",
     )
 
     teaser_image = models.ForeignKey(
@@ -139,17 +129,13 @@ class ExplorerIndexPageSelection(Orderable):
         blank=True,
         on_delete=models.SET_NULL,
         related_name="+",
-        help_text=(
-            "Optional image to display in the teaser for the selected page. If left blank, the page's teaser image will be displayed."
-        ),
+        help_text="Optional image to display in the teaser for the selected page. If left blank, the page's teaser image will be displayed.",
     )
 
     cta_label = models.CharField(
         max_length=50,
         blank=True,
-        help_text=(
-            "Optional label for the call to action button. If left blank, 'Read more' will be used."
-        ),
+        help_text="Optional label for the call to action button. If left blank, 'Read more' will be used.",
         verbose_name="CTA label",
     )
 
@@ -222,9 +208,7 @@ class ExplorerIndexPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
         on_delete=models.SET_NULL,
         related_name="+",
         verbose_name="stories hero image",
-        help_text=(
-            "The stories section hero image to display on the Explorer Index Page."
-        ),
+        help_text="The stories section hero image to display on the Explorer Index Page.",
     )
 
     stories_hero_image_caption = RichTextField(
@@ -388,9 +372,7 @@ class TopicExplorerPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
         blank=True,
         on_delete=models.SET_NULL,
         related_name="+",
-        help_text=(
-            "Select a page to display in the featured area. This can be an Article, Focused Article or Record Article."
-        ),
+        help_text="Select a page to display in the featured area. This can be an Article, Focused Article or Record Article.",
         verbose_name="featured article",
     )
 
@@ -610,9 +592,7 @@ class TimePeriodExplorerPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
         blank=True,
         on_delete=models.SET_NULL,
         related_name="+",
-        help_text=(
-            "Select a page to display in the featured area. This can be an Article, Focused Article or Record Article."
-        ),
+        help_text="Select a page to display in the featured area. This can be an Article, Focused Article or Record Article.",
         verbose_name="featured article",
     )
 
@@ -793,9 +773,7 @@ class TopicalPageMixin:
         return InlinePanel(
             "page_time_periods",
             heading="Related time periods",
-            help_text=(
-                "If the page relates to more than one time period, please add these in order of relevance from most to least"
-            ),
+            help_text="If the page relates to more than one time period, please add these in order of relevance from most to least",
             max_num=max_num,
         )
 
@@ -804,9 +782,7 @@ class TopicalPageMixin:
         return InlinePanel(
             "page_topics",
             heading="Related topics",
-            help_text=(
-                "If the page relates to more than one topic, please add these in order of relevance from most to least."
-            ),
+            help_text="If the page relates to more than one topic, please add these in order of relevance from most to least.",
             max_num=max_num,
         )
 
@@ -887,9 +863,7 @@ class HighlightGalleryPage(
         blank=True,
         on_delete=models.SET_NULL,
         related_name="+",
-        help_text=(
-            "Select a page to display in the featured area. This can be an Article, Focused Article or Record Article."
-        ),
+        help_text="Select a page to display in the featured area. This can be an Article, Focused Article or Record Article.",
         verbose_name="featured article",
     )
 

@@ -33,10 +33,8 @@ class FeaturedLinksMixin(models.Model):
         blank=True,
         max_num=3,
         use_json_field=True,
-        help_text=(
-            "Exactly three links, or leave empty to hide this section. "
-            "Each link can be to an internal page or an external URL."
-        ),
+        help_text="Exactly three links, or leave empty to hide this section. "
+        "Each link can be to an internal page or an external URL.",
     )
 
     api_fields = [
@@ -134,10 +132,8 @@ class SidebarNavigationMixin(models.Model):
 
     show_sidebar_navigation = models.BooleanField(
         default=True,
-        help_text=(
-            "Show a navigation sidebar of sibling pages within this section. "
-            "Only applies to direct children of a section index."
-        ),
+        help_text="Show a navigation sidebar of sibling pages within this section. "
+        "Only applies to direct children of a section index.",
     )
 
     @property

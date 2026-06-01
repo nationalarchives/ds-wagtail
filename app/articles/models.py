@@ -125,9 +125,7 @@ class ArticleIndexPage(BasePageWithRequiredIntro):
         blank=True,
         on_delete=models.SET_NULL,
         related_name="+",
-        help_text=(
-            "Select a page to display in the featured area. This can be an Article, Focused Article or Record Article."
-        ),
+        help_text="Select a page to display in the featured area. This can be an Article, Focused Article or Record Article.",
         verbose_name="featured article",
     )
 
@@ -578,9 +576,7 @@ class RecordArticlePage(
         blank=True,
         on_delete=models.SET_NULL,
         related_name="+",
-        help_text=(
-            "Select a page to display in the featured area. This can be an Article, Focused Article or Record Article."
-        ),
+        help_text="Select a page to display in the featured area. This can be an Article, Focused Article or Record Article.",
         verbose_name="featured article",
     )
 

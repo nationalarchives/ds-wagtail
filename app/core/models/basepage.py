@@ -76,9 +76,7 @@ class BasePage(AlertMixin, SocialMixin, CustomHeadlessPreviewMixin, Page):
 
     short_title = models.CharField(
         verbose_name="short title",
-        help_text=(
-            "A shorter title for use in breadcrumbs and other navigational elements, where applicable."
-        ),
+        help_text="A shorter title for use in breadcrumbs and other navigational elements, where applicable.",
         max_length=45,
         blank=True,
         null=True,
@@ -86,9 +84,7 @@ class BasePage(AlertMixin, SocialMixin, CustomHeadlessPreviewMixin, Page):
 
     teaser_text = models.TextField(
         verbose_name="teaser text",
-        help_text=(
-            "A short, enticing description of this page. This will appear in promos and under thumbnails around the site."
-        ),
+        help_text="A short, enticing description of this page. This will appear in promos and under thumbnails around the site.",
         max_length=160,
     )
 
@@ -107,9 +103,7 @@ class BasePage(AlertMixin, SocialMixin, CustomHeadlessPreviewMixin, Page):
         [
             FieldPanel(
                 "slug",
-                help_text=(
-                    "The name of the page as it will appear at the end of the URL"
-                ),
+                help_text="The name of the page as it will appear at the end of the URL",
                 widget=SlugInput,
             ),
             HelpPanel(
@@ -276,9 +270,7 @@ class BasePageWithIntro(BasePage):
 
     intro = RichTextField(
         verbose_name="introductory text",
-        help_text=(
-            "1-2 sentences introducing the subject of the page, and explaining why a user should read on."
-        ),
+        help_text="1-2 sentences introducing the subject of the page, and explaining why a user should read on.",
         features=settings.INLINE_RICH_TEXT_FEATURES,
         max_length=300,
         null=True,
@@ -307,9 +299,7 @@ class BasePageWithRequiredIntro(BasePageWithIntro):
 
     intro = RichTextField(
         verbose_name="introductory text",
-        help_text=(
-            "1-2 sentences introducing the subject of the page, and explaining why a user should read on."
-        ),
+        help_text="1-2 sentences introducing the subject of the page, and explaining why a user should read on.",
         features=settings.INLINE_RICH_TEXT_FEATURES,
         max_length=300,
     )

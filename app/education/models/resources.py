@@ -91,9 +91,7 @@ class Source(Orderable):
     media = StreamField(
         SourceMediaBlock(),
         verbose_name="source media",
-        help_text=(
-            "Choose one media type for this source. A caption can be added for each."
-        ),
+        help_text="Choose one media type for this source. A caption can be added for each.",
         blank=True,
         null=True,
     )
@@ -109,9 +107,7 @@ class Source(Orderable):
     description = RichTextField(
         features=settings.RESTRICTED_RICH_TEXT_FEATURES,
         verbose_name="source description",
-        help_text=(
-            "An optional free text field to add in a fuller description of the source."
-        ),
+        help_text="An optional free text field to add in a fuller description of the source.",
         blank=True,
         null=True,
     )
@@ -187,9 +183,7 @@ class TeachingResourcePage(
 
     sources_title = models.CharField(
         verbose_name="sources title",
-        help_text=(
-            "Title of the main section of the page. In most cases ‘Investigate the sources’"
-        ),
+        help_text="Title of the main section of the page. In most cases ‘Investigate the sources’",
         blank=True,
         max_length=160,
     )
@@ -205,9 +199,7 @@ class TeachingResourcePage(
     teachers_notes = RichTextField(
         features=settings.RESTRICTED_RICH_TEXT_FEATURES,
         verbose_name="teachers notes",
-        help_text=(
-            "A general overview of what the resource contains and how it can be used."
-        ),
+        help_text="A general overview of what the resource contains and how it can be used.",
         blank=True,
         null=True,
     )
@@ -223,9 +215,7 @@ class TeachingResourcePage(
             ("featured_external_link", FeaturedExternalLinkBlock()),
         ],
         verbose_name="extension activities",
-        help_text=(
-            "Optional section where editors can add extra activities for teachers to try with their pupils."
-        ),
+        help_text="Optional section where editors can add extra activities for teachers to try with their pupils.",
         blank=True,
         null=True,
     )

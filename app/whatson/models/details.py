@@ -257,9 +257,7 @@ class EventPage(RequiredHeroImageMixin, ContentWarningMixin, BasePageWithRequire
     various_dates = models.BooleanField(
         verbose_name="various dates and times",
         default=False,
-        help_text=(
-            "Check this box if the event has multiple sessions with different dates and times."
-        ),
+        help_text="Check this box if the event has multiple sessions with different dates and times.",
     )
 
     start_date = models.DateTimeField(
@@ -384,9 +382,7 @@ class EventPage(RequiredHeroImageMixin, ContentWarningMixin, BasePageWithRequire
                         FieldPanel("start_date", read_only=True),
                         FieldPanel("end_date", read_only=True),
                     ],
-                    help_text=(
-                        "These dates are automatically set based on the sessions added."
-                    ),
+                    help_text="These dates are automatically set based on the sessions added.",
                 ),
                 FieldPanel("various_dates"),
                 InlinePanel(
@@ -402,9 +398,7 @@ class EventPage(RequiredHeroImageMixin, ContentWarningMixin, BasePageWithRequire
         InlinePanel(
             "speakers",
             heading="Speaker information",
-            help_text=(
-                "If the event has more than one speaker, please add these in order of relevance from most to least."
-            ),
+            help_text="If the event has more than one speaker, please add these in order of relevance from most to least.",
         ),
     ]
 
@@ -912,9 +906,7 @@ class ExhibitionPage(
         max_length=40,
         verbose_name="partnership lead text",
         blank=True,
-        help_text=(
-            "Optional override for the partner logos section lead text. Will display a default if not provided."
-        ),
+        help_text="Optional override for the partner logos section lead text. Will display a default if not provided.",
     )
 
     partnership = PartnerLogoField(
@@ -930,9 +922,7 @@ class ExhibitionPage(
         max_length=100,
         verbose_name="intro title",
         blank=True,
-        help_text=(
-            "Only used in jump links. Does not appear on page. Leave blank to default to 'About [Page title]'."
-        ),
+        help_text="Only used in jump links. Does not appear on page. Leave blank to default to 'About [Page title]'.",
     )
 
     body = StreamField(ExhibitionPageStreamBlock, blank=True, null=True)

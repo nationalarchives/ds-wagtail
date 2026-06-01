@@ -111,9 +111,7 @@ class HeroImageMixin(models.Model):
         verbose_name="hero image caption (optional)",
         features=["bold", "italic", "link"],
         blank=True,
-        help_text=(
-            "An optional caption for hero images. This could be used for image sources or for other useful metadata."
-        ),
+        help_text="An optional caption for hero images. This could be used for image sources or for other useful metadata.",
     )
 
     class Meta:
@@ -276,9 +274,7 @@ class SocialMixin(models.Model):
         on_delete=models.SET_NULL,
         related_name="+",
         verbose_name="OpenGraph image",
-        help_text=(
-            "Image that will appear when this page is shared on social media. This will default to the teaser image if left blank."
-        ),
+        help_text="Image that will appear when this page is shared on social media. This will default to the teaser image if left blank.",
     )
 
     twitter_og_title = models.CharField(
@@ -312,15 +308,11 @@ class SocialMixin(models.Model):
             [
                 FieldPanel(
                     "seo_title",
-                    help_text=(
-                        "The name of the page displayed on search engine results as the clickable headline and when shared on social media."
-                    ),
+                    help_text="The name of the page displayed on search engine results as the clickable headline and when shared on social media.",
                 ),
                 FieldPanel(
                     "search_description",
-                    help_text=(
-                        "The descriptive text displayed underneath a headline in search engine results and when shared on social media."
-                    ),
+                    help_text="The descriptive text displayed underneath a headline in search engine results and when shared on social media.",
                 ),
                 FieldPanel("search_image"),
             ],
