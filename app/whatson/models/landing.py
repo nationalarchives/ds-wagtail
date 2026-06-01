@@ -32,8 +32,8 @@ class WhatsOnPageSelection(Orderable):
         "wagtailcore.Page",
         on_delete=models.CASCADE,
         related_name="+",
-        verbose_name=("selected page"),
-        help_text=("The page to display on the What's On page."),
+        verbose_name="selected page",
+        help_text="The page to display on the What's On page.",
     )
 
     panels = [
@@ -82,8 +82,8 @@ class WhatsOnPage(BasePageWithRequiredIntro):
     content_panels = BasePageWithRequiredIntro.content_panels + [
         InlinePanel(
             "whats_on_page_selections",
-            heading=("Page selections"),
-            help_text=("Select pages to display on the What's On page."),
+            heading="Page selections",
+            help_text="Select pages to display on the What's On page.",
         ),
     ]
 

@@ -67,8 +67,8 @@ class SeriesTag(Orderable):
         "whatson.WhatsOnSeriesPage",
         on_delete=models.CASCADE,
         related_name="series_pages",
-        verbose_name=("series"),
-        help_text=("The series to include the page in."),
+        verbose_name="series",
+        help_text="The series to include the page in.",
         null=False,
         blank=False,
     )
@@ -91,12 +91,12 @@ class EventType(models.Model):
 
     name = models.CharField(
         max_length=255,
-        verbose_name=("name"),
+        verbose_name="name",
     )
 
     slug = models.SlugField(
         max_length=255,
-        verbose_name=("slug"),
+        verbose_name="slug",
         unique=True,
     )
 
@@ -129,21 +129,21 @@ class EventSpeaker(Orderable):
 
     name = models.CharField(
         max_length=100,
-        verbose_name=("name"),
-        help_text=("The name of the speaker."),
+        verbose_name="name",
+        help_text="The name of the speaker.",
         blank=True,
     )
 
     role = models.CharField(
         max_length=200,
-        verbose_name=("role"),
-        help_text=("The role of the speaker."),
+        verbose_name="role",
+        help_text="The role of the speaker.",
         blank=True,
     )
 
     biography = RichTextField(
-        verbose_name=("biography"),
-        help_text=("A short biography of the speaker."),
+        verbose_name="biography",
+        help_text="A short biography of the speaker.",
         blank=True,
         features=settings.INLINE_RICH_TEXT_FEATURES,
     )
@@ -197,17 +197,17 @@ class EventSession(models.Model):
     )
 
     start = models.DateTimeField(
-        verbose_name=("starts at"),
+        verbose_name="starts at",
     )
 
     end = models.DateTimeField(
-        verbose_name=("ends at"),
+        verbose_name="ends at",
     )
 
     sold_out = models.BooleanField(
-        verbose_name=("sold out"),
+        verbose_name="sold out",
         default=False,
-        help_text=("Check this box if the session is sold out."),
+        help_text="Check this box if the session is sold out.",
     )
 
     def clean(self):
@@ -255,7 +255,7 @@ class EventPage(RequiredHeroImageMixin, ContentWarningMixin, BasePageWithRequire
     )
 
     various_dates = models.BooleanField(
-        verbose_name=("various dates and times"),
+        verbose_name="various dates and times",
         default=False,
         help_text=(
             "Check this box if the event has multiple sessions with different dates and times."
@@ -263,13 +263,13 @@ class EventPage(RequiredHeroImageMixin, ContentWarningMixin, BasePageWithRequire
     )
 
     start_date = models.DateTimeField(
-        verbose_name=("start date"),
+        verbose_name="start date",
         null=True,
         editable=False,
     )
 
     end_date = models.DateTimeField(
-        verbose_name=("end date"),
+        verbose_name="end date",
         null=True,
         editable=False,
     )
@@ -278,33 +278,33 @@ class EventPage(RequiredHeroImageMixin, ContentWarningMixin, BasePageWithRequire
         EventPageStreamBlock(),
         blank=True,
         null=True,
-        verbose_name=("description"),
-        help_text=("The description of the event."),
+        verbose_name="description",
+        help_text="The description of the event.",
     )
 
     age_detail = models.CharField(
         max_length=40,
-        verbose_name=("age detail"),
+        verbose_name="age detail",
         blank=True,
-        help_text=("The text for the age detail section."),
+        help_text="The text for the age detail section.",
     )
 
     booking_details = RichTextField(
         max_length=40,
         null=True,
         blank=True,
-        verbose_name=("booking details"),
-        help_text=("Information about how to book tickets for the event."),
+        verbose_name="booking details",
+        help_text="Information about how to book tickets for the event.",
         features=["link"],
     )
 
     min_price = models.FloatField(
-        verbose_name=("minimum price"),
+        verbose_name="minimum price",
         default=0,
     )
 
     max_price = models.FloatField(
-        verbose_name=("maximum price"),
+        verbose_name="maximum price",
         default=0,
     )
 
@@ -314,8 +314,8 @@ class EventPage(RequiredHeroImageMixin, ContentWarningMixin, BasePageWithRequire
         blank=False,
         on_delete=models.SET_NULL,
         related_name="+",
-        verbose_name=("location"),
-        help_text=("The location of the event."),
+        verbose_name="location",
+        help_text="The location of the event.",
     )
 
     booking_link = models.URLField(
@@ -327,9 +327,9 @@ class EventPage(RequiredHeroImageMixin, ContentWarningMixin, BasePageWithRequire
 
     event_highlights_title = models.CharField(
         max_length=100,
-        verbose_name=("event highlights title"),
+        verbose_name="event highlights title",
         blank=True,
-        help_text=("Leave blank to default to 'Event highlights'."),
+        help_text="Leave blank to default to 'Event highlights'.",
     )
 
     event_highlights = StreamField(
@@ -350,14 +350,14 @@ class EventPage(RequiredHeroImageMixin, ContentWarningMixin, BasePageWithRequire
                 [
                     FieldPanel("description"),
                 ],
-                heading=("Event information"),
+                heading="Event information",
             ),
             MultiFieldPanel(
                 [
                     FieldPanel("event_highlights_title"),
                     FieldPanel("event_highlights"),
                 ],
-                heading=("Event highlights"),
+                heading="Event highlights",
             ),
         ]
     )
@@ -375,7 +375,7 @@ class EventPage(RequiredHeroImageMixin, ContentWarningMixin, BasePageWithRequire
                     ],
                 ),
             ],
-            heading=("Price details"),
+            heading="Price details",
         ),
         MultiFieldPanel(
             [
@@ -391,17 +391,17 @@ class EventPage(RequiredHeroImageMixin, ContentWarningMixin, BasePageWithRequire
                 FieldPanel("various_dates"),
                 InlinePanel(
                     "sessions",
-                    heading=("Sessions"),
+                    heading="Sessions",
                     min_num=1,
                 ),
             ],
-            heading=("Date details"),
+            heading="Date details",
         ),
         FieldPanel("location"),
         FieldPanel("age_detail"),
         InlinePanel(
             "speakers",
-            heading=("Speaker information"),
+            heading="Speaker information",
             help_text=(
                 "If the event has more than one speaker, please add these in order of relevance from most to least."
             ),
@@ -411,7 +411,7 @@ class EventPage(RequiredHeroImageMixin, ContentWarningMixin, BasePageWithRequire
     promote_panels = BasePageWithRequiredIntro.promote_panels + [
         InlinePanel(
             "page_series_tags",
-            heading=("Series"),
+            heading="Series",
             max_num=3,
         ),
     ]
@@ -558,54 +558,54 @@ class DisplayPage(
 
     # Key details section
     start_date = models.DateField(
-        verbose_name=("start date"),
+        verbose_name="start date",
         null=True,
         blank=True,
     )
 
     end_date = models.DateField(
-        verbose_name=("end date"),
+        verbose_name="end date",
         null=True,
         blank=True,
     )
 
     all_year = models.BooleanField(
-        verbose_name=("all year"),
+        verbose_name="all year",
         default=False,
-        help_text=("Check this box if the display is available all year round."),
+        help_text="Check this box if the display is available all year round.",
     )
 
     exclude_days = models.BooleanField(
-        verbose_name=("exclude days"),
+        verbose_name="exclude days",
         default=False,
-        help_text=("Check this box to show only the month and year on the display."),
+        help_text="Check this box to show only the month and year on the display.",
     )
 
     price = models.FloatField(
-        verbose_name=("price"),
+        verbose_name="price",
         default=0,
     )
 
     booking_details = RichTextField(
         max_length=40,
         null=True,
-        verbose_name=("booking details"),
-        help_text=("Information about how to book tickets for the display."),
+        verbose_name="booking details",
+        help_text="Information about how to book tickets for the display.",
         features=["link"],
     )
 
     open_days = models.CharField(
         max_length=255,
-        verbose_name=("open days"),
+        verbose_name="open days",
         blank=True,
-        help_text=("The days the display is open, e.g. Tuesday to Sunday."),
+        help_text="The days the display is open, e.g. Tuesday to Sunday.",
     )
 
     age_detail = models.CharField(
         max_length=40,
-        verbose_name=("age detail"),
+        verbose_name="age detail",
         blank=True,
-        help_text=("The text for the age detail section."),
+        help_text="The text for the age detail section.",
     )
 
     location = models.ForeignKey(
@@ -614,8 +614,8 @@ class DisplayPage(
         blank=False,
         on_delete=models.SET_NULL,
         related_name="+",
-        verbose_name=("location"),
-        help_text=("The location of the display."),
+        verbose_name="location",
+        help_text="The location of the display.",
     )
 
     # Body section
@@ -623,9 +623,9 @@ class DisplayPage(
 
     display_highlights_title = models.CharField(
         max_length=100,
-        verbose_name=("display highlights title"),
+        verbose_name="display highlights title",
         blank=True,
-        help_text=("Leave blank to default to 'Display highlights'."),
+        help_text="Leave blank to default to 'Display highlights'.",
     )
 
     display_highlights = StreamField(
@@ -638,12 +638,12 @@ class DisplayPage(
     related_pages_title = models.CharField(
         max_length=255,
         blank=True,
-        help_text=("The title to display for the related content section."),
+        help_text="The title to display for the related content section.",
     )
 
     related_pages_description = RichTextField(
         blank=True,
-        help_text=("The description to display for the related content section."),
+        help_text="The description to display for the related content section.",
         features=settings.INLINE_RICH_TEXT_FEATURES,
     )
 
@@ -713,7 +713,7 @@ class DisplayPage(
                     FieldPanel("display_highlights_title"),
                     FieldPanel("display_highlights"),
                 ],
-                heading=("Content"),
+                heading="Content",
             ),
             MultiFieldPanel(
                 [
@@ -723,7 +723,7 @@ class DisplayPage(
                     FieldPanel("related_pages"),
                     FieldPanel("shop"),
                 ],
-                heading=("Related content"),
+                heading="Related content",
             ),
         ]
     )
@@ -740,14 +740,14 @@ class DisplayPage(
                 FieldPanel("all_year"),
                 FieldPanel("exclude_days"),
             ],
-            heading=("Date details"),
+            heading="Date details",
         ),
         MultiFieldPanel(
             [
                 FieldPanel("price"),
                 FieldPanel("booking_details"),
             ],
-            heading=("Price details"),
+            heading="Price details",
         ),
         FieldPanel("open_days"),
         FieldPanel("age_detail"),
@@ -755,14 +755,14 @@ class DisplayPage(
             [
                 FieldPanel("location"),
             ],
-            heading=("Location details"),
+            heading="Location details",
         ),
     ]
 
     promote_panels = BasePageWithRequiredIntro.promote_panels + [
         InlinePanel(
             "page_series_tags",
-            heading=("Series"),
+            heading="Series",
             max_num=3,
         ),
     ]
@@ -848,54 +848,54 @@ class ExhibitionPage(
     # Hero section
     subtitle = models.CharField(
         max_length=120,
-        verbose_name=("subtitle"),
-        help_text=("A subtitle for the event."),
+        verbose_name="subtitle",
+        help_text="A subtitle for the event.",
     )
 
     # Key details section
     start_date = models.DateField(
-        verbose_name=("start date"),
+        verbose_name="start date",
         null=True,
         blank=True,
     )
 
     end_date = models.DateField(
-        verbose_name=("end date"),
+        verbose_name="end date",
         null=True,
         blank=True,
     )
 
     exclude_days = models.BooleanField(
-        verbose_name=("exclude days"),
+        verbose_name="exclude days",
         default=False,
-        help_text=("Check this box to show only the month and year on the exhibition."),
+        help_text="Check this box to show only the month and year on the exhibition.",
     )
 
     price = models.FloatField(
-        verbose_name=("price"),
+        verbose_name="price",
         default=0,
     )
 
     booking_details = RichTextField(
         max_length=40,
         null=True,
-        verbose_name=("booking details"),
-        help_text=("Information about how to book tickets for the exhibition."),
+        verbose_name="booking details",
+        help_text="Information about how to book tickets for the exhibition.",
         features=["link"],
     )
 
     open_days = models.CharField(
         max_length=255,
-        verbose_name=("open days"),
+        verbose_name="open days",
         blank=True,
-        help_text=("The days the exhibition is open, e.g. Tuesday to Sunday."),
+        help_text="The days the exhibition is open, e.g. Tuesday to Sunday.",
     )
 
     age_detail = models.CharField(
         max_length=40,
-        verbose_name=("age detail"),
+        verbose_name="age detail",
         blank=True,
-        help_text=("The text for the age detail section."),
+        help_text="The text for the age detail section.",
     )
 
     location = models.ForeignKey(
@@ -904,13 +904,13 @@ class ExhibitionPage(
         blank=False,
         on_delete=models.SET_NULL,
         related_name="+",
-        verbose_name=("location"),
-        help_text=("The location of the exhibition."),
+        verbose_name="location",
+        help_text="The location of the exhibition.",
     )
 
     partnership_lead_text = models.CharField(
         max_length=40,
-        verbose_name=("partnership lead text"),
+        verbose_name="partnership lead text",
         blank=True,
         help_text=(
             "Optional override for the partner logos section lead text. Will display a default if not provided."
@@ -921,14 +921,14 @@ class ExhibitionPage(
         null=True,
         blank=True,
         related_name="+",
-        verbose_name=("partnership"),
-        help_text=("The partnership logo for the exhibition."),
+        verbose_name="partnership",
+        help_text="The partnership logo for the exhibition.",
     )
 
     # Body section
     intro_title = models.CharField(
         max_length=100,
-        verbose_name=("intro title"),
+        verbose_name="intro title",
         blank=True,
         help_text=(
             "Only used in jump links. Does not appear on page. Leave blank to default to 'About [Page title]'."
@@ -939,9 +939,9 @@ class ExhibitionPage(
 
     exhibition_highlights_title = models.CharField(
         max_length=100,
-        verbose_name=("exhibition highlights title"),
+        verbose_name="exhibition highlights title",
         blank=True,
-        help_text=("Leave blank to default to 'Exhibition highlights'."),
+        help_text="Leave blank to default to 'Exhibition highlights'.",
     )
 
     exhibition_highlights = StreamField(
@@ -958,9 +958,9 @@ class ExhibitionPage(
 
     video_title = models.CharField(
         max_length=100,
-        verbose_name=("video title"),
+        verbose_name="video title",
         blank=True,
-        help_text=("The title of the video section."),
+        help_text="The title of the video section.",
     )
 
     video = StreamField(
@@ -975,12 +975,12 @@ class ExhibitionPage(
     related_pages_title = models.CharField(
         max_length=255,
         blank=True,
-        help_text=("The title to display for the related content section."),
+        help_text="The title to display for the related content section.",
     )
 
     related_pages_description = RichTextField(
         blank=True,
-        help_text=("The description to display for the related content section."),
+        help_text="The description to display for the related content section.",
         features=settings.INLINE_RICH_TEXT_FEATURES,
     )
 
@@ -996,8 +996,8 @@ class ExhibitionPage(
 
     event_title = models.CharField(
         max_length=100,
-        verbose_name=("event title"),
-        help_text=("The title of the events section."),
+        verbose_name="event title",
+        help_text="The title of the events section.",
         default="Exhibition events",
         blank=True,
         null=True,
@@ -1005,7 +1005,7 @@ class ExhibitionPage(
 
     event_description = RichTextField(
         blank=True,
-        help_text=("The description to display for the events section."),
+        help_text="The description to display for the events section.",
         features=settings.INLINE_RICH_TEXT_FEATURES,
     )
 
@@ -1080,7 +1080,7 @@ class ExhibitionPage(
                 FieldPanel("hero_style"),
                 FieldPanel("hero_layout"),
             ],
-            heading=("Hero section"),
+            heading="Hero section",
         ),
         MultiFieldPanel(
             [
@@ -1093,7 +1093,7 @@ class ExhibitionPage(
                 FieldPanel("video_title"),
                 FieldPanel("video"),
             ],
-            heading=("Content"),
+            heading="Content",
         ),
         MultiFieldPanel(
             [
@@ -1106,7 +1106,7 @@ class ExhibitionPage(
                 FieldPanel("event_links"),
                 FieldPanel("shop"),
             ],
-            heading=("Related content"),
+            heading="Related content",
         ),
     ]
 
@@ -1121,14 +1121,14 @@ class ExhibitionPage(
                 ),
                 FieldPanel("exclude_days"),
             ],
-            heading=("Date details"),
+            heading="Date details",
         ),
         MultiFieldPanel(
             [
                 FieldPanel("price"),
                 FieldPanel("booking_details"),
             ],
-            heading=("Price details"),
+            heading="Price details",
         ),
         FieldPanel("open_days"),
         FieldPanel("age_detail"),
@@ -1138,7 +1138,7 @@ class ExhibitionPage(
                 FieldPanel("partnership_lead_text"),
                 FieldPanel("partnership"),
             ],
-            heading=("Partnership details"),
+            heading="Partnership details",
         ),
     ]
 
@@ -1149,7 +1149,7 @@ class ExhibitionPage(
     promote_panels = BasePageWithRequiredIntro.promote_panels + [
         InlinePanel(
             "page_series_tags",
-            heading=("Series"),
+            heading="Series",
             max_num=3,
         ),
     ]

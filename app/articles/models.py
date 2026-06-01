@@ -128,7 +128,7 @@ class ArticleIndexPage(BasePageWithRequiredIntro):
         help_text=(
             "Select a page to display in the featured area. This can be an Article, Focused Article or Record Article."
         ),
-        verbose_name=("featured article"),
+        verbose_name="featured article",
     )
 
     featured_pages = StreamField(
@@ -526,21 +526,21 @@ class RecordArticlePage(
         blank=True,
         on_delete=models.SET_NULL,
         related_name="+",
-        help_text=("Square, rotated image to display in the page introduction"),
-        verbose_name=("intro image"),
+        help_text="Square, rotated image to display in the page introduction",
+        verbose_name="intro image",
     )
 
-    record = RecordField(verbose_name=("record"), db_index=True)
+    record = RecordField(verbose_name="record", db_index=True)
     record.wagtail_reference_index_ignore = True
 
     date_text = models.CharField(
-        verbose_name=("date text"),
+        verbose_name="date text",
         max_length=100,
-        help_text=("Date(s) related to the record (max. character length: 100)"),
+        help_text="Date(s) related to the record (max. character length: 100)",
     )
 
     about = RichTextField(
-        verbose_name=("why this record matters"),
+        verbose_name="why this record matters",
         features=settings.RESTRICTED_RICH_TEXT_FEATURES,
     )
 
@@ -557,11 +557,11 @@ class RecordArticlePage(
     )
 
     gallery_heading = models.CharField(
-        verbose_name=("gallery heading"),
+        verbose_name="gallery heading",
         max_length=250,
         blank=True,
         null=True,
-        help_text=("Optional heading for the gallery"),
+        help_text="Optional heading for the gallery",
     )
 
     featured_highlight_gallery = models.ForeignKey(
@@ -569,7 +569,7 @@ class RecordArticlePage(
         blank=True,
         null=True,
         on_delete=models.SET_NULL,
-        verbose_name=("featured highlight gallery"),
+        verbose_name="featured highlight gallery",
     )
 
     featured_article = models.ForeignKey(
@@ -581,7 +581,7 @@ class RecordArticlePage(
         help_text=(
             "Select a page to display in the featured area. This can be an Article, Focused Article or Record Article."
         ),
-        verbose_name=("featured article"),
+        verbose_name="featured article",
     )
 
     class Meta:

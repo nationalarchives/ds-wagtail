@@ -28,11 +28,11 @@ class RecordChooserBlock(CharBlock):
 
 
 class RecordLinkBlock(blocks.StructBlock):
-    record = RecordChooserBlock(label=("Record"))
-    descriptive_title = blocks.CharBlock(label=("Descriptive title"), max_length=255)
-    record_dates = blocks.CharBlock(label=("Date(s)"), max_length=100)
+    record = RecordChooserBlock(label="Record")
+    descriptive_title = blocks.CharBlock(label="Descriptive title", max_length=255)
+    record_dates = blocks.CharBlock(label="Date(s)", max_length=100)
     thumbnail_image = APIImageChooserBlock(
-        label=("Thumbnail image (optional)"), required=False
+        label="Thumbnail image (optional)", required=False
     )
 
     class Meta:
@@ -47,7 +47,7 @@ class RecordLinkBlock(blocks.StructBlock):
 
 
 class RecordLinksBlock(blocks.StructBlock):
-    items = blocks.ListBlock(RecordLinkBlock, label=("Items"))
+    items = blocks.ListBlock(RecordLinkBlock, label="Items")
 
     class Meta:
         icon = "box-archive"

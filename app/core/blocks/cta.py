@@ -9,10 +9,10 @@ from .paragraph import APIRichTextBlock
 class LargeCardLinksBlock(blocks.StructBlock):
     heading = blocks.CharBlock(max_length=100, required=False)
     page_1 = APIPageChooserBlock(
-        label=("Link one target"), required_api_fields=["teaser_image"]
+        label="Link one target", required_api_fields=["teaser_image"]
     )
     page_2 = APIPageChooserBlock(
-        label=("Link two target"), required_api_fields=["teaser_image"]
+        label="Link two target", required_api_fields=["teaser_image"]
     )
 
     class Meta:

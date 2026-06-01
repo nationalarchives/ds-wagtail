@@ -50,19 +50,19 @@ class Highlight(Orderable):
         get_image_model_string(),
         null=True,
         on_delete=models.SET_NULL,
-        verbose_name=("image"),
+        verbose_name="image",
     )
 
     title = models.CharField(
         max_length=255,
-        verbose_name=("title"),
+        verbose_name="title",
         help_text=(
             "The descriptive name of the image. If this image features in a highlights gallery, this title will be visible on the page."
         ),
     )
 
     record = RecordField(
-        verbose_name=("related record"),
+        verbose_name="related record",
         db_index=True,
         blank=False,
         null=False,
@@ -73,15 +73,15 @@ class Highlight(Orderable):
     record.wagtail_reference_index_ignore = True
 
     record_dates = models.CharField(
-        verbose_name=("record date(s)"),
+        verbose_name="record date(s)",
         max_length=100,
         blank=False,
         null=False,
-        help_text=("Date(s) related to the selected record (max length: 100 chars)."),
+        help_text="Date(s) related to the selected record (max length: 100 chars).",
     )
 
     description = RichTextField(
-        verbose_name=("description"),
+        verbose_name="description",
         help_text=(
             "This text will appear in highlights galleries. A 100-300 word "
             "description of the story of the record and why it is significant."
@@ -114,7 +114,7 @@ class ExplorerIndexPageSelection(Orderable):
         "wagtailcore.Page",
         on_delete=models.CASCADE,
         related_name="explorer_index_page_selected_pages",
-        help_text=("Select a page to display in the Explorer Index Page."),
+        help_text="Select a page to display in the Explorer Index Page.",
     )
 
     title = models.CharField(
@@ -162,7 +162,7 @@ class ExplorerIndexPageSelection(Orderable):
                 FieldPanel("teaser_image"),
                 FieldPanel("cta_label"),
             ],
-            heading=("Page link overrides"),
+            heading="Page link overrides",
         ),
     ]
 
@@ -206,13 +206,13 @@ class ExplorerIndexPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
         max_length=100,
         blank=True,
         default="Stories from the collection",
-        help_text=("The title to display for the articles section."),
+        help_text="The title to display for the articles section.",
     )
 
     stories_introduction = models.CharField(
         max_length=200,
         blank=True,
-        help_text=("The introduction to display for the articles section."),
+        help_text="The introduction to display for the articles section.",
     )
 
     stories_hero_image = models.ForeignKey(
@@ -221,7 +221,7 @@ class ExplorerIndexPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
         blank=False,
         on_delete=models.SET_NULL,
         related_name="+",
-        verbose_name=("stories hero image"),
+        verbose_name="stories hero image",
         help_text=(
             "The stories section hero image to display on the Explorer Index Page."
         ),
@@ -234,7 +234,7 @@ class ExplorerIndexPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
     explorer_index_page_selections_title = models.CharField(
         max_length=100,
         blank=True,
-        help_text=("The title to display for the Explorer Index Page selections."),
+        help_text="The title to display for the Explorer Index Page selections.",
     )
 
     @cached_property
@@ -259,14 +259,14 @@ class ExplorerIndexPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
                     FieldPanel("stories_title"),
                     FieldPanel("stories_introduction"),
                 ],
-                heading=("Stories section"),
+                heading="Stories section",
             ),
             FieldPanel("explorer_index_page_selections_title"),
             InlinePanel(
                 "explorer_index_page_selections",
-                label=("Selected pages for Explorer Index Page"),
+                label="Selected pages for Explorer Index Page",
                 max_num=2,
-                help_text=("Select pages to display on the Explorer Index Page."),
+                help_text="Select pages to display on the Explorer Index Page.",
             ),
         ]
     )
@@ -391,7 +391,7 @@ class TopicExplorerPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
         help_text=(
             "Select a page to display in the featured area. This can be an Article, Focused Article or Record Article."
         ),
-        verbose_name=("featured article"),
+        verbose_name="featured article",
     )
 
     skos_id = models.CharField(
@@ -613,7 +613,7 @@ class TimePeriodExplorerPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
         help_text=(
             "Select a page to display in the featured area. This can be an Article, Focused Article or Record Article."
         ),
-        verbose_name=("featured article"),
+        verbose_name="featured article",
     )
 
     start_year = models.IntegerField(blank=False)
@@ -737,7 +737,7 @@ class PageTopic(Orderable):
     page = ParentalKey(Page, on_delete=models.CASCADE, related_name="page_topics")
     topic = models.ForeignKey(
         TopicExplorerPage,
-        verbose_name=("topic"),
+        verbose_name="topic",
         related_name="topic_pages",
         on_delete=models.CASCADE,
     )
@@ -759,7 +759,7 @@ class PageTimePeriod(Orderable):
     page = ParentalKey(Page, on_delete=models.CASCADE, related_name="page_time_periods")
     time_period = models.ForeignKey(
         TimePeriodExplorerPage,
-        verbose_name=("time period"),
+        verbose_name="time period",
         related_name="time_period_pages",
         on_delete=models.CASCADE,
     )
@@ -792,7 +792,7 @@ class TopicalPageMixin:
     def get_time_periods_inlinepanel(cls, max_num: int | None = 4) -> InlinePanel:
         return InlinePanel(
             "page_time_periods",
-            heading=("Related time periods"),
+            heading="Related time periods",
             help_text=(
                 "If the page relates to more than one time period, please add these in order of relevance from most to least"
             ),
@@ -803,7 +803,7 @@ class TopicalPageMixin:
     def get_topics_inlinepanel(cls, max_num: int | None = 4) -> InlinePanel:
         return InlinePanel(
             "page_topics",
-            heading=("Related topics"),
+            heading="Related topics",
             help_text=(
                 "If the page relates to more than one topic, please add these in order of relevance from most to least."
             ),
@@ -890,7 +890,7 @@ class HighlightGalleryPage(
         help_text=(
             "Select a page to display in the featured area. This can be an Article, Focused Article or Record Article."
         ),
-        verbose_name=("featured article"),
+        verbose_name="featured article",
     )
 
     api_fields = (
@@ -918,8 +918,8 @@ class HighlightGalleryPage(
         + [
             InlinePanel(
                 "page_highlights",
-                heading=("Highlights"),
-                label=("Item"),
+                heading="Highlights",
+                label="Item",
                 max_num=15,
             ),
             PageChooserPanel(

@@ -75,7 +75,7 @@ class BasePage(AlertMixin, SocialMixin, CustomHeadlessPreviewMixin, Page):
     """
 
     short_title = models.CharField(
-        verbose_name=("short title"),
+        verbose_name="short title",
         help_text=(
             "A shorter title for use in breadcrumbs and other navigational elements, where applicable."
         ),
@@ -85,7 +85,7 @@ class BasePage(AlertMixin, SocialMixin, CustomHeadlessPreviewMixin, Page):
     )
 
     teaser_text = models.TextField(
-        verbose_name=("teaser text"),
+        verbose_name="teaser text",
         help_text=(
             "A short, enticing description of this page. This will appear in promos and under thumbnails around the site."
         ),
@@ -98,7 +98,7 @@ class BasePage(AlertMixin, SocialMixin, CustomHeadlessPreviewMixin, Page):
         blank=True,
         on_delete=models.SET_NULL,
         related_name="+",
-        help_text=("Image that will appear on thumbnails and promos around the site."),
+        help_text="Image that will appear on thumbnails and promos around the site.",
     )
 
     show_publish_date_in_search_results = False
@@ -275,7 +275,7 @@ class BasePageWithIntro(BasePage):
     """
 
     intro = RichTextField(
-        verbose_name=("introductory text"),
+        verbose_name="introductory text",
         help_text=(
             "1-2 sentences introducing the subject of the page, and explaining why a user should read on."
         ),
@@ -306,7 +306,7 @@ class BasePageWithRequiredIntro(BasePageWithIntro):
     """
 
     intro = RichTextField(
-        verbose_name=("introductory text"),
+        verbose_name="introductory text",
         help_text=(
             "1-2 sentences introducing the subject of the page, and explaining why a user should read on."
         ),

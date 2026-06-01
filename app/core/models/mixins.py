@@ -46,7 +46,7 @@ class ContentWarningMixin(models.Model):
         verbose_name="custom content warning text (optional)",
         features=["link"],
         blank=True,
-        help_text=("If specified, will be used for the content warning."),
+        help_text="If specified, will be used for the content warning.",
     )
 
     content_panels = [
@@ -157,8 +157,8 @@ class AccentColourMixin(models.Model):
     accent_colour = models.CharField(
         max_length=20,
         default=BrandColourChoices.NONE,
-        verbose_name=("page accent colour"),
-        help_text=("The accent colour of the page where relevant."),
+        verbose_name="page accent colour",
+        help_text="The accent colour of the page where relevant.",
         choices=BrandColourChoices.choices,
     )
 
@@ -180,8 +180,8 @@ class HeroLayoutMixin(models.Model):
     hero_layout = models.CharField(
         max_length=20,
         default=HeroLayoutChoices.DEFAULT,
-        verbose_name=("hero layout"),
-        help_text=("The layout of the hero component."),
+        verbose_name="hero layout",
+        help_text="The layout of the hero component.",
         choices=HeroLayoutChoices.choices,
     )
 
@@ -203,8 +203,8 @@ class HeroStyleMixin(models.Model):
     hero_style = models.CharField(
         max_length=20,
         default=HeroColourChoices.NONE,
-        verbose_name=("hero component colour"),
-        help_text=("The accent colour of the hero component."),
+        verbose_name="hero component colour",
+        help_text="The accent colour of the hero component.",
         choices=HeroColourChoices.choices,
     )
 
@@ -275,24 +275,24 @@ class SocialMixin(models.Model):
         blank=True,
         on_delete=models.SET_NULL,
         related_name="+",
-        verbose_name=("OpenGraph image"),
+        verbose_name="OpenGraph image",
         help_text=(
             "Image that will appear when this page is shared on social media. This will default to the teaser image if left blank."
         ),
     )
 
     twitter_og_title = models.CharField(
-        verbose_name=("Twitter OpenGraph title"),
+        verbose_name="Twitter OpenGraph title",
         max_length=255,
         blank=True,
         null=True,
-        help_text=("If left blank, the OpenGraph title will be used."),
+        help_text="If left blank, the OpenGraph title will be used.",
     )
     twitter_og_description = models.TextField(
-        verbose_name=("Twitter OpenGraph description"),
+        verbose_name="Twitter OpenGraph description",
         blank=True,
         null=True,
-        help_text=("If left blank, the OpenGraph description will be used."),
+        help_text="If left blank, the OpenGraph description will be used.",
     )
     twitter_og_image = models.ForeignKey(
         get_image_model_string(),
@@ -300,8 +300,8 @@ class SocialMixin(models.Model):
         blank=True,
         on_delete=models.SET_NULL,
         related_name="+",
-        verbose_name=("Twitter OpenGraph image"),
-        help_text=("If left blank, the OpenGraph image will be used."),
+        verbose_name="Twitter OpenGraph image",
+        help_text="If left blank, the OpenGraph image will be used.",
     )
 
     class Meta:

@@ -31,7 +31,7 @@ class CustomImage(ClusterableModel, AbstractImage):
 
     title = models.CharField(
         max_length=255,
-        verbose_name=("title"),
+        verbose_name="title",
         help_text=(
             "The descriptive name of the image. If this image features in a highlights gallery, this title will be visible on the page."
         ),
@@ -40,12 +40,12 @@ class CustomImage(ClusterableModel, AbstractImage):
     description = models.CharField(
         blank=True,
         max_length=255,
-        verbose_name=("alt text"),
+        verbose_name="alt text",
         default="",
     )
 
     copyright = RichTextField(
-        verbose_name=("copyright"),
+        verbose_name="copyright",
         blank=True,
         max_length=200,
         help_text=(
@@ -55,22 +55,22 @@ class CustomImage(ClusterableModel, AbstractImage):
     )
 
     transcription_heading = models.CharField(
-        verbose_name=("transcript heading"),
+        verbose_name="transcript heading",
         max_length=30,
         choices=TranscriptionHeadingChoices.choices,
         default=TranscriptionHeadingChoices.TRANSCRIPT,
     )
 
     transcription = RichTextField(
-        verbose_name=("transcript"),
+        verbose_name="transcript",
         features=["bold", "italic", "ol", "ul"],
         blank=True,
         max_length=1500,
-        help_text=("If the image contains text consider adding a transcript."),
+        help_text="If the image contains text consider adding a transcript.",
     )
 
     translation_heading = models.CharField(
-        verbose_name=("translation heading"),
+        verbose_name="translation heading",
         max_length=30,
         choices=TranslationHeadingChoices.choices,
         default=TranslationHeadingChoices.TRANSLATION,
@@ -80,7 +80,7 @@ class CustomImage(ClusterableModel, AbstractImage):
     )
 
     translation = RichTextField(
-        verbose_name=("translation"),
+        verbose_name="translation",
         features=["bold", "italic", "ol", "ul"],
         blank=True,
         max_length=1500,

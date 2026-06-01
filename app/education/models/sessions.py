@@ -86,13 +86,13 @@ class SessionLocation(Orderable):
     location_type = models.CharField(
         max_length=32,
         choices=LocationType.choices,
-        verbose_name=("location type"),
-        help_text=("Choose a standard location or Custom venue."),
+        verbose_name="location type",
+        help_text="Choose a standard location or Custom venue.",
         null=True,
     )
 
     duration = models.CharField(
-        verbose_name=("duration"),
+        verbose_name="duration",
         help_text=(
             "A clear description of the session duration for this location, e.g. 1 hour, 1 to 2 hours."
         ),
@@ -104,7 +104,7 @@ class SessionLocation(Orderable):
     region = models.CharField(
         max_length=32,
         choices=Regions.choices,
-        verbose_name=("region"),
+        verbose_name="region",
         help_text=(
             "The region where the session is offered. Required for schools and custom venues."
         ),
@@ -116,32 +116,32 @@ class SessionLocation(Orderable):
         blank=True,
         null=True,
         max_length=255,
-        verbose_name=("Venue name"),
-        help_text=("Required only when location type is Custom venue."),
+        verbose_name="Venue name",
+        help_text="Required only when location type is Custom venue.",
     )
 
     address_line_1 = models.CharField(
         blank=True,
         null=True,
         max_length=255,
-        verbose_name=("Address line 1"),
-        help_text=("Required only when location type is Custom venue."),
+        verbose_name="Address line 1",
+        help_text="Required only when location type is Custom venue.",
     )
 
     address_line_2 = models.CharField(
         blank=True,
         null=True,
         max_length=255,
-        verbose_name=("Address line 2"),
-        help_text=("Required only when location type is Custom venue."),
+        verbose_name="Address line 2",
+        help_text="Required only when location type is Custom venue.",
     )
 
     postcode = models.CharField(
         blank=True,
         null=True,
         max_length=20,
-        verbose_name=("Postcode"),
-        help_text=("Required only when location type is Custom venue."),
+        verbose_name="Postcode",
+        help_text="Required only when location type is Custom venue.",
     )
 
     panels = [
@@ -155,7 +155,7 @@ class SessionLocation(Orderable):
                 FieldPanel("address_line_2"),
                 FieldPanel("postcode"),
             ],
-            heading=("Custom venue address details"),
+            heading="Custom venue address details",
         ),
     ]
 
@@ -233,7 +233,7 @@ class RelatedEducationSessions(Orderable):
         "education.EducationSessionPage",
         on_delete=models.CASCADE,
         related_name="+",
-        verbose_name=("selected page"),
+        verbose_name="selected page",
     )
 
     class Meta:
@@ -258,7 +258,7 @@ class EducationSessionPage(
     ]
 
     start_date = models.DateField(
-        verbose_name=("start date"),
+        verbose_name="start date",
         null=True,
         blank=True,
         help_text=(
@@ -267,7 +267,7 @@ class EducationSessionPage(
     )
 
     end_date = models.DateField(
-        verbose_name=("end date"),
+        verbose_name="end date",
         null=True,
         blank=True,
         help_text=(
@@ -275,11 +275,11 @@ class EducationSessionPage(
         ),
     )
 
-    price = models.FloatField(null=True, blank=True, verbose_name=("price"))
+    price = models.FloatField(null=True, blank=True, verbose_name="price")
 
     price_detail = models.CharField(
-        verbose_name=("price detail"),
-        help_text=("An explanation of the price. Required if price is filled in."),
+        verbose_name="price detail",
+        help_text="An explanation of the price. Required if price is filled in.",
         blank=True,
         null=True,
         max_length=160,
@@ -288,20 +288,20 @@ class EducationSessionPage(
     booking_link = models.URLField(
         null=True,
         blank=True,
-        help_text=("Link to booking page"),
-        verbose_name=("Booking link"),
+        help_text="Link to booking page",
+        verbose_name="Booking link",
     )
 
     description = StreamField(
         [("description", SessionDescriptionBlock())],
-        verbose_name=("description"),
+        verbose_name="description",
         blank=True,
         null=True,
         min_num=1,
     )
 
     curriculum_connection_description = RichTextField(
-        verbose_name=("curriculum connection description"),
+        verbose_name="curriculum connection description",
         help_text=(
             "A description of how the session connects to the curriculum. This is optional but can help teachers understand the relevance of the session to their teaching."
         ),
@@ -312,7 +312,7 @@ class EducationSessionPage(
     highlights = StreamField(
         [("highlights", ImageGalleryBlock())],
         blank=True,
-        help_text=("Optional image gallery to show what to expect from the session."),
+        help_text="Optional image gallery to show what to expect from the session.",
         max_num=1,
     )
 
@@ -353,7 +353,7 @@ class EducationSessionPage(
             ),
             InlinePanel(
                 "related_education_sessions",
-                heading=("More education sessions"),
+                heading="More education sessions",
                 help_text=(
                     "Education sessions that are selected to be shown in the related education sessions section"
                 ),
@@ -371,12 +371,12 @@ class EducationSessionPage(
                         FieldPanel("price"),
                         FieldPanel("price_detail"),
                     ],
-                    heading=("Session price"),
+                    heading="Session price",
                 ),
                 InlinePanel(
                     "session_locations",
-                    label=("Location"),
-                    heading=("Session locations"),
+                    label="Location",
+                    heading="Session locations",
                     min_num=1,
                 ),
                 FieldPanel("booking_link"),

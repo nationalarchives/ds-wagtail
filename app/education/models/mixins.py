@@ -41,18 +41,18 @@ class EducationTaxonomyMixin:
         return [
             InlinePanel(
                 "education_keystage_tags",
-                label=("Key stage tag"),
-                heading=("Key stages"),
+                label="Key stage tag",
+                heading="Key stages",
             ),
             InlinePanel(
                 "education_time_period_tags",
-                label=("Time period tag"),
-                heading=("Time periods"),
+                label="Time period tag",
+                heading="Time periods",
             ),
             InlinePanel(
                 "education_theme_tags",
-                label=("Theme tag"),
-                heading=("Themes"),
+                label="Theme tag",
+                heading="Themes",
             ),
         ]
 

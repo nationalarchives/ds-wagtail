@@ -42,13 +42,13 @@ class FeaturedLinksSection(models.Model):
         related_name="featured_links_sections",
     )
     heading = models.CharField(
-        verbose_name=("featured links heading text"),
+        verbose_name="featured links heading text",
         max_length=100,
-        help_text=("A short heading for the featured links section"),
+        help_text="A short heading for the featured links section",
     )
     links = StreamField(
         [("link", LinkBlock())],
-        verbose_name=("featured links"),
+        verbose_name="featured links",
         min_num=3,
         max_num=3,
         use_json_field=True,
@@ -144,10 +144,10 @@ class UKGWAHomePage(HeroImageMixin, SearchMixin, UKGWABasePage):
         + [
             InlinePanel(
                 "featured_links_sections",
-                label=("Featured links section"),
+                label="Featured links section",
                 min_num=2,
                 max_num=2,
-                help_text=("Add exactly 2 featured links sections to the homepage"),
+                help_text="Add exactly 2 featured links sections to the homepage",
             )
         ]
     )
@@ -306,34 +306,34 @@ class ArchiveSearchComponent(models.Model):
         SOCIAL = "social", "Social Media Archive"
 
     name = models.CharField(
-        verbose_name=("name"),
+        verbose_name="name",
         max_length=255,
         help_text=(
             "Internal name to identify this search component (not shown to users)"
         ),
     )
     heading = models.CharField(
-        verbose_name=("heading"),
+        verbose_name="heading",
         max_length=255,
         help_text=(
             "The heading text displayed above the search bar (e.g. 'Web Archive Search')"
         ),
     )
     help_text = models.TextField(
-        verbose_name=("help text"),
+        verbose_name="help text",
         blank=True,
         help_text=(
             "Optional guidance text displayed below the search box to help users understand what they can search for"
         ),
     )
     button_text = models.CharField(
-        verbose_name=("button text"),
+        verbose_name="button text",
         max_length=50,
         default="Search",
-        help_text=("The text displayed on the search button"),
+        help_text="The text displayed on the search button",
     )
     archive_type = models.CharField(
-        verbose_name=("archive type"),
+        verbose_name="archive type",
         max_length=20,
         choices=ArchiveTypes.choices,
         help_text=(
@@ -373,32 +373,32 @@ class BookmarkletCTASnippet(models.Model):
     """
 
     name = models.CharField(
-        verbose_name=("name"),
+        verbose_name="name",
         max_length=255,
         help_text=(
             "Internal name to identify this bookmarklet snippet (not shown to users)"
         ),
     )
     heading = models.CharField(
-        verbose_name=("heading"),
+        verbose_name="heading",
         max_length=255,
-        help_text=("The heading text displayed at the top of the component"),
+        help_text="The heading text displayed at the top of the component",
     )
     body = models.TextField(
-        verbose_name=("body"),
-        help_text=("Description text displayed below the heading"),
+        verbose_name="body",
+        help_text="Description text displayed below the heading",
     )
     button_text = models.CharField(
-        verbose_name=("button text"),
+        verbose_name="button text",
         max_length=50,
         default="Check UKGWA",
-        help_text=("The text displayed on the CTA button"),
+        help_text="The text displayed on the CTA button",
     )
     button_link = models.ForeignKey(
         "wagtailcore.Page",
         on_delete=models.PROTECT,
         related_name="+",
-        help_text=("The internal page the button will take users to"),
+        help_text="The internal page the button will take users to",
     )
 
     panels = [

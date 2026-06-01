@@ -13,27 +13,27 @@ class KeyStage(models.Model):
 
     name = models.CharField(
         max_length=255,
-        verbose_name=("name"),
+        verbose_name="name",
         unique=True,
     )
 
     stage = models.PositiveSmallIntegerField(
-        verbose_name=("stage"),
-        help_text=("Numeric key stage value, e.g. 2, 3, 4."),
+        verbose_name="stage",
+        help_text="Numeric key stage value, e.g. 2, 3, 4.",
         null=True,
         blank=True,
     )
 
     age_range = models.CharField(
         max_length=64,
-        verbose_name=("age range"),
-        help_text=("Age range text, e.g. 5-7 or 7-11."),
+        verbose_name="age range",
+        help_text="Age range text, e.g. 5-7 or 7-11.",
         blank=True,
     )
 
     slug = models.SlugField(
         max_length=255,
-        verbose_name=("slug"),
+        verbose_name="slug",
         unique=True,
     )
 
@@ -68,34 +68,34 @@ class TimePeriod(models.Model):
 
     name = models.CharField(
         max_length=255,
-        verbose_name=("name"),
+        verbose_name="name",
         unique=True,
     )
 
     slug = models.SlugField(
         max_length=255,
-        verbose_name=("slug"),
+        verbose_name="slug",
         unique=True,
     )
 
     year_from = models.PositiveIntegerField(
-        verbose_name=("year from"),
+        verbose_name="year from",
         null=True,
         blank=True,
-        help_text=("Starting year, e.g. 1485"),
+        help_text="Starting year, e.g. 1485",
     )
 
     year_to = models.PositiveIntegerField(
-        verbose_name=("year to"),
+        verbose_name="year to",
         null=True,
         blank=True,
-        help_text=("Ending year, e.g. 1750"),
+        help_text="Ending year, e.g. 1750",
     )
 
     available_for_resources = models.BooleanField(
         default=True,
-        verbose_name=("available for resources"),
-        help_text=("Whether this time period can be tagged on teaching resources."),
+        verbose_name="available for resources",
+        help_text="Whether this time period can be tagged on teaching resources.",
     )
 
     @cached_property
@@ -131,13 +131,13 @@ class Theme(models.Model):
 
     name = models.CharField(
         max_length=255,
-        verbose_name=("name"),
+        verbose_name="name",
         unique=True,
     )
 
     slug = models.SlugField(
         max_length=255,
-        verbose_name=("slug"),
+        verbose_name="slug",
         unique=True,
     )
 
@@ -157,7 +157,7 @@ class BaseKeyStageTag(TagDuplicateCheckMixin, Orderable):
         "education.KeyStage",
         on_delete=models.CASCADE,
         related_name="+",
-        verbose_name=("key stage"),
+        verbose_name="key stage",
     )
 
     panels = [
@@ -176,7 +176,7 @@ class BaseTimePeriodTag(TagDuplicateCheckMixin, Orderable):
         "education.TimePeriod",
         on_delete=models.CASCADE,
         related_name="+",
-        verbose_name=("time period"),
+        verbose_name="time period",
     )
 
     panels = [
@@ -195,7 +195,7 @@ class BaseThemeTag(TagDuplicateCheckMixin, Orderable):
         "education.Theme",
         on_delete=models.CASCADE,
         related_name="+",
-        verbose_name=("theme"),
+        verbose_name="theme",
     )
 
     panels = [

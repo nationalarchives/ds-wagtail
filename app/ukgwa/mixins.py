@@ -22,14 +22,14 @@ class FeaturedLinksMixin(models.Model):
     """
 
     featured_links_heading = models.CharField(
-        verbose_name=("featured links heading text"),
+        verbose_name="featured links heading text",
         max_length=100,
         blank=True,
         help_text="A short heading for the featured links section",
     )
     featured_links = StreamField(
         [("link", LinkBlock())],
-        verbose_name=("featured links"),
+        verbose_name="featured links",
         blank=True,
         max_num=3,
         use_json_field=True,
@@ -89,7 +89,7 @@ class BookmarkletMixin(models.Model):
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
-        help_text=("Select a bookmarklet CTA snippet to display on this page"),
+        help_text="Select a bookmarklet CTA snippet to display on this page",
     )
 
     api_fields = [
@@ -116,7 +116,7 @@ class SearchMixin(models.Model):
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
-        help_text=("Select an archive search component to display on this page"),
+        help_text="Select an archive search component to display on this page",
     )
 
     api_fields = [

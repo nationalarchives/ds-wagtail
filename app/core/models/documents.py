@@ -8,7 +8,7 @@ from wagtail.documents.models import AbstractDocument, Document
 class CustomDocument(AbstractDocument):
     title = models.CharField(
         max_length=255,
-        verbose_name=("title"),
+        verbose_name="title",
         help_text="The name of the document as it will appear on the webpage. Please format this in sentence case with spaces between the words. e.g. Preservation policy part one.",
     )
     extent = models.CharField(
