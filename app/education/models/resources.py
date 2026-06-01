@@ -1,7 +1,6 @@
 from django.conf import settings
 from django.db import models
 from django.utils.functional import cached_property
-from django.utils.translation import gettext_lazy as _
 from modelcluster.fields import ParentalKey
 from wagtail.admin.panels import (
     FieldPanel,
@@ -62,7 +61,7 @@ class TeachingResourcePageTimePeriodTag(BaseTimePeriodTag):
         "education.TimePeriod",
         on_delete=models.CASCADE,
         related_name="+",
-        verbose_name=_("time period"),
+        verbose_name=("time period"),
         limit_choices_to={"available_for_resources": True},
     )
 
@@ -83,16 +82,16 @@ class Source(Orderable):
     )
 
     title = models.CharField(
-        verbose_name=_("source title"),
-        help_text=_("A unique, descriptive title for the source."),
+        verbose_name=("source title"),
+        help_text=("A unique, descriptive title for the source."),
         blank=True,
         max_length=160,
     )
 
     media = StreamField(
         SourceMediaBlock(),
-        verbose_name=_("source media"),
-        help_text=_(
+        verbose_name=("source media"),
+        help_text=(
             "Choose one media type for this source. A caption can be added for each."
         ),
         blank=True,
@@ -101,16 +100,16 @@ class Source(Orderable):
 
     featured_link = StreamField(
         SourceFeaturedLinkBlock(),
-        verbose_name=_("source media featured link"),
-        help_text=_("Choose internal or external link for this source"),
+        verbose_name=("source media featured link"),
+        help_text=("Choose internal or external link for this source"),
         blank=True,
         max_num=1,
     )
 
     description = RichTextField(
         features=settings.RESTRICTED_RICH_TEXT_FEATURES,
-        verbose_name=_("source description"),
-        help_text=_(
+        verbose_name=("source description"),
+        help_text=(
             "An optional free text field to add in a fuller description of the source."
         ),
         blank=True,
@@ -145,14 +144,14 @@ class CurriculumConnection(Orderable):
         "education.KeyStage",
         on_delete=models.CASCADE,
         related_name="+",
-        verbose_name=_("Key stage"),
-        help_text=_("The key stage for this curriculum connection."),
+        verbose_name=("Key stage"),
+        help_text=("The key stage for this curriculum connection."),
     )
 
     description = RichTextField(
         features=["bold", "italic", "link", "ul"],
-        verbose_name=_("curriculum connection description"),
-        help_text=_("Add the curriculum connection description."),
+        verbose_name=("curriculum connection description"),
+        help_text=("Add the curriculum connection description."),
         blank=True,
         null=True,
     )
@@ -181,14 +180,14 @@ class TeachingResourcePage(
     ]
 
     enquiry_question = models.CharField(
-        verbose_name=_("enquiry question"),
+        verbose_name=("enquiry question"),
         blank=True,
         max_length=160,
     )
 
     sources_title = models.CharField(
-        verbose_name=_("sources title"),
-        help_text=_(
+        verbose_name=("sources title"),
+        help_text=(
             "Title of the main section of the page. In most cases ‘Investigate the sources’"
         ),
         blank=True,
@@ -197,16 +196,16 @@ class TeachingResourcePage(
 
     sources_introduction = RichTextField(
         features=["bold", "italic", "link"],
-        verbose_name=_("sources introduction"),
-        help_text=_("Optional text field to provide an introduction to the sources."),
+        verbose_name=("sources introduction"),
+        help_text=("Optional text field to provide an introduction to the sources."),
         blank=True,
         null=True,
     )
 
     teachers_notes = RichTextField(
         features=settings.RESTRICTED_RICH_TEXT_FEATURES,
-        verbose_name=_("teachers notes"),
-        help_text=_(
+        verbose_name=("teachers notes"),
+        help_text=(
             "A general overview of what the resource contains and how it can be used."
         ),
         blank=True,
@@ -223,8 +222,8 @@ class TeachingResourcePage(
             ("featured_page", FeaturedPageBlock()),
             ("featured_external_link", FeaturedExternalLinkBlock()),
         ],
-        verbose_name=_("extension activities"),
-        help_text=_(
+        verbose_name=("extension activities"),
+        help_text=(
             "Optional section where editors can add extra activities for teachers to try with their pupils."
         ),
         blank=True,
@@ -239,16 +238,16 @@ class TeachingResourcePage(
             ),
             ("sub_heading", SubHeadingBlock()),
         ],
-        verbose_name=_("background information"),
-        help_text=_("Section providing historical context to the teaching resource."),
+        verbose_name=("background information"),
+        help_text=("Section providing historical context to the teaching resource."),
         blank=True,
         null=True,
     )
 
     further_information_title = models.CharField(
         max_length=255,
-        verbose_name=_("further information title"),
-        help_text=_("Title of the further information section."),
+        verbose_name=("further information title"),
+        help_text=("Title of the further information section."),
         blank=True,
         null=True,
     )
@@ -263,8 +262,8 @@ class TeachingResourcePage(
             ("featured_external_link", FeaturedExternalLinkBlock()),
             ("featured_page", FeaturedPageBlock()),
         ],
-        verbose_name=_("further information"),
-        help_text=_("Section providing links to other useful information."),
+        verbose_name=("further information"),
+        help_text=("Section providing links to other useful information."),
         blank=True,
         null=True,
     )
@@ -281,18 +280,18 @@ class TeachingResourcePage(
                     FieldPanel("sources_introduction"),
                     InlinePanel(
                         "sources",
-                        label=_("Source"),
-                        heading=_("Sources"),
+                        label=("Source"),
+                        heading=("Sources"),
                         min_num=1,
                     ),
                 ],
-                heading=_("Sources"),
+                heading=("Sources"),
             ),
             FieldPanel("teachers_notes"),
             InlinePanel(
                 "curriculum_connections",
-                label=_("Curriculum connection"),
-                heading=_("Connections to the curriculum"),
+                label=("Curriculum connection"),
+                heading=("Connections to the curriculum"),
                 min_num=1,
             ),
             FieldPanel("extension_activities"),
@@ -302,7 +301,7 @@ class TeachingResourcePage(
                     FieldPanel("further_information_title"),
                     FieldPanel("further_information"),
                 ],
-                heading=_("Further information"),
+                heading=("Further information"),
             ),
         ]
     )

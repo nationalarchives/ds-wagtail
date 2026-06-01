@@ -2,7 +2,6 @@ import uuid
 
 from django.conf import settings
 from django.db import models
-from django.utils.translation import gettext_lazy as _
 from modelcluster.models import ClusterableModel
 from wagtail.api import APIField
 from wagtail.fields import RichTextField
@@ -13,13 +12,13 @@ from app.core.serializers import RichTextSerializer
 
 
 class TranscriptionHeadingChoices(models.TextChoices):
-    TRANSCRIPT = "transcript", _("Transcript")
-    PARTIAL_TRANSCRIPTION = "partial-transcript", _("Partial transcript")
+    TRANSCRIPT = "transcript", ("Transcript")
+    PARTIAL_TRANSCRIPTION = "partial-transcript", ("Partial transcript")
 
 
 class TranslationHeadingChoices(models.TextChoices):
-    TRANSLATION = "translation", _("Translation")
-    MODERN_ENGLISH = "modern-english", _("Modern English")
+    TRANSLATION = "translation", ("Translation")
+    MODERN_ENGLISH = "modern-english", ("Modern English")
 
 
 class CustomImage(ClusterableModel, AbstractImage):
@@ -32,8 +31,8 @@ class CustomImage(ClusterableModel, AbstractImage):
 
     title = models.CharField(
         max_length=255,
-        verbose_name=_("title"),
-        help_text=_(
+        verbose_name=("title"),
+        help_text=(
             "The descriptive name of the image. If this image features in a highlights gallery, this title will be visible on the page."
         ),
     )
@@ -41,51 +40,51 @@ class CustomImage(ClusterableModel, AbstractImage):
     description = models.CharField(
         blank=True,
         max_length=255,
-        verbose_name=_("alt text"),
+        verbose_name=("alt text"),
         default="",
     )
 
     copyright = RichTextField(
-        verbose_name=_("copyright"),
+        verbose_name=("copyright"),
         blank=True,
         max_length=200,
-        help_text=_(
+        help_text=(
             "Credit for images not owned by TNA. Do not include the copyright symbol."
         ),
         features=settings.INLINE_RICH_TEXT_FEATURES,
     )
 
     transcription_heading = models.CharField(
-        verbose_name=_("transcript heading"),
+        verbose_name=("transcript heading"),
         max_length=30,
         choices=TranscriptionHeadingChoices.choices,
         default=TranscriptionHeadingChoices.TRANSCRIPT,
     )
 
     transcription = RichTextField(
-        verbose_name=_("transcript"),
+        verbose_name=("transcript"),
         features=["bold", "italic", "ol", "ul"],
         blank=True,
         max_length=1500,
-        help_text=_("If the image contains text consider adding a transcript."),
+        help_text=("If the image contains text consider adding a transcript."),
     )
 
     translation_heading = models.CharField(
-        verbose_name=_("translation heading"),
+        verbose_name=("translation heading"),
         max_length=30,
         choices=TranslationHeadingChoices.choices,
         default=TranslationHeadingChoices.TRANSLATION,
-        help_text=_(
+        help_text=(
             'If the original transcription language is some earlier form of English, choose "Modern English". If not, choose “Translation”.'
         ),
     )
 
     translation = RichTextField(
-        verbose_name=_("translation"),
+        verbose_name=("translation"),
         features=["bold", "italic", "ol", "ul"],
         blank=True,
         max_length=1500,
-        help_text=_(
+        help_text=(
             "An optional English / Modern English translation of the transcription."
         ),
     )

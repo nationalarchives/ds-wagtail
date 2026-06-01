@@ -1,6 +1,5 @@
 from django.core.exceptions import ValidationError
 from django.db import models
-from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 from wagtail import blocks
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel, TitleFieldPanel
@@ -21,18 +20,18 @@ class Location(models.Model):
     A model representing a location (physical or online).
     """
 
-    space_name = models.CharField(max_length=255, verbose_name=_("Space name"))
+    space_name = models.CharField(max_length=255, verbose_name=("Space name"))
 
     at_tna = models.BooleanField(
         default=False,
-        verbose_name=_("at The National Archives"),
-        help_text=_("Check if this venue is at The National Archives."),
+        verbose_name=("at The National Archives"),
+        help_text=("Check if this venue is at The National Archives."),
     )
 
     online = models.BooleanField(
         default=False,
-        verbose_name=_("online venue"),
-        help_text=_("Check if this is an online venue."),
+        verbose_name=("online venue"),
+        help_text=("Check if this is an online venue."),
     )
 
     # Address fields
@@ -40,32 +39,32 @@ class Location(models.Model):
         max_length=255,
         blank=True,
         null=True,
-        verbose_name=_("first line of address"),
-        help_text=_("First line of address for the location, if applicable."),
+        verbose_name=("first line of address"),
+        help_text=("First line of address for the location, if applicable."),
     )
 
     address_line_2 = models.CharField(
         max_length=255,
         blank=True,
         null=True,
-        verbose_name=_("second line of address"),
-        help_text=_("Second line of address for the location, if applicable."),
+        verbose_name=("second line of address"),
+        help_text=("Second line of address for the location, if applicable."),
     )
 
     postcode = models.CharField(
         max_length=20,
         blank=True,
         null=True,
-        verbose_name=_("postcode"),
-        help_text=_("Postcode for the location, if applicable."),
+        verbose_name=("postcode"),
+        help_text=("Postcode for the location, if applicable."),
     )
 
     online_detail = models.CharField(
         max_length=255,
         blank=True,
         null=True,
-        verbose_name=_("online detail"),
-        help_text=_("Additional detail for online venues, if applicable."),
+        verbose_name=("online detail"),
+        help_text=("Additional detail for online venues, if applicable."),
     )
 
     image = models.ForeignKey(
@@ -74,14 +73,14 @@ class Location(models.Model):
         blank=True,
         on_delete=models.SET_NULL,
         related_name="+",
-        verbose_name=_("Image"),
-        help_text=_("An image representing the location, if applicable."),
+        verbose_name=("Image"),
+        help_text=("An image representing the location, if applicable."),
     )
 
     details_title = models.CharField(
         max_length=100,
         blank=True,
-        help_text=_("Leave blank to default to 'Plan your visit'."),
+        help_text=("Leave blank to default to 'Plan your visit'."),
     )
 
     details = StreamField(
@@ -93,16 +92,16 @@ class Location(models.Model):
     venue_link = models.URLField(
         blank=True,
         null=True,
-        verbose_name=_("Venue link"),
-        help_text=_("A link to the venue's website or visit us page."),
+        verbose_name=("Venue link"),
+        help_text=("A link to the venue's website or visit us page."),
     )
 
     venue_link_text = models.CharField(
         max_length=50,
         blank=True,
         null=True,
-        verbose_name=_("Venue link text"),
-        help_text=_("Text to display for the venue link, if applicable."),
+        verbose_name=("Venue link text"),
+        help_text=("Text to display for the venue link, if applicable."),
     )
 
     panels = [
@@ -112,8 +111,8 @@ class Location(models.Model):
                 FieldPanel("online"),
                 FieldPanel("online_detail"),
             ],
-            heading=_("Online Venue Details"),
-            help_text=_("Fill in these details for online venues only."),
+            heading=("Online Venue Details"),
+            help_text=("Fill in these details for online venues only."),
         ),
         MultiFieldPanel(
             [
@@ -122,8 +121,8 @@ class Location(models.Model):
                 FieldPanel("address_line_2"),
                 FieldPanel("postcode"),
             ],
-            heading=_("Physical address"),
-            help_text=_("Fill in these details for physical venues only."),
+            heading=("Physical address"),
+            help_text=("Fill in these details for physical venues only."),
         ),
         MultiFieldPanel(
             [
@@ -132,7 +131,7 @@ class Location(models.Model):
                 FieldPanel("venue_link"),
                 FieldPanel("venue_link_text"),
             ],
-            heading=_("Key details"),
+            heading=("Key details"),
         ),
     ]
 
@@ -202,8 +201,8 @@ class Location(models.Model):
         return f"{self.space_name}"
 
     class Meta:
-        verbose_name = _("Location")
-        verbose_name_plural = _("Locations")
+        verbose_name = "Location"
+        verbose_name_plural = "Locations"
 
 
 class LocationSerializer(serializers.Serializer):

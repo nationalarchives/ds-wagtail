@@ -1,6 +1,5 @@
 from django.core.exceptions import ValidationError
 from django.db import models
-from django.utils.translation import gettext_lazy as _
 from modelcluster.fields import ParentalKey
 from rest_framework import serializers
 from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
@@ -123,7 +122,7 @@ class HubPage(HeroImageMixin, BasePageWithIntro):
 
     plain_cards_list = models.BooleanField(
         default=False,
-        help_text=_(
+        help_text=(
             "If checked, the links will be displayed as a list of plain cards, without images."
         ),
     )
