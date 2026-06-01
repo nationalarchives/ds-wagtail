@@ -1,5 +1,4 @@
 from django.db import models
-from django.utils.translation import gettext_lazy as _
 from wagtail.admin.panels import (
     FieldPanel,
     MultiFieldPanel,
@@ -34,15 +33,15 @@ class TeachingResourcesListingPage(BasePageWithRequiredIntro):
         blank=True,
         on_delete=models.SET_NULL,
         related_name="+",
-        verbose_name=_("featured teaching resource"),
-        help_text=_(
+        verbose_name=("featured teaching resource"),
+        help_text=(
             "Option to add a highlighted teaching resource, particularly for history months etc"
         ),
     )
 
     featured_teaching_resource_teaser_override = models.CharField(
-        verbose_name=_("Featured teaching resource teaser text override"),
-        help_text=_("Override text for the featured teaching resource"),
+        verbose_name=("Featured teaching resource teaser text override"),
+        help_text=("Override text for the featured teaching resource"),
         blank=True,
         max_length=160,
     )
@@ -53,7 +52,7 @@ class TeachingResourcesListingPage(BasePageWithRequiredIntro):
                 PageChooserPanel("featured_teaching_resource"),
                 FieldPanel("featured_teaching_resource_teaser_override"),
             ],
-            heading=_("Featured teaching resource"),
+            heading=("Featured teaching resource"),
         ),
     ]
 
@@ -63,7 +62,7 @@ class TeachingResourcesListingPage(BasePageWithRequiredIntro):
     ]
 
     class Meta:
-        verbose_name = _("Teaching Resources listing page")
+        verbose_name = "Teaching Resources listing page"
 
 
 class EducationSessionsListingPage(BasePageWithRequiredIntro):
@@ -87,13 +86,13 @@ class EducationSessionsListingPage(BasePageWithRequiredIntro):
         blank=True,
         on_delete=models.SET_NULL,
         related_name="+",
-        verbose_name=_("featured education session"),
-        help_text=_("Page picker to highlight a featured education session"),
+        verbose_name=("featured education session"),
+        help_text=("Page picker to highlight a featured education session"),
     )
 
     featured_education_session_teaser_override = models.CharField(
-        verbose_name=_("Featured education session teaser text override"),
-        help_text=_("Override text for the featured education session"),
+        verbose_name=("Featured education session teaser text override"),
+        help_text=("Override text for the featured education session"),
         blank=True,
         max_length=160,
     )
@@ -104,7 +103,7 @@ class EducationSessionsListingPage(BasePageWithRequiredIntro):
                 PageChooserPanel("featured_education_session"),
                 FieldPanel("featured_education_session_teaser_override"),
             ],
-            heading=_("Featured education session"),
+            heading=("Featured education session"),
         ),
     ]
 
@@ -114,4 +113,4 @@ class EducationSessionsListingPage(BasePageWithRequiredIntro):
     ]
 
     class Meta:
-        verbose_name = _("Education Sessions listing page")
+        verbose_name = "Education Sessions listing page"

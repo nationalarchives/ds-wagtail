@@ -1,5 +1,4 @@
 from django.db import models
-from django.utils.translation import gettext_lazy as _
 from modelcluster.fields import ParentalKey
 from wagtail.admin.panels import (
     FieldPanel,
@@ -43,17 +42,17 @@ class FeaturedLinksSection(models.Model):
         related_name="featured_links_sections",
     )
     heading = models.CharField(
-        verbose_name=_("featured links heading text"),
+        verbose_name=("featured links heading text"),
         max_length=100,
-        help_text=_("A short heading for the featured links section"),
+        help_text=("A short heading for the featured links section"),
     )
     links = StreamField(
         [("link", LinkBlock())],
-        verbose_name=_("featured links"),
+        verbose_name=("featured links"),
         min_num=3,
         max_num=3,
         use_json_field=True,
-        help_text=_(
+        help_text=(
             "Contains exactly three links. Each link can be to an internal page or an external URL."
         ),
     )
@@ -145,10 +144,10 @@ class UKGWAHomePage(HeroImageMixin, SearchMixin, UKGWABasePage):
         + [
             InlinePanel(
                 "featured_links_sections",
-                label=_("Featured links section"),
+                label=("Featured links section"),
                 min_num=2,
                 max_num=2,
-                help_text=_("Add exactly 2 featured links sections to the homepage"),
+                help_text=("Add exactly 2 featured links sections to the homepage"),
             )
         ]
     )
@@ -184,7 +183,7 @@ class SectionIndexPage(SearchMixin, UKGWABasePage):
         [("link", LinkWithDescriptionBlock())],
         blank=True,
         use_json_field=True,
-        help_text=_(
+        help_text=(
             "Optional links appended to the list of child pages. "
             "Each link can be to an internal page or an external URL."
         ),
@@ -307,37 +306,37 @@ class ArchiveSearchComponent(models.Model):
         SOCIAL = "social", "Social Media Archive"
 
     name = models.CharField(
-        verbose_name=_("name"),
+        verbose_name=("name"),
         max_length=255,
-        help_text=_(
+        help_text=(
             "Internal name to identify this search component (not shown to users)"
         ),
     )
     heading = models.CharField(
-        verbose_name=_("heading"),
+        verbose_name=("heading"),
         max_length=255,
-        help_text=_(
+        help_text=(
             "The heading text displayed above the search bar (e.g. 'Web Archive Search')"
         ),
     )
     help_text = models.TextField(
-        verbose_name=_("help text"),
+        verbose_name=("help text"),
         blank=True,
-        help_text=_(
+        help_text=(
             "Optional guidance text displayed below the search box to help users understand what they can search for"
         ),
     )
     button_text = models.CharField(
-        verbose_name=_("button text"),
+        verbose_name=("button text"),
         max_length=50,
         default="Search",
-        help_text=_("The text displayed on the search button"),
+        help_text=("The text displayed on the search button"),
     )
     archive_type = models.CharField(
-        verbose_name=_("archive type"),
+        verbose_name=("archive type"),
         max_length=20,
         choices=ArchiveTypes.choices,
-        help_text=_(
+        help_text=(
             "Select whether this component searches the Web Archive or Social Media Archive"
         ),
     )
@@ -361,8 +360,8 @@ class ArchiveSearchComponent(models.Model):
         return self.name
 
     class Meta:
-        verbose_name = _("Archive Search Component")
-        verbose_name_plural = _("Archive Search Components")
+        verbose_name = "Archive Search Component"
+        verbose_name_plural = "Archive Search Components"
 
 
 @register_snippet
@@ -374,32 +373,32 @@ class BookmarkletCTASnippet(models.Model):
     """
 
     name = models.CharField(
-        verbose_name=_("name"),
+        verbose_name=("name"),
         max_length=255,
-        help_text=_(
+        help_text=(
             "Internal name to identify this bookmarklet snippet (not shown to users)"
         ),
     )
     heading = models.CharField(
-        verbose_name=_("heading"),
+        verbose_name=("heading"),
         max_length=255,
-        help_text=_("The heading text displayed at the top of the component"),
+        help_text=("The heading text displayed at the top of the component"),
     )
     body = models.TextField(
-        verbose_name=_("body"),
-        help_text=_("Description text displayed below the heading"),
+        verbose_name=("body"),
+        help_text=("Description text displayed below the heading"),
     )
     button_text = models.CharField(
-        verbose_name=_("button text"),
+        verbose_name=("button text"),
         max_length=50,
         default="Check UKGWA",
-        help_text=_("The text displayed on the CTA button"),
+        help_text=("The text displayed on the CTA button"),
     )
     button_link = models.ForeignKey(
         "wagtailcore.Page",
         on_delete=models.PROTECT,
         related_name="+",
-        help_text=_("The internal page the button will take users to"),
+        help_text=("The internal page the button will take users to"),
     )
 
     panels = [
@@ -414,5 +413,5 @@ class BookmarkletCTASnippet(models.Model):
         return self.name
 
     class Meta:
-        verbose_name = _("Bookmarklet CTA")
-        verbose_name_plural = _("Bookmarklet CTA")
+        verbose_name = "Bookmarklet CTA"
+        verbose_name_plural = "Bookmarklet CTA"
