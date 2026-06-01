@@ -1,6 +1,5 @@
 from django.conf import settings
 from django.core.exceptions import ValidationError
-from django.utils.translation import gettext_lazy as _
 from wagtail import blocks
 
 from .page_chooser import APIPageChooserBlock
@@ -10,10 +9,10 @@ from .paragraph import APIRichTextBlock
 class LargeCardLinksBlock(blocks.StructBlock):
     heading = blocks.CharBlock(max_length=100, required=False)
     page_1 = APIPageChooserBlock(
-        label=_("Link one target"), required_api_fields=["teaser_image"]
+        label=("Link one target"), required_api_fields=["teaser_image"]
     )
     page_2 = APIPageChooserBlock(
-        label=_("Link two target"), required_api_fields=["teaser_image"]
+        label=("Link two target"), required_api_fields=["teaser_image"]
     )
 
     class Meta:
