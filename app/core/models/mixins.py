@@ -6,7 +6,6 @@ from django.http import HttpRequest
 from django.utils import timezone
 from django.utils.functional import cached_property
 from django.utils.safestring import mark_safe
-from django.utils.translation import gettext_lazy as _
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel
 from wagtail.api import APIField
 from wagtail.fields import RichTextField
@@ -47,7 +46,7 @@ class ContentWarningMixin(models.Model):
         verbose_name="custom content warning text (optional)",
         features=["link"],
         blank=True,
-        help_text=("If specified, will be used for the content warning."),
+        help_text="If specified, will be used for the content warning.",
     )
 
     content_panels = [
@@ -112,9 +111,7 @@ class HeroImageMixin(models.Model):
         verbose_name="hero image caption (optional)",
         features=["bold", "italic", "link"],
         blank=True,
-        help_text=(
-            "An optional caption for hero images. This could be used for image sources or for other useful metadata."
-        ),
+        help_text="An optional caption for hero images. This could be used for image sources or for other useful metadata.",
     )
 
     class Meta:
@@ -158,8 +155,8 @@ class AccentColourMixin(models.Model):
     accent_colour = models.CharField(
         max_length=20,
         default=BrandColourChoices.NONE,
-        verbose_name=_("page accent colour"),
-        help_text=_("The accent colour of the page where relevant."),
+        verbose_name="page accent colour",
+        help_text="The accent colour of the page where relevant.",
         choices=BrandColourChoices.choices,
     )
 
@@ -181,8 +178,8 @@ class HeroLayoutMixin(models.Model):
     hero_layout = models.CharField(
         max_length=20,
         default=HeroLayoutChoices.DEFAULT,
-        verbose_name=_("hero layout"),
-        help_text=_("The layout of the hero component."),
+        verbose_name="hero layout",
+        help_text="The layout of the hero component.",
         choices=HeroLayoutChoices.choices,
     )
 
@@ -204,8 +201,8 @@ class HeroStyleMixin(models.Model):
     hero_style = models.CharField(
         max_length=20,
         default=HeroColourChoices.NONE,
-        verbose_name=_("hero component colour"),
-        help_text=_("The accent colour of the hero component."),
+        verbose_name="hero component colour",
+        help_text="The accent colour of the hero component.",
         choices=HeroColourChoices.choices,
     )
 
@@ -276,24 +273,22 @@ class SocialMixin(models.Model):
         blank=True,
         on_delete=models.SET_NULL,
         related_name="+",
-        verbose_name=_("OpenGraph image"),
-        help_text=_(
-            "Image that will appear when this page is shared on social media. This will default to the teaser image if left blank."
-        ),
+        verbose_name="OpenGraph image",
+        help_text="Image that will appear when this page is shared on social media. This will default to the teaser image if left blank.",
     )
 
     twitter_og_title = models.CharField(
-        verbose_name=_("Twitter OpenGraph title"),
+        verbose_name="Twitter OpenGraph title",
         max_length=255,
         blank=True,
         null=True,
-        help_text=_("If left blank, the OpenGraph title will be used."),
+        help_text="If left blank, the OpenGraph title will be used.",
     )
     twitter_og_description = models.TextField(
-        verbose_name=_("Twitter OpenGraph description"),
+        verbose_name="Twitter OpenGraph description",
         blank=True,
         null=True,
-        help_text=_("If left blank, the OpenGraph description will be used."),
+        help_text="If left blank, the OpenGraph description will be used.",
     )
     twitter_og_image = models.ForeignKey(
         get_image_model_string(),
@@ -301,8 +296,8 @@ class SocialMixin(models.Model):
         blank=True,
         on_delete=models.SET_NULL,
         related_name="+",
-        verbose_name=_("Twitter OpenGraph image"),
-        help_text=_("If left blank, the OpenGraph image will be used."),
+        verbose_name="Twitter OpenGraph image",
+        help_text="If left blank, the OpenGraph image will be used.",
     )
 
     class Meta:
@@ -313,15 +308,11 @@ class SocialMixin(models.Model):
             [
                 FieldPanel(
                     "seo_title",
-                    help_text=_(
-                        "The name of the page displayed on search engine results as the clickable headline and when shared on social media."
-                    ),
+                    help_text="The name of the page displayed on search engine results as the clickable headline and when shared on social media.",
                 ),
                 FieldPanel(
                     "search_description",
-                    help_text=_(
-                        "The descriptive text displayed underneath a headline in search engine results and when shared on social media."
-                    ),
+                    help_text="The descriptive text displayed underneath a headline in search engine results and when shared on social media.",
                 ),
                 FieldPanel("search_image"),
             ],
