@@ -3,7 +3,6 @@ from typing import Union
 from django.conf import settings
 from django.db import models
 from django.utils.functional import cached_property
-from django.utils.translation import gettext_lazy as _
 from modelcluster.contrib.taggit import ClusterTaggableManager
 from modelcluster.fields import ParentalKey
 from rest_framework import serializers
@@ -126,10 +125,8 @@ class ArticleIndexPage(BasePageWithRequiredIntro):
         blank=True,
         on_delete=models.SET_NULL,
         related_name="+",
-        help_text=_(
-            "Select a page to display in the featured area. This can be an Article, Focused Article or Record Article."
-        ),
-        verbose_name=_("featured article"),
+        help_text="Select a page to display in the featured area. This can be an Article, Focused Article or Record Article.",
+        verbose_name="featured article",
     )
 
     featured_pages = StreamField(
@@ -147,7 +144,7 @@ class ArticleIndexPage(BasePageWithRequiredIntro):
     ]
 
     class Meta:
-        verbose_name = _("article index page")
+        verbose_name = "article index page"
 
     content_panels = BasePageWithRequiredIntro.content_panels + [
         PageChooserPanel(
@@ -186,9 +183,9 @@ class ArticlePage(
     body = StreamField(ArticlePageStreamBlock, blank=True, null=True)
 
     class Meta:
-        verbose_name = _("article")
-        verbose_name_plural = _("articles")
-        verbose_name_public = _("the story of")
+        verbose_name = "article"
+        verbose_name_plural = "articles"
+        verbose_name_public = "the story of"
 
     content_panels = (
         BasePageWithRequiredIntro.content_panels
@@ -336,9 +333,9 @@ class FocusedArticlePage(
     body = StreamField(ArticlePageStreamBlock, blank=True, null=True)
 
     class Meta:
-        verbose_name = _("focused article")
-        verbose_name_plural = _("focused articles")
-        verbose_name_public = _("focus on")
+        verbose_name = "focused article"
+        verbose_name_plural = "focused articles"
+        verbose_name_public = "focus on"
 
     content_panels = (
         BasePageWithRequiredIntro.content_panels
@@ -488,8 +485,8 @@ class PageGalleryImage(Orderable):
     )
 
     class Meta(Orderable.Meta):
-        verbose_name = _("gallery image")
-        verbose_name_plural = _("gallery images")
+        verbose_name = "gallery image"
+        verbose_name_plural = "gallery images"
 
     panels = [
         FieldPanel("image"),
@@ -527,21 +524,21 @@ class RecordArticlePage(
         blank=True,
         on_delete=models.SET_NULL,
         related_name="+",
-        help_text=_("Square, rotated image to display in the page introduction"),
-        verbose_name=_("intro image"),
+        help_text="Square, rotated image to display in the page introduction",
+        verbose_name="intro image",
     )
 
-    record = RecordField(verbose_name=_("record"), db_index=True)
+    record = RecordField(verbose_name="record", db_index=True)
     record.wagtail_reference_index_ignore = True
 
     date_text = models.CharField(
-        verbose_name=_("date text"),
+        verbose_name="date text",
         max_length=100,
-        help_text=_("Date(s) related to the record (max. character length: 100)"),
+        help_text="Date(s) related to the record (max. character length: 100)",
     )
 
     about = RichTextField(
-        verbose_name=_("why this record matters"),
+        verbose_name="why this record matters",
         features=settings.RESTRICTED_RICH_TEXT_FEATURES,
     )
 
@@ -558,11 +555,11 @@ class RecordArticlePage(
     )
 
     gallery_heading = models.CharField(
-        verbose_name=_("gallery heading"),
+        verbose_name="gallery heading",
         max_length=250,
         blank=True,
         null=True,
-        help_text=_("Optional heading for the gallery"),
+        help_text="Optional heading for the gallery",
     )
 
     featured_highlight_gallery = models.ForeignKey(
@@ -570,7 +567,7 @@ class RecordArticlePage(
         blank=True,
         null=True,
         on_delete=models.SET_NULL,
-        verbose_name=_("featured highlight gallery"),
+        verbose_name="featured highlight gallery",
     )
 
     featured_article = models.ForeignKey(
@@ -579,16 +576,14 @@ class RecordArticlePage(
         blank=True,
         on_delete=models.SET_NULL,
         related_name="+",
-        help_text=_(
-            "Select a page to display in the featured area. This can be an Article, Focused Article or Record Article."
-        ),
-        verbose_name=_("featured article"),
+        help_text="Select a page to display in the featured area. This can be an Article, Focused Article or Record Article.",
+        verbose_name="featured article",
     )
 
     class Meta:
-        verbose_name = _("record article")
-        verbose_name_plural = _("record articles")
-        verbose_name_public = _("record revealed")
+        verbose_name = "record article"
+        verbose_name_plural = "record articles"
+        verbose_name_public = "record revealed"
 
     content_panels = (
         BasePageWithRequiredIntro.content_panels
