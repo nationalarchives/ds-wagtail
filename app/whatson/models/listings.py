@@ -4,7 +4,6 @@ from django.db import models
 from django.db.models import Q
 from django.utils import timezone
 from django.utils.functional import cached_property
-from django.utils.translation import gettext_lazy as _
 from modelcluster.fields import ParentalKey
 from wagtail.admin.panels import (
     FieldPanel,
@@ -75,8 +74,8 @@ class WhatsOnSeriesPage(BasePageWithRequiredIntro):
         blank=True,
         on_delete=models.SET_NULL,
         related_name="+",
-        verbose_name=_("featured page"),
-        help_text=_("The page to feature on the series page."),
+        verbose_name="featured page",
+        help_text="The page to feature on the series page.",
     )
 
     parent_page_types = [
@@ -143,8 +142,8 @@ class WhatsOnSeriesPage(BasePageWithRequiredIntro):
     ]
 
     class Meta:
-        verbose_name = _("Series listing page")
-        verbose_name_plural = _("Series listing pages")
+        verbose_name = "Series listing page"
+        verbose_name_plural = "Series listing pages"
 
 
 class CategorySelection(models.Model):
@@ -157,8 +156,8 @@ class CategorySelection(models.Model):
         "whatson.EventType",
         on_delete=models.CASCADE,
         related_name="selected_category",
-        verbose_name=_("category"),
-        help_text=_("The category of events to display on the Category page."),
+        verbose_name="category",
+        help_text="The category of events to display on the Category page.",
         null=False,
         blank=False,
     )
@@ -175,8 +174,8 @@ class WhatsOnCategoryPage(BasePageWithRequiredIntro):
         blank=True,
         on_delete=models.SET_NULL,
         related_name="+",
-        verbose_name=_("featured page"),
-        help_text=_("The page to feature on the category page."),
+        verbose_name="featured page",
+        help_text="The page to feature on the category page.",
     )
 
     parent_page_types = [
@@ -188,7 +187,7 @@ class WhatsOnCategoryPage(BasePageWithRequiredIntro):
     content_panels = BasePageWithRequiredIntro.content_panels + [
         InlinePanel(
             "category_pages",
-            heading=_("Category selection"),
+            heading="Category selection",
         ),
         PageChooserPanel(
             "featured_page",
@@ -244,8 +243,8 @@ class WhatsOnCategoryPage(BasePageWithRequiredIntro):
     ]
 
     class Meta:
-        verbose_name = _("Category listing page")
-        verbose_name_plural = _("Category listing pages")
+        verbose_name = "Category listing page"
+        verbose_name_plural = "Category listing pages"
 
 
 class WhatsOnLocationListingPage(BasePageWithRequiredIntro):
@@ -255,14 +254,14 @@ class WhatsOnLocationListingPage(BasePageWithRequiredIntro):
 
     at_tna = models.BooleanField(
         default=False,
-        verbose_name=_("at The National Archives"),
-        help_text=_("Check this box to display events at The National Archives."),
+        verbose_name="at The National Archives",
+        help_text="Check this box to display events at The National Archives.",
     )
 
     online = models.BooleanField(
         default=False,
-        verbose_name=_("online"),
-        help_text=_("Check this box to display online events."),
+        verbose_name="online",
+        help_text="Check this box to display online events.",
     )
 
     @cached_property
@@ -330,8 +329,8 @@ class WhatsOnLocationListingPage(BasePageWithRequiredIntro):
     ]
 
     class Meta:
-        verbose_name = _("Location listing page")
-        verbose_name_plural = _("Location listing pages")
+        verbose_name = "Location listing page"
+        verbose_name_plural = "Location listing pages"
 
 
 class WhatsOnDateListingPage(BasePageWithRequiredIntro):
@@ -341,8 +340,8 @@ class WhatsOnDateListingPage(BasePageWithRequiredIntro):
 
     days = models.PositiveIntegerField(
         default=1,
-        verbose_name=_("number of days"),
-        help_text=_("The number of days in the future to list events/exhibitions."),
+        verbose_name="number of days",
+        help_text="The number of days in the future to list events/exhibitions.",
     )
 
     @cached_property
@@ -435,8 +434,8 @@ class WhatsOnDateListingPage(BasePageWithRequiredIntro):
     ]
 
     class Meta:
-        verbose_name = _("Date listing page")
-        verbose_name_plural = _("Date listing pages")
+        verbose_name = "Date listing page"
+        verbose_name_plural = "Date listing pages"
 
 
 class EventsListingPage(BasePageWithRequiredIntro):
@@ -450,8 +449,8 @@ class EventsListingPage(BasePageWithRequiredIntro):
         blank=True,
         on_delete=models.SET_NULL,
         related_name="+",
-        verbose_name=_("featured page"),
-        help_text=_("The page to feature at the top of the Events page."),
+        verbose_name="featured page",
+        help_text="The page to feature at the top of the Events page.",
     )
 
     max_count = 1
@@ -511,8 +510,8 @@ class ExhibitionsListingPage(BasePageWithRequiredIntro):
         blank=True,
         on_delete=models.SET_NULL,
         related_name="+",
-        verbose_name=_("featured page"),
-        help_text=_("The page to feature at the top of the Exhibitions page."),
+        verbose_name="featured page",
+        help_text="The page to feature at the top of the Exhibitions page.",
     )
 
     @cached_property

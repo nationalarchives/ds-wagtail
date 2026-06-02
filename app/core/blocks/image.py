@@ -57,10 +57,8 @@ class ContentImageBlock(blocks.StructBlock):
     image = APIImageChooserBlock(rendition_size="max-900x900", required=True)
     caption = APIRichTextBlock(
         features=["bold", "italic", "link"],
-        help_text=(
-            "If provided, displays directly below the image. Can be used to specify sources, transcripts or "
-            "other useful metadata."
-        ),
+        help_text="If provided, displays directly below the image. Can be used to specify sources, transcripts or "
+        "other useful metadata.",
         label="Caption (optional)",
         required=False,
     )
