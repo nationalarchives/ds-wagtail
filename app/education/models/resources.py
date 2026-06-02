@@ -12,9 +12,6 @@ from wagtail.api import APIField
 from wagtail.fields import RichTextField, StreamField
 from wagtail.models import Orderable
 
-from app.core.blocks.paragraph import APIRichTextBlock
-from app.core.blocks.promoted_links import FeaturedExternalLinkBlock, FeaturedPageBlock
-from app.core.blocks.section import SubHeadingBlock
 from app.core.models import (
     BasePageWithRequiredIntro,
     ContentWarningMixin,
@@ -27,6 +24,9 @@ from ..blocks import (
     SourceFeaturedLinkBlock,
     SourceMediaBlock,
     SourceQuestionBlock,
+    TeachingResourceBackgroundInformationBlock,
+    TeachingResourceExtensionActivitiesBlock,
+    TeachingResourceFurtherInformationBlock,
     TeachersNotesBlock,
 )
 from ..serializers import (
@@ -215,15 +215,7 @@ class TeachingResourcePage(
     )
 
     extension_activities = StreamField(
-        [
-            (
-                "paragraph",
-                APIRichTextBlock(features=settings.RESTRICTED_RICH_TEXT_FEATURES),
-            ),
-            ("sub_heading", SubHeadingBlock()),
-            ("featured_page", FeaturedPageBlock()),
-            ("featured_external_link", FeaturedExternalLinkBlock()),
-        ],
+        TeachingResourceExtensionActivitiesBlock(),
         verbose_name=_("extension activities"),
         help_text=_(
             "Optional section where editors can add extra activities for teachers to try with their pupils."
@@ -233,13 +225,7 @@ class TeachingResourcePage(
     )
 
     background_information = StreamField(
-        [
-            (
-                "paragraph",
-                APIRichTextBlock(features=settings.RESTRICTED_RICH_TEXT_FEATURES),
-            ),
-            ("sub_heading", SubHeadingBlock()),
-        ],
+        TeachingResourceBackgroundInformationBlock(),
         verbose_name=_("background information"),
         help_text=_("Section providing historical context to the teaching resource."),
         blank=True,
@@ -255,15 +241,7 @@ class TeachingResourcePage(
     )
 
     further_information = StreamField(
-        [
-            (
-                "paragraph",
-                APIRichTextBlock(features=settings.RESTRICTED_RICH_TEXT_FEATURES),
-            ),
-            ("sub_heading", SubHeadingBlock()),
-            ("featured_external_link", FeaturedExternalLinkBlock()),
-            ("featured_page", FeaturedPageBlock()),
-        ],
+        TeachingResourceFurtherInformationBlock(),
         verbose_name=_("further information"),
         help_text=_("Section providing links to other useful information."),
         blank=True,

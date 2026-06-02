@@ -87,6 +87,25 @@ class TeachersNotesBlock(blocks.StreamBlock):
     inset_text = InsetTextBlock()
 
 
+class TeachingResourceExtensionActivitiesBlock(blocks.StreamBlock):
+    paragraph = ParagraphBlock()
+    sub_heading = SubHeadingBlock()
+    featured_page = FeaturedPageBlock()
+    featured_external_link = FeaturedExternalLinkBlock()
+
+
+class TeachingResourceBackgroundInformationBlock(blocks.StreamBlock):
+    paragraph = ParagraphBlock()
+    sub_heading = SubHeadingBlock()
+
+
+class TeachingResourceFurtherInformationBlock(blocks.StreamBlock):
+    paragraph = ParagraphBlock()
+    sub_heading = SubHeadingBlock()
+    featured_external_link = FeaturedExternalLinkBlock()
+    featured_page = FeaturedPageBlock()
+
+
 class SectionContentBlock(blocks.StreamBlock):
     description = ParagraphBlock()
     partner_logo = PartnerLogoChooserBlock()
