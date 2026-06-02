@@ -18,6 +18,7 @@ from app.core.models import (
 from app.core.serializers import DefaultPageSerializer
 
 from ..serializers import LinkedPageSerializer
+from .listings import EducationSessionsListingPage, TeachingResourcesListingPage
 from .resources import TeachingResourcePage
 from .sessions import EducationSessionPage
 
@@ -41,6 +42,26 @@ class EducationPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
     def latest_education_sessions(self) -> list:
         return list(
             EducationSessionPage.objects.live().public().order_by("-start_date")[:3]
+        )
+
+    @cached_property
+    def teaching_resources_listing(self):
+        return (
+            self.get_children()
+            .type(TeachingResourcesListingPage)
+            .live()
+            .public()
+            .first()
+        )
+
+    @cached_property
+    def education_sessions_listing(self):
+        return (
+            self.get_children()
+            .type(EducationSessionsListingPage)
+            .live()
+            .public()
+            .first()
         )
 
     parent_page_types = [
@@ -116,7 +137,6 @@ class EducationPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
         + [
             MultiFieldPanel(
                 [
-                    PageChooserPanel("teaching_resources_listing_page"),
                     FieldPanel("teaching_resources_teaser_override"),
                     MultiFieldPanel(
                         [
@@ -129,7 +149,6 @@ class EducationPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
             ),
             MultiFieldPanel(
                 [
-                    PageChooserPanel("education_sessions_listing_page"),
                     FieldPanel("education_sessions_teaser_override"),
                     MultiFieldPanel(
                         [
@@ -149,11 +168,11 @@ class EducationPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
     )
 
     api_fields = BasePageWithRequiredIntro.api_fields + [
-        APIField("teaching_resources_listing_page", serializer=DefaultPageSerializer()),
+        APIField("teaching_resources_listing", serializer=DefaultPageSerializer()),
         APIField("teaching_resources_teaser_override"),
         APIField("featured_teaching_resource", serializer=DefaultPageSerializer()),
         APIField("featured_teaching_resource_teaser_override"),
-        APIField("education_sessions_listing_page", serializer=DefaultPageSerializer()),
+        APIField("education_sessions_listing", serializer=DefaultPageSerializer()),
         APIField("education_sessions_teaser_override"),
         APIField("featured_education_session", serializer=DefaultPageSerializer()),
         APIField("featured_education_session_teaser_override"),

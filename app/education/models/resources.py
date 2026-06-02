@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
 from modelcluster.fields import ParentalKey
 from wagtail.admin.panels import (
@@ -171,6 +172,10 @@ class TeachingResourcePage(
     BasePageWithRequiredIntro,
 ):
     """A page to display a teaching resource"""
+
+    @cached_property
+    def type_label(cls) -> str:
+        return "Teaching resource"
 
     parent_page_types = [
         "education.TeachingResourcesListingPage",
