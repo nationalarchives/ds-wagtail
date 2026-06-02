@@ -12,13 +12,13 @@ from app.core.serializers import RichTextSerializer
 
 
 class TranscriptionHeadingChoices(models.TextChoices):
-    TRANSCRIPT = "transcript", ("Transcript")
-    PARTIAL_TRANSCRIPTION = "partial-transcript", ("Partial transcript")
+    TRANSCRIPT = "transcript", "Transcript"
+    PARTIAL_TRANSCRIPTION = "partial-transcript", "Partial transcript"
 
 
 class TranslationHeadingChoices(models.TextChoices):
-    TRANSLATION = "translation", ("Translation")
-    MODERN_ENGLISH = "modern-english", ("Modern English")
+    TRANSLATION = "translation", "Translation"
+    MODERN_ENGLISH = "modern-english", "Modern English"
 
 
 class CustomImage(ClusterableModel, AbstractImage):

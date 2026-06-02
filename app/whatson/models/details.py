@@ -167,9 +167,7 @@ class EventSpeaker(Orderable):
     def clean(self):
         if not (self.name and self.role) and not self.person_page:
             raise ValidationError(
-                (
-                    "You must provide either a person's name and role or a person page for the speaker."
-                )
+                "You must provide either a person's name and role or a person page for the speaker."
             )
         if (
             (self.person_page and self.name)
@@ -177,9 +175,7 @@ class EventSpeaker(Orderable):
             or (self.person_page and self.image)
         ):
             raise ValidationError(
-                (
-                    "You cannot provide both a person's details and a person page for the speaker."
-                )
+                "You cannot provide both a person's details and a person page for the speaker."
             )
         return super().clean()
 
@@ -214,15 +210,15 @@ class EventSession(models.Model):
         if self.start and self.end and self.start >= self.end:
             raise ValidationError(
                 {
-                    "start": ("The start time must be before the end time."),
-                    "end": ("The end time must be after the start time."),
+                    "start": "The start time must be before the end time.",
+                    "end": "The end time must be after the start time.",
                 }
             )
         if self.start and self.end and self.start.date() != self.end.date():
             raise ValidationError(
                 {
-                    "start": ("The start and end times must be on the same day."),
-                    "end": ("The start and end times must be on the same day."),
+                    "start": "The start and end times must be on the same day.",
+                    "end": "The start and end times must be on the same day.",
                 }
             )
         return super().clean()
@@ -819,8 +815,8 @@ class DisplayPage(
             if self.start_date > self.end_date:
                 raise ValidationError(
                     {
-                        "start_date": ("The start date must be before the end date."),
-                        "end_date": ("The end date must be after the start date."),
+                        "start_date": "The start date must be before the end date.",
+                        "end_date": "The end date must be after the start date.",
                     }
                 )
 
@@ -1215,14 +1211,14 @@ class ExhibitionPage(
             if self.start_date > self.end_date:
                 raise ValidationError(
                     {
-                        "start_date": ("The start date must be before the end date."),
-                        "end_date": ("The end date must be after the start date."),
+                        "start_date": "The start date must be before the end date.",
+                        "end_date": "The end date must be after the start date.",
                     }
                 )
         if self.video and not self.video_title:
             raise ValidationError(
                 {
-                    "video_title": ("The video title is required if a video is added."),
+                    "video_title": "The video title is required if a video is added.",
                 }
             )
         return super().clean()

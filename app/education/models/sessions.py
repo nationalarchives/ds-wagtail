@@ -65,10 +65,10 @@ class EducationSessionPageThemeTag(BaseThemeTag):
 
 class SessionLocation(Orderable):
     class LocationType(models.TextChoices):
-        ONLINE = "online", ("Online")
-        NATIONAL_ARCHIVES = "national_archives", ("At The National Archives")
-        YOUR_SCHOOL = "your_school", ("At your school")
-        CUSTOM = "custom", ("Custom venue")
+        ONLINE = "online", "Online"
+        NATIONAL_ARCHIVES = "national_archives", "At The National Archives"
+        YOUR_SCHOOL = "your_school", "At your school"
+        CUSTOM = "custom", "Custom venue"
 
     class Regions(models.TextChoices):
         SOUTH_EAST = "south_east", "South East and London"
@@ -312,14 +312,12 @@ class EducationSessionPage(
         if self.price is not None and not self.price_detail:
             raise ValidationError(
                 {
-                    "price_detail": (
-                        "Price detail is required when a session price is specified."
-                    )
+                    "price_detail": "Price detail is required when a session price is specified."
                 }
             )
         if self.price is None and self.price_detail:
             raise ValidationError(
-                {"price": ("Price is required when price detail is specified.")}
+                {"price": "Price is required when price detail is specified."}
             )
         if (
             self.start_date is not None
@@ -327,7 +325,7 @@ class EducationSessionPage(
             and self.start_date >= self.end_date
         ):
             raise ValidationError(
-                {"end_date": ("End date must be later than start date.")}
+                {"end_date": "End date must be later than start date."}
             )
 
     content_panels = (

@@ -111,7 +111,7 @@ class BasePage(AlertMixin, SocialMixin, CustomHeadlessPreviewMixin, Page):
                 content="The full URL to this page. This is generated automatically based on the page's position in the page tree.",
             ),
         ],
-        ("For search engines"),
+        heading="For search engines",
     )
     _short_title_panel = FieldPanel("short_title")
     _teaser_panel = MultiFieldPanel(

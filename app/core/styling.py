@@ -7,13 +7,13 @@ class BrandColourChoices(models.TextChoices):
     on various components on the site.
     """
 
-    NONE = "none", ("None")
-    BLACK = "black", ("Black")
-    PINK = "pink", ("Pink")
-    ORANGE = "orange", ("Orange")
-    YELLOW = "yellow", ("Yellow")
-    GREEN = "green", ("Green")
-    BLUE = "blue", ("Blue")
+    NONE = "none", "None"
+    BLACK = "black", "Black"
+    PINK = "pink", "Pink"
+    ORANGE = "orange", "Orange"
+    YELLOW = "yellow", "Yellow"
+    GREEN = "green", "Green"
+    BLUE = "blue", "Blue"
 
 
 class HeroColourChoices(models.TextChoices):
@@ -22,10 +22,10 @@ class HeroColourChoices(models.TextChoices):
     on the hero component.
     """
 
-    NONE = "none", ("None")
-    CONTRAST = "contrast", ("Contrast")
-    TINT = "tint", ("Tint")
-    ACCENT = "accent", ("Accent")
+    NONE = "none", "None"
+    CONTRAST = "contrast", "Contrast"
+    TINT = "tint", "Tint"
+    ACCENT = "accent", "Accent"
 
 
 class HeroLayoutChoices(models.TextChoices):
@@ -34,6 +34,6 @@ class HeroLayoutChoices(models.TextChoices):
     on the hero component.
     """
 
-    DEFAULT = "default", ("Default")
-    SHIFT = "shift", ("Shifted")
-    SPLIT = "split", ("Split")
+    DEFAULT = "default", "Default"
+    SHIFT = "shift", "Shifted"
+    SPLIT = "split", "Split"
