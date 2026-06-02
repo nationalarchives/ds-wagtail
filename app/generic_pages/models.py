@@ -58,7 +58,7 @@ class LinkItem(Orderable):
         related_name="+",
     )
     description = models.CharField(max_length=255, null=True, blank=True)
-    url = models.URLField(verbose_name="URL", blank=True, null=True)
+    url = models.URLField(verbose_name="URL", blank=True, null=True, max_length=300)
 
     internal_page = models.ForeignKey(
         "wagtailcore.Page",
