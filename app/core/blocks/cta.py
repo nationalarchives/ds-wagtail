@@ -72,7 +72,7 @@ class ButtonBlock(blocks.StructBlock):
 
 class CallToActionBlock(blocks.StructBlock):
     body = APIRichTextBlock(
-        max_length=100, features=settings.RESTRICTED_RICH_TEXT_FEATURES
+        max_length=100, features=settings.EXPANDED_RICH_TEXT_FEATURES
     )
     button = ButtonBlock()
 

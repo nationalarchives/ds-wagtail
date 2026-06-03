@@ -105,7 +105,7 @@ class Source(Orderable):
     )
 
     description = RichTextField(
-        features=settings.RESTRICTED_RICH_TEXT_FEATURES,
+        features=settings.EXPANDED_RICH_TEXT_FEATURES,
         verbose_name="source description",
         help_text="An optional free text field to add in a fuller description of the source.",
         blank=True,
@@ -197,7 +197,7 @@ class TeachingResourcePage(
     )
 
     teachers_notes = RichTextField(
-        features=settings.RESTRICTED_RICH_TEXT_FEATURES,
+        features=settings.EXPANDED_RICH_TEXT_FEATURES,
         verbose_name="teachers notes",
         help_text="A general overview of what the resource contains and how it can be used.",
         blank=True,
@@ -208,7 +208,7 @@ class TeachingResourcePage(
         [
             (
                 "paragraph",
-                APIRichTextBlock(features=settings.RESTRICTED_RICH_TEXT_FEATURES),
+                APIRichTextBlock(features=settings.EXPANDED_RICH_TEXT_FEATURES),
             ),
             ("sub_heading", SubHeadingBlock()),
             ("featured_page", FeaturedPageBlock()),
@@ -224,7 +224,7 @@ class TeachingResourcePage(
         [
             (
                 "paragraph",
-                APIRichTextBlock(features=settings.RESTRICTED_RICH_TEXT_FEATURES),
+                APIRichTextBlock(features=settings.EXPANDED_RICH_TEXT_FEATURES),
             ),
             ("sub_heading", SubHeadingBlock()),
         ],
@@ -246,7 +246,7 @@ class TeachingResourcePage(
         [
             (
                 "paragraph",
-                APIRichTextBlock(features=settings.RESTRICTED_RICH_TEXT_FEATURES),
+                APIRichTextBlock(features=settings.EXPANDED_RICH_TEXT_FEATURES),
             ),
             ("sub_heading", SubHeadingBlock()),
             ("featured_external_link", FeaturedExternalLinkBlock()),

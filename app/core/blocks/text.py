@@ -5,7 +5,7 @@ from .paragraph import APIRichTextBlock
 
 
 class InsetTextBlock(blocks.StructBlock):
-    text = APIRichTextBlock(features=settings.RESTRICTED_RICH_TEXT_FEATURES)
+    text = APIRichTextBlock(features=settings.EXPANDED_RICH_TEXT_FEATURES)
 
     class Meta:
         icon = "indent"
@@ -14,7 +14,7 @@ class InsetTextBlock(blocks.StructBlock):
 
 
 class WarningTextBlock(blocks.StructBlock):
-    body = APIRichTextBlock(features=settings.RESTRICTED_RICH_TEXT_FEATURES)
+    body = APIRichTextBlock(features=settings.EXPANDED_RICH_TEXT_FEATURES)
 
     class Meta:
         icon = "warning"

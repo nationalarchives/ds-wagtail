@@ -64,7 +64,7 @@ class SourceQuestionItemBlock(blocks.StructBlock):
         max_length=255,
     )
     question_description = APIRichTextBlock(
-        features=settings.RESTRICTED_RICH_TEXT_FEATURES,
+        features=settings.EXPANDED_RICH_TEXT_FEATURES,
         required=False,
     )
 
