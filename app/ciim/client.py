@@ -53,7 +53,7 @@ class CIIMClient(SimpleJsonApiClient):
             f'Getting record instance from CIIM API for ID "{id}"',
         )
 
-        response = self.get(path="/get", default_headers={})
+        response = self.get(path="/get", headers={})
 
         if not response or not response.get("data"):
             return {

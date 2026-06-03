@@ -15,7 +15,7 @@ class TestCIIMClient(unittest.TestCase):
     @patch("app.ciim.client.CIIMClient.get")
     def test_get_record_instance_success(self, mock_get):
         # Mock API response
-        self.client.default_params = {"id": "C1234"}
+        self.client.params = {"id": "C1234"}
 
         mock_get.return_value = {
             "data": [
@@ -55,7 +55,7 @@ class TestCIIMClient(unittest.TestCase):
     def test_get_record_instance_failed_data(self, mock_get):
         # Mock API response with bad data
         DUMMY_ID = "A_BAD_ID"
-        self.client.default_params = {"id": DUMMY_ID}
+        self.client.params = {"id": DUMMY_ID}
 
         mock_get.return_value = {"data": []}
 
@@ -72,7 +72,7 @@ class TestCIIMClient(unittest.TestCase):
     @patch("app.ciim.client.CIIMClient.get_record_instance")
     def test_get_serialized_record_success(self, mock_get_record_instance):
         # Mock the get_record_instance method with some fake data so we don't get an API hit
-        self.client.default_params = {"id": "CD123"}
+        self.client.params = {"id": "CD123"}
 
         mock_get_record_instance.return_value = {
             "summaryTitle": "Record Title",
