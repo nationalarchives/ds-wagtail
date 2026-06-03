@@ -44,7 +44,7 @@ class QuoteBlock(blocks.StructBlock):
     """
 
     quote = APIRichTextBlock(
-        required=True, features=settings.RESTRICTED_RICH_TEXT_FEATURES
+        required=True, features=settings.EXPANDED_RICH_TEXT_FEATURES
     )
 
     attribution = blocks.CharBlock(

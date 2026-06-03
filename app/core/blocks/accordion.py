@@ -8,7 +8,7 @@ from .tables import TableBlock
 
 class AccordionContentBlock(blocks.StreamBlock):
     text = APIRichTextBlock(
-        required=True, features=settings.RESTRICTED_RICH_TEXT_FEATURES
+        required=True, features=settings.EXPANDED_RICH_TEXT_FEATURES
     )
     table = TableBlock()
     documents = DocumentsBlock()
@@ -30,7 +30,7 @@ class AccordionBlock(blocks.StructBlock):
 class SimplifiedAccordionBlock(blocks.StructBlock):
     title = blocks.CharBlock(required=True)
     body = APIRichTextBlock(
-        required=True, features=settings.RESTRICTED_RICH_TEXT_FEATURES
+        required=True, features=settings.EXPANDED_RICH_TEXT_FEATURES
     )
 
     class Meta:
@@ -48,7 +48,7 @@ class AccordionsBlock(blocks.StructBlock):
 class DetailsBlock(blocks.StructBlock):
     title = blocks.CharBlock(required=True)
     body = APIRichTextBlock(
-        required=True, features=settings.RESTRICTED_RICH_TEXT_FEATURES
+        required=True, features=settings.EXPANDED_RICH_TEXT_FEATURES
     )
 
     class Meta:
