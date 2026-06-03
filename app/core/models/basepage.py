@@ -5,7 +5,6 @@ from django.db import models
 from django.db.models import options
 from django.utils.functional import cached_property
 from django.utils.text import capfirst
-from django.utils.translation import gettext_lazy as _
 from wagtail.admin.panels import FieldPanel, HelpPanel, MultiFieldPanel
 from wagtail.admin.widgets.slug import SlugInput
 from wagtail.api import APIField
@@ -76,20 +75,16 @@ class BasePage(AlertMixin, SocialMixin, CustomHeadlessPreviewMixin, Page):
     """
 
     short_title = models.CharField(
-        verbose_name=_("short title"),
-        help_text=_(
-            "A shorter title for use in breadcrumbs and other navigational elements, where applicable."
-        ),
+        verbose_name="short title",
+        help_text="A shorter title for use in breadcrumbs and other navigational elements, where applicable.",
         max_length=45,
         blank=True,
         null=True,
     )
 
     teaser_text = models.TextField(
-        verbose_name=_("teaser text"),
-        help_text=_(
-            "A short, enticing description of this page. This will appear in promos and under thumbnails around the site."
-        ),
+        verbose_name="teaser text",
+        help_text="A short, enticing description of this page. This will appear in promos and under thumbnails around the site.",
         max_length=160,
     )
 
@@ -99,7 +94,7 @@ class BasePage(AlertMixin, SocialMixin, CustomHeadlessPreviewMixin, Page):
         blank=True,
         on_delete=models.SET_NULL,
         related_name="+",
-        help_text=_("Image that will appear on thumbnails and promos around the site."),
+        help_text="Image that will appear on thumbnails and promos around the site.",
     )
 
     show_publish_date_in_search_results = False
@@ -108,9 +103,7 @@ class BasePage(AlertMixin, SocialMixin, CustomHeadlessPreviewMixin, Page):
         [
             FieldPanel(
                 "slug",
-                help_text=_(
-                    "The name of the page as it will appear at the end of the URL"
-                ),
+                help_text="The name of the page as it will appear at the end of the URL",
                 widget=SlugInput,
             ),
             HelpPanel(
@@ -118,7 +111,7 @@ class BasePage(AlertMixin, SocialMixin, CustomHeadlessPreviewMixin, Page):
                 content="The full URL to this page. This is generated automatically based on the page's position in the page tree.",
             ),
         ],
-        _("For search engines"),
+        heading="For search engines",
     )
     _short_title_panel = FieldPanel("short_title")
     _teaser_panel = MultiFieldPanel(
@@ -276,10 +269,8 @@ class BasePageWithIntro(BasePage):
     """
 
     intro = RichTextField(
-        verbose_name=_("introductory text"),
-        help_text=_(
-            "1-2 sentences introducing the subject of the page, and explaining why a user should read on."
-        ),
+        verbose_name="introductory text",
+        help_text="1-2 sentences introducing the subject of the page, and explaining why a user should read on.",
         features=settings.INLINE_RICH_TEXT_FEATURES,
         max_length=300,
         null=True,
@@ -307,10 +298,8 @@ class BasePageWithRequiredIntro(BasePageWithIntro):
     """
 
     intro = RichTextField(
-        verbose_name=_("introductory text"),
-        help_text=_(
-            "1-2 sentences introducing the subject of the page, and explaining why a user should read on."
-        ),
+        verbose_name="introductory text",
+        help_text="1-2 sentences introducing the subject of the page, and explaining why a user should read on.",
         features=settings.INLINE_RICH_TEXT_FEATURES,
         max_length=300,
     )

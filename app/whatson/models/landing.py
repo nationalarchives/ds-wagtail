@@ -1,6 +1,5 @@
 from django.db import models
 from django.utils.functional import cached_property
-from django.utils.translation import gettext_lazy as _
 from modelcluster.fields import ParentalKey
 from wagtail.admin.panels import (
     InlinePanel,
@@ -33,8 +32,8 @@ class WhatsOnPageSelection(Orderable):
         "wagtailcore.Page",
         on_delete=models.CASCADE,
         related_name="+",
-        verbose_name=_("selected page"),
-        help_text=_("The page to display on the What's On page."),
+        verbose_name="selected page",
+        help_text="The page to display on the What's On page.",
     )
 
     panels = [
@@ -50,7 +49,7 @@ class WhatsOnPageSelection(Orderable):
     ]
 
     class Meta:
-        verbose_name = _("selection")
+        verbose_name = "selection"
         ordering = ["sort_order"]
 
 
@@ -64,7 +63,7 @@ class WhatsOnPage(BasePageWithRequiredIntro):
         return "What's On"
 
     class Meta:
-        verbose_name = _("What's On page")
+        verbose_name = "What's On page"
 
     parent_page_types = [
         "home.HomePage",
@@ -83,8 +82,8 @@ class WhatsOnPage(BasePageWithRequiredIntro):
     content_panels = BasePageWithRequiredIntro.content_panels + [
         InlinePanel(
             "whats_on_page_selections",
-            heading=_("Page selections"),
-            help_text=_("Select pages to display on the What's On page."),
+            heading="Page selections",
+            help_text="Select pages to display on the What's On page.",
         ),
     ]
 
