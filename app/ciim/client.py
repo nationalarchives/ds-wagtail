@@ -25,9 +25,9 @@ class CIIMClient(SimpleJsonApiClient):
         super().__init__(api_url, default_params=default_params)
         self.add_default_parameter("filter", "@datatype.base:record")
 
-    def get(self, path: str = "/", default_headers: dict = None) -> dict:
+    def get(self, path: str = "/", headers: dict = None) -> dict:
         try:
-            return super().get(path=path, default_headers=default_headers)
+            return super().get(path=path, headers=headers)
         except Exception:
             capture_message(
                 "CIIMClient.get: Failed to fetch data from CIIM API", level="error"
