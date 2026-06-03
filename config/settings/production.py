@@ -313,13 +313,9 @@ INLINE_RICH_TEXT_FEATURES = [
     "link",
     "code",
 ]
-RESTRICTED_RICH_TEXT_FEATURES = INLINE_RICH_TEXT_FEATURES + [
+EXPANDED_RICH_TEXT_FEATURES = INLINE_RICH_TEXT_FEATURES + [
     "ol",
     "ul",
-]
-EXPANDED_RICH_TEXT_FEATURES = RESTRICTED_RICH_TEXT_FEATURES + [
-    "h2",
-    "h3",
 ]
 
 # Don't anonymise data by default, so we don't accidentally lose production data
@@ -332,8 +328,9 @@ BIRDBATH_PROCESSORS = ["app.users.anonymisation.UserAnonymiser"]
 # -----------------------------------------------------------------------------
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 # WAGTAIL_EMAIL_MANAGEMENT_ENABLED = False  # Disable the ability for users to change their email address
-# WAGTAILADMIN_NOTIFICATION_USE_HTML = True
+WAGTAILADMIN_NOTIFICATION_USE_HTML = True
 WAGTAILADMIN_NOTIFICATION_INCLUDE_SUPERUSERS = False
+WAGTAILADMIN_USER_PASSWORD_RESET_FORM = "app.core.forms.auth.HtmlPasswordResetForm"
 DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "wagtail@nationalarchives.gov.uk")
 EMAIL_HOST = os.getenv("EMAIL_HOST", None)
 EMAIL_PORT = os.getenv("EMAIL_PORT", 587)
