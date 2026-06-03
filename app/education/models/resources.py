@@ -23,10 +23,10 @@ from ..blocks import (
     SourceFeaturedLinkBlock,
     SourceMediaBlock,
     SourceQuestionBlock,
+    TeachersNotesBlock,
     TeachingResourceBackgroundInformationBlock,
     TeachingResourceExtensionActivitiesBlock,
     TeachingResourceFurtherInformationBlock,
-    TeachersNotesBlock,
 )
 from ..serializers import (
     CurriculumConnectionSerializer,
@@ -200,9 +200,7 @@ class TeachingResourcePage(
     teachers_notes = StreamField(
         TeachersNotesBlock(),
         verbose_name="teachers notes",
-        help_text=
-            "A general overview of what the resource contains and how it can be used."
-        ,
+        help_text="A general overview of what the resource contains and how it can be used.",
         blank=True,
         null=True,
     )
