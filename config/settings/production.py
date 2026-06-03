@@ -313,13 +313,9 @@ INLINE_RICH_TEXT_FEATURES = [
     "link",
     "code",
 ]
-RESTRICTED_RICH_TEXT_FEATURES = INLINE_RICH_TEXT_FEATURES + [
+EXPANDED_RICH_TEXT_FEATURES = INLINE_RICH_TEXT_FEATURES + [
     "ol",
     "ul",
-]
-EXPANDED_RICH_TEXT_FEATURES = RESTRICTED_RICH_TEXT_FEATURES + [
-    "h2",
-    "h3",
 ]
 
 # Don't anonymise data by default, so we don't accidentally lose production data

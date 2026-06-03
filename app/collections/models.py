@@ -82,7 +82,7 @@ class Highlight(Orderable):
         "description of the story of the record and why it is significant.",
         blank=False,
         null=False,
-        features=settings.RESTRICTED_RICH_TEXT_FEATURES,
+        features=settings.EXPANDED_RICH_TEXT_FEATURES,
         max_length=900,
     )
 

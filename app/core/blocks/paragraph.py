@@ -13,7 +13,7 @@ class APIRichTextBlock(blocks.RichTextBlock):
 
 
 class ParagraphBlock(blocks.StructBlock):
-    text = APIRichTextBlock(features=settings.RESTRICTED_RICH_TEXT_FEATURES)
+    text = APIRichTextBlock(features=settings.EXPANDED_RICH_TEXT_FEATURES)
 
     class Meta:
         icon = "paragraph"
