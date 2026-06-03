@@ -295,7 +295,7 @@ WAGTAILDOCS_INLINE_CONTENT_TYPES = []
 WAGTAILIMAGES_IMAGE_MODEL = "images.CustomImage"
 
 # CIIM API Client
-ROSETTA_API_URL = os.getenv("ROSETTA_API_URL")
+ROSETTA_API_URL = os.getenv("ROSETTA_API_URL", "")
 
 # Rich Text Features
 # https://docs.wagtail.io/en/stable/advanced_topics/customisation/page_editing_interface.html#limiting-features-in-a-rich-text-field

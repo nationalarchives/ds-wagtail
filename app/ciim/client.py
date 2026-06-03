@@ -38,7 +38,7 @@ class CIIMClient(SimpleJsonApiClient):
         """
         Get a single record instance from the CIIM API.
         """
-        id = self.default_params.get("id")
+        id = self.params.get("id")
         if not id:
             return None
 
@@ -87,7 +87,7 @@ class CIIMClient(SimpleJsonApiClient):
         """
         Get a standardised serialized record from the CIIM API for the Wagtail API.
         """
-        id = self.default_params.get("id")
+        id = self.params.get("id")
 
         if not id:
             return None
