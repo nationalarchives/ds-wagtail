@@ -1,6 +1,5 @@
 from django.db import models
 from django.utils.functional import cached_property
-from django.utils.translation import gettext_lazy as _
 from wagtail.admin.panels import FieldPanel
 from wagtail.models import Orderable
 
@@ -12,33 +11,33 @@ class KeyStage(models.Model):
 
     name = models.CharField(
         max_length=255,
-        verbose_name=_("name"),
+        verbose_name="name",
         unique=True,
     )
 
     stage = models.PositiveSmallIntegerField(
-        verbose_name=_("stage"),
-        help_text=_("Numeric key stage value, e.g. 2, 3, 4."),
+        verbose_name="stage",
+        help_text="Numeric key stage value, e.g. 2, 3, 4.",
         null=True,
         blank=True,
     )
 
     age_range = models.CharField(
         max_length=64,
-        verbose_name=_("age range"),
-        help_text=_("Age range text, e.g. 5-7 or 7-11."),
+        verbose_name="age range",
+        help_text="Age range text, e.g. 5-7 or 7-11.",
         blank=True,
     )
 
     slug = models.SlugField(
         max_length=255,
-        verbose_name=_("slug"),
+        verbose_name="slug",
         unique=True,
     )
 
     class Meta:
-        verbose_name = _("Key stage")
-        verbose_name_plural = _("Key stages")
+        verbose_name = "Key stage"
+        verbose_name_plural = "Key stages"
         ordering = ["stage", "name"]
 
     @property
@@ -68,34 +67,34 @@ class TimePeriod(models.Model):
 
     name = models.CharField(
         max_length=255,
-        verbose_name=_("name"),
+        verbose_name="name",
         unique=True,
     )
 
     slug = models.SlugField(
         max_length=255,
-        verbose_name=_("slug"),
+        verbose_name="slug",
         unique=True,
     )
 
     year_from = models.PositiveIntegerField(
-        verbose_name=_("year from"),
+        verbose_name="year from",
         null=True,
         blank=True,
-        help_text=_("Starting year, e.g. 1485"),
+        help_text="Starting year, e.g. 1485",
     )
 
     year_to = models.PositiveIntegerField(
-        verbose_name=_("year to"),
+        verbose_name="year to",
         null=True,
         blank=True,
-        help_text=_("Ending year, e.g. 1750"),
+        help_text="Ending year, e.g. 1750",
     )
 
     available_for_resources = models.BooleanField(
         default=True,
-        verbose_name=_("available for resources"),
-        help_text=_("Whether this time period can be tagged on teaching resources."),
+        verbose_name="available for resources",
+        help_text="Whether this time period can be tagged on teaching resources.",
     )
 
     @cached_property
@@ -119,8 +118,8 @@ class TimePeriod(models.Model):
         return self.name
 
     class Meta:
-        verbose_name = _("Time period")
-        verbose_name_plural = _("Time periods")
+        verbose_name = "Time period"
+        verbose_name_plural = "Time periods"
         ordering = ["year_from", "year_to", "name"]
 
     def __str__(self):
@@ -132,19 +131,19 @@ class Theme(models.Model):
 
     name = models.CharField(
         max_length=255,
-        verbose_name=_("name"),
+        verbose_name="name",
         unique=True,
     )
 
     slug = models.SlugField(
         max_length=255,
-        verbose_name=_("slug"),
+        verbose_name="slug",
         unique=True,
     )
 
     class Meta:
-        verbose_name = _("Theme")
-        verbose_name_plural = _("Themes")
+        verbose_name = "Theme"
+        verbose_name_plural = "Themes"
         ordering = ["name"]
 
     def __str__(self):
@@ -153,13 +152,13 @@ class Theme(models.Model):
 
 class BaseKeyStageTag(TagDuplicateCheckMixin, Orderable):
     FK_FIELD_NAME = "key_stage"
-    FIELD_LABEL = _("key stage")
+    FIELD_LABEL = "key stage"
 
     key_stage = models.ForeignKey(
         "education.KeyStage",
         on_delete=models.CASCADE,
         related_name="+",
-        verbose_name=_("key stage"),
+        verbose_name="key stage",
     )
 
     panels = [
@@ -172,13 +171,13 @@ class BaseKeyStageTag(TagDuplicateCheckMixin, Orderable):
 
 class BaseTimePeriodTag(TagDuplicateCheckMixin, Orderable):
     FK_FIELD_NAME = "time_period"
-    FIELD_LABEL = _("time period")
+    FIELD_LABEL = "time period"
 
     time_period = models.ForeignKey(
         "education.TimePeriod",
         on_delete=models.CASCADE,
         related_name="+",
-        verbose_name=_("time period"),
+        verbose_name="time period",
     )
 
     panels = [
@@ -191,13 +190,13 @@ class BaseTimePeriodTag(TagDuplicateCheckMixin, Orderable):
 
 class BaseThemeTag(TagDuplicateCheckMixin, Orderable):
     FK_FIELD_NAME = "theme"
-    FIELD_LABEL = _("theme")
+    FIELD_LABEL = "theme"
 
     theme = models.ForeignKey(
         "education.Theme",
         on_delete=models.CASCADE,
         related_name="+",
-        verbose_name=_("theme"),
+        verbose_name="theme",
     )
 
     panels = [

@@ -1,5 +1,4 @@
 from django.utils.functional import cached_property
-from django.utils.translation import gettext_lazy as _
 from wagtail.admin.panels import InlinePanel
 
 
@@ -40,18 +39,18 @@ class EducationTaxonomyMixin:
         return [
             InlinePanel(
                 "education_keystage_tags",
-                label=_("Key stage tag"),
-                heading=_("Key stages"),
+                label="Key stage tag",
+                heading="Key stages",
             ),
             InlinePanel(
                 "education_time_period_tags",
-                label=_("Time period tag"),
-                heading=_("Time periods"),
+                label="Time period tag",
+                heading="Time periods",
             ),
             InlinePanel(
                 "education_theme_tags",
-                label=_("Theme tag"),
-                heading=_("Themes"),
+                label="Theme tag",
+                heading="Themes",
             ),
         ]
 

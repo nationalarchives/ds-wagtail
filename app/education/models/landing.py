@@ -1,6 +1,5 @@
 from django.db import models
 from django.utils.functional import cached_property
-from django.utils.translation import gettext_lazy as _
 from modelcluster.fields import ParentalKey
 from wagtail.admin.panels import (
     FieldPanel,
@@ -77,11 +76,20 @@ class EducationPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
 
     max_count = 1
 
+    # Teaching resources section
+    teaching_resources_listing_page = models.ForeignKey(
+        "education.TeachingResourcesListingPage",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        verbose_name="teaching resource listing page",
+        help_text="The teaching resource listing page to display on the Education landing page.",
+    )
+
     teaching_resources_teaser_override = models.CharField(
-        verbose_name=_("teaching resources teaser text"),
-        help_text=_(
-            "Short text under Explore teaching resources title to entice users to click through"
-        ),
+        verbose_name="teaching resources teaser text",
+        help_text="Short text under Explore teaching resources title to entice users to click through",
         blank=True,
         max_length=160,
     )
@@ -92,24 +100,31 @@ class EducationPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
         blank=True,
         on_delete=models.SET_NULL,
         related_name="+",
-        verbose_name=_("featured teaching resource"),
-        help_text=_(
-            "Option to add a highlighted teaching resource, particularly for history months etc"
-        ),
+        verbose_name="featured teaching resource",
+        help_text="Option to add a highlighted teaching resource, particularly for history months etc",
     )
 
     featured_teaching_resource_teaser_override = models.CharField(
-        verbose_name=_("Featured teaching resource teaser text override"),
-        help_text=_("Override text for the featured teaching resource"),
+        verbose_name="Featured teaching resource teaser text override",
+        help_text="Override text for the featured teaching resource",
         blank=True,
         max_length=160,
     )
 
+    # Education sessions section
+    education_sessions_listing_page = models.ForeignKey(
+        "education.EducationSessionsListingPage",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        verbose_name="education sessions listing page",
+        help_text="The education sessions listing page to display on the Education landing page.",
+    )
+
     education_sessions_teaser_override = models.CharField(
-        verbose_name=_("education sessions teaser text"),
-        help_text=_(
-            "Short text under Explore education sessions title to entice users to click through"
-        ),
+        verbose_name="education sessions teaser text",
+        help_text="Short text under Explore education sessions title to entice users to click through",
         blank=True,
         max_length=160,
     )
@@ -120,13 +135,13 @@ class EducationPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
         blank=True,
         on_delete=models.SET_NULL,
         related_name="+",
-        verbose_name=_("featured education session"),
-        help_text=_("Page picker to highlight a featured education session"),
+        verbose_name="featured education session",
+        help_text="Page picker to highlight a featured education session",
     )
 
     featured_education_session_teaser_override = models.CharField(
-        verbose_name=_("Featured education session teaser text override"),
-        help_text=_("Override text for the featured education session"),
+        verbose_name="Featured education session teaser text override",
+        help_text="Override text for the featured education session",
         blank=True,
         max_length=160,
     )
@@ -145,7 +160,7 @@ class EducationPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
                         ],
                     ),
                 ],
-                heading=_("Teaching resources"),
+                heading="Teaching resources",
             ),
             MultiFieldPanel(
                 [
@@ -157,12 +172,12 @@ class EducationPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
                         ],
                     ),
                 ],
-                heading=_("Education sessions"),
+                heading="Education sessions",
             ),
             InlinePanel(
                 "education_read_more_links",
-                heading=_("Read more"),
-                help_text=_("Navigation to other sections within Education"),
+                heading="Read more",
+                help_text="Navigation to other sections within Education",
             ),
         ]
     )
@@ -189,7 +204,7 @@ class EducationPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
     ]
 
     class Meta:
-        verbose_name = _("Education landing page")
+        verbose_name = "Education landing page"
 
 
 class EducationReadMoreLink(Orderable):
@@ -205,7 +220,7 @@ class EducationReadMoreLink(Orderable):
         "wagtailcore.Page",
         on_delete=models.CASCADE,
         related_name="+",
-        verbose_name=_("selected page"),
+        verbose_name="selected page",
     )
 
     panels = [
@@ -216,5 +231,5 @@ class EducationReadMoreLink(Orderable):
     ]
 
     class Meta:
-        verbose_name = _("read more link")
+        verbose_name = "read more link"
         ordering = ["sort_order"]
