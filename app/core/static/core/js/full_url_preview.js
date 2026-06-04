@@ -1,27 +1,28 @@
 // This function was written by CoPilot
 
-(function () {
-  "use strict";
+(function fullUrlPreviewModule() {
+  const LAST_SEGMENT_OFFSET = 1;
+  const LOOP_INCREMENT = 1;
 
-  function replaceLastSegment(urlString, slug) {
+  const replaceLastSegment = function replaceLastSegment(urlString, slug) {
     try {
-      var url = new URL(urlString);
-      var segments = url.pathname.split("/").filter(Boolean);
+      const url = new URL(urlString);
+      const segments = url.pathname.split("/").filter(Boolean);
 
       if (segments.length) {
-        segments[segments.length - 1] = slug;
+        segments[segments.length - LAST_SEGMENT_OFFSET] = slug;
       } else {
         segments.push(slug);
       }
 
-      url.pathname = "/" + segments.join("/") + "/";
+      url.pathname = `/${segments.join("/")}/`;
       return url.toString();
-    } catch (error) {
+    } catch {
       return null;
     }
-  }
+  };
 
-  function getPreviewUrl(initialFullUrl, slug) {
+  const getPreviewUrl = function getPreviewUrl(initialFullUrl, slug) {
     if (!slug) {
       return null;
     }
@@ -30,23 +31,23 @@
       return replaceLastSegment(initialFullUrl, slug);
     }
 
-    return "/" + slug + "/";
-  }
+    return `/${slug}/`;
+  };
 
-  function bindContainer(container) {
-    var slugInput = document.getElementById("id_slug");
-    var previewRow = container.querySelector(".js-full-url-preview");
-    var previewLink = container.querySelector(".js-full-url-preview-link");
+  const bindContainer = function bindContainer(container) {
+    const slugInput = document.getElementById("id_slug");
+    const previewRow = container.querySelector(".js-full-url-preview");
+    const previewLink = container.querySelector(".js-full-url-preview-link");
 
     if (!slugInput || !previewRow || !previewLink) {
       return;
     }
 
-    var initialFullUrl = (container.dataset.initialFullUrl || "").trim();
+    const initialFullUrl = (container.dataset.initialFullUrl || "").trim();
 
-    function updatePreview() {
-      var slug = (slugInput.value || "").trim();
-      var previewUrl = getPreviewUrl(initialFullUrl, slug);
+    const updatePreview = function updatePreview() {
+      const slug = (slugInput.value || "").trim();
+      const previewUrl = getPreviewUrl(initialFullUrl, slug);
 
       if (!previewUrl) {
         previewRow.hidden = true;
@@ -58,20 +59,20 @@
       previewRow.hidden = false;
       previewLink.textContent = previewUrl;
       previewLink.setAttribute("href", previewUrl);
-    }
+    };
 
     slugInput.addEventListener("input", updatePreview);
     slugInput.addEventListener("change", updatePreview);
     updatePreview();
-  }
+  };
 
-  function init() {
-    var containers = document.querySelectorAll(".js-full-url-help");
+  const init = function init() {
+    const containers = document.querySelectorAll(".js-full-url-help");
 
-    for (var i = 0; i < containers.length; i += 1) {
-      bindContainer(containers[i]);
+    for (let index = 0; index < containers.length; index += LOOP_INCREMENT) {
+      bindContainer(containers[index]);
     }
-  }
+  };
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", init);
