@@ -106,7 +106,7 @@ class Source(Orderable):
     )
 
     description = RichTextField(
-        features=settings.RESTRICTED_RICH_TEXT_FEATURES,
+        features=settings.EXPANDED_RICH_TEXT_FEATURES,
         verbose_name="source description",
         help_text="An optional free text field to add in a fuller description of the source.",
         blank=True,
