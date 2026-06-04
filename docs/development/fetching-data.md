@@ -17,9 +17,17 @@ Developers from external agencies may not be able to register for a platform.sh 
 
 ## Download from development
 
-Set up the AWS CLI as described in: https://national-archives.atlassian.net/wiki/spaces/TW/pages/775028742/Local+development#AWS-CLI-setup
+Set up the AWS CLI (ensuring you select `AdministratorAccess` when prompted) as described in: https://national-archives.atlassian.net/wiki/spaces/TW/pages/775028742/Local+development#AWS-CLI-setup
+
+From the ds-wagtail folder: 
 
 ```sh
+aws sso login
+
 # Pull all data and media from the development server
-docker compose exec dev pull
+./dev/pull
 ```
+
+
+`./dev/pull-data` or ``./dev/pull-media` are also options.
+
