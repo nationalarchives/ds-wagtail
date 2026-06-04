@@ -1,9 +1,3 @@
-"""Testing style:
-- Prefer real values for representation tests.
-- Use DB-backed TestCase only for validation paths that require real pages.
-- Keep mocks at external boundaries, not internal helper plumbing.
-"""
-
 from types import SimpleNamespace
 
 from django.core.exceptions import ValidationError

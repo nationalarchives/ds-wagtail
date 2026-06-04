@@ -1,9 +1,3 @@
-"""Testing style:
-- Prefer real values for representation tests.
-- Patch only external boundaries or heavy superclass internals when necessary.
-- Use tiny builders for repeated nested payloads.
-"""
-
 from unittest.mock import patch
 
 from django.core.exceptions import ValidationError

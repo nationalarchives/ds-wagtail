@@ -1,9 +1,3 @@
-"""Testing style:
-- Prefer real block values for smoke paths.
-- Patch serializer/network boundaries only.
-- Use superclass patching sparingly for nested block internals.
-"""
-
 from unittest.mock import patch
 
 from django.test import SimpleTestCase
