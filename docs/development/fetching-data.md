@@ -30,6 +30,6 @@ aws sso login
 
 Note:
 
-- To pull only data run `./dev/pull-data`
+- To solely pull data run `./dev/pull-data`
 
-- To only pull media run `./dev/pull-media`
+- To solely pull media run `./dev/pull-media`
