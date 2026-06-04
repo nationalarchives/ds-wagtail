@@ -19,7 +19,7 @@ Developers from external agencies may not be able to register for a platform.sh 
 
 Set up the AWS CLI (ensuring you select `AdministratorAccess` when prompted) as described in: https://national-archives.atlassian.net/wiki/spaces/TW/pages/775028742/Local+development#AWS-CLI-setup
 
-From the ds-wagtail folder log into AWS before pulling data like so: 
+From the ds-wagtail folder log into AWS before pulling data like so:
 
 ```sh
 aws sso login
@@ -28,8 +28,8 @@ aws sso login
 ./dev/pull
 ```
 
-Note: 
+Note:
 
-- To pull only data run `./dev/pull-data` 
+- To pull only data run `./dev/pull-data`
 
 - To only pull media run `./dev/pull-media`
