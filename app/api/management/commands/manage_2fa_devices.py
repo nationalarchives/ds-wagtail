@@ -12,7 +12,7 @@ class Command(BaseCommand):
 
 	
 	#be authenticated with an admin account
-	def check_admin_authentication():
+	def check_admin_authentication(self):
 		admin_user = User.objects.filter(**{User.USERNAME_FIELD: admin_username}).first()
 		if not admin_user:
 			raise CommandError("Admin authentication failed.")
@@ -21,7 +21,7 @@ class Command(BaseCommand):
 			raise CommandError("Authenticated user does not have Wagtail admin access.")
 
 
-	def get_target_user():
+	def get_target_user(self):
         target_user = User.objects.filter(email=target_email).first()
         if not target_user:
             raise CommandError(f"No user found for email {target_email}")
@@ -32,22 +32,22 @@ class Command(BaseCommand):
         return target_user
 
 	# remove all 2FA devices
-	def remove_devices():
+	def remove_devices(self):
 
 
 
 	# reset the password
-	def reset_password():
+	def reset_password(self):
 
 
 
 	# remove all active sessions for that user
-	def remove_all_active_sessions():
+	def remove_all_active_sessions(self):
 
 
 
 	# send them an email
-	def send_email():
+	def send_email(self):
 
 
 
