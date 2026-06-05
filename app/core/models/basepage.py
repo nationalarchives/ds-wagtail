@@ -134,7 +134,7 @@ class BasePage(AlertMixin, SocialMixin, CustomHeadlessPreviewMixin, Page):
         abstract = True
 
     @cached_property
-    def type_label(cls) -> str:
+    def type_label(self) -> str:
         """
         Return the label to use for this page type in the front-end,
         with the first letter capitalized for display.

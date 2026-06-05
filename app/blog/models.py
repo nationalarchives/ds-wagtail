@@ -113,7 +113,7 @@ class BlogPostPage(
     )
 
     @cached_property
-    def type_label(cls) -> str:
+    def type_label(self) -> str:
         """
         Overrides the type_label method from BasePage, to return the correct
         type label for the blog post page.

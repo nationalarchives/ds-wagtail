@@ -464,7 +464,7 @@ class EventPage(RequiredHeroImageMixin, ContentWarningMixin, BasePageWithRequire
         ]
 
     @cached_property
-    def type_label(cls) -> str:
+    def type_label(self) -> str:
         """
         Overrides the type_label method from BasePage, to return the correct
         type label for the event page which will be the event type name.
@@ -665,7 +665,7 @@ class DisplayPage(
         ]
 
     @cached_property
-    def type_label(cls) -> str:
+    def type_label(self) -> str:
         """
         Overrides the type_label method from BasePage, to return the correct
         type label for the display page.
@@ -1025,7 +1025,7 @@ class ExhibitionPage(
         ]
 
     @cached_property
-    def type_label(cls) -> str:
+    def type_label(self) -> str:
         """
         Overrides the type_label method from BasePage, to return the correct
         type label for the exhibition page.
