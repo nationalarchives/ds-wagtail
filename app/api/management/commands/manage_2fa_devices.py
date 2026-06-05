@@ -12,10 +12,25 @@ class Command(BaseCommand):
 
 	
 	#be authenticated with an admin account
-	def admin_authentication():
+	def check_admin_authentication():
+		admin_user = User.objects.filter(**{User.USERNAME_FIELD: admin_username}).first()
+		if not admin_user:
+			print("AUTH FAILED - NOT ADMIN")
+			return False
+
+#TODO throw errors, fail first to allow moer
+		return admin_user.is_active and (admin_user.is_superuser or admin_user.has_perm("wagtailadmin.access_admin"))
 
 
+	def get_target_user():
+        target_user = User.objects.filter(email=target_email).first()
+        if not target_user:
+            print("NO TARGET USER")
 
+        if not target_user.is_active:
+            print("INACTIVE TARGET")
+        else: 
+        	return target_user
 
 	# remove all 2FA devices
 	def remove_devices():
