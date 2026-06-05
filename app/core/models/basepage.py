@@ -139,17 +139,17 @@ class BasePage(AlertMixin, SocialMixin, CustomHeadlessPreviewMixin, Page):
         Return the label to use for this page type in the front-end,
         with the first letter capitalized for display.
         """
-        if cls.has_custom_type_label():
-            return capfirst(cls._meta.verbose_name_public)
+        if self.has_custom_type_label():
+            return capfirst(self._meta.verbose_name_public)
         return None
 
     @classmethod
-    def has_custom_type_label(cls) -> bool:
+    def has_custom_type_label(self) -> bool:
         """
         Returns a boolean indicating whether a custom 'verbose_name_public' value
         has been set in `Meta` for this page type.
         """
-        return bool(getattr(cls._meta, "verbose_name_public", None))
+        return bool(getattr(self._meta, "verbose_name_public", None))
 
     @property
     def privacy(self):

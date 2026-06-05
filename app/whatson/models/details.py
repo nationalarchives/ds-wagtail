@@ -469,8 +469,8 @@ class EventPage(RequiredHeroImageMixin, ContentWarningMixin, BasePageWithRequire
         Overrides the type_label method from BasePage, to return the correct
         type label for the event page which will be the event type name.
         """
-        if cls.event_type:
-            return cls.event_type.name
+        if self.event_type:
+            return self.event_type.name
         return "Event"
 
     @cached_property
@@ -670,8 +670,8 @@ class DisplayPage(
         Overrides the type_label method from BasePage, to return the correct
         type label for the display page.
         """
-        if cls.end_date:
-            if cls.end_date < timezone.now().date():
+        if self.end_date:
+            if self.end_date < timezone.now().date():
                 return "Past display"
         return "Display"
 
@@ -1032,9 +1032,9 @@ class ExhibitionPage(
         """
         today = timezone.now().date()
 
-        if cls.start_date and cls.start_date > today:
+        if self.start_date and self.start_date > today:
             return "Upcoming exhibition"
-        if cls.end_date and cls.end_date < today:
+        if self.end_date and self.end_date < today:
             return "Past exhibition"
         return "Exhibition"
 
