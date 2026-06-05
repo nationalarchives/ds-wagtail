@@ -10,12 +10,17 @@ from app.core.models import (
     BasePageWithRequiredIntro,
 )
 from app.core.serializers import DefaultPageSerializer
+from django.utils.functional import cached_property
 
 
 class TeachingResourcesListingPage(BasePageWithRequiredIntro):
     """
     A page for displaying education/teaching resources.
     """
+
+    @cached_property
+    def type_label(cls) -> str:
+        return "Education"
 
     parent_page_types = [
         "education.EducationPage",
@@ -67,6 +72,10 @@ class EducationSessionsListingPage(BasePageWithRequiredIntro):
     """
     A page for displaying education sessions.
     """
+
+    @cached_property
+    def type_label(cls) -> str:
+        return "Education"
 
     parent_page_types = [
         "education.EducationPage",
