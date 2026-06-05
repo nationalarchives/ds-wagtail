@@ -144,12 +144,12 @@ class BasePage(AlertMixin, SocialMixin, CustomHeadlessPreviewMixin, Page):
         return None
 
     @classmethod
-    def has_custom_type_label(self) -> bool:
+    def has_custom_type_label(cls) -> bool:
         """
         Returns a boolean indicating whether a custom 'verbose_name_public' value
         has been set in `Meta` for this page type.
         """
-        return bool(getattr(self._meta, "verbose_name_public", None))
+        return bool(getattr(cls._meta, "verbose_name_public", None))
 
     @property
     def privacy(self):
