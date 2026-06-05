@@ -121,7 +121,7 @@ class WhatsOnSeriesPage(BasePageWithRequiredIntro):
 
     @cached_property
     def type_label(cls) -> str:
-        return "What's On"
+        return "What's on"
 
     content_panels = BasePageWithRequiredIntro.content_panels + [
         PageChooserPanel(
@@ -230,7 +230,7 @@ class WhatsOnCategoryPage(BasePageWithRequiredIntro):
 
     @cached_property
     def type_label(cls) -> str:
-        return "What's On"
+        return "What's on"
 
     api_fields = BasePageWithRequiredIntro.api_fields + [
         APIField("featured_page", serializer=DefaultPageSerializer()),
@@ -266,7 +266,7 @@ class WhatsOnLocationListingPage(BasePageWithRequiredIntro):
 
     @cached_property
     def type_label(cls) -> str:
-        return "What's On"
+        return "What's on"
 
     @cached_property
     def event_listings(self) -> list:
@@ -403,7 +403,7 @@ class WhatsOnDateListingPage(BasePageWithRequiredIntro):
 
     @cached_property
     def type_label(cls) -> str:
-        return "What's On"
+        return "What's on"
 
     content_panels = BasePageWithRequiredIntro.content_panels + [
         FieldPanel(
@@ -481,7 +481,7 @@ class EventsListingPage(BasePageWithRequiredIntro):
 
     @cached_property
     def type_label(cls) -> str:
-        return "What's On"
+        return "What's on"
 
     content_panels = BasePageWithRequiredIntro.content_panels + [
         FieldPanel(
@@ -547,7 +547,7 @@ class ExhibitionsListingPage(BasePageWithRequiredIntro):
 
     @cached_property
     def type_label(cls) -> str:
-        return "What's On"
+        return "What's on"
 
     max_count = 1
 
