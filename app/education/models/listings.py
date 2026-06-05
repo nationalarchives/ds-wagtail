@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.functional import cached_property
 from wagtail.admin.panels import (
     FieldPanel,
     MultiFieldPanel,
@@ -10,7 +11,6 @@ from app.core.models import (
     BasePageWithRequiredIntro,
 )
 from app.core.serializers import DefaultPageSerializer
-from django.utils.functional import cached_property
 
 
 class TeachingResourcesListingPage(BasePageWithRequiredIntro):
