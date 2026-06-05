@@ -1,4 +1,4 @@
-from django.core.management.base import BaseCommand
+from django.core.management.base import BaseCommand, CommandError
 
 class Command(BaseCommand):
     help = "Manage 2FA devices." #TODO make better
@@ -15,22 +15,21 @@ class Command(BaseCommand):
 	def check_admin_authentication():
 		admin_user = User.objects.filter(**{User.USERNAME_FIELD: admin_username}).first()
 		if not admin_user:
-			print("AUTH FAILED - NOT ADMIN")
-			return False
+			raise CommandError("Admin authentication failed.")
 
-#TODO throw errors, fail first to allow moer
-		return admin_user.is_active and (admin_user.is_superuser or admin_user.has_perm("wagtailadmin.access_admin"))
+		if not admin_user.is_active or not (admin_user.is_superuser or admin_user.has_perm("wagtailadmin.access_admin")):
+			raise CommandError("Authenticated user does not have Wagtail admin access.")
 
 
 	def get_target_user():
         target_user = User.objects.filter(email=target_email).first()
         if not target_user:
-            print("NO TARGET USER")
+            raise CommandError(f"No user found for email {target_email}")
 
         if not target_user.is_active:
-            print("INACTIVE TARGET")
-        else: 
-        	return target_user
+            raise CommandError("Target user is inactive.")
+
+        return target_user
 
 	# remove all 2FA devices
 	def remove_devices():
