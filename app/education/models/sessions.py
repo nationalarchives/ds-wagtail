@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.functional import cached_property
@@ -293,6 +294,7 @@ class EducationSessionPage(
     )
 
     curriculum_connection_description = RichTextField(
+        features=settings.EXPANDED_RICH_TEXT_FEATURES,
         verbose_name="curriculum connection description",
         help_text="A description of how the session connects to the curriculum. This is optional but can help teachers understand the relevance of the session to their teaching.",
         blank=True,
@@ -322,10 +324,10 @@ class EducationSessionPage(
         if (
             self.start_date is not None
             and self.end_date is not None
-            and self.start_date >= self.end_date
+            and self.start_date > self.end_date
         ):
             raise ValidationError(
-                {"end_date": "End date must be later than start date."}
+                {"end_date": "End date must not be before start date."}
             )
 
     content_panels = (
