@@ -17,9 +17,7 @@ class CIIMClient(SimpleJsonApiClient):
     Client for interacting with the CIIM API.
     """
 
-    def __init__(
-        self, api_url: str | None = None, default_params: dict = None
-    ):
+    def __init__(self, api_url: str | None = None, default_params: dict = None):
         api_url = api_url or settings.ROSETTA_API_URL
         if not api_url:
             raise ValueError("ROSETTA_API_URL is not defined")
