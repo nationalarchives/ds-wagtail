@@ -183,6 +183,7 @@ class EducationPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
     )
 
     api_fields = BasePageWithRequiredIntro.api_fields + [
+        APIField("hero_image"),
         APIField("teaching_resources_listing", serializer=DefaultPageSerializer()),
         APIField("teaching_resources_teaser_override"),
         APIField("featured_teaching_resource", serializer=DefaultPageSerializer()),
