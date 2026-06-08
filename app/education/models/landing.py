@@ -226,7 +226,12 @@ class EducationReadMoreLink(Orderable):
     panels = [
         PageChooserPanel(
             "selected_page",
-            ["education.EducationSessionPage", "education.TeachingResourcePage"],
+            [
+                "education.EducationSessionPage",
+                "education.TeachingResourcePage",
+                "generic_pages.GeneralPage",
+                "generic_pages.HubPage",
+            ],
         ),
     ]
 
