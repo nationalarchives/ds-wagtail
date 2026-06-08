@@ -20,6 +20,12 @@ class ExternalApplicationPage(index.Indexed,models.Model):
         index.AutocompleteField("title", boost=10),
         index.SearchField("description"),
         index.SearchField("short_title"),
+        index.RelatedFields("application", [
+            index.SearchField("title", boost=5),
+            index.SearchField("description"),
+            index.SearchField("type_label"),
+            index.FilterField("is_active"),
+        ]),
     ]
 
     class Meta:
