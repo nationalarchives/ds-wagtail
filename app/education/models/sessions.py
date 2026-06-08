@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.functional import cached_property
@@ -293,7 +294,7 @@ class EducationSessionPage(
     )
 
     curriculum_connection_description = RichTextField(
-        features=["italic", "bold", "ol", "ul", "link"],
+        features=settings.EXPANDED_RICH_TEXT_FEATURES,
         verbose_name="curriculum connection description",
         help_text="A description of how the session connects to the curriculum. This is optional but can help teachers understand the relevance of the session to their teaching.",
         blank=True,

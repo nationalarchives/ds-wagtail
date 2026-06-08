@@ -82,8 +82,8 @@ class SourceQuestionBlock(blocks.StreamBlock):
 
 
 class TeachersNotesBlock(blocks.StreamBlock):
-    notes = ParagraphBlock()
-    subheading = SubHeadingBlock()
+    paragraph = ParagraphBlock()
+    sub_heading = SubHeadingBlock()
     inset_text = InsetTextBlock()
 
 
