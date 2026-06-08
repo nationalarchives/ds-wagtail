@@ -44,7 +44,7 @@ class TestCIIMClient(unittest.TestCase):
     @patch("app.ciim.client.CIIMClient.get")
     def test_get_record_instance_empty_data(self, mock_get):
         # Mock API response with empty data
-        self.client.default_params = {"id": ""}
+        self.client.params = {"id": ""}
 
         mock_get.return_value = {"data": []}
 

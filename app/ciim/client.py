@@ -18,8 +18,11 @@ class CIIMClient(SimpleJsonApiClient):
     """
 
     def __init__(
-        self, api_url: str = settings.ROSETTA_API_URL, default_params: dict = None
+        self, api_url: str | None = None, default_params: dict = None
     ):
+        api_url = api_url or settings.ROSETTA_API_URL
+        if not api_url:
+            raise ValueError("ROSETTA_API_URL is not defined")
         if default_params is None:
             default_params = {}
         super().__init__(api_url, default_params=default_params)
