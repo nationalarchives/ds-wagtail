@@ -290,7 +290,6 @@ class TeachingResourcePage(
             PublishedDateMixin.get_is_newly_published_apifield(),
         ]
         + [
-            APIField("hero_image"),
             APIField("enquiry_question"),
             # TODO: primary tags?
             # APIField("key_stage", serializer=KeyStageSerializer()),

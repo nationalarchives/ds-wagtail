@@ -64,10 +64,13 @@ class TeachingResourcesListingPage(RequiredHeroImageMixin, BasePageWithRequiredI
         ]
     )
 
-    api_fields = BasePageWithRequiredIntro.api_fields + [
-        APIField("featured_teaching_resource", serializer=DefaultPageSerializer()),
-        APIField("featured_teaching_resource_teaser_override"),
-    ]
+    api_fields = (
+        BasePageWithRequiredIntro.api_fields
+        + RequiredHeroImageMixin.api_fields + [
+            APIField("featured_teaching_resource", serializer=DefaultPageSerializer()),
+            APIField("featured_teaching_resource_teaser_override"),
+        ]
+    )
 
     class Meta:
         verbose_name = "Teaching Resources listing page"
