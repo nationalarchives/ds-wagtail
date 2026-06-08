@@ -80,7 +80,7 @@ class FoiRequestPage(BasePage):
     )
 
     @cached_property
-    def type_label(cls) -> str:
+    def type_label(self) -> str:
         return "Freedom of information request"
 
     content_panels = BasePage.content_panels + [
