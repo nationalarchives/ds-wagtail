@@ -28,7 +28,7 @@ class EducationPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
     """
 
     @cached_property
-    def type_label(cls) -> str:
+    def type_label(self) -> str:
         return "Education"
 
     @cached_property

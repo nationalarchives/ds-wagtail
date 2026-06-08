@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.functional import cached_property
 from wagtail.admin.panels import (
     FieldPanel,
     MultiFieldPanel,
@@ -17,6 +18,10 @@ class TeachingResourcesListingPage(RequiredHeroImageMixin, BasePageWithRequiredI
     """
     A page for displaying education/teaching resources.
     """
+
+    @cached_property
+    def type_label(self) -> str:
+        return "Education"
 
     parent_page_types = [
         "education.EducationPage",
@@ -72,6 +77,10 @@ class EducationSessionsListingPage(BasePageWithRequiredIntro):
     """
     A page for displaying education sessions.
     """
+
+    @cached_property
+    def type_label(self) -> str:
+        return "Education"
 
     parent_page_types = [
         "education.EducationPage",

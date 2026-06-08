@@ -247,7 +247,7 @@ class EducationSessionPage(
     """A page to display an education session"""
 
     @cached_property
-    def type_label(cls) -> str:
+    def type_label(self) -> str:
         return "Education session"
 
     parent_page_types = [
