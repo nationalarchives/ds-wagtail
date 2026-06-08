@@ -1,8 +1,9 @@
 from django.db import models
 from django.utils import timezone
+from wagtail.search import index
 
 
-class ExternalApplicationPage(models.Model):
+class ExternalApplicationPage(index.Indexed,models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField(blank=True)
     teaser_image = models.URLField(blank=True, null=True)
@@ -13,6 +14,13 @@ class ExternalApplicationPage(models.Model):
         related_name="pages",
         on_delete=models.CASCADE,
     )
+
+    search_fields = [
+        index.SearchField("title", boost=10),
+        index.AutocompleteField("title", boost=10),
+        index.SearchField("description"),
+        index.SearchField("short_title"),
+    ]
 
     class Meta:
         ordering = ["title"]
