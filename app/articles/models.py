@@ -542,7 +542,7 @@ class RecordArticlePage(
 
     about = RichTextField(
         verbose_name="why this record matters",
-        features=settings.RESTRICTED_RICH_TEXT_FEATURES,
+        features=settings.EXPANDED_RICH_TEXT_FEATURES,
     )
 
     image_library_link = models.URLField(

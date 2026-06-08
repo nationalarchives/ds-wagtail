@@ -59,8 +59,8 @@ class WhatsOnPage(BasePageWithRequiredIntro):
     """
 
     @cached_property
-    def type_label(cls) -> str:
-        return "What's On"
+    def type_label(self) -> str:
+        return "What's on"
 
     class Meta:
         verbose_name = "What's On page"
