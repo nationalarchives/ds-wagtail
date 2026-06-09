@@ -29,23 +29,10 @@ class SourceImageWithCaptionBlock(blocks.StructBlock):
         group = "Video, audio and downloads"
 
 
-class SourceMediaWithCaptionBlock(MediaBlock):
-    title = None
-    caption = APIRichTextBlock(features=["bold", "italic"], required=False)
-
-
-class SourceYouTubeWithCaptionBlock(blocks.StructBlock):
-    youtube = YouTubeBlock()
-    caption = APIRichTextBlock(features=["bold", "italic"], required=False)
-
-    class Meta:
-        label = "YouTube"
-
-
 class SourceMediaBlock(blocks.StreamBlock):
     image = SourceImageWithCaptionBlock()
-    media = SourceMediaWithCaptionBlock()
-    youtube = SourceYouTubeWithCaptionBlock()
+    media = MediaBlock()
+    youtube = YouTubeBlock()
 
     class Meta:
         label = "Source media"
