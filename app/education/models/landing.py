@@ -182,26 +182,29 @@ class EducationPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
         ]
     )
 
-    api_fields = BasePageWithRequiredIntro.api_fields + [
-        APIField("teaching_resources_listing", serializer=DefaultPageSerializer()),
-        APIField("teaching_resources_teaser_override"),
-        APIField("featured_teaching_resource", serializer=DefaultPageSerializer()),
-        APIField("featured_teaching_resource_teaser_override"),
-        APIField("education_sessions_listing", serializer=DefaultPageSerializer()),
-        APIField("education_sessions_teaser_override"),
-        APIField("featured_education_session", serializer=DefaultPageSerializer()),
-        APIField("featured_education_session_teaser_override"),
-        APIField(
-            "latest_teaching_resources", serializer=DefaultPageSerializer(many=True)
-        ),
-        APIField(
-            "latest_education_sessions", serializer=DefaultPageSerializer(many=True)
-        ),
-        APIField(
-            "education_read_more_links",
-            serializer=LinkedPageSerializer(many=True),
-        ),
-    ]
+    api_fields = (
+        BasePageWithRequiredIntro.api_fields
+        + RequiredHeroImageMixin.api_fields + [
+            APIField("teaching_resources_listing", serializer=DefaultPageSerializer()),
+            APIField("teaching_resources_teaser_override"),
+            APIField("featured_teaching_resource", serializer=DefaultPageSerializer()),
+            APIField("featured_teaching_resource_teaser_override"),
+            APIField("education_sessions_listing", serializer=DefaultPageSerializer()),
+            APIField("education_sessions_teaser_override"),
+            APIField("featured_education_session", serializer=DefaultPageSerializer()),
+            APIField("featured_education_session_teaser_override"),
+            APIField(
+                "latest_teaching_resources", serializer=DefaultPageSerializer(many=True)
+            ),
+            APIField(
+                "latest_education_sessions", serializer=DefaultPageSerializer(many=True)
+            ),
+            APIField(
+                "education_read_more_links",
+                serializer=LinkedPageSerializer(many=True),
+            ),
+        ]
+    )
 
     class Meta:
         verbose_name = "Education landing page"
