@@ -130,7 +130,6 @@ class SessionLocation(Orderable):
         null=True,
         max_length=255,
         verbose_name="Address line 2",
-        help_text="Required only when location type is Custom venue.",
     )
 
     postcode = models.CharField(
