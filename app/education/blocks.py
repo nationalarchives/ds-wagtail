@@ -2,8 +2,8 @@ from django.conf import settings
 from wagtail import blocks
 
 from app.core.blocks import (
-    APIImageChooserBlock,
     APIRichTextBlock,
+    ContentImageBlock,
     FeaturedExternalLinkBlock,
     FeaturedPageBlock,
     InsetTextBlock,
@@ -18,19 +18,8 @@ from app.media.blocks import MediaBlock
 # Resources - Source
 
 
-class SourceImageWithCaptionBlock(blocks.StructBlock):
-    image = APIImageChooserBlock(
-        rendition_size="max-900x900",
-        help_text="An image for the source.",
-    )
-    caption = APIRichTextBlock(features=["bold", "italic"], required=False)
-
-    class Meta:
-        group = "Video, audio and downloads"
-
-
 class SourceMediaBlock(blocks.StreamBlock):
-    image = SourceImageWithCaptionBlock()
+    image = ContentImageBlock()
     media = MediaBlock()
     youtube = YouTubeBlock()
 
