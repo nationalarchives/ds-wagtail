@@ -286,7 +286,7 @@ class EducationSessionPage(
     )
 
     description = StreamField(
-        [("description", SessionDescriptionBlock())],
+        [("section", SessionDescriptionBlock())],
         verbose_name="description",
         blank=True,
         null=True,
@@ -297,8 +297,8 @@ class EducationSessionPage(
         features=settings.EXPANDED_RICH_TEXT_FEATURES,
         verbose_name="curriculum connection description",
         help_text="A description of how the session connects to the curriculum. This is optional but can help teachers understand the relevance of the session to their teaching.",
-        blank=True,
         null=True,
+        blank=True,
     )
 
     highlights = StreamField(
@@ -377,6 +377,12 @@ class EducationSessionPage(
         + BasePageWithRequiredIntro.promote_panels
         + EducationTaxonomyMixin.taxonomy_promote_panels()
     )
+
+    default_api_fields = BasePageWithRequiredIntro.default_api_fields + [
+        APIField("key_stages", serializer=KeyStageSerializer(many=True)),
+        APIField("time_periods", serializer=TimePeriodSerializer(many=True)),
+        APIField("themes", serializer=ThemeSerializer(many=True)),
+    ]
 
     api_fields = (
         BasePageWithRequiredIntro.api_fields

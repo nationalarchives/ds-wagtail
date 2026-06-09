@@ -149,8 +149,8 @@ class CurriculumConnection(Orderable):
         features=["bold", "italic", "link", "ul"],
         verbose_name="curriculum connection description",
         help_text="Add the curriculum connection description.",
-        blank=True,
-        null=True,
+        blank=False,
+        null=False,
     )
 
     panels = [
@@ -201,8 +201,8 @@ class TeachingResourcePage(
         TeachersNotesBlock(),
         verbose_name="teachers notes",
         help_text="A general overview of what the resource contains and how it can be used.",
-        blank=True,
-        null=True,
+        blank=False,
+        null=False,
     )
 
     extension_activities = StreamField(
@@ -281,6 +281,12 @@ class TeachingResourcePage(
         + EducationTaxonomyMixin.taxonomy_promote_panels()
     )
 
+    default_api_fields = BasePageWithRequiredIntro.default_api_fields + [
+        APIField("key_stages", serializer=KeyStageSerializer(many=True)),
+        APIField("time_periods", serializer=TimePeriodSerializer(many=True)),
+        APIField("themes", serializer=ThemeSerializer(many=True)),
+    ]
+
     api_fields = (
         BasePageWithRequiredIntro.api_fields
         + RequiredHeroImageMixin.api_fields
@@ -290,7 +296,6 @@ class TeachingResourcePage(
             PublishedDateMixin.get_is_newly_published_apifield(),
         ]
         + [
-            APIField("hero_image"),
             APIField("enquiry_question"),
             # TODO: primary tags?
             # APIField("key_stage", serializer=KeyStageSerializer()),
