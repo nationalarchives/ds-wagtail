@@ -378,6 +378,12 @@ class EducationSessionPage(
         + EducationTaxonomyMixin.taxonomy_promote_panels()
     )
 
+    default_api_fields = BasePageWithRequiredIntro.default_api_fields + [
+        APIField("key_stages", serializer=KeyStageSerializer(many=True)),
+        APIField("time_periods", serializer=TimePeriodSerializer(many=True)),
+        APIField("themes", serializer=ThemeSerializer(many=True)),
+    ]
+
     api_fields = (
         BasePageWithRequiredIntro.api_fields
         + RequiredHeroImageMixin.api_fields
