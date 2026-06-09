@@ -1,5 +1,6 @@
 from django.conf import settings
 from wagtail import blocks
+from wagtail.blocks import BlockGroup
 from wagtail.snippets.blocks import SnippetChooserBlock
 
 from app.core.serializers import DefaultPageSerializer
@@ -69,8 +70,6 @@ class DescriptionListSettingsBlock(blocks.StructBlock):
     )
 
     class Meta:
-        icon = "gear"
-        collapsed = True
         label = "Style Options"
         label_format = ""
 
@@ -93,6 +92,7 @@ class DescriptionListBlock(blocks.StructBlock):
         icon = "list-ul"
         label = "Description List"
         group = "Structured and collapsible content"
+        form_layout = BlockGroup(children=["items"], settings=["settings"])
 
 
 class PeopleListingBlock(blocks.StructBlock):
