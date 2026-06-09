@@ -44,6 +44,7 @@ def global_admin_css():
 @hooks.register("register_icons")
 def register_icons(icons):
     return icons + [
+        "wagtailfontawesomesvg/solid/gear.svg",
         "wagtailfontawesomesvg/solid/star.svg",
         "wagtailfontawesomesvg/solid/box-archive.svg",
         "wagtailfontawesomesvg/solid/indent.svg",
