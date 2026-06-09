@@ -31,6 +31,8 @@ DATABASES = {
     }
 }
 
+ROSETTA_API_URL = "http://rosetta.test/data"
+
 STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
 
 RECORD_DETAILS_CACHE_TIMEOUT = 0
