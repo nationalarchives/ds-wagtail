@@ -9,12 +9,11 @@ from wagtail.api import APIField
 
 from app.core.models import (
     BasePageWithRequiredIntro,
-    RequiredHeroImageMixin,
 )
 from app.core.serializers import DefaultPageSerializer
 
 
-class TeachingResourcesListingPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
+class TeachingResourcesListingPage(BasePageWithRequiredIntro):
     """
     A page for displaying education/teaching resources.
     """
@@ -52,7 +51,6 @@ class TeachingResourcesListingPage(RequiredHeroImageMixin, BasePageWithRequiredI
 
     content_panels = (
         BasePageWithRequiredIntro.content_panels
-        + RequiredHeroImageMixin.content_panels
         + [
             MultiFieldPanel(
                 [
@@ -64,13 +62,10 @@ class TeachingResourcesListingPage(RequiredHeroImageMixin, BasePageWithRequiredI
         ]
     )
 
-    api_fields = (
-        BasePageWithRequiredIntro.api_fields
-        + RequiredHeroImageMixin.api_fields + [
-            APIField("featured_teaching_resource", serializer=DefaultPageSerializer()),
-            APIField("featured_teaching_resource_teaser_override"),
-        ]
-    )
+    api_fields = BasePageWithRequiredIntro.api_fields + [
+        APIField("featured_teaching_resource", serializer=DefaultPageSerializer()),
+        APIField("featured_teaching_resource_teaser_override"),
+    ]
 
     class Meta:
         verbose_name = "Teaching Resources listing page"

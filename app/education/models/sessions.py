@@ -297,8 +297,9 @@ class EducationSessionPage(
         features=settings.EXPANDED_RICH_TEXT_FEATURES,
         verbose_name="curriculum connection description",
         help_text="A description of how the session connects to the curriculum. This is optional but can help teachers understand the relevance of the session to their teaching.",
-        blank=True,
-        null=True,
+        null=False,
+        blank=False,
+        default="",
     )
 
     highlights = StreamField(
