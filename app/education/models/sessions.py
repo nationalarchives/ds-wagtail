@@ -299,7 +299,6 @@ class EducationSessionPage(
         help_text="A description of how the session connects to the curriculum. This is optional but can help teachers understand the relevance of the session to their teaching.",
         null=False,
         blank=False,
-        default="",
     )
 
     highlights = StreamField(
