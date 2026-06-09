@@ -44,7 +44,7 @@ class SourceYouTubeWithCaptionBlock(blocks.StructBlock):
 
 class SourceMediaBlock(blocks.StreamBlock):
     image = SourceImageWithCaptionBlock()
-    video = SourceMediaWithCaptionBlock()
+    media = SourceMediaWithCaptionBlock()
     youtube = SourceYouTubeWithCaptionBlock()
 
     class Meta:
@@ -107,7 +107,7 @@ class TeachingResourceFurtherInformationBlock(blocks.StreamBlock):
 
 
 class SectionContentBlock(blocks.StreamBlock):
-    description = ParagraphBlock()
+    paragraph = ParagraphBlock()
     partner_logo = PartnerLogoChooserBlock()
     quote = QuoteBlock()
     inset_text = InsetTextBlock()

@@ -286,7 +286,7 @@ class EducationSessionPage(
     )
 
     description = StreamField(
-        [("description", SessionDescriptionBlock())],
+        [("section", SessionDescriptionBlock())],
         verbose_name="description",
         blank=True,
         null=True,
