@@ -3,8 +3,6 @@ import os
 from .production import *
 from .production import BASE_DIR, INSTALLED_APPS
 
-os.environ.setdefault("ROSETTA_API_URL", "http://rosetta.test/data")
-
 ENVIRONMENT_NAME = "test"
 
 DEBUG = True
@@ -34,6 +32,8 @@ DATABASES = {
 ROSETTA_API_URL = "http://rosetta.test/data"
 
 STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
+
+ROSETTA_API_URL = "http://rosetta.test/data"
 
 RECORD_DETAILS_CACHE_TIMEOUT = 0
 
