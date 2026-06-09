@@ -33,6 +33,48 @@ class DoDontListBlock(blocks.StructBlock):
         group = "Emphasis"
 
 
+class DescriptionListSettingsBlock(blocks.StructBlock):
+    STYLE_CHOICES = [
+        ("none", "None"),
+        ("lined", "Lined"),
+        ("zebra", "Zebra"),
+    ]
+
+    COLUMN_BALANCING_CHOICES = [
+        ("none", "None"),
+        ("even", "Even"),
+        ("left-weighted", "Left-weighted"),
+        ("right-weighted", "Right-weighted"),
+    ]
+
+    style = blocks.ChoiceBlock(
+        choices=STYLE_CHOICES,
+        default="none",
+        label="Style",
+        help_text="Choose the style for this description list.",
+    )
+
+    column_balancing = blocks.ChoiceBlock(
+        choices=COLUMN_BALANCING_CHOICES,
+        default="none",
+        label="Column balancing",
+        help_text="Choose the balancing for the columns of the description list.",
+    )
+
+    stacked = blocks.BooleanBlock(
+        required=False,
+        default=False,
+        label="Stacked layout",
+        help_text="If enabled, the term and detail will be stacked vertically instead of displayed side by side.",
+    )
+
+    class Meta:
+        icon = "gear"
+        collapsed = True
+        label = "Style Options"
+        label_format = ""
+
+
 class DescriptionListItemBlock(blocks.StructBlock):
     term = blocks.CharBlock(required=True)
     detail = APIRichTextBlock(features=settings.INLINE_RICH_TEXT_FEATURES)
@@ -45,6 +87,7 @@ class DescriptionListItemBlock(blocks.StructBlock):
 
 class DescriptionListBlock(blocks.StructBlock):
     items = blocks.ListBlock(DescriptionListItemBlock())
+    settings = DescriptionListSettingsBlock()
 
     class Meta:
         icon = "list-ul"
