@@ -29,8 +29,6 @@ DATABASES = {
     }
 }
 
-ROSETTA_API_URL = "http://rosetta.test/data"
-
 STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
 
 ROSETTA_API_URL = "http://rosetta.test/data"
