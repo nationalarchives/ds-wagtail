@@ -65,6 +65,4 @@ class LinkedPageSerializer(serializers.Serializer):
         if not instance:
             return None
 
-        return DefaultPageSerializer().to_representation(
-            instance.selected_page
-        )
+        return DefaultPageSerializer().to_representation(instance.selected_page)
