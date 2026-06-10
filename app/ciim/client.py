@@ -2,6 +2,7 @@ import logging
 
 from django.conf import settings
 from django.core.cache import cache
+from django.core.exceptions import ImproperlyConfigured
 from sentry_sdk import capture_message
 from tna_utilities.api import SimpleJsonApiClient
 
@@ -19,6 +20,10 @@ class CIIMClient(SimpleJsonApiClient):
 
     def __init__(self, api_url: str | None = None, default_params: dict = None):
         api_url = api_url or settings.ROSETTA_API_URL
+        if not api_url:
+            raise ImproperlyConfigured(
+                "ROSETTA_API_URL environment variable must be set and cannot be empty."
+            )
         if default_params is None:
             default_params = {}
         super().__init__(api_url, default_params=default_params)
