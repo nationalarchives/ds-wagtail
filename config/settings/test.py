@@ -3,8 +3,6 @@ import os
 from .production import *
 from .production import BASE_DIR, INSTALLED_APPS
 
-os.environ.setdefault("ROSETTA_API_URL", "http://rosetta.test/data")
-
 ENVIRONMENT_NAME = "test"
 
 DEBUG = True
