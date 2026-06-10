@@ -9,6 +9,7 @@ def image_generator(
     background_colour=None,
     formats=None,
     prefix=None,
+    suffix=None,
 ):
     if formats is None:
         formats = ["jpeg", "webp"]
@@ -42,6 +43,8 @@ def image_generator(
         fmt = spec.split("format-")[1].split("|", 1)[0]
         if prefix:
             fmt = f"{prefix}_{fmt}"
+        if suffix:
+            fmt = f"{fmt}_{suffix}"
         output[fmt] = {
             "url": rendition.url,
             "full_url": rendition.full_url,
@@ -78,13 +81,15 @@ class ImageSerializer(Serializer):
     def __init__(
         self,
         rendition_size="fill-600x400",
-        thumbnail_size="fill-240x240",
+        thumbnail_size=None,
         jpeg_quality=60,
         webp_quality=70,
         thumbnail_jpeg_quality=40,
         thumbnail_webp_quality=50,
         background_colour="fff",
         formats=None,
+        thumbnail_prefix=None,
+        thumbnail_suffix="thumb",
         *args,
         **kwargs,
     ):
@@ -98,6 +103,8 @@ class ImageSerializer(Serializer):
         self.thumbnail_webp_quality = thumbnail_webp_quality
         self.background_colour = background_colour
         self.formats = formats
+        self.thumbnail_prefix = thumbnail_prefix
+        self.thumbnail_suffix = thumbnail_suffix
         super().__init__(*args, **kwargs)
 
     def to_representation(self, value):
@@ -114,27 +121,29 @@ class ImageSerializer(Serializer):
             if not image_data:
                 return None
 
-            thumbnail_image_data = image_generator(
-                original_image=value,
-                rendition_size=self.thumbnail_size,
-                jpeg_quality=self.thumbnail_jpeg_quality,
-                webp_quality=self.thumbnail_webp_quality,
-                background_colour=self.background_colour,
-                formats=self.formats,
-                prefix="thumbnail",
-            )
-
-            if not thumbnail_image_data:
-                return None
-
-            return {
+            data = {
                 "id": value.id,
                 "uuid": value.uuid,
                 "title": value.title,
                 "description": value.description,
                 **(image_data),
-                **(thumbnail_image_data),
             }
+
+            if self.thumbnail_size:
+                thumbnail_image_data = image_generator(
+                    original_image=value,
+                    rendition_size=self.thumbnail_size,
+                    jpeg_quality=self.thumbnail_jpeg_quality,
+                    webp_quality=self.thumbnail_webp_quality,
+                    background_colour=self.background_colour,
+                    formats=self.formats,
+                    prefix=self.thumbnail_prefix,
+                    suffix=self.thumbnail_suffix,
+                )
+
+                data.update(thumbnail_image_data)
+
+            return data
         return None
 
 
