@@ -21,7 +21,7 @@ from app.media.blocks import MediaBlock
 class SourceMediaBlock(blocks.StreamBlock):
     image = ContentImageBlock()
     media = MediaBlock()
-    youtube = YouTubeBlock()
+    youtube_video = YouTubeBlock()
 
     class Meta:
         label = "Source media"
