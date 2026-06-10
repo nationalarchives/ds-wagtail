@@ -310,7 +310,7 @@ class EducationSessionPage(
     def clean(self):
         super().clean()
 
-        if self.price not in (None, 0) and not self.price_detail:
+        if self.price and not self.price_detail:
             raise ValidationError(
                 {
                     "price_detail": "Price detail is required when a session price is specified."
