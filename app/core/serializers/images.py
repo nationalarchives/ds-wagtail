@@ -8,6 +8,7 @@ def image_generator(
     webp_quality=70,
     background_colour=None,
     formats=None,
+    prefix=None,
 ):
     if formats is None:
         formats = ["jpeg", "webp"]
@@ -39,6 +40,8 @@ def image_generator(
     output = {}
     for spec, rendition in renditions.items():
         fmt = spec.split("format-")[1].split("|", 1)[0]
+        if prefix:
+            fmt = f"{prefix}_{fmt}"
         output[fmt] = {
             "url": rendition.url,
             "full_url": rendition.full_url,
@@ -75,8 +78,11 @@ class ImageSerializer(Serializer):
     def __init__(
         self,
         rendition_size="fill-600x400",
+        thumbnail_size="fill-300x300",
         jpeg_quality=60,
         webp_quality=70,
+        thumbnail_jpeg_quality=50,
+        thumbnail_webp_quality=60,
         background_colour="fff",
         formats=None,
         *args,
@@ -85,8 +91,11 @@ class ImageSerializer(Serializer):
         if formats is None:
             formats = ["jpeg", "webp"]
         self.rendition_size = rendition_size
+        self.thumbnail_size = thumbnail_size
         self.jpeg_quality = jpeg_quality
         self.webp_quality = webp_quality
+        self.thumbnail_jpeg_quality = thumbnail_jpeg_quality
+        self.thumbnail_webp_quality = thumbnail_webp_quality
         self.background_colour = background_colour
         self.formats = formats
         super().__init__(*args, **kwargs)
@@ -105,12 +114,26 @@ class ImageSerializer(Serializer):
             if not image_data:
                 return None
 
+            thumbnail_image_data = image_generator(
+                original_image=value,
+                rendition_size=self.thumbnail_size,
+                jpeg_quality=self.thumbnail_jpeg_quality,
+                webp_quality=self.thumbnail_webp_quality,
+                background_colour=self.background_colour,
+                formats=self.formats,
+                prefix="thumbnail",
+            )
+
+            if not thumbnail_image_data:
+                return None
+
             return {
                 "id": value.id,
                 "uuid": value.uuid,
                 "title": value.title,
                 "description": value.description,
                 **(image_data),
+                **(thumbnail_image_data),
             }
         return None
 
