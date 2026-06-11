@@ -22,7 +22,7 @@ class Command(BaseCommand):
         )
         parser.add_argument(
             "--reason",
-            default="Your 2FA devices have been removed from your account. Please reset your password. /n Note: Any active sessions you may have had have also been deleted.",
+            default="Your 2FA devices have been removed from your account. Please reset your password. \n Note: Any active sessions you may have had have also been deleted.",
             help="Optional reason to include in the notification email",
         )
 
@@ -46,13 +46,14 @@ class Command(BaseCommand):
 
         if not target_user.is_active:
             raise CommandError("Target user is inactive.")
-
+        self.stdout.write(f"Target user found: {target_user} {target_user.email}")
         return target_user
 
     # remove all 2FA devices
     def remove_devices(self, target_user):
         devices = Device.objects.filter(user=target_user)
-        devices.delete()
+        self.stdout.write(f"2FA devices to remove: {devices.count()}")
+        # devices.delete()
 
     # reset the password
     def reset_password(self, target_user):
@@ -67,6 +68,9 @@ class Command(BaseCommand):
             data = session.get_decoded()
             if str(data.get("_auth_user_id")) == str(target_user.pk):
                 active_session_keys.append(session.session_key)
+        session_count = len(active_session_keys)
+        self.stdout.write(f"Active sessions to revoke: {session_count}")
+        # todo delete sessions still
 
     # send them an email
     def send_email(self, target_user, reason):
