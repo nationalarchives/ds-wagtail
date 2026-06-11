@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.contrib.auth.hashers import make_password
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.contrib.sessions.models import Session
 from django.core.management.base import BaseCommand, CommandError
 from django.utils import timezone
@@ -10,90 +10,143 @@ from django_otp.models import Device
 from app.core.forms.auth import HtmlPasswordResetForm
 
 
+User = get_user_model()
+
+
 class Command(BaseCommand):
-    help = "Manage 2FA devices."  # TODO make better
+    help = "Remove all 2FA devices, reset password, revoke sessions, and notify a user."
 
     def add_arguments(self, parser):
         parser.add_argument(
             "--target-email", required=True, help="Email of the user to be reset."
         )
         parser.add_argument(
-            "--admin-username", required=True, help="Admin/username performing reset."
+            "--admin-username", required=True, help="Admin username performing the reset."
         )
         parser.add_argument(
             "--reason",
-            default="Your 2FA devices have been removed from your account. Please reset your password. \n Note: Any active sessions you may have had have also been deleted.",
+            default=(
+                "Your 2FA devices have been removed from your account. Please reset your password.\n\n"
+                "Note: Any active sessions you may have had have also been deleted."
+            ),
             help="Optional reason to include in the notification email",
         )
 
-    # be authenticated with an admin account
     def check_admin_authentication(self, admin_username):
-        admin_user = User.objects.filter(
-            **{User.USERNAME_FIELD: admin_username}
-        ).first()
+        self.stdout.write("\n--- Step 1: Admin Authentication ---")
+        admin_user = User.objects.filter(**{User.USERNAME_FIELD: admin_username}).first()
         if not admin_user:
-            raise CommandError("Admin authentication failed.")
+            raise CommandError(self.style.ERROR("❌ Admin user not found."))
 
-        if not admin_user.is_active or not (
-            admin_user.is_superuser or admin_user.has_perm("wagtailadmin.access_admin")
-        ):
-            raise CommandError("Authenticated user does not have Wagtail admin access.")
+        if not admin_user.is_active:
+            raise CommandError(self.style.ERROR("❌ Admin user is inactive."))
+
+        if not (admin_user.is_superuser or admin_user.has_perm("wagtailadmin.access_admin")):
+            raise CommandError(
+                self.style.ERROR("❌ Admin user does not have Wagtail admin access.")
+            )
+
+        self.stdout.write(self.style.SUCCESS(f"✓ Admin validated: {admin_user.email}"))
+        return admin_user
 
     def get_target_user(self, target_email):
-        target_user = User.objects.filter(email=target_email).first()
+        self.stdout.write("\n--- Step 2: Locate Target User ---")
+        target_user = User.objects.filter(email__iexact=target_email).first()
         if not target_user:
-            raise CommandError(f"No user found for email {target_email}")
+            raise CommandError(self.style.ERROR(f"❌ No user found with email: {target_email}"))
 
         if not target_user.is_active:
-            raise CommandError("Target user is inactive.")
-        self.stdout.write(f"Target user found: {target_user} {target_user.email}")
+            raise CommandError(self.style.ERROR("❌ Target user is inactive."))
+
+        self.stdout.write(
+            self.style.SUCCESS(f"✓ Target user found: {target_user.email} (ID: {target_user.pk})")
+        )
         return target_user
 
-    # remove all 2FA devices
     def remove_devices(self, target_user):
+        self.stdout.write("\n--- Step 3: Remove 2FA Devices ---")
         devices = Device.objects.filter(user=target_user)
-        self.stdout.write(f"2FA devices to remove: {devices.count()}")
-        # devices.delete()
+        device_count = devices.count()
 
-    # reset the password
+        if device_count == 0:
+            self.stdout.write(self.style.WARNING("⚠ No 2FA devices found."))
+            return
+
+        self.stdout.write(f"Found {device_count} device(s) to remove:")
+        for device in devices:
+            try:
+                name = getattr(device, "name", "<unnamed>")
+            except Exception:
+                name = "<error>"
+            self.stdout.write(f"  - {name} (ID: {getattr(device, 'id', 'n/a')})")
+
+        deleted_count, _ = devices.delete()
+        self.stdout.write(self.style.SUCCESS(f"✓ Deleted {deleted_count} 2FA device(s)."))
+
     def reset_password(self, target_user):
+        self.stdout.write("\n--- Step 4: Reset Password ---")
         random_password = get_random_string(40)
         target_user.password = make_password(random_password)
         target_user.save(update_fields=["password"])
+        self.stdout.write(self.style.SUCCESS("✓ Password has been reset to a random value."))
 
-    # remove all active sessions for that user
     def remove_all_active_sessions(self, target_user):
+        self.stdout.write("\n--- Step 5: Revoke Active Sessions ---")
         active_session_keys = []
         for session in Session.objects.filter(expire_date__gte=timezone.now()):
-            data = session.get_decoded()
+            try:
+                data = session.get_decoded()
+            except Exception as e:
+                self.stdout.write(self.style.WARNING(f"⚠ Could not decode session {session.session_key}: {e}"))
+                continue
+
             if str(data.get("_auth_user_id")) == str(target_user.pk):
                 active_session_keys.append(session.session_key)
+
         session_count = len(active_session_keys)
-        self.stdout.write(f"Active sessions to revoke: {session_count}")
-        # todo delete sessions still
+        if session_count == 0:
+            self.stdout.write(self.style.WARNING("⚠ No active sessions found."))
+            return
 
-    # send them an email
+        self.stdout.write(f"Found {session_count} active session(s). Revoking...")
+        deleted_count, _ = Session.objects.filter(session_key__in=active_session_keys).delete()
+        self.stdout.write(self.style.SUCCESS(f"✓ Deleted {deleted_count} session(s)."))
+
     def send_email(self, target_user, reason):
+        self.stdout.write("\n--- Step 6: Send Notification Email ---")
+        try:
+            form = HtmlPasswordResetForm({"email": target_user.email})
+            if not form.is_valid():
+                raise CommandError(self.style.ERROR("❌ Could not prepare password reset email for target user"))
 
-        # TODO: make this email nice to read and include reason
-        form = HtmlPasswordResetForm({"email": target_user.email}, {"reason": reason})
-        if not form.is_valid():
-            raise CommandError("Could not prepare password reset email for target user")
-
-        form.save(
-            from_email=settings.DEFAULT_FROM_EMAIL,
-            request=None,
-            use_https=True,
-        )
+            form.save(from_email=settings.DEFAULT_FROM_EMAIL, request=None, use_https=True)
+            self.stdout.write(self.style.SUCCESS(f"✓ Password reset email sent to {target_user.email}"))
+        except Exception as e:
+            self.stdout.write(self.style.ERROR(f"❌ Failed to send email: {e}"))
+            raise
 
     def handle(self, *args, **options):
         target_email = options["target_email"].strip().lower()
         admin_username = options["admin_username"].strip()
         reason = options["reason"]
 
-        if self.check_admin_authentication(admin_username):
+        try:
+            self.stdout.write(self.style.NOTICE("=" * 60))
+            self.stdout.write(self.style.NOTICE("2FA Device & User Security Reset"))
+            self.stdout.write(self.style.NOTICE("=" * 60))
+
+            self.check_admin_authentication(admin_username)
             target_user = self.get_target_user(target_email)
             self.remove_devices(target_user)
             self.reset_password(target_user)
             self.remove_all_active_sessions(target_user)
             self.send_email(target_user, reason)
+
+            self.stdout.write("\n" + "=" * 60)
+            self.stdout.write(self.style.SUCCESS("✓ All steps completed successfully!"))
+            self.stdout.write("=" * 60)
+            self.stdout.write(f"User {target_user.email} has been reset.\n")
+
+        except CommandError as e:
+            self.stdout.write(f"\n{e}\n")
+            raise
