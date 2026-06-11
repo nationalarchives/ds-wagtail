@@ -31,6 +31,13 @@ class Command(BaseCommand):
             ),
             help="Optional reason to include in the notification email",
         )
+        parser.set_defaults(execute=False)
+        parser.add_argument(
+            "--execute",
+            action="store_true",
+            help="Perform destructive actions (default: dry-run)",
+        )
+        
 
     def check_admin_authentication(self, admin_username):
         self.stdout.write("\n--- Step 1: Admin Authentication ---")
@@ -66,8 +73,9 @@ class Command(BaseCommand):
     def remove_devices(self, target_user):
         self.stdout.write("\n--- Step 3: Remove 2FA Devices ---")
         devices = Device.objects.filter(user=target_user)
+        self.stdout.write("\n**********FOUND DEVICES***********")
         device_count = devices.count()
-
+        self.stdout.write("\n**********DEVICES COUNTED***********")
         if device_count == 0:
             self.stdout.write(self.style.WARNING("⚠ No 2FA devices found."))
             return
@@ -80,15 +88,21 @@ class Command(BaseCommand):
                 name = "<error>"
             self.stdout.write(f"  - {name} (ID: {getattr(device, 'id', 'n/a')})")
 
-        deleted_count, _ = devices.delete()
-        self.stdout.write(self.style.SUCCESS(f"✓ Deleted {deleted_count} 2FA device(s)."))
+        if getattr(self, "execute", False):
+            deleted_count, _ = devices.delete()
+            self.stdout.write(self.style.SUCCESS(f"✓ Deleted {deleted_count} 2FA device(s)."))
+        else:
+            self.stdout.write(self.style.NOTICE(f"DRY RUN: would delete {device_count} 2FA device(s)."))
 
     def reset_password(self, target_user):
         self.stdout.write("\n--- Step 4: Reset Password ---")
-        random_password = get_random_string(40)
-        target_user.password = make_password(random_password)
-        target_user.save(update_fields=["password"])
-        self.stdout.write(self.style.SUCCESS("✓ Password has been reset to a random value."))
+        if getattr(self, "execute", False):
+            random_password = get_random_string(40)
+            target_user.password = make_password(random_password)
+            target_user.save(update_fields=["password"])
+            self.stdout.write(self.style.SUCCESS("✓ Password has been reset to a random value."))
+        else:
+            self.stdout.write(self.style.NOTICE("DRY RUN: would reset the user's password to a random value."))
 
     def remove_all_active_sessions(self, target_user):
         self.stdout.write("\n--- Step 5: Revoke Active Sessions ---")
@@ -109,8 +123,11 @@ class Command(BaseCommand):
             return
 
         self.stdout.write(f"Found {session_count} active session(s). Revoking...")
-        deleted_count, _ = Session.objects.filter(session_key__in=active_session_keys).delete()
-        self.stdout.write(self.style.SUCCESS(f"✓ Deleted {deleted_count} session(s)."))
+        if getattr(self, "execute", False):
+            deleted_count, _ = Session.objects.filter(session_key__in=active_session_keys).delete()
+            self.stdout.write(self.style.SUCCESS(f"✓ Deleted {deleted_count} session(s)."))
+        else:
+            self.stdout.write(self.style.NOTICE(f"DRY RUN: would delete {session_count} session(s)."))
 
     def send_email(self, target_user, reason):
         self.stdout.write("\n--- Step 6: Send Notification Email ---")
@@ -118,9 +135,11 @@ class Command(BaseCommand):
             form = HtmlPasswordResetForm({"email": target_user.email})
             if not form.is_valid():
                 raise CommandError(self.style.ERROR("❌ Could not prepare password reset email for target user"))
-
-            form.save(from_email=settings.DEFAULT_FROM_EMAIL, request=None, use_https=True)
-            self.stdout.write(self.style.SUCCESS(f"✓ Password reset email sent to {target_user.email}"))
+            if getattr(self, "execute", False):
+                form.save(from_email=settings.DEFAULT_FROM_EMAIL, request=None, use_https=True)
+                self.stdout.write(self.style.SUCCESS(f"✓ Password reset email sent to {target_user.email}"))
+            else:
+                self.stdout.write(self.style.NOTICE(f"DRY RUN: would send password reset email to {target_user.email}"))
         except Exception as e:
             self.stdout.write(self.style.ERROR(f"❌ Failed to send email: {e}"))
             raise
@@ -134,9 +153,10 @@ class Command(BaseCommand):
             self.stdout.write(self.style.NOTICE("=" * 60))
             self.stdout.write(self.style.NOTICE("2FA Device & User Security Reset"))
             self.stdout.write(self.style.NOTICE("=" * 60))
-
             self.check_admin_authentication(admin_username)
             target_user = self.get_target_user(target_email)
+            # store execute flag on self for methods to access
+            self.execute = bool(options.get("execute"))
             self.remove_devices(target_user)
             self.reset_password(target_user)
             self.remove_all_active_sessions(target_user)
