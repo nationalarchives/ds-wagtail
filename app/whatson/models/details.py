@@ -33,6 +33,7 @@ from app.core.models import (
     AccentColourMixin,
     BasePageWithRequiredIntro,
     ContentWarningMixin,
+    HeroImageMixin,
     HeroLayoutMixin,
     HeroStyleMixin,
     LocationSerializer,
@@ -43,6 +44,7 @@ from app.core.serializers import (
     RichTextSerializer,
 )
 from app.core.serializers.partner_logos import PartnerLogoSerializer
+from app.generic_pages.blocks import GeneralPageStreamBlock
 
 from ..blocks import EventPageStreamBlock, ExhibitionPageStreamBlock
 from ..serializers import (
@@ -534,6 +536,26 @@ class EventPage(RequiredHeroImageMixin, ContentWarningMixin, BasePageWithRequire
         "whatson.EventsListingPage",
     ]
     subpage_types = []
+
+
+class EventSupplementaryPage(
+    HeroImageMixin,
+    BasePageWithRequiredIntro,
+):
+    """
+    A page for supplementary content related to an event, e.g. a page about the
+    venue, speakers, or sessions.
+    """
+
+    body = StreamField(GeneralPageStreamBlock(), blank=True, null=True)
+
+    content_panels = (
+        BasePageWithRequiredIntro.content_panels
+        + HeroImageMixin.content_panels
+        + [
+            FieldPanel("body"),
+        ]
+    )
 
 
 class DisplayPage(
