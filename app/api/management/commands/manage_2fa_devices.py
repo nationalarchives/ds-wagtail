@@ -1,6 +1,6 @@
 from django.conf import settings
-from django.contrib.auth.hashers import make_password
 from django.contrib.auth import get_user_model
+from django.contrib.auth.hashers import make_password
 from django.contrib.sessions.models import Session
 from django.core.management.base import BaseCommand, CommandError
 from django.utils import timezone
@@ -8,7 +8,6 @@ from django.utils.crypto import get_random_string
 from django_otp.plugins.otp_totp.models import TOTPDevice
 
 from app.core.forms.auth import HtmlPasswordResetForm
-
 
 User = get_user_model()
 
@@ -21,7 +20,9 @@ class Command(BaseCommand):
             "--target-email", required=True, help="Email of the user to be reset."
         )
         parser.add_argument(
-            "--admin-username", required=True, help="Admin username performing the reset."
+            "--admin-username",
+            required=True,
+            help="Admin username performing the reset.",
         )
         parser.add_argument(
             "--reason",
@@ -37,18 +38,21 @@ class Command(BaseCommand):
             action="store_true",
             help="Perform destructive actions (default: dry-run)",
         )
-        
 
     def check_admin_authentication(self, admin_username):
         self.stdout.write("\n--- Step 1: Admin Authentication ---")
-        admin_user = User.objects.filter(**{User.USERNAME_FIELD: admin_username}).first()
+        admin_user = User.objects.filter(
+            **{User.USERNAME_FIELD: admin_username}
+        ).first()
         if not admin_user:
             raise CommandError(self.style.ERROR("❌ Admin user not found."))
 
         if not admin_user.is_active:
             raise CommandError(self.style.ERROR("❌ Admin user is inactive."))
 
-        if not (admin_user.is_superuser or admin_user.has_perm("wagtailadmin.access_admin")):
+        if not (
+            admin_user.is_superuser or admin_user.has_perm("wagtailadmin.access_admin")
+        ):
             raise CommandError(
                 self.style.ERROR("❌ Admin user does not have Wagtail admin access.")
             )
@@ -60,13 +64,17 @@ class Command(BaseCommand):
         self.stdout.write("\n--- Step 2: Locate Target User ---")
         target_user = User.objects.filter(email__iexact=target_email).first()
         if not target_user:
-            raise CommandError(self.style.ERROR(f"❌ No user found with email: {target_email}"))
+            raise CommandError(
+                self.style.ERROR(f"❌ No user found with email: {target_email}")
+            )
 
         if not target_user.is_active:
             raise CommandError(self.style.ERROR("❌ Target user is inactive."))
 
         self.stdout.write(
-            self.style.SUCCESS(f"✓ Target user found: {target_user.email} (ID: {target_user.pk})")
+            self.style.SUCCESS(
+                f"✓ Target user found: {target_user.email} (ID: {target_user.pk})"
+            )
         )
         return target_user
 
@@ -88,9 +96,15 @@ class Command(BaseCommand):
 
         if getattr(self, "execute", False):
             deleted_count, _ = devices.delete()
-            self.stdout.write(self.style.SUCCESS(f"✓ Deleted {deleted_count} 2FA device(s)."))
+            self.stdout.write(
+                self.style.SUCCESS(f"✓ Deleted {deleted_count} 2FA device(s).")
+            )
         else:
-            self.stdout.write(self.style.NOTICE(f"DRY RUN: would delete {device_count} 2FA device(s)."))
+            self.stdout.write(
+                self.style.NOTICE(
+                    f"DRY RUN: would delete {device_count} 2FA device(s)."
+                )
+            )
 
     def reset_password(self, target_user):
         self.stdout.write("\n--- Step 4: Reset Password ---")
@@ -98,9 +112,15 @@ class Command(BaseCommand):
             random_password = get_random_string(40)
             target_user.password = make_password(random_password)
             target_user.save(update_fields=["password"])
-            self.stdout.write(self.style.SUCCESS("✓ Password has been reset to a random value."))
+            self.stdout.write(
+                self.style.SUCCESS("✓ Password has been reset to a random value.")
+            )
         else:
-            self.stdout.write(self.style.NOTICE("DRY RUN: would reset the user's password to a random value."))
+            self.stdout.write(
+                self.style.NOTICE(
+                    "DRY RUN: would reset the user's password to a random value."
+                )
+            )
 
     def remove_all_active_sessions(self, target_user):
         self.stdout.write("\n--- Step 5: Revoke Active Sessions ---")
@@ -109,7 +129,11 @@ class Command(BaseCommand):
             try:
                 data = session.get_decoded()
             except Exception as e:
-                self.stdout.write(self.style.WARNING(f"⚠ Could not decode session {session.session_key}: {e}"))
+                self.stdout.write(
+                    self.style.WARNING(
+                        f"⚠ Could not decode session {session.session_key}: {e}"
+                    )
+                )
                 continue
 
             if str(data.get("_auth_user_id")) == str(target_user.pk):
@@ -122,22 +146,42 @@ class Command(BaseCommand):
 
         self.stdout.write(f"Found {session_count} active session(s). Revoking...")
         if getattr(self, "execute", False):
-            deleted_count, _ = Session.objects.filter(session_key__in=active_session_keys).delete()
-            self.stdout.write(self.style.SUCCESS(f"✓ Deleted {deleted_count} session(s)."))
+            deleted_count, _ = Session.objects.filter(
+                session_key__in=active_session_keys
+            ).delete()
+            self.stdout.write(
+                self.style.SUCCESS(f"✓ Deleted {deleted_count} session(s).")
+            )
         else:
-            self.stdout.write(self.style.NOTICE(f"DRY RUN: would delete {session_count} session(s)."))
+            self.stdout.write(
+                self.style.NOTICE(f"DRY RUN: would delete {session_count} session(s).")
+            )
 
     def send_email(self, target_user, reason):
         self.stdout.write("\n--- Step 6: Send Notification Email ---")
         try:
             form = HtmlPasswordResetForm({"email": target_user.email})
             if not form.is_valid():
-                raise CommandError(self.style.ERROR("❌ Could not prepare password reset email for target user"))
+                raise CommandError(
+                    self.style.ERROR(
+                        "❌ Could not prepare password reset email for target user"
+                    )
+                )
             if getattr(self, "execute", False):
-                form.save(from_email=settings.DEFAULT_FROM_EMAIL, request=None, use_https=True)
-                self.stdout.write(self.style.SUCCESS(f"✓ Password reset email sent to {target_user.email}"))
+                form.save(
+                    from_email=settings.DEFAULT_FROM_EMAIL, request=None, use_https=True
+                )
+                self.stdout.write(
+                    self.style.SUCCESS(
+                        f"✓ Password reset email sent to {target_user.email}"
+                    )
+                )
             else:
-                self.stdout.write(self.style.NOTICE(f"DRY RUN: would send password reset email to {target_user.email}"))
+                self.stdout.write(
+                    self.style.NOTICE(
+                        f"DRY RUN: would send password reset email to {target_user.email}"
+                    )
+                )
         except Exception as e:
             self.stdout.write(self.style.ERROR(f"❌ Failed to send email: {e}"))
             raise
