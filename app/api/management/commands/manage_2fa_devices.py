@@ -61,7 +61,9 @@ class Command(BaseCommand):
 
 
     # send them an email
-    def send_email(self, target_user):
+    def send_email(self, target_user, reason):
+
+#TODO: make this email nice to read and include reason
         form = HtmlPasswordResetForm({"email": target_user.email})
         if not form.is_valid():
             raise CommandError("Could not prepare password reset email for target user")
@@ -78,5 +80,10 @@ class Command(BaseCommand):
         admin_username = options["admin_username"].strip()
         reason = options["reason"]
 
-        
+        if self.check_admin_authentication(admin_username):
+            target_user = self.get_target_user(target_email)
+            self.remove_devices(target_user)
+            self.reset_password(target_user)
+            self.remove_all_active_sessions(target_user)
+            self.send_email(target_user)
 
