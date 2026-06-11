@@ -11,22 +11,33 @@ from app.core.forms.auth import HtmlPasswordResetForm
 
 
 class Command(BaseCommand):
-    help = "Manage 2FA devices." #TODO make better
+    help = "Manage 2FA devices."  # TODO make better
 
     def add_arguments(self, parser):
-        parser.add_argument("--target-email", required=True, help="Email of the user to be reset.")
-        parser.add_argument("--admin-username", required=True, help="Admin/username performing reset.")
-        parser.add_argument("--reason", default="Your 2FA devices have been removed from your account. Please reset your password. /n Note: Any active sessions you may have had have also been deleted.",  help="Optional reason to include in the notification email")
+        parser.add_argument(
+            "--target-email", required=True, help="Email of the user to be reset."
+        )
+        parser.add_argument(
+            "--admin-username", required=True, help="Admin/username performing reset."
+        )
+        parser.add_argument(
+            "--reason",
+            default="Your 2FA devices have been removed from your account. Please reset your password. /n Note: Any active sessions you may have had have also been deleted.",
+            help="Optional reason to include in the notification email",
+        )
 
-    #be authenticated with an admin account
+    # be authenticated with an admin account
     def check_admin_authentication(self, admin_username):
-        admin_user = User.objects.filter(**{User.USERNAME_FIELD: admin_username}).first()
+        admin_user = User.objects.filter(
+            **{User.USERNAME_FIELD: admin_username}
+        ).first()
         if not admin_user:
             raise CommandError("Admin authentication failed.")
 
-        if not admin_user.is_active or not (admin_user.is_superuser or admin_user.has_perm("wagtailadmin.access_admin")):
+        if not admin_user.is_active or not (
+            admin_user.is_superuser or admin_user.has_perm("wagtailadmin.access_admin")
+        ):
             raise CommandError("Authenticated user does not have Wagtail admin access.")
-
 
     def get_target_user(self, target_email):
         target_user = User.objects.filter(email=target_email).first()
@@ -43,13 +54,11 @@ class Command(BaseCommand):
         devices = Device.objects.filter(user=target_user)
         devices.delete()
 
-
     # reset the password
     def reset_password(self, target_user):
         random_password = get_random_string(40)
         target_user.password = make_password(random_password)
         target_user.save(update_fields=["password"])
-
 
     # remove all active sessions for that user
     def remove_all_active_sessions(self, target_user):
@@ -59,12 +68,11 @@ class Command(BaseCommand):
             if str(data.get("_auth_user_id")) == str(target_user.pk):
                 active_session_keys.append(session.session_key)
 
-
     # send them an email
     def send_email(self, target_user, reason):
 
-#TODO: make this email nice to read and include reason
-        form = HtmlPasswordResetForm({"email": target_user.email})
+        # TODO: make this email nice to read and include reason
+        form = HtmlPasswordResetForm({"email": target_user.email}, {"reason": reason})
         if not form.is_valid():
             raise CommandError("Could not prepare password reset email for target user")
 
@@ -73,7 +81,6 @@ class Command(BaseCommand):
             request=None,
             use_https=True,
         )
-
 
     def handle(self, *args, **options):
         target_email = options["target_email"].strip().lower()
@@ -85,5 +92,4 @@ class Command(BaseCommand):
             self.remove_devices(target_user)
             self.reset_password(target_user)
             self.remove_all_active_sessions(target_user)
-            self.send_email(target_user)
-
+            self.send_email(target_user, reason)
