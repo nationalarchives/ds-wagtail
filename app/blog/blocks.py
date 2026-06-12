@@ -59,3 +59,4 @@ class BlogPostPageStreamBlock(SectionContentBlock):
 
     content_section = ContentSectionBlock()
     sub_heading = None
+    sub_sub_heading = None
