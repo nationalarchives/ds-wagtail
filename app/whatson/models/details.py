@@ -439,6 +439,7 @@ class EventPage(RequiredHeroImageMixin, ContentWarningMixin, BasePageWithRequire
             APIField("speakers", serializer=SpeakerSerializer(many=True)),
             APIField("sessions", serializer=SessionSerializer(many=True)),
             APIField("series", serializer=DefaultPageSerializer(many=True)),
+            APIField("supplementary_page", serializer=DefaultPageSerializer()),
         ]
     )
 
@@ -484,6 +485,13 @@ class EventPage(RequiredHeroImageMixin, ContentWarningMixin, BasePageWithRequire
             session.sold_out if session.start >= timezone.now() else True
             for session in self.sessions.all()
         )
+
+    @property
+    def supplementary_page(self):
+        """
+        Returns the supplementary page for the event, if it exists.
+        """
+        return self.get_children().type(EventSupplementaryPage).first()
 
     def serializable_data(self):
         # Keep aggregated field values out of revision content
