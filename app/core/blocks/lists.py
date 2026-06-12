@@ -42,7 +42,7 @@ class DescriptionListSettingsBlock(blocks.StructBlock):
     ]
 
     COLUMN_BALANCING_CHOICES = [
-        ("none", "None"),
+        ("none", "Auto (recommended)"),
         ("even", "Even"),
         ("left-weighted", "Left-weighted"),
         ("right-weighted", "Right-weighted"),
