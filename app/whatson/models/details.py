@@ -561,6 +561,7 @@ class EventSupplementaryPage(
         "whatson.EventPage",
     ]
     subpage_types = []
+    max_count_per_parent = 1
 
     api_fields = (
         BasePageWithRequiredIntro.api_fields
