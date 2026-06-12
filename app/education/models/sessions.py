@@ -130,7 +130,6 @@ class SessionLocation(Orderable):
         null=True,
         max_length=255,
         verbose_name="Address line 2",
-        help_text="Required only when location type is Custom venue.",
     )
 
     postcode = models.CharField(
@@ -286,7 +285,7 @@ class EducationSessionPage(
     )
 
     description = StreamField(
-        [("description", SessionDescriptionBlock())],
+        [("content_section", SessionDescriptionBlock())],
         verbose_name="description",
         blank=True,
         null=True,
@@ -297,8 +296,8 @@ class EducationSessionPage(
         features=settings.EXPANDED_RICH_TEXT_FEATURES,
         verbose_name="curriculum connection description",
         help_text="A description of how the session connects to the curriculum. This is optional but can help teachers understand the relevance of the session to their teaching.",
-        blank=True,
         null=True,
+        blank=True,
     )
 
     highlights = StreamField(
@@ -311,7 +310,7 @@ class EducationSessionPage(
     def clean(self):
         super().clean()
 
-        if self.price is not None and not self.price_detail:
+        if self.price and not self.price_detail:
             raise ValidationError(
                 {
                     "price_detail": "Price detail is required when a session price is specified."
@@ -377,6 +376,12 @@ class EducationSessionPage(
         + BasePageWithRequiredIntro.promote_panels
         + EducationTaxonomyMixin.taxonomy_promote_panels()
     )
+
+    default_api_fields = BasePageWithRequiredIntro.default_api_fields + [
+        APIField("key_stages", serializer=KeyStageSerializer(many=True)),
+        APIField("time_periods", serializer=TimePeriodSerializer(many=True)),
+        APIField("themes", serializer=ThemeSerializer(many=True)),
+    ]
 
     api_fields = (
         BasePageWithRequiredIntro.api_fields
