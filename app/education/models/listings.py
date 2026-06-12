@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.functional import cached_property
 from wagtail.admin.panels import (
     FieldPanel,
     MultiFieldPanel,
@@ -8,14 +9,19 @@ from wagtail.api import APIField
 
 from app.core.models import (
     BasePageWithRequiredIntro,
+    RequiredHeroImageMixin,
 )
 from app.core.serializers import DefaultPageSerializer
 
 
-class TeachingResourcesListingPage(BasePageWithRequiredIntro):
+class TeachingResourcesListingPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
     """
     A page for displaying education/teaching resources.
     """
+
+    @cached_property
+    def type_label(self) -> str:
+        return "Education"
 
     parent_page_types = [
         "education.EducationPage",
@@ -44,15 +50,19 @@ class TeachingResourcesListingPage(BasePageWithRequiredIntro):
         max_length=160,
     )
 
-    content_panels = BasePageWithRequiredIntro.content_panels + [
-        MultiFieldPanel(
-            [
-                PageChooserPanel("featured_teaching_resource"),
-                FieldPanel("featured_teaching_resource_teaser_override"),
-            ],
-            heading="Featured teaching resource",
-        ),
-    ]
+    content_panels = (
+        BasePageWithRequiredIntro.content_panels
+        + RequiredHeroImageMixin.content_panels
+        + [
+            MultiFieldPanel(
+                [
+                    PageChooserPanel("featured_teaching_resource"),
+                    FieldPanel("featured_teaching_resource_teaser_override"),
+                ],
+                heading="Featured teaching resource",
+            ),
+        ]
+    )
 
     api_fields = BasePageWithRequiredIntro.api_fields + [
         APIField("featured_teaching_resource", serializer=DefaultPageSerializer()),
@@ -67,6 +77,10 @@ class EducationSessionsListingPage(BasePageWithRequiredIntro):
     """
     A page for displaying education sessions.
     """
+
+    @cached_property
+    def type_label(self) -> str:
+        return "Education"
 
     parent_page_types = [
         "education.EducationPage",

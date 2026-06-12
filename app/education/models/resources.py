@@ -11,9 +11,6 @@ from wagtail.api import APIField
 from wagtail.fields import RichTextField, StreamField
 from wagtail.models import Orderable
 
-from app.core.blocks.paragraph import APIRichTextBlock
-from app.core.blocks.promoted_links import FeaturedExternalLinkBlock, FeaturedPageBlock
-from app.core.blocks.section import SubHeadingBlock
 from app.core.models import (
     BasePageWithRequiredIntro,
     ContentWarningMixin,
@@ -26,6 +23,10 @@ from ..blocks import (
     SourceFeaturedLinkBlock,
     SourceMediaBlock,
     SourceQuestionBlock,
+    TeachersNotesBlock,
+    TeachingResourceBackgroundInformationBlock,
+    TeachingResourceExtensionActivitiesBlock,
+    TeachingResourceFurtherInformationBlock,
 )
 from ..serializers import (
     CurriculumConnectionSerializer,
@@ -148,8 +149,8 @@ class CurriculumConnection(Orderable):
         features=["bold", "italic", "link", "ul"],
         verbose_name="curriculum connection description",
         help_text="Add the curriculum connection description.",
-        blank=True,
-        null=True,
+        blank=False,
+        null=False,
     )
 
     panels = [
@@ -168,7 +169,7 @@ class TeachingResourcePage(
     """A page to display a teaching resource"""
 
     @cached_property
-    def type_label(cls) -> str:
+    def type_label(self) -> str:
         return "Teaching resource"
 
     parent_page_types = [
@@ -196,24 +197,16 @@ class TeachingResourcePage(
         null=True,
     )
 
-    teachers_notes = RichTextField(
-        features=settings.EXPANDED_RICH_TEXT_FEATURES,
+    teachers_notes = StreamField(
+        TeachersNotesBlock(),
         verbose_name="teachers notes",
         help_text="A general overview of what the resource contains and how it can be used.",
-        blank=True,
-        null=True,
+        blank=False,
+        null=False,
     )
 
     extension_activities = StreamField(
-        [
-            (
-                "paragraph",
-                APIRichTextBlock(features=settings.EXPANDED_RICH_TEXT_FEATURES),
-            ),
-            ("sub_heading", SubHeadingBlock()),
-            ("featured_page", FeaturedPageBlock()),
-            ("featured_external_link", FeaturedExternalLinkBlock()),
-        ],
+        TeachingResourceExtensionActivitiesBlock(),
         verbose_name="extension activities",
         help_text="Optional section where editors can add extra activities for teachers to try with their pupils.",
         blank=True,
@@ -221,13 +214,7 @@ class TeachingResourcePage(
     )
 
     background_information = StreamField(
-        [
-            (
-                "paragraph",
-                APIRichTextBlock(features=settings.EXPANDED_RICH_TEXT_FEATURES),
-            ),
-            ("sub_heading", SubHeadingBlock()),
-        ],
+        TeachingResourceBackgroundInformationBlock(),
         verbose_name="background information",
         help_text="Section providing historical context to the teaching resource.",
         blank=True,
@@ -243,15 +230,7 @@ class TeachingResourcePage(
     )
 
     further_information = StreamField(
-        [
-            (
-                "paragraph",
-                APIRichTextBlock(features=settings.EXPANDED_RICH_TEXT_FEATURES),
-            ),
-            ("sub_heading", SubHeadingBlock()),
-            ("featured_external_link", FeaturedExternalLinkBlock()),
-            ("featured_page", FeaturedPageBlock()),
-        ],
+        TeachingResourceFurtherInformationBlock(),
         verbose_name="further information",
         help_text="Section providing links to other useful information.",
         blank=True,
@@ -302,6 +281,12 @@ class TeachingResourcePage(
         + EducationTaxonomyMixin.taxonomy_promote_panels()
     )
 
+    default_api_fields = BasePageWithRequiredIntro.default_api_fields + [
+        APIField("key_stages", serializer=KeyStageSerializer(many=True)),
+        APIField("time_periods", serializer=TimePeriodSerializer(many=True)),
+        APIField("themes", serializer=ThemeSerializer(many=True)),
+    ]
+
     api_fields = (
         BasePageWithRequiredIntro.api_fields
         + RequiredHeroImageMixin.api_fields
@@ -311,7 +296,6 @@ class TeachingResourcePage(
             PublishedDateMixin.get_is_newly_published_apifield(),
         ]
         + [
-            APIField("hero_image"),
             APIField("enquiry_question"),
             # TODO: primary tags?
             # APIField("key_stage", serializer=KeyStageSerializer()),

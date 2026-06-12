@@ -2,8 +2,8 @@ from django.conf import settings
 from wagtail import blocks
 
 from app.core.blocks import (
-    APIImageChooserBlock,
     APIRichTextBlock,
+    ContentImageBlock,
     FeaturedExternalLinkBlock,
     FeaturedPageBlock,
     InsetTextBlock,
@@ -12,39 +12,16 @@ from app.core.blocks import (
     QuoteBlock,
     YouTubeBlock,
 )
+from app.core.blocks.section import SubHeadingBlock
 from app.media.blocks import MediaBlock
 
 # Resources - Source
 
 
-class SourceImageWithCaptionBlock(blocks.StructBlock):
-    image = APIImageChooserBlock(
-        rendition_size="max-900x900",
-        help_text="An image for the source.",
-    )
-    caption = APIRichTextBlock(features=["bold", "italic"], required=False)
-
-    class Meta:
-        group = "Video, audio and downloads"
-
-
-class SourceMediaWithCaptionBlock(MediaBlock):
-    title = None
-    caption = APIRichTextBlock(features=["bold", "italic"], required=False)
-
-
-class SourceYouTubeWithCaptionBlock(MediaBlock):
-    youtube = YouTubeBlock()
-    caption = APIRichTextBlock(features=["bold", "italic"], required=False)
-
-    class Meta:
-        label = "YouTube"
-
-
 class SourceMediaBlock(blocks.StreamBlock):
-    image = SourceImageWithCaptionBlock()
-    video = SourceMediaWithCaptionBlock()
-    youtube = SourceYouTubeWithCaptionBlock()
+    image = ContentImageBlock()
+    media = MediaBlock()
+    youtube_video = YouTubeBlock()
 
     class Meta:
         label = "Source media"
@@ -80,8 +57,33 @@ class SourceQuestionBlock(blocks.StreamBlock):
         label = "Source question"
 
 
+class TeachersNotesBlock(blocks.StreamBlock):
+    paragraph = ParagraphBlock()
+    sub_heading = SubHeadingBlock()
+    inset_text = InsetTextBlock()
+
+
+class TeachingResourceExtensionActivitiesBlock(blocks.StreamBlock):
+    paragraph = ParagraphBlock()
+    sub_heading = SubHeadingBlock()
+    featured_page = FeaturedPageBlock()
+    featured_external_link = FeaturedExternalLinkBlock()
+
+
+class TeachingResourceBackgroundInformationBlock(blocks.StreamBlock):
+    paragraph = ParagraphBlock()
+    sub_heading = SubHeadingBlock()
+
+
+class TeachingResourceFurtherInformationBlock(blocks.StreamBlock):
+    paragraph = ParagraphBlock()
+    sub_heading = SubHeadingBlock()
+    featured_external_link = FeaturedExternalLinkBlock()
+    featured_page = FeaturedPageBlock()
+
+
 class SectionContentBlock(blocks.StreamBlock):
-    description = ParagraphBlock()
+    paragraph = ParagraphBlock()
     partner_logo = PartnerLogoChooserBlock()
     quote = QuoteBlock()
     inset_text = InsetTextBlock()
