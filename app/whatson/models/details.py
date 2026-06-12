@@ -535,7 +535,7 @@ class EventPage(RequiredHeroImageMixin, ContentWarningMixin, BasePageWithRequire
     parent_page_types = [
         "whatson.EventsListingPage",
     ]
-    subpage_types = []
+    subpage_types = ["whatson.EventSupplementaryPage"]
 
 
 class EventSupplementaryPage(
@@ -556,6 +556,23 @@ class EventSupplementaryPage(
             FieldPanel("body"),
         ]
     )
+
+    parent_page_types = [
+        "whatson.EventPage",
+    ]
+    subpage_types = []
+
+    api_fields = (
+        BasePageWithRequiredIntro.api_fields
+        + HeroImageMixin.api_fields
+        + [
+            APIField("body"),
+        ]
+    )
+
+    class Meta:
+        verbose_name = "event supplementary page"
+        verbose_name_plural = "event supplementary pages"
 
 
 class DisplayPage(
