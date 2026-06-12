@@ -16,6 +16,7 @@ from app.core.blocks import (
     PartnerLogoListBlock,
     QuoteBlock,
     SubHeadingBlock,
+    SubSubHeadingBlock,
     YouTubeBlock,
 )
 from app.media.blocks import MediaBlock
@@ -37,6 +38,7 @@ class SectionContentBlock(blocks.StreamBlock):
     quote = QuoteBlock()
     record_links = RecordLinksBlock()
     sub_heading = SubHeadingBlock()
+    sub_sub_heading = SubSubHeadingBlock()
     table = ContentTableBlock()
     youtube_video = YouTubeBlock()
 
