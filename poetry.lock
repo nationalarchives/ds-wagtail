@@ -1630,18 +1630,18 @@ wagtail = "*"
 
 [[package]]
 name = "wagtail-headless-preview"
-version = "0.8.0"
+version = "0.9.0"
 description = "Enhance Wagtail previews in headless setups."
 optional = false
-python-versions = ">=3.8"
+python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "wagtail_headless_preview-0.8.0-py3-none-any.whl", hash = "sha256:91b305c36573490856e212f9e5645ada81f72ad37f1bb00e6feddc5537252358"},
-    {file = "wagtail_headless_preview-0.8.0.tar.gz", hash = "sha256:581d8419cd1ef1f7de88235445e9695e5591d46259283d56bfe814e8620fa1d5"},
+    {file = "wagtail_headless_preview-0.9.0-py3-none-any.whl", hash = "sha256:9047701345323d77938c07685279770646c92545bed851c6608f026ac645f16d"},
+    {file = "wagtail_headless_preview-0.9.0.tar.gz", hash = "sha256:dbabbb614bd1689f048738c46034c557a3ee426e0ef80feb4831bcfc93a24e15"},
 ]
 
 [package.dependencies]
-Wagtail = ">=4.1"
+Wagtail = ">=7.0"
 
 [package.extras]
 testing = ["coverage[toml] (>=7.0,<8.0)", "django-cors-headers", "tox (>=4)"]
@@ -1708,4 +1708,4 @@ wand = ["Wand (>=0.6,<1.0)"]
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.14"
-content-hash = "b8ea5ce1468e768d0fb78e64f76446fbaf2e3a3f313687792374a8abefa6b900"
+content-hash = "df9ac8daafc0ac84598e923946f6e0b2ad033f0abdd57d054536c15e2e2ce55d"
