@@ -2,7 +2,7 @@
 
 ## Load local DB from an SQL file (No AWS access needed)
 
-Without AWS access you can load your db locally using a dump file and the following command: 
+Without AWS access you can load your db locally using a dump and the following command: 
 
 `./dev/local-db-restore dumps/[my-db-file].sql`
 
