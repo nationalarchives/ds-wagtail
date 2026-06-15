@@ -5,9 +5,9 @@ from .client import CIIMClient
 
 class RecordSerializer(serializers.Serializer):
     def to_representation(self, instance):
-        params = {
+        default_params = {
             "id": instance,
         }
-        client = CIIMClient(params=params)
+        client = CIIMClient(default_params=default_params)
 
         return client.get_serialized_record()
