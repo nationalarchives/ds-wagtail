@@ -20,14 +20,9 @@ class Command(BaseCommand):
             "--target-email", required=True, help="Email of the user to be reset."
         )
         parser.add_argument(
-            "--admin-username",
-            required=True,
-            help="Admin username performing the reset.",
-        )
-        parser.add_argument(
             "--reason",
             default=(
-                "Your 2FA devices have been removed from your account. Please reset your password.\n\n"
+                "Your Two-Factor Authentication (2FA) devices have been removed from your account. Please reset your password.\n\n"
                 "Note: Any active sessions you may have had have also been deleted."
             ),
             help="Optional reason to include in the notification email",
@@ -38,27 +33,6 @@ class Command(BaseCommand):
             action="store_true",
             help="Perform destructive actions (default: dry-run)",
         )
-
-    def check_admin_authentication(self, admin_username):
-        self.stdout.write("\n--- Step 1: Admin Authentication ---")
-        admin_user = User.objects.filter(
-            **{User.USERNAME_FIELD: admin_username}
-        ).first()
-        if not admin_user:
-            raise CommandError(self.style.ERROR("❌ Admin user not found."))
-
-        if not admin_user.is_active:
-            raise CommandError(self.style.ERROR("❌ Admin user is inactive."))
-
-        if not (
-            admin_user.is_superuser or admin_user.has_perm("wagtailadmin.access_admin")
-        ):
-            raise CommandError(
-                self.style.ERROR("❌ Admin user does not have Wagtail admin access.")
-            )
-
-        self.stdout.write(self.style.SUCCESS(f"✓ Admin validated: {admin_user.email}"))
-        return admin_user
 
     def get_target_user(self, target_email):
         self.stdout.write("\n--- Step 2: Locate Target User ---")
@@ -182,20 +156,24 @@ class Command(BaseCommand):
                         f"DRY RUN: would send password reset email to {target_user.email}"
                     )
                 )
+                self.stdout.write("HTML body:")
+                self.stdout.write(rendered["html"])
         except Exception as e:
             self.stdout.write(self.style.ERROR(f"❌ Failed to send email: {e}"))
             raise
 
     def handle(self, *args, **options):
         target_email = options["target_email"].strip().lower()
-        admin_username = options["admin_username"].strip()
         reason = options["reason"]
 
         try:
             self.stdout.write(self.style.NOTICE("=" * 60))
-            self.stdout.write(self.style.NOTICE("2FA Device & User Security Reset"))
+            self.stdout.write(
+                self.style.NOTICE(
+                    "Two-Factor Authentication (2FA) Device & User Security Reset"
+                )
+            )
             self.stdout.write(self.style.NOTICE("=" * 60))
-            self.check_admin_authentication(admin_username)
             target_user = self.get_target_user(target_email)
             # store execute flag on self for methods to access
             self.execute = bool(options.get("execute"))
