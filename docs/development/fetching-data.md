@@ -2,7 +2,7 @@
 
 ## Load local DB from an SQL file (No AWS access needed)
 
-Without AWS access you can load your db locally using a dump and the following command: 
+Without AWS access you can load your db locally using a dump and the following command:
 
 `./dev/local-db-restore dumps/[my-db-file].sql`
 
@@ -10,8 +10,6 @@ Without AWS access you can load your db locally using a dump and the following c
 
 - any Django users you created locally before running the command will no longer exist
 - a superuser whose credentials are defined in `docker-compose.yml` will be created
-
-
 
 ## Download from development with AWS
 
