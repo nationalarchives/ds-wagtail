@@ -26,8 +26,8 @@ class CIIMClient(SimpleJsonApiClient):
             )
         if default_params is None:
             default_params = {}
-        super().__init__(api_url, default_params=default_params)
-        self.add_default_parameter("filter", "@datatype.base:record")
+        default_params.update({"filter": "@datatype.base:record"})
+        super().__init__(api_url, default_params=default_params, default_headers={})
 
     def get(self, path: str = "/", headers: dict = None) -> dict:
         try:
