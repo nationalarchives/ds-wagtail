@@ -1,7 +1,5 @@
 # Fetching data
 
-Developers from external agencies may not be able to register for a platform.sh account. In this scenario, ask a developer from The National Archives to share their API key.
-
 ## Load local DB from an SQL file (No AWS access needed)
 
 Without AWS access you can load your db locally using a dump file and the following command: 
