@@ -2,9 +2,9 @@ import logging
 
 from django.conf import settings
 from django.core.cache import cache
+from django.core.exceptions import ImproperlyConfigured
 from sentry_sdk import capture_message
-
-from app.core.json_api_client import JSONAPIClient
+from tna_utilities.api import SimpleJsonApiClient
 
 logger = logging.getLogger(__name__)
 
@@ -13,16 +13,21 @@ DEFAULT_SUMMARY_TITLE = "[unknown]"
 DEFAULT_IAID = None
 
 
-class CIIMClient(JSONAPIClient):
+class CIIMClient(SimpleJsonApiClient):
     """
     Client for interacting with the CIIM API.
     """
 
-    def __init__(self, api_url: str = settings.ROSETTA_API_URL, params: dict = None):
-        if params is None:
-            params = {}
-        super().__init__(api_url, params=params)
-        self.add_parameter("filter", "@datatype.base:record")
+    def __init__(self, api_url: str | None = None, default_params: dict = None):
+        api_url = api_url or settings.ROSETTA_API_URL
+        if not api_url:
+            raise ImproperlyConfigured(
+                "ROSETTA_API_URL environment variable must be set and cannot be empty."
+            )
+        if default_params is None:
+            default_params = {}
+        super().__init__(api_url, default_params=default_params)
+        self.add_default_parameter("filter", "@datatype.base:record")
 
     def get(self, path: str = "/", headers: dict = None) -> dict:
         try:
