@@ -35,7 +35,6 @@ class Command(BaseCommand):
         )
 
     def get_target_user(self, target_email):
-        self.stdout.write("\n--- Step 2: Locate Target User ---")
         target_user = User.objects.filter(email__iexact=target_email).first()
         if not target_user:
             raise CommandError(
@@ -53,7 +52,7 @@ class Command(BaseCommand):
         return target_user
 
     def remove_devices(self, target_user):
-        self.stdout.write("\n--- Step 3: Remove 2FA Devices ---")
+        self.stdout.write("\n--- Step 2: Remove 2FA Devices ---")
         devices = TOTPDevice.objects.filter(user=target_user)
         device_count = devices.count()
         if device_count == 0:
@@ -81,7 +80,7 @@ class Command(BaseCommand):
             )
 
     def reset_password(self, target_user):
-        self.stdout.write("\n--- Step 4: Reset Password ---")
+        self.stdout.write("\n--- Step 3: Reset Password ---")
         if getattr(self, "execute", False):
             random_password = get_random_string(40)
             target_user.set_password(random_password)
@@ -97,7 +96,7 @@ class Command(BaseCommand):
             )
 
     def remove_all_active_sessions(self, target_user):
-        self.stdout.write("\n--- Step 5: Revoke Active Sessions ---")
+        self.stdout.write("\n--- Step 4: Revoke Active Sessions ---")
         active_session_keys = []
         for session in Session.objects.filter(expire_date__gte=timezone.now()).iterator():
             try:
@@ -132,7 +131,7 @@ class Command(BaseCommand):
             )
 
     def send_email(self, target_user, reason):
-        self.stdout.write("\n--- Step 6: Send Notification Email ---")
+        self.stdout.write("\n--- Step 5: Send Notification Email ---")
         try:
             form = HtmlPasswordResetForm({"email": target_user.email})
             if not form.is_valid():
@@ -175,7 +174,7 @@ class Command(BaseCommand):
             )
             self.stdout.write(self.style.NOTICE("=" * 60))
             target_user = self.get_target_user(target_email)
-            # store execute flag on self for methods to access
+
             self.execute = bool(options.get("execute"))
             self.remove_devices(target_user)
             self.reset_password(target_user)
