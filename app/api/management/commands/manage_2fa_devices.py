@@ -99,7 +99,7 @@ class Command(BaseCommand):
     def remove_all_active_sessions(self, target_user):
         self.stdout.write("\n--- Step 5: Revoke Active Sessions ---")
         active_session_keys = []
-        for session in Session.objects.filter(expire_date__gte=timezone.now()):
+        for session in Session.objects.filter(expire_date__gte=timezone.now()).iterator():
             try:
                 data = session.get_decoded()
             except Exception as e:
