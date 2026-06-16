@@ -3,12 +3,13 @@ from wagtail import blocks
 
 from app.core.blocks import (
     APIRichTextBlock,
+    ContactBlock,
     ContentImageBlock,
     FeaturedExternalLinkBlock,
     FeaturedPageBlock,
     InsetTextBlock,
     ParagraphBlock,
-    PartnerLogoChooserBlock,
+    PartnerLogoListBlock,
     QuoteBlock,
     YouTubeBlock,
 )
@@ -84,7 +85,10 @@ class TeachingResourceFurtherInformationBlock(blocks.StreamBlock):
 
 class SectionContentBlock(blocks.StreamBlock):
     paragraph = ParagraphBlock()
-    partner_logo = PartnerLogoChooserBlock()
+    partner_logos = PartnerLogoListBlock()
+    contact = ContactBlock()
+    featured_page = FeaturedPageBlock()
+    featured_external_link = FeaturedExternalLinkBlock()
     quote = QuoteBlock()
     inset_text = InsetTextBlock()
 
