@@ -172,7 +172,7 @@ class Command(BaseCommand):
                     encoding="utf-8",
                 ):
                     merged = {**(context or {}), **extra}
-                    subject = "The National Archives: Password Reset"
+                    subject = "The National Archives: Password Reset (Two-Factor Authentication)"
                     plain = loader.render_to_string(email_template_name, merged)
                     self.stdout.write(
                         self.style.NOTICE(f"DRY RUN: Email to {to_email}")
