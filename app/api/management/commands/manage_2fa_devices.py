@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import make_password
 from django.contrib.sessions.models import Session
 from django.core.management.base import BaseCommand, CommandError
+from django.template import loader
 from django.utils import timezone
 from django.utils.crypto import get_random_string
 from django_otp.plugins.otp_totp.models import TOTPDevice
@@ -21,11 +22,8 @@ class Command(BaseCommand):
         )
         parser.add_argument(
             "--reason",
-            default=(
-                "Your Two-Factor Authentication (2FA) devices have been removed from your account. Please reset your password.\n\n"
-                "Note: Any active sessions you may have had have also been deleted."
-            ),
-            help="Optional reason to include in the notification email",
+            default="",
+            help="Optional additional reason to include in the notification email",
         )
         parser.set_defaults(execute=False)
         parser.add_argument(
@@ -35,6 +33,7 @@ class Command(BaseCommand):
         )
 
     def get_target_user(self, target_email):
+        self.stdout.write("\n--- Step 1: Locate Target User ---")
         target_user = User.objects.filter(email__iexact=target_email).first()
         if not target_user:
             raise CommandError(
@@ -83,7 +82,7 @@ class Command(BaseCommand):
         self.stdout.write("\n--- Step 3: Reset Password ---")
         if getattr(self, "execute", False):
             random_password = get_random_string(40)
-            target_user.set_password(random_password)
+            target_user.password = make_password(random_password)
             target_user.save(update_fields=["password"])
             self.stdout.write(
                 self.style.SUCCESS("✓ Password has been reset to a random value.")
@@ -98,7 +97,7 @@ class Command(BaseCommand):
     def remove_all_active_sessions(self, target_user):
         self.stdout.write("\n--- Step 4: Revoke Active Sessions ---")
         active_session_keys = []
-        for session in Session.objects.filter(expire_date__gte=timezone.now()).iterator():
+        for session in Session.objects.filter(expire_date__gte=timezone.now()):
             try:
                 data = session.get_decoded()
             except Exception as e:
@@ -134,15 +133,27 @@ class Command(BaseCommand):
         self.stdout.write("\n--- Step 5: Send Notification Email ---")
         try:
             form = HtmlPasswordResetForm({"email": target_user.email})
+            form.email_template_name = (
+                "wagtailadmin/account/password_reset/email_plain_2fa.txt"
+            )
+            form.html_email_template_name = (
+                "wagtailadmin/account/password_reset/password_reset_email_2fa.html"
+            )
             if not form.is_valid():
                 raise CommandError(
                     self.style.ERROR(
                         "❌ Could not prepare password reset email for target user"
                     )
                 )
+
+            extra = {"reason": reason} if reason else {}
+
             if getattr(self, "execute", False):
                 form.save(
-                    from_email=settings.DEFAULT_FROM_EMAIL, request=None, use_https=True
+                    from_email=settings.DEFAULT_FROM_EMAIL,
+                    request=None,
+                    use_https=True,
+                    extra_email_context=extra,
                 )
                 self.stdout.write(
                     self.style.SUCCESS(
@@ -150,13 +161,48 @@ class Command(BaseCommand):
                     )
                 )
             else:
+                # dry-run: render templates and print them
+                def _dry_send_mail(
+                    subject_template_name,
+                    email_template_name,
+                    context,
+                    from_email,
+                    to_email,
+                    html_email_template_name=None,
+                    encoding="utf-8",
+                ):
+                    merged = {**(context or {}), **extra}
+                    subject = "The National Archives: Password Reset"
+                    plain = loader.render_to_string(email_template_name, merged)
+                    self.stdout.write(
+                        self.style.NOTICE(f"DRY RUN: Email to {to_email}")
+                    )
+                    self.stdout.write(self.style.NOTICE(f"Subject: {subject}"))
+                    self.stdout.write("Plain body:")
+                    self.stdout.write(plain)
+                    if html_email_template_name:
+                        html_ctx = {
+                            **merged,
+                            "reset_url": form._build_reset_url(merged),
+                        }
+                        html = loader.render_to_string(
+                            html_email_template_name, html_ctx
+                        )
+                        self.stdout.write("HTML body:")
+                        self.stdout.write(html)
+
+                form.send_mail = _dry_send_mail
+                form.save(
+                    from_email=settings.DEFAULT_FROM_EMAIL,
+                    request=None,
+                    use_https=True,
+                    extra_email_context=extra,
+                )
                 self.stdout.write(
                     self.style.NOTICE(
                         f"DRY RUN: would send password reset email to {target_user.email}"
                     )
                 )
-                self.stdout.write("HTML body:")
-                self.stdout.write(rendered["html"])
         except Exception as e:
             self.stdout.write(self.style.ERROR(f"❌ Failed to send email: {e}"))
             raise
