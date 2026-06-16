@@ -301,7 +301,7 @@ class EducationSessionPage(
     )
 
     highlights = StreamField(
-        [("highlights", ImageGalleryBlock())],
+        [("image_gallery", ImageGalleryBlock())],
         blank=True,
         help_text="Optional image gallery to show what to expect from the session.",
         max_num=1,

@@ -85,7 +85,6 @@ class Source(Orderable):
     title = models.CharField(
         verbose_name="source title",
         help_text="A unique, descriptive title for the source.",
-        blank=True,
         max_length=160,
     )
 
