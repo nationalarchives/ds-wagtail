@@ -84,7 +84,7 @@ class Command(BaseCommand):
         self.stdout.write("\n--- Step 4: Reset Password ---")
         if getattr(self, "execute", False):
             random_password = get_random_string(40)
-            target_user.password = make_password(random_password)
+            target_user.set_password(random_password)
             target_user.save(update_fields=["password"])
             self.stdout.write(
                 self.style.SUCCESS("✓ Password has been reset to a random value.")
