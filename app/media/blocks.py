@@ -3,6 +3,7 @@ from wagtail.rich_text import expand_db_html
 from wagtailmedia.blocks import AbstractMediaChooserBlock
 
 from app.core.blocks.image import APIImageChooserBlock
+from app.media.time_utils import format_seconds_mmss, parse_chapter_time_to_seconds
 
 
 class MediaChooserBlock(AbstractMediaChooserBlock):
@@ -23,13 +24,23 @@ class MediaChooserBlock(AbstractMediaChooserBlock):
         We use expand_db_html to get any rich text fields as useful HTML,
         rather than the raw database representation.
         """
+        chapter_pairs = []
+        for chapter in value.chapters:
+            total_seconds = parse_chapter_time_to_seconds(chapter.value.get("time"))
+            chapter_pairs.append(
+                (
+                    total_seconds,
+                    {
+                        "time": format_seconds_mmss(total_seconds),
+                        "heading": chapter.value["heading"],
+                        "transcript": expand_db_html(chapter.value["transcript"].source),
+                    },
+                )
+            )
+
         chapters = [
-            {
-                "time": int(chapter.value["time"]),
-                "heading": chapter.value["heading"],
-                "transcript": expand_db_html(chapter.value["transcript"].source),
-            }
-            for chapter in value.chapters
+            chapter_payload
+            for _, chapter_payload in sorted(chapter_pairs, key=lambda pair: pair[0])
         ]
         return {
             "id": value.id,
@@ -44,7 +55,7 @@ class MediaChooserBlock(AbstractMediaChooserBlock):
             "date": value.date,
             "description": expand_db_html(value.description),
             "transcript": expand_db_html(value.transcript),
-            "chapters": sorted(chapters, key=lambda x: x["time"]),
+            "chapters": chapters,
             "width": value.width,
             "height": value.height,
             "duration": value.duration,
