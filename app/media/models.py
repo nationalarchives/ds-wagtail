@@ -12,6 +12,7 @@ from wagtailmedia.settings import wagtailmedia_settings
 
 from app.core.blocks.paragraph import APIRichTextBlock
 from app.core.serializers import RichTextSerializer
+from app.media.time_utils import format_seconds_mmss, parse_chapter_time_to_seconds
 
 
 class MediaChapterSectionBlock(blocks.StructBlock):
@@ -29,6 +30,21 @@ class MediaChapterSectionBlock(blocks.StructBlock):
     )
     heading = blocks.CharBlock(max_length=20)
     transcript = APIRichTextBlock(required=False, features=["bold", "italic"])
+
+    def to_python(self, value):
+        if isinstance(value, dict):
+            value = value.copy()
+            if "time" in value:
+                total_seconds = parse_chapter_time_to_seconds(value.get("time"))
+                value["time"] = format_seconds_mmss(total_seconds)
+        return super().to_python(value)
+
+    def get_prep_value(self, value):
+        prepped = super().get_prep_value(value)
+        total_seconds = parse_chapter_time_to_seconds(prepped.get("time"))
+
+        prepped["time"] = total_seconds
+        return prepped
 
     class Meta:
         label = "Chapter"
