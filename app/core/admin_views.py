@@ -1,6 +1,7 @@
 from django.apps import apps
 from django.conf import settings
 from django.core.cache import cache
+from django.core.paginator import Paginator
 from django.shortcuts import render
 from django.utils.encoding import force_str
 from wagtail.admin.auth import require_admin_access
@@ -187,11 +188,19 @@ def block_usage_report_view(request):
         for block_type in block_type_names
     ]
 
+    # Paginate rows
+    paginator = Paginator(rows, 5)  # 5 fields per page
+    page_num = request.GET.get("page", 1)
+    try:
+        page_obj = paginator.page(page_num)
+    except Exception:
+        page_obj = paginator.page(1)
+
     return render(
         request,
         "wagtailadmin/reports/block_usage.html",
         {
-            "rows": rows,
+            "page_obj": page_obj,
             "total_blocks": total_blocks,
             "block_type_options": block_type_options,
             "selected_block": selected_block,

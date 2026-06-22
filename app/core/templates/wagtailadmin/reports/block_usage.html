@@ -25,10 +25,10 @@
             {% endif %}
         </form>
 
-        {% if rows %}
+        {% if page_obj.object_list %}
             <p><strong>{% trans "Total blocks:" %}</strong> {{ total_blocks }}</p>
 
-            {% for row in rows %}
+            {% for row in page_obj.object_list %}
                 <section style="margin-top: 1.25rem;">
                     <h2>{{ row.field_name }} ({{ row.field_total }})</h2>
                     <table class="listing">
@@ -67,7 +67,25 @@
                     </table>
                 </section>
             {% endfor %}
-        {% else %}
+
+            <!-- Pagination controls -->
+            {% if page_obj.has_other_pages %}
+                <div style="margin-top: 2rem; padding: 1rem; border-top: 1px solid #ddd;">
+                    <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+                        {% if page_obj.has_previous %}
+                            <a href="?page=1{% if selected_block %}&block={{ selected_block }}{% endif %}" class="button button-secondary">{% trans "First" %}</a>
+                            <a href="?page={{ page_obj.previous_page_number }}{% if selected_block %}&block={{ selected_block }}{% endif %}" class="button button-secondary">{% trans "Previous" %}</a>
+                        {% endif %}
+
+                        <span>{% trans "Page" %} {{ page_obj.number }} {% trans "of" %} {{ page_obj.paginator.num_pages }}</span>
+
+                        {% if page_obj.has_next %}
+                            <a href="?page={{ page_obj.next_page_number }}{% if selected_block %}&block={{ selected_block }}{% endif %}" class="button button-secondary">{% trans "Next" %}</a>
+                            <a href="?page={{ page_obj.paginator.num_pages }}{% if selected_block %}&block={{ selected_block }}{% endif %}" class="button button-secondary">{% trans "Last" %}</a>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endif %}
             <p>{% trans "No blocks found for the current filter." %}</p>
         {% endif %}
     </div>
