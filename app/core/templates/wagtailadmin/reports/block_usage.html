@@ -1,0 +1,74 @@
+{% extends "wagtailadmin/base.html" %}
+{% load i18n %}
+
+{% block titletag %}{% trans "Block usage report" %}{% endblock %}
+
+{% block content %}
+    {% include "wagtailadmin/shared/header.html" with title=_("Block usage report") icon="terminal" %}
+
+    <div class="nice-padding">
+        <form method="get" class="w-form-width" style="margin-bottom: 1rem;">
+            <div class="field">
+                <label class="w-field__label" for="block-filter">{% trans "Block type filter" %}</label>
+                <div class="w-field__input">
+                    <select id="block-filter" name="block">
+                        <option value="">{% trans "All block types" %}</option>
+                        {% for option in block_type_options %}
+                            <option value="{{ option.value }}" {% if selected_block == option.value %}selected{% endif %}>{{ option.label }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <button type="submit" class="button button-primary">{% trans "Apply" %}</button>
+            {% if selected_block %}
+                <a class="button button-secondary" href="?">{% trans "Clear" %}</a>
+            {% endif %}
+        </form>
+
+        {% if rows %}
+            <p><strong>{% trans "Total blocks:" %}</strong> {{ total_blocks }}</p>
+
+            {% for row in rows %}
+                <section style="margin-top: 1.25rem;">
+                    <h2>{{ row.field_name }} ({{ row.field_total }})</h2>
+                    <table class="listing">
+                        <thead>
+                            <tr>
+                                <th>{% trans "Block type" %}</th>
+                                <th>{% trans "Count" %}</th>
+                                <th>{% trans "Pages" %}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for block in row.blocks %}
+                                <tr>
+                                    <td>{{ block.block_label }}</td>
+                                    <td>{{ block.count }}</td>
+                                    <td>{{ block.pages|length }}</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3">
+                                        {% if block.pages %}
+                                            <ul style="margin: 0; padding-left: 1.25rem;">
+                                                {% for page in block.pages %}
+                                                    <li>
+                                                        <a href="{% url 'wagtailadmin_pages:edit' page.id %}">{{ page.title }}</a>
+                                                        <span>({{ page.page_type }}, {{ page.occurrences }})</span>
+                                                    </li>
+                                                {% endfor %}
+                                            </ul>
+                                        {% else %}
+                                            <span>{% trans "No pages" %}</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </section>
+            {% endfor %}
+        {% else %}
+            <p>{% trans "No blocks found for the current filter." %}</p>
+        {% endif %}
+    </div>
+{% endblock %}
