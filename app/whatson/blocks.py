@@ -17,7 +17,7 @@ class ExhibitionPageStreamBlock(blocks.StreamBlock):
     sub_heading = SubHeadingBlock()
 
 
-class SectionContentBlock(blocks.StreamBlock):
+class EventSectionContentBlock(blocks.StreamBlock):
     contact = ContactBlock()
     inset_text = InsetTextBlock()
     paragraph = ParagraphBlock()
@@ -27,12 +27,12 @@ class SectionContentBlock(blocks.StreamBlock):
 
 class ContentSectionBlock(blocks.StructBlock):
     heading = blocks.CharBlock(max_length=100, label="Heading")
-    content = SectionContentBlock(required=False)
+    content = EventSectionContentBlock(required=False)
 
     class Meta:
         label = "Section"
 
 
-class EventPageStreamBlock(SectionContentBlock):
+class EventPageStreamBlock(EventSectionContentBlock):
     content_section = ContentSectionBlock()
     sub_heading = None

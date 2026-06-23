@@ -9,6 +9,9 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - name: Add .env file for test Rosetta API URL
+      run: echo "ROSETTA_API_URL=http://rosetta.test/data" > .env
+      shell: bash
     - name: Start Docker containers
       run: docker compose up --detach --wait --wait-timeout 300 || docker compose logs app
       shell: bash

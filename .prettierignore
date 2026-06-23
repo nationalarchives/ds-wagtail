@@ -1,3 +1,4 @@
 # Ignore all HTML files:
 **/*.html
 app/api/tests/expected_results/**/*
+dumps

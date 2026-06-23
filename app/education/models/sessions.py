@@ -301,7 +301,7 @@ class EducationSessionPage(
     )
 
     highlights = StreamField(
-        [("highlights", ImageGalleryBlock())],
+        [("image_gallery", ImageGalleryBlock())],
         blank=True,
         help_text="Optional image gallery to show what to expect from the session.",
         max_num=1,
@@ -381,6 +381,9 @@ class EducationSessionPage(
         APIField("key_stages", serializer=KeyStageSerializer(many=True)),
         APIField("time_periods", serializer=TimePeriodSerializer(many=True)),
         APIField("themes", serializer=ThemeSerializer(many=True)),
+        APIField("session_locations", serializer=SessionLocationSerializer(many=True)),
+        APIField("start_date"),
+        APIField("end_date"),
     ]
 
     api_fields = (

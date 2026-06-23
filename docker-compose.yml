@@ -29,6 +29,7 @@ services:
       - WAGTAILAPI_BASE_URL=http://host.docker.internal:8000
       - WAGTAILAPI_MEDIA_BASE_URL=https://localhost
       - REDIS_URL=redis://redis:6379/0
+      - ROSETTA_API_URL=${ROSETTA_API_URL}
       - WAGTAIL_2FA_REQUIRED=False
       - EMAIL_HOST
       - EMAIL_HOST_USER
