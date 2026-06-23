@@ -294,7 +294,7 @@ class AuthorTag(models.Model):
     )
 
 
-class AuthorPageMixin:
+class AuthorPageMixin(models.Model):
     """
     A mixin for pages that uses the ``AuthorTag`` model
     in order to be associated with an author.
@@ -339,6 +339,9 @@ class AuthorPageMixin:
             serializer=DefaultPageSerializer(required_api_fields=["image"], many=True),
         )
     ]
+
+    class Meta:
+        abstract = True
 
 
 class ExternalAuthorTag(models.Model):
