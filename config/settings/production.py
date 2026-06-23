@@ -37,6 +37,7 @@ SITE_ID = 1
 
 INSTALLED_APPS = [
     "app.generic_pages",
+    "app.access",
     "app.alerts",
     "app.articles",
     "app.api",
