@@ -278,12 +278,29 @@ CSRF_TRUSTED_ORIGINS = os.getenv(
     "CSRF_TRUSTED_ORIGINS", "https://www.nationalarchives.gov.uk"
 ).split(",")
 
-# For search results within Wagtail itself
-WAGTAILSEARCH_BACKENDS = {
-    "default": {
-        "BACKEND": "wagtail.search.backends.database",
+WAGTAILSEARCH_BACKEND = os.getenv("WAGTAILSEARCH_BACKEND", "database")
+
+if WAGTAILSEARCH_BACKEND.startswith("elasticsearch"):
+    WAGTAILSEARCH_BACKENDS = {
+        "default": {
+            "BACKEND": f"wagtail.search.backends.{WAGTAILSEARCH_BACKEND}",
+            "URLS": [
+                url.strip()
+                for url in os.getenv(
+                    "WAGTAILSEARCH_URLS", "http://localhost:9200"
+                ).split(",")
+                if url.strip()
+            ],
+            "INDEX_PREFIX": os.getenv("WAGTAILSEARCH_INDEX_PREFIX", "wagtail_"),
+            "TIMEOUT": int(os.getenv("WAGTAILSEARCH_TIMEOUT", "5")),
+        }
     }
-}
+else:
+    WAGTAILSEARCH_BACKENDS = {
+        "default": {
+            "BACKEND": "wagtail.search.backends.database",
+        }
+    }
 
 WAGTAILDOCS_DOCUMENT_MODEL = "core.CustomDocument"
 WAGTAILDOCS_EXTENSIONS = [

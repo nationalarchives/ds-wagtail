@@ -745,7 +745,7 @@ class PageTimePeriod(Orderable):
     )
 
 
-class TopicalPageMixin:
+class TopicalPageMixin(models.Model):
     """
     A mixin for pages that use the ``PageTopic`` and ``PageTimePeriod`` models
     in order to be associated with one or many topics/time periods. It simply
@@ -823,6 +823,9 @@ class TopicalPageMixin:
     @cached_property
     def highlight_image_count(self):
         return self.highlights.count()
+
+    class Meta:
+        abstract = True
 
 
 class HighlightSerializer(serializers.ModelSerializer):
