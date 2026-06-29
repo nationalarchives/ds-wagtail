@@ -195,7 +195,9 @@ class EtnaMedia(AbstractMedia):
                     {
                         "time": format_seconds_mmss(total_seconds),
                         "heading": chapter.value["heading"],
-                        "transcript": expand_db_html(chapter.value["transcript"].source),
+                        "transcript": expand_db_html(
+                            chapter.value["transcript"].source
+                        ),
                     },
                 )
             )
