@@ -1,25 +1,31 @@
 # Fetching data
 
-## Prerequisites
+## Load local DB from an SQL file (No AWS access needed)
 
-The following steps must be completed before you can pull data from an evironment:
+Without AWS access you can load your db locally using a dump and the following command:
 
-1. [Register for a Platform.sh account](https://auth.api.platform.sh/register) using your work email
-2. On the `#ds-etna` or `#ds-etna-dev` Slack channels, request for someone to add you to the Etna project
-3. Once you have access, [generate an API token](https://docs.platform.sh/development/cli/api-tokens.html#get-a-token) for your account (The name **Local CLI** will do nicely), and add it your local `.env` file as `PLATFORMSH_CLI_TOKEN`
-
-Developers from external agencies may not be able to register for a platform.sh account. In this scenario, ask a developer from The National Archives to share their API key.
+`./dev/local-db-restore dumps/[my-db-file].sql`
 
 **NOTE:** When fetching data:
 
 - any Django users you created locally before running the command will no longer exist
 - a superuser whose credentials are defined in `docker-compose.yml` will be created
 
-## Download from development
+## Download from development with AWS
 
-Set up the AWS CLI as described in: https://national-archives.atlassian.net/wiki/spaces/TW/pages/775028742/Local+development#AWS-CLI-setup
+Set up the AWS CLI (ensuring you select `AdministratorAccess` when prompted) as described in: https://national-archives.atlassian.net/wiki/spaces/TW/pages/775028742/Local+development#AWS-CLI-setup
+
+From the ds-wagtail folder log into AWS before pulling data like so:
 
 ```sh
+aws sso login
+
 # Pull all data and media from the development server
-docker compose exec dev pull
+./dev/pull
 ```
+
+Note:
+
+- To solely pull data run `./dev/pull-data`
+
+- To solely pull media run `./dev/pull-media`

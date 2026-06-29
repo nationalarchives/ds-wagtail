@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.functional import cached_property
@@ -129,7 +130,6 @@ class SessionLocation(Orderable):
         null=True,
         max_length=255,
         verbose_name="Address line 2",
-        help_text="Required only when location type is Custom venue.",
     )
 
     postcode = models.CharField(
@@ -246,7 +246,7 @@ class EducationSessionPage(
     """A page to display an education session"""
 
     @cached_property
-    def type_label(cls) -> str:
+    def type_label(self) -> str:
         return "Education session"
 
     parent_page_types = [
@@ -285,7 +285,7 @@ class EducationSessionPage(
     )
 
     description = StreamField(
-        [("description", SessionDescriptionBlock())],
+        [("content_section", SessionDescriptionBlock())],
         verbose_name="description",
         blank=True,
         null=True,
@@ -293,14 +293,15 @@ class EducationSessionPage(
     )
 
     curriculum_connection_description = RichTextField(
+        features=settings.EXPANDED_RICH_TEXT_FEATURES,
         verbose_name="curriculum connection description",
         help_text="A description of how the session connects to the curriculum. This is optional but can help teachers understand the relevance of the session to their teaching.",
-        blank=True,
         null=True,
+        blank=True,
     )
 
     highlights = StreamField(
-        [("highlights", ImageGalleryBlock())],
+        [("image_gallery", ImageGalleryBlock())],
         blank=True,
         help_text="Optional image gallery to show what to expect from the session.",
         max_num=1,
@@ -309,7 +310,7 @@ class EducationSessionPage(
     def clean(self):
         super().clean()
 
-        if self.price is not None and not self.price_detail:
+        if self.price and not self.price_detail:
             raise ValidationError(
                 {
                     "price_detail": "Price detail is required when a session price is specified."
@@ -322,10 +323,10 @@ class EducationSessionPage(
         if (
             self.start_date is not None
             and self.end_date is not None
-            and self.start_date >= self.end_date
+            and self.start_date > self.end_date
         ):
             raise ValidationError(
-                {"end_date": "End date must be later than start date."}
+                {"end_date": "End date must not be before start date."}
             )
 
     content_panels = (
@@ -375,6 +376,15 @@ class EducationSessionPage(
         + BasePageWithRequiredIntro.promote_panels
         + EducationTaxonomyMixin.taxonomy_promote_panels()
     )
+
+    default_api_fields = BasePageWithRequiredIntro.default_api_fields + [
+        APIField("key_stages", serializer=KeyStageSerializer(many=True)),
+        APIField("time_periods", serializer=TimePeriodSerializer(many=True)),
+        APIField("themes", serializer=ThemeSerializer(many=True)),
+        APIField("session_locations", serializer=SessionLocationSerializer(many=True)),
+        APIField("start_date"),
+        APIField("end_date"),
+    ]
 
     api_fields = (
         BasePageWithRequiredIntro.api_fields

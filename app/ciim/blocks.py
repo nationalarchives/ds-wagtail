@@ -16,10 +16,10 @@ class RecordChooserBlock(CharBlock):
     """
 
     def get_api_representation(self, value, context=None):
-        params = {
+        default_params = {
             "id": value,
         }
-        client = CIIMClient(params=params)
+        client = CIIMClient(default_params=default_params)
 
         return client.get_serialized_record()
 

@@ -33,6 +33,7 @@ from app.core.models import (
     AccentColourMixin,
     BasePageWithRequiredIntro,
     ContentWarningMixin,
+    HeroImageMixin,
     HeroLayoutMixin,
     HeroStyleMixin,
     LocationSerializer,
@@ -43,6 +44,7 @@ from app.core.serializers import (
     RichTextSerializer,
 )
 from app.core.serializers.partner_logos import PartnerLogoSerializer
+from app.generic_pages.blocks import GeneralPageStreamBlock
 
 from ..blocks import EventPageStreamBlock, ExhibitionPageStreamBlock
 from ..serializers import (
@@ -437,6 +439,7 @@ class EventPage(RequiredHeroImageMixin, ContentWarningMixin, BasePageWithRequire
             APIField("speakers", serializer=SpeakerSerializer(many=True)),
             APIField("sessions", serializer=SessionSerializer(many=True)),
             APIField("series", serializer=DefaultPageSerializer(many=True)),
+            APIField("supplementary_page", serializer=DefaultPageSerializer()),
         ]
     )
 
@@ -464,13 +467,13 @@ class EventPage(RequiredHeroImageMixin, ContentWarningMixin, BasePageWithRequire
         ]
 
     @cached_property
-    def type_label(cls) -> str:
+    def type_label(self) -> str:
         """
         Overrides the type_label method from BasePage, to return the correct
         type label for the event page which will be the event type name.
         """
-        if cls.event_type:
-            return cls.event_type.name
+        if self.event_type:
+            return self.event_type.name
         return "Event"
 
     @cached_property
@@ -482,6 +485,13 @@ class EventPage(RequiredHeroImageMixin, ContentWarningMixin, BasePageWithRequire
             session.sold_out if session.start >= timezone.now() else True
             for session in self.sessions.all()
         )
+
+    @property
+    def supplementary_page(self):
+        """
+        Returns the supplementary page for the event, if it exists.
+        """
+        return self.get_children().type(EventSupplementaryPage).first()
 
     def serializable_data(self):
         # Keep aggregated field values out of revision content
@@ -533,7 +543,46 @@ class EventPage(RequiredHeroImageMixin, ContentWarningMixin, BasePageWithRequire
     parent_page_types = [
         "whatson.EventsListingPage",
     ]
+    subpage_types = ["whatson.EventSupplementaryPage"]
+
+
+class EventSupplementaryPage(
+    HeroImageMixin,
+    BasePageWithRequiredIntro,
+):
+    """
+    A page for supplementary content related to an event, e.g. a page about the
+    venue, speakers, or sessions.
+    """
+
+    body = StreamField(GeneralPageStreamBlock(), blank=True, null=True)
+
+    content_panels = (
+        BasePageWithRequiredIntro.content_panels
+        + HeroImageMixin.content_panels
+        + [
+            FieldPanel("body"),
+        ]
+    )
+
+    parent_page_types = [
+        "whatson.EventPage",
+    ]
     subpage_types = []
+
+    max_count_per_parent = 1
+
+    api_fields = (
+        BasePageWithRequiredIntro.api_fields
+        + HeroImageMixin.api_fields
+        + [
+            APIField("body"),
+        ]
+    )
+
+    class Meta:
+        verbose_name = "event supplementary page"
+        verbose_name_plural = "event supplementary pages"
 
 
 class DisplayPage(
@@ -665,13 +714,13 @@ class DisplayPage(
         ]
 
     @cached_property
-    def type_label(cls) -> str:
+    def type_label(self) -> str:
         """
         Overrides the type_label method from BasePage, to return the correct
         type label for the display page.
         """
-        if cls.end_date:
-            if cls.end_date < timezone.now().date():
+        if self.end_date:
+            if self.end_date < timezone.now().date():
                 return "Past display"
         return "Display"
 
@@ -1025,16 +1074,16 @@ class ExhibitionPage(
         ]
 
     @cached_property
-    def type_label(cls) -> str:
+    def type_label(self) -> str:
         """
         Overrides the type_label method from BasePage, to return the correct
         type label for the exhibition page.
         """
         today = timezone.now().date()
 
-        if cls.start_date and cls.start_date > today:
+        if self.start_date and self.start_date > today:
             return "Upcoming exhibition"
-        if cls.end_date and cls.end_date < today:
+        if self.end_date and self.end_date < today:
             return "Past exhibition"
         return "Exhibition"
 
