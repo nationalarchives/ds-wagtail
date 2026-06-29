@@ -7,6 +7,7 @@ from django.db import models
 from wagtail import blocks
 from wagtail.api import APIField
 from wagtail.fields import RichTextField, StreamField
+from wagtail.rich_text import expand_db_html
 from wagtailmedia.models import AbstractMedia
 from wagtailmedia.settings import wagtailmedia_settings
 
@@ -183,6 +184,26 @@ class EtnaMedia(AbstractMedia):
 
     def mime(self):
         return mimetypes.guess_type(self.filename)[0] or "application/octet-stream"
+
+    def api_chapters(self):
+        chapter_pairs = []
+        for chapter in self.chapters:
+            total_seconds = parse_chapter_time_to_seconds(chapter.value.get("time"))
+            chapter_pairs.append(
+                (
+                    total_seconds,
+                    {
+                        "time": format_seconds_mmss(total_seconds),
+                        "heading": chapter.value["heading"],
+                        "transcript": expand_db_html(chapter.value["transcript"].source),
+                    },
+                )
+            )
+
+        return [
+            chapter_payload
+            for _, chapter_payload in sorted(chapter_pairs, key=lambda pair: pair[0])
+        ]
 
     api_fields = [
         APIField("type"),
