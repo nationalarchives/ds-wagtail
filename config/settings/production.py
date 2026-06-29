@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     "app.foi",
     "app.highlights",
     "app.home",
+    "app.search",
     "app.ukgwa",
     "app.images",
     "app.media",
@@ -279,11 +280,29 @@ CSRF_TRUSTED_ORIGINS = os.getenv(
 ).split(",")
 
 # For search results within Wagtail itself
-WAGTAILSEARCH_BACKENDS = {
-    "default": {
-        "BACKEND": "wagtail.search.backends.database",
+WAGTAIL_SEARCH_BACKEND = os.getenv("WAGTAIL_SEARCH_BACKEND", "database").lower()
+
+if WAGTAIL_SEARCH_BACKEND == "elasticsearch":
+    WAGTAILSEARCH_BACKENDS = {
+        "default": {
+            "BACKEND": "wagtail.search.backends.elasticsearch8",
+            "URLS": [
+                url.strip()
+                for url in os.getenv(
+                    "WAGTAILSEARCH_URL", "http://localhost:9200"
+                ).split(",")
+                if url.strip()
+            ],
+            "INDEX_PREFIX": os.getenv("WAGTAILSEARCH_INDEX_PREFIX", "wagtail"),
+            "TIMEOUT": int(os.getenv("WAGTAILSEARCH_TIMEOUT", "5")),
+        }
     }
-}
+else:
+    WAGTAILSEARCH_BACKENDS = {
+        "default": {
+            "BACKEND": "wagtail.search.backends.database",
+        }
+    }
 
 WAGTAILDOCS_DOCUMENT_MODEL = "core.CustomDocument"
 WAGTAILDOCS_EXTENSIONS = [

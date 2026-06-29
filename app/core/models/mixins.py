@@ -11,6 +11,7 @@ from wagtail.api import APIField
 from wagtail.fields import RichTextField
 from wagtail.images import get_image_model_string
 from wagtail.models import Site
+from wagtail.search import index
 from wagtail_headless_preview.models import (
     HeadlessPreviewMixin,
     get_client_root_url_from_site,
@@ -85,6 +86,10 @@ class PublishedDateMixin(models.Model):
 
     promote_panels = [
         FieldPanel("published_date"),
+    ]
+
+    search_fields = [
+        index.FilterField("published_date"),
     ]
 
     @classmethod

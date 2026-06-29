@@ -9,6 +9,7 @@ from wagtail.api import APIField
 from wagtail.fields import RichTextField, StreamField
 from wagtail.images import get_image_model_string
 from wagtail.models import Page
+from wagtail.search import index
 from wagtail.snippets.models import register_snippet
 
 from app.core.models import BasePage
@@ -237,6 +238,14 @@ class PersonPage(BasePage):
         APIField("archived_blog_url"),
     ]
 
+    search_fields = BasePage.search_fields + [
+        index.SearchField("first_name", boost=1),
+        index.SearchField("last_name", boost=1),
+        index.SearchField("role"),
+        index.SearchField("summary"),
+        index.SearchField("research_summary"),
+    ]
+
     @cached_property
     def authored_focused_articles(self):
         from app.articles.models import FocusedArticlePage
@@ -294,11 +303,14 @@ class AuthorTag(models.Model):
     )
 
 
-class AuthorPageMixin:
+class AuthorPageMixin(models.Model):
     """
     A mixin for pages that uses the ``AuthorTag`` model
     in order to be associated with an author.
     """
+
+    class Meta:
+        abstract = True
 
     @classmethod
     def get_authors_inlinepanel(cls, max_num=6):
@@ -339,6 +351,8 @@ class AuthorPageMixin:
             serializer=DefaultPageSerializer(required_api_fields=["image"], many=True),
         )
     ]
+
+    search_fields = [index.SearchField("author_names")]
 
 
 class ExternalAuthorTag(models.Model):
