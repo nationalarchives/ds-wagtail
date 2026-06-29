@@ -2,6 +2,8 @@ from io import StringIO
 from unittest.mock import MagicMock, patch
 
 from django.contrib.auth import get_user_model
+from django.contrib.sessions.backends.db import SessionStore
+from django.contrib.sessions.models import Session
 from django.core.management import call_command
 from django.core.management.base import CommandError
 from django.test import TestCase
@@ -93,7 +95,7 @@ class Manage2FADevicesCommandTests(TestCase):
         out = StringIO()
 
         devices_qs = MagicMock()
-        devices_qs.count.return_value = 2
+        devices_qs.count.side_effect = [2, 0]
         devices_qs.__iter__.return_value = iter([])
         devices_qs.delete.return_value = (2, {})
         device_filter_mock.return_value = devices_qs
@@ -107,6 +109,7 @@ class Manage2FADevicesCommandTests(TestCase):
         )
 
         devices_qs.delete.assert_called_once()
+        self.assertEqual(devices_qs.count(), 0)
         self.assertTrue(save_mock.called)
 
     @patch("app.api.management.commands.manage_2fa_devices.HtmlPasswordResetForm.save")
@@ -128,6 +131,7 @@ class Manage2FADevicesCommandTests(TestCase):
         )
 
         devices_qs.delete.assert_not_called()
+        self.assertEqual(devices_qs.count(), 2)
         self.assertTrue(save_mock.called)
 
     @patch("app.api.management.commands.manage_2fa_devices.HtmlPasswordResetForm.save")
@@ -177,4 +181,28 @@ class Manage2FADevicesCommandTests(TestCase):
         )
 
         revoke_qs.delete.assert_not_called()
+        self.assertTrue(save_mock.called)
+
+    @patch("app.api.management.commands.manage_2fa_devices.HtmlPasswordResetForm.save")
+    def test_execute_removes_real_user_session(self, save_mock):
+        out = StringIO()
+
+        session_store = SessionStore()
+        session_store["_auth_user_id"] = str(self.user.pk)
+        session_store["_auth_user_backend"] = "django.contrib.auth.backends.ModelBackend"
+        session_store["_auth_user_hash"] = "test-hash"
+        session_store.save()
+        session_key = session_store.session_key
+
+        self.assertTrue(Session.objects.filter(session_key=session_key).exists())
+
+        call_command(
+            "manage_2fa_devices",
+            "--target-email",
+            self.user.email,
+            "--execute",
+            stdout=out,
+        )
+
+        self.assertFalse(Session.objects.filter(session_key=session_key).exists())
         self.assertTrue(save_mock.called)
