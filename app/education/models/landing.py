@@ -192,13 +192,22 @@ class EducationPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
             APIField("featured_teaching_resource_teaser_override"),
             APIField("education_sessions_listing", serializer=DefaultPageSerializer()),
             APIField("education_sessions_teaser_override"),
-            APIField("featured_education_session", serializer=DefaultPageSerializer()),
+            APIField(
+                "featured_education_session",
+                serializer=DefaultPageSerializer(
+                    required_api_fields=["session_locations", "start_date", "end_date"]
+                ),
+            ),
             APIField("featured_education_session_teaser_override"),
             APIField(
                 "latest_teaching_resources", serializer=DefaultPageSerializer(many=True)
             ),
             APIField(
-                "latest_education_sessions", serializer=DefaultPageSerializer(many=True)
+                "latest_education_sessions",
+                serializer=DefaultPageSerializer(
+                    many=True,
+                    required_api_fields=["session_locations", "start_date", "end_date"],
+                ),
             ),
             APIField(
                 "education_read_more_links",

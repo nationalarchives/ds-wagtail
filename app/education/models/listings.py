@@ -120,7 +120,12 @@ class EducationSessionsListingPage(BasePageWithRequiredIntro):
     ]
 
     api_fields = BasePageWithRequiredIntro.api_fields + [
-        APIField("featured_education_session", serializer=DefaultPageSerializer()),
+        APIField(
+            "featured_education_session",
+            serializer=DefaultPageSerializer(
+                required_api_fields=["session_locations", "start_date", "end_date"]
+            ),
+        ),
         APIField("featured_education_session_teaser_override"),
     ]
 
