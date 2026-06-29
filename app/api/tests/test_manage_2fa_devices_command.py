@@ -189,7 +189,9 @@ class Manage2FADevicesCommandTests(TestCase):
 
         session_store = SessionStore()
         session_store["_auth_user_id"] = str(self.user.pk)
-        session_store["_auth_user_backend"] = "django.contrib.auth.backends.ModelBackend"
+        session_store["_auth_user_backend"] = (
+            "django.contrib.auth.backends.ModelBackend"
+        )
         session_store["_auth_user_hash"] = "test-hash"
         session_store.save()
         session_key = session_store.session_key
