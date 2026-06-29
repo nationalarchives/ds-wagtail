@@ -3,16 +3,19 @@ from wagtail import blocks
 
 from app.core.blocks import (
     APIRichTextBlock,
+    ContactBlock,
     ContentImageBlock,
+    ContentTableBlock,
+    DescriptionListBlock,
     FeaturedExternalLinkBlock,
     FeaturedPageBlock,
     InsetTextBlock,
     ParagraphBlock,
-    PartnerLogoChooserBlock,
+    PartnerLogoListBlock,
     QuoteBlock,
+    SubHeadingBlock,
     YouTubeBlock,
 )
-from app.core.blocks.section import SubHeadingBlock
 from app.media.blocks import MediaBlock
 
 # Resources - Source
@@ -58,14 +61,19 @@ class SourceQuestionBlock(blocks.StreamBlock):
 
 
 class TeachersNotesBlock(blocks.StreamBlock):
+    description_list = DescriptionListBlock()
     paragraph = ParagraphBlock()
     sub_heading = SubHeadingBlock()
     inset_text = InsetTextBlock()
+    quote = QuoteBlock()
 
 
 class TeachingResourceExtensionActivitiesBlock(blocks.StreamBlock):
+    description_list = DescriptionListBlock()
     paragraph = ParagraphBlock()
+    quote = QuoteBlock()
     sub_heading = SubHeadingBlock()
+    table = ContentTableBlock()
     featured_page = FeaturedPageBlock()
     featured_external_link = FeaturedExternalLinkBlock()
 
@@ -84,7 +92,10 @@ class TeachingResourceFurtherInformationBlock(blocks.StreamBlock):
 
 class SectionContentBlock(blocks.StreamBlock):
     paragraph = ParagraphBlock()
-    partner_logo = PartnerLogoChooserBlock()
+    partner_logos = PartnerLogoListBlock()
+    contact = ContactBlock()
+    featured_page = FeaturedPageBlock()
+    featured_external_link = FeaturedExternalLinkBlock()
     quote = QuoteBlock()
     inset_text = InsetTextBlock()
 

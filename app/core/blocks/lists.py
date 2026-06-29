@@ -1,5 +1,6 @@
 from django.conf import settings
 from wagtail import blocks
+from wagtail.blocks import BlockGroup
 from wagtail.snippets.blocks import SnippetChooserBlock
 
 from app.core.serializers import DefaultPageSerializer
@@ -33,6 +34,55 @@ class DoDontListBlock(blocks.StructBlock):
         group = "Emphasis"
 
 
+class DescriptionListSettingsBlock(blocks.StructBlock):
+    STYLE_CHOICES = [
+        ("none", "None"),
+        ("lined", "Lined"),
+        ("zebra", "Zebra"),
+    ]
+
+    COLUMN_BALANCING_CHOICES = [
+        ("none", "Auto (recommended)"),
+        ("even", "Even"),
+        ("left-weighted", "Left-weighted"),
+        ("right-weighted", "Right-weighted"),
+    ]
+
+    style = blocks.ChoiceBlock(
+        choices=STYLE_CHOICES,
+        default="none",
+        label="Style",
+        help_text="Choose the style for this description list.",
+    )
+
+    column_balancing = blocks.ChoiceBlock(
+        choices=COLUMN_BALANCING_CHOICES,
+        default="none",
+        label="Column balancing",
+        help_text="Choose the balancing for the columns of the description list.",
+    )
+
+    stacked = blocks.BooleanBlock(
+        required=False,
+        default=False,
+        label="Stacked layout",
+        help_text="If enabled, the term and detail will be stacked vertically instead of displayed side by side.",
+    )
+
+    def get_api_representation(self, value, context=None):
+        representation = super().get_api_representation(value, context=context)
+
+        for field in ("style", "column_balancing"):
+            if representation.get(field) == "none":
+                representation[field] = None
+
+        return representation
+
+    class Meta:
+        label = "Style Options"
+        label_format = ""
+
+
 class DescriptionListItemBlock(blocks.StructBlock):
     term = blocks.CharBlock(required=True)
     detail = APIRichTextBlock(features=settings.INLINE_RICH_TEXT_FEATURES)
@@ -45,11 +95,13 @@ class DescriptionListItemBlock(blocks.StructBlock):
 
 class DescriptionListBlock(blocks.StructBlock):
     items = blocks.ListBlock(DescriptionListItemBlock())
+    settings = DescriptionListSettingsBlock()
 
     class Meta:
         icon = "list-ul"
         label = "Description List"
         group = "Structured and collapsible content"
+        form_layout = BlockGroup(children=["items"], settings=["settings"])
 
 
 class PeopleListingBlock(blocks.StructBlock):

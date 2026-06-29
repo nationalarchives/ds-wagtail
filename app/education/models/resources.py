@@ -11,6 +11,7 @@ from wagtail.api import APIField
 from wagtail.fields import RichTextField, StreamField
 from wagtail.models import Orderable
 
+from app.core.blocks.image import PartnerLogoListBlock
 from app.core.models import (
     BasePageWithRequiredIntro,
     ContentWarningMixin,
@@ -85,7 +86,6 @@ class Source(Orderable):
     title = models.CharField(
         verbose_name="source title",
         help_text="A unique, descriptive title for the source.",
-        blank=True,
         max_length=160,
     )
 
@@ -237,6 +237,15 @@ class TeachingResourcePage(
         null=True,
     )
 
+    partner_logos = StreamField(
+        [("partner_logos", PartnerLogoListBlock())],
+        verbose_name="partner logos",
+        help_text="Optional section to add logos of partner organisations.",
+        blank=True,
+        null=True,
+        max_num=1,
+    )
+
     content_panels = (
         BasePageWithRequiredIntro.content_panels
         + RequiredHeroImageMixin.content_panels
@@ -272,6 +281,7 @@ class TeachingResourcePage(
                 ],
                 heading="Further information",
             ),
+            FieldPanel("partner_logos"),
         ]
     )
 
@@ -316,5 +326,6 @@ class TeachingResourcePage(
             APIField("background_information"),
             APIField("further_information_title"),
             APIField("further_information"),
+            APIField("partner_logos"),
         ]
     )
