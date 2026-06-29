@@ -2,27 +2,50 @@ import mimetypes
 import uuid
 
 from django.conf import settings
-from django.core.validators import FileExtensionValidator, MinValueValidator
+from django.core.validators import FileExtensionValidator, RegexValidator
 from django.db import models
 from wagtail import blocks
 from wagtail.api import APIField
 from wagtail.fields import RichTextField, StreamField
+from wagtail.rich_text import expand_db_html
 from wagtailmedia.models import AbstractMedia
 from wagtailmedia.settings import wagtailmedia_settings
 
 from app.core.blocks.paragraph import APIRichTextBlock
 from app.core.serializers import RichTextSerializer
+from app.media.time_utils import format_seconds_mmss, parse_chapter_time_to_seconds
 
 
 class MediaChapterSectionBlock(blocks.StructBlock):
-    time = blocks.IntegerBlock(
-        blank=True,
-        default=0,
-        validators=[MinValueValidator(0)],
-        label="Time in seconds",
+    time = blocks.CharBlock(
+        required=True,
+        default="00:00",
+        label="Chapter time",
+        help_text="Enter chapter time as MM:SS.",
+        validators=[
+            RegexValidator(
+                regex=r"^\d{1,3}:[0-5]\d$",
+                message="Enter chapter time as MM:SS.",
+            )
+        ],
     )
     heading = blocks.CharBlock(max_length=20)
     transcript = APIRichTextBlock(required=False, features=["bold", "italic"])
+
+    def to_python(self, value):
+        if isinstance(value, dict):
+            value = value.copy()
+            if "time" in value:
+                total_seconds = parse_chapter_time_to_seconds(value.get("time"))
+                value["time"] = format_seconds_mmss(total_seconds)
+        return super().to_python(value)
+
+    def get_prep_value(self, value):
+        prepped = super().get_prep_value(value)
+        total_seconds = parse_chapter_time_to_seconds(prepped.get("time"))
+
+        prepped["time"] = total_seconds
+        return prepped
 
     class Meta:
         label = "Chapter"
@@ -161,6 +184,28 @@ class EtnaMedia(AbstractMedia):
 
     def mime(self):
         return mimetypes.guess_type(self.filename)[0] or "application/octet-stream"
+
+    def api_chapters(self):
+        chapter_pairs = []
+        for chapter in self.chapters:
+            total_seconds = parse_chapter_time_to_seconds(chapter.value.get("time"))
+            chapter_pairs.append(
+                (
+                    total_seconds,
+                    {
+                        "time": format_seconds_mmss(total_seconds),
+                        "heading": chapter.value["heading"],
+                        "transcript": expand_db_html(
+                            chapter.value["transcript"].source
+                        ),
+                    },
+                )
+            )
+
+        return [
+            chapter_payload
+            for _, chapter_payload in sorted(chapter_pairs, key=lambda pair: pair[0])
+        ]
 
     api_fields = [
         APIField("type"),
