@@ -94,12 +94,12 @@ class ImageSerializer(Serializer):
 
     def __init__(
         self,
-        rendition_size="fill-600x400",
-        jpeg_quality=60,
-        webp_quality=70,
-        background_colour="fff",
-        formats=None,
-        additional_rendition_specs=None,
+        rendition_size: str = "fill-600x400",
+        jpeg_quality: int = 60,
+        webp_quality: int = 70,
+        background_colour: str = "fff",
+        formats: list = None,
+        additional_rendition_specs: dict = None,
         *args,
         **kwargs,
     ):
