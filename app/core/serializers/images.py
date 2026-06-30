@@ -1,9 +1,8 @@
 from rest_framework.serializers import Serializer
-from app.images.models import CustomImage
 
 
 def image_generator(
-    original_image: CustomImage,
+    original_image,
     rendition_size: str = "fill-600x400",
     jpeg_quality: int = 60,
     webp_quality: int = 70,
