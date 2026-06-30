@@ -1,13 +1,15 @@
 from rest_framework.serializers import Serializer
+from app.images.models import CustomImage
 
 
 def image_generator(
-    original_image,
-    rendition_size="fill-600x400",
-    jpeg_quality=60,
-    webp_quality=70,
-    background_colour=None,
-    formats=None,
+    original_image: CustomImage,
+    rendition_size: str = "fill-600x400",
+    jpeg_quality: int = 60,
+    webp_quality: int = 70,
+    background_colour: str | None = None,
+    formats: list | None = None,
+    additional_rendition_specs: dict | None = None,
 ):
     if formats is None:
         formats = ["jpeg", "webp"]
@@ -18,18 +20,33 @@ def image_generator(
         f"|bgcolor-{background_colour}" if background_colour else ""
     )
 
-    rendition_specs = []
-    for fmt in formats:
+    def build_rendition_spec(size: str, fmt: str) -> str:
         if fmt == "jpeg":
-            rendition_specs.append(
-                f"{rendition_size}|format-jpeg|jpegquality-{jpeg_quality}{background_colour_rendition}"
+            return (
+                f"{size}|format-jpeg|jpegquality-{jpeg_quality}"
+                f"{background_colour_rendition}"
             )
-        elif fmt == "webp":
-            rendition_specs.append(
-                f"{rendition_size}|format-webp|webpquality-{webp_quality}{background_colour_rendition}"
+        if fmt == "webp":
+            return (
+                f"{size}|format-webp|webpquality-{webp_quality}"
+                f"{background_colour_rendition}"
             )
-        else:
-            rendition_specs.append(f"{rendition_size}|format-{fmt}")
+        return f"{size}|format-{fmt}"
+
+    rendition_specs = []
+    output_keys_by_spec = {}
+
+    for fmt in formats:
+        spec = build_rendition_spec(rendition_size, fmt)
+        rendition_specs.append(spec)
+        output_keys_by_spec[spec] = fmt
+
+    if additional_rendition_specs:
+        for key, size in additional_rendition_specs.items():
+            for fmt in formats:
+                spec = build_rendition_spec(size, fmt)
+                rendition_specs.append(spec)
+                output_keys_by_spec[spec] = f"{key}_{fmt}"
 
     renditions = original_image.get_renditions(*rendition_specs)
 
@@ -38,8 +55,12 @@ def image_generator(
 
     output = {}
     for spec, rendition in renditions.items():
-        fmt = spec.split("format-")[1].split("|", 1)[0]
-        output[fmt] = {
+        output_key = output_keys_by_spec.get(spec)
+        if not output_key:
+            fmt = spec.split("format-")[1].split("|", 1)[0]
+            output_key = fmt
+
+        output[output_key] = {
             "url": rendition.url,
             "full_url": rendition.full_url,
             "width": rendition.width,
@@ -79,6 +100,7 @@ class ImageSerializer(Serializer):
         webp_quality=70,
         background_colour="fff",
         formats=None,
+        additional_rendition_specs=None,
         *args,
         **kwargs,
     ):
@@ -89,6 +111,7 @@ class ImageSerializer(Serializer):
         self.webp_quality = webp_quality
         self.background_colour = background_colour
         self.formats = formats
+        self.additional_rendition_specs = additional_rendition_specs
         super().__init__(*args, **kwargs)
 
     def to_representation(self, value):
@@ -100,6 +123,7 @@ class ImageSerializer(Serializer):
                 webp_quality=self.webp_quality,
                 background_colour=self.background_colour,
                 formats=self.formats,
+                additional_rendition_specs=self.additional_rendition_specs,
             )
 
             if not image_data:
