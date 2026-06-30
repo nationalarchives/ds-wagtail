@@ -228,7 +228,10 @@ class BasePage(AlertMixin, SocialMixin, CustomHeadlessPreviewMixin, Page):
         APIField("teaser_text"),
         APIField(
             "teaser_image",
-            serializer=ImageSerializer("fill-600x400"),
+            serializer=ImageSerializer(
+                "fill-600x400",
+                additional_rendition_specs={"square": "fill-512x512"},
+            ),
         ),
         APIField("first_published_at"),
         APIField("last_published_at"),
@@ -253,7 +256,10 @@ class BasePage(AlertMixin, SocialMixin, CustomHeadlessPreviewMixin, Page):
         APIField("teaser_text"),
         APIField(
             "teaser_image",
-            serializer=ImageSerializer("fill-600x400"),
+            serializer=ImageSerializer(
+                "fill-600x400",
+                additional_rendition_specs={"square": "fill-512x512"},
+            ),
         ),
     ]
 
