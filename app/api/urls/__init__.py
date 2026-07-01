@@ -3,6 +3,10 @@ from wagtail.api.v2.router import WagtailAPIRouter
 from app.api.urls.blog_posts import BlogPostsAPIViewSet
 from app.api.urls.blogs import BlogsAPIViewSet
 from app.api.urls.catalogue import CatalogueAPIViewSet
+from app.api.urls.education import (
+    EducationResourcesAPIViewSet,
+    EducationSessionsAPIViewSet,
+)
 from app.api.urls.events import EventsAPIViewSet
 from app.api.urls.foi import FreedomOfInformationRequestsAPIViewSet
 from app.api.urls.globals import GlobalsAPIViewSet
@@ -15,6 +19,8 @@ from app.api.urls.tags import ArticleTagsAPIViewSet
 
 api_router = WagtailAPIRouter("wagtailapi")
 api_router.register_endpoint("pages", CustomPagesAPIViewSet)
+api_router.register_endpoint("education/resources", EducationResourcesAPIViewSet)
+api_router.register_endpoint("education/sessions", EducationSessionsAPIViewSet)
 api_router.register_endpoint("page_preview", PagePreviewAPIViewSet)
 api_router.register_endpoint("article_tags", ArticleTagsAPIViewSet)
 api_router.register_endpoint("images", CustomImagesAPIViewSet)
