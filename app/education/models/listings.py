@@ -12,6 +12,12 @@ from app.core.models import (
     RequiredHeroImageMixin,
 )
 from app.core.serializers import DefaultPageSerializer
+from app.education.models.sessions import (
+    EducationSessionPage,
+    EducationSessionPageKeyStageTag,
+    EducationSessionPageThemeTag,
+    EducationSessionPageTimePeriodTag,
+)
 
 from ..serializers import KeyStageSerializer, ThemeSerializer, TimePeriodSerializer
 from .details import KeyStage, Theme, TimePeriod
@@ -138,6 +144,43 @@ class EducationSessionsListingPage(BasePageWithRequiredIntro):
     ]
 
     max_count = 1
+
+    @cached_property
+    def search_filters(self):
+        session_pages = EducationSessionPage.objects.live().public()
+
+        key_stages = (
+            EducationSessionPageKeyStageTag.objects.filter(page__in=session_pages)
+            .values_list("key_stage", flat=True)
+            .distinct()
+        )
+        time_periods = (
+            EducationSessionPageTimePeriodTag.objects.filter(page__in=session_pages)
+            .values_list("time_period", flat=True)
+            .distinct()
+        )
+        themes = (
+            EducationSessionPageThemeTag.objects.filter(page__in=session_pages)
+            .values_list("theme", flat=True)
+            .distinct()
+        )
+
+        return {
+            "key_stage": KeyStageSerializer(
+                KeyStage.objects.filter(id__in=key_stages).order_by("stage", "name"),
+                many=True,
+            ).data,
+            "time_period": TimePeriodSerializer(
+                TimePeriod.objects.filter(id__in=time_periods).order_by(
+                    "year_from", "year_to", "name"
+                ),
+                many=True,
+            ).data,
+            "theme": ThemeSerializer(
+                Theme.objects.filter(id__in=themes).order_by("name"),
+                many=True,
+            ).data,
+        }
 
     featured_education_session = models.ForeignKey(
         "education.EducationSessionPage",
