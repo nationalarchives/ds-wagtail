@@ -1,5 +1,6 @@
 from wagtail.api.v2.views import path
 
+from app.api.filters import EducationTaxonomyFilter, SessionLocationFilter
 from app.api.urls.pages import CustomPagesAPIViewSet
 from app.education.models import EducationSessionPage, TeachingResourcePage
 
@@ -10,11 +11,9 @@ class EducationResourcesAPIViewSet(CustomPagesAPIViewSet):
         ["key_stage", "time_period", "theme"]
     )
 
-    # copied from events.py to replace with appropriate filters
-    # filter_backends = [
-    #     # LocationFilter,
-    #     # EventDateFilter,
-    # ] + CustomPagesAPIViewSet.filter_backends
+    filter_backends = [
+        EducationTaxonomyFilter,
+    ] + CustomPagesAPIViewSet.filter_backends
 
     @classmethod
     def get_urlpatterns(cls):
@@ -29,11 +28,10 @@ class EducationSessionsAPIViewSet(CustomPagesAPIViewSet):
         ["key_stage", "time_period", "theme", "location"]
     )
 
-    # copied from events.py to replace with appropriate filters
-    # filter_backends = [
-    #     # LocationFilter,
-    #     # EventDateFilter,
-    # ] + CustomPagesAPIViewSet.filter_backends
+    filter_backends = [
+        EducationTaxonomyFilter,
+        SessionLocationFilter,
+    ] + CustomPagesAPIViewSet.filter_backends
 
     @classmethod
     def get_urlpatterns(cls):
