@@ -6,7 +6,7 @@ from wagtail.api.v2.utils import BadRequestError
 from wagtail.models import Page, Site
 from wagtail.search.backends.database.postgres.postgres import PostgresSearchResults
 
-from app.education.models import SessionLocation
+from app.education.models.sessions import SessionLocation
 
 from .utils import get_site_from_request
 
