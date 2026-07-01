@@ -13,6 +13,15 @@ from app.core.models import (
 )
 from app.core.serializers import DefaultPageSerializer
 
+from ..serializers import KeyStageSerializer, ThemeSerializer, TimePeriodSerializer
+from .details import KeyStage, Theme, TimePeriod
+from .resources import (
+    TeachingResourcePage,
+    TeachingResourcePageKeyStageTag,
+    TeachingResourcePageThemeTag,
+    TeachingResourcePageTimePeriodTag,
+)
+
 
 class TeachingResourcesListingPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
     """
@@ -32,6 +41,43 @@ class TeachingResourcesListingPage(RequiredHeroImageMixin, BasePageWithRequiredI
     ]
 
     max_count = 1
+
+    @cached_property
+    def search_filters(self):
+        resource_pages = TeachingResourcePage.objects.live().public()
+
+        key_stages = (
+            TeachingResourcePageKeyStageTag.objects.filter(page__in=resource_pages)
+            .values_list("key_stage", flat=True)
+            .distinct()
+        )
+        time_periods = (
+            TeachingResourcePageTimePeriodTag.objects.filter(page__in=resource_pages)
+            .values_list("time_period", flat=True)
+            .distinct()
+        )
+        themes = (
+            TeachingResourcePageThemeTag.objects.filter(page__in=resource_pages)
+            .values_list("theme", flat=True)
+            .distinct()
+        )
+
+        return {
+            "key_stage": KeyStageSerializer(
+                KeyStage.objects.filter(id__in=key_stages).order_by("stage", "name"),
+                many=True,
+            ).data,
+            "time_period": TimePeriodSerializer(
+                TimePeriod.objects.filter(id__in=time_periods).order_by(
+                    "year_from", "year_to", "name"
+                ),
+                many=True,
+            ).data,
+            "theme": ThemeSerializer(
+                Theme.objects.filter(id__in=themes).order_by("name"),
+                many=True,
+            ).data,
+        }
 
     featured_teaching_resource = models.ForeignKey(
         "education.TeachingResourcePage",
@@ -67,6 +113,7 @@ class TeachingResourcesListingPage(RequiredHeroImageMixin, BasePageWithRequiredI
     api_fields = BasePageWithRequiredIntro.api_fields + [
         APIField("featured_teaching_resource", serializer=DefaultPageSerializer()),
         APIField("featured_teaching_resource_teaser_override"),
+        APIField("search_filters"),
     ]
 
     class Meta:
