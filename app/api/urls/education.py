@@ -1,5 +1,8 @@
+from wagtail.api.v2.views import path
+
 from app.api.urls.pages import CustomPagesAPIViewSet
 from app.education.models import EducationSessionPage, TeachingResourcePage
+
 
 class EducationResourcesAPIViewSet(CustomPagesAPIViewSet):
     model = TeachingResourcePage
@@ -7,7 +10,7 @@ class EducationResourcesAPIViewSet(CustomPagesAPIViewSet):
         ["key_stage", "time_period", "theme"]
     )
 
-#copied from events.py to replace with appropriate filters
+    # copied from events.py to replace with appropriate filters
     # filter_backends = [
     #     # LocationFilter,
     #     # EventDateFilter,
@@ -20,14 +23,13 @@ class EducationResourcesAPIViewSet(CustomPagesAPIViewSet):
         ]
 
 
-
 class EducationSessionsAPIViewSet(CustomPagesAPIViewSet):
     model = EducationSessionPage
     known_query_parameters = CustomPagesAPIViewSet.known_query_parameters.union(
         ["key_stage", "time_period", "theme", "location"]
     )
 
-#copied from events.py to replace with appropriate filters
+    # copied from events.py to replace with appropriate filters
     # filter_backends = [
     #     # LocationFilter,
     #     # EventDateFilter,
