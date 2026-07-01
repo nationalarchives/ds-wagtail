@@ -286,8 +286,6 @@ class EventDateFilter(BaseFilterBackend):
 
 def get_multivalue_tags_from_name(request, tag_name):
     tag_values = request.GET.getlist(tag_name)
-    if not tag_values:
-        return []
     if tag_values:
         if any(value == "" for value in tag_values):
             raise BadRequestError(f"{tag_name} cannot be empty")
@@ -296,6 +294,7 @@ def get_multivalue_tags_from_name(request, tag_name):
 
 class EducationTaxonomyFilter(BaseFilterBackend):
     def filter_queryset(self, request, queryset, view):
+        key_stages = []
         key_stage_values = request.GET.getlist("key_stage")
         if key_stage_values:
             try:
@@ -305,9 +304,10 @@ class EducationTaxonomyFilter(BaseFilterBackend):
             except ValueError:
                 raise BadRequestError("key_stage must be one or more integers")
 
-        queryset = queryset.filter(
-            education_keystage_tags__key_stage__stage__in=key_stages
-        )
+        if key_stages:
+            queryset = queryset.filter(
+                education_keystage_tags__key_stage__stage__in=key_stages
+            )
 
         time_periods = get_multivalue_tags_from_name(request, "time_period")
         if time_periods:
@@ -325,7 +325,7 @@ class SessionLocationFilter(BaseFilterBackend):
 
         locations = get_multivalue_tags_from_name(request, "location")
         if not locations:
-            return []
+            return queryset
 
         valid_location_types = {
             value for value, _ in SessionLocation.LocationType.choices
@@ -334,7 +334,7 @@ class SessionLocationFilter(BaseFilterBackend):
         invalid = set(locations) - set(valid_location_types)
         if invalid:
             raise BadRequestError(
-                "location must be one or more of: {', '.join(sorted(valid_location_types))}"
+                f"location must be one or more of: {', '.join(sorted(valid_location_types))}"
             )
 
         return queryset.filter(
