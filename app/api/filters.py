@@ -1,6 +1,7 @@
 import datetime
 
 from django.db.models import Q
+from django.utils.timezone import localdate
 from rest_framework.filters import BaseFilterBackend
 from wagtail.api.v2.utils import BadRequestError
 from wagtail.models import Page, Site
@@ -305,18 +306,35 @@ class EducationTaxonomyFilter(BaseFilterBackend):
                 raise BadRequestError("key_stage must be one or more integers")
 
         if key_stages:
-            queryset = queryset.filter(
-                education_keystage_tags__key_stage__stage__in=key_stages
+            matching_ids = list(
+                queryset.model.objects.filter(
+                    education_keystage_tags__key_stage__stage__in=key_stages
+                )
+                .values_list("id", flat=True)
+                .distinct()
             )
+            queryset = queryset.filter(id__in=matching_ids)
 
         time_periods = get_multivalue_tags_from_name(request, "time_period")
         if time_periods:
-            queryset = queryset.filter(
-                education_time_period_tags__time_period__slug__in=time_periods
+            matching_ids = list(
+                queryset.model.objects.filter(
+                    education_time_period_tags__time_period__slug__in=time_periods
+                )
+                .values_list("id", flat=True)
+                .distinct()
             )
+            queryset = queryset.filter(id__in=matching_ids)
         themes = get_multivalue_tags_from_name(request, "theme")
         if themes:
-            queryset = queryset.filter(education_theme_tags__theme__slug__in=themes)
+            matching_ids = list(
+                queryset.model.objects.filter(
+                    education_theme_tags__theme__slug__in=themes
+                )
+                .values_list("id", flat=True)
+                .distinct()
+            )
+            queryset = queryset.filter(id__in=matching_ids)
         return queryset.distinct()
 
 
@@ -337,6 +355,22 @@ class SessionLocationFilter(BaseFilterBackend):
                 f"location must be one or more of: {', '.join(sorted(valid_location_types))}"
             )
 
+        matching_ids = list(
+            queryset.model.objects.filter(
+                session_locations__location_type__in=locations
+            )
+            .values_list("id", flat=True)
+            .distinct()
+        )
+
+        return queryset.filter(id__in=matching_ids).distinct()
+
+
+class CurrentOrFutureSessionFilter(BaseFilterBackend):
+    def filter_queryset(self, request, queryset, view):
+        today = localdate()
         return queryset.filter(
-            session_locations__location_type__in=locations
-        ).distinct()
+            Q(start_date__gte=today)
+            | Q(end_date__gte=today)
+            | Q(start_date__isnull=True, end_date__isnull=True)  # all year round
+        )
