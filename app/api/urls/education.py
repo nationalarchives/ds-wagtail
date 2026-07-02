@@ -1,6 +1,11 @@
+from django.db.models import Q
+from django.utils.timezone import localdate
 from wagtail.api.v2.views import path
 
-from app.api.filters import EducationTaxonomyFilter, SessionLocationFilter
+from app.api.filters import (
+    EducationTaxonomyFilter,
+    SessionLocationFilter,
+)
 from app.api.urls.pages import CustomPagesAPIViewSet
 from app.education.models import EducationSessionPage, TeachingResourcePage
 
@@ -32,6 +37,15 @@ class EducationSessionsAPIViewSet(CustomPagesAPIViewSet):
         EducationTaxonomyFilter,
         SessionLocationFilter,
     ] + CustomPagesAPIViewSet.filter_backends
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        today = localdate()
+        return queryset.filter(
+            Q(start_date__gte=today)
+            | Q(end_date__gte=today)
+            | Q(start_date__isnull=True, end_date__isnull=True)
+        )
 
     @classmethod
     def get_urlpatterns(cls):

@@ -250,6 +250,7 @@ class EducationSessionsListingPage(BasePageWithRequiredIntro):
             ),
         ),
         APIField("featured_education_session_teaser_override"),
+        APIField("search_filters"),
     ]
 
     class Meta:
