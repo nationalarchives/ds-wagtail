@@ -369,8 +369,14 @@ class SessionLocationFilter(BaseFilterBackend):
 class CurrentOrFutureSessionFilter(BaseFilterBackend):
     def filter_queryset(self, request, queryset, view):
         today = localdate()
-        return queryset.filter(
-            Q(start_date__gte=today)
-            | Q(end_date__gte=today)
-            | Q(start_date__isnull=True, end_date__isnull=True)  # all year round
+        matching_ids = list(
+            queryset.model.objects.filter(
+                Q(start_date__gte=today)
+                | Q(end_date__gte=today)
+                | Q(start_date__isnull=True, end_date__isnull=True)
+            )
+            .values_list("id", flat=True)
+            .distinct()
         )
+
+        return queryset.filter(id__in=matching_ids).distinct()
