@@ -1,5 +1,7 @@
 from django.db import models
+from django.db.models import Q
 from django.utils.functional import cached_property
+from django.utils.timezone import localdate
 from wagtail.admin.panels import (
     FieldPanel,
     MultiFieldPanel,
@@ -17,6 +19,7 @@ from app.education.models.sessions import (
     EducationSessionPageKeyStageTag,
     EducationSessionPageThemeTag,
     EducationSessionPageTimePeriodTag,
+    SessionLocation,
 )
 
 from ..serializers import KeyStageSerializer, ThemeSerializer, TimePeriodSerializer
@@ -147,21 +150,43 @@ class EducationSessionsListingPage(BasePageWithRequiredIntro):
 
     @cached_property
     def search_filters(self):
-        session_pages = EducationSessionPage.objects.live().public()
+        today = localdate()
+        current_or_future_session_pages = (
+            EducationSessionPage.objects.live()
+            .public()
+            .filter(
+                Q(start_date__gte=today)
+                | Q(end_date__gte=today)
+                | Q(start_date__isnull=True, end_date__isnull=True)  # all year round
+            )
+        )
 
         key_stages = (
-            EducationSessionPageKeyStageTag.objects.filter(page__in=session_pages)
+            EducationSessionPageKeyStageTag.objects.filter(
+                page__in=current_or_future_session_pages
+            )
             .values_list("key_stage", flat=True)
             .distinct()
         )
         time_periods = (
-            EducationSessionPageTimePeriodTag.objects.filter(page__in=session_pages)
+            EducationSessionPageTimePeriodTag.objects.filter(
+                page__in=current_or_future_session_pages
+            )
             .values_list("time_period", flat=True)
             .distinct()
         )
         themes = (
-            EducationSessionPageThemeTag.objects.filter(page__in=session_pages)
+            EducationSessionPageThemeTag.objects.filter(
+                page__in=current_or_future_session_pages
+            )
             .values_list("theme", flat=True)
+            .distinct()
+        )
+
+        available_location_types = set(
+            SessionLocation.objects.filter(page__in=current_or_future_session_pages)
+            .exclude(location_type__isnull=True)
+            .values_list("location_type", flat=True)
             .distinct()
         )
 
@@ -180,6 +205,14 @@ class EducationSessionsListingPage(BasePageWithRequiredIntro):
                 Theme.objects.filter(id__in=themes).order_by("name"),
                 many=True,
             ).data,
+            "location": [
+                {
+                    "name": label,
+                    "slug": value,
+                }
+                for value, label in SessionLocation.LocationType.choices
+                if value in available_location_types
+            ],
         }
 
     featured_education_session = models.ForeignKey(
