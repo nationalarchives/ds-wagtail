@@ -4,7 +4,8 @@ from wagtail.blocks import CharBlock
 
 from app.core.blocks.image import APIImageChooserBlock
 
-from .client import CIIMClient
+from .fields import RecordField
+from .serializers import RecordSerializer
 
 
 class RecordChooserBlock(CharBlock):
@@ -16,12 +17,19 @@ class RecordChooserBlock(CharBlock):
     """
 
     def get_api_representation(self, value, context=None):
-        default_params = {
-            "id": value,
-        }
-        client = CIIMClient(default_params=default_params)
+        if not value:
+            return None
 
-        return client.get_serialized_record()
+        serializer = RecordSerializer()
+        return serializer.to_representation(value)
+
+    def clean(self, value):
+        """
+        Validate the record ID using the RecordField validation logic.
+        """
+        field = RecordField()
+        field.validate(value, None)
+        return value
 
     class Meta:
         icon = "archive"
