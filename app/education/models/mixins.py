@@ -41,6 +41,7 @@ class EducationTaxonomyMixin:
                 "education_keystage_tags",
                 label="Key stage tag",
                 heading="Key stages",
+                min_num=1,
             ),
             InlinePanel(
                 "education_time_period_tags",
