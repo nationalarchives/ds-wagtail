@@ -188,12 +188,13 @@ class EtnaMedia(AbstractMedia):
     def api_chapters(self):
         chapter_pairs = []
         for chapter in self.chapters:
-            total_seconds = parse_chapter_time_to_seconds(chapter.value.get("time"))
+            time_str = chapter.value["time"]  # already normalised to HH:MM:SS by to_python
+            sort_key = parse_chapter_time_to_seconds(time_str)
             chapter_pairs.append(
                 (
-                    total_seconds,
+                    sort_key,
                     {
-                        "time": format_seconds_hhmmss(total_seconds),
+                        "time": time_str,
                         "heading": chapter.value["heading"],
                         "transcript": expand_db_html(
                             chapter.value["transcript"].source
