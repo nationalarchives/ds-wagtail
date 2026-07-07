@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.utils.functional import cached_property
 from wagtail.admin.panels import InlinePanel
 
@@ -34,6 +35,11 @@ class EducationTaxonomyMixin:
             )
         ]
 
+    def clean(self):
+        super().clean()
+        if not self.education_keystage_tags.exists():
+            raise ValidationError("At least one key stage is required.")
+
     @staticmethod
     def taxonomy_promote_panels():
         return [
@@ -41,6 +47,7 @@ class EducationTaxonomyMixin:
                 "education_keystage_tags",
                 label="Key stage tag",
                 heading="Key stages",
+                min_num=1,
             ),
             InlinePanel(
                 "education_time_period_tags",
