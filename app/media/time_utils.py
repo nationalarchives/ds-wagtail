@@ -10,9 +10,6 @@ def parse_chapter_time_to_seconds(raw_value):
         if ":" in value:
             parts = value.split(":")
             try:
-                if len(parts) == 2:
-                    minutes, seconds = map(int, parts)
-                    return max(minutes, 0) * 60 + max(seconds, 0)
                 if len(parts) == 3:
                     hours, minutes, seconds = map(int, parts)
                     return max(hours, 0) * 3600 + max(minutes, 0) * 60 + max(seconds, 0)
