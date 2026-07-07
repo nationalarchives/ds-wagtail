@@ -21,6 +21,8 @@ def parse_chapter_time_to_seconds(raw_value):
     return 0
 
 
-def format_seconds_mmss(total_seconds):
-    minutes, seconds = divmod(max(int(total_seconds or 0), 0), 60)
-    return f"{minutes:02d}:{seconds:02d}"
+def format_seconds_hhmmss(total_seconds):
+    total_seconds = max(int(total_seconds or 0), 0)
+    hours, remainder = divmod(total_seconds, 3600)
+    minutes, seconds = divmod(remainder, 60)
+    return f"{hours:02d}:{minutes:02d}:{seconds:02d}"

@@ -13,19 +13,19 @@ from wagtailmedia.settings import wagtailmedia_settings
 
 from app.core.blocks.paragraph import APIRichTextBlock
 from app.core.serializers import RichTextSerializer
-from app.media.time_utils import format_seconds_mmss, parse_chapter_time_to_seconds
+from app.media.time_utils import format_seconds_hhmmss, parse_chapter_time_to_seconds
 
 
 class MediaChapterSectionBlock(blocks.StructBlock):
     time = blocks.CharBlock(
         required=True,
-        default="00:00",
+        default="00:00:00",
         label="Chapter time",
-        help_text="Enter chapter time as MM:SS.",
+        help_text="Enter chapter time as HH:MM:SS.",
         validators=[
             RegexValidator(
-                regex=r"^\d{1,3}:[0-5]\d$",
-                message="Enter chapter time as MM:SS.",
+                regex=r"^\d{1,3}:[0-5]\d:[0-5]\d$",
+                message="Enter chapter time as HH:MM:SS.",
             )
         ],
     )
@@ -37,7 +37,7 @@ class MediaChapterSectionBlock(blocks.StructBlock):
             value = value.copy()
             if "time" in value:
                 total_seconds = parse_chapter_time_to_seconds(value.get("time"))
-                value["time"] = format_seconds_mmss(total_seconds)
+                value["time"] = format_seconds_hhmmss(total_seconds)
         return super().to_python(value)
 
     def get_prep_value(self, value):
@@ -193,7 +193,7 @@ class EtnaMedia(AbstractMedia):
                 (
                     total_seconds,
                     {
-                        "time": format_seconds_mmss(total_seconds),
+                        "time": format_seconds_hhmmss(total_seconds),
                         "heading": chapter.value["heading"],
                         "transcript": expand_db_html(
                             chapter.value["transcript"].source
