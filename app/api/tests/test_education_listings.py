@@ -132,36 +132,35 @@ class EducationListingsAPITest(WagtailPageTestCase):
         )
 
     def create_resource_page(self, slug, title, key_stages, time_periods, themes):
-        page = self.publish_page(
-            self.resources_listing_page,
-            TeachingResourcePage(
-                title=title,
-                slug=slug,
-                teaser_text="Resource teaser",
-                intro="<p>Resource intro</p>",
-                hero_image=self.test_image,
-                teachers_notes=[
-                    {
-                        "type": "paragraph",
-                        "value": {
-                            "text": "<p>Teacher notes</p>",
-                        },
-                    }
-                ],
-            ),
+        page = TeachingResourcePage(
+            title=title,
+            slug=slug,
+            teaser_text="Resource teaser",
+            intro="<p>Resource intro</p>",
+            hero_image=self.test_image,
+            teachers_notes=[
+                {
+                    "type": "paragraph",
+                    "value": {
+                        "text": "<p>Teacher notes</p>",
+                    },
+                }
+            ],
         )
 
-        for key_stage in key_stages:
-            TeachingResourcePageKeyStageTag.objects.create(
-                page=page, key_stage=key_stage
-            )
-        for time_period in time_periods:
-            TeachingResourcePageTimePeriodTag.objects.create(
-                page=page,
-                time_period=time_period,
-            )
-        for theme in themes:
-            TeachingResourcePageThemeTag.objects.create(page=page, theme=theme)
+        page.education_keystage_tags = [
+            TeachingResourcePageKeyStageTag(key_stage=key_stage)
+            for key_stage in key_stages
+        ]
+        page.education_time_period_tags = [
+            TeachingResourcePageTimePeriodTag(time_period=time_period)
+            for time_period in time_periods
+        ]
+        page.education_theme_tags = [
+            TeachingResourcePageThemeTag(theme=theme) for theme in themes
+        ]
+
+        page = self.publish_page(self.resources_listing_page, page)
 
         return page
 
@@ -176,39 +175,40 @@ class EducationListingsAPITest(WagtailPageTestCase):
         start_date=None,
         end_date=None,
     ):
-        page = self.publish_page(
-            self.sessions_listing_page,
-            EducationSessionPage(
-                title=title,
-                slug=slug,
-                teaser_text="Session teaser",
-                intro="<p>Session intro</p>",
-                hero_image=self.test_image,
-                start_date=start_date,
-                end_date=end_date,
-            ),
+        page = EducationSessionPage(
+            title=title,
+            slug=slug,
+            teaser_text="Session teaser",
+            intro="<p>Session intro</p>",
+            hero_image=self.test_image,
+            start_date=start_date,
+            end_date=end_date,
         )
 
-        for key_stage in key_stages:
-            EducationSessionPageKeyStageTag.objects.create(
-                page=page, key_stage=key_stage
-            )
-        for time_period in time_periods:
-            EducationSessionPageTimePeriodTag.objects.create(
-                page=page,
-                time_period=time_period,
-            )
-        for theme in themes:
-            EducationSessionPageThemeTag.objects.create(page=page, theme=theme)
+        page.education_keystage_tags = [
+            EducationSessionPageKeyStageTag(key_stage=key_stage)
+            for key_stage in key_stages
+        ]
+        page.education_time_period_tags = [
+            EducationSessionPageTimePeriodTag(time_period=time_period)
+            for time_period in time_periods
+        ]
+        page.education_theme_tags = [
+            EducationSessionPageThemeTag(theme=theme) for theme in themes
+        ]
+
+        location_objects = []
         for location_type in location_types:
             kwargs = {
-                "page": page,
                 "location_type": location_type,
                 "duration": "1 hour",
             }
             if location_type == SessionLocation.LocationType.YOUR_SCHOOL:
                 kwargs["region"] = SessionLocation.Regions.NORTH_WEST
-            SessionLocation.objects.create(**kwargs)
+            location_objects.append(SessionLocation(**kwargs))
+        page.session_locations = location_objects
+
+        page = self.publish_page(self.sessions_listing_page, page)
 
         return page
 
