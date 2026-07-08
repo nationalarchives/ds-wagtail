@@ -28,7 +28,7 @@
 
   {%- set content = "<p>You can continue editing using the button below.</p>" -%}
 
-  {%- set cta_buttons = [
+  {%- set ctaButtons = [
     {
       "text": "Edit page",
       "href": base_url ~ url_for('wagtailadmin_pages:edit', page.id)
