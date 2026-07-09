@@ -8,5 +8,6 @@ def settings_vars(request):
         "BUILD_VERSION": getattr(settings, "BUILD_VERSION", ""),
         "IMAGE_PAGE_URL": MEDIA_PAGE_URL + "/image/",
         "VIDEO_PAGE_URL": MEDIA_PAGE_URL + "/video/",
-        "AUDIO_PAGE_URL": MEDIA_PAGE_URL + "/video/", # TODO: Update to /audio/ when implemented in frontend
+        "AUDIO_PAGE_URL": MEDIA_PAGE_URL
+        + "/video/",  # TODO: Update to /audio/ when implemented in frontend
     }
