@@ -241,7 +241,7 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 MEDIA_ROOT = "/media"
 MEDIA_URL = "media/"
-MEDIA_PAGE_URL = os.getenv("MEDIA_PAGE_URL", WAGTAILADMIN_BASE_URL)
+MEDIA_PAGE_URL = os.getenv("MEDIA_PAGE_URL", WAGTAILAPI_MEDIA_BASE_URL)
 
 WAGTAILMEDIA = {
     "MEDIA_MODEL": "media.EtnaMedia",
