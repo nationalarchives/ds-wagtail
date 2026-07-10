@@ -191,6 +191,14 @@ class EducationSessionsListingPage(BasePageWithRequiredIntro):
             .distinct()
         )
 
+        available_regions = set(
+            SessionLocation.objects.filter(page__in=current_or_future_session_pages)
+            .exclude(region__isnull=True)
+            .exclude(region="")
+            .values_list("region", flat=True)
+            .distinct()
+        )
+
         return {
             "key_stage": KeyStageSerializer(
                 KeyStage.objects.filter(id__in=key_stages).order_by("stage", "name"),
@@ -213,6 +221,14 @@ class EducationSessionsListingPage(BasePageWithRequiredIntro):
                 }
                 for value, label in SessionLocation.LocationType.choices
                 if value in available_location_types
+            ],
+            "regions": [
+                {
+                    "name": label,
+                    "slug": value.replace("_", "-"),
+                }
+                for value, label in SessionLocation.Regions.choices
+                if value in available_regions
             ],
         }
 
