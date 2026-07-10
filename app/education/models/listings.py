@@ -186,6 +186,7 @@ class EducationSessionsListingPage(BasePageWithRequiredIntro):
         available_location_types = set(
             SessionLocation.objects.filter(page__in=current_or_future_session_pages)
             .exclude(location_type__isnull=True)
+            .exclude(location_type=SessionLocation.LocationType.CUSTOM)
             .values_list("location_type", flat=True)
             .distinct()
         )
