@@ -1,10 +1,13 @@
 import datetime
 
 from django.db.models import Q
+from django.utils.timezone import localdate
 from rest_framework.filters import BaseFilterBackend
 from wagtail.api.v2.utils import BadRequestError
 from wagtail.models import Page, Site
 from wagtail.search.backends.database.postgres.postgres import PostgresSearchResults
+
+from app.education.models.sessions import SessionLocation
 
 from .utils import get_site_from_request
 
@@ -280,3 +283,100 @@ class EventDateFilter(BaseFilterBackend):
             queryset = queryset.filter(start_date__lte=to_date)
 
         return queryset
+
+
+def get_multivalue_tags_from_name(request, tag_name):
+    tag_values = request.GET.getlist(tag_name)
+    if tag_values:
+        if any(value == "" for value in tag_values):
+            raise BadRequestError(f"{tag_name} cannot be empty")
+        return tag_values
+
+
+class EducationTaxonomyFilter(BaseFilterBackend):
+    def filter_queryset(self, request, queryset, view):
+        key_stages = []
+        key_stage_values = request.GET.getlist("key_stage")
+        if key_stage_values:
+            try:
+                key_stages = [int(value) for value in key_stage_values if value != ""]
+                if len(key_stages) != len(key_stage_values):
+                    raise ValueError
+            except ValueError:
+                raise BadRequestError("key_stage must be one or more integers")
+
+        if key_stages:
+            matching_ids = list(
+                queryset.model.objects.filter(
+                    education_keystage_tags__key_stage__stage__in=key_stages
+                )
+                .values_list("id", flat=True)
+                .distinct()
+            )
+            queryset = queryset.filter(id__in=matching_ids)
+
+        time_periods = get_multivalue_tags_from_name(request, "time_period")
+        if time_periods:
+            matching_ids = list(
+                queryset.model.objects.filter(
+                    education_time_period_tags__time_period__slug__in=time_periods
+                )
+                .values_list("id", flat=True)
+                .distinct()
+            )
+            queryset = queryset.filter(id__in=matching_ids)
+        themes = get_multivalue_tags_from_name(request, "theme")
+        if themes:
+            matching_ids = list(
+                queryset.model.objects.filter(
+                    education_theme_tags__theme__slug__in=themes
+                )
+                .values_list("id", flat=True)
+                .distinct()
+            )
+            queryset = queryset.filter(id__in=matching_ids)
+        return queryset.distinct()
+
+
+class SessionLocationFilter(BaseFilterBackend):
+    def filter_queryset(self, request, queryset, view):
+
+        locations = get_multivalue_tags_from_name(request, "location")
+        if not locations:
+            return queryset
+
+        valid_location_types = {
+            value for value, _ in SessionLocation.LocationType.choices
+        }
+
+        invalid = set(locations) - set(valid_location_types)
+        if invalid:
+            raise BadRequestError(
+                f"location must be one or more of: {', '.join(sorted(valid_location_types))}"
+            )
+
+        matching_ids = list(
+            queryset.model.objects.filter(
+                session_locations__location_type__in=locations
+            )
+            .values_list("id", flat=True)
+            .distinct()
+        )
+
+        return queryset.filter(id__in=matching_ids).distinct()
+
+
+class CurrentOrFutureSessionFilter(BaseFilterBackend):
+    def filter_queryset(self, request, queryset, view):
+        today = localdate()
+        matching_ids = list(
+            queryset.model.objects.filter(
+                Q(start_date__gte=today)
+                | Q(end_date__gte=today)
+                | Q(start_date__isnull=True, end_date__isnull=True)
+            )
+            .values_list("id", flat=True)
+            .distinct()
+        )
+
+        return queryset.filter(id__in=matching_ids).distinct()
