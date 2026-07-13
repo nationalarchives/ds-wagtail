@@ -360,7 +360,12 @@ def location_query(location_type, regions=None):
 
 class SessionLocationFilter(BaseFilterBackend):
     def filter_queryset(self, request, queryset, view):
-        valid_location_types = {v for v, _ in SessionLocation.LocationType.choices}
+        LT = SessionLocation.LocationType
+        valid_location_types = {
+            LT.NATIONAL_ARCHIVES,
+            LT.ONLINE,
+            LT.YOUR_SCHOOL,
+        }
         valid_regions = {v for v, _ in SessionLocation.Regions.choices}
 
         locations = get_validated_values(request, "location", valid_location_types)
@@ -371,7 +376,6 @@ class SessionLocationFilter(BaseFilterBackend):
         if not locations and not regions:
             return queryset
 
-        LT = SessionLocation.LocationType
         query = Q()
 
         if LT.ONLINE in locations:
@@ -387,7 +391,11 @@ class SessionLocationFilter(BaseFilterBackend):
         if LT.YOUR_SCHOOL in locations:
             query |= location_query(LT.YOUR_SCHOOL, regions)
 
-        return queryset.filter(query).distinct()
+        matching_ids = list(
+            queryset.model.objects.filter(query).values_list("id", flat=True).distinct()
+        )
+
+        return queryset.filter(id__in=matching_ids).distinct()
 
 
 class CurrentOrFutureSessionFilter(BaseFilterBackend):

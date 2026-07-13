@@ -174,6 +174,7 @@ class EducationListingsAPITest(WagtailPageTestCase):
         location_types,
         start_date=None,
         end_date=None,
+        region=None,
     ):
         page = EducationSessionPage(
             title=title,
@@ -203,8 +204,11 @@ class EducationListingsAPITest(WagtailPageTestCase):
                 "location_type": location_type,
                 "duration": "1 hour",
             }
-            if location_type == SessionLocation.LocationType.YOUR_SCHOOL:
-                kwargs["region"] = SessionLocation.Regions.NORTH_WEST
+            if location_type in {
+                SessionLocation.LocationType.YOUR_SCHOOL,
+                SessionLocation.LocationType.CUSTOM,
+            }:
+                kwargs["region"] = region or SessionLocation.Regions.NORTH_WEST
             location_objects.append(SessionLocation(**kwargs))
         page.session_locations = location_objects
 
@@ -367,6 +371,7 @@ class EducationListingsAPITest(WagtailPageTestCase):
             themes=[self.medicine_welfare],
             location_types=[SessionLocation.LocationType.YOUR_SCHOOL],
             start_date=future_date,
+            region=SessionLocation.Regions.NORTH_EAST,
         )
         self.create_session_page(
             slug="mouse-custom-south-west",
@@ -376,6 +381,7 @@ class EducationListingsAPITest(WagtailPageTestCase):
             themes=[self.medicine_welfare],
             location_types=[SessionLocation.LocationType.CUSTOM],
             start_date=future_date,
+            region=SessionLocation.Regions.SOUTH_WEST,
         )
         self.create_session_page(
             slug="mouse-at-tna",
