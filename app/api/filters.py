@@ -338,19 +338,6 @@ class EducationTaxonomyFilter(BaseFilterBackend):
         return queryset.distinct()
 
 
-def get_validated_values(request, param_name, valid_values, normalize=None):
-    values = get_multivalue_tags_from_name(request, param_name) or []
-    if not values:
-        return set()
-    normalized = {normalize(v) if normalize else v for v in values}
-    invalid = normalized - valid_values
-    if invalid:
-        raise BadRequestError(
-            f"{param_name} must be one or more of: {', '.join(sorted(valid_values))}"
-        )
-    return normalized
-
-
 def location_query(location_type, regions=None):
     q = Q(session_locations__location_type=location_type)
     if regions:
@@ -368,10 +355,20 @@ class SessionLocationFilter(BaseFilterBackend):
         }
         valid_regions = {v for v, _ in SessionLocation.Regions.choices}
 
-        locations = get_validated_values(request, "location", valid_location_types)
-        regions = get_validated_values(
-            request, "region", valid_regions, normalize=lambda v: v.replace("-", "_")
-        )
+        locations = set(get_multivalue_tags_from_name(request, "location") or [])
+        invalid_locations = locations - valid_location_types
+        if invalid_locations:
+            raise BadRequestError(
+                "location must be one or more of: "
+                f"{', '.join(sorted(valid_location_types))}"
+            )
+
+        regions = set(get_multivalue_tags_from_name(request, "region") or [])
+        invalid_regions = regions - valid_regions
+        if invalid_regions:
+            raise BadRequestError(
+                f"region must be one or more of: {', '.join(sorted(valid_regions))}"
+            )
 
         if not locations and not regions:
             return queryset

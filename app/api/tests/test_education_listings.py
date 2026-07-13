@@ -394,7 +394,7 @@ class EducationListingsAPITest(WagtailPageTestCase):
         )
 
         response = self.request_api(
-            "/api/v2/education/sessions/?region=north-east&region=south-west"
+            "/api/v2/education/sessions/?region=north_east&region=south_west"
         )
 
         self.assertEqual(response.status_code, 200, response.content.decode())
