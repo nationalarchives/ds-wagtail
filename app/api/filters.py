@@ -338,32 +338,53 @@ class EducationTaxonomyFilter(BaseFilterBackend):
         return queryset.distinct()
 
 
+def get_validated_values(request, param_name, valid_values, normalize=None):
+    values = get_multivalue_tags_from_name(request, param_name) or []
+    if not values:
+        return set()
+    normalized = {normalize(v) if normalize else v for v in values}
+    invalid = normalized - valid_values
+    if invalid:
+        raise BadRequestError(
+            f"{param_name} must be one or more of: {', '.join(sorted(valid_values))}"
+        )
+    return normalized
+
+
+def location_query(location_type, regions=None):
+    q = Q(session_locations__location_type=location_type)
+    if regions:
+        q &= Q(session_locations__region__in=regions)
+    return q
+
+
 class SessionLocationFilter(BaseFilterBackend):
     def filter_queryset(self, request, queryset, view):
+        valid_location_types = {v for v, _ in SessionLocation.LocationType.choices}
+        valid_regions = {v for v, _ in SessionLocation.Regions.choices}
 
-        locations = get_multivalue_tags_from_name(request, "location")
-        if not locations:
-            return queryset
-
-        valid_location_types = {
-            value for value, _ in SessionLocation.LocationType.choices
-        }
-
-        invalid = set(locations) - set(valid_location_types)
-        if invalid:
-            raise BadRequestError(
-                f"location must be one or more of: {', '.join(sorted(valid_location_types))}"
-            )
-
-        matching_ids = list(
-            queryset.model.objects.filter(
-                session_locations__location_type__in=locations
-            )
-            .values_list("id", flat=True)
-            .distinct()
+        locations = get_validated_values(request, "location", valid_location_types)
+        regions = get_validated_values(
+            request, "region", valid_regions, normalize=lambda v: v.replace("-", "_")
         )
 
-        return queryset.filter(id__in=matching_ids).distinct()
+        if not locations and not regions:
+            return queryset
+
+        LT = SessionLocation.LocationType
+        query = location_query(LT.NATIONAL_ARCHIVES)
+
+        if LT.ONLINE in locations:
+            query |= location_query(LT.ONLINE)
+
+        if regions and not locations:
+            query |= location_query(LT.CUSTOM, regions)
+            query |= location_query(LT.YOUR_SCHOOL, regions)
+
+        if LT.YOUR_SCHOOL in locations:
+            query |= location_query(LT.YOUR_SCHOOL, regions)
+
+        return queryset.filter(query).distinct()
 
 
 class CurrentOrFutureSessionFilter(BaseFilterBackend):
