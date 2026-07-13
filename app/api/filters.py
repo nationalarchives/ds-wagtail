@@ -372,10 +372,13 @@ class SessionLocationFilter(BaseFilterBackend):
             return queryset
 
         LT = SessionLocation.LocationType
-        query = location_query(LT.NATIONAL_ARCHIVES)
+        query = Q()
 
         if LT.ONLINE in locations:
             query |= location_query(LT.ONLINE)
+
+        if LT.NATIONAL_ARCHIVES in locations:
+            query |= location_query(LT.NATIONAL_ARCHIVES)
 
         if regions and not locations:
             query |= location_query(LT.CUSTOM, regions)
