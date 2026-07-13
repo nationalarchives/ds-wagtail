@@ -381,12 +381,12 @@ class SessionLocationFilter(BaseFilterBackend):
         if LT.NATIONAL_ARCHIVES in locations:
             query |= location_query(LT.NATIONAL_ARCHIVES)
 
-        if regions and not locations:
-            query |= location_query(LT.CUSTOM, regions)
-            query |= location_query(LT.YOUR_SCHOOL, regions)
-
-        if LT.YOUR_SCHOOL in locations:
-            query |= location_query(LT.YOUR_SCHOOL, regions)
+        if regions:
+            if LT.YOUR_SCHOOL in locations:
+                query |= location_query(LT.YOUR_SCHOOL, regions)
+            else:
+                query |= location_query(LT.CUSTOM, regions)
+                query |= location_query(LT.YOUR_SCHOOL, regions)
 
         matching_ids = list(
             queryset.model.objects.filter(query).values_list("id", flat=True).distinct()
