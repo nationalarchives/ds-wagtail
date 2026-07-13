@@ -3,6 +3,27 @@ from wagtail.rich_text import expand_db_html
 from wagtailmedia.blocks import AbstractMediaChooserBlock
 
 from app.core.blocks.image import APIImageChooserBlock
+from app.media.time_utils import format_seconds_hhmmss, parse_chapter_time_to_seconds
+
+
+class ChapterTimeBlock(blocks.CharBlock):
+    def to_python(self, value):
+        if value in (None, ""):
+            return super().to_python(value)
+
+        formatted_value = format_seconds_hhmmss(parse_chapter_time_to_seconds(value))
+        return super().to_python(formatted_value)
+
+    def get_prep_value(self, value):
+        prepped_value = super().get_prep_value(value)
+        return parse_chapter_time_to_seconds(prepped_value)
+
+    def get_form_state(self, value):
+        if value in (None, ""):
+            return super().get_form_state(value)
+
+        formatted_value = format_seconds_hhmmss(parse_chapter_time_to_seconds(value))
+        return super().get_form_state(formatted_value)
 
 
 class MediaChooserBlock(AbstractMediaChooserBlock):

@@ -13,11 +13,12 @@ from wagtailmedia.settings import wagtailmedia_settings
 
 from app.core.blocks.paragraph import APIRichTextBlock
 from app.core.serializers import RichTextSerializer
+from app.media.blocks import ChapterTimeBlock
 from app.media.time_utils import format_seconds_hhmmss, parse_chapter_time_to_seconds
 
 
 class MediaChapterSectionBlock(blocks.StructBlock):
-    time = blocks.CharBlock(
+    time = ChapterTimeBlock(
         required=True,
         default="00:00:00",
         label="Chapter time",
@@ -31,21 +32,6 @@ class MediaChapterSectionBlock(blocks.StructBlock):
     )
     heading = blocks.CharBlock(max_length=20)
     transcript = APIRichTextBlock(required=False, features=["bold", "italic"])
-
-    def to_python(self, value):
-        if isinstance(value, dict):
-            value = value.copy()
-            if "time" in value:
-                total_seconds = parse_chapter_time_to_seconds(value.get("time"))
-                value["time"] = format_seconds_hhmmss(total_seconds)
-        return super().to_python(value)
-
-    def get_prep_value(self, value):
-        prepped = super().get_prep_value(value)
-        total_seconds = parse_chapter_time_to_seconds(prepped.get("time"))
-
-        prepped["time"] = total_seconds
-        return prepped
 
     class Meta:
         label = "Chapter"
@@ -188,9 +174,9 @@ class EtnaMedia(AbstractMedia):
     def api_chapters(self):
         chapter_pairs = []
         for chapter in self.chapters:
-            time_str = chapter.value[
-                "time"
-            ]  # already normalised to HH:MM:SS by to_python
+            time_str = format_seconds_hhmmss(
+                parse_chapter_time_to_seconds(chapter.value["time"])
+            )
             sort_key = parse_chapter_time_to_seconds(time_str)
             chapter_pairs.append(
                 (
