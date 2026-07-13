@@ -208,10 +208,12 @@ class PersonPage(BasePage):
 
     default_api_fields = BasePage.default_api_fields + [
         APIField("role"),
-        APIField("image", serializer=ImageSerializer(rendition_size="fill-512x512")),
         APIField(
-            "image_small",
-            serializer=ImageSerializer(rendition_size="fill-128x128", source="image"),
+            "image",
+            serializer=ImageSerializer(
+                rendition_size="fill-512x512",
+                additional_rendition_specs={"small": "fill-128x128"},
+            ),
         ),
         APIField("first_name"),
         APIField("last_name"),
@@ -224,10 +226,12 @@ class PersonPage(BasePage):
         APIField("last_name"),
         APIField("role"),
         APIField("role_tags"),
-        APIField("image", serializer=ImageSerializer(rendition_size="fill-512x512")),
         APIField(
-            "image_small",
-            serializer=ImageSerializer(rendition_size="fill-128x128", source="image"),
+            "image",
+            serializer=ImageSerializer(
+                rendition_size="fill-512x512",
+                additional_rendition_specs={"small": "fill-128x128"},
+            ),
         ),
         APIField("summary", serializer=RichTextSerializer()),
         APIField("research_summary"),
