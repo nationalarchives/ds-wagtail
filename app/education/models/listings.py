@@ -225,7 +225,7 @@ class EducationSessionsListingPage(BasePageWithRequiredIntro):
             "regions": [
                 {
                     "name": label,
-                    "slug": value.replace("_", "-"),
+                    "slug": value,
                 }
                 for value, label in SessionLocation.Regions.choices
                 if value in available_regions
