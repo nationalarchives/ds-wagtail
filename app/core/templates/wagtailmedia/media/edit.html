@@ -1,0 +1,18 @@
+{% extends "wagtailmedia/media/edit.html" %}
+
+{% block form_row %}
+    <div class="row row-flush nice-padding">
+        <div class="col10">
+            {% if media.type == "video" %}
+                <p>
+                    View live video page at: <a href="{{ VIDEO_PAGE_URL }}{{ media.uuid }}" target="_blank" rel="noreferrer">{{ VIDEO_PAGE_URL }}{{ media.uuid }}</a>
+                </p>
+            {% else %}
+                <p>
+                    View live audio page at: <a href="{{ AUDIO_PAGE_URL }}{{ media.uuid }}" target="_blank" rel="noreferrer">{{ AUDIO_PAGE_URL }}{{ media.uuid }}</a>
+                </p>
+            {% endif %}
+        </div>
+    </div>
+    {{ block.super }}
+{% endblock %}
