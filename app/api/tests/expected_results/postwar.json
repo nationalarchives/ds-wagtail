@@ -93,22 +93,13 @@
             "width": 100,
             "height": 40
         },
-        "transcript": null,
-        "translation": null,
-        "copyright": null
-    },
-    "hero_image_small": {
-        "id": 7,
-        "uuid": "00000000-0000-0000-0000-000000000000",
-        "title": "An image",
-        "description": "",
-        "jpeg": {
+        "small_jpeg": {
             "url": "/media/images/example.2e16d0ba.fill-900x600.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
             "full_url": "http://localhost/media/images/example.2e16d0ba.fill-900x600.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
             "width": 100,
             "height": 68
         },
-        "webp": {
+        "small_webp": {
             "url": "/media/images/exampl.2e16d0ba.fill-900x600.format-webp.webpquality-70.bgcolor-fff.webp",
             "full_url": "http://localhost/media/images/exampl.2e16d0ba.fill-900x600.format-webp.webpquality-70.bgcolor-fff.webp",
             "width": 100,
