@@ -406,6 +406,44 @@ class EducationListingsAPITest(WagtailPageTestCase):
             {"Mouse school north east", "Mouse custom south west"},
         )
 
+    def test_sessions_endpoint_region_filter_with_your_school_excludes_custom(self):
+        future_date = localdate() + timedelta(days=7)
+
+        self.create_session_page(
+            slug="mouse-school-north-east",
+            title="Mouse school north east",
+            key_stages=[self.ks1],
+            time_periods=[self.early_modern],
+            themes=[self.medicine_welfare],
+            location_types=[SessionLocation.LocationType.YOUR_SCHOOL],
+            start_date=future_date,
+            region=SessionLocation.Regions.NORTH_EAST,
+        )
+        self.create_session_page(
+            slug="mouse-custom-south-west",
+            title="Mouse custom south west",
+            key_stages=[self.ks1],
+            time_periods=[self.early_modern],
+            themes=[self.medicine_welfare],
+            location_types=[SessionLocation.LocationType.CUSTOM],
+            start_date=future_date,
+            region=SessionLocation.Regions.SOUTH_WEST,
+        )
+
+        response = self.request_api(
+            "/api/v2/education/sessions/?region=north_east&region=south_west"
+            "&location=your_school"
+        )
+
+        self.assertEqual(response.status_code, 200, response.content.decode())
+        response_data = response.json()
+
+        self.assertEqual(response_data["meta"]["total_count"], 1)
+        self.assertEqual(
+            {item["title"] for item in response_data["items"]},
+            {"Mouse school north east"},
+        )
+
     def test_sessions_endpoint_region_filter_combines_with_national_archives(self):
         future_date = localdate() + timedelta(days=7)
 
