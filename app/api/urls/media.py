@@ -6,13 +6,14 @@ from wagtailmedia.api.serializers import MediaItemSerializer
 from wagtailmedia.api.views import MediaAPIViewSet
 
 from app.api.permissions import IsAPITokenAuthenticated
+from app.media.time_utils import parse_chapter_time_to_seconds
 
 
 class CustomMediaItemSerializer(MediaItemSerializer):
     def to_representation(self, instance):
         chapters = [
             {
-                "time": int(chapter.value["time"]),
+                "time": parse_chapter_time_to_seconds(chapter.value["time"]),
                 "heading": chapter.value["heading"],
                 "transcript": expand_db_html(chapter.value["transcript"].source),
             }
