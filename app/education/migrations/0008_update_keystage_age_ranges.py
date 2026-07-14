@@ -33,4 +33,9 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.RunPython(update_keystage_age_ranges, revert_keystage_age_ranges),
+        migrations.AlterField(
+            model_name='keystage',
+            name='age_range',
+            field=models.CharField(blank=True, help_text='Age range text, e.g. 5–7 or 7–11.', max_length=64, verbose_name='age range'),
+        ),
     ]
