@@ -1,7 +1,6 @@
 from wagtail import blocks
 
 from app.core.blocks.image import APIImageChooserBlock
-from app.core.serializers import ImageSerializer
 
 
 class ShopCollectionBlock(blocks.StructBlock):
@@ -33,15 +32,8 @@ class ShopCollectionBlock(blocks.StructBlock):
     background_image = APIImageChooserBlock(
         label="Background image",
         rendition_size="fill-1800x720",
+        additional_rendition_specs={"small": "fill-600x400"},
     )
-
-    def get_api_representation(self, value, context=None):
-        representation = super().get_api_representation(value, context)
-        if background_image := value.get("background_image"):
-            representation["background_image_small"] = ImageSerializer(
-                rendition_size="fill-600x400"
-            ).to_representation(background_image)
-        return representation
 
     class Meta:
         icon = "shop"
