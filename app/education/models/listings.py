@@ -186,7 +186,16 @@ class EducationSessionsListingPage(BasePageWithRequiredIntro):
         available_location_types = set(
             SessionLocation.objects.filter(page__in=current_or_future_session_pages)
             .exclude(location_type__isnull=True)
+            .exclude(location_type=SessionLocation.LocationType.CUSTOM)
             .values_list("location_type", flat=True)
+            .distinct()
+        )
+
+        available_regions = set(
+            SessionLocation.objects.filter(page__in=current_or_future_session_pages)
+            .exclude(region__isnull=True)
+            .exclude(region="")
+            .values_list("region", flat=True)
             .distinct()
         )
 
@@ -212,6 +221,14 @@ class EducationSessionsListingPage(BasePageWithRequiredIntro):
                 }
                 for value, label in SessionLocation.LocationType.choices
                 if value in available_location_types
+            ],
+            "regions": [
+                {
+                    "name": label,
+                    "slug": value,
+                }
+                for value, label in SessionLocation.Regions.choices
+                if value in available_regions
             ],
         }
 
