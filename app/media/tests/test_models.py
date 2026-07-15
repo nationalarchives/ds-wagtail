@@ -48,3 +48,38 @@ class TestMediaChapterSectionBlock(TestCase):
             stored_value = json.loads(stored_value)
 
         self.assertEqual(stored_value[0]["value"]["time"], 3723)
+        self.assertEqual(media.api_chapters()[0]["time"], 3723)
+
+    def test_api_chapters_returns_sorted_seconds(self):
+        media = EtnaMedia.objects.create(
+            title="Test media",
+            file="media/test.mp4",
+            type="video",
+            duration=10,
+            width=1920,
+            height=1080,
+            thumbnail="media/test.jpg",
+            chapters=[
+                (
+                    "chapter",
+                    {
+                        "time": "00:00:05",
+                        "heading": "Second",
+                        "transcript": "",
+                    },
+                ),
+                (
+                    "chapter",
+                    {
+                        "time": "00:00:02",
+                        "heading": "First",
+                        "transcript": "",
+                    },
+                ),
+            ],
+        )
+
+        self.assertEqual([chapter["time"] for chapter in media.api_chapters()], [2, 5])
+        self.assertTrue(
+            all(isinstance(chapter["time"], int) for chapter in media.api_chapters())
+        )

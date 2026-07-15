@@ -14,7 +14,7 @@ from wagtailmedia.settings import wagtailmedia_settings
 from app.core.blocks.paragraph import APIRichTextBlock
 from app.core.serializers import RichTextSerializer
 from app.media.blocks import ChapterTimeBlock
-from app.media.time_utils import format_seconds_hhmmss, parse_chapter_time_to_seconds
+from app.media.time_utils import parse_chapter_time_to_seconds
 
 
 class MediaChapterSectionBlock(blocks.StructBlock):
@@ -174,19 +174,15 @@ class EtnaMedia(AbstractMedia):
     def api_chapters(self):
         chapter_pairs = []
         for chapter in self.chapters:
-            time_str = format_seconds_hhmmss(
-                parse_chapter_time_to_seconds(chapter.value["time"])
-            )
-            sort_key = parse_chapter_time_to_seconds(time_str)
+            value = chapter.value
+            sort_key = parse_chapter_time_to_seconds(value["time"])
             chapter_pairs.append(
                 (
                     sort_key,
                     {
-                        "time": time_str,
-                        "heading": chapter.value["heading"],
-                        "transcript": expand_db_html(
-                            chapter.value["transcript"].source
-                        ),
+                        "time": sort_key,
+                        "heading": value["heading"],
+                        "transcript": expand_db_html(value["transcript"].source),
                     },
                 )
             )
