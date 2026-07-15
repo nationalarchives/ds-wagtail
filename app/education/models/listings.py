@@ -222,7 +222,7 @@ class EducationSessionsListingPage(BasePageWithRequiredIntro):
                 for value, label in SessionLocation.LocationType.choices
                 if value in available_location_types
             ],
-            "regions": [
+            "region": [
                 {
                     "name": label,
                     "slug": value,
