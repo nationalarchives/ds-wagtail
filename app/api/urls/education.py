@@ -29,7 +29,7 @@ class EducationResourcesAPIViewSet(CustomPagesAPIViewSet):
 class EducationSessionsAPIViewSet(CustomPagesAPIViewSet):
     model = EducationSessionPage
     known_query_parameters = CustomPagesAPIViewSet.known_query_parameters.union(
-        ["key_stage", "time_period", "theme", "location"]
+        ["key_stage", "time_period", "theme", "location", "region"]
     )
 
     filter_backends = [
