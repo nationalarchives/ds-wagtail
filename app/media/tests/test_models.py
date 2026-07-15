@@ -1,8 +1,10 @@
 import json
 
+from django.core.exceptions import ValidationError
 from django.db import connection
 from django.test import TestCase
 
+from app.media.blocks import CHAPTER_TIME_VALIDATION_MESSAGE, ChapterTimeBlock
 from app.media.models import EtnaMedia, MediaChapterSectionBlock
 
 
@@ -83,3 +85,25 @@ class TestMediaChapterSectionBlock(TestCase):
         self.assertTrue(
             all(isinstance(chapter["time"], int) for chapter in media.api_chapters())
         )
+
+    def test_chapter_time_clean_rejects_out_of_range_units(self):
+        block = ChapterTimeBlock()
+
+        with self.assertRaises(ValidationError) as out_of_range_minutes:
+            block.clean("00:99:00")
+        self.assertIn(
+            CHAPTER_TIME_VALIDATION_MESSAGE, str(out_of_range_minutes.exception)
+        )
+        self.assertIn("'00:99:00'", str(out_of_range_minutes.exception))
+
+        with self.assertRaises(ValidationError) as out_of_range_seconds:
+            block.clean("00:00:99")
+        self.assertIn(
+            CHAPTER_TIME_VALIDATION_MESSAGE, str(out_of_range_seconds.exception)
+        )
+        self.assertIn("'00:00:99'", str(out_of_range_seconds.exception))
+
+        with self.assertRaises(ValidationError) as malformed_time:
+            block.clean("not-a-time")
+        self.assertIn(CHAPTER_TIME_VALIDATION_MESSAGE, str(malformed_time.exception))
+        self.assertIn("'not-a-time'", str(malformed_time.exception))
