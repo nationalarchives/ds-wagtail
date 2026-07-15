@@ -1,6 +1,6 @@
 # etna:allowAlterField
 
-from django.db import migrations
+from django.db import migrations, models
 
 
 AGE_RANGE_UPDATES = {
