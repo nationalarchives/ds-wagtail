@@ -174,6 +174,7 @@ class EducationListingsAPITest(WagtailPageTestCase):
         location_types,
         start_date=None,
         end_date=None,
+        region=None,
     ):
         page = EducationSessionPage(
             title=title,
@@ -203,8 +204,11 @@ class EducationListingsAPITest(WagtailPageTestCase):
                 "location_type": location_type,
                 "duration": "1 hour",
             }
-            if location_type == SessionLocation.LocationType.YOUR_SCHOOL:
-                kwargs["region"] = SessionLocation.Regions.NORTH_WEST
+            if location_type in {
+                SessionLocation.LocationType.YOUR_SCHOOL,
+                SessionLocation.LocationType.CUSTOM,
+            }:
+                kwargs["region"] = region or SessionLocation.Regions.NORTH_WEST
             location_objects.append(SessionLocation(**kwargs))
         page.session_locations = location_objects
 
@@ -353,6 +357,143 @@ class EducationListingsAPITest(WagtailPageTestCase):
             past_session_response.content.decode(),
         )
         self.assertEqual(past_session_response.json()["meta"]["total_count"], 0)
+
+    def test_sessions_endpoint_region_filter_does_not_default_to_national_archives(
+        self,
+    ):
+        future_date = localdate() + timedelta(days=7)
+
+        self.create_session_page(
+            slug="mouse-school-north-east",
+            title="Mouse school north east",
+            key_stages=[self.ks1],
+            time_periods=[self.early_modern],
+            themes=[self.medicine_welfare],
+            location_types=[SessionLocation.LocationType.YOUR_SCHOOL],
+            start_date=future_date,
+            region=SessionLocation.Regions.NORTH_EAST,
+        )
+        self.create_session_page(
+            slug="mouse-custom-south-west",
+            title="Mouse custom south west",
+            key_stages=[self.ks1],
+            time_periods=[self.early_modern],
+            themes=[self.medicine_welfare],
+            location_types=[SessionLocation.LocationType.CUSTOM],
+            start_date=future_date,
+            region=SessionLocation.Regions.SOUTH_WEST,
+        )
+        self.create_session_page(
+            slug="mouse-at-tna",
+            title="Mouse at TNA",
+            key_stages=[self.ks1],
+            time_periods=[self.early_modern],
+            themes=[self.medicine_welfare],
+            location_types=[SessionLocation.LocationType.NATIONAL_ARCHIVES],
+            start_date=future_date,
+        )
+
+        response = self.request_api(
+            "/api/v2/education/sessions/?region=north_east&region=south_west"
+        )
+
+        self.assertEqual(response.status_code, 200, response.content.decode())
+        response_data = response.json()
+
+        self.assertEqual(response_data["meta"]["total_count"], 2)
+        self.assertEqual(
+            {item["title"] for item in response_data["items"]},
+            {"Mouse school north east", "Mouse custom south west"},
+        )
+
+    def test_sessions_endpoint_region_filter_with_your_school_excludes_custom(self):
+        future_date = localdate() + timedelta(days=7)
+
+        self.create_session_page(
+            slug="mouse-school-north-east",
+            title="Mouse school north east",
+            key_stages=[self.ks1],
+            time_periods=[self.early_modern],
+            themes=[self.medicine_welfare],
+            location_types=[SessionLocation.LocationType.YOUR_SCHOOL],
+            start_date=future_date,
+            region=SessionLocation.Regions.NORTH_EAST,
+        )
+        self.create_session_page(
+            slug="mouse-custom-south-west",
+            title="Mouse custom south west",
+            key_stages=[self.ks1],
+            time_periods=[self.early_modern],
+            themes=[self.medicine_welfare],
+            location_types=[SessionLocation.LocationType.CUSTOM],
+            start_date=future_date,
+            region=SessionLocation.Regions.SOUTH_WEST,
+        )
+
+        response = self.request_api(
+            "/api/v2/education/sessions/?region=north_east&region=south_west"
+            "&location=your_school"
+        )
+
+        self.assertEqual(response.status_code, 200, response.content.decode())
+        response_data = response.json()
+
+        self.assertEqual(response_data["meta"]["total_count"], 1)
+        self.assertEqual(
+            {item["title"] for item in response_data["items"]},
+            {"Mouse school north east"},
+        )
+
+    def test_sessions_endpoint_region_filter_combines_with_national_archives(self):
+        future_date = localdate() + timedelta(days=7)
+
+        self.create_session_page(
+            slug="mouse-school-south-east",
+            title="Mouse school south east",
+            key_stages=[self.ks1],
+            time_periods=[self.early_modern],
+            themes=[self.medicine_welfare],
+            location_types=[SessionLocation.LocationType.YOUR_SCHOOL],
+            start_date=future_date,
+            region=SessionLocation.Regions.SOUTH_EAST,
+        )
+        self.create_session_page(
+            slug="mouse-custom-south-west",
+            title="Mouse custom south west",
+            key_stages=[self.ks1],
+            time_periods=[self.early_modern],
+            themes=[self.medicine_welfare],
+            location_types=[SessionLocation.LocationType.CUSTOM],
+            start_date=future_date,
+            region=SessionLocation.Regions.SOUTH_WEST,
+        )
+        self.create_session_page(
+            slug="mouse-at-tna",
+            title="Mouse at TNA",
+            key_stages=[self.ks1],
+            time_periods=[self.early_modern],
+            themes=[self.medicine_welfare],
+            location_types=[SessionLocation.LocationType.NATIONAL_ARCHIVES],
+            start_date=future_date,
+        )
+
+        response = self.request_api(
+            "/api/v2/education/sessions/?region=south_east&region=south_west"
+            "&location=national_archives"
+        )
+
+        self.assertEqual(response.status_code, 200, response.content.decode())
+        response_data = response.json()
+
+        self.assertEqual(response_data["meta"]["total_count"], 3)
+        self.assertEqual(
+            {item["title"] for item in response_data["items"]},
+            {
+                "Mouse school south east",
+                "Mouse custom south west",
+                "Mouse at TNA",
+            },
+        )
 
     def test_teaching_resources_listing_page_returns_ordered_search_filters(self):
         self.create_resource_page(
