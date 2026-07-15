@@ -12,7 +12,9 @@ def parse_chapter_time_to_seconds(raw_value):
             try:
                 if len(parts) == 3:
                     hours, minutes, seconds = map(int, parts)
-                    return max(hours, 0) * 3600 + max(minutes, 0) * 60 + max(seconds, 0)
+                    if not (0 <= minutes <= 59 and 0 <= seconds <= 59):
+                        return 0
+                    return max(hours, 0) * 3600 + minutes * 60 + seconds
             except ValueError:
                 return 0
     return 0
