@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from wagtail import blocks
 from wagtail.rich_text import expand_db_html
 from wagtailmedia.blocks import AbstractMediaChooserBlock
@@ -5,8 +6,31 @@ from wagtailmedia.blocks import AbstractMediaChooserBlock
 from app.core.blocks.image import APIImageChooserBlock
 from app.media.time_utils import format_seconds_hhmmss, parse_chapter_time_to_seconds
 
+CHAPTER_TIME_VALIDATION_MESSAGE = (
+    "The accepted format is HH:MM:SS, minutes and seconds must be between 00 and 59."
+)
+
+
+def chapter_time_validation_error(value):
+    return ValidationError(f"{CHAPTER_TIME_VALIDATION_MESSAGE} You wrote: {value!r}.")
+
 
 class ChapterTimeBlock(blocks.CharBlock):
+    def clean(self, value):
+        data = super().clean(value)
+        if data in (None, ""):
+            return data
+
+        try:
+            hours, minutes, seconds = (int(part) for part in data.split(":", 2))
+        except ValueError:
+            raise chapter_time_validation_error(data)
+
+        if hours < 0 or not (0 <= minutes <= 59 and 0 <= seconds <= 59):
+            raise chapter_time_validation_error(data)
+
+        return data
+
     def to_python(self, value):
         if value in (None, ""):
             return super().to_python(value)

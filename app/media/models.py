@@ -2,7 +2,7 @@ import mimetypes
 import uuid
 
 from django.conf import settings
-from django.core.validators import FileExtensionValidator, RegexValidator
+from django.core.validators import FileExtensionValidator
 from django.db import models
 from wagtail import blocks
 from wagtail.api import APIField
@@ -23,12 +23,6 @@ class MediaChapterSectionBlock(blocks.StructBlock):
         default="00:00:00",
         label="Chapter time",
         help_text="Enter chapter time as HH:MM:SS.",
-        validators=[
-            RegexValidator(
-                regex=r"^\d{1,3}:[0-5]\d:[0-5]\d$",
-                message="Enter chapter time as HH:MM:SS.",
-            )
-        ],
     )
     heading = blocks.CharBlock(max_length=20)
     transcript = APIRichTextBlock(required=False, features=["bold", "italic"])
