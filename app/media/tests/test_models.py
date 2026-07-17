@@ -4,7 +4,11 @@ from django.core.exceptions import ValidationError
 from django.db import connection
 from django.test import TestCase
 
-from app.media.blocks import CHAPTER_TIME_VALIDATION_MESSAGE, ChapterTimeBlock
+from app.media.blocks import (
+    CHAPTER_TIME_VALIDATION_MESSAGE,
+    ChapterTimeBlock,
+    normalise_chapter_time_for_display,
+)
 from app.media.models import EtnaMedia, MediaChapterSectionBlock
 
 
@@ -107,3 +111,11 @@ class TestMediaChapterSectionBlock(TestCase):
             block.clean("not-a-time")
         self.assertIn(CHAPTER_TIME_VALIDATION_MESSAGE, str(malformed_time.exception))
         self.assertIn("'not-a-time'", str(malformed_time.exception))
+
+    def test_chapter_time_display_normalisation_preserves_invalid_values(self):
+        self.assertEqual(normalise_chapter_time_for_display("00:62:5123"), "00:62:5123")
+        self.assertEqual(normalise_chapter_time_for_display("not-a-time"), "not-a-time")
+
+    def test_chapter_time_display_normalisation_handles_numeric_values(self):
+        self.assertEqual(normalise_chapter_time_for_display(5), "00:00:05")
+        self.assertEqual(normalise_chapter_time_for_display("5"), "00:00:05")

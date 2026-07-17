@@ -1,28 +1,18 @@
 from django.conf import settings
 from django.urls import path
 from rest_framework.response import Response
-from wagtail.rich_text import expand_db_html
 from wagtailmedia.api.serializers import MediaItemSerializer
 from wagtailmedia.api.views import MediaAPIViewSet
 
 from app.api.permissions import IsAPITokenAuthenticated
-from app.media.time_utils import parse_chapter_time_to_seconds
 
 
 class CustomMediaItemSerializer(MediaItemSerializer):
     def to_representation(self, instance):
-        chapters = [
-            {
-                "time": parse_chapter_time_to_seconds(chapter.value["time"]),
-                "heading": chapter.value["heading"],
-                "transcript": expand_db_html(chapter.value["transcript"].source),
-            }
-            for chapter in instance.chapters
-        ]
         representation = super().to_representation(instance)
         representation["uuid"] = instance.uuid
         return representation | {
-            "chapters": sorted(chapters, key=lambda x: x["time"]),
+            "chapters": instance.api_chapters(),
             "subtitles_file": instance.subtitles_file_url,
             "subtitles_file_full_url": instance.subtitles_file_full_url,
             "chapters_file": instance.chapters_file_url,

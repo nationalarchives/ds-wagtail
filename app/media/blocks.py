@@ -15,6 +15,28 @@ def chapter_time_validation_error(value):
     return ValidationError(f"{CHAPTER_TIME_VALIDATION_MESSAGE} You wrote: {value!r}.")
 
 
+def normalise_chapter_time_for_display(value):
+    if value in (None, ""):
+        return value
+
+    if isinstance(value, int):
+        return format_seconds_hhmmss(value)
+
+    if isinstance(value, str):
+        stripped = value.strip()
+        if stripped.isdigit():
+            return format_seconds_hhmmss(int(stripped))
+
+        parts = stripped.split(":")
+        if len(parts) == 3 and all(part.isdigit() for part in parts):
+            hours, minutes, seconds = map(int, parts)
+            if hours >= 0 and 0 <= minutes <= 59 and 0 <= seconds <= 59:
+                total_seconds = hours * 3600 + minutes * 60 + seconds
+                return format_seconds_hhmmss(total_seconds)
+
+    return value
+
+
 class ChapterTimeBlock(blocks.CharBlock):
     def clean(self, value):
         data = super().clean(value)
@@ -32,22 +54,14 @@ class ChapterTimeBlock(blocks.CharBlock):
         return data
 
     def to_python(self, value):
-        if value in (None, ""):
-            return super().to_python(value)
-
-        formatted_value = format_seconds_hhmmss(parse_chapter_time_to_seconds(value))
-        return super().to_python(formatted_value)
+        return super().to_python(normalise_chapter_time_for_display(value))
 
     def get_prep_value(self, value):
         prepped_value = super().get_prep_value(value)
         return parse_chapter_time_to_seconds(prepped_value)
 
     def get_form_state(self, value):
-        if value in (None, ""):
-            return super().get_form_state(value)
-
-        formatted_value = format_seconds_hhmmss(parse_chapter_time_to_seconds(value))
-        return super().get_form_state(formatted_value)
+        return super().get_form_state(normalise_chapter_time_for_display(value))
 
 
 class MediaChooserBlock(AbstractMediaChooserBlock):
