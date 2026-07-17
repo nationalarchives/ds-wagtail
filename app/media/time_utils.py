@@ -1,23 +1,35 @@
+def parse_chapter_time_string_to_seconds(raw_value):
+    if not isinstance(raw_value, str):
+        return None
+
+    value = raw_value.strip()
+    parts = value.split(":")
+
+    if len(parts) != 3 or any(not part.isdigit() for part in parts):
+        return None
+
+    hours, minutes, seconds = map(int, parts)
+    if hours < 0 or not (0 <= minutes <= 59 and 0 <= seconds <= 59):
+        return None
+
+    return hours * 3600 + minutes * 60 + seconds
+
+
 def parse_chapter_time_to_seconds(raw_value):
     if raw_value is None:
-        return 0
+        return None
+
     if isinstance(raw_value, int):
-        return max(raw_value, 0)
+        return raw_value if raw_value >= 0 else None
+
     if isinstance(raw_value, str):
         value = raw_value.strip()
         if value.isdigit():
             return int(value)
-        if ":" in value:
-            parts = value.split(":")
-            try:
-                if len(parts) == 3:
-                    hours, minutes, seconds = map(int, parts)
-                    if not (0 <= minutes <= 59 and 0 <= seconds <= 59):
-                        return 0
-                    return max(hours, 0) * 3600 + minutes * 60 + seconds
-            except ValueError:
-                return 0
-    return 0
+
+        return parse_chapter_time_string_to_seconds(value)
+
+    return None
 
 
 def format_seconds_hhmmss(total_seconds):

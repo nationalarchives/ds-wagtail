@@ -4,7 +4,11 @@ from wagtail.rich_text import expand_db_html
 from wagtailmedia.blocks import AbstractMediaChooserBlock
 
 from app.core.blocks.image import APIImageChooserBlock
-from app.media.time_utils import format_seconds_hhmmss, parse_chapter_time_to_seconds
+from app.media.time_utils import (
+    format_seconds_hhmmss,
+    parse_chapter_time_string_to_seconds,
+    parse_chapter_time_to_seconds,
+)
 
 CHAPTER_TIME_VALIDATION_MESSAGE = (
     "The accepted format is HH:MM:SS, minutes and seconds must be between 00 and 59."
@@ -19,22 +23,11 @@ def normalise_chapter_time_for_display(value):
     if value in (None, ""):
         return value
 
-    if isinstance(value, int):
-        return format_seconds_hhmmss(value)
+    seconds = parse_chapter_time_to_seconds(value)
+    if seconds is None:
+        return value
 
-    if isinstance(value, str):
-        stripped = value.strip()
-        if stripped.isdigit():
-            return format_seconds_hhmmss(int(stripped))
-
-        parts = stripped.split(":")
-        if len(parts) == 3 and all(part.isdigit() for part in parts):
-            hours, minutes, seconds = map(int, parts)
-            if hours >= 0 and 0 <= minutes <= 59 and 0 <= seconds <= 59:
-                total_seconds = hours * 3600 + minutes * 60 + seconds
-                return format_seconds_hhmmss(total_seconds)
-
-    return value
+    return format_seconds_hhmmss(seconds)
 
 
 class ChapterTimeBlock(blocks.CharBlock):
@@ -43,12 +36,7 @@ class ChapterTimeBlock(blocks.CharBlock):
         if data in (None, ""):
             return data
 
-        try:
-            hours, minutes, seconds = (int(part) for part in data.split(":", 2))
-        except ValueError:
-            raise chapter_time_validation_error(data)
-
-        if hours < 0 or not (0 <= minutes <= 59 and 0 <= seconds <= 59):
+        if parse_chapter_time_string_to_seconds(data) is None:
             raise chapter_time_validation_error(data)
 
         return data
@@ -58,7 +46,10 @@ class ChapterTimeBlock(blocks.CharBlock):
 
     def get_prep_value(self, value):
         prepped_value = super().get_prep_value(value)
-        return parse_chapter_time_to_seconds(prepped_value)
+        seconds = parse_chapter_time_to_seconds(prepped_value)
+        if seconds is None:
+            raise chapter_time_validation_error(prepped_value)
+        return seconds
 
     def get_form_state(self, value):
         return super().get_form_state(normalise_chapter_time_for_display(value))
