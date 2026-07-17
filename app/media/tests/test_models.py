@@ -119,3 +119,46 @@ class TestMediaChapterSectionBlock(TestCase):
     def test_chapter_time_display_normalisation_handles_numeric_values(self):
         self.assertEqual(normalise_chapter_time_for_display(5), "00:00:05")
         self.assertEqual(normalise_chapter_time_for_display("5"), "00:00:05")
+
+    def test_three_digit_hour_time_is_stored_as_correct_seconds(self):
+        media = EtnaMedia.objects.create(
+            title="Test media",
+            file="media/test.mp4",
+            type="video",
+            duration=10,
+            width=1920,
+            height=1080,
+            thumbnail="media/test.jpg",
+            chapters=[
+                (
+                    "chapter",
+                    {
+                        "time": "123:00:00",
+                        "heading": "Long form section",
+                        "transcript": "",
+                    },
+                )
+            ],
+        )
+
+        media.refresh_from_db()
+
+        # Frontend/editor value should remain HH:MM:SS
+        chapter_value = media.chapters[0].value
+        self.assertEqual(chapter_value["time"], "123:00:00")
+
+        # Backend/storage/API value should be seconds
+        expected_seconds = 123 * 3600
+        self.assertEqual(media.api_chapters()[0]["time"], expected_seconds)
+
+        with connection.cursor() as cursor:
+            cursor.execute(
+                f"SELECT chapters FROM {EtnaMedia._meta.db_table} WHERE id = %s",
+                [media.id],
+            )
+            stored_value = cursor.fetchone()[0]
+
+        if isinstance(stored_value, str):
+            stored_value = json.loads(stored_value)
+
+        self.assertEqual(stored_value[0]["value"]["time"], expected_seconds)
