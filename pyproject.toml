@@ -24,7 +24,7 @@ wagtail-headless-preview = "^0.9.0"
 whitenoise = "^6.12.0"
 boto3 = "^1.43.26"
 wagtail-2fa = "^1.8.0"
-tna-frontend-jinja = "1.0.0"
+tna-frontend-jinja = "1.1.0"
 tna-utilities = "^1.5.0"
 
 [tool.poetry.group.dev]
