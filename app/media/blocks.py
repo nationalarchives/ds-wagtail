@@ -1,8 +1,58 @@
+from django.core.exceptions import ValidationError
 from wagtail import blocks
 from wagtail.rich_text import expand_db_html
 from wagtailmedia.blocks import AbstractMediaChooserBlock
 
 from app.core.blocks.image import APIImageChooserBlock
+from app.media.time_utils import (
+    format_seconds_hhmmss,
+    parse_chapter_time_string_to_seconds,
+    parse_chapter_time_to_seconds,
+)
+
+CHAPTER_TIME_VALIDATION_MESSAGE = (
+    "The accepted format is HH:MM:SS, minutes and seconds must be between 00 and 59."
+)
+
+
+def chapter_time_validation_error(value):
+    return ValidationError(f"{CHAPTER_TIME_VALIDATION_MESSAGE} You wrote: {value!r}.")
+
+
+def normalise_chapter_time_for_display(value):
+    if value in (None, ""):
+        return value
+
+    seconds = parse_chapter_time_to_seconds(value)
+    if seconds is None:
+        return value
+
+    return format_seconds_hhmmss(seconds)
+
+
+class ChapterTimeBlock(blocks.CharBlock):
+    def clean(self, value):
+        data = super().clean(value)
+        if data in (None, ""):
+            return data
+
+        if parse_chapter_time_string_to_seconds(data) is None:
+            raise chapter_time_validation_error(data)
+
+        return data
+
+    def to_python(self, value):
+        return super().to_python(normalise_chapter_time_for_display(value))
+
+    def get_prep_value(self, value):
+        prepped_value = super().get_prep_value(value)
+        seconds = parse_chapter_time_to_seconds(prepped_value)
+        if seconds is None:
+            raise chapter_time_validation_error(prepped_value)
+        return seconds
+
+    def get_form_state(self, value):
+        return super().get_form_state(normalise_chapter_time_for_display(value))
 
 
 class MediaChooserBlock(AbstractMediaChooserBlock):
@@ -23,14 +73,6 @@ class MediaChooserBlock(AbstractMediaChooserBlock):
         We use expand_db_html to get any rich text fields as useful HTML,
         rather than the raw database representation.
         """
-        chapters = [
-            {
-                "time": int(chapter.value["time"]),
-                "heading": chapter.value["heading"],
-                "transcript": expand_db_html(chapter.value["transcript"].source),
-            }
-            for chapter in value.chapters
-        ]
         return {
             "id": value.id,
             "uuid": value.uuid,
@@ -44,7 +86,7 @@ class MediaChooserBlock(AbstractMediaChooserBlock):
             "date": value.date,
             "description": expand_db_html(value.description),
             "transcript": expand_db_html(value.transcript),
-            "chapters": sorted(chapters, key=lambda x: x["time"]),
+            "chapters": value.api_chapters(),
             "width": value.width,
             "height": value.height,
             "duration": value.duration,
