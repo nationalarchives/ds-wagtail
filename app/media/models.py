@@ -2,24 +2,27 @@ import mimetypes
 import uuid
 
 from django.conf import settings
-from django.core.validators import FileExtensionValidator, MinValueValidator
+from django.core.validators import FileExtensionValidator
 from django.db import models
 from wagtail import blocks
 from wagtail.api import APIField
 from wagtail.fields import RichTextField, StreamField
+from wagtail.rich_text import expand_db_html
 from wagtailmedia.models import AbstractMedia
 from wagtailmedia.settings import wagtailmedia_settings
 
 from app.core.blocks.paragraph import APIRichTextBlock
 from app.core.serializers import RichTextSerializer
+from app.media.blocks import ChapterTimeBlock
+from app.media.time_utils import parse_chapter_time_to_seconds
 
 
 class MediaChapterSectionBlock(blocks.StructBlock):
-    time = blocks.IntegerBlock(
-        blank=True,
-        default=0,
-        validators=[MinValueValidator(0)],
-        label="Time in seconds",
+    time = ChapterTimeBlock(
+        required=True,
+        default="00:00:00",
+        label="Chapter time",
+        help_text="Enter chapter time as HH:MM:SS.",
     )
     heading = blocks.CharBlock(max_length=20)
     transcript = APIRichTextBlock(required=False, features=["bold", "italic"])
@@ -161,6 +164,27 @@ class EtnaMedia(AbstractMedia):
 
     def mime(self):
         return mimetypes.guess_type(self.filename)[0] or "application/octet-stream"
+
+    def api_chapters(self):
+        chapter_pairs = []
+        for chapter in self.chapters:
+            value = chapter.value
+            sort_key = parse_chapter_time_to_seconds(value["time"])
+            chapter_pairs.append(
+                (
+                    sort_key,
+                    {
+                        "time": sort_key,
+                        "heading": value["heading"],
+                        "transcript": expand_db_html(value["transcript"].source),
+                    },
+                )
+            )
+
+        return [
+            chapter_payload
+            for _, chapter_payload in sorted(chapter_pairs, key=lambda pair: pair[0])
+        ]
 
     api_fields = [
         APIField("type"),

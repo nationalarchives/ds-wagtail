@@ -25,7 +25,7 @@ class KeyStage(models.Model):
     age_range = models.CharField(
         max_length=64,
         verbose_name="age range",
-        help_text="Age range text, e.g. 5-7 or 7-11.",
+        help_text="Age range text, e.g. 5–7 or 7–11.",
         blank=True,
     )
 
@@ -106,9 +106,9 @@ class TimePeriod(models.Model):
             return f"pre {self.year_to}"
 
         if self.year_to is None:
-            return f"{self.year_from} - present"
+            return f"{self.year_from}–present"
 
-        return f"{self.year_from}-{self.year_to}"
+        return f"{self.year_from}–{self.year_to}"
 
     @cached_property
     def display_name(self):
