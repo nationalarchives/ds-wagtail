@@ -19,7 +19,12 @@ def image_generator(
         f"|bgcolor-{background_colour}" if background_colour else ""
     )
 
-    def build_rendition_spec(size: str, fmt: str) -> str:
+    def build_rendition_spec(
+        size: str,
+        fmt: str,
+        jpeg_quality: int = jpeg_quality,
+        webp_quality: int = webp_quality,
+    ) -> str:
         if fmt == "jpeg":
             return (
                 f"{size}|format-jpeg|jpegquality-{jpeg_quality}"
@@ -41,9 +46,22 @@ def image_generator(
         output_keys_by_spec[spec] = fmt
 
     if additional_rendition_specs:
-        for key, size in additional_rendition_specs.items():
+        for key, value in additional_rendition_specs.items():
+            if isinstance(value, dict):
+                size = value["size"]
+                extra_jpeg_quality = value.get("jpeg_quality", jpeg_quality)
+                extra_webp_quality = value.get("webp_quality", webp_quality)
+            else:
+                size = value
+                extra_jpeg_quality = jpeg_quality
+                extra_webp_quality = webp_quality
             for fmt in formats:
-                spec = build_rendition_spec(size, fmt)
+                spec = build_rendition_spec(
+                    size,
+                    fmt,
+                    jpeg_quality=extra_jpeg_quality,
+                    webp_quality=extra_webp_quality,
+                )
                 rendition_specs.append(spec)
                 output_keys_by_spec[spec] = f"{key}_{fmt}"
 
@@ -85,6 +103,14 @@ class ImageSerializer(Serializer):
     To generate any additional formats of images, override `formats` in the serializer, e.g:
     ["jpeg", "webp", "png"]. These will be returned in the API response
     in the same way as the `jpeg` and `webp` renditions.
+
+    To generate additional renditions with custom sizes, pass `additional_rendition_specs`
+    as a dict mapping output key names to either a size string or a dict with `size`,
+    `jpeg_quality`, and/or `webp_quality` keys, e.g:
+    additional_rendition_specs={
+        "small": "fill-300x200",
+        "large": {"size": "fill-1200x800", "jpeg_quality": 80, "webp_quality": 85},
+    }
 
     The source of the image can also be set in the serializer, e.g:
     APIField("image_large", serializer=ImageSerializer(rendition_size="fill-900x900", source="image"))
