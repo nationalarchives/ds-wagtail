@@ -203,31 +203,52 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
                 )
             except Site.DoesNotExist:
                 site = None
+                logger.debug(f"No site found for query: {query}")
         else:
             site = Site.find_for_request(self.request)
 
         if "html_path" in request.GET and site is not None:
             path = request.GET["html_path"]
 
-            redirect_queryset = Redirect.objects.all()
-            redirects = redirect_queryset.filter(
-                Q(old_path=path)
-                | Q(old_path=path.strip("/"))
-                | Q(old_path=f"/{path.strip('/')}")
-                | Q(old_path=f"{path.strip('/')}/")
-                | Q(old_path=f"/{path.strip('/')}/")
-            )
-            if redirects.exists():
-                if redirects.get().redirect_page:
-                    if new_path := redirects.get().redirect_page.url:
-                        logger.info(f"Redirect detected: {path} ---> {new_path}")
-                        path = new_path
-
             path_components = [component for component in path.split("/") if component]
 
             try:
                 page, _, _ = site.root_page.specific.route(request, path_components)
             except Http404:
+                page = None
+
+            if (
+                page is None
+                and request.GET.get("follow_redirects", "").lower() == "true"
+            ):
+                redirect_queryset = Redirect.objects.all()
+                site_redirects = redirect_queryset.filter(site=site)
+                first_matching_redirect = site_redirects.filter(
+                    Q(old_path=path)
+                    | Q(old_path=path.strip("/"))
+                    | Q(old_path=f"/{path.strip('/')}")
+                    | Q(old_path=f"{path.strip('/')}/")
+                    | Q(old_path=f"/{path.strip('/')}/")
+                )
+                if (
+                    first_matching_redirect.exists()
+                    and first_matching_redirect.get().redirect_page
+                    and (
+                        new_path := first_matching_redirect.get().redirect_page.url_path
+                    )
+                ):
+                    logger.info(f"Redirect detected: {path} ---> {new_path}")
+                    new_path_components = [
+                        component for component in new_path.split("/") if component
+                    ]
+                    try:
+                        page, _, _ = site.root_page.specific.route(
+                            request, new_path_components[1:]
+                        )
+                    except Http404:
+                        return None
+
+            if page is None:
                 return None
 
             if queryset.filter(id=page.id).exists():
