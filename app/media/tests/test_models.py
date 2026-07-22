@@ -9,13 +9,13 @@ from app.media.blocks import (
     ChapterTimeBlock,
     normalise_chapter_time_for_display,
 )
-from app.media.forms import MediaDurationField
+from app.media.fields import MediaDurationFormField
 from app.media.models import EtnaMedia, MediaChapterSectionBlock
 
 
 class TestMediaChapterSectionBlock(TestCase):
     def test_duration_form_field_uses_hhmmss_input_guidance(self):
-        field = MediaDurationField(required=False)
+        field = MediaDurationFormField(required=False)
 
         self.assertEqual(
             field.help_text,
@@ -28,7 +28,7 @@ class TestMediaChapterSectionBlock(TestCase):
         self.assertEqual(field.prepare_value(3723), "01:02:03")
 
     def test_duration_form_field_rejects_non_hhmmss_input(self):
-        field = MediaDurationField(required=False)
+        field = MediaDurationFormField(required=False)
 
         with self.assertRaises(ValidationError) as invalid_duration:
             field.clean("12:34")
@@ -39,7 +39,7 @@ class TestMediaChapterSectionBlock(TestCase):
         )
 
     def test_duration_form_field_converts_hhmmss_to_seconds(self):
-        field = MediaDurationField(required=False)
+        field = MediaDurationFormField(required=False)
 
         self.assertEqual(field.clean("01:02:03"), 3723)
 
