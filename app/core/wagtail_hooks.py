@@ -4,7 +4,11 @@ from django.urls import path, reverse
 from wagtail import hooks
 from wagtail.admin.menu import MenuItem
 
-from .admin_views import invalidate_tree_explorer_cache, tree_explorer_view
+from .admin_views import (
+    block_usage_report_view,
+    invalidate_tree_explorer_cache,
+    tree_explorer_view,
+)
 from .models.partner_logos import partner_logo_chooserviewset, partner_logo_modelviewset
 
 
@@ -84,6 +88,11 @@ def register_tree_explorer_admin_urls():
             tree_explorer_view,
             name="tree_explorer",
         ),
+        path(
+            "reports/block-usage/",
+            block_usage_report_view,
+            name="block_usage_report",
+        ),
     ]
 
 
@@ -94,6 +103,16 @@ def register_tree_explorer_menu_item():
         reverse("tree_explorer"),
         icon_name="list-ul",
         order=150,
+    )
+
+
+@hooks.register("register_admin_menu_item")
+def register_block_usage_report_menu_item():
+    return MenuItem(
+        "Block usage",
+        reverse("block_usage_report"),
+        icon_name="terminal",
+        order=160,
     )
 
 
