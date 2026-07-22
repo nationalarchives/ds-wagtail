@@ -37,3 +37,14 @@ def format_seconds_hhmmss(total_seconds):
     hours, remainder = divmod(total_seconds, 3600)
     minutes, seconds = divmod(remainder, 60)
     return f"{hours:02d}:{minutes:02d}:{seconds:02d}"
+
+
+def normalise_hhmmss_for_display(value, parser):
+    if value in (None, ""):
+        return value
+
+    seconds = parser(value)
+    if seconds is None:
+        return value
+
+    return format_seconds_hhmmss(seconds)

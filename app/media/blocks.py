@@ -5,7 +5,7 @@ from wagtailmedia.blocks import AbstractMediaChooserBlock
 
 from app.core.blocks.image import APIImageChooserBlock
 from app.media.time_utils import (
-    format_seconds_hhmmss,
+    normalise_hhmmss_for_display,
     parse_chapter_time_string_to_seconds,
     parse_chapter_time_to_seconds,
 )
@@ -20,14 +20,7 @@ def chapter_time_validation_error(value):
 
 
 def normalise_chapter_time_for_display(value):
-    if value in (None, ""):
-        return value
-
-    seconds = parse_chapter_time_to_seconds(value)
-    if seconds is None:
-        return value
-
-    return format_seconds_hhmmss(seconds)
+    return normalise_hhmmss_for_display(value, parse_chapter_time_to_seconds)
 
 
 class ChapterTimeBlock(blocks.CharBlock):
