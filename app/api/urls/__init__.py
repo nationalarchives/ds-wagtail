@@ -15,6 +15,8 @@ from app.api.urls.media import CustomMediaAPIViewSet
 from app.api.urls.page_preview import PagePreviewAPIViewSet
 from app.api.urls.pages import CustomPagesAPIViewSet
 from app.api.urls.redirects import RedirectsAPIViewSet
+from app.api.urls.external_applications import ExternalApplicationPagesAPIViewSet
+from app.api.urls.unified_search import UnifiedSearchAPIViewSet
 from app.api.urls.tags import ArticleTagsAPIViewSet
 
 api_router = WagtailAPIRouter("wagtailapi")
@@ -32,3 +34,5 @@ api_router.register_endpoint("redirects", RedirectsAPIViewSet)
 api_router.register_endpoint("foi", FreedomOfInformationRequestsAPIViewSet)
 api_router.register_endpoint("catalogue", CatalogueAPIViewSet)
 api_router.register_endpoint("globals", GlobalsAPIViewSet)
+api_router.register_endpoint("external_applications", ExternalApplicationPagesAPIViewSet)
+api_router.register_endpoint("search", UnifiedSearchAPIViewSet)
