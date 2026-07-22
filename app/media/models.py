@@ -2,7 +2,6 @@ import mimetypes
 import uuid
 
 from django.conf import settings
-from django.core.exceptions import ValidationError
 from django.core.validators import FileExtensionValidator
 from django.db import models
 from wagtail import blocks
@@ -15,11 +14,10 @@ from wagtailmedia.settings import wagtailmedia_settings
 from app.core.blocks.paragraph import APIRichTextBlock
 from app.core.serializers import RichTextSerializer
 from app.media.blocks import ChapterTimeBlock
+from app.media.fields import MediaDurationField
 from app.media.time_utils import (
     coerce_media_duration_to_api_seconds,
-    DURATION_VALIDATION_MESSAGE,
     parse_chapter_time_to_seconds,
-    parse_media_duration_to_seconds,
 )
 
 
@@ -53,6 +51,7 @@ class EtnaMedia(AbstractMedia):
         unique=True,
         verbose_name="UUID",
     )
+    duration = MediaDurationField()
     audio_described_file = models.FileField(
         blank=True,
         null=True,
@@ -95,18 +94,7 @@ class EtnaMedia(AbstractMedia):
         null=True,
     )
 
-    def _normalise_duration(self):
-        if self.duration in (None, ""):
-            return
-
-        seconds = parse_media_duration_to_seconds(self.duration)
-        if seconds is None:
-            raise ValidationError({"duration": DURATION_VALIDATION_MESSAGE})
-
-        self.duration = seconds
-
     def clean(self, *args, **kwargs):
-        self._normalise_duration()
         super().clean(*args, **kwargs)
 
         if self.audio_described_file:
@@ -128,10 +116,6 @@ class EtnaMedia(AbstractMedia):
         if self.chapters_file:
             validate = FileExtensionValidator(["vtt"])
             validate(self.chapters_file)
-
-    def save(self, *args, **kwargs):
-        self._normalise_duration()
-        return super().save(*args, **kwargs)
 
     @property
     def full_url(self):
