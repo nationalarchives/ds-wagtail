@@ -5,6 +5,7 @@ from wagtailmedia.blocks import AbstractMediaChooserBlock
 
 from app.core.blocks.image import APIImageChooserBlock
 from app.media.time_utils import (
+    coerce_media_duration_to_api_seconds,
     normalise_hhmmss_for_display,
     parse_chapter_time_string_to_seconds,
     parse_chapter_time_to_seconds,
@@ -82,7 +83,7 @@ class MediaChooserBlock(AbstractMediaChooserBlock):
             "chapters": value.api_chapters(),
             "width": value.width,
             "height": value.height,
-            "duration": value.duration,
+            "duration": coerce_media_duration_to_api_seconds(value.duration),
             "subtitles_file": value.subtitles_file_url,
             "subtitles_file_full_url": value.subtitles_file_full_url,
             "chapters_file": value.chapters_file_url,

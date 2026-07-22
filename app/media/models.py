@@ -16,6 +16,7 @@ from app.core.blocks.paragraph import APIRichTextBlock
 from app.core.serializers import RichTextSerializer
 from app.media.blocks import ChapterTimeBlock
 from app.media.time_utils import (
+    coerce_media_duration_to_api_seconds,
     DURATION_VALIDATION_MESSAGE,
     parse_chapter_time_to_seconds,
     parse_media_duration_to_seconds,
@@ -205,6 +206,9 @@ class EtnaMedia(AbstractMedia):
             chapter_payload
             for _, chapter_payload in sorted(chapter_pairs, key=lambda pair: pair[0])
         ]
+
+    def api_duration(self):
+        return coerce_media_duration_to_api_seconds(self.duration)
 
     api_fields = [
         APIField("type"),
