@@ -43,24 +43,6 @@
                 "height": 68
             }
         },
-        "teaser_image_square": {
-            "id": 8,
-            "uuid": "00000000-0000-0000-0000-000000000000",
-            "title": "An image",
-            "description": "",
-            "jpeg": {
-                "url": "/media/images/example.2e16d0ba.fill-512x512.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
-                "full_url": "http://localhost/media/images/example.2e16d0ba.fill-512x512.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
-                "width": 100,
-                "height": 100
-            },
-            "webp": {
-                "url": "/media/images/exampl.2e16d0ba.fill-512x512.format-webp.webpquality-70.bgcolor-fff.webp",
-                "full_url": "http://localhost/media/images/exampl.2e16d0ba.fill-512x512.format-webp.webpquality-70.bgcolor-fff.webp",
-                "width": 100,
-                "height": 100
-            }
-        },
         "search_image": null,
         "twitter_og_title": null,
         "twitter_og_description": null,
@@ -113,6 +95,18 @@
                     "full_url": "http://localhost/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-70.bgcolor-fff.webp",
                     "width": 100,
                     "height": 68
+                },
+                "square_jpeg": {
+                    "url": "/media/images/example.2e16d0ba.fill-512x512.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                    "full_url": "http://localhost/media/images/example.2e16d0ba.fill-512x512.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                    "width": 100,
+                    "height": 100
+                },
+                "square_webp": {
+                    "url": "/media/images/exampl.2e16d0ba.fill-512x512.format-webp.webpquality-70.bgcolor-fff.webp",
+                    "full_url": "http://localhost/media/images/exampl.2e16d0ba.fill-512x512.format-webp.webpquality-70.bgcolor-fff.webp",
+                    "width": 100,
+                    "height": 100
                 }
             },
             "first_published_at": "2000-01-01T00:00:00Z",
@@ -134,22 +128,16 @@
                     "full_url": "http://localhost/media/images/exampl.2e16d0ba.fill-512x512.format-webp.webpquality-70.bgcolor-fff.webp",
                     "width": 100,
                     "height": 100
-                }
-            },
-            "image_small": {
-                "id": 10,
-                "uuid": "00000000-0000-0000-0000-000000000000",
-                "title": "An image",
-                "description": "",
-                "jpeg": {
-                    "url": "/media/images/example.2e16d0ba.fill-128x128.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
-                    "full_url": "http://localhost/media/images/example.2e16d0ba.fill-128x128.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                },
+                "small_jpeg": {
+                    "url": "/media/images/image.fill-128x128.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                    "full_url": "http://localhost/media/images/image.fill-128x128.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
                     "width": 100,
                     "height": 100
                 },
-                "webp": {
-                    "url": "/media/images/exampl.2e16d0ba.fill-128x128.format-webp.webpquality-70.bgcolor-fff.webp",
-                    "full_url": "http://localhost/media/images/exampl.2e16d0ba.fill-128x128.format-webp.webpquality-70.bgcolor-fff.webp",
+                "small_webp": {
+                    "url": "/media/images/image.fill-128x128.format-webp.webpquality-70.bgcolor-fff.webp",
+                    "full_url": "http://localhost/media/images/image.fill-128x128.format-webp.webpquality-70.bgcolor-fff.webp",
                     "width": 100,
                     "height": 100
                 }

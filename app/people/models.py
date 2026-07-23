@@ -12,6 +12,7 @@ from wagtail.models import Page
 from wagtail.snippets.models import register_snippet
 
 from app.core.models import BasePage
+from app.core.models.mixins import SocialMixin
 from app.core.serializers import (
     DefaultPageSerializer,
     ImageSerializer,
@@ -206,12 +207,30 @@ class PersonPage(BasePage):
     parent_page_types = ["people.PeopleIndexPage"]
     subpage_types = []
 
+    _teaser_image_api_field = APIField(
+        "teaser_image",
+        serializer=ImageSerializer(
+            "fill-600x400", additional_rendition_specs={"square": "fill-512x512"}
+        ),
+    )
+
+    _teaser_api_meta_fields = [APIField("teaser_text"), _teaser_image_api_field]
+
+    api_meta_fields = (
+        BasePage._base_api_meta_fields
+        + _teaser_api_meta_fields
+        + SocialMixin.api_meta_fields
+    )
+
     default_api_fields = BasePage.default_api_fields + [
+        _teaser_image_api_field,
         APIField("role"),
-        APIField("image", serializer=ImageSerializer(rendition_size="fill-512x512")),
         APIField(
-            "image_small",
-            serializer=ImageSerializer(rendition_size="fill-128x128", source="image"),
+            "image",
+            serializer=ImageSerializer(
+                rendition_size="fill-512x512",
+                additional_rendition_specs={"small": "fill-128x128"},
+            ),
         ),
         APIField("first_name"),
         APIField("last_name"),
@@ -224,10 +243,12 @@ class PersonPage(BasePage):
         APIField("last_name"),
         APIField("role"),
         APIField("role_tags"),
-        APIField("image", serializer=ImageSerializer(rendition_size="fill-512x512")),
         APIField(
-            "image_small",
-            serializer=ImageSerializer(rendition_size="fill-128x128", source="image"),
+            "image",
+            serializer=ImageSerializer(
+                rendition_size="fill-512x512",
+                additional_rendition_specs={"small": "fill-128x128"},
+            ),
         ),
         APIField("summary", serializer=RichTextSerializer()),
         APIField("research_summary"),

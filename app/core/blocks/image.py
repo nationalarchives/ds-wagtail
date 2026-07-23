@@ -22,6 +22,10 @@ class APIImageChooserBlock(ImageChooserBlock):
 
     jpeg_quality and webp_quality default to 60 and 80 respectively,
     and can be specified in the same way as rendition_size.
+
+    additional_rendition_specs can be passed to generate named additional
+    renditions, e.g:
+    additional_rendition_specs={"small": "fill-300x200"}
     """
 
     def __init__(
@@ -32,12 +36,14 @@ class APIImageChooserBlock(ImageChooserBlock):
         jpeg_quality=60,
         webp_quality=70,
         background_colour="fff",
+        additional_rendition_specs=None,
         **kwargs,
     ):
         self.rendition_size = rendition_size
         self.jpeg_quality = jpeg_quality
         self.webp_quality = webp_quality
         self.background_colour = background_colour
+        self.additional_rendition_specs = additional_rendition_specs
         super().__init__(required=required, help_text=help_text, **kwargs)
 
     def get_api_representation(self, value, context=None):
@@ -46,6 +52,7 @@ class APIImageChooserBlock(ImageChooserBlock):
             jpeg_quality=self.jpeg_quality,
             webp_quality=self.webp_quality,
             background_colour=self.background_colour,
+            additional_rendition_specs=self.additional_rendition_specs,
         )
         return serializer.to_representation(value)
 

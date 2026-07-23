@@ -13,6 +13,7 @@ nav:
       - Project conventions: development/project-conventions.md
       - Version control: development/version-control.md
   - Features:
+      - Images: features/images.md
       - Search and record data: features/search-and-record-data.md
   - Infrastructure:
       - API tokens: infrastructure/api-tokens.md

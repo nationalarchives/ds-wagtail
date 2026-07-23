@@ -3,11 +3,12 @@ from rest_framework.serializers import Serializer
 
 def image_generator(
     original_image,
-    rendition_size="fill-600x400",
-    jpeg_quality=60,
-    webp_quality=70,
-    background_colour=None,
-    formats=None,
+    rendition_size: str = "fill-600x400",
+    jpeg_quality: int = 60,
+    webp_quality: int = 70,
+    background_colour: str | None = None,
+    formats: list | None = None,
+    additional_rendition_specs: dict | None = None,
 ):
     if formats is None:
         formats = ["jpeg", "webp"]
@@ -18,18 +19,51 @@ def image_generator(
         f"|bgcolor-{background_colour}" if background_colour else ""
     )
 
-    rendition_specs = []
-    for fmt in formats:
+    def build_rendition_spec(
+        size: str,
+        fmt: str,
+        jpeg_quality: int = jpeg_quality,
+        webp_quality: int = webp_quality,
+    ) -> str:
         if fmt == "jpeg":
-            rendition_specs.append(
-                f"{rendition_size}|format-jpeg|jpegquality-{jpeg_quality}{background_colour_rendition}"
+            return (
+                f"{size}|format-jpeg|jpegquality-{jpeg_quality}"
+                f"{background_colour_rendition}"
             )
-        elif fmt == "webp":
-            rendition_specs.append(
-                f"{rendition_size}|format-webp|webpquality-{webp_quality}{background_colour_rendition}"
+        if fmt == "webp":
+            return (
+                f"{size}|format-webp|webpquality-{webp_quality}"
+                f"{background_colour_rendition}"
             )
-        else:
-            rendition_specs.append(f"{rendition_size}|format-{fmt}")
+        return f"{size}|format-{fmt}"
+
+    rendition_specs = []
+    output_keys_by_spec = {}
+
+    for fmt in formats:
+        spec = build_rendition_spec(rendition_size, fmt)
+        rendition_specs.append(spec)
+        output_keys_by_spec[spec] = fmt
+
+    if additional_rendition_specs:
+        for key, value in additional_rendition_specs.items():
+            if isinstance(value, dict):
+                size = value["size"]
+                extra_jpeg_quality = value.get("jpeg_quality", jpeg_quality)
+                extra_webp_quality = value.get("webp_quality", webp_quality)
+            else:
+                size = value
+                extra_jpeg_quality = jpeg_quality
+                extra_webp_quality = webp_quality
+            for fmt in formats:
+                spec = build_rendition_spec(
+                    size,
+                    fmt,
+                    jpeg_quality=extra_jpeg_quality,
+                    webp_quality=extra_webp_quality,
+                )
+                rendition_specs.append(spec)
+                output_keys_by_spec[spec] = f"{key}_{fmt}"
 
     renditions = original_image.get_renditions(*rendition_specs)
 
@@ -38,8 +72,12 @@ def image_generator(
 
     output = {}
     for spec, rendition in renditions.items():
-        fmt = spec.split("format-")[1].split("|", 1)[0]
-        output[fmt] = {
+        output_key = output_keys_by_spec.get(spec)
+        if not output_key:
+            fmt = spec.split("format-")[1].split("|", 1)[0]
+            output_key = fmt
+
+        output[output_key] = {
             "url": rendition.url,
             "full_url": rendition.full_url,
             "width": rendition.width,
@@ -66,6 +104,14 @@ class ImageSerializer(Serializer):
     ["jpeg", "webp", "png"]. These will be returned in the API response
     in the same way as the `jpeg` and `webp` renditions.
 
+    To generate additional renditions with custom sizes, pass `additional_rendition_specs`
+    as a dict mapping output key names to either a size string or a dict with `size`,
+    `jpeg_quality`, and/or `webp_quality` keys, e.g:
+    additional_rendition_specs={
+        "small": "fill-300x200",
+        "large": {"size": "fill-1200x800", "jpeg_quality": 80, "webp_quality": 85},
+    }
+
     The source of the image can also be set in the serializer, e.g:
     APIField("image_large", serializer=ImageSerializer(rendition_size="fill-900x900", source="image"))
 
@@ -74,11 +120,12 @@ class ImageSerializer(Serializer):
 
     def __init__(
         self,
-        rendition_size="fill-600x400",
-        jpeg_quality=60,
-        webp_quality=70,
-        background_colour="fff",
-        formats=None,
+        rendition_size: str = "fill-600x400",
+        jpeg_quality: int = 60,
+        webp_quality: int = 70,
+        background_colour: str = "fff",
+        formats: list = None,
+        additional_rendition_specs: dict = None,
         *args,
         **kwargs,
     ):
@@ -89,6 +136,7 @@ class ImageSerializer(Serializer):
         self.webp_quality = webp_quality
         self.background_colour = background_colour
         self.formats = formats
+        self.additional_rendition_specs = additional_rendition_specs
         super().__init__(*args, **kwargs)
 
     def to_representation(self, value):
@@ -100,6 +148,7 @@ class ImageSerializer(Serializer):
                 webp_quality=self.webp_quality,
                 background_colour=self.background_colour,
                 formats=self.formats,
+                additional_rendition_specs=self.additional_rendition_specs,
             )
 
             if not image_data:

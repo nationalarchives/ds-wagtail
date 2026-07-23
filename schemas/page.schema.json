@@ -148,10 +148,6 @@
           "description": "The teaser image for the page",
           "$ref": "https://www.nationalarchives.gov.uk/wagtail/image-rendition.schema.json"
         },
-        "teaser_image_square": {
-          "description": "The square teaser image for the page",
-          "$ref": "https://www.nationalarchives.gov.uk/wagtail/image-rendition.schema.json"
-        },
         "search_image": {
           "description": "The search image for the page",
           "$ref": "https://www.nationalarchives.gov.uk/wagtail/image-rendition.schema.json"
@@ -207,7 +203,6 @@
         "page_path",
         "teaser_text",
         "teaser_image",
-        "teaser_image_square",
         "search_image",
         "twitter_og_title",
         "twitter_og_description",

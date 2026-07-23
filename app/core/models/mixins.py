@@ -131,11 +131,9 @@ class HeroImageMixin(models.Model):
         APIField("hero_image_caption", serializer=RichTextSerializer()),
         APIField(
             "hero_image",
-            serializer=DetailedImageSerializer("fill-1800x720"),
-        ),
-        APIField(
-            "hero_image_small",
-            serializer=DetailedImageSerializer("fill-900x600", source="hero_image"),
+            serializer=DetailedImageSerializer(
+                "fill-1800x720", additional_rendition_specs={"small": "fill-900x600"}
+            ),
         ),
     ]
 
@@ -255,15 +253,14 @@ class SocialMixin(models.Model):
     API Field Building Blocks:
     For flexible composition of api_meta_fields in child classes:
 
-    - `_teaser_image_square_api_field`: Square crop of teaser_image (requires teaser_image field)
     - `_social_base_api_meta_fields`: SEO and social fields (works without teaser_image)
 
-    Child classes can include teaser_image_square or omit it:
+    Child classes can compose social metadata independently of teaser_image:
 
-        # Include teaser_image_square (default)
+        # Include social metadata fields (default)
         api_meta_fields = SocialMixin.api_meta_fields
 
-        # Omit teaser_image_square (for pages without teaser_image)
+        # Reuse the same social metadata fields in custom compositions
         api_meta_fields = SocialMixin._social_base_api_meta_fields
     """
 
@@ -329,11 +326,6 @@ class SocialMixin(models.Model):
     ]
 
     # API field building blocks for flexible composition
-    _teaser_image_square_api_field = APIField(
-        "teaser_image_square",
-        serializer=ImageSerializer("fill-512x512", source="teaser_image"),
-    )
-
     _social_base_api_meta_fields = [
         APIField("seo_title"),
         APIField("search_description"),
@@ -349,7 +341,7 @@ class SocialMixin(models.Model):
         ),
     ]
 
-    api_meta_fields = [_teaser_image_square_api_field] + _social_base_api_meta_fields
+    api_meta_fields = _social_base_api_meta_fields
 
 
 class CustomHeadlessPreviewMixin(HeadlessPreviewMixin):

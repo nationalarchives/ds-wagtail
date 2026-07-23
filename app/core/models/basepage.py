@@ -216,6 +216,10 @@ class BasePage(AlertMixin, SocialMixin, CustomHeadlessPreviewMixin, Page):
 
     page_path = property(get_page_path)
 
+    _teaser_image_api_field = APIField(
+        "teaser_image", serializer=ImageSerializer("fill-600x400")
+    )
+
     default_api_fields = [
         APIField("id"),
         APIField("title"),
@@ -226,10 +230,7 @@ class BasePage(AlertMixin, SocialMixin, CustomHeadlessPreviewMixin, Page):
         APIField("type"),
         APIField("type_label"),
         APIField("teaser_text"),
-        APIField(
-            "teaser_image",
-            serializer=ImageSerializer("fill-600x400"),
-        ),
+        _teaser_image_api_field,
         APIField("first_published_at"),
         APIField("last_published_at"),
     ]
@@ -251,10 +252,7 @@ class BasePage(AlertMixin, SocialMixin, CustomHeadlessPreviewMixin, Page):
 
     _teaser_api_meta_fields = [
         APIField("teaser_text"),
-        APIField(
-            "teaser_image",
-            serializer=ImageSerializer("fill-600x400"),
-        ),
+        _teaser_image_api_field,
     ]
 
     api_meta_fields = (
