@@ -69,6 +69,15 @@ class DescriptionListSettingsBlock(blocks.StructBlock):
         help_text="If enabled, the term and detail will be stacked vertically instead of displayed side by side.",
     )
 
+    def get_api_representation(self, value, context=None):
+        representation = super().get_api_representation(value, context=context)
+
+        for field in ("style", "column_balancing"):
+            if representation.get(field) == "none":
+                representation[field] = None
+
+        return representation
+
     class Meta:
         label = "Style Options"
         label_format = ""
