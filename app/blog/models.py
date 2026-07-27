@@ -162,6 +162,67 @@ class BlogPage(HeroImageMixin, BasePageWithRequiredIntro):
         """
         return BlogFeedsPage.objects.all().live().public().first()
 
+    @cached_property
+    def child_blogs(self):
+        """
+        Returns child BlogPages of this page with post counts.
+        """
+        queryset = BlogPage.objects.child_of(self).live().public().order_by("title")
+        return queryset
+
+    @cached_property
+    def blog_posts_count(self):
+        """
+        Returns blog post counts aggregated by year and month for this blog's posts.
+        """
+        queryset = BlogPostPage.objects.descendant_of(self).live().public()
+        
+        monthly_counts = (
+            queryset.annotate(
+                year=ExtractYear("published_date"),
+                month=ExtractMonth("published_date"),
+            )
+            .values("year", "month")
+            .annotate(posts=Count("id"))
+            .order_by("year", "month")
+        )
+
+        years_dict = {}
+        for row in monthly_counts:
+            year, month, count = row["year"], row["month"], row["posts"]
+            acc = years_dict.setdefault(year, {"year": year, "months": [], "posts": 0})
+            acc["months"].append({"month": month, "posts": count})
+            acc["posts"] += count
+
+        return list(years_dict.values())
+
+    @cached_property
+    def blog_posts_authors(self):
+        """
+        Returns blog post authors with their post counts for this blog's posts.
+        """
+        queryset = BlogPostPage.objects.descendant_of(self).live().public()
+        authors = set(
+            queryset.values_list("author_tags__author", "author_tags__author__live")
+        )
+        authors_count = []
+        for author in authors:
+            if author[0] is not None and author[1]:
+                author_item = (
+                    queryset.filter(author_tags__author=author)
+                    .first()
+                    .author_tags.filter(author=author)
+                    .first()
+                    .author
+                )
+                authors_count.append(
+                    {
+                        "author": author_item,
+                        "posts": queryset.filter(author_tags__author=author).count(),
+                    }
+                )
+        return sorted(authors_count, key=lambda x: x["posts"], reverse=True)
+
     content_panels = (
         BasePageWithRequiredIntro.content_panels + HeroImageMixin.content_panels
     )
@@ -176,6 +237,9 @@ class BlogPage(HeroImageMixin, BasePageWithRequiredIntro):
         + [
             APIField("custom_type_label"),
             APIField("blogs_feeds_page", serializer=DefaultPageSerializer()),
+            APIField("child_blogs", serializer=DefaultPageSerializer(many=True)),
+            APIField("blog_posts_count"),
+            APIField("blog_posts_authors", serializer=BlogPostAuthorsSerializer()),
         ]
     )
 
