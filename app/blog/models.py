@@ -1,8 +1,11 @@
 from django.db import models
+from django.db.models import Count
+from django.db.models.functions import ExtractMonth, ExtractYear
 from django.utils.functional import cached_property
 from wagtail.admin.panels import FieldPanel
 from wagtail.api import APIField
 from wagtail.fields import RichTextField, StreamField
+from wagtail.models import PageViewRestriction
 
 from app.core.models import (
     BasePage,
@@ -15,6 +18,7 @@ from app.core.serializers.pages import DefaultPageSerializer
 from app.people.models import AuthorPageMixin, ExternalAuthorMixin
 
 from .blocks import BlogPostPageStreamBlock
+from .serializers import BlogPostAuthorsSerializer
 
 
 class BlogIndexPage(BasePageWithRequiredIntro):
@@ -36,8 +40,91 @@ class BlogIndexPage(BasePageWithRequiredIntro):
         """
         return BlogFeedsPage.objects.all().live().public().first()
 
+    @cached_property
+    def top_blogs(self):
+        """
+        Returns top-level blogs with post counts.
+        Replicates the logic from blogs/top/ endpoint.
+        """
+        queryset = BlogPage.objects.all().live().public().order_by("title")
+        restricted_pages = [
+            restriction.page
+            for restriction in PageViewRestriction.objects.all().select_related("page")
+        ]
+        for restricted_page in restricted_pages:
+            queryset = queryset.not_descendant_of(restricted_page, inclusive=True)
+        
+        blog_post_counts = {}
+        for blog in queryset:
+            # Ignore all "sub-blogs" (BlogPages which are children of other BlogPages)
+            queryset = queryset.not_descendant_of(blog, inclusive=False)
+            blog_posts = (
+                BlogPostPage.objects.all().live().public().descendant_of(blog).count()
+            )
+            blog_post_counts[blog.id] = blog_posts
+        
+        return queryset
+
+    @cached_property
+    def blog_posts_count(self):
+        """
+        Returns blog post counts aggregated by year and month.
+        Replicates the logic from blog_posts/count/ endpoint.
+        """
+        queryset = BlogPostPage.objects.all().live().public()
+        
+        monthly_counts = (
+            queryset.annotate(
+                year=ExtractYear("published_date"),
+                month=ExtractMonth("published_date"),
+            )
+            .values("year", "month")
+            .annotate(posts=Count("id"))
+            .order_by("year", "month")
+        )
+
+        years_dict = {}
+        for row in monthly_counts:
+            year, month, count = row["year"], row["month"], row["posts"]
+            acc = years_dict.setdefault(year, {"year": year, "months": [], "posts": 0})
+            acc["months"].append({"month": month, "posts": count})
+            acc["posts"] += count
+
+        return list(years_dict.values())        
+
+    @cached_property
+    def blog_posts_authors(self):
+        """
+        Returns blog post authors with their post counts.
+        Replicates the logic from blog_posts/authors/ endpoint.
+        """
+        queryset = BlogPostPage.objects.all().live().public()
+        authors = set(
+            queryset.values_list("author_tags__author", "author_tags__author__live")
+        )
+        authors_count = []
+        for author in authors:
+            if author[0] is not None and author[1]:
+                author_item = (
+                    queryset.filter(author_tags__author=author)
+                    .first()
+                    .author_tags.filter(author=author)
+                    .first()
+                    .author
+                )
+                authors_count.append(
+                    {
+                        "author": author_item,
+                        "posts": queryset.filter(author_tags__author=author).count(),
+                    }
+                )
+        return sorted(authors_count, key=lambda x: x["posts"], reverse=True)
+
     api_fields = BasePageWithRequiredIntro.api_fields + [
         APIField("blogs_feeds_page", serializer=DefaultPageSerializer()),
+        APIField("top_blogs", serializer=DefaultPageSerializer(many=True)),
+        APIField("blog_posts_count"),
+        APIField("blog_posts_authors", serializer=BlogPostAuthorsSerializer()),
     ]
 
 
