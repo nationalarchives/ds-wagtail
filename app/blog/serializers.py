@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from app.core.serializers.pages import DefaultPageSerializer, get_api_data
+
+from app.core.serializers.pages import DefaultPageSerializer
 
 
 class BlogCountSerializer(serializers.Serializer):
@@ -43,4 +44,3 @@ class BlogPostAuthorsSerializer(serializers.Serializer):
             "author": DefaultPageSerializer().to_representation(item.get("author")),
             "posts": item.get("posts", 0),
         }
-    

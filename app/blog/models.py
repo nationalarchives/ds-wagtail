@@ -53,7 +53,7 @@ class BlogIndexPage(BasePageWithRequiredIntro):
         ]
         for restricted_page in restricted_pages:
             queryset = queryset.not_descendant_of(restricted_page, inclusive=True)
-        
+
         blog_post_counts = {}
         for blog in queryset:
             # Ignore all "sub-blogs" (BlogPages which are children of other BlogPages)
@@ -62,7 +62,7 @@ class BlogIndexPage(BasePageWithRequiredIntro):
                 BlogPostPage.objects.all().live().public().descendant_of(blog).count()
             )
             blog_post_counts[blog.id] = blog_posts
-        
+
         return queryset
 
     @cached_property
@@ -72,7 +72,7 @@ class BlogIndexPage(BasePageWithRequiredIntro):
         Replicates the logic from blog_posts/count/ endpoint.
         """
         queryset = BlogPostPage.objects.all().live().public()
-        
+
         monthly_counts = (
             queryset.annotate(
                 year=ExtractYear("published_date"),
@@ -90,7 +90,7 @@ class BlogIndexPage(BasePageWithRequiredIntro):
             acc["months"].append({"month": month, "posts": count})
             acc["posts"] += count
 
-        return list(years_dict.values())        
+        return list(years_dict.values())
 
     @cached_property
     def blog_posts_authors(self):
@@ -177,7 +177,7 @@ class BlogPage(HeroImageMixin, BasePageWithRequiredIntro):
         Returns blog post counts aggregated by year and month for this blog's posts.
         """
         queryset = BlogPostPage.objects.descendant_of(self).live().public()
-        
+
         monthly_counts = (
             queryset.annotate(
                 year=ExtractYear("published_date"),
