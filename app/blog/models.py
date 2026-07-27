@@ -97,6 +97,7 @@ class BlogIndexPage(BasePageWithRequiredIntro):
         """
         Returns blog post authors with their post counts.
         Replicates the logic from blog_posts/authors/ endpoint.
+        Limited to top 12 authors.
         """
         queryset = BlogPostPage.objects.all().live().public()
         authors = set(
@@ -118,7 +119,7 @@ class BlogIndexPage(BasePageWithRequiredIntro):
                         "posts": queryset.filter(author_tags__author=author).count(),
                     }
                 )
-        return sorted(authors_count, key=lambda x: x["posts"], reverse=True)
+        return sorted(authors_count, key=lambda x: x["posts"], reverse=True)[:12]
 
     api_fields = BasePageWithRequiredIntro.api_fields + [
         APIField("blogs_feeds_page", serializer=DefaultPageSerializer()),
@@ -200,6 +201,7 @@ class BlogPage(HeroImageMixin, BasePageWithRequiredIntro):
     def blog_posts_authors(self):
         """
         Returns blog post authors with their post counts for this blog's posts.
+        Limited to top 12 authors.
         """
         queryset = BlogPostPage.objects.descendant_of(self).live().public()
         authors = set(
@@ -221,7 +223,7 @@ class BlogPage(HeroImageMixin, BasePageWithRequiredIntro):
                         "posts": queryset.filter(author_tags__author=author).count(),
                     }
                 )
-        return sorted(authors_count, key=lambda x: x["posts"], reverse=True)
+        return sorted(authors_count, key=lambda x: x["posts"], reverse=True)[:12]
 
     content_panels = (
         BasePageWithRequiredIntro.content_panels + HeroImageMixin.content_panels
