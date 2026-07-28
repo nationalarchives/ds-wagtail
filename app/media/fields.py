@@ -14,7 +14,7 @@ NON_NEGATIVE_DURATION_VALIDATION_MESSAGE = (
 )
 
 
-def is_negative_integer_literal(value):
+def is_negative(value):
     if isinstance(value, int):
         return value < 0
 
@@ -42,7 +42,7 @@ class MediaDurationFormField(forms.CharField):
         if data in self.empty_values:
             return None
 
-        if is_negative_integer_literal(data):
+        if is_negative(data):
             raise ValidationError(NON_NEGATIVE_DURATION_VALIDATION_MESSAGE)
 
         seconds = parse_duration_input_to_seconds(data)
@@ -66,7 +66,7 @@ class MediaDurationField(models.IntegerField):
         if value in self.empty_values:
             return None
 
-        if is_negative_integer_literal(value):
+        if is_negative(value):
             raise ValidationError(NON_NEGATIVE_DURATION_VALIDATION_MESSAGE)
 
         seconds = parse_duration_input_to_seconds(value)
