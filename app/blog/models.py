@@ -172,6 +172,37 @@ class BlogPage(HeroImageMixin, BasePageWithRequiredIntro):
         return queryset
 
     @cached_property
+    def top_blogs(self):
+        """
+        Returns "top-most" level blogs with post counts.
+        Replicates the logic from blogs/top/ endpoint.
+        """
+        blog_index = BlogIndexPage.objects.all().live().public().first()
+        if not blog_index:
+            return None
+
+        queryset = (
+            BlogPage.objects.child_of(blog_index).live().public().order_by("title")
+        )
+        restricted_pages = [
+            restriction.page
+            for restriction in PageViewRestriction.objects.all().select_related("page")
+        ]
+        for restricted_page in restricted_pages:
+            queryset = queryset.not_descendant_of(restricted_page, inclusive=True)
+
+        blog_post_counts = {}
+        for blog in queryset:
+            # Ignore all "sub-blogs" (BlogPages which are children of other BlogPages)
+            queryset = queryset.not_descendant_of(blog, inclusive=False)
+            blog_posts = (
+                BlogPostPage.objects.all().live().public().descendant_of(blog).count()
+            )
+            blog_post_counts[blog.id] = blog_posts
+
+        return [blog_index] + list(queryset)
+
+    @cached_property
     def blog_posts_count(self):
         """
         Returns blog post counts aggregated by year and month for this blog's posts.
@@ -240,6 +271,7 @@ class BlogPage(HeroImageMixin, BasePageWithRequiredIntro):
             APIField("custom_type_label"),
             APIField("blogs_feeds_page", serializer=DefaultPageSerializer()),
             APIField("child_blogs", serializer=DefaultPageSerializer(many=True)),
+            APIField("top_blogs", serializer=DefaultPageSerializer(many=True)),
             APIField("blog_posts_count"),
             APIField("blog_posts_authors", serializer=BlogPostAuthorsSerializer()),
         ]
