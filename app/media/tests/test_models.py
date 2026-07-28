@@ -7,6 +7,7 @@ from django.test import TestCase
 from app.media.blocks import (
     CHAPTER_TIME_VALIDATION_MESSAGE,
     ChapterTimeBlock,
+    MediaChooserBlock,
     normalise_chapter_time_for_display,
 )
 from app.media.fields import MediaDurationFormField
@@ -56,6 +57,38 @@ class TestMediaChapterSectionBlock(TestCase):
 
         media.refresh_from_db()
         self.assertEqual(media.duration, 3723)
+
+    def test_api_duration_returns_seconds(self):
+        media = EtnaMedia(
+            title="Test media",
+            file="media/test.mp4",
+            type="video",
+            duration="01:02:03",
+            width=1920,
+            height=1080,
+            thumbnail="media/test.jpg",
+            description="",
+            transcript="",
+        )
+
+        self.assertEqual(media.api_duration(), 3723)
+
+    def test_media_block_api_representation_uses_duration_seconds(self):
+        media = EtnaMedia(
+            title="Test media",
+            file="media/test.mp4",
+            type="video",
+            duration="01:02:03",
+            width=1920,
+            height=1080,
+            thumbnail="media/test.jpg",
+            description="",
+            transcript="",
+        )
+
+        representation = MediaChooserBlock().get_api_representation(media)
+
+        self.assertEqual(representation["duration"], 3723)
 
     def test_duration_mmss_is_rejected(self):
         media = EtnaMedia(
