@@ -6,12 +6,23 @@ from app.media.time_utils import (
     DURATION_VALIDATION_MESSAGE,
     HHMMSS_PLACEHOLDER,
     normalise_hhmmss_for_display,
-    parse_media_duration_to_seconds,
+    parse_duration_input_to_seconds,
 )
 
 NON_NEGATIVE_DURATION_VALIDATION_MESSAGE = (
     "Duration must be greater than or equal to 0."
 )
+
+
+def is_negative_integer_literal(value):
+    if isinstance(value, int):
+        return value < 0
+
+    if isinstance(value, str):
+        stripped = value.strip()
+        return stripped.startswith("-") and stripped[1:].isdigit()
+
+    return False
 
 
 class MediaDurationFormField(forms.CharField):
@@ -24,23 +35,19 @@ class MediaDurationFormField(forms.CharField):
         super().__init__(*args, **kwargs)
 
     def prepare_value(self, value):
-        return normalise_hhmmss_for_display(value, parse_media_duration_to_seconds)
+        return normalise_hhmmss_for_display(value, parse_duration_input_to_seconds)
 
     def clean(self, value):
         data = super().clean(value)
         if data in self.empty_values:
             return None
 
-        if isinstance(data, str):
-            data_stripped = data.strip()
-            if data_stripped.startswith("-") and data_stripped[1:].isdigit():
-                raise ValidationError(NON_NEGATIVE_DURATION_VALIDATION_MESSAGE)
+        if is_negative_integer_literal(data):
+            raise ValidationError(NON_NEGATIVE_DURATION_VALIDATION_MESSAGE)
 
-        seconds = parse_media_duration_to_seconds(data)
+        seconds = parse_duration_input_to_seconds(data)
         if seconds is None:
             raise ValidationError(DURATION_VALIDATION_MESSAGE)
-        if seconds < 0:
-            raise ValidationError(NON_NEGATIVE_DURATION_VALIDATION_MESSAGE)
 
         return seconds
 
@@ -59,18 +66,12 @@ class MediaDurationField(models.IntegerField):
         if value in self.empty_values:
             return None
 
-        if isinstance(value, int) and value < 0:
+        if is_negative_integer_literal(value):
             raise ValidationError(NON_NEGATIVE_DURATION_VALIDATION_MESSAGE)
-        if isinstance(value, str):
-            value_stripped = value.strip()
-            if value_stripped.startswith("-") and value_stripped[1:].isdigit():
-                raise ValidationError(NON_NEGATIVE_DURATION_VALIDATION_MESSAGE)
 
-        seconds = parse_media_duration_to_seconds(value)
+        seconds = parse_duration_input_to_seconds(value)
         if seconds is None:
             raise ValidationError(DURATION_VALIDATION_MESSAGE)
-        if seconds < 0:
-            raise ValidationError(NON_NEGATIVE_DURATION_VALIDATION_MESSAGE)
 
         return int(seconds)
 

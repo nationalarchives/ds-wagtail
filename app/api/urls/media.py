@@ -27,7 +27,11 @@ class CustomMediaAPIViewSet(MediaAPIViewSet):
 
     lookup_field = "uuid"
     base_serializer_class = CustomMediaItemSerializer
-    meta_fields = MediaAPIViewSet.meta_fields
+    meta_fields = [
+        field
+        for field in MediaAPIViewSet.meta_fields
+        if field not in {"download_url", "detail_url"}
+    ]
     body_fields = MediaAPIViewSet.body_fields + [
         "uuid",
         "title",
@@ -45,9 +49,6 @@ class CustomMediaAPIViewSet(MediaAPIViewSet):
         "chapters_file",
         "chapters_file_full_url",
     ]
-    meta_fields.remove("download_url")
-    meta_fields.remove("detail_url")
-
     def find_object(self, queryset, request):
         if "uuid" in request.GET:
             return queryset.get(uuid=request.GET["uuid"])

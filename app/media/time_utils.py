@@ -2,7 +2,7 @@ HHMMSS_PLACEHOLDER = "00:00:00"
 DURATION_VALIDATION_MESSAGE = "Duration must be in HH:MM:SS format."
 
 
-def parse_chapter_time_string_to_seconds(raw_value):
+def parse_hhmmss_string_to_seconds(raw_value):
     if not isinstance(raw_value, str):
         return None
 
@@ -19,7 +19,7 @@ def parse_chapter_time_string_to_seconds(raw_value):
     return hours * 3600 + minutes * 60 + seconds
 
 
-def _parse_hhmmss_to_seconds(raw_value):
+def parse_duration_input_to_seconds(raw_value):
     if raw_value is None:
         return None
 
@@ -28,21 +28,14 @@ def _parse_hhmmss_to_seconds(raw_value):
 
     if isinstance(raw_value, str):
         value = raw_value.strip()
-        return parse_chapter_time_string_to_seconds(value)
+        return parse_hhmmss_string_to_seconds(value)
 
     return None
 
 
-def parse_media_duration_to_seconds(raw_value):
-    return _parse_hhmmss_to_seconds(raw_value)
-
-
-def coerce_media_duration_to_api_seconds(raw_value):
+def normalise_duration_for_api_seconds(raw_value):
     if raw_value is None:
         return None
-
-    if isinstance(raw_value, int):
-        return raw_value if raw_value >= 0 else None
 
     if isinstance(raw_value, float):
         return int(raw_value) if raw_value >= 0 else None
@@ -51,18 +44,18 @@ def coerce_media_duration_to_api_seconds(raw_value):
         value = raw_value.strip()
         if value.isdigit():
             return int(value)
-        return parse_chapter_time_string_to_seconds(value)
 
-    return None
+    return parse_duration_input_to_seconds(raw_value)
 
 
-def parse_chapter_time_to_seconds(raw_value):
+def parse_chapter_input_to_seconds(raw_value):
     if isinstance(raw_value, str):
         value = raw_value.strip()
         if value.isdigit():
             return int(value)
+        return parse_hhmmss_string_to_seconds(value)
 
-    return _parse_hhmmss_to_seconds(raw_value)
+    return parse_duration_input_to_seconds(raw_value)
 
 
 def format_seconds_hhmmss(total_seconds):
