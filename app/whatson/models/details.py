@@ -39,6 +39,7 @@ from app.core.models import (
     LocationSerializer,
     RequiredHeroImageMixin,
 )
+from app.core.models.mixins import SidebarMixin
 from app.core.serializers import (
     DefaultPageSerializer,
     RichTextSerializer,
@@ -547,6 +548,7 @@ class EventPage(RequiredHeroImageMixin, ContentWarningMixin, BasePageWithRequire
 
 
 class EventSupplementaryPage(
+    SidebarMixin,
     HeroImageMixin,
     BasePageWithRequiredIntro,
 ):
@@ -565,6 +567,10 @@ class EventSupplementaryPage(
         ]
     )
 
+    settings_panels = (
+        BasePageWithRequiredIntro.settings_panels + SidebarMixin.settings_panels
+    )
+
     parent_page_types = [
         "whatson.EventPage",
     ]
@@ -574,6 +580,7 @@ class EventSupplementaryPage(
 
     api_fields = (
         BasePageWithRequiredIntro.api_fields
+        + SidebarMixin.api_fields
         + HeroImageMixin.api_fields
         + [
             APIField("body"),
