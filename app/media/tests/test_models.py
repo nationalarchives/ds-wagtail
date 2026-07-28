@@ -114,6 +114,25 @@ class TestMediaChapterSectionBlock(TestCase):
             str(invalid_duration.exception),
         )
 
+    def test_duration_negative_integer_is_rejected(self):
+        media = EtnaMedia(
+            title="Test media",
+            file="media/test.mp4",
+            type="video",
+            duration=-1,
+            width=1920,
+            height=1080,
+            thumbnail="media/test.jpg",
+        )
+
+        with self.assertRaises(ValidationError) as invalid_duration:
+            media.full_clean()
+
+        self.assertIn(
+            "Duration must be greater than or equal to 0.",
+            str(invalid_duration.exception),
+        )
+
     def test_chapter_times_are_stored_as_seconds_but_rendered_as_hhmmss(self):
         media = EtnaMedia.objects.create(
             title="Test media",

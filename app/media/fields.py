@@ -9,6 +9,10 @@ from app.media.time_utils import (
     parse_media_duration_to_seconds,
 )
 
+NON_NEGATIVE_DURATION_VALIDATION_MESSAGE = (
+    "Duration must be greater than or equal to 0."
+)
+
 
 class MediaDurationFormField(forms.CharField):
     def __init__(self, *args, **kwargs):
@@ -27,14 +31,21 @@ class MediaDurationFormField(forms.CharField):
         if data in self.empty_values:
             return None
 
+        if isinstance(data, str):
+            data_stripped = data.strip()
+            if data_stripped.startswith("-") and data_stripped[1:].isdigit():
+                raise ValidationError(NON_NEGATIVE_DURATION_VALIDATION_MESSAGE)
+
         seconds = parse_media_duration_to_seconds(data)
         if seconds is None:
             raise ValidationError(DURATION_VALIDATION_MESSAGE)
+        if seconds < 0:
+            raise ValidationError(NON_NEGATIVE_DURATION_VALIDATION_MESSAGE)
 
         return seconds
 
 
-class MediaDurationField(models.PositiveIntegerField):
+class MediaDurationField(models.IntegerField):
     description = "Media duration stored as seconds"
 
     def __init__(self, *args, **kwargs):
@@ -48,9 +59,18 @@ class MediaDurationField(models.PositiveIntegerField):
         if value in self.empty_values:
             return None
 
+        if isinstance(value, int) and value < 0:
+            raise ValidationError(NON_NEGATIVE_DURATION_VALIDATION_MESSAGE)
+        if isinstance(value, str):
+            value_stripped = value.strip()
+            if value_stripped.startswith("-") and value_stripped[1:].isdigit():
+                raise ValidationError(NON_NEGATIVE_DURATION_VALIDATION_MESSAGE)
+
         seconds = parse_media_duration_to_seconds(value)
         if seconds is None:
             raise ValidationError(DURATION_VALIDATION_MESSAGE)
+        if seconds < 0:
+            raise ValidationError(NON_NEGATIVE_DURATION_VALIDATION_MESSAGE)
 
         return int(seconds)
 
@@ -62,4 +82,4 @@ class MediaDurationField(models.PositiveIntegerField):
 
     def formfield(self, **kwargs):
         kwargs.setdefault("form_class", MediaDurationFormField)
-        return super().formfield(**kwargs)
+        return models.Field.formfield(self, **kwargs)
