@@ -13,7 +13,7 @@ jobs:
   check-migrations:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
         with:
           persist-credentials: false
       - name: Run tests
@@ -31,7 +31,7 @@ jobs:
       DATABASE_PORT: 5432
     services:
       postgres:
-        image: postgres:16.0
+        image: postgres:16.14
         env:
           POSTGRES_USER: ${{ env.DATABASE_USER }}
           POSTGRES_PASSWORD: ${{ env.DATABASE_PASSWORD }}
@@ -40,7 +40,7 @@ jobs:
           - 5432:5432
         options: --health-cmd pg_isready --health-interval 1s --health-timeout 3s --health-retries 10
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
         with:
           persist-credentials: false
       - name: Run tests
@@ -51,7 +51,7 @@ jobs:
   check-formatting:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
         with:
           persist-credentials: false
       - name: Run tests
