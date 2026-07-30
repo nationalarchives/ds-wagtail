@@ -143,6 +143,8 @@ TEMPLATES = [
 ]
 
 AUTHENTICATION_BACKENDS = [
+    # Allow Django/Wagtail admin login with email credentials.
+    "app.users.backends.EmailModelBackend",
     # Needed to login by username in Django admin, regardless of `allauth`
     "django.contrib.auth.backends.ModelBackend",
     # `allauth` specific authentication methods, such as login by e-mail
@@ -162,6 +164,7 @@ DATA_UPLOAD_MAX_NUMBER_FIELDS = int(os.getenv("DATA_UPLOAD_MAX_NUMBER_FIELDS", 1
 
 # django-allauth configuration
 ACCOUNT_LOGIN_METHODS = {"email"}
+ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_SIGNUP_FIELDS = ["email*", "password1*", "password2*"]
 ACCOUNT_LOGOUT_ON_GET = False  # Bypass logout confirmation form
 ACCOUNT_SESSION_REMEMBER = False  # True|False disables "Remember me?" checkbox"
