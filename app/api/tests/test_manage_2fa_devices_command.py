@@ -91,14 +91,23 @@ class Manage2FADevicesCommandTests(TestCase):
 
     @patch("app.api.management.commands.manage_2fa_devices.HtmlPasswordResetForm.save")
     @patch("app.api.management.commands.manage_2fa_devices.TOTPDevice.objects.filter")
-    def test_execute_deletes_2fa_devices(self, device_filter_mock, save_mock):
+    @patch("app.api.management.commands.manage_2fa_devices.StaticDevice.objects.filter")
+    def test_execute_deletes_2fa_devices(
+        self, static_device_filter_mock, device_filter_mock, save_mock
+    ):
         out = StringIO()
 
-        devices_qs = MagicMock()
-        devices_qs.count.side_effect = [2, 0]
-        devices_qs.__iter__.return_value = iter([])
-        devices_qs.delete.return_value = (2, {})
-        device_filter_mock.return_value = devices_qs
+        totp_devices_qs = MagicMock()
+        totp_devices_qs.count.return_value = 2
+        totp_devices_qs.__iter__.return_value = iter([])
+        totp_devices_qs.delete.return_value = (2, {})
+        device_filter_mock.return_value = totp_devices_qs
+
+        static_devices_qs = MagicMock()
+        static_devices_qs.count.return_value = 1
+        static_devices_qs.__iter__.return_value = iter([])
+        static_devices_qs.delete.return_value = (1, {})
+        static_device_filter_mock.return_value = static_devices_qs
 
         call_command(
             "manage_2fa_devices",
@@ -108,20 +117,29 @@ class Manage2FADevicesCommandTests(TestCase):
             stdout=out,
         )
 
-        devices_qs.delete.assert_called_once()
-        self.assertEqual(devices_qs.count(), 0)
+        totp_devices_qs.delete.assert_called_once()
+        static_devices_qs.delete.assert_called_once()
         self.assertTrue(save_mock.called)
 
     @patch("app.api.management.commands.manage_2fa_devices.HtmlPasswordResetForm.save")
     @patch("app.api.management.commands.manage_2fa_devices.TOTPDevice.objects.filter")
-    def test_dry_run_does_not_delete_2fa_devices(self, device_filter_mock, save_mock):
+    @patch("app.api.management.commands.manage_2fa_devices.StaticDevice.objects.filter")
+    def test_dry_run_does_not_delete_2fa_devices(
+        self, static_device_filter_mock, device_filter_mock, save_mock
+    ):
         out = StringIO()
 
-        devices_qs = MagicMock()
-        devices_qs.count.return_value = 2
-        devices_qs.__iter__.return_value = iter([])
-        devices_qs.delete.return_value = (2, {})
-        device_filter_mock.return_value = devices_qs
+        totp_devices_qs = MagicMock()
+        totp_devices_qs.count.return_value = 2
+        totp_devices_qs.__iter__.return_value = iter([])
+        totp_devices_qs.delete.return_value = (2, {})
+        device_filter_mock.return_value = totp_devices_qs
+
+        static_devices_qs = MagicMock()
+        static_devices_qs.count.return_value = 1
+        static_devices_qs.__iter__.return_value = iter([])
+        static_devices_qs.delete.return_value = (1, {})
+        static_device_filter_mock.return_value = static_devices_qs
 
         call_command(
             "manage_2fa_devices",
@@ -130,8 +148,8 @@ class Manage2FADevicesCommandTests(TestCase):
             stdout=out,
         )
 
-        devices_qs.delete.assert_not_called()
-        self.assertEqual(devices_qs.count(), 2)
+        totp_devices_qs.delete.assert_not_called()
+        static_devices_qs.delete.assert_not_called()
         self.assertTrue(save_mock.called)
 
     @patch("app.api.management.commands.manage_2fa_devices.HtmlPasswordResetForm.save")
