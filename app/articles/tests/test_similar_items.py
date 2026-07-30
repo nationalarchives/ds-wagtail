@@ -16,7 +16,7 @@ class TestArticlePageSimilarItems(TestCase):
             ("UFOs", "ufos"),
             ("Witchcraft", "witchcraft"),
         ]:
-            ArticleTag.objects.get_or_create(slug=slug, defaults={"name": name})
+            ArticleTag.objects.get_or_create(slug=slug, defaults={"name": name, "skos_id": name})
 
         # Add pages
         self.original_page = ArticlePage(
@@ -128,7 +128,7 @@ class TestFocusedArticlePageSimilarItems(TestCase):
             ("UFOs", "ufos"),
             ("Witchcraft", "witchcraft"),
         ]:
-            ArticleTag.objects.get_or_create(slug=slug, defaults={"name": name})
+            ArticleTag.objects.get_or_create(slug=slug, defaults={"name": name, "skos_id": name})
 
         # Add pages
         self.original_page = FocusedArticlePage(
