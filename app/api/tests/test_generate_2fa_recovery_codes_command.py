@@ -48,7 +48,7 @@ class Generate2FARecoveryCodesCommandTests(TestCase):
         self.assertTrue(all(len(token) == 12 for token in tokens))
         output = out.getvalue()
         self.assertIn("Generated 8 recovery code(s)", output)
-        self.assertIn("Recovery codes are hidden by default.", output)
+        self.assertIn("Recovery codes are hidden by default", output)
         self.assertTrue(all(token not in output for token in tokens))
 
     def test_show_codes_prints_generated_codes(self):
