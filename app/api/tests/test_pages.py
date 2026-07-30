@@ -327,8 +327,8 @@ class APIResponseTest(WagtailPageTestCase):
             }
         ]
 
-        self.witchcraft = ArticleTag.objects.get(name="Witchcraft")
-        self.medicine = ArticleTag.objects.get(name="Medicine")
+        self.witchcraft, _ = ArticleTag.objects.get_or_create(name="Witchcraft")
+        self.medicine, _ = ArticleTag.objects.get_or_create(name="Medicine")
         self.article.tags.add(self.witchcraft)
         self.article.body = self.BODY_JSON
         self.article.save()
