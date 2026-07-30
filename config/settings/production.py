@@ -93,6 +93,7 @@ INSTALLED_APPS = [
     "wagtail_2fa",
     "django_otp",
     "django_otp.plugins.otp_totp",
+    "django_otp.plugins.otp_static",
 ]
 
 MIDDLEWARE = [

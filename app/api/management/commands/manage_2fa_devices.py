@@ -6,6 +6,7 @@ from django.core.management.base import BaseCommand, CommandError
 from django.template import loader
 from django.utils import timezone
 from django.utils.crypto import get_random_string
+from django_otp.plugins.otp_static.models import StaticDevice
 from django_otp.plugins.otp_totp.models import TOTPDevice
 
 from app.core.forms.auth import HtmlPasswordResetForm
@@ -15,6 +16,14 @@ User = get_user_model()
 
 class Command(BaseCommand):
     help = "Remove all 2FA devices, reset password, revoke sessions, and notify a user."
+
+    def _format_device(self, label, device):
+        try:
+            name = getattr(device, "name", "<unnamed>")
+        except Exception:
+            name = "<error>"
+
+        return f"  - {label}: {name} (ID: {getattr(device, 'id', 'n/a')})"
 
     def add_arguments(self, parser):
         parser.add_argument(
@@ -52,30 +61,29 @@ class Command(BaseCommand):
 
     def remove_devices(self, target_user):
         self.stdout.write("\n--- Step 2: Remove 2FA Devices ---")
-        devices = TOTPDevice.objects.filter(user=target_user)
-        device_count = devices.count()
-        if device_count == 0:
+        device_sets = [
+            ("TOTP", TOTPDevice.objects.filter(user=target_user)),
+            ("Recovery codes", StaticDevice.objects.filter(user=target_user)),
+        ]
+        total_count = sum(devices.count() for _, devices in device_sets)
+
+        if total_count == 0:
             self.stdout.write(self.style.WARNING("⚠ No 2FA devices found."))
             return
 
-        self.stdout.write(f"Found {device_count} device(s) to remove:")
-        for device in devices:
-            try:
-                name = getattr(device, "name", "<unnamed>")
-            except Exception:
-                name = "<error>"
-            self.stdout.write(f"  - {name} (ID: {getattr(device, 'id', 'n/a')})")
+        self.stdout.write(f"Found {total_count} device(s) to remove:")
+        for label, devices in device_sets:
+            for device in devices:
+                self.stdout.write(self._format_device(label, device))
 
         if getattr(self, "execute", False):
-            deleted_count, _ = devices.delete()
+            deleted_count = sum(devices.delete()[0] for _, devices in device_sets)
             self.stdout.write(
                 self.style.SUCCESS(f"✓ Deleted {deleted_count} 2FA device(s).")
             )
         else:
             self.stdout.write(
-                self.style.NOTICE(
-                    f"DRY RUN: would delete {device_count} 2FA device(s)."
-                )
+                self.style.NOTICE(f"DRY RUN: would delete {total_count} 2FA device(s).")
             )
 
     def reset_password(self, target_user):
