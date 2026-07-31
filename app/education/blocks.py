@@ -31,7 +31,7 @@ class SourceMediaBlock(blocks.StreamBlock):
 
 
 class SourceFeaturedLinkBlock(blocks.StreamBlock):
-    external_link = FeaturedExternalLinkBlock()
+    featured_external_link = FeaturedExternalLinkBlock()
     internal_link = FeaturedPageBlock()
 
     class Meta:
