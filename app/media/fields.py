@@ -3,8 +3,8 @@ from django.core.exceptions import ValidationError
 from django.db import models
 
 from app.media.time_utils import (
-    DURATION_VALIDATION_MESSAGE,
     HHMMSS_PLACEHOLDER,
+    duration_validation_message,
     normalise_hhmmss_for_display,
     parse_duration_input_to_seconds,
 )
@@ -47,7 +47,7 @@ class MediaDurationFormField(forms.CharField):
 
         seconds = parse_duration_input_to_seconds(data)
         if seconds is None:
-            raise ValidationError(DURATION_VALIDATION_MESSAGE)
+            raise ValidationError(duration_validation_message(data))
 
         return seconds
 
@@ -71,7 +71,7 @@ class MediaDurationField(models.IntegerField):
 
         seconds = parse_duration_input_to_seconds(value)
         if seconds is None:
-            raise ValidationError(DURATION_VALIDATION_MESSAGE)
+            raise ValidationError(duration_validation_message(value))
 
         return int(seconds)
 

@@ -17,7 +17,7 @@ from app.media.blocks import ChapterTimeBlock
 from app.media.fields import MediaDurationField
 from app.media.time_utils import (
     normalise_duration_for_api_seconds,
-    parse_chapter_input_to_seconds,
+    parse_chapter_time_to_seconds,
 )
 
 
@@ -174,7 +174,7 @@ class EtnaMedia(AbstractMedia):
         chapter_pairs = []
         for chapter in self.chapters:
             value = chapter.value
-            sort_key = parse_chapter_input_to_seconds(value["time"])
+            sort_key = parse_chapter_time_to_seconds(value["time"])
             chapter_pairs.append(
                 (
                     sort_key,

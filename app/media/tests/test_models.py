@@ -35,9 +35,10 @@ class TestMediaChapterSectionBlock(TestCase):
             field.clean("12:34")
 
         self.assertIn(
-            "Duration must be in HH:MM:SS format.",
+            "The accepted format is HH:MM:SS, minutes and seconds must be between 00 and 59.",
             str(invalid_duration.exception),
         )
+        self.assertIn("You wrote: '12:34'.", str(invalid_duration.exception))
 
     def test_duration_form_field_converts_hhmmss_to_seconds(self):
         field = MediaDurationFormField(required=False)
@@ -105,9 +106,30 @@ class TestMediaChapterSectionBlock(TestCase):
             media.full_clean()
 
         self.assertIn(
-            "Duration must be in HH:MM:SS format.",
+            "The accepted format is HH:MM:SS, minutes and seconds must be between 00 and 59.",
             str(invalid_duration.exception),
         )
+        self.assertIn("You wrote: '12:34'.", str(invalid_duration.exception))
+
+    def test_duration_out_of_range_hhmmss_is_rejected_with_specific_message(self):
+        media = EtnaMedia(
+            title="Test media",
+            file="media/test.mp4",
+            type="video",
+            duration="100:59:99",
+            width=1920,
+            height=1080,
+            thumbnail="media/test.jpg",
+        )
+
+        with self.assertRaises(ValidationError) as invalid_duration:
+            media.full_clean()
+
+        self.assertIn(
+            "The accepted format is HH:MM:SS, minutes and seconds must be between 00 and 59.",
+            str(invalid_duration.exception),
+        )
+        self.assertIn("You wrote: '100:59:99'.", str(invalid_duration.exception))
 
     def test_duration_rejects_invalid_time_string(self):
         media = EtnaMedia(
@@ -124,9 +146,10 @@ class TestMediaChapterSectionBlock(TestCase):
             media.full_clean()
 
         self.assertIn(
-            "Duration must be in HH:MM:SS format.",
+            "The accepted format is HH:MM:SS, minutes and seconds must be between 00 and 59.",
             str(invalid_duration.exception),
         )
+        self.assertIn("You wrote: 'not-a-time'.", str(invalid_duration.exception))
 
     def test_duration_float_is_rejected(self):
         media = EtnaMedia(
@@ -143,9 +166,10 @@ class TestMediaChapterSectionBlock(TestCase):
             media.full_clean()
 
         self.assertIn(
-            "Duration must be in HH:MM:SS format.",
+            "The accepted format is HH:MM:SS, minutes and seconds must be between 00 and 59.",
             str(invalid_duration.exception),
         )
+        self.assertIn("You wrote: 12.34.", str(invalid_duration.exception))
 
     def test_duration_negative_integer_is_rejected(self):
         media = EtnaMedia(

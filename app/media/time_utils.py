@@ -1,5 +1,11 @@
 HHMMSS_PLACEHOLDER = "00:00:00"
-DURATION_VALIDATION_MESSAGE = "Duration must be in HH:MM:SS format."
+DURATION_VALIDATION_MESSAGE = (
+    "The accepted format is HH:MM:SS, minutes and seconds must be between 00 and 59."
+)
+
+
+def duration_validation_message(raw_value):
+    return f"{DURATION_VALIDATION_MESSAGE} You wrote: {raw_value!r}."
 
 
 def parse_hhmmss_string_to_seconds(raw_value):
@@ -53,7 +59,6 @@ def parse_chapter_input_to_seconds(raw_value):
         value = raw_value.strip()
         if value.isdigit():
             return int(value)
-        return parse_hhmmss_string_to_seconds(value)
 
     return parse_duration_input_to_seconds(raw_value)
 
@@ -74,3 +79,20 @@ def normalise_hhmmss_for_display(value, parser):
         return value
 
     return format_seconds_hhmmss(seconds)
+
+
+def parse_chapter_time_to_seconds(raw_value):
+    if raw_value is None:
+        return None
+
+    if isinstance(raw_value, int):
+        return raw_value if raw_value >= 0 else None
+
+    if isinstance(raw_value, str):
+        value = raw_value.strip()
+        if value.isdigit():
+            return int(value)
+
+        return parse_hhmmss_string_to_seconds(value)
+
+    return None
