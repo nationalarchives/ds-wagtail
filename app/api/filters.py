@@ -1,10 +1,13 @@
 import datetime
 
 from django.db.models import Q
+from django.utils.timezone import localdate
 from rest_framework.filters import BaseFilterBackend
 from wagtail.api.v2.utils import BadRequestError
 from wagtail.models import Page, Site
 from wagtail.search.backends.database.postgres.postgres import PostgresSearchResults
+
+from app.education.models.sessions import SessionLocation
 
 from .utils import get_site_from_request
 
@@ -280,3 +283,128 @@ class EventDateFilter(BaseFilterBackend):
             queryset = queryset.filter(start_date__lte=to_date)
 
         return queryset
+
+
+def get_multivalue_tags_from_name(request, tag_name):
+    tag_values = request.GET.getlist(tag_name)
+    if tag_values:
+        if any(value == "" for value in tag_values):
+            raise BadRequestError(f"{tag_name} cannot be empty")
+        return tag_values
+
+
+class EducationTaxonomyFilter(BaseFilterBackend):
+    def filter_queryset(self, request, queryset, view):
+        key_stages = []
+        key_stage_values = request.GET.getlist("key_stage")
+        if key_stage_values:
+            try:
+                key_stages = [int(value) for value in key_stage_values if value != ""]
+                if len(key_stages) != len(key_stage_values):
+                    raise ValueError
+            except ValueError:
+                raise BadRequestError("key_stage must be one or more integers")
+
+        if key_stages:
+            matching_ids = list(
+                queryset.model.objects.filter(
+                    education_keystage_tags__key_stage__stage__in=key_stages
+                )
+                .values_list("id", flat=True)
+                .distinct()
+            )
+            queryset = queryset.filter(id__in=matching_ids)
+
+        time_periods = get_multivalue_tags_from_name(request, "time_period")
+        if time_periods:
+            matching_ids = list(
+                queryset.model.objects.filter(
+                    education_time_period_tags__time_period__slug__in=time_periods
+                )
+                .values_list("id", flat=True)
+                .distinct()
+            )
+            queryset = queryset.filter(id__in=matching_ids)
+        themes = get_multivalue_tags_from_name(request, "theme")
+        if themes:
+            matching_ids = list(
+                queryset.model.objects.filter(
+                    education_theme_tags__theme__slug__in=themes
+                )
+                .values_list("id", flat=True)
+                .distinct()
+            )
+            queryset = queryset.filter(id__in=matching_ids)
+        return queryset.distinct()
+
+
+def location_query(location_type, regions=None):
+    q = Q(session_locations__location_type=location_type)
+    if regions:
+        q &= Q(session_locations__region__in=regions)
+    return q
+
+
+class SessionLocationFilter(BaseFilterBackend):
+    def filter_queryset(self, request, queryset, view):
+        LT = SessionLocation.LocationType
+        valid_location_types = {
+            LT.NATIONAL_ARCHIVES,
+            LT.ONLINE,
+            LT.YOUR_SCHOOL,
+        }
+        valid_regions = {v for v, _ in SessionLocation.Regions.choices}
+
+        locations = set(get_multivalue_tags_from_name(request, "location") or [])
+        invalid_locations = locations - valid_location_types
+        if invalid_locations:
+            raise BadRequestError(
+                "location must be one or more of: "
+                f"{', '.join(sorted(valid_location_types))}"
+            )
+
+        regions = set(get_multivalue_tags_from_name(request, "region") or [])
+        invalid_regions = regions - valid_regions
+        if invalid_regions:
+            raise BadRequestError(
+                f"region must be one or more of: {', '.join(sorted(valid_regions))}"
+            )
+
+        if not locations and not regions:
+            return queryset
+
+        query = Q()
+
+        if LT.ONLINE in locations:
+            query |= location_query(LT.ONLINE)
+
+        if LT.NATIONAL_ARCHIVES in locations:
+            query |= location_query(LT.NATIONAL_ARCHIVES)
+
+        if LT.YOUR_SCHOOL in locations:
+            query |= location_query(LT.YOUR_SCHOOL, regions)
+        elif regions:
+            query |= location_query(LT.CUSTOM, regions)
+            query |= location_query(LT.YOUR_SCHOOL, regions)
+
+        matching_ids = list(
+            queryset.model.objects.filter(query).values_list("id", flat=True).distinct()
+        )
+
+        return queryset.filter(id__in=matching_ids).distinct()
+
+
+class CurrentOrFutureSessionFilter(BaseFilterBackend):
+    def filter_queryset(self, request, queryset, view):
+        today = localdate()
+        matching_ids = list(
+            queryset.model.objects.filter(
+                Q(start_date__gte=today)
+                | Q(end_date__gte=today)
+                | Q(start_date__isnull=True, end_date__isnull=True)
+            )
+            .values_list("id", flat=True)
+            .distinct()
+        )
+
+        return queryset.filter(id__in=matching_ids).distinct()

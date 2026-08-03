@@ -158,6 +158,8 @@ WAGTAIL_AUTOSAVE_INTERVAL = int(
     os.getenv("WAGTAIL_AUTOSAVE_INTERVAL", "0")
 )  # Disabled (0) by default
 
+DATA_UPLOAD_MAX_NUMBER_FIELDS = int(os.getenv("DATA_UPLOAD_MAX_NUMBER_FIELDS", 10000))
+
 # django-allauth configuration
 ACCOUNT_LOGIN_METHODS = {"email"}
 ACCOUNT_SIGNUP_FIELDS = ["email*", "password1*", "password2*"]
@@ -241,6 +243,7 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 MEDIA_ROOT = "/media"
 MEDIA_URL = "media/"
+MEDIA_PAGE_URL = os.getenv("MEDIA_PAGE_URL", WAGTAILAPI_MEDIA_BASE_URL)
 
 WAGTAILMEDIA = {
     "MEDIA_MODEL": "media.EtnaMedia",
