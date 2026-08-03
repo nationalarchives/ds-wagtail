@@ -91,7 +91,7 @@ class CustomImage(ClusterableModel, AbstractImage):
         max_length=30,
         choices=AlternativeFormatHeadingChoices.choices,
         default=AlternativeFormatHeadingChoices.TRANSCRIPT_WITH_TABLES,
-        help_text='If the image has an alternative format, choose the appropriate heading.',
+        help_text="If the image has an alternative format, choose the appropriate heading.",
     )
 
     alternative_format = models.FileField(
