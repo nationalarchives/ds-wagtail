@@ -18,18 +18,18 @@ The image system is built on top of Wagtail's image infrastructure and extends i
 
 Extends Wagtail's `AbstractImage` with the following extra fields:
 
-| Field                   | Type            | Notes                                                                                |
-| ----------------------- | --------------- | ------------------------------------------------------------------------------------ |
-| `uuid`                  | `UUIDField`     | Auto-generated, unique, read-only. Used as the lookup key in the `/images` endpoint. |
-| `title`                 | `CharField`     | Descriptive name. Shown in highlights galleries.                                     |
-| `description`           | `CharField`     | Alt text for the image.                                                              |
-| `copyright`             | `RichTextField` | Credit for images not owned by TNA. Do not include the copyright symbol.             |
-| `transcription_heading` | `CharField`     | Choice of `"Transcript"` or `"Partial transcript"`.                                  |
-| `transcription`         | `RichTextField` | Optional text transcription of the image content.                                    |
-| `translation_heading`   | `CharField`     | Choice of `"Translation"` or `"Modern English"`.                                     |
-| `translation`           | `RichTextField` | Optional English translation of the transcription.                                   |
-| `alternative_format_heading` | `CharField` | Choice of heading for alternative format content. Current option is `"Transcript with tables"`. |
-| `alternative_format`    | `FileField`     | Optional uploaded spreadsheet-style file. Stored under `images/alternative_formats/`. |
+| Field                        | Type            | Notes                                                                                           |
+| ---------------------------- | --------------- | ----------------------------------------------------------------------------------------------- |
+| `uuid`                       | `UUIDField`     | Auto-generated, unique, read-only. Used as the lookup key in the `/images` endpoint.            |
+| `title`                      | `CharField`     | Descriptive name. Shown in highlights galleries.                                                |
+| `description`                | `CharField`     | Alt text for the image.                                                                         |
+| `copyright`                  | `RichTextField` | Credit for images not owned by TNA. Do not include the copyright symbol.                        |
+| `transcription_heading`      | `CharField`     | Choice of `"Transcript"` or `"Partial transcript"`.                                             |
+| `transcription`              | `RichTextField` | Optional text transcription of the image content.                                               |
+| `translation_heading`        | `CharField`     | Choice of `"Translation"` or `"Modern English"`.                                                |
+| `translation`                | `RichTextField` | Optional English translation of the transcription.                                              |
+| `alternative_format_heading` | `CharField`     | Choice of heading for alternative format content. Current option is `"Transcript with tables"`. |
+| `alternative_format`         | `FileField`     | Optional uploaded spreadsheet-style file. Stored under `images/alternative_formats/`.           |
 
 `alternative_format` accepts only `.csv`, `.xlsx`, and `.xls` files via model validation.
 
