@@ -6,19 +6,27 @@ from app.images.models import CustomImage
 
 
 class TestCustomImageAlternativeFormatValidation(TestCase):
+    @staticmethod
+    def image_upload_file():
+        return SimpleUploadedFile(
+            "test.gif",
+            (
+                b"GIF89a\x01\x00\x01\x00\x80\x00\x00"
+                b"\x00\x00\x00\xff\xff\xff!\xf9\x04\x01\x00\x00\x00\x00"
+                b",\x00\x00\x00\x00\x01\x00\x01\x00\x00\x02\x02D\x01\x00;"
+            ),
+            content_type="image/gif",
+        )
+
     def test_validation_allows_csv_and_xlsx_files(self):
         csv_image = CustomImage(
             title="CSV alternative format",
-            file="images/test.jpg",
-            width=1,
-            height=1,
+            file=self.image_upload_file(),
             alternative_format=SimpleUploadedFile("table.csv", b"a,b\n1,2\n"),
         )
         xlsx_image = CustomImage(
             title="XLSX alternative format",
-            file="images/test.jpg",
-            width=1,
-            height=1,
+            file=self.image_upload_file(),
             alternative_format=SimpleUploadedFile(
                 "table.xlsx",
                 b"xlsx-content",
@@ -32,9 +40,7 @@ class TestCustomImageAlternativeFormatValidation(TestCase):
     def test_validation_rejects_other_file_extensions(self):
         image = CustomImage(
             title="Invalid alternative format",
-            file="images/test.jpg",
-            width=1,
-            height=1,
+            file=self.image_upload_file(),
             alternative_format=SimpleUploadedFile("table.pdf", b"pdf-content"),
         )
 
