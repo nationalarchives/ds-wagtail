@@ -28,6 +28,12 @@ Extends Wagtail's `AbstractImage` with the following extra fields:
 | `transcription`         | `RichTextField` | Optional text transcription of the image content.                                    |
 | `translation_heading`   | `CharField`     | Choice of `"Translation"` or `"Modern English"`.                                     |
 | `translation`           | `RichTextField` | Optional English translation of the transcription.                                   |
+| `alternative_format_heading` | `CharField` | Choice of heading for alternative format content. Current option is `"Transcript with tables"`. |
+| `alternative_format`    | `FileField`     | Optional uploaded spreadsheet-style file. Stored under `images/alternative_formats/`. |
+
+`alternative_format` accepts only `.csv`, `.xlsx`, and `.xls` files via model validation.
+
+In the Wagtail admin image form, the file chooser is configured with an `accept` attribute (`.csv,.xlsx,.xls`) via `CustomImageAdminForm` (`app/images/forms.py`). This helps filter selectable files in the local file dialog, while model validation remains the enforcement layer.
 
 The companion model `CustomImageRendition` extends `AbstractRendition` and adds a `full_url` property.
 
@@ -227,4 +233,4 @@ The endpoint uses `ViewSetImageSerializer`, which inherits from Wagtail's built-
 
 Access can be restricted to authenticated API token holders via the `WAGTAILAPI_AUTHENTICATION` setting.
 
-Extra fields exposed in the response: `uuid`, `title`, `copyright`, `tags`, `transcription_heading`, `transcription`, `translation_heading`, `translation`, `description`, plus the standard `jpeg` / `webp` rendition objects.
+Extra fields exposed in the response: `uuid`, `title`, `copyright`, `tags`, `transcription_heading`, `transcription`, `translation_heading`, `translation`, `alternative_format_heading`, `alternative_format`, `description`, plus the standard `jpeg` / `webp` rendition objects.

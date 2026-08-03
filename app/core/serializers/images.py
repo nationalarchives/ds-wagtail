@@ -194,6 +194,14 @@ class DetailedImageSerializer(ImageSerializer):
                         else None
                     ),
                     "copyright": value.copyright if value.copyright else None,
+                    "alternative_format": (
+                        {
+                            "heading": value.get_alternative_format_heading_display(),
+                            "file": value.alternative_format.url,
+                        }
+                        if value.alternative_format
+                        else None
+                    ),
                 }
             )
         return representation

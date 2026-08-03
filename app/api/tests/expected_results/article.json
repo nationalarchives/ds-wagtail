@@ -99,7 +99,8 @@
         },
         "transcript": null,
         "translation": null,
-        "copyright": null
+        "copyright": null,
+        "alternative_format": null
     },
     "custom_warning_text": "",
     "tags": [
