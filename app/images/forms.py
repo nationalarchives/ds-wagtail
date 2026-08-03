@@ -10,5 +10,7 @@ class CustomImageAdminForm(BaseImageForm):
     class Meta(BaseImageForm.Meta):
         widgets = {
             **BaseImageForm.Meta.widgets,
-            "alternative_format": forms.FileInput(attrs={"accept": ".csv,.xlsx,.xls"}),
+            "alternative_format": forms.ClearableFileInput(
+                attrs={"accept": ".csv,.xlsx,.xls"}
+            ),
         }
