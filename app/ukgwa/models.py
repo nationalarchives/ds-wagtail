@@ -77,8 +77,8 @@ class UKGWABasePage(ThemedAlertMixin, BasePageWithRequiredIntro):
     UKGWA pages don't use teaser images, so this class:
     - Customizes promote_panels to hide teaser_image from the admin UI
       (uses BasePage's panel building blocks and omits teaser_image)
-    - Overrides api_meta_fields to exclude teaser_image_square from API responses
-      (which requires teaser_image to exist)
+        - Overrides api_meta_fields to exclude teaser_image from API responses
+            (including any additional teaser renditions)
 
     The teaser_image field still exists in the database (inherited from BasePage)
     but is not used or exposed for UKGWA pages.
@@ -107,7 +107,7 @@ class UKGWABasePage(ThemedAlertMixin, BasePageWithRequiredIntro):
         _internal_data_panel,
     ] + SocialMixin.promote_panels
 
-    # Compose API meta fields without teaser_image and teaser_image_square
+    # Compose API meta fields without teaser_image
     api_meta_fields = (
         BasePage._base_api_meta_fields
         + [APIField("teaser_text")]

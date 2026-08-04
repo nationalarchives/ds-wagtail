@@ -47,10 +47,8 @@ class SpeakerSerializer(serializers.Serializer):
                 "role": instance.role,
                 "biography": RichTextSerializer().to_representation(instance.biography),
                 "image": ImageSerializer(
-                    rendition_size="fill-400x400"
-                ).to_representation(instance.image),
-                "image_small": ImageSerializer(
-                    rendition_size="fill-128x128"
+                    rendition_size="fill-400x400",
+                    additional_rendition_specs={"small": "fill-128x128"},
                 ).to_representation(instance.image),
             }
         return None
