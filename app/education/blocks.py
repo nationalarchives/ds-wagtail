@@ -79,6 +79,7 @@ class TeachingResourceExtensionActivitiesBlock(blocks.StreamBlock):
 
 
 class TeachingResourceBackgroundInformationBlock(blocks.StreamBlock):
+    description_list = DescriptionListBlock()
     inset_text = InsetTextBlock()
     paragraph = ParagraphBlock()
     sub_heading = SubHeadingBlock()
