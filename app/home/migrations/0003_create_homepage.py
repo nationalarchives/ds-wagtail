@@ -9,8 +9,15 @@ def create_homepage(apps, schema_editor):
     Site = apps.get_model("wagtailcore.Site")
     HomePage = apps.get_model("home.HomePage")
 
-    # Delete the default homepage
-    # If migration is run multiple times, it may have already been deleted
+    # If the homepage (by path) already exists, ensure a default Site exists
+    # and exit early — this makes the migration idempotent.
+    existing_page = Page.objects.filter(path="00010001").first()
+    if existing_page:
+        if not Site.objects.filter(root_page=existing_page, is_default_site=True).exists():
+            Site.objects.create(hostname="localhost", root_page=existing_page, is_default_site=True)
+        return
+
+    # Delete the default homepage if present (may already have been deleted)
     Page.objects.filter(id=2).delete()
 
     # Create content type for homepage model
