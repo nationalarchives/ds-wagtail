@@ -2,6 +2,7 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import make_password
 from django.contrib.sessions.models import Session
+from django.core.mail import EmailMultiAlternatives
 from django.core.management.base import BaseCommand, CommandError
 from django.template import loader
 from django.utils import timezone
@@ -17,7 +18,7 @@ User = get_user_model()
 class Command(BaseCommand):
     help = "Remove all 2FA devices, reset password, revoke sessions, and notify a user."
 
-    def _format_device(self, label, device):
+    def _format_device_name(self, label, device):
         try:
             name = getattr(device, "name", "<unnamed>")
         except Exception:
@@ -27,7 +28,9 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument(
-            "--target-email", required=True, help="Email of the user to be reset."
+            "--target-email",
+            required=True,
+            help="Email of the user account to be reset.",
         )
         parser.add_argument(
             "--reason",
@@ -39,6 +42,11 @@ class Command(BaseCommand):
             "--execute",
             action="store_true",
             help="Perform destructive actions (default: dry-run)",
+        )
+        parser.add_argument(
+            "--only-reset-recovery-codes",
+            action="store_true",
+            help="When used with --execute, delete StaticDevice(s) (recovery codes) for the user.",
         )
 
     def get_target_user(self, target_email):
@@ -61,10 +69,16 @@ class Command(BaseCommand):
 
     def remove_devices(self, target_user):
         self.stdout.write("\n--- Step 2: Remove 2FA Devices ---")
-        device_sets = [
-            ("TOTP", TOTPDevice.objects.filter(user=target_user)),
-            ("Recovery codes", StaticDevice.objects.filter(user=target_user)),
-        ]
+        if getattr(self, "only_reset_recovery_codes", False):
+            device_sets = [
+                ("Recovery codes", StaticDevice.objects.filter(user=target_user))
+            ]
+        else:
+            device_sets = [
+                ("TOTP", TOTPDevice.objects.filter(user=target_user)),
+                ("Recovery codes", StaticDevice.objects.filter(user=target_user)),
+            ]
+
         total_count = sum(devices.count() for _, devices in device_sets)
 
         if total_count == 0:
@@ -74,17 +88,33 @@ class Command(BaseCommand):
         self.stdout.write(f"Found {total_count} device(s) to remove:")
         for label, devices in device_sets:
             for device in devices:
-                self.stdout.write(self._format_device(label, device))
+                self.stdout.write(self._format_device_name(label, device))
 
         if getattr(self, "execute", False):
-            deleted_count = sum(devices.delete()[0] for _, devices in device_sets)
-            self.stdout.write(
-                self.style.SUCCESS(f"✓ Deleted {deleted_count} 2FA device(s).")
-            )
+            if getattr(self, "only_reset_recovery_codes", False):
+                recovery_qs = device_sets[0][1]
+                deleted_count = recovery_qs.delete()[0]
+                self.stdout.write(
+                    self.style.SUCCESS(f"✓ Deleted {deleted_count} StaticDevice(s).")
+                )
+            else:
+                deleted_count = sum(devices.delete()[0] for _, devices in device_sets)
+                self.stdout.write(
+                    self.style.SUCCESS(f"✓ Deleted {deleted_count} 2FA device(s).")
+                )
         else:
-            self.stdout.write(
-                self.style.NOTICE(f"DRY RUN: would delete {total_count} 2FA device(s).")
-            )
+            if getattr(self, "only_reset_recovery_codes", False):
+                self.stdout.write(
+                    self.style.NOTICE(
+                        f"DRY RUN: would delete {device_sets[0][1].count()} StaticDevice(s)."
+                    )
+                )
+            else:
+                self.stdout.write(
+                    self.style.NOTICE(
+                        f"DRY RUN: would delete {total_count} 2FA device(s)."
+                    )
+                )
 
     def reset_password(self, target_user):
         self.stdout.write("\n--- Step 3: Reset Password ---")
@@ -230,6 +260,9 @@ class Command(BaseCommand):
             target_user = self.get_target_user(target_email)
 
             self.execute = bool(options.get("execute"))
+            self.only_reset_recovery_codes = bool(
+                options.get("only_reset_recovery_codes")
+            )
             self.remove_devices(target_user)
             self.reset_password(target_user)
             self.remove_all_active_sessions(target_user)
