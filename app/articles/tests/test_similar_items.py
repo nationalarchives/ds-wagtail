@@ -8,6 +8,18 @@ class TestArticlePageSimilarItems(TestCase):
     def setUp(self):
         root = Site.objects.get(is_default_site=True).root_page
 
+        # Create tags
+        for name, slug in [
+            ("Americas", "americas"),
+            ("Army", "army"),
+            ("Asia", "asia"),
+            ("UFOs", "ufos"),
+            ("Witchcraft", "witchcraft"),
+        ]:
+            ArticleTag.objects.get_or_create(
+                slug=slug, defaults={"name": name, "skos_id": name}
+            )
+
         # Add pages
         self.original_page = ArticlePage(
             title="Original", intro="test", teaser_text="test"
@@ -109,6 +121,18 @@ class TestArticlePageSimilarItems(TestCase):
 class TestFocusedArticlePageSimilarItems(TestCase):
     def setUp(self):
         root = Site.objects.get(is_default_site=True).root_page
+
+        # Create tags
+        for name, slug in [
+            ("Americas", "americas"),
+            ("Army", "army"),
+            ("Asia", "asia"),
+            ("UFOs", "ufos"),
+            ("Witchcraft", "witchcraft"),
+        ]:
+            ArticleTag.objects.get_or_create(
+                slug=slug, defaults={"name": name, "skos_id": name}
+            )
 
         # Add pages
         self.original_page = FocusedArticlePage(
