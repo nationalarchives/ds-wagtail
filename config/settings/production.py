@@ -104,6 +104,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "wagtail_2fa.middleware.VerifyUserMiddleware",
+    "app.core.middleware.RecoveryCodesMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django.middleware.security.SecurityMiddleware",
