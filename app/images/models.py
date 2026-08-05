@@ -90,7 +90,8 @@ class CustomImage(ClusterableModel, AbstractImage):
         verbose_name="alternative format heading",
         max_length=30,
         choices=AlternativeFormatHeadingChoices.choices,
-        default=AlternativeFormatHeadingChoices.TRANSCRIPT_WITH_TABLES,
+        null=True,
+        blank=True,
         help_text="If the image has an alternative format, choose the appropriate heading.",
     )
 
