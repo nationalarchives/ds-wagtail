@@ -31,7 +31,7 @@ class SourceMediaBlock(blocks.StreamBlock):
 
 
 class SourceFeaturedLinkBlock(blocks.StreamBlock):
-    external_link = FeaturedExternalLinkBlock()
+    featured_external_link = FeaturedExternalLinkBlock()
     internal_link = FeaturedPageBlock()
 
     class Meta:
@@ -79,6 +79,7 @@ class TeachingResourceExtensionActivitiesBlock(blocks.StreamBlock):
 
 
 class TeachingResourceBackgroundInformationBlock(blocks.StreamBlock):
+    description_list = DescriptionListBlock()
     inset_text = InsetTextBlock()
     paragraph = ParagraphBlock()
     sub_heading = SubHeadingBlock()
