@@ -13,6 +13,10 @@ from django_otp.plugins.otp_static.models import StaticDevice
 from django_otp.plugins.otp_totp.models import TOTPDevice
 
 from app.core.forms.auth import HtmlPasswordResetForm, send_recovery_codes_email
+from app.api.management.commands.manage_2fa_helpers import (
+    find_matching_users,
+    format_device_name,
+)
 
 User = get_user_model()
 logger = logging.getLogger(__name__)
@@ -23,16 +27,6 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
 
-        parser.add_argument(
-            "--list-missing-2fa",
-            action="store_true",
-            help="List users who do not have any 2FA devices configured.",
-        )
-        parser.add_argument(
-            "--list-missing-recovery-codes",
-            action="store_true",
-            help="List users who have 2FA devices but no recovery codes (StaticDevice).",
-        )
 
         parser.add_argument(
             "--target-email",
@@ -55,62 +49,6 @@ class Command(BaseCommand):
             help="When used with --execute, delete StaticDevice(s) (recovery codes) for the user.",
         )
 
-    def _find_matching_users(self, predicate):
-        qs = User.objects.filter(is_active=True)
-        matches = []
-        for u in qs:
-            try:
-                if predicate(u):
-                    matches.append(u)
-            except Exception:
-                continue
-
-        return matches
-
-    def list_users_missing_2fa(self):
-        self.stdout.write("\n--- Users without any 2FA devices ---")
-        matches = self._find_matching_users(
-            lambda u: not django_otp.user_has_device(u, confirmed=True)
-        )
-
-        if not matches:
-            self.stdout.write(self.style.WARNING("No users found without 2FA devices."))
-            logger.info("No users found without 2FA devices.")
-            return
-
-        for u in matches:
-            self.stdout.write(f"- {u.email or u.username} (ID: {u.pk})")
-        self.stdout.write(
-            self.style.SUCCESS(f"Found {len(matches)} user(s) without 2FA devices.")
-        )
-        logger.info("Found %d user(s) without 2FA devices.", len(matches))
-
-    def list_users_missing_recovery_codes(self):
-        self.stdout.write("\n--- Users with 2FA but without recovery codes ---")
-        matches = self._find_matching_users(
-            lambda u: (
-                django_otp.user_has_device(u, confirmed=True)
-                and not StaticDevice.objects.filter(user=u).exists()
-            )
-        )
-
-        if not matches:
-            self.stdout.write(
-                self.style.WARNING(
-                    "No users found who have 2FA but lack recovery codes."
-                )
-            )
-            logger.info("No users found who have 2FA but lack recovery codes.")
-            return
-
-        for u in matches:
-            self.stdout.write(f"- {u.email or u.username} (ID: {u.pk})")
-        self.stdout.write(
-            self.style.SUCCESS(
-                f"Found {len(matches)} user(s) with 2FA but no recovery codes."
-            )
-        )
-        logger.info("Found %d user(s) with 2FA but no recovery codes.", len(matches))
 
     def get_target_user(self, target_email):
         self.stdout.write("\n--- Step 1: Locate Target User ---")
@@ -134,12 +72,7 @@ class Command(BaseCommand):
         return target_user
 
     def _format_device_name(self, label, device):
-        try:
-            name = getattr(device, "name", "<unnamed>")
-        except Exception:
-            name = "<error>"
-
-        return f"  - {label}: {name} (ID: {getattr(device, 'id', 'n/a')})"
+        return format_device_name(label, device)
 
     def _remove_devices(self, target_user):
         self.stdout.write("\n--- Step 2: Remove 2FA Devices ---")
