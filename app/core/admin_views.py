@@ -143,7 +143,7 @@ def recovery_codes_view(request):
     if not codes:
         messages.warning(
             request,
-            "No recovery codes are available to display. Contact your administrator to generate new codes if you have not saved them.",
+            "No recovery codes are available to display. Please contact the Digital Services Content Design Team if you have not saved them.",
         )
         return redirect("wagtailadmin_home")
 

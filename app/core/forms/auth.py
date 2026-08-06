@@ -96,7 +96,7 @@ def send_template_email(
 
 def send_recovery_codes_email(user, reason="", execute=False):
     ctx = {"user": user, "reason": reason} if reason else {"user": user}
-    subject = "The National Archives: Account recovery codes reset"
+    subject = "The National Archives: Account Recovery Codes reset"
     plain_tpl = (
         "wagtailadmin/account/recovery_codes/recovery_codes_reset_email_plain.txt"
     )
