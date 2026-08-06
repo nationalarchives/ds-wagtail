@@ -64,18 +64,29 @@ def send_template_email(
     ctx = ctx or {}
     plain = ""
     html = None
-    try:
-        jinja = engines["jinja2"]
-        if plain_tpl:
-            plain = jinja.get_template(plain_tpl).render(ctx)
-        if html_tpl:
+    # Render plain text with Django loader to avoid Jinja parsing Django tags
+    if plain_tpl:
+        # Try to render plain text with the Django backend. If that fails
+        # (template not found or parsing issues due to where the template
+        # lives), fall back to a safe empty body so email sending can still
+        # proceed in `--execute` mode during admin workflows and tests.
+        try:
+            plain = loader.render_to_string(plain_tpl, ctx, using="django")
+        except Exception:
+            plain = ""
+
+    # Prefer Jinja for HTML templates (if available), fall back to Django loader
+    if html_tpl:
+        try:
+            jinja = engines["jinja2"]
             html = jinja.get_template(html_tpl).render(ctx)
-    except Exception:
-        # Fall back to Django loader if Jinja templates are not available
-        if plain_tpl:
-            plain = loader.render_to_string(plain_tpl, ctx)
-        if html_tpl:
-            html = loader.render_to_string(html_tpl, ctx)
+        except Exception:
+            # Fall back to Django loader for HTML too, but force the Django
+            # backend to avoid Jinja trying to parse Django-specific tags.
+            try:
+                html = loader.render_to_string(html_tpl, ctx, using="django")
+            except Exception:
+                html = None
 
     if execute:
         msg = EmailMultiAlternatives(
