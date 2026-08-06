@@ -386,10 +386,10 @@ class Command(BaseCommand):
     def _send_recovery_codes_notification(self, target_user, reason):
         self.stdout.write("\n--- Step 5: Send Recovery Codes Email ---")
         try:
-            result = send_recovery_codes_email(
+            email = send_recovery_codes_email(
                 target_user, reason, execute=self.execute
             )
-            if result.get("sent"):
+            if email.get("sent"):
                 self.stdout.write(
                     self.style.SUCCESS(
                         f"✓ Recovery codes notification sent to {target_user.email}"
@@ -404,13 +404,24 @@ class Command(BaseCommand):
                 self.stdout.write(
                     self.style.NOTICE(f"DRY RUN: Email to {target_user.email}")
                 )
-                self.stdout.write(self.style.NOTICE(f"Subject: {result['subject']}"))
-                if result.get("reason"):
-                    self.stdout.write(self.style.NOTICE(f"Reason: {result['reason']}"))
+                self.stdout.write(self.style.NOTICE(f"Subject: {email.get('subject')}"))
+                if email.get("reason"):
+                    self.stdout.write(self.style.NOTICE(f"Reason: {email['reason']}"))
+
+                # Print rendered bodies when available (dry-run)
+                plain = email.get("plain")
+                html = email.get("html")
+                if plain:
+                    self.stdout.write("Plain body:")
+                    self.stdout.write(plain)
+                if html:
+                    self.stdout.write("HTML body:")
+                    self.stdout.write(html)
+
                 logger.info(
                     "DRY RUN: recovery codes email prepared for %s (subject=%s)",
                     target_user.email,
-                    result.get("subject"),
+                    email.get("subject"),
                 )
         except Exception as e:
             logger.exception(

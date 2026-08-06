@@ -91,7 +91,14 @@ def send_template_email(
         msg.send()
         return {"sent": True, "subject": subject}
 
-    return {"sent": False, "subject": subject, "reason": ctx.get("reason")}
+    # Dry-run: return rendered content for inspection by callers.
+    return {
+        "sent": False,
+        "subject": subject,
+        "reason": ctx.get("reason"),
+        "plain": plain,
+        "html": html,
+    }
 
 
 def send_recovery_codes_email(user, reason="", execute=False):
