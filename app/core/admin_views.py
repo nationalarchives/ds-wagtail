@@ -10,6 +10,8 @@ from wagtail.admin.auth import require_admin_access
 from wagtail.models import Page
 from wagtail.permission_policies.pages import PagePermissionPolicy
 
+from app.core.middleware import get_recovery_codes_cache_key
+
 TREE_EXPLORER_CACHE_NAMESPACE = "core:wagtail:tree_explorer"
 TREE_EXPLORER_CACHE_TIMEOUT = getattr(settings, "TREE_EXPLORER_CACHE_TIMEOUT", 300)
 PAGE_PERMISSION_POLICY = PagePermissionPolicy()
@@ -143,21 +145,21 @@ def tree_explorer_view(request):
 def recovery_codes_view(request):
     codes = request.session.pop("initial_recovery_codes", None)
     if not codes:
+        # Short-lived fallback for concurrent requests during post-login redirect.
+        codes = cache.get(get_recovery_codes_cache_key(request.user))
+
+    if not codes:
         messages.warning(
             request,
             "No recovery codes are available to display. Please contact the Digital Services Content Design Team if you have not saved them.",
         )
-        if getattr(request, "user", None) and (
-            getattr(request.user, "is_staff", False)
-            or getattr(request.user, "is_superuser", False)
-        ):
-            return redirect(reverse("wagtailadmin_home"))
-        return redirect(getattr(settings, "LOGIN_REDIRECT_URL", "/"))
+        return redirect(reverse("wagtailadmin_home"))
 
     return render(
         request,
         "wagtailadmin/account/recovery_codes.html",
         {
             "recovery_codes": codes,
+            "redirect_url": reverse("wagtailadmin_home"),
         },
     )

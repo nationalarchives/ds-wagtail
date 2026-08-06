@@ -1,9 +1,12 @@
 from django.contrib.auth import get_user_model
+from django.core.cache import cache
 from django.test import TestCase, override_settings
 from django.urls import reverse
 from django_otp import DEVICE_ID_SESSION_KEY
 from django_otp.plugins.otp_static.models import StaticDevice
 from django_otp.plugins.otp_totp.models import TOTPDevice
+
+from app.core.middleware import get_recovery_codes_cache_key
 
 
 @override_settings(WAGTAIL_2FA_REQUIRED=True)
@@ -63,6 +66,26 @@ class RecoveryCodesOnboardingTests(TestCase):
 
         session = self.client.session
         self.assertNotIn("initial_recovery_codes", session)
+
+    def test_recovery_codes_view_uses_cache_fallback_for_repeated_requests(self):
+        self._login_as_verified_user()
+        self.client.get(reverse("wagtailadmin_home"))
+
+        first_response = self.client.get(reverse("recovery_codes"))
+        self.assertEqual(first_response.status_code, 200)
+
+        session = self.client.session
+        self.assertNotIn("initial_recovery_codes", session)
+
+        cached_codes = cache.get(get_recovery_codes_cache_key(self.user))
+        self.assertTrue(cached_codes)
+
+        second_response = self.client.get(reverse("recovery_codes"))
+        second_content = second_response.content.decode()
+
+        self.assertEqual(second_response.status_code, 200)
+        self.assertIn("Please save these recovery codes now", second_content)
+        self.assertTrue(all(code in second_content for code in cached_codes))
 
     def test_existing_recovery_device_skips_onboarding(self):
         self._login_as_verified_user()

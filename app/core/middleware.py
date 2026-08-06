@@ -1,6 +1,9 @@
 import logging
 
 from django.conf import settings
+from django.contrib.auth import get_user_model
+from django.core.cache import cache
+from django.db import transaction
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.utils.crypto import get_random_string
@@ -8,6 +11,12 @@ from django_otp.plugins.otp_static.models import StaticDevice
 
 # Don't include commonly misunderstood characters
 ALLOWED_CHARS = "23456789ABCDEFGHJKLMNPQRSTUVWXYZ"
+RECOVERY_CODES_CACHE_NAMESPACE = "core:wagtail:recovery_codes"
+RECOVERY_CODES_CACHE_TIMEOUT = getattr(settings, "RECOVERY_CODES_CACHE_TIMEOUT", 300)
+
+
+def get_recovery_codes_cache_key(user):
+    return f"{RECOVERY_CODES_CACHE_NAMESPACE}:u{user.pk}"
 
 
 def create_static_device_with_tokens(
@@ -20,33 +29,39 @@ def create_static_device_with_tokens(
 ):
     logger = logging.getLogger(__name__)
 
-    existing_qs = StaticDevice.objects.filter(user=user)
-    existing_count = existing_qs.count()
+    with transaction.atomic():
+        # Serialize generation per user to prevent duplicate devices/tokens
+        get_user_model().objects.select_for_update().only("pk").get(pk=user.pk)
 
-    if existing_count > 1:
-        logger.warning(
-            "Multiple StaticDevice objects found for user %s (count=%d). Removing duplicates.",
-            getattr(user, "pk", "<unknown>"),
-            existing_count,
+        existing_qs = StaticDevice.objects.filter(user=user)
+        existing_count = existing_qs.count()
+
+        if existing_count > 1:
+            logger.warning(
+                "Multiple StaticDevice objects found for user %s (count=%d). Removing duplicates.",
+                getattr(user, "pk", "<unknown>"),
+                existing_count,
+            )
+            existing_qs.delete()
+        elif existing_count == 1 and not delete_existing:
+            device = existing_qs.first()
+            codes = list(device.token_set.values_list("token", flat=True))
+            return device, codes
+
+        # Create a fresh StaticDevice and tokens
+        StaticDevice.objects.filter(user=user).delete()
+        device = StaticDevice.objects.create(
+            user=user, name=device_name, confirmed=True
         )
-        existing_qs.delete()
-    elif existing_count == 1 and not delete_existing:
-        device = existing_qs.first()
-        codes = list(device.token_set.values_list("token", flat=True))
+
+        codes = [
+            get_random_string(length=length, allowed_chars=allowed_chars)
+            for _ in range(count)
+        ]
+        for code in codes:
+            device.token_set.create(token=code)
+
         return device, codes
-
-    # Create a fresh StaticDevice and tokens
-    StaticDevice.objects.filter(user=user).delete()
-    device = StaticDevice.objects.create(user=user, name=device_name, confirmed=True)
-
-    codes = [
-        get_random_string(length=length, allowed_chars=allowed_chars)
-        for _ in range(count)
-    ]
-    for code in codes:
-        device.token_set.create(token=code)
-
-    return device, codes
 
 
 class RecoveryCodesMiddleware:
@@ -88,4 +103,10 @@ class RecoveryCodesMiddleware:
         _, codes = create_static_device_with_tokens(request.user, delete_existing=False)
 
         request.session["initial_recovery_codes"] = codes
+        # Backup in cache so parallel redirects can still render recovery codes once session pop occurs.
+        cache.set(
+            get_recovery_codes_cache_key(request.user),
+            codes,
+            timeout=RECOVERY_CODES_CACHE_TIMEOUT,
+        )
         return redirect("recovery_codes")
