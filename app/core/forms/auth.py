@@ -66,10 +66,6 @@ def send_template_email(
     html = None
     # Render plain text with Django loader to avoid Jinja parsing Django tags
     if plain_tpl:
-        # Try to render plain text with the Django backend. If that fails
-        # (template not found or parsing issues due to where the template
-        # lives), fall back to a safe empty body so email sending can still
-        # proceed in `--execute` mode during admin workflows and tests.
         try:
             plain = loader.render_to_string(plain_tpl, ctx, using="django")
         except Exception:
@@ -81,8 +77,6 @@ def send_template_email(
             jinja = engines["jinja2"]
             html = jinja.get_template(html_tpl).render(ctx)
         except Exception:
-            # Fall back to Django loader for HTML too, but force the Django
-            # backend to avoid Jinja trying to parse Django-specific tags.
             try:
                 html = loader.render_to_string(html_tpl, ctx, using="django")
             except Exception:

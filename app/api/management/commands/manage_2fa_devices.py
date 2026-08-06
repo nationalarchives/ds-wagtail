@@ -66,9 +66,9 @@ class Command(BaseCommand):
         )
         return target_user
 
-    def remove_devices(self, target_user):
+    def _remove_devices(self, target_user):
         self.stdout.write("\n--- Step 2: Remove 2FA Devices ---")
-        if getattr(self, "only_reset_recovery_codes", False):
+        if self.only_reset_recovery_codes:
             device_sets = [
                 ("Recovery codes", StaticDevice.objects.filter(user=target_user))
             ]
@@ -89,8 +89,8 @@ class Command(BaseCommand):
             for device in devices:
                 self.stdout.write(self._format_device_name(label, device))
 
-        if getattr(self, "execute", False):
-            if getattr(self, "only_reset_recovery_codes", False):
+        if self.execute:
+            if self.only_reset_recovery_codes:
                 recovery_qs = device_sets[0][1]
                 deleted_count = recovery_qs.delete()[0]
                 self.stdout.write(
@@ -102,7 +102,7 @@ class Command(BaseCommand):
                     self.style.SUCCESS(f"✓ Deleted {deleted_count} 2FA device(s).")
                 )
         else:
-            if getattr(self, "only_reset_recovery_codes", False):
+            if self.only_reset_recovery_codes:
                 self.stdout.write(
                     self.style.NOTICE(
                         f"DRY RUN: would delete {device_sets[0][1].count()} StaticDevice(s)."
@@ -115,9 +115,9 @@ class Command(BaseCommand):
                     )
                 )
 
-    def reset_password(self, target_user):
+    def _reset_password(self, target_user):
         self.stdout.write("\n--- Step 3: Reset Password ---")
-        if getattr(self, "execute", False):
+        if self.execute:
             random_password = get_random_string(40)
             target_user.password = make_password(random_password)
             target_user.save(update_fields=["password"])
@@ -131,7 +131,7 @@ class Command(BaseCommand):
                 )
             )
 
-    def remove_all_active_sessions(self, target_user):
+    def _remove_all_active_sessions(self, target_user):
         self.stdout.write("\n--- Step 4: Revoke Active Sessions ---")
         active_session_keys = []
         for session in Session.objects.filter(expire_date__gte=timezone.now()):
@@ -154,7 +154,7 @@ class Command(BaseCommand):
             return
 
         self.stdout.write(f"Found {session_count} active session(s). Revoking...")
-        if getattr(self, "execute", False):
+        if self.execute:
             deleted_count, _ = Session.objects.filter(
                 session_key__in=active_session_keys
             ).delete()
@@ -166,7 +166,7 @@ class Command(BaseCommand):
                 self.style.NOTICE(f"DRY RUN: would delete {session_count} session(s).")
             )
 
-    def send_password_reset_email(self, target_user, reason):
+    def _send_password_reset_email(self, target_user, reason):
         self.stdout.write("\n--- Step 5: Send Notification Email ---")
         try:
             form = HtmlPasswordResetForm({"email": target_user.email})
@@ -185,7 +185,7 @@ class Command(BaseCommand):
 
             extra = {"reason": reason} if reason else {}
 
-            if getattr(self, "execute", False):
+            if self.execute:
                 form.save(
                     from_email=settings.DEFAULT_FROM_EMAIL,
                     request=None,
@@ -245,12 +245,11 @@ class Command(BaseCommand):
             raise
 
     # Email rendering/sending delegated to app.core.forms.auth.send_recovery_codes_email
-
-    def send_recovery_codes_notification(self, target_user, reason):
+    def _send_recovery_codes_notification(self, target_user, reason):
         self.stdout.write("\n--- Step 5: Send Recovery Codes Email ---")
         try:
             result = send_recovery_codes_email(
-                target_user, reason, execute=getattr(self, "execute", False)
+                target_user, reason, execute=self.execute
             )
             if result.get("sent"):
                 self.stdout.write(
@@ -289,13 +288,13 @@ class Command(BaseCommand):
             self.only_reset_recovery_codes = bool(
                 options.get("only_reset_recovery_codes")
             )
-            self.remove_devices(target_user)
-            if getattr(self, "only_reset_recovery_codes", False):
-                self.send_recovery_codes_notification(target_user, reason)
+            self._remove_devices(target_user)
+            if self.only_reset_recovery_codes:
+                self._send_recovery_codes_notification(target_user, reason)
             else:
-                self.reset_password(target_user)
-                self.remove_all_active_sessions(target_user)
-                self.send_password_reset_email(target_user, reason)
+                self._reset_password(target_user)
+                self._remove_all_active_sessions(target_user)
+                self._send_password_reset_email(target_user, reason)
 
             self.stdout.write("\n" + "=" * 60)
             self.stdout.write(self.style.SUCCESS("✓ All steps completed successfully!"))
