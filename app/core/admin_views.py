@@ -144,9 +144,17 @@ def tree_explorer_view(request):
 @login_required
 def recovery_codes_view(request):
     codes = request.session.pop("initial_recovery_codes", None)
-    if not codes:
-        # Short-lived fallback for concurrent requests during post-login redirect.
-        codes = cache.get(get_recovery_codes_cache_key(request.user))
+    nonce = request.session.pop("initial_recovery_nonce", None)
+
+    if not codes and nonce:
+        codes = cache.get(get_recovery_codes_cache_key(request.user, nonce))
+
+    # If we successfully used the cached copy, delete it so it cannot be reused.
+    if codes and nonce:
+        try:
+            cache.delete(get_recovery_codes_cache_key(request.user, nonce))
+        except Exception:
+            pass
 
     if not codes:
         messages.warning(

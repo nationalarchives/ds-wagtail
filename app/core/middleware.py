@@ -15,7 +15,9 @@ RECOVERY_CODES_CACHE_NAMESPACE = "core:wagtail:recovery_codes"
 RECOVERY_CODES_CACHE_TIMEOUT = getattr(settings, "RECOVERY_CODES_CACHE_TIMEOUT", 300)
 
 
-def get_recovery_codes_cache_key(user):
+def get_recovery_codes_cache_key(user, nonce=None):
+    if nonce:
+        return f"{RECOVERY_CODES_CACHE_NAMESPACE}:u{user.pk}:n{nonce}"
     return f"{RECOVERY_CODES_CACHE_NAMESPACE}:u{user.pk}"
 
 
@@ -102,10 +104,15 @@ class RecoveryCodesMiddleware:
     def _bootstrap_and_redirect(self, request):
         _, codes = create_static_device_with_tokens(request.user, delete_existing=False)
 
+        # One-time nonce stored in session to prevent direct GET access to the recovery page.
+        nonce = get_random_string(length=12)
         request.session["initial_recovery_codes"] = codes
-        # Backup in cache so parallel redirects can still render recovery codes once session pop occurs.
+        request.session["initial_recovery_nonce"] = nonce
+
+        # Backup in cache keyed by nonce so parallel redirects that consumed the session
+        # can still render the codes if they carry the session nonce.
         cache.set(
-            get_recovery_codes_cache_key(request.user),
+            get_recovery_codes_cache_key(request.user, nonce),
             codes,
             timeout=RECOVERY_CODES_CACHE_TIMEOUT,
         )

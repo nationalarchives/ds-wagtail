@@ -77,8 +77,20 @@ class RecoveryCodesOnboardingTests(TestCase):
         session = self.client.session
         self.assertNotIn("initial_recovery_codes", session)
 
-        cached_codes = cache.get(get_recovery_codes_cache_key(self.user))
+        # Simulate a second request that no longer has session codes but does
+        # have the nonce backing in the cache.
+        nonce = self.client.session.get("initial_recovery_nonce")
+        self.assertTrue(nonce)
+
+        cached_codes = cache.get(get_recovery_codes_cache_key(self.user, nonce))
         self.assertTrue(cached_codes)
+
+        # Clear the session codes to mimic a parallel request that popped them.
+        if "initial_recovery_codes" in self.client.session:
+            del self.client.session["initial_recovery_codes"]
+        if "initial_recovery_nonce" in self.client.session:
+            # keep the nonce for this simulated second request
+            pass
 
         second_response = self.client.get(reverse("recovery_codes"))
         second_content = second_response.content.decode()
