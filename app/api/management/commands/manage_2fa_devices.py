@@ -21,12 +21,13 @@ logger = logging.getLogger(__name__)
 
 
 class Command(BaseCommand):
-    help = "List users without 2FA, remove or reset 2FA devices, reset password, revoke sessions, and notify a user."
+    help = "Remove or reset 2FA devices, reset password, revoke sessions, and notify a user."
 
     def add_arguments(self, parser):
 
         parser.add_argument(
             "--target-email",
+            required=True,
             help="Email of the user account to be reset.",
         )
         parser.add_argument(
