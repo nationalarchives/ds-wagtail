@@ -1,6 +1,7 @@
 import uuid
 
 from django.conf import settings
+from django.core.exceptions import ValidationError
 from django.core.validators import FileExtensionValidator
 from django.db import models
 from modelcluster.models import ClusterableModel
@@ -90,7 +91,6 @@ class CustomImage(ClusterableModel, AbstractImage):
         verbose_name="alternative format heading",
         max_length=30,
         choices=AlternativeFormatHeadingChoices.choices,
-        null=True,
         blank=True,
         help_text="If the image has an alternative format, choose the appropriate heading.",
     )
@@ -106,6 +106,23 @@ class CustomImage(ClusterableModel, AbstractImage):
 
     def usage_count(self):
         return self.get_usage().count()
+
+    def clean(self):
+        super().clean()
+
+        if self.alternative_format and not self.alternative_format_heading:
+            raise ValidationError(
+                {
+                    "alternative_format_heading": "Choose an alternative format heading when an alternative format file is uploaded.",
+                }
+            )
+
+        if self.alternative_format_heading and not self.alternative_format:
+            raise ValidationError(
+                {
+                    "alternative_format": "Upload an alternative format file when an alternative format heading is selected.",
+                }
+            )
 
     search_fields = AbstractImage.search_fields + [
         index.SearchField("transcription", boost=1),
