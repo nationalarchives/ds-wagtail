@@ -1,3 +1,6 @@
+import logging
+
+import django_otp
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import make_password
@@ -12,23 +15,27 @@ from django_otp.plugins.otp_totp.models import TOTPDevice
 from app.core.forms.auth import HtmlPasswordResetForm, send_recovery_codes_email
 
 User = get_user_model()
+logger = logging.getLogger(__name__)
 
 
 class Command(BaseCommand):
-    help = "Remove all 2FA devices, reset password, revoke sessions, and notify a user."
-
-    def _format_device_name(self, label, device):
-        try:
-            name = getattr(device, "name", "<unnamed>")
-        except Exception:
-            name = "<error>"
-
-        return f"  - {label}: {name} (ID: {getattr(device, 'id', 'n/a')})"
+    help = "List users without 2FA, remove or reset 2FA devices, reset password, revoke sessions, and notify a user."
 
     def add_arguments(self, parser):
+
+        parser.add_argument(
+            "--list-missing-2fa",
+            action="store_true",
+            help="List users who do not have any 2FA devices configured.",
+        )
+        parser.add_argument(
+            "--list-missing-recovery-codes",
+            action="store_true",
+            help="List users who have 2FA devices but no recovery codes (StaticDevice).",
+        )
+
         parser.add_argument(
             "--target-email",
-            required=True,
             help="Email of the user account to be reset.",
         )
         parser.add_argument(
@@ -48,15 +55,74 @@ class Command(BaseCommand):
             help="When used with --execute, delete StaticDevice(s) (recovery codes) for the user.",
         )
 
+    def _find_matching_users(self, predicate):
+        qs = User.objects.filter(is_active=True)
+        matches = []
+        for u in qs:
+            try:
+                if predicate(u):
+                    matches.append(u)
+            except Exception:
+                continue
+
+        return matches
+
+    def list_users_missing_2fa(self):
+        self.stdout.write("\n--- Users without any 2FA devices ---")
+        matches = self._find_matching_users(
+            lambda u: not django_otp.user_has_device(u, confirmed=True)
+        )
+
+        if not matches:
+            self.stdout.write(self.style.WARNING("No users found without 2FA devices."))
+            logger.info("No users found without 2FA devices.")
+            return
+
+        for u in matches:
+            self.stdout.write(f"- {u.email or u.username} (ID: {u.pk})")
+        self.stdout.write(
+            self.style.SUCCESS(f"Found {len(matches)} user(s) without 2FA devices.")
+        )
+        logger.info("Found %d user(s) without 2FA devices.", len(matches))
+
+    def list_users_missing_recovery_codes(self):
+        self.stdout.write("\n--- Users with 2FA but without recovery codes ---")
+        matches = self._find_matching_users(
+            lambda u: (
+                django_otp.user_has_device(u, confirmed=True)
+                and not StaticDevice.objects.filter(user=u).exists()
+            )
+        )
+
+        if not matches:
+            self.stdout.write(
+                self.style.WARNING(
+                    "No users found who have 2FA but lack recovery codes."
+                )
+            )
+            logger.info("No users found who have 2FA but lack recovery codes.")
+            return
+
+        for u in matches:
+            self.stdout.write(f"- {u.email or u.username} (ID: {u.pk})")
+        self.stdout.write(
+            self.style.SUCCESS(
+                f"Found {len(matches)} user(s) with 2FA but no recovery codes."
+            )
+        )
+        logger.info("Found %d user(s) with 2FA but no recovery codes.", len(matches))
+
     def get_target_user(self, target_email):
         self.stdout.write("\n--- Step 1: Locate Target User ---")
         target_user = User.objects.filter(email__iexact=target_email).first()
         if not target_user:
+            logger.warning("No user found with email: %s", target_email)
             raise CommandError(
                 self.style.ERROR(f"❌ No user found with email: {target_email}")
             )
 
         if not target_user.is_active:
+            logger.warning("Target user %s is inactive", target_email)
             raise CommandError(self.style.ERROR("❌ Target user is inactive."))
 
         self.stdout.write(
@@ -64,7 +130,16 @@ class Command(BaseCommand):
                 f"✓ Target user found: {target_user.email} (ID: {target_user.pk})"
             )
         )
+        logger.info("Target user found: %s (ID: %s)", target_user.email, target_user.pk)
         return target_user
+
+    def _format_device_name(self, label, device):
+        try:
+            name = getattr(device, "name", "<unnamed>")
+        except Exception:
+            name = "<error>"
+
+        return f"  - {label}: {name} (ID: {getattr(device, 'id', 'n/a')})"
 
     def _remove_devices(self, target_user):
         self.stdout.write("\n--- Step 2: Remove 2FA Devices ---")
@@ -82,9 +157,13 @@ class Command(BaseCommand):
 
         if total_count == 0:
             self.stdout.write(self.style.WARNING("⚠ No 2FA devices found."))
+            logger.info("No 2FA devices found for user %s", target_user.pk)
             return
 
         self.stdout.write(f"Found {total_count} device(s) to remove:")
+        logger.info(
+            "Found %d device(s) to remove for user %s", total_count, target_user.pk
+        )
         for label, devices in device_sets:
             for device in devices:
                 self.stdout.write(self._format_device_name(label, device))
@@ -92,14 +171,34 @@ class Command(BaseCommand):
         if self.execute:
             if self.only_reset_recovery_codes:
                 recovery_qs = device_sets[0][1]
-                deleted_count = recovery_qs.delete()[0]
+                device_count = recovery_qs.count()
+                deleted_rows = recovery_qs.delete()[0]
                 self.stdout.write(
-                    self.style.SUCCESS(f"✓ Deleted {deleted_count} StaticDevice(s).")
+                    self.style.SUCCESS(
+                        f"✓ Deleted {device_count} StaticDevice(s) ({deleted_rows} rows)."
+                    )
+                )
+                logger.info(
+                    "Deleted %d StaticDevice(s) (%d rows) for user %s (execute=%s)",
+                    device_count,
+                    deleted_rows,
+                    target_user.pk,
+                    self.execute,
                 )
             else:
-                deleted_count = sum(devices.delete()[0] for _, devices in device_sets)
+                device_count = sum(devices.count() for _, devices in device_sets)
+                deleted_rows = sum(devices.delete()[0] for _, devices in device_sets)
                 self.stdout.write(
-                    self.style.SUCCESS(f"✓ Deleted {deleted_count} 2FA device(s).")
+                    self.style.SUCCESS(
+                        f"✓ Deleted {device_count} 2FA device(s) ({deleted_rows} rows)."
+                    )
+                )
+                logger.info(
+                    "Deleted %d 2FA device(s) (%d rows) for user %s (execute=%s)",
+                    device_count,
+                    deleted_rows,
+                    target_user.pk,
+                    self.execute,
                 )
         else:
             if self.only_reset_recovery_codes:
@@ -108,11 +207,21 @@ class Command(BaseCommand):
                         f"DRY RUN: would delete {device_sets[0][1].count()} StaticDevice(s)."
                     )
                 )
+                logger.info(
+                    "DRY RUN: would delete %d StaticDevice(s) for user %s",
+                    device_sets[0][1].count(),
+                    target_user.pk,
+                )
             else:
                 self.stdout.write(
                     self.style.NOTICE(
                         f"DRY RUN: would delete {total_count} 2FA device(s)."
                     )
+                )
+                logger.info(
+                    "DRY RUN: would delete %d 2FA device(s) for user %s",
+                    total_count,
+                    target_user.pk,
                 )
 
     def _reset_password(self, target_user):
@@ -124,12 +233,16 @@ class Command(BaseCommand):
             self.stdout.write(
                 self.style.SUCCESS("✓ Password has been reset to a random value.")
             )
+            logger.info(
+                "Password reset for user %s (execute=%s)", target_user.pk, self.execute
+            )
         else:
             self.stdout.write(
                 self.style.NOTICE(
                     "DRY RUN: would reset the user's password to a random value."
                 )
             )
+            logger.info("DRY RUN: would reset password for user %s", target_user.pk)
 
     def _remove_all_active_sessions(self, target_user):
         self.stdout.write("\n--- Step 4: Revoke Active Sessions ---")
@@ -151,9 +264,13 @@ class Command(BaseCommand):
         session_count = len(active_session_keys)
         if session_count == 0:
             self.stdout.write(self.style.WARNING("⚠ No active sessions found."))
+            logger.info("No active sessions found for user %s", target_user.pk)
             return
 
         self.stdout.write(f"Found {session_count} active session(s). Revoking...")
+        logger.info(
+            "Found %d active sessions for user %s", session_count, target_user.pk
+        )
         if self.execute:
             deleted_count, _ = Session.objects.filter(
                 session_key__in=active_session_keys
@@ -161,9 +278,17 @@ class Command(BaseCommand):
             self.stdout.write(
                 self.style.SUCCESS(f"✓ Deleted {deleted_count} session(s).")
             )
+            logger.info(
+                "Deleted %d session(s) for user %s", deleted_count, target_user.pk
+            )
         else:
             self.stdout.write(
                 self.style.NOTICE(f"DRY RUN: would delete {session_count} session(s).")
+            )
+            logger.info(
+                "DRY RUN: would delete %d session(s) for user %s",
+                session_count,
+                target_user.pk,
             )
 
     def _send_password_reset_email(self, target_user, reason):
@@ -196,6 +321,11 @@ class Command(BaseCommand):
                     self.style.SUCCESS(
                         f"✓ Password reset email sent to {target_user.email}"
                     )
+                )
+                logger.info(
+                    "Password reset email sent to %s for user %s",
+                    target_user.email,
+                    target_user.pk,
                 )
             else:
                 # dry-run: render templates and print them
@@ -240,7 +370,15 @@ class Command(BaseCommand):
                         f"DRY RUN: would send password reset email to {target_user.email}"
                     )
                 )
+                logger.info(
+                    "DRY RUN: would send password reset email to %s for user %s",
+                    target_user.email,
+                    target_user.pk,
+                )
         except Exception as e:
+            logger.exception(
+                "Failed to send password reset email to user %s", target_user.pk
+            )
             self.stdout.write(self.style.ERROR(f"❌ Failed to send email: {e}"))
             raise
 
@@ -257,6 +395,11 @@ class Command(BaseCommand):
                         f"✓ Recovery codes notification sent to {target_user.email}"
                     )
                 )
+                logger.info(
+                    "Recovery codes notification sent to %s for user %s",
+                    target_user.email,
+                    target_user.pk,
+                )
             else:
                 self.stdout.write(
                     self.style.NOTICE(f"DRY RUN: Email to {target_user.email}")
@@ -264,15 +407,38 @@ class Command(BaseCommand):
                 self.stdout.write(self.style.NOTICE(f"Subject: {result['subject']}"))
                 if result.get("reason"):
                     self.stdout.write(self.style.NOTICE(f"Reason: {result['reason']}"))
+                logger.info(
+                    "DRY RUN: recovery codes email prepared for %s (subject=%s)",
+                    target_user.email,
+                    result.get("subject"),
+                )
         except Exception as e:
+            logger.exception(
+                "Failed to send recovery codes email to user %s", target_user.pk
+            )
             self.stdout.write(
                 self.style.ERROR(f"❌ Failed to send recovery codes email: {e}")
             )
             raise
 
     def handle(self, *args, **options):
-        target_email = options["target_email"].strip().lower()
-        reason = options["reason"]
+        if options.get("list_missing_2fa"):
+            return self.list_users_missing_2fa()
+
+        if options.get("list_missing_recovery_codes"):
+            return self.list_users_missing_recovery_codes()
+
+        target_email = options.get("target_email")
+        reason = options.get("reason")
+
+        if not target_email:
+            raise CommandError(
+                self.style.ERROR(
+                    "❌ --target-email is required unless using a list flag."
+                )
+            )
+
+        target_email = target_email.strip().lower()
 
         try:
             self.stdout.write(self.style.NOTICE("=" * 60))
@@ -300,6 +466,9 @@ class Command(BaseCommand):
             self.stdout.write(self.style.SUCCESS("✓ All steps completed successfully!"))
             self.stdout.write("=" * 60)
             self.stdout.write(f"User {target_user.email} has been reset.\n")
+            logger.info(
+                "User %s has been reset (execute=%s)", target_user.email, self.execute
+            )
 
         except CommandError as e:
             self.stdout.write(f"\n{e}\n")

@@ -14,6 +14,8 @@ Arguments and flags
 - `--execute`: perform the destructive actions. Without `--execute` the command runs as a dry-run and prints what would be done.
 - `--only-reset-recovery-codes`: when used together with `--execute`, delete _only_ the user's `StaticDevice` objects (these store single-use recovery codes). If omitted, `--execute` will remove all 2FA devices (TOTP and Static).
 - `--reason "text"`: optional freeform reason to include in the notification email.
+- `--list-missing-2fa`: list active users who do not have any 2FA devices configured (no target email required).
+- `--list-missing-recovery-codes`: list active users who have 2FA devices but no static recovery codes (no target email required).
 
 Example usages
 
@@ -35,10 +37,23 @@ manage_2fa_devices --target-email user@example.com --execute
 manage_2fa_devices --target-email user@example.com --execute --only-reset-recovery-codes
 ```
 
+-- List users without any 2FA devices:
+
+```sh
+manage_2fa_devices --list-missing-2fa
+```
+
+-- List users who have 2FA configured but lack recovery codes:
+
+```sh
+manage_2fa_devices --list-missing-recovery-codes
+```
+
 Behavior notes
 
 - Dry-runs by default (email template dry-run has been removeed and replaced with the proposed subject and reason, if included.)
 - When `--only-reset-recovery-codes` is used, only `StaticDevice` objects (the static recovery-code devices) are removed. Without this flag, `--execute` will remove all 2FA device types (TOTP and Static).
+- The list flags do not require `--target-email` and will exit after printing matches.
 - Removing static devices is destructive: existing recovery codes are permanently removed. The middleware will create a new `StaticDevice` and fresh recovery codes for a verified user on their next GET, and those codes will be displayed exactly once.
 
 ## Safety checklist
