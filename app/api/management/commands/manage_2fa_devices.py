@@ -1,6 +1,5 @@
 import logging
 
-import django_otp
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import make_password
@@ -12,11 +11,10 @@ from django.utils.crypto import get_random_string
 from django_otp.plugins.otp_static.models import StaticDevice
 from django_otp.plugins.otp_totp.models import TOTPDevice
 
-from app.core.forms.auth import HtmlPasswordResetForm, send_recovery_codes_email
 from app.api.management.commands.manage_2fa_helpers import (
-    find_matching_users,
     format_device_name,
 )
+from app.core.forms.auth import HtmlPasswordResetForm, send_recovery_codes_email
 
 User = get_user_model()
 logger = logging.getLogger(__name__)
@@ -26,7 +24,6 @@ class Command(BaseCommand):
     help = "List users without 2FA, remove or reset 2FA devices, reset password, revoke sessions, and notify a user."
 
     def add_arguments(self, parser):
-
 
         parser.add_argument(
             "--target-email",
@@ -48,7 +45,6 @@ class Command(BaseCommand):
             action="store_true",
             help="When used with --execute, delete StaticDevice(s) (recovery codes) for the user.",
         )
-
 
     def get_target_user(self, target_email):
         self.stdout.write("\n--- Step 1: Locate Target User ---")
@@ -319,9 +315,7 @@ class Command(BaseCommand):
     def _send_recovery_codes_notification(self, target_user, reason):
         self.stdout.write("\n--- Step 5: Send Recovery Codes Email ---")
         try:
-            email = send_recovery_codes_email(
-                target_user, reason, execute=self.execute
-            )
+            email = send_recovery_codes_email(target_user, reason, execute=self.execute)
             if email.get("sent"):
                 self.stdout.write(
                     self.style.SUCCESS(

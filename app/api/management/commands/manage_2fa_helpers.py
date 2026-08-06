@@ -1,8 +1,6 @@
 import logging
 
-import django_otp
 from django.contrib.auth import get_user_model
-from django_otp.plugins.otp_static.models import StaticDevice
 
 logger = logging.getLogger(__name__)
 User = get_user_model()
