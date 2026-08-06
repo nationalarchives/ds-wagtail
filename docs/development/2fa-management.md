@@ -53,7 +53,7 @@ Behavior notes
 - Dry-runs by default (email template dry-run has been removeed and replaced with the proposed subject and reason, if included.)
 - When `--only-reset-recovery-codes` is used, only `StaticDevice` objects (the static recovery-code devices) are removed. Without this flag, `--execute` will remove all 2FA device types (TOTP and Static).
 - The list flags do not require `--target-email` and will exit after printing matches.
- - The list command `list_2fa_devices` does not require `--target-email` and will exit after printing matches.
+- The list command `list_2fa_devices` does not require `--target-email` and will exit after printing matches.
 - Removing static devices is destructive: existing recovery codes are permanently removed. The middleware will create a new `StaticDevice` and fresh recovery codes for a verified user on their next GET, and those codes will be displayed exactly once.
 
 ## Safety checklist
