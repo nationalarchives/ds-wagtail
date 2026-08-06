@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.cache import cache
 from django.shortcuts import redirect, render
+from django.urls import reverse
 from django.utils.encoding import force_str
 from wagtail.admin.auth import require_admin_access
 from wagtail.models import Page
@@ -146,7 +147,12 @@ def recovery_codes_view(request):
             request,
             "No recovery codes are available to display. Please contact the Digital Services Content Design Team if you have not saved them.",
         )
-        return redirect(settings.LOGIN_REDIRECT_URL)
+        if getattr(request, "user", None) and (
+            getattr(request.user, "is_staff", False)
+            or getattr(request.user, "is_superuser", False)
+        ):
+            return redirect(reverse("wagtailadmin_home"))
+        return redirect(getattr(settings, "LOGIN_REDIRECT_URL", "/"))
 
     return render(
         request,

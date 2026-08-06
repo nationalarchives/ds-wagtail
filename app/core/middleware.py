@@ -1,3 +1,5 @@
+import logging
+
 from django.conf import settings
 from django.shortcuts import redirect
 from django.urls import reverse
@@ -16,9 +18,25 @@ def create_static_device_with_tokens(
     device_name="Recovery codes",
     delete_existing=False,
 ):
-    if delete_existing:
-        StaticDevice.objects.filter(user=user).delete()
+    logger = logging.getLogger(__name__)
 
+    existing_qs = StaticDevice.objects.filter(user=user)
+    existing_count = existing_qs.count()
+
+    if existing_count > 1:
+        logger.warning(
+            "Multiple StaticDevice objects found for user %s (count=%d). Removing duplicates.",
+            getattr(user, "pk", "<unknown>"),
+            existing_count,
+        )
+        existing_qs.delete()
+    elif existing_count == 1 and not delete_existing:
+        device = existing_qs.first()
+        codes = list(device.token_set.values_list("token", flat=True))
+        return device, codes
+
+    # Create a fresh StaticDevice and tokens
+    StaticDevice.objects.filter(user=user).delete()
     device = StaticDevice.objects.create(user=user, name=device_name, confirmed=True)
 
     codes = [
@@ -67,7 +85,7 @@ class RecoveryCodesMiddleware:
         return not StaticDevice.objects.filter(user=user).exists()
 
     def _bootstrap_and_redirect(self, request):
-        _, codes = create_static_device_with_tokens(request.user)
+        _, codes = create_static_device_with_tokens(request.user, delete_existing=False)
 
         request.session["initial_recovery_codes"] = codes
         return redirect("recovery_codes")
