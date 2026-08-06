@@ -68,9 +68,6 @@ class Command(BaseCommand):
         logger.info("Target user found: %s (ID: %s)", target_user.email, target_user.pk)
         return target_user
 
-    def _format_device_name(self, label, device):
-        return format_device_name(label, device)
-
     def _remove_devices(self, target_user):
         self.stdout.write("\n--- Step 2: Remove 2FA Devices ---")
         if self.only_reset_recovery_codes:
@@ -96,7 +93,7 @@ class Command(BaseCommand):
         )
         for label, devices in device_sets:
             for device in devices:
-                self.stdout.write(self._format_device_name(label, device))
+                self.stdout.write(format_device_name(label, device))
 
         if self.execute:
             if self.only_reset_recovery_codes:
