@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
-from django.template import loader
+from django.template import engines, loader
 from django.urls import reverse
 from wagtail.admin.forms.auth import PasswordResetForm
 
@@ -51,3 +51,51 @@ class HtmlPasswordResetForm(PasswordResetForm):
         kwargs["html_email_template_name"] = self.html_email_template_name
         kwargs["email_template_name"] = self.email_template_name
         return super().save(*args, **kwargs)
+
+
+def send_template_email(
+    to_email,
+    subject,
+    plain_tpl,
+    html_tpl=None,
+    ctx=None,
+    execute=False,
+):
+    ctx = ctx or {}
+    plain = ""
+    html = None
+    try:
+        jinja = engines["jinja2"]
+        if plain_tpl:
+            plain = jinja.get_template(plain_tpl).render(ctx)
+        if html_tpl:
+            html = jinja.get_template(html_tpl).render(ctx)
+    except Exception:
+        # Fall back to Django loader if Jinja templates are not available
+        if plain_tpl:
+            plain = loader.render_to_string(plain_tpl, ctx)
+        if html_tpl:
+            html = loader.render_to_string(html_tpl, ctx)
+
+    if execute:
+        msg = EmailMultiAlternatives(
+            subject, plain, settings.DEFAULT_FROM_EMAIL, [to_email]
+        )
+        if html:
+            msg.attach_alternative(html, "text/html")
+        msg.send()
+        return {"sent": True, "subject": subject}
+
+    return {"sent": False, "subject": subject, "reason": ctx.get("reason")}
+
+
+def send_recovery_codes_email(user, reason="", execute=False):
+    ctx = {"user": user, "reason": reason} if reason else {"user": user}
+    subject = "The National Archives: Account recovery codes reset"
+    plain_tpl = (
+        "wagtailadmin/account/recovery_codes/recovery_codes_reset_email_plain.txt"
+    )
+    html_tpl = "wagtailadmin/account/recovery_codes/recovery_codes_reset_email.html"
+    return send_template_email(
+        user.email, subject, plain_tpl, html_tpl, ctx, execute=execute
+    )

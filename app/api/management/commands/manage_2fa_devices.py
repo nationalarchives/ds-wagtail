@@ -2,7 +2,6 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import make_password
 from django.contrib.sessions.models import Session
-from django.core.mail import EmailMultiAlternatives
 from django.core.management.base import BaseCommand, CommandError
 from django.template import loader
 from django.utils import timezone
@@ -10,7 +9,7 @@ from django.utils.crypto import get_random_string
 from django_otp.plugins.otp_static.models import StaticDevice
 from django_otp.plugins.otp_totp.models import TOTPDevice
 
-from app.core.forms.auth import HtmlPasswordResetForm
+from app.core.forms.auth import HtmlPasswordResetForm, send_recovery_codes_email
 
 User = get_user_model()
 
@@ -167,7 +166,7 @@ class Command(BaseCommand):
                 self.style.NOTICE(f"DRY RUN: would delete {session_count} session(s).")
             )
 
-    def send_email(self, target_user, reason):
+    def send_password_reset_email(self, target_user, reason):
         self.stdout.write("\n--- Step 5: Send Notification Email ---")
         try:
             form = HtmlPasswordResetForm({"email": target_user.email})
@@ -245,6 +244,33 @@ class Command(BaseCommand):
             self.stdout.write(self.style.ERROR(f"❌ Failed to send email: {e}"))
             raise
 
+    # Email rendering/sending delegated to app.core.forms.auth.send_recovery_codes_email
+
+    def send_recovery_codes_notification(self, target_user, reason):
+        self.stdout.write("\n--- Step 5: Send Recovery Codes Email ---")
+        try:
+            result = send_recovery_codes_email(
+                target_user, reason, execute=getattr(self, "execute", False)
+            )
+            if result.get("sent"):
+                self.stdout.write(
+                    self.style.SUCCESS(
+                        f"✓ Recovery codes notification sent to {target_user.email}"
+                    )
+                )
+            else:
+                self.stdout.write(
+                    self.style.NOTICE(f"DRY RUN: Email to {target_user.email}")
+                )
+                self.stdout.write(self.style.NOTICE(f"Subject: {result['subject']}"))
+                if result.get("reason"):
+                    self.stdout.write(self.style.NOTICE(f"Reason: {result['reason']}"))
+        except Exception as e:
+            self.stdout.write(
+                self.style.ERROR(f"❌ Failed to send recovery codes email: {e}")
+            )
+            raise
+
     def handle(self, *args, **options):
         target_email = options["target_email"].strip().lower()
         reason = options["reason"]
@@ -264,9 +290,12 @@ class Command(BaseCommand):
                 options.get("only_reset_recovery_codes")
             )
             self.remove_devices(target_user)
-            self.reset_password(target_user)
-            self.remove_all_active_sessions(target_user)
-            self.send_email(target_user, reason)
+            if getattr(self, "only_reset_recovery_codes", False):
+                self.send_recovery_codes_notification(target_user, reason)
+            else:
+                self.reset_password(target_user)
+                self.remove_all_active_sessions(target_user)
+                self.send_password_reset_email(target_user, reason)
 
             self.stdout.write("\n" + "=" * 60)
             self.stdout.write(self.style.SUCCESS("✓ All steps completed successfully!"))
