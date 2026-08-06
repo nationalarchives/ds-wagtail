@@ -1,6 +1,7 @@
 from django.apps import apps
 from django.conf import settings
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.core.cache import cache
 from django.shortcuts import redirect, render
 from django.utils.encoding import force_str
@@ -137,7 +138,7 @@ def tree_explorer_view(request):
     )
 
 
-@require_admin_access
+@login_required
 def recovery_codes_view(request):
     codes = request.session.pop("initial_recovery_codes", None)
     if not codes:
@@ -145,7 +146,7 @@ def recovery_codes_view(request):
             request,
             "No recovery codes are available to display. Please contact the Digital Services Content Design Team if you have not saved them.",
         )
-        return redirect("wagtailadmin_home")
+        return redirect(settings.LOGIN_REDIRECT_URL)
 
     return render(
         request,

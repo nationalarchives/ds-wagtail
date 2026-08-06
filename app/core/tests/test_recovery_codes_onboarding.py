@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.test import TestCase, override_settings
 from django.urls import reverse
@@ -86,6 +87,6 @@ class RecoveryCodesOnboardingTests(TestCase):
 
         self.assertRedirects(
             response,
-            reverse("wagtailadmin_home"),
+            settings.LOGIN_REDIRECT_URL,
             fetch_redirect_response=False,
         )

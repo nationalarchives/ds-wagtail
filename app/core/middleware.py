@@ -57,17 +57,11 @@ class RecoveryCodesMiddleware:
         ):
             return False
 
-        admin_base_path = reverse("wagtailadmin_home")
         recovery_path = reverse("recovery_codes")
         logout_path = reverse("wagtailadmin_logout")
         path = request.path
 
-        if (
-            not path.startswith(admin_base_path)
-            or path == recovery_path
-            or "/2fa/" in path
-            or path == logout_path
-        ):
+        if path == recovery_path or "/2fa/" in path or path == logout_path:
             return False
 
         return not StaticDevice.objects.filter(user=user).exists()
