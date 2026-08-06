@@ -23,7 +23,7 @@ Example usages
 manage_2fa_devices --target-email user@example.com
 ```
 
--- Execute reset of all 2FA devices, sessions, and password (this will remove *both* TOTP and static recovery devices unless you pass `--only-reset-recovery-codes`):
+-- Execute reset of all 2FA devices, sessions, and password (this will remove _both_ TOTP and static recovery devices unless you pass `--only-reset-recovery-codes`):
 
 ```sh
 manage_2fa_devices --target-email user@example.com --execute
@@ -41,11 +41,8 @@ Behavior notes
 - When `--only-reset-recovery-codes` is used, only `StaticDevice` objects (the static recovery-code devices) are removed. Without this flag, `--execute` will remove all 2FA device types (TOTP and Static).
 - Removing static devices is destructive: existing recovery codes are permanently removed. The middleware will create a new `StaticDevice` and fresh recovery codes for a verified user on their next GET, and those codes will be displayed exactly once.
 
-
 ## Safety checklist
 
 - Confirm the target user email before running `--execute`.
 - Prefer dry-run first.
 - When resetting recovery codes communicate with emphasis to the user that they will be shown new recovery codes only when they next sign in to the admin and that they must save them immediately.
-
-
