@@ -104,7 +104,6 @@ class EducationListingsAPITest(WagtailPageTestCase):
                 slug="teaching-resources",
                 teaser_text="Teaching resources teaser",
                 intro="<p>Teaching resources intro</p>",
-                hero_image=cls.test_image,
             ),
         )
 
