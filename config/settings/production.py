@@ -163,7 +163,7 @@ WAGTAIL_AUTOSAVE_INTERVAL = int(
 DATA_UPLOAD_MAX_NUMBER_FIELDS = int(os.getenv("DATA_UPLOAD_MAX_NUMBER_FIELDS", 10000))
 
 # django-allauth configuration
-ACCOUNT_LOGIN_METHODS = {"email", "username"}
+ACCOUNT_LOGIN_METHODS = {"email"}
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_SIGNUP_FIELDS = ["email*", "password1*", "password2*"]
 ACCOUNT_LOGOUT_ON_GET = False  # Bypass logout confirmation form
