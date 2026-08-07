@@ -1,0 +1,13 @@
+{% load i18n wagtailadmin_tags %}{% base_url_setting as base_url %}
+{% trans "Your account recovery codes have been reset." %}
+
+{% if reason %}{% trans "Reason:" %} {{ reason }}
+
+{% endif %}
+{% if user.USERNAME_FIELD != "email" %}
+{% trans "Your username:" %} {{ user.get_username }}
+{% endif %}
+
+{% trans "When you next sign in to the Wagtail admin and complete two-factor authentication, new recovery codes will be created and displayed exactly once. Please save them immediately." %}
+
+{% trans "If you did not request this change, please contact the Digital Services Content Design Team." %}

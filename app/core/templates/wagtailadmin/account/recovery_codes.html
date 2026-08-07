@@ -1,0 +1,33 @@
+{% extends "wagtailadmin/base.html" %}
+{% load i18n %}
+
+{% block titletag %}{% trans "Recovery Codes" %}{% endblock %}
+
+{% block content %}
+    {% trans "IMPORTANT: Account Recovery Codes" as title %}
+    {% include "wagtailadmin/shared/header.html" with title=title %}
+
+    <div class="nice-padding">
+        <p>
+            {% trans "Recovery codes are unique, single-use backup credentials. They act as a safety net to regain access to your account if you lose your primary authentication device (such as a phone or authenticator app)." %}
+        </p>
+        <p>
+            {% trans "For your security, this is the only time these codes are shown - you will not be able to access this page again." %}
+        </p>
+        <p>
+            {% trans "If you lose access to these recovery codes or someone else is able to access your saved codes, please contact the Digital Services Content Design Team." %}
+        </p>
+        <p>
+            {% trans "Please save these recovery codes now. Each code can be used only once if you cannot access your authenticator app." %}
+        </p>
+        <ul>
+            {% for code in recovery_codes %}
+                <li><strong>{{ code }}</strong></li>
+            {% endfor %}
+        </ul>
+
+        <p>
+            <a class="button button-primary" href="{{ redirect_url }}">{% trans "I have saved my recovery codes somewhere safe" %}</a>
+        </p>
+    </div>
+{% endblock %}

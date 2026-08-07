@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
-from django.template import loader
+from django.template import engines, loader
 from django.urls import reverse
 from wagtail.admin.forms.auth import PasswordResetForm
 
@@ -51,3 +51,64 @@ class HtmlPasswordResetForm(PasswordResetForm):
         kwargs["html_email_template_name"] = self.html_email_template_name
         kwargs["email_template_name"] = self.email_template_name
         return super().save(*args, **kwargs)
+
+
+def send_template_email(
+    to_email,
+    subject,
+    plain_tpl,
+    html_tpl=None,
+    ctx=None,
+    execute=False,
+):
+    ctx = ctx or {}
+    plain = ""
+    html = None
+    # Render plain text with Django loader to avoid Jinja parsing Django tags
+    if plain_tpl:
+        try:
+            plain = loader.render_to_string(plain_tpl, ctx, using="django")
+        except Exception:
+            plain = ""
+            if execute:
+                raise
+    # Prefer Jinja for HTML templates (if available), fall back to Django loader
+    if html_tpl:
+        try:
+            jinja = engines["jinja2"]
+            html = jinja.get_template(html_tpl).render(ctx)
+        except Exception:
+            try:
+                html = loader.render_to_string(html_tpl, ctx, using="django")
+            except Exception:
+                html = None
+
+    if execute:
+        msg = EmailMultiAlternatives(
+            subject, plain, settings.DEFAULT_FROM_EMAIL, [to_email]
+        )
+        if html:
+            msg.attach_alternative(html, "text/html")
+        msg.send()
+        return {"sent": True, "subject": subject}
+
+    # Dry-run: return rendered content for inspection by callers.
+    return {
+        "sent": False,
+        "subject": subject,
+        "reason": ctx.get("reason"),
+        "plain": plain,
+        "html": html,
+    }
+
+
+def send_recovery_codes_email(user, reason="", execute=False):
+    ctx = {"user": user, "reason": reason} if reason else {"user": user}
+    subject = "The National Archives: Account Recovery Codes reset"
+    plain_tpl = (
+        "wagtailadmin/account/recovery_codes/recovery_codes_reset_email_plain.txt"
+    )
+    html_tpl = "wagtailadmin/account/recovery_codes/recovery_codes_reset_email.html"
+    return send_template_email(
+        user.email, subject, plain_tpl, html_tpl, ctx, execute=execute
+    )
