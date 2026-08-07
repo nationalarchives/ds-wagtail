@@ -47,6 +47,7 @@ def remove_email_uniqueness(apps, schema_editor):
 
 class Migration(migrations.Migration):
     dependencies = [
+        ("users", "0001_create_beta_testers_group"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
