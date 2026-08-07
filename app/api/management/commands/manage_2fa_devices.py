@@ -358,19 +358,13 @@ class Command(BaseCommand):
             raise
 
     def handle(self, *args, **options):
-        if options.get("list_missing_2fa"):
-            return self.list_users_missing_2fa()
-
-        if options.get("list_missing_recovery_codes"):
-            return self.list_users_missing_recovery_codes()
-
         target_email = options.get("target_email")
         reason = options.get("reason")
 
         if not target_email:
             raise CommandError(
                 self.style.ERROR(
-                    "❌ --target-email is required unless using a list flag."
+                    "❌ --target-email is required."
                 )
             )
 
