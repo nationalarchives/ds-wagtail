@@ -70,7 +70,8 @@ def send_template_email(
             plain = loader.render_to_string(plain_tpl, ctx, using="django")
         except Exception:
             plain = ""
-
+            if execute:
+                raise
     # Prefer Jinja for HTML templates (if available), fall back to Django loader
     if html_tpl:
         try:
