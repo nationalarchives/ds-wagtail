@@ -1,4 +1,15 @@
+from os.path import basename, splitext
+from urllib.parse import urlparse
+
+from django.conf import settings
 from rest_framework.serializers import Serializer
+
+
+def _extract_file_type(file_or_url):
+    name = getattr(file_or_url, "name", None) or getattr(file_or_url, "url", "")
+    path = urlparse(name).path
+    extension = splitext(basename(path))[1].lstrip(".").lower()
+    return extension or None
 
 
 def image_generator(
@@ -197,7 +208,23 @@ class DetailedImageSerializer(ImageSerializer):
                     "alternative_format": (
                         {
                             "heading": value.get_alternative_format_heading_display(),
-                            "file": value.alternative_format.url,
+                            "file": (
+                                {
+                                    "url": value.alternative_format.url,
+                                    "full_url": (
+                                        settings.WAGTAILAPI_MEDIA_BASE_URL
+                                        + value.alternative_format.url
+                                        if hasattr(
+                                            settings, "WAGTAILAPI_MEDIA_BASE_URL"
+                                        )
+                                        and value.alternative_format.url.startswith("/")
+                                        else value.alternative_format.url
+                                    ),
+                                    "file_type": _extract_file_type(
+                                        value.alternative_format
+                                    ),
+                                }
+                            ),
                         }
                         if value.alternative_format
                         else None
