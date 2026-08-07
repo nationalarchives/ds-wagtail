@@ -1,3 +1,5 @@
+import logging
+
 from django.apps import apps
 from django.conf import settings
 from django.contrib import messages
@@ -11,6 +13,8 @@ from wagtail.models import Page
 from wagtail.permission_policies.pages import PagePermissionPolicy
 
 from app.core.middleware import get_recovery_codes_cache_key
+
+logger = logging.getLogger(__name__)
 
 TREE_EXPLORER_CACHE_NAMESPACE = "core:wagtail:tree_explorer"
 TREE_EXPLORER_CACHE_TIMEOUT = getattr(settings, "TREE_EXPLORER_CACHE_TIMEOUT", 300)
@@ -143,18 +147,37 @@ def tree_explorer_view(request):
 
 @login_required
 def recovery_codes_view(request):
+    # Try session first (one normal flow will have this), but preserve the nonce
+    # in session so parallel requests without the session copy can still use the
+    # cached fallback keyed by nonce.
     codes = request.session.pop("initial_recovery_codes", None)
-    nonce = request.session.pop("initial_recovery_nonce", None)
+    nonce = request.session.get("initial_recovery_nonce", None)
 
+    # If session didn't have codes, try the cache using the nonce.
+    used_cache = False
     if not codes and nonce:
         codes = cache.get(get_recovery_codes_cache_key(request.user, nonce))
+        if codes:
+            used_cache = True
 
-    # If we successfully used the cached copy, delete it so it cannot be reused.
-    if codes and nonce:
+    # If we used the cache copy, consume both the cache and the session nonce so
+    # the codes cannot be accessed again.
+    if used_cache and nonce:
         try:
             cache.delete(get_recovery_codes_cache_key(request.user, nonce))
-        except Exception:
-            pass
+            logger.info(
+                "Cleared recovery codes cache for user %s and nonce %s",
+                getattr(request.user, "pk", "<unknown>"),
+                nonce,
+            )
+        except Exception as e:
+            logger.warning(
+                "Failed to delete recovery codes cache for user %s (nonce=%s): %s",
+                getattr(request.user, "pk", "<unknown>"),
+                nonce,
+                e,
+            )
+        request.session.pop("initial_recovery_nonce", None)
 
     if not codes:
         messages.warning(

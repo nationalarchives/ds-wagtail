@@ -71,27 +71,22 @@ class RecoveryCodesOnboardingTests(TestCase):
         self._login_as_verified_user()
         self.client.get(reverse("wagtailadmin_home"))
 
+        # Capture the nonce immediately after the middleware redirect so we can
+        # simulate a parallel request that no longer has session codes.
+        nonce = self.client.session.get("initial_recovery_nonce")
+        self.assertTrue(nonce)
+
         first_response = self.client.get(reverse("recovery_codes"))
         self.assertEqual(first_response.status_code, 200)
 
         session = self.client.session
         self.assertNotIn("initial_recovery_codes", session)
 
-        # Simulate a second request that no longer has session codes but does
-        # have the nonce backing in the cache.
-        nonce = self.client.session.get("initial_recovery_nonce")
-        self.assertTrue(nonce)
-
         cached_codes = cache.get(get_recovery_codes_cache_key(self.user, nonce))
         self.assertTrue(cached_codes)
 
-        # Clear the session codes to mimic a parallel request that popped them.
-        if "initial_recovery_codes" in self.client.session:
-            del self.client.session["initial_recovery_codes"]
-        if "initial_recovery_nonce" in self.client.session:
-            # keep the nonce for this simulated second request
-            pass
-
+        # Simulate a second request using the same session/nonce when session
+        # codes have already been consumed.
         second_response = self.client.get(reverse("recovery_codes"))
         second_content = second_response.content.decode()
 
@@ -124,3 +119,38 @@ class RecoveryCodesOnboardingTests(TestCase):
             reverse("wagtailadmin_home"),
             fetch_redirect_response=False,
         )
+
+    def test_logs_generated_and_duplicate_removal(self):
+        # Ensure no existing devices
+        StaticDevice.objects.filter(user=self.user).delete()
+
+        # Generation should emit an INFO log
+        with self.assertLogs("app.core.middleware", level="INFO") as cm:
+            from app.core.middleware import create_static_device_with_tokens
+
+            device, codes = create_static_device_with_tokens(
+                self.user, delete_existing=False
+            )
+
+        logs = "\n".join(cm.output)
+        self.assertIn("Generated 10 recovery codes for user", logs)
+
+        # Create duplicates to trigger duplicate-removal path
+        StaticDevice.objects.create(
+            user=self.user, name="Recovery codes", confirmed=True
+        )
+        StaticDevice.objects.create(
+            user=self.user, name="Recovery codes", confirmed=True
+        )
+
+        with self.assertLogs("app.core.middleware", level="INFO") as cm2:
+            from app.core.middleware import create_static_device_with_tokens
+
+            device2, codes2 = create_static_device_with_tokens(
+                self.user, delete_existing=False
+            )
+
+        logs2 = "\n".join(cm2.output)
+        self.assertIn("Multiple StaticDevice objects found for user", logs2)
+        self.assertIn("Removed", logs2)
+        self.assertIn("Generated 10 recovery codes for user", logs2)

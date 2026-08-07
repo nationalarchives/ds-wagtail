@@ -45,6 +45,11 @@ def create_static_device_with_tokens(
                 existing_count,
             )
             existing_qs.delete()
+            logger.info(
+                "Removed %d duplicate StaticDevice(s) for user %s",
+                existing_count,
+                getattr(user, "pk", "<unknown>"),
+            )
         elif existing_count == 1 and not delete_existing:
             device = existing_qs.first()
             codes = list(device.token_set.values_list("token", flat=True))
@@ -62,6 +67,12 @@ def create_static_device_with_tokens(
         ]
         for code in codes:
             device.token_set.create(token=code)
+
+        logger.info(
+            "Generated %d recovery codes for user %s",
+            len(codes),
+            getattr(user, "pk", "<unknown>"),
+        )
 
         return device, codes
 
