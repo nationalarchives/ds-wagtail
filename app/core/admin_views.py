@@ -3,7 +3,6 @@ import logging
 from django.apps import apps
 from django.conf import settings
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
 from django.core.cache import cache
 from django.shortcuts import redirect, render
 from django.urls import reverse
@@ -145,7 +144,7 @@ def tree_explorer_view(request):
     )
 
 
-@login_required
+@require_admin_access
 def recovery_codes_view(request):
     # Try session first (one normal flow will have this), but preserve the nonce
     # in session so parallel requests without the session copy can still use the
