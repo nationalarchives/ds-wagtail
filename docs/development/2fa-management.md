@@ -35,14 +35,13 @@ manage_2fa_devices --target-email user@example.com --execute
 manage_2fa_devices --target-email user@example.com --execute --only-reset-recovery-codes
 ```
 
--- List users without any 2FA devices:
--- List users without any 2FA devices (use the dedicated command):
+-- List users without any 2FA devices (use the dedicated list_2fa_devices command):
 
 ```sh
 list_2fa_devices --missing-2fa
 ```
 
--- List users who have 2FA configured but lack recovery codes (use the dedicated command):
+-- List users who have 2FA configured but lack recovery codes (use the dedicated list_2fa_devices command):
 
 ```sh
 list_2fa_devices --missing-recovery-codes

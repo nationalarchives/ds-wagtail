@@ -362,11 +362,7 @@ class Command(BaseCommand):
         reason = options.get("reason")
 
         if not target_email:
-            raise CommandError(
-                self.style.ERROR(
-                    "❌ --target-email is required."
-                )
-            )
+            raise CommandError(self.style.ERROR("❌ --target-email is required."))
 
         target_email = target_email.strip().lower()
 

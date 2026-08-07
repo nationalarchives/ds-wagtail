@@ -43,16 +43,13 @@ class Command(BaseCommand):
             logger.info("Found %d user(s) without 2FA devices.", len(matches))
 
         if options.get("missing_recovery_codes"):
+            from django_otp.plugins.otp_static.models import StaticDevice
+
             self.stdout.write("\n--- Users with 2FA but without recovery codes ---")
             matches = find_matching_users(
                 lambda u: (
                     django_otp.user_has_device(u, confirmed=True)
-                    and not __import__(
-                        "django_otp.plugins.otp_static.models",
-                        fromlist=["StaticDevice"],
-                    )
-                    .StaticDevice.objects.filter(user=u)
-                    .exists()
+                    and not StaticDevice.objects.filter(user=u).exists()
                 )
             )
             if not matches:

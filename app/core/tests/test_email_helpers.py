@@ -68,7 +68,7 @@ class EmailHelpersTests(TestCase):
         self.assertTrue(result.get("sent"))
         self.assertEqual(result.get("subject"), subject)
 
-    def test_send_recovery_codes_email_wrapps_send_template(self):
+    def test_send_recovery_codes_email_wraps_send_template(self):
         with patch("app.core.forms.auth.send_template_email") as mock_send:
             mock_send.return_value = {"sent": False, "subject": "s", "reason": "r"}
             res = auth.send_recovery_codes_email(self.user, reason="r", execute=False)
