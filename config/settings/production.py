@@ -314,7 +314,12 @@ INLINE_RICH_TEXT_FEATURES = [
     "bold",
     "italic",
     "link",
+    "document-link",
     "code",
+    "small",
+    "superscript",
+    "subscript",
+    "keyboard",
 ]
 EXPANDED_RICH_TEXT_FEATURES = INLINE_RICH_TEXT_FEATURES + [
     "ol",
