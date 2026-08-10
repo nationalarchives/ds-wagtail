@@ -3,7 +3,6 @@ from datetime import timedelta
 from django.utils.timezone import localdate
 from wagtail.models import Site
 from wagtail.test.utils import WagtailPageTestCase
-from wagtail_factories import ImageFactory
 
 from app.api.models import APIToken
 from app.education.models import (
@@ -32,8 +31,6 @@ class EducationListingsAPITest(WagtailPageTestCase):
     def setUpTestData(cls):
         cls.api_token = APIToken.objects.create(name="education-api-token")
         cls.root_page = Site.objects.get(is_default_site=True).root_page
-
-        cls.test_image = ImageFactory()
 
         cls.ks1, _ = KeyStage.objects.update_or_create(
             slug="key-stage-1",
@@ -93,7 +90,6 @@ class EducationListingsAPITest(WagtailPageTestCase):
                 slug="education",
                 teaser_text="Education teaser",
                 intro="<p>Education landing intro</p>",
-                hero_image=cls.test_image,
             ),
         )
 
@@ -136,7 +132,6 @@ class EducationListingsAPITest(WagtailPageTestCase):
             slug=slug,
             teaser_text="Resource teaser",
             intro="<p>Resource intro</p>",
-            hero_image=self.test_image,
             teachers_notes=[
                 {
                     "type": "paragraph",
@@ -180,7 +175,6 @@ class EducationListingsAPITest(WagtailPageTestCase):
             slug=slug,
             teaser_text="Session teaser",
             intro="<p>Session intro</p>",
-            hero_image=self.test_image,
             start_date=start_date,
             end_date=end_date,
         )
