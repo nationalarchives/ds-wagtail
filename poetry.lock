@@ -1427,14 +1427,14 @@ docs = ["mkdocs (>=1.1,<1.2)", "mkdocs-material (>=6.2,<6.3)"]
 
 [[package]]
 name = "tna-frontend-jinja"
-version = "1.1.0"
+version = "1.2.0"
 description = "TNA Frontend Jinja templates"
 optional = false
 python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "tna_frontend_jinja-1.1.0-py3-none-any.whl", hash = "sha256:0f30ee49877901c54339fc96753907dfccdf2aa4d50ee4a41ab72e26180c4d90"},
-    {file = "tna_frontend_jinja-1.1.0.tar.gz", hash = "sha256:a0227354bb6270ce986c320f0135f0bcbd9ffd415b8e176514c31996ba6dbf2c"},
+    {file = "tna_frontend_jinja-1.2.0-py3-none-any.whl", hash = "sha256:4cb4100b46d2261c1893354c96259d1cf280c78b4e966c5f3e8132e9b8472ff5"},
+    {file = "tna_frontend_jinja-1.2.0.tar.gz", hash = "sha256:4bd79a35e6ad59ee34d99d6e3ed59a70b3e3131001090530b1ab5fa8ecfa5641"},
 ]
 
 [package.dependencies]
@@ -1678,4 +1678,4 @@ wand = ["Wand (>=0.6,<1.0)"]
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.14"
-content-hash = "8ef39ca9f0b6637d6f29f0520d1e8217b5bc45d2ea8e49f8949393de0f1e5145"
+content-hash = "a0c2015575fdcaaecc78783837fb40037ccf02544e1d7ac94a880bc0f3546d9a"
