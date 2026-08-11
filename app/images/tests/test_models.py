@@ -22,11 +22,13 @@ class TestCustomImageAlternativeFormatValidation(TestCase):
         csv_image = CustomImage(
             title="CSV alternative format",
             file=self.image_upload_file(),
+            alternative_format_heading=AlternativeFormatHeadingChoices.TRANSCRIPT_WITH_TABLES,
             alternative_format=SimpleUploadedFile("table.csv", b"a,b\n1,2\n"),
         )
         xlsx_image = CustomImage(
             title="XLSX alternative format",
             file=self.image_upload_file(),
+            alternative_format_heading=AlternativeFormatHeadingChoices.TRANSCRIPT_WITH_TABLES,
             alternative_format=SimpleUploadedFile(
                 "table.xlsx",
                 b"xlsx-content",
