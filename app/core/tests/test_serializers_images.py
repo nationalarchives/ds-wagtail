@@ -55,16 +55,16 @@ class TestDetailedImageSerializerAlternativeFormat(TestCase):
             rep = ser.to_representation(img)
 
         self.assertIn("alternative_format", rep)
-        self.assertIsInstance(rep["alternative_format"]["file"], dict)
-        self.assertEqual(rep["alternative_format"]["file"]["url"], alt.url)
+        self.assertIsInstance(rep["alternative_format"], dict)
+        self.assertEqual(rep["alternative_format"]["url"], alt.url)
         expected_full = (
             settings.WAGTAILAPI_MEDIA_BASE_URL + alt.url
             if hasattr(settings, "WAGTAILAPI_MEDIA_BASE_URL")
             and alt.url.startswith("/")
             else alt.url
         )
-        self.assertEqual(rep["alternative_format"]["file"]["full_url"], expected_full)
-        self.assertEqual(rep["alternative_format"]["file"]["file_type"], "csv")
+        self.assertEqual(rep["alternative_format"]["full_url"], expected_full)
+        self.assertEqual(rep["alternative_format"]["file_type"], "csv")
 
     @override_settings(WAGTAILAPI_MEDIA_BASE_URL="https://example.com")
     def test_alternative_format_file_object_with_full_url(self):
@@ -77,10 +77,10 @@ class TestDetailedImageSerializerAlternativeFormat(TestCase):
             rep = ser.to_representation(img)
 
         self.assertEqual(
-            rep["alternative_format"]["file"]["full_url"],
+            rep["alternative_format"]["full_url"],
             "https://example.com" + alt.url,
         )
-        self.assertEqual(rep["alternative_format"]["file"]["file_type"], "xlsx")
+        self.assertEqual(rep["alternative_format"]["file_type"], "xlsx")
 
     def test_file_with_multiple_dots(self):
         alt = DummyFile("/media/path/my.file.name.csv", "my.file.name.csv")
@@ -91,7 +91,7 @@ class TestDetailedImageSerializerAlternativeFormat(TestCase):
             ser = DetailedImageSerializer()
             rep = ser.to_representation(img)
 
-        self.assertEqual(rep["alternative_format"]["file"]["file_type"], "csv")
+        self.assertEqual(rep["alternative_format"]["file_type"], "csv")
 
     def test_url_with_query_string(self):
         alt = DummyFile("/media/path/table.csv?ver=1", "/media/path/table.csv?ver=1")
@@ -102,7 +102,7 @@ class TestDetailedImageSerializerAlternativeFormat(TestCase):
             ser = DetailedImageSerializer()
             rep = ser.to_representation(img)
 
-        self.assertEqual(rep["alternative_format"]["file"]["file_type"], "csv")
+        self.assertEqual(rep["alternative_format"]["file_type"], "csv")
 
     def test_no_extension_returns_none(self):
         alt = DummyFile("/media/path/file", "file")
@@ -113,7 +113,7 @@ class TestDetailedImageSerializerAlternativeFormat(TestCase):
             ser = DetailedImageSerializer()
             rep = ser.to_representation(img)
 
-        self.assertIsNone(rep["alternative_format"]["file"]["file_type"])
+        self.assertIsNone(rep["alternative_format"]["file_type"])
 
     def test_uppercase_extension_normalized(self):
         alt = DummyFile("/media/path/table.CSV", "table.CSV")
@@ -124,4 +124,4 @@ class TestDetailedImageSerializerAlternativeFormat(TestCase):
             ser = DetailedImageSerializer()
             rep = ser.to_representation(img)
 
-        self.assertEqual(rep["alternative_format"]["file"]["file_type"], "csv")
+        self.assertEqual(rep["alternative_format"]["file_type"], "csv")

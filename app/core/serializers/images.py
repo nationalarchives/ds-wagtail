@@ -208,23 +208,15 @@ class DetailedImageSerializer(ImageSerializer):
                     "alternative_format": (
                         {
                             "heading": value.get_alternative_format_heading_display(),
-                            "file": (
-                                {
-                                    "url": value.alternative_format.url,
-                                    "full_url": (
-                                        settings.WAGTAILAPI_MEDIA_BASE_URL
-                                        + value.alternative_format.url
-                                        if hasattr(
-                                            settings, "WAGTAILAPI_MEDIA_BASE_URL"
-                                        )
-                                        and value.alternative_format.url.startswith("/")
-                                        else value.alternative_format.url
-                                    ),
-                                    "file_type": _extract_file_type(
-                                        value.alternative_format
-                                    ),
-                                }
+                            "url": value.alternative_format.url,
+                            "full_url": (
+                                settings.WAGTAILAPI_MEDIA_BASE_URL
+                                + value.alternative_format.url
+                                if hasattr(settings, "WAGTAILAPI_MEDIA_BASE_URL")
+                                and value.alternative_format.url.startswith("/")
+                                else value.alternative_format.url
                             ),
+                            "file_type": _extract_file_type(value.alternative_format),
                         }
                         if value.alternative_format
                         else None
