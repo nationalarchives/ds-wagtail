@@ -12,6 +12,11 @@ def _extract_file_type(file_or_url):
     return extension or None
 
 
+def _extract_file_size(file_obj):
+    size = getattr(file_obj, "size", None)
+    return None if size is None else int(size)
+
+
 def image_generator(
     original_image,
     rendition_size: str = "fill-600x400",
@@ -217,6 +222,7 @@ class DetailedImageSerializer(ImageSerializer):
                                 else value.alternative_format.url
                             ),
                             "file_type": _extract_file_type(value.alternative_format),
+                            "file_size": _extract_file_size(value.alternative_format),
                         }
                         if value.alternative_format
                         else None

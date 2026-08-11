@@ -7,9 +7,10 @@ from app.core.serializers.images import DetailedImageSerializer, ImageSerializer
 
 
 class DummyFile:
-    def __init__(self, url, name=None):
+    def __init__(self, url, name=None, size=None):
         self.url = url
         self.name = name or url
+        self.size = size
 
 
 class DummyImage:
@@ -46,6 +47,7 @@ class TestDetailedImageSerializerAlternativeFormat(TestCase):
         alt = DummyFile(
             "/media/images/alternative_formats/table.csv",
             "images/alternative_formats/table.csv",
+            2048,
         )
         img = DummyImage(alt)
         with patch.object(
@@ -65,6 +67,7 @@ class TestDetailedImageSerializerAlternativeFormat(TestCase):
         )
         self.assertEqual(rep["alternative_format"]["full_url"], expected_full)
         self.assertEqual(rep["alternative_format"]["file_type"], "csv")
+        self.assertEqual(rep["alternative_format"]["file_size"], 2048)
 
     @override_settings(WAGTAILAPI_MEDIA_BASE_URL="https://example.com")
     def test_alternative_format_file_object_with_full_url(self):
@@ -125,3 +128,14 @@ class TestDetailedImageSerializerAlternativeFormat(TestCase):
             rep = ser.to_representation(img)
 
         self.assertEqual(rep["alternative_format"]["file_type"], "csv")
+
+    def test_missing_size_returns_none(self):
+        alt = DummyFile("/media/path/table.csv", "table.csv")
+        img = DummyImage(alt)
+        with patch.object(
+            ImageSerializer, "to_representation", return_value=base_repr()
+        ):
+            ser = DetailedImageSerializer()
+            rep = ser.to_representation(img)
+
+        self.assertIsNone(rep["alternative_format"]["file_size"])
