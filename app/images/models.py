@@ -110,6 +110,13 @@ class CustomImage(ClusterableModel, AbstractImage):
     def clean(self):
         super().clean()
 
+        if self.alternative_format and not self.alternative_format_heading:
+            raise ValidationError(
+                {
+                    "alternative_format_heading": "Choose an alternative format heading when an alternative format file is uploaded.",
+                }
+            )
+
         if self.alternative_format_heading and not self.alternative_format:
             raise ValidationError(
                 {

@@ -51,6 +51,18 @@ class TestCustomImageAlternativeFormatValidation(TestCase):
         self.assertIn("csv", str(context.exception))
         self.assertIn("xlsx", str(context.exception))
 
+    def test_validation_requires_heading_when_file_is_uploaded(self):
+        image = CustomImage(
+            title="Missing heading",
+            file=self.image_upload_file(),
+            alternative_format=SimpleUploadedFile("table.csv", b"a,b\n1,2\n"),
+        )
+
+        with self.assertRaises(ValidationError) as context:
+            image.full_clean()
+
+        self.assertIn("alternative_format_heading", context.exception.message_dict)
+
     def test_validation_requires_file_when_heading_is_selected(self):
         image = CustomImage(
             title="Missing file",
