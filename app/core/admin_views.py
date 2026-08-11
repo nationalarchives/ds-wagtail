@@ -170,7 +170,7 @@ def recovery_codes_view(request):
                 nonce,
             )
         except Exception as e:
-            logger.warning(
+            logger.error(
                 "Failed to delete recovery codes cache for user %s (nonce=%s): %s",
                 getattr(request.user, "pk", "<unknown>"),
                 nonce,

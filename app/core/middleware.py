@@ -24,7 +24,7 @@ def get_recovery_codes_cache_key(user, nonce=None):
 def create_static_device_with_tokens(
     user,
     count=10,
-    length=10,
+    length=16,
     allowed_chars=ALLOWED_CHARS,
     device_name="Recovery codes",
     delete_existing=False,
