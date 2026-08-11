@@ -99,7 +99,8 @@
         },
         "transcript": null,
         "translation": null,
-        "copyright": null
+        "copyright": null,
+        "alternative_format": null
     },
     "custom_warning_text": "",
     "tags": [
@@ -180,7 +181,8 @@
                                     "heading": "Translation",
                                     "text": "<p>Translation</p>"
                                 },
-                                "copyright": "Copyrighted by someone"
+                                "copyright": "Copyrighted by someone",
+                                "alternative_format": null
                             },
                             "caption": "<p data-block-key=\"apto9\">Caption text</p>"
                         },
@@ -215,7 +217,8 @@
                                     "heading": "Translation",
                                     "text": "<p>Translation</p>"
                                 },
-                                "copyright": "Copyrighted by someone"
+                                "copyright": "Copyrighted by someone",
+                                "alternative_format": null
                             },
                             "media": {
                                 "id": 1,
@@ -279,7 +282,8 @@
                                             "heading": "Translation",
                                             "text": "<p>Translation</p>"
                                         },
-                                        "copyright": "Copyrighted by someone"
+                                        "copyright": "Copyrighted by someone",
+                                        "alternative_format": null
                                     }
                                 }
                             ]
