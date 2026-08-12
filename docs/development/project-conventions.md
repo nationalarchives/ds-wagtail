@@ -1,12 +1,12 @@
 # Project conventions
 
-At TNA we follow a set of conventions for our projects to ensure consistency and quality across our codebases. These can be found in our [developer handbook](https://nationalarchives.github.io/developer-handbook/) and should be followed when contributing to the Etna project, as well as the guidance below.
+At TNA we follow a set of conventions for our projects to ensure consistency and quality across our codebases. These can be found in our [engineering handbook](https://nationalarchives.github.io/engineering-handbook/) and should be followed when contributing to the ETNA project, as well as the guidance below.
 
 ## Formatting
 
 ```sh
 # Format and lint all Python, JavaScript, CSS, JSON etc.
-docker compose exec dev format
+docker compose exec app format
 ```
 
 ## Migrations
