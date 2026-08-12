@@ -15,6 +15,7 @@ nav:
   - Features:
       - Images: features/images.md
       - Record data: features/record-data.md
+      - Wagtail API: features/wagtail-api.md
   - Infrastructure:
       - API tokens: infrastructure/api-tokens.md
       - Configuring an environment: infrastructure/configuring-an-environment.md
