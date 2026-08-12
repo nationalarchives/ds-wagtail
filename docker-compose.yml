@@ -43,7 +43,7 @@ services:
       start_interval: 2s
 
   db:
-    image: postgres:18.4
+    image: postgres:15.18
     environment:
       - POSTGRES_PASSWORD=postgres
     volumes:
