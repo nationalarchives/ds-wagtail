@@ -8,6 +8,7 @@ Before contributing, please familiarise yourself with the [Project conventions](
 - Mark in-progress PRs as drafts until they are ready for review.
 - Don't be afraid to show your working. We're all learning. If you need help, linking to code changes in a PR is a quick and easy way to explain the problem.
 - Where possible, a feature branch should be kept up-to-date with `main` by regularly merging `main` into the feature branch. This will help to prevent conflicts when merging the feature branch back into `main`, and ensure there are no inconsistencies.
+- Be aware that code merged into the `main` branch has the ability to be deployed to production. Only merge into `main` if you are happy for this to happen. If you are worried about this, you can either keep working in a feature branch or use a feature flag.
 
 ## Submitting a pull request (PR)
 
