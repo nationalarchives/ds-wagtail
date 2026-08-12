@@ -20,7 +20,7 @@ After the `Release to staging` Action has finished running, a draft release will
 
 ## Adding/updating environment variables
 
-Some changes may require environment variables to be added or updated. These should be edited in the relevant [`config/parameters/wagtail`](https://github.com/nationalarchives/ds-infrastructure-web/tree/main/config/parameters/wagtail) file. There is a `json` file for each environment.
+Some changes may require environment variables to be added or updated. These should be edited in the relevant [`config/parameters/wagtail`](https://github.com/nationalarchives/ds-infrastructure-web/tree/main/config/parameters/wagtail) file. There is a `json` file for each environment. Further information can be found in [Environment variables](../env-vars.md).
 
 ## Manual deployments to a specific environment
 

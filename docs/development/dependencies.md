@@ -11,9 +11,11 @@ This project uses [Renovate](https://docs.renovatebot.com/) to automatically upd
 Renovate strongly suggests that pinned package versions in `pyproject.toml` are the explicit version, rather than careted `^x.y.z` or tilded `~x.y`. This means that to update any versions, you must first update the pinned version in `pyproject.toml` to the required version, e.g. `wagtail = "7.4.2" -> wagtail = "7.5.0"`.
 
 After that, you can run:
+
 ```sh
 docker compose exec app poetry update
 ```
+
 to update the `poetry.lock` with the latest version(s).
 
 ## Adding new dependencies
@@ -35,6 +37,7 @@ docker compose exec app poetry remove tna-frontend-jinja
 ## Dependency compatibility
 
 Please ensure that dependencies are:
+
 - Checked for any vulnerabilities
 - At least 7 days old before adoption (see `min-release-age = 7` in `pyproject.toml`)
 - Compatible with our pinned core stack versions (notably Python, Django, and Wagtail)

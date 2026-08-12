@@ -4,9 +4,10 @@ Specific guidance for working on on backend tasks.
 
 ## Running Django management commands
 
-All Django commands should be run in the `app` container. 
+All Django commands should be run in the `app` container.
 
 To run a command, run:
+
 ```sh
 docker compose exec app poetry run ...
 ```
@@ -14,6 +15,7 @@ docker compose exec app poetry run ...
 With this, you can interact with Django exactly as you can see outlined in [the official documentation](https://docs.djangoproject.com/en/stable/topics/migrations/#module-django.db.migrations) and the many tutorials you'll find on the web.
 
 For example, to make migrations:
+
 ```sh
 docker compose exec app poetry run python manage.py makemigrations
 ```
@@ -192,4 +194,3 @@ Useful commands:
 - Add a comment/docstring to explain the need/use case for the custom migration.
 
 This staged approach reduces downtime risk and makes rollback easier.
-

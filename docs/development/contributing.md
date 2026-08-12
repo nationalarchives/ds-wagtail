@@ -1,6 +1,6 @@
-# Contributing code
+# Contributing
 
-Before contributing code, please familiarise yourself with the [Project conventions](project-conventions.md).
+Before contributing, please familiarise yourself with the [Project conventions](project-conventions.md).
 
 ## General advice:
 
