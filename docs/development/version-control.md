@@ -35,5 +35,5 @@ We follow the [GitHub flow branching model](https://docs.github.com/en/get-start
 
 **NOTE:** Where possible, a feature branch should be kept up-to-date with `main` by regularly merging `main` into the feature branch. This will help to prevent conflicts when merging the feature branch back into `main`, and ensure there are no inconsistencies.
 
-**Please ensure that you are using Squash and Merge when merging pull requests into `main`.**
+**Ensure that you are using Squash and Merge when merging pull requests into `main`.**
 This keeps the commit history clean and easy to track.
