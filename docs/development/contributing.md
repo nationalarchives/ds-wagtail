@@ -15,7 +15,7 @@ Before contributing, please familiarise yourself with the [Project conventions](
 2. Head to https://github.com/nationalarchives/ds-wagtail/pulls and create a pull request from your branch.
 
    For the PR Title:
-   See [here](project-conventions.md#naming-pull-requests) for information on naming conventions.
+   See information on [naming conventions](project-conventions.md#naming-pull-requests).
 
 3. To mark a PR as a draft, click the drop-down where it says **"Create pull request"** and select the **"Create draft pull request"** button instead.
 4. When you are finished (and CI is passing): Add a useful description, mark the PR as "Ready to review", and request a review from another developer.
