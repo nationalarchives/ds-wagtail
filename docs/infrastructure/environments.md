@@ -1,93 +1,31 @@
-# Hosted environments
+# Environments
 
-## List of environments in use and the branches to which they are tied
+## Deploying to an environment
 
-The GitHub branch and Hosted environments have the same name:
+### Deploying to develop
 
-- `main`: for Live/Production
-- `develop`: for Development
+Any code that is merged into the `main` branch will be automatically deployed to the `develop` environment. A merge to `main` triggers the `update-ds-infrastructure-web` Action, which updates the [develop.json config](https://github.com/nationalarchives/ds-infrastructure-web/blob/main/config/develop.json) in [`ds-infrastructure-web`](https://github.com/nationalarchives/ds-infrastructure-web). Further Actions are run on `ds-infrastructure-web` - please see the [`ds-infrastructure-web` repo](https://github.com/nationalarchives/ds-infrastructure-web) for more information.
 
-## Pre-requisites for deployment to develop
+### Deploying to staging and production
 
-1. If your new code requires any Platform.sh environment variables to either be updated or created, please speak to someone who has access to the Platform.sh environment before deploying/merging your code.
+**Both `staging` and `production` are managed via [`ds-infrastructure-web`](https://github.com/nationalarchives/ds-infrastructure-web). This information may not be up-to-date with current workflows for deploying to either environment.**
 
-- The new variables should follow the naming convention as the other variables, which is `env:VARIABLE_NAME`
+#### Staging
 
-## Deploying to develop
+Run the [Release to staging](https://github.com/nationalarchives/ds-infrastructure-web/actions/workflows/deploy-staging.yml) Action on the `ds-infrastructure-web` repo. This will update all applications on `staging` with the latest versions that are on `develop`.
 
-We now have CD (Continuous Delivery) actions set up on Github.
-This now allows us to run automated deployments when code is merged to `develop`.
+#### Production
 
-**Please ensure that you are using Squash and Merge when merging pull requests into `develop`.**
-This keeps the commit history clean and easy to track.
+After the `Release to staging` Action has finished running, a draft release will be available in the [Releases tab](https://github.com/nationalarchives/ds-infrastructure-web/releases) of `ds-infrastructure-web`. Publish this, and have a colleague approve the Action.
 
-When your code has been merged, the action will start. Once completed, a notification will be sent in the Slack channel `ds-platform-sh-notifications`.
-Your code will then be visible on the `develop` environment.
+## Adding/updating environment variables
 
-Provided that you have used the correct naming conventions for your branch and PR, the JIRA ticket associated with your branch will be updated and moved into the `READY TO TEST ON DEVELOP` swim lane.
-Otherwise, you will need to manually move the ticket into the `READY TO TEST ON DEVELOP` swim lane.
+Some changes may require environment variables to be added or updated. These should be edited in the relevant [`config/parameters/wagtail`](https://github.com/nationalarchives/ds-infrastructure-web/tree/main/config/parameters/wagtail) file. There is a `json` file for each environment.
 
-## Pre-requisites for deployment to main
+## Manual deployments to a specific environment
 
-1. If your new code requires any Platform.sh environment variables to either be updated or created, please speak to someone who has access to the Platform.sh environment before deploying/merging your code.
+Each PR runs the `build` action which creates a [tagged image version](https://github.com/nationalarchives/ds-wagtail/pkgs/container/ds-wagtail) of your branch. This tag can then be used with the [`Deploy single application`](https://github.com/nationalarchives/ds-infrastructure-web/actions/workflows/deploy-specific-application-version.yml) Action to deploy to either `develop` or `staging` without needing to merge to `main` or create a release. This allows us to test features before merging them.
 
-- The new variables should follow the naming convention as the other variables, which is `env:VARIABLE_NAME`
+**Do not deploy a branch/version that includes migrations.** This will affect the database of the selected environment, and will require a rollback/backup to fix. If you must do this, speak with Platform Team colleagues first to organise this safely.
 
-2. A branch must be created from `develop`, you should call this `release/X.X.X`, with the `X`s being relative to the major, minor, and patch level of the release.
-3. A pull request should be created to merge `release/X.X.X` into `main`, titled `Release X.X.X into main`.
-4. The pull request should contain a summary of all commits since the last release.
-
-- This can be obtained by running `git log --oneline` for a shortened version of the commit history.
-
-5. Create a "release" on [Github releases](https://github.com/nationalarchives/ds-wagtail/releases)
-
-- Create a new tag to match your release number, and title it `Release X.X.X`
-
-## Deploying to main
-
-We now have CD (Continuous Delivery) actions set up on Github.
-This now allows us to run automated deployments when code is merged to `main`.
-
-!!! Please ensure that you are using Merge Commit when merging releases into `main`.
-This brings all the commits from the release branch into `main` to keep the commit history continuous from `develop`.
-
-When your code has been merged, the action will start. Once completed, a notification will be sent in the Slack channel `#ds-platform-sh-notifications`.
-Your code will then be visible on the `main` environment.
-
-After merging into `main`, make a pull request to merge `main` into `develop`.
-This will ensure that `develop` includes the commit from `main` and will prevent any conflicts when merging future releases into `main` to keep the history in sync.
-
-Provided that you have used the correct naming conventions for your branch and PR, the JIRA ticket associated with your branch will be updated and moved into the `READY TO TEST ON MAIN` swim lane.
-Otherwise, you will need to manually move the deployed tickets into the `READY TO TEST ON MAIN` swim lane.
-
-Please then update the `#ds-etna-dev` Slack channel and let the team know that `develop` is free to be used again.
-
-## Manual deployments to environments
-
-If CD fails for any reason and cannot be fixed, you can manually deploy to an environment by following the steps below:
-
-```console
-platform project:set-remote <project_id>
-```
-
-# Develop
-
-```console
-git push platform develop
-```
-
-# Main
-
-```console
-git push platform main
-```
-
-## How to access the Platform.sh shell
-
-1. Go to the Platform.sh dashboard
-2. Click on the environment you want to access
-3. Click on the `SSH` tab
-4. Copy the SSH command
-5. Open your `ds-wagtail-cli1` container in Docker Desktop
-6. Paste the command into the CLI
-7. You should now be in the Platform.sh shell
+If any of the above fails, or you have concerns or questions, please contact a Platform Team colleague.
