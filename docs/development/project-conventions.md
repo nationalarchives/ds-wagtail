@@ -18,6 +18,9 @@ in the following format:
 
 ```python
 # etna:allowDeleteModel
+# etna:allowRenameModel
+# etna:allowRemoveField
+# etna:allowAlterField
 ```
 
 The operations that require a comment are `DeleteModel`, `RenameModel`, `RemoveField`, and `AlterField`.

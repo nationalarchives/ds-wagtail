@@ -37,4 +37,4 @@ Some variables have defaults in the settings modules. These defaults are used on
 
 ## Table of environment variables
 
-The table of environment variables can be found in the `README.md` - to avoid duplication of information, and ease of use, they are kept there.
+The canonical table of environment variables is maintained in the [README environment variables section](https://github.com/nationalarchives/ds-wagtail?tab=readme-ov-file#environment-variables) to avoid duplication.
