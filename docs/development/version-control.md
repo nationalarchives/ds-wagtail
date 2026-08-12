@@ -2,7 +2,7 @@
 
 ## Branching model
 
-We follow the [GitHub flow branching model](https://docs.github.com/en/get-started/using-github/github-flow)/[trunk-based development](https://www.atlassian.com/continuous-delivery/continuous-integration/trunk-based-development).
+We follow the [GitHub flow branching model](https://docs.github.com/en/get-started/using-github/github-flow).
 
 - Features are developed in a branch off of `main` (e.g. `feature/EDEV-123-some-new-changes`)
 - Pull requests are created to merge the changes from the feature branch back into `main`
