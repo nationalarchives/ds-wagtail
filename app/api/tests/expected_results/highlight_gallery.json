@@ -128,7 +128,8 @@
                     "heading": "Translation",
                     "text": "<p>Translation</p>"
                 },
-                "copyright": "Copyrighted by someone"
+                "copyright": "Copyrighted by someone",
+                "alternative_format": null
             },
             "description": "<p>Test description</p>",
             "record": {

@@ -53,18 +53,18 @@ lxml = ["lxml"]
 
 [[package]]
 name = "boto3"
-version = "1.43.62"
+version = "1.43.64"
 description = "The AWS SDK for Python"
 optional = false
 python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "boto3-1.43.62-py3-none-any.whl", hash = "sha256:0bb298e7ffd72b91615df44bf71c417df80a29d844971e5d665b8bd743a4bb35"},
-    {file = "boto3-1.43.62.tar.gz", hash = "sha256:0bf920e0739346e81c7310b685a3f783bf1fcc62ce7d5c7016508fa25c0d261f"},
+    {file = "boto3-1.43.64-py3-none-any.whl", hash = "sha256:2b555e63ece57cffb1ab1666fa6c23a0957e61f9d19ea8424d6c884124c3fd98"},
+    {file = "boto3-1.43.64.tar.gz", hash = "sha256:fc7522c3ed97d38176e0b1366406bca0fc8c888ae8d416bf953477b3f015a7b2"},
 ]
 
 [package.dependencies]
-botocore = ">=1.43.62,<1.44.0"
+botocore = ">=1.43.64,<1.44.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.19.0,<0.20.0"
 
@@ -233,14 +233,14 @@ files = [
 
 [[package]]
 name = "django"
-version = "6.0.7"
+version = "6.0.8"
 description = "A high-level Python web framework that encourages rapid development and clean, pragmatic design."
 optional = false
 python-versions = ">=3.12"
 groups = ["main"]
 files = [
-    {file = "django-6.0.7-py3-none-any.whl", hash = "sha256:a037427c2288443a8c02a1b02295a31c239663aa682bc50b1976afb7cf6a769e"},
-    {file = "django-6.0.7.tar.gz", hash = "sha256:2998503fc083124fb58037084bfa00de323c7c743f05f1b4284e77bff0ab8890"},
+    {file = "django-6.0.8-py3-none-any.whl", hash = "sha256:9b98b7e1902e0e575ea4f42c175fc9512784f7f2580898286aee3388b322219d"},
+    {file = "django-6.0.8.tar.gz", hash = "sha256:cb0bd962d27fc866f3c514b20aae6a7df56ec80b488f9899da46d675cd051526"},
 ]
 
 [package.dependencies]
@@ -1427,14 +1427,14 @@ docs = ["mkdocs (>=1.1,<1.2)", "mkdocs-material (>=6.2,<6.3)"]
 
 [[package]]
 name = "tna-frontend-jinja"
-version = "1.1.0"
+version = "1.2.0"
 description = "TNA Frontend Jinja templates"
 optional = false
 python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "tna_frontend_jinja-1.1.0-py3-none-any.whl", hash = "sha256:0f30ee49877901c54339fc96753907dfccdf2aa4d50ee4a41ab72e26180c4d90"},
-    {file = "tna_frontend_jinja-1.1.0.tar.gz", hash = "sha256:a0227354bb6270ce986c320f0135f0bcbd9ffd415b8e176514c31996ba6dbf2c"},
+    {file = "tna_frontend_jinja-1.2.0-py3-none-any.whl", hash = "sha256:4cb4100b46d2261c1893354c96259d1cf280c78b4e966c5f3e8132e9b8472ff5"},
+    {file = "tna_frontend_jinja-1.2.0.tar.gz", hash = "sha256:4bd79a35e6ad59ee34d99d6e3ed59a70b3e3131001090530b1ab5fa8ecfa5641"},
 ]
 
 [package.dependencies]
@@ -1445,14 +1445,14 @@ wtforms = ["flask-wtf[email]"]
 
 [[package]]
 name = "tna-utilities"
-version = "1.5.0"
+version = "1.6.0"
 description = "A library of common National Archives Python functions"
 optional = false
 python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "tna_utilities-1.5.0-py3-none-any.whl", hash = "sha256:8a444891c2b39a3f8c76c8297ce800b1376e268a292dcdbb74407bbdb6ae4e6f"},
-    {file = "tna_utilities-1.5.0.tar.gz", hash = "sha256:f8525c0b05ac9e8c8f0fe47e7bfca00a1df6c514506c37e2b7848d840d2f2c09"},
+    {file = "tna_utilities-1.6.0-py3-none-any.whl", hash = "sha256:292042813c016bcbb973ae204f82a7f762ea5684183afc2bbc543349111facef"},
+    {file = "tna_utilities-1.6.0.tar.gz", hash = "sha256:de396d5790b86c9d052c7337bc25a9e0b62c7a810968e9f5e33a0a2a7cbca273"},
 ]
 
 [package.dependencies]
@@ -1678,4 +1678,4 @@ wand = ["Wand (>=0.6,<1.0)"]
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.14"
-content-hash = "770ff75dfdbccb7ceb2cfe40b4fd2334775b10c8807f05ebc59f4339078c8002"
+content-hash = "25dc7e4b8133de2b775a3596ff730c7f3e23bd99c1d1c46b6d906e89e666c019"
