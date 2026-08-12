@@ -1,35 +1,26 @@
 # Dependency management
 
-Managing dependencies can be done using the `dev` container as this comes preinstalled with Poetry.
+Managing dependencies can be done using the `app` container as this has Poetry installed.
 
-## Updating to latest builds
+## Automated updates
 
-e.g. `x.y.1` -> `x.y.2`
+This project uses [Renovate](https://docs.renovatebot.com/) to automatically update packages and flag any updates/vulnerabilities in our existing packages. The config can be seen in [`renovate.json`](https://github.com/nationalarchives/ds-wagtail/blob/main/.github/renovate.json) However, manual intervention is sometimes required.
 
+## Updating to latest versions
+
+Renovate strongly suggests that pinned package versions in `pyproject.toml` are the explicit version, rather than careted `^x.y.z` or tilded `~x.y`. This means that to update any versions, you must first update the pinned version in `pyproject.toml` to the required version, e.g. `wagtail = "7.4.2" -> wagtail = "7.5.0"`.
+
+After that, you can run:
 ```sh
-# Update Poetry and NPM dependencies
-docker compose exec dev upgrade
-
-# Update Poetry dependencies
-docker compose exec dev upgrade poetry
-
-# Update NPM dependencies
-docker compose exec dev upgrade npm
+docker compose exec app poetry update
 ```
+to update the `poetry.lock` with the latest version(s).
 
-## Major or minor updates or adding new dependencies
-
-e.g. `x.1.z` -> `x.2.z` or `1.y.z` -> `2.y.z`
+## Adding new dependencies
 
 ```sh
-# Update the tna-frontend-jinja package to 0.5.0 in Poetry
-docker compose exec dev poetry add tna-frontend-jinja=0.5.0
-
-# Update the tna-frontend package to 0.5.0 in npm
-docker compose exec dev /bin/bash -c ". tna-nvm && npm i @nationalarchives/frontend@0.8.0"
-
-# After installing, rebuild the app container
-docker compose up --build -d app
+# Add the tna-frontend-jinja package with version 0.5.0 in Poetry
+docker compose exec app poetry add tna-frontend-jinja=0.5.0
 ```
 
 See the [Poetry docs](https://python-poetry.org/docs/cli/#add) for more options.
@@ -38,11 +29,24 @@ See the [Poetry docs](https://python-poetry.org/docs/cli/#add) for more options.
 
 ```sh
 # Remove the pendulum package
-docker compose exec dev poetry remove pendulum
+docker compose exec app poetry remove tna-frontend-jinja
+```
 
-# Remove the jquery package
-docker compose exec dev /bin/bash -c ". tna-nvm && npm remove jquery"
+## Dependency compatibility
 
-# After removing, rebuild the app container
-docker compose up --build -d app
+Please ensure that dependencies are:
+- Checked for any vulnerabilities
+- At least 7 days old before adoption (see `min-release-age = 7` in `pyproject.toml`)
+- Compatible with our pinned core stack versions (notably Python, Django, and Wagtail)
+- Not yanked and not pre-release, unless there is a clear, agreed reason
+- Actively maintained (recent releases, issue activity, and clear project ownership)
+- Acceptable from a licensing and compliance perspective
+- Reviewed for breaking changes in release notes/changelog
+- Security-sensitive dependencies should get extra scrutiny
+
+Before merging dependency changes, run tests and checks locally:
+
+```sh
+docker compose exec app poetry run pytest
+docker compose exec app poetry run python manage.py check
 ```
