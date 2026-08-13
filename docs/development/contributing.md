@@ -1,13 +1,14 @@
-# Contributing code
+# Contributing
 
-Before contributing code, please familiarise yourself with the [Project conventions](project-conventions.md).
+Before contributing, please familiarise yourself with the [Project conventions](project-conventions.md).
 
 ## General advice:
 
 - Submit pull-requests sooner rather than later: CI feedback is your friend, not your enemy.
 - Mark in-progress PRs as drafts until they are ready for review.
 - Don't be afraid to show your working. We're all learning. If you need help, linking to code changes in a PR is a quick and easy way to explain the problem.
-- Where possible, a feature branch should be kept up-to-date with `develop` by regularly merging `develop` into the feature branch. This will help to prevent conflicts when merging the feature branch back into `develop`, and ensure there are no inconsistencies.
+- Where possible, a feature branch should be kept up-to-date with `main` by regularly merging `main` into the feature branch. This will help to prevent conflicts when merging the feature branch back into `main`, and ensure there are no inconsistencies.
+- Be aware that code merged into the `main` branch has the ability to be deployed to production. Only merge into `main` if you are happy for this to happen. If you are worried about this, you can either keep working in a feature branch or use a feature flag.
 
 ## Submitting a pull request (PR)
 
@@ -15,10 +16,7 @@ Before contributing code, please familiarise yourself with the [Project conventi
 2. Head to https://github.com/nationalarchives/ds-wagtail/pulls and create a pull request from your branch.
 
    For the PR Title:
-   - For ticketed features or ticketed bugs, use the naming convention: `DF-XXX: Short description`
-   - For housekeeping tasks or other unticketed work, use the convention: `CHORE: Short description`
-
-   See [here](project-conventions.md#naming-pull-requests) for more information on naming conventions.
+   See information on [naming conventions](project-conventions.md#naming-pull-requests).
 
 3. To mark a PR as a draft, click the drop-down where it says **"Create pull request"** and select the **"Create draft pull request"** button instead.
 4. When you are finished (and CI is passing): Add a useful description, mark the PR as "Ready to review", and request a review from another developer.
