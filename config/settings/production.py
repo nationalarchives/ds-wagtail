@@ -240,10 +240,6 @@ STATIC_URL = "wagtail-static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 AWS_STORAGE_BUCKET_NAME = os.getenv("AWS_STORAGE_BUCKET_NAME", "")
-if not AWS_STORAGE_BUCKET_NAME:
-    raise ImproperlyConfigured(
-        "AWS_STORAGE_BUCKET_NAME environment variable must be set and cannot be empty."
-    )
 AWS_S3_CUSTOM_DOMAIN = os.getenv(
     "AWS_S3_CUSTOM_DOMAIN", f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
 ).rstrip("/")

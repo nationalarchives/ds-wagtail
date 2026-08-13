@@ -8,6 +8,8 @@ SCRIPTDIR=$(dirname $0)
 MEDIA_DUMP="${DUMP_DIR}/media.zip"
 EXTRACTED_MEDIA="${DUMP_DIR}/extract"
 
+docker compose up s3 -d --wait
+
 if [ ! -f $MEDIA_DUMP ]; then
     echo "Downloading zipped media..."
     aws s3 cp s3://ds-$ENVIRONMENT-deployment-source/wagtail-content/$(aws s3 ls s3://ds-$ENVIRONMENT-deployment-source/wagtail-content/ | sort | tail -n 1 | awk '{print $4}') $MEDIA_DUMP
