@@ -7,15 +7,21 @@
 To create all the relevant Docker containers, run:
 
 ```sh
+# Copy the example .env file
+cp .env.example .env
+
+# Set .env values for:
+#   - ROSETTA_API_URL
+
 # Build and start the containers defined in docker-compose.yml
-docker-compose up -d
+docker compose up -d
 ```
 
 To get data and media from the host platform, check out [fetching data](./development/fetching-data.md).
 
 ## Updating this documentation
 
-The navigation for this this documentation is configured in `mkdocs.yml`. You can add new markdown files there to get them to appear in the navigation.
+The navigation for this documentation is configured in `mkdocs.yml`. You can add new markdown files there to get them to appear in the navigation.
 
 You can preview changes locally by starting the `docs` container (if it isn't already running):
 

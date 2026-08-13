@@ -1,121 +1,39 @@
 # Configuring an environment
 
-Most app configuration is controlled via **env** vars, which are managed from the 'Configuration' panel in AWS.
+Most app configuration is controlled via environment variables.
 
-To understand the full range of supported env vars and how they correlate to Django project configuration, take a good look through `config/base.py`.
+## Where to configure values
 
-NOTE: The `Dockerfile` included in project sets a few 'higher order' env vars for the container to use too (using the `ENV` statement). The `DJANGO_SETTINGS_MODULE` one is particularly important: Without it, the app will attempt to run with `dev` settings, which are intended for local development only.
+- For local development, values are set in `docker-compose.yml` and `.env`.
+- For deployed environments, values are managed in `ds-infrastructure-web`.
 
-The env vars you'll definitely want to set for each environment are:
+For the full, maintained variable table and defaults, see [README.md](https://github.com/nationalarchives/ds-wagtail?tab=readme-ov-file#environment-variables).
 
-## 1. The basics:
+## How settings modules are selected
 
-### `SECRET_KEY`
+- The Docker image defaults `DJANGO_SETTINGS_MODULE` to `config.settings.production`.
+- Local `docker-compose.yml` overrides this to `config.settings.develop`.
 
-**This must be a large random value and it must be kept secret.**
+The settings modules are in `config/settings/` and `develop`/`staging` inherit from `production`.
 
-Each environment should have a unique value. Particular care should be taken to ensure that the key used in production isn’t used anywhere else.
+## Minimum required variables
 
-### `DATABASE_URL`
+At minimum, each environment should provide:
 
-Postgres connection string including the user, password, host, port and target database name in a single string,
+- `SECRET_KEY` (required and non-empty)
+- `DATABASE_HOST`, `DATABASE_NAME`, `DATABASE_USER`, `DATABASE_PASSWORD` (and optional `DATABASE_PORT`)
+- `ROSETTA_API_URL`
 
-e.g: **postgres://USER:PASSWORD@HOST:PORT/DB_NAME**
+You will also usually set:
 
-NOTE: The database 'DB_NAME' must already exist, but can be empty. The app will create any database tables / indexes it needs.
+- `ENVIRONMENT_NAME`
+- `ALLOWED_HOSTS`
+- `WAGTAILADMIN_BASE_URL`, `WAGTAILAPI_BASE_URL`, `WAGTAILAPI_MEDIA_BASE_URL`
+- `CSRF_TRUSTED_ORIGINS`
 
-### `PRIMARY_HOST`
+## Operational recommendations
 
-The primary domain that will be used to access the Wagtail CMS for this environment.
-
-e.g. **eta.nationalarchives.gov.uk**.
-
-## 2. Redis (for internal caching)
-
-### `REDIS_TLS_URL`
-
-Connection string for a TLS-enabled Redis instance.
-
-e.g. **rediss://USER:PASSWORD@HOST:PORT/DB_NAME**
-
-### `REDIS_URL`
-
-Connection string for a Redis instance without TLS enabled.
-
-e.g. **redis://USER:PASSWORD@HOST:PORT/DB_NAME**
-
-## 3. Email (SMTP)
-
-### `SERVER_EMAIL`
-
-Default: **'root@localhost'**
-
-The 'from' address that should be used for emails sent by the server to site admins and other users.
-
-### `EMAIL_HOST`
-
-Default: **'localhost'**
-
-The host to use for sending email.
-
-### `EMAIL_PORT`
-
-Default: **25**
-
-Port to use for the SMTP server defined in `EMAIL_HOST`.
-
-### `EMAIL_HOST_USER`
-
-Default: **''** (empty string)
-
-Username to use for the SMTP server defined in `EMAIL_HOST`. If empty, Django won’t attempt authentication.
-
-### `EMAIL_HOST_PASSWORD`
-
-Default: **''** (Empty string)
-
-Password to use for the SMTP server defined in `EMAIL_HOST`. This setting is used in conjunction with `EMAIL_HOST_USER` when authenticating to the SMTP server. If either of these settings is empty, Django won’t attempt authentication.
-
-### `EMAIL_USE_TLS`
-
-Default: **False**
-
-Whether to use a TLS (secure) connection when talking to the SMTP server. This is used for explicit TLS connections, generally on port 587. If you are experiencing hanging connections, see the implicit TLS setting `EMAIL_USE_SSL`.
-
-### `EMAIL_USE_SSL`
-
-Default: **False**
-
-Whether to use an implicit TLS (secure) connection when talking to the SMTP server. In most email documentation this type of TLS connection is referred to as SSL. It is generally used on port 465. If you are experiencing problems, see the explicit TLS setting `EMAIL_USE_TLS`.
-
-NOTE: `EMAIL_USE_TLS` and `EMAIL_USE_SSL` are mutually exclusive, so only set one of those settings to `True`.
-
-## 4. Sentry (Error logging and performance monitoring)
-
-Below are the key env vars used to configure Sentry for each environment. See [Sentry's official guide](https://docs.sentry.io/platforms/python/guides/django/) for further information on configuring Sentry for Django projects.
-
-### `SENTRY_DSN`
-
-Default: `None`
-
-The project-specific identifier provided by Sentry. This value should remain the same accross all environments... the `ENVIRONMENT_NAME` env var value is used to differentiate between environments.
-
-### `ENVIRONMENT_NAME`
-
-Default: `production`
-
-A string used to populate the `environment` value on issues and other transactions sent to Sentry from this environment. In the Sentry UI, this value can be used as a filter, allowing you to easily see which issues apply to which environment.
-
-### `SENTRY_SAMPLE_RATE`
-
-Default: 0.5
-
-A number between `0.0` and `1.0`, which determines how many processes out of all processes should be tracked/analysed in order to send performance data to Sentry. A value of `0.0` means that no processes should be tracked, and a value of `1.0` mean that ALL should be tracked.
-
-Performance monitoring has a minimal impact on app performance, but even so, Sentry recommend using a value less than `1.0` in production (hence using `0.5` as the default).
-
-### `SENTY_SEND_USER_DATA`
-
-Default: `False`
-
-This value determines whether data about the 'currently-logged in user' is included in the error reports sent to Sentry. This can be useful in 'testing' environments, as it can help developers to see which tester is having the problem. However, in production, we need to be far more careful leaking personal data - therefore, this option should be turned off in that environment (hence setting `False` as the default).
+- Use unique `SECRET_KEY` values per environment.
+- Keep secrets out of source control.
+- Review cache settings (`REDIS_URL`, `CACHE_DEFAULT_TIMEOUT`) when enabling Redis.
+- Review telemetry settings (`SENTRY_DSN`, `SENTRY_SAMPLE_RATE`) per environment.

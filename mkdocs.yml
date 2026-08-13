@@ -14,13 +14,12 @@ nav:
       - Version control: development/version-control.md
   - Features:
       - Images: features/images.md
-      - Search and record data: features/search-and-record-data.md
+      - Record data: features/record-data.md
+      - Wagtail API: features/wagtail-api.md
   - Infrastructure:
       - API tokens: infrastructure/api-tokens.md
       - Configuring an environment: infrastructure/configuring-an-environment.md
       - Environments: infrastructure/environments.md
-      - Scheduled tasks: infrastructure/scheduled-tasks.md
-      - Testing an environment: infrastructure/testing-an-environment.md
   - Environment variables: env-vars.md
 markdown_extensions:
   - admonition
