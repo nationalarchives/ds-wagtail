@@ -165,7 +165,7 @@ class CustomImageRendition(AbstractRendition):
         url = self.url
         if hasattr(settings, "WAGTAILAPI_MEDIA_BASE_URL") and url.startswith("/"):
             return settings.WAGTAILAPI_MEDIA_BASE_URL + url
-        return super().full_url()
+        return super().full_url
 
     class Meta:
         unique_together = (("image", "filter_spec", "focal_point_key"),)

@@ -93,11 +93,16 @@ def image_generator(
             fmt = spec.split("format-")[1].split("|", 1)[0]
             output_key = fmt
 
+        file_size = None
+        if hasattr(rendition, "file") and rendition.file:
+            file_size = _extract_file_size(rendition.file)
+
         output[output_key] = {
             "url": rendition.url,
             "full_url": rendition.full_url,
             "width": rendition.width,
             "height": rendition.height,
+            "file_size": file_size,
         }
 
     return output

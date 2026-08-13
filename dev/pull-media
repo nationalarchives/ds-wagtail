@@ -5,22 +5,22 @@ set -e
 SCRIPTDIR=$(dirname $0)
 . $SCRIPTDIR/pre-pull
 
-MEDIA_DUMP="media.zip"
+MEDIA_DUMP="${DUMP_DIR}/media.zip"
+EXTRACTED_MEDIA="${DUMP_DIR}/extract"
 
-echo "Downloading zipped media..."
-aws s3 cp s3://ds-$ENVIRONMENT-deployment-source/wagtail-content/$(aws s3 ls s3://ds-$ENVIRONMENT-deployment-source/wagtail-content/ | sort | tail -n 1 | awk '{print $4}') $DUMP_DIR/$MEDIA_DUMP
+if [ ! -f $MEDIA_DUMP ]; then
+    echo "Downloading zipped media..."
+    aws s3 cp s3://ds-$ENVIRONMENT-deployment-source/wagtail-content/$(aws s3 ls s3://ds-$ENVIRONMENT-deployment-source/wagtail-content/ | sort | tail -n 1 | awk '{print $4}') $MEDIA_DUMP
+fi
 
-echo "Unzipping media..."
-unzip -o $DUMP_DIR/$MEDIA_DUMP -d $DUMP_DIR/media
+if [ ! -d $EXTRACTED_MEDIA ]; then
+    echo "Unzipping media..."
+    unzip -o $MEDIA_DUMP -d $EXTRACTED_MEDIA
+fi
 
-echo "Moving media to /media..."
-docker compose cp $DUMP_DIR/media/media app:/
-
-echo "Setting media permissions..."
-docker compose exec app chmod -fR 777 /media
+echo "Copying media to local S3..."
+source $SCRIPTDIR/../.env
+AWS_ACCESS_KEY_ID=$AWS_S3_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY=$AWS_S3_SECRET_ACCESS_KEY aws --endpoint-url http://localhost:8002 s3 cp $EXTRACTED_MEDIA/media s3://wagtail --recursive
 
 echo "Removing downloaded media..."
-rm -fR $DUMP_DIR/$MEDIA_DUMP $DUMP_DIR/media
-
-# echo "Recreate media renditions..."
-# docker compose exec app manage wagtail_update_image_renditions
+rm -fR $MEDIA_DUMP $EXTRACTED_MEDIA

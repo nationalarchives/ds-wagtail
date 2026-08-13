@@ -91,6 +91,7 @@ INSTALLED_APPS = [
     "wagtail_2fa",
     "django_otp",
     "django_otp.plugins.otp_totp",
+    "storages",
 ]
 
 MIDDLEWARE = [
@@ -238,7 +239,30 @@ USE_TZ = True
 
 STATIC_URL = "wagtail-static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+AWS_STORAGE_BUCKET_NAME = os.getenv("AWS_STORAGE_BUCKET_NAME", "")
+AWS_S3_CUSTOM_DOMAIN = os.getenv(
+    "AWS_S3_CUSTOM_DOMAIN", f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
+).rstrip("/")
+
+STORAGES = {
+    "default": {
+        "BACKEND": "storages.backends.s3.S3Storage",
+        "OPTIONS": {
+            "access_key": os.getenv("AWS_S3_ACCESS_KEY_ID", ""),
+            "secret_key": os.getenv("AWS_S3_SECRET_ACCESS_KEY", ""),
+            "bucket_name": AWS_STORAGE_BUCKET_NAME,
+            "region_name": os.getenv("AWS_S3_REGION_NAME", ""),
+            "endpoint_url": os.getenv("AWS_S3_ENDPOINT_URL", ""),
+            "custom_domain": AWS_S3_CUSTOM_DOMAIN,
+            "file_overwrite": False,
+            "url_protocol": f"{os.getenv('AWS_S3_URL_PROTOCOL', 'https')}:",
+        },
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 
 MEDIA_ROOT = "/media"
 MEDIA_URL = "media/"
