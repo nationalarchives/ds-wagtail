@@ -1,6 +1,8 @@
 import uuid
 
 from django.conf import settings
+from django.core.exceptions import ValidationError
+from django.core.validators import FileExtensionValidator
 from django.db import models
 from modelcluster.models import ClusterableModel
 from wagtail.api import APIField
@@ -19,6 +21,10 @@ class TranscriptionHeadingChoices(models.TextChoices):
 class TranslationHeadingChoices(models.TextChoices):
     TRANSLATION = "translation", "Translation"
     MODERN_ENGLISH = "modern-english", "Modern English"
+
+
+class AlternativeFormatHeadingChoices(models.TextChoices):
+    TRANSCRIPT_WITH_TABLES = "transcript-with-tables", "Transcript with tables"
 
 
 class CustomImage(ClusterableModel, AbstractImage):
@@ -81,8 +87,42 @@ class CustomImage(ClusterableModel, AbstractImage):
         help_text="An optional English / Modern English translation of the transcription.",
     )
 
+    alternative_format_heading = models.CharField(
+        verbose_name="alternative format heading",
+        max_length=30,
+        choices=AlternativeFormatHeadingChoices.choices,
+        blank=True,
+        help_text="If the image has an alternative format, choose the appropriate heading.",
+    )
+
+    alternative_format = models.FileField(
+        verbose_name="alternative format",
+        blank=True,
+        null=True,
+        upload_to="images/alternative_formats/",
+        help_text="An optional alternative format of the image, e.g. a spreadsheet.",
+        validators=[FileExtensionValidator(["csv", "xlsx", "xls"])],
+    )
+
     def usage_count(self):
         return self.get_usage().count()
+
+    def clean(self):
+        super().clean()
+
+        if self.alternative_format and not self.alternative_format_heading:
+            raise ValidationError(
+                {
+                    "alternative_format_heading": "Choose an alternative format heading when an alternative format file is uploaded.",
+                }
+            )
+
+        if self.alternative_format_heading and not self.alternative_format:
+            raise ValidationError(
+                {
+                    "alternative_format": "Upload an alternative format file when an alternative format heading is selected.",
+                }
+            )
 
     search_fields = AbstractImage.search_fields + [
         index.SearchField("transcription", boost=1),
@@ -100,6 +140,8 @@ class CustomImage(ClusterableModel, AbstractImage):
         APIField("transcription", serializer=RichTextSerializer()),
         APIField("translation_heading"),
         APIField("translation", serializer=RichTextSerializer()),
+        APIField("alternative_format_heading"),
+        APIField("alternative_format"),
     ]
 
     admin_form_fields = Image.admin_form_fields + (
@@ -108,6 +150,8 @@ class CustomImage(ClusterableModel, AbstractImage):
         "transcription",
         "translation_heading",
         "translation",
+        "alternative_format_heading",
+        "alternative_format",
     )
 
 

@@ -43,13 +43,11 @@ INSTALLED_APPS = [
     "app.blog",
     "app.people",
     "app.cookies",
-    "app.categories",
     "app.ciim",
     "app.collections",
     "app.core",
     "app.education",
     "app.foi",
-    "app.highlights",
     "app.home",
     "app.ukgwa",
     "app.images",
@@ -153,6 +151,7 @@ WAGTAIL_2FA_REQUIRED = strtobool(os.getenv("WAGTAIL_2FA_REQUIRED", "True"))
 WAGTAIL_2FA_OTP_TOTP_NAME = (
     f"National Archives Wagtail ({ENVIRONMENT_NAME.capitalize()})"
 )
+WAGTAILIMAGES_IMAGE_FORM_BASE = "app.images.forms.CustomImageAdminForm"
 
 WAGTAIL_AUTOSAVE_INTERVAL = int(
     os.getenv("WAGTAIL_AUTOSAVE_INTERVAL", "0")

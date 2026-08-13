@@ -199,7 +199,7 @@ class TeachingResourcePage(
 
     teachers_notes = StreamField(
         TeachersNotesBlock(),
-        verbose_name="teachers notes",
+        verbose_name="teachers' notes",
         help_text="A general overview of what the resource contains and how it can be used.",
         blank=False,
         null=False,
