@@ -20,7 +20,6 @@ nav:
       - API tokens: infrastructure/api-tokens.md
       - Configuring an environment: infrastructure/configuring-an-environment.md
       - Environments: infrastructure/environments.md
-      - Testing an environment: infrastructure/testing-an-environment.md
   - Environment variables: env-vars.md
 markdown_extensions:
   - admonition
