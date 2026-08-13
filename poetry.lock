@@ -253,32 +253,6 @@ argon2 = ["argon2-cffi (>=23.1.0)"]
 bcrypt = ["bcrypt (>=4.1.1)"]
 
 [[package]]
-name = "django-allauth"
-version = "65.18.0"
-description = "Integrated set of Django applications addressing authentication, registration, account management as well as 3rd party (social) account authentication."
-optional = false
-python-versions = ">=3.10"
-groups = ["main"]
-files = [
-    {file = "django_allauth-65.18.0-py3-none-any.whl", hash = "sha256:e508640c83b94eaf1a9b4e9ac5332dc310dcdc83fca40d58a3f670e15bad1e84"},
-    {file = "django_allauth-65.18.0.tar.gz", hash = "sha256:afb82e2c545b9a5539370ad120468faaed84715e095a7b6e76972dacdc6376fe"},
-]
-
-[package.dependencies]
-asgiref = ">=3.8.1"
-Django = ">=4.2.16"
-
-[package.extras]
-headless = ["pyjwt[crypto] (>=2.0,<3)"]
-headless-spec = ["PyYAML (>=6,<7)"]
-idp-oidc = ["oauthlib (>=3.3.0,<4)", "pyjwt[crypto] (>=2.0,<3)"]
-mfa = ["fido2 (>=1.1.2,<3)", "qrcode (>=7.0.0,<9)"]
-openid = ["python3-openid (>=3.0.8,<4)"]
-saml = ["python3-saml (>=1.15.0,<2.0.0)"]
-socialaccount = ["oauthlib (>=3.3.0,<4)", "pyjwt[crypto] (>=2.0,<3)", "requests (>=2.0.0,<3)"]
-steam = ["python3-openid (>=3.0.8,<4)"]
-
-[[package]]
 name = "django-birdbath"
 version = "2.0.1"
 description = "A simple tool for giving Django database data a good wash. Anonymise user data, delete stuff you"
@@ -1681,4 +1655,4 @@ wand = ["Wand (>=0.6,<1.0)"]
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.14"
-content-hash = "afcb09c31ece3714b1fcc931bf2d6416b5ef143bd14ba0c0d9525fc9fb0e7cfb"
+content-hash = "fc6c96028e58555fa9fc4e7b5b23bf99a13f1b281db9e59e7fe9a26cf5e5c2d1"
