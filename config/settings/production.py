@@ -54,13 +54,14 @@ INSTALLED_APPS = [
     "app.media",
     "app.navigation",
     "app.users",
+    "app.apps.CustomUsersAppConfig",
     "app.whatson",
     "wagtail.contrib.forms",
     "wagtail.contrib.redirects",
     "wagtail.contrib.table_block",
     "wagtail.embeds",
     "wagtail.sites",
-    "wagtail.users",
+    # "wagtail.users",
     "wagtail.snippets",
     "wagtail.documents",
     "wagtail.images",
@@ -152,6 +153,8 @@ WAGTAIL_2FA_OTP_TOTP_NAME = (
     f"National Archives Wagtail ({ENVIRONMENT_NAME.capitalize()})"
 )
 WAGTAILIMAGES_IMAGE_FORM_BASE = "app.images.forms.CustomImageAdminForm"
+WAGTAIL_USER_CREATION_FORM = "app.users.forms.CustomUserCreationForm"
+WAGTAIL_USER_EDIT_FORM = "app.users.forms.CustomUserEditForm"
 
 WAGTAIL_AUTOSAVE_INTERVAL = int(
     os.getenv("WAGTAIL_AUTOSAVE_INTERVAL", "0")
