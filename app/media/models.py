@@ -113,19 +113,6 @@ class EtnaMedia(AbstractMedia):
             validate(self.chapters_file)
 
     @property
-    def full_url(self):
-        url = self.url
-        if url.startswith("/"):
-            if (
-                hasattr(settings, "WAGTAILAPI_MEDIA_BASE_URL")
-                and settings.WAGTAILAPI_MEDIA_BASE_URL
-            ):
-                url = settings.WAGTAILAPI_MEDIA_BASE_URL + url
-            elif hasattr(settings, "WAGTAILADMIN_BASE_URL"):
-                url = settings.WAGTAILADMIN_BASE_URL + url
-        return url
-
-    @property
     def subtitles_file_url(self):
         if self.subtitles_file and hasattr(self.subtitles_file, "url"):
             return self.subtitles_file.url

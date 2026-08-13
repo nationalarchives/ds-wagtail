@@ -10,7 +10,6 @@ BASE_DIR = os.path.dirname(PROJECT_DIR)
 
 ENVIRONMENT_NAME = os.getenv("ENVIRONMENT_NAME", "production")
 WAGTAILADMIN_BASE_URL = os.getenv("WAGTAILADMIN_BASE_URL", "")
-WAGTAILAPI_MEDIA_BASE_URL = os.getenv("WAGTAILAPI_MEDIA_BASE_URL", "")
 WAGTAILAPI_BASE_URL = os.getenv("WAGTAILAPI_BASE_URL", WAGTAILADMIN_BASE_URL)
 WAGTAIL_HEADLESS_PREVIEW = {
     "CLIENT_URLS": {
@@ -241,6 +240,10 @@ STATIC_URL = "wagtail-static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 AWS_STORAGE_BUCKET_NAME = os.getenv("AWS_STORAGE_BUCKET_NAME", "")
+if not AWS_STORAGE_BUCKET_NAME:
+    raise ImproperlyConfigured(
+        "AWS_STORAGE_BUCKET_NAME environment variable must be set and cannot be empty."
+    )
 AWS_S3_CUSTOM_DOMAIN = os.getenv(
     "AWS_S3_CUSTOM_DOMAIN", f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
 ).rstrip("/")
@@ -252,7 +255,7 @@ STORAGES = {
             "access_key": os.getenv("AWS_S3_ACCESS_KEY_ID", ""),
             "secret_key": os.getenv("AWS_S3_SECRET_ACCESS_KEY", ""),
             "bucket_name": AWS_STORAGE_BUCKET_NAME,
-            "region_name": os.getenv("AWS_S3_REGION_NAME", ""),
+            "region_name": os.getenv("AWS_S3_REGION_NAME", "eu-west-2"),
             "endpoint_url": os.getenv("AWS_S3_ENDPOINT_URL", ""),
             "custom_domain": AWS_S3_CUSTOM_DOMAIN,
             "file_overwrite": False,
@@ -266,7 +269,7 @@ STORAGES = {
 
 MEDIA_ROOT = "/media"
 MEDIA_URL = "media/"
-MEDIA_PAGE_URL = os.getenv("MEDIA_PAGE_URL", WAGTAILAPI_MEDIA_BASE_URL)
+MEDIA_PAGE_URL = os.getenv("MEDIA_PAGE_URL", "")
 
 WAGTAILMEDIA = {
     "MEDIA_MODEL": "media.EtnaMedia",

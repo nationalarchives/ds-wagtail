@@ -1,6 +1,5 @@
 from unittest.mock import patch
 
-from django.conf import settings
 from django.test import TestCase, override_settings
 
 from app.core.serializers.images import DetailedImageSerializer, ImageSerializer
@@ -59,17 +58,11 @@ class TestDetailedImageSerializerAlternativeFormat(TestCase):
         self.assertIn("alternative_format", rep)
         self.assertIsInstance(rep["alternative_format"], dict)
         self.assertEqual(rep["alternative_format"]["url"], alt.url)
-        expected_full = (
-            settings.WAGTAILAPI_MEDIA_BASE_URL + alt.url
-            if hasattr(settings, "WAGTAILAPI_MEDIA_BASE_URL")
-            and alt.url.startswith("/")
-            else alt.url
-        )
-        self.assertEqual(rep["alternative_format"]["full_url"], expected_full)
+        self.assertEqual(rep["alternative_format"]["full_url"], alt.url)
         self.assertEqual(rep["alternative_format"]["file_type"], "csv")
         self.assertEqual(rep["alternative_format"]["file_size"], 2048)
 
-    @override_settings(WAGTAILAPI_MEDIA_BASE_URL="https://example.com")
+    @override_settings(AWS_S3_CUSTOM_DOMAIN="https://example.com")
     def test_alternative_format_file_object_with_full_url(self):
         alt = DummyFile("/media/path/table.xlsx", "path/table.xlsx")
         img = DummyImage(alt)

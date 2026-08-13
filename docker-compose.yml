@@ -27,10 +27,9 @@ services:
       - DJANGO_SUPERUSER_EMAIL=admin@tna.dev
       - WAGTAILADMIN_BASE_URL=http://localhost:8000
       - WAGTAILAPI_BASE_URL=http://host.docker.internal:8000
-      - WAGTAILAPI_MEDIA_BASE_URL=https://localhost
       - MEDIA_PAGE_URL=https://localhost
       - REDIS_URL=redis://redis:6379/0
-      - ROSETTA_API_URL=${ROSETTA_API_URL}
+      - ROSETTA_API_URL=https://rosetta-dev.k-int.com/rosetta/data
       - WAGTAIL_2FA_REQUIRED=False
       - EMAIL_HOST
       - EMAIL_HOST_USER
@@ -38,11 +37,12 @@ services:
       - NEW_LABEL_DISPLAY_FOR_DAYS=21
       - AWS_STORAGE_BUCKET_NAME=wagtail
       - AWS_S3_ENDPOINT_URL=http://s3:9000
-      - AWS_S3_ACCESS_KEY_ID=${AWS_S3_ACCESS_KEY_ID}
-      - AWS_S3_SECRET_ACCESS_KEY=${AWS_S3_SECRET_ACCESS_KEY}
+      # S3 Ninja credentials from https://github.com/scireum/s3ninja/blob/0629ec5dfbf2b40408cf7ee8a0d4779894ce49d9/src/main/resources/application.conf#L38-L42
+      - AWS_S3_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE
+      - AWS_S3_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
       # - AWS_S3_CUSTOM_DOMAIN=localhost:8002/ui/wagtail
-      - AWS_S3_CUSTOM_DOMAIN=localhost/media
       # - AWS_S3_URL_PROTOCOL=http
+      - AWS_S3_CUSTOM_DOMAIN=localhost/media
     volumes:
       - ./:/app
     healthcheck:
