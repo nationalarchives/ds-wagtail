@@ -82,8 +82,6 @@ INSTALLED_APPS = [
     "django.contrib.sites",
     "django.contrib.staticfiles",
     "django.contrib.postgres",
-    "allauth",
-    "allauth.account",
     "birdbath",
     "wagtail.api.v2",
     "wagtail.contrib.frontend_cache",
@@ -95,7 +93,6 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    "allauth.account.middleware.AccountMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -141,13 +138,6 @@ TEMPLATES = [
     },
 ]
 
-AUTHENTICATION_BACKENDS = [
-    # Needed to login by username in Django admin, regardless of `allauth`
-    "django.contrib.auth.backends.ModelBackend",
-    # `allauth` specific authentication methods, such as login by e-mail
-    "allauth.account.auth_backends.AuthenticationBackend",
-]
-
 WAGTAIL_2FA_REQUIRED = strtobool(os.getenv("WAGTAIL_2FA_REQUIRED", "True"))
 WAGTAIL_2FA_OTP_TOTP_NAME = (
     f"National Archives Wagtail ({ENVIRONMENT_NAME.capitalize()})"
@@ -156,17 +146,16 @@ WAGTAILIMAGES_IMAGE_FORM_BASE = "app.images.forms.CustomImageAdminForm"
 WAGTAIL_USER_CREATION_FORM = "app.users.forms.CustomUserCreationForm"
 WAGTAIL_USER_EDIT_FORM = "app.users.forms.CustomUserEditForm"
 
+# Allows logging into the Wagtail/Django admin with either username or email.
+AUTHENTICATION_BACKENDS = [
+    "app.users.backends.EmailOrUsernameModelBackend",
+]
+
 WAGTAIL_AUTOSAVE_INTERVAL = int(
     os.getenv("WAGTAIL_AUTOSAVE_INTERVAL", "0")
 )  # Disabled (0) by default
 
 DATA_UPLOAD_MAX_NUMBER_FIELDS = int(os.getenv("DATA_UPLOAD_MAX_NUMBER_FIELDS", 10000))
-
-# django-allauth configuration
-ACCOUNT_LOGIN_METHODS = {"email"}
-ACCOUNT_SIGNUP_FIELDS = ["email*", "password1*", "password2*"]
-ACCOUNT_LOGOUT_ON_GET = False  # Bypass logout confirmation form
-ACCOUNT_SESSION_REMEMBER = False  # True|False disables "Remember me?" checkbox"
 
 WSGI_APPLICATION = "config.wsgi.application"
 
