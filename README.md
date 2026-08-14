@@ -3,22 +3,25 @@
 ## Quickstart
 
 ```sh
-# Copy the example .env file
-cp .env.example .env
-
-# Set .env values for:
-#   - ROSETTA_API_URL
-
 # Build and start the containers
 docker compose up -d
 ```
-
-View the site on [localhost:8000](http://localhost:8000).
 
 Log in to the Wagtail Admin on [localhost:8000/admin](http://localhost:8000/admin) with the credentials:
 
 - Username: `admin`
 - Password: `admin`
+
+### Pull data from AWS
+
+To [pull example data from AWS](./docs/development/fetching-data.md) from the development environment, install and set up the [AWS CLI](https://aws.amazon.com/cli/) and then run:
+
+```sh
+# Log into AWS
+aws sso login
+# Pull data and media
+./dev/pull
+```
 
 ## Project documentation
 

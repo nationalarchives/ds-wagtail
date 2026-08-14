@@ -38,10 +38,8 @@ services:
       - AWS_STORAGE_BUCKET_NAME=wagtail
       - AWS_S3_ENDPOINT_URL=http://s3:9000
       # S3 Ninja credentials from https://github.com/scireum/s3ninja/blob/0629ec5dfbf2b40408cf7ee8a0d4779894ce49d9/src/main/resources/application.conf#L38-L42
-      # - AWS_S3_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE
-      # - AWS_S3_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
-      # - AWS_S3_CUSTOM_DOMAIN=localhost:8002/ui/wagtail
-      # - AWS_S3_URL_PROTOCOL=http
+      - AWS_S3_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE
+      - AWS_S3_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
       - AWS_S3_CUSTOM_DOMAIN=localhost/media
     volumes:
       - ./:/app
@@ -66,12 +64,12 @@ services:
     volumes:
       - s3data:/home/sirius/data
       - ./.env:/home/sirius/.env
-    entrypoint:
-      [
-        "sh",
-        "-c",
-        'AWS_S3_ACCESS_KEY_ID=$(grep -Eo ''awsAccessKey = "(.*)"'' /home/sirius/app/application.conf | grep -Eo ''"(.*)"'' | tr -d ''"'') && AWS_S3_SECRET_ACCESS_KEY=$(grep -Eo ''awsSecretKey = "(.*)"'' /home/sirius/app/application.conf | grep -Eo ''"(.*)"'' | tr -d ''"'') && export AWS_S3_ACCESS_KEY_ID AWS_S3_SECRET_ACCESS_KEY && tmp_env=$(mktemp) && awk -v ak="$$AWS_S3_ACCESS_KEY_ID" -v sk="$$AWS_S3_SECRET_ACCESS_KEY" ''BEGIN{seen_ak=0; seen_sk=0} /^AWS_S3_ACCESS_KEY_ID=/{print "AWS_S3_ACCESS_KEY_ID=" ak; seen_ak=1; next} /^AWS_S3_SECRET_ACCESS_KEY=/{print "AWS_S3_SECRET_ACCESS_KEY=" sk; seen_sk=1; next} {print} END{if(!seen_ak) print "AWS_S3_ACCESS_KEY_ID=" ak; if(!seen_sk) print "AWS_S3_SECRET_ACCESS_KEY=" sk}'' /home/sirius/.env > "$$tmp_env" && cat "$$tmp_env" > /home/sirius/.env && rm -f "$$tmp_env" && exec /home/sirius/run.sh',
-      ]
+    # entrypoint:
+    #   [
+    #     "sh",
+    #     "-c",
+    #     'AWS_S3_ACCESS_KEY_ID=$(grep -Eo ''awsAccessKey = "(.*)"'' /home/sirius/app/application.conf | grep -Eo ''"(.*)"'' | tr -d ''"'') && AWS_S3_SECRET_ACCESS_KEY=$(grep -Eo ''awsSecretKey = "(.*)"'' /home/sirius/app/application.conf | grep -Eo ''"(.*)"'' | tr -d ''"'') && export AWS_S3_ACCESS_KEY_ID AWS_S3_SECRET_ACCESS_KEY && tmp_env=$(mktemp) && awk -v ak="$$AWS_S3_ACCESS_KEY_ID" -v sk="$$AWS_S3_SECRET_ACCESS_KEY" ''BEGIN{seen_ak=0; seen_sk=0} /^AWS_S3_ACCESS_KEY_ID=/{print "AWS_S3_ACCESS_KEY_ID=" ak; seen_ak=1; next} /^AWS_S3_SECRET_ACCESS_KEY=/{print "AWS_S3_SECRET_ACCESS_KEY=" sk; seen_sk=1; next} {print} END{if(!seen_ak) print "AWS_S3_ACCESS_KEY_ID=" ak; if(!seen_sk) print "AWS_S3_SECRET_ACCESS_KEY=" sk}'' /home/sirius/.env > "$$tmp_env" && cat "$$tmp_env" > /home/sirius/.env && rm -f "$$tmp_env" && exec /home/sirius/run.sh',
+    #   ]
 
   docs:
     image: squidfunk/mkdocs-material
