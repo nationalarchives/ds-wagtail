@@ -17,7 +17,7 @@ The settings modules use environment variables to control behaviour without chan
 - `SENTRY_DSN` and `SENTRY_SAMPLE_RATE` for error reporting
 - `WAGTAILADMIN_BASE_URL`, `WAGTAILAPI_BASE_URL`, and `WAGTAILAPI_MEDIA_BASE_URL` for generated URLs
 - `EMAIL_*` for outbound mail
-- `DEBUG`, `LOG_LEVEL`, and `WAGTAIL_2FA_REQUIRED` for runtime behaviour
+- `DEBUG`, `LOG_LEVEL`, and `MFA_REQUIRED` for runtime behaviour
 
 If a variable is required and missing, the settings code may raise an error. For example, `SECRET_KEY` must be set before Django can start.
 

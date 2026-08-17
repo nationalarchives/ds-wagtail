@@ -6,7 +6,7 @@ from django.core.management.base import BaseCommand, CommandError
 from django.template import loader
 from django.utils import timezone
 from django.utils.crypto import get_random_string
-from django_otp.plugins.otp_totp.models import TOTPDevice
+from allauth.mfa.models import Authenticator
 
 from app.core.forms.auth import HtmlPasswordResetForm
 
@@ -52,7 +52,7 @@ class Command(BaseCommand):
 
     def remove_devices(self, target_user):
         self.stdout.write("\n--- Step 2: Remove 2FA Devices ---")
-        devices = TOTPDevice.objects.filter(user=target_user)
+        devices = Authenticator.objects.filter(user=target_user)
         device_count = devices.count()
         if device_count == 0:
             self.stdout.write(self.style.WARNING("⚠ No 2FA devices found."))
@@ -61,7 +61,7 @@ class Command(BaseCommand):
         self.stdout.write(f"Found {device_count} device(s) to remove:")
         for device in devices:
             try:
-                name = getattr(device, "name", "<unnamed>")
+                name = device.get_type_display()
             except Exception:
                 name = "<error>"
             self.stdout.write(f"  - {name} (ID: {getattr(device, 'id', 'n/a')})")

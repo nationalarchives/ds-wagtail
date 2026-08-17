@@ -41,6 +41,7 @@ private_urls = [
     path("healthcheck/", include("app.healthcheck.urls")),
     path("api/v2/", api_router.urls),
     path("django-admin/", admin.site.urls),
+    path("accounts/", include("allauth.urls")),
     path("admin/", include(wagtailadmin_urls)),
     path("wagtail-documents/", include(wagtaildocs_urls)),
 ]

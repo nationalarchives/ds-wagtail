@@ -90,7 +90,7 @@ class Manage2FADevicesCommandTests(TestCase):
         self.assertEqual(kwargs.get("extra_email_context"), {})
 
     @patch("app.api.management.commands.manage_2fa_devices.HtmlPasswordResetForm.save")
-    @patch("app.api.management.commands.manage_2fa_devices.TOTPDevice.objects.filter")
+    @patch("app.api.management.commands.manage_2fa_devices.Authenticator.objects.filter")
     def test_execute_deletes_2fa_devices(self, device_filter_mock, save_mock):
         out = StringIO()
 
@@ -113,7 +113,7 @@ class Manage2FADevicesCommandTests(TestCase):
         self.assertTrue(save_mock.called)
 
     @patch("app.api.management.commands.manage_2fa_devices.HtmlPasswordResetForm.save")
-    @patch("app.api.management.commands.manage_2fa_devices.TOTPDevice.objects.filter")
+    @patch("app.api.management.commands.manage_2fa_devices.Authenticator.objects.filter")
     def test_dry_run_does_not_delete_2fa_devices(self, device_filter_mock, save_mock):
         out = StringIO()
 
