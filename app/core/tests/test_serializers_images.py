@@ -8,6 +8,7 @@ from app.core.serializers.images import DetailedImageSerializer, ImageSerializer
 class DummyFile:
     def __init__(self, url, name=None, size=None):
         self.url = url
+        self.full_url = f"https://example.com{url}"
         self.name = name or url
         self.size = size
 
@@ -58,7 +59,9 @@ class TestDetailedImageSerializerAlternativeFormat(TestCase):
         self.assertIn("alternative_format", rep)
         self.assertIsInstance(rep["alternative_format"], dict)
         self.assertEqual(rep["alternative_format"]["url"], alt.url)
-        self.assertEqual(rep["alternative_format"]["full_url"], alt.url)
+        self.assertEqual(
+            rep["alternative_format"]["full_url"], f"https://example.com{alt.url}"
+        )
         self.assertEqual(rep["alternative_format"]["file_type"], "csv")
         self.assertEqual(rep["alternative_format"]["file_size"], 2048)
 
@@ -74,7 +77,11 @@ class TestDetailedImageSerializerAlternativeFormat(TestCase):
 
         self.assertEqual(
             rep["alternative_format"]["full_url"],
-            "https://example.com" + alt.url,
+            f"https://example.com{alt.url}",
+        )
+        self.assertEqual(
+            rep["alternative_format"]["url"],
+            alt.url,
         )
         self.assertEqual(rep["alternative_format"]["file_type"], "xlsx")
 

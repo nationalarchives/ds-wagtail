@@ -28,10 +28,15 @@ DATABASES = {
     }
 }
 
+AWS_S3_CUSTOM_DOMAIN = "https://example.com"
+
 STORAGES = {
     "default": {
-        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
-    }
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
 }
 
 ROSETTA_API_URL = "http://rosetta.test/data"
