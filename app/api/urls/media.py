@@ -5,12 +5,20 @@ from wagtailmedia.api.serializers import MediaItemSerializer
 from wagtailmedia.api.views import MediaAPIViewSet
 
 from app.api.permissions import IsAPITokenAuthenticated
+from app.media.time_utils import parse_chapter_time_to_seconds
 
 
 class CustomMediaItemSerializer(MediaItemSerializer):
     def to_representation(self, instance):
         representation = super().to_representation(instance)
         representation["uuid"] = instance.uuid
+        
+        # Convert duration to integer seconds
+        duration = instance.duration
+        if duration:
+            seconds = parse_chapter_time_to_seconds(duration)
+            representation["duration"] = seconds
+        
         return representation | {
             "chapters": instance.api_chapters(),
             "subtitles_file": instance.subtitles_file_url,

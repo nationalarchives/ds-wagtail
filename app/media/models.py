@@ -13,7 +13,7 @@ from wagtailmedia.settings import wagtailmedia_settings
 
 from app.core.blocks.paragraph import APIRichTextBlock
 from app.core.serializers import RichTextSerializer
-from app.media.blocks import ChapterTimeBlock
+from app.media.blocks import ChapterTimeBlock, MediaTimeField
 from app.media.time_utils import parse_chapter_time_to_seconds
 
 
@@ -56,6 +56,12 @@ class EtnaMedia(AbstractMedia):
     date = models.DateField(blank=True, null=True)
     description = RichTextField(
         blank=True, null=True, features=settings.INLINE_RICH_TEXT_FEATURES
+    )
+    duration = MediaTimeField(
+        blank=True,
+        null=True,
+        verbose_name="duration",
+        help_text="Duration of the media in HH:MM:SS format.",
     )
     transcript = RichTextField(
         blank=True, null=True, features=settings.INLINE_RICH_TEXT_FEATURES

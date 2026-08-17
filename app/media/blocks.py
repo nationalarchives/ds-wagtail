@@ -1,4 +1,5 @@
 from django.core.exceptions import ValidationError
+from django.db import models
 from wagtail import blocks
 from wagtail.rich_text import expand_db_html
 from wagtailmedia.blocks import AbstractMediaChooserBlock
@@ -55,6 +56,71 @@ class ChapterTimeBlock(blocks.CharBlock):
         return super().get_form_state(normalise_chapter_time_for_display(value))
 
 
+class MediaTimeField(models.CharField):
+    """
+    A Django model field for storing media chapter timestamps in HH:MM:SS format.
+    Converts HH:MM:SS input to seconds for database storage and back to HH:MM:SS for display.
+    """
+
+    def __init__(self, *args, **kwargs):
+        kwargs.setdefault("max_length", 20)  # Store as string of seconds
+        super().__init__(*args, **kwargs)
+
+    def clean(self, value, model_instance):
+        if value in (None, ""):
+            return value
+
+        if parse_chapter_time_string_to_seconds(value) is None:
+            raise chapter_time_validation_error(value)
+        
+        return value
+
+    def to_python(self, value):
+        """Normalize value - keep in seconds format for internal use."""
+        if value in (None, ""):
+            return value
+
+        # If it's a string representation of seconds, keep it as-is
+        if isinstance(value, str):
+            try:
+                int(value)  # Validate it's a number
+                return value
+            except ValueError:
+                # If it's HH:MM:SS format, convert to seconds
+                seconds = parse_chapter_time_to_seconds(value)
+                if seconds is not None:
+                    return str(seconds)
+                return value
+        
+        # If it's an integer (seconds), convert to string
+        seconds = parse_chapter_time_to_seconds(value)
+        if seconds is not None:
+            return str(seconds)
+        return value
+
+    def get_prep_value(self, value):
+        """Convert HH:MM:SS input to seconds string for database storage."""
+        if value in (None, ""):
+            return value
+
+        seconds = parse_chapter_time_to_seconds(value)
+        if seconds is None:
+            raise chapter_time_validation_error(value)
+        return str(seconds)
+
+    def from_db_value(self, value, expression, connection):
+        """Convert database value (seconds string) to HH:MM:SS format when reading."""
+
+        if value in (None, ""):
+            return value
+
+        try:
+            seconds = int(value)
+            return format_seconds_hhmmss(seconds)
+        except (ValueError, TypeError):
+            return value
+
+
 class MediaChooserBlock(AbstractMediaChooserBlock):
     def render_basic(self, value, context=None):
         """
@@ -73,6 +139,12 @@ class MediaChooserBlock(AbstractMediaChooserBlock):
         We use expand_db_html to get any rich text fields as useful HTML,
         rather than the raw database representation.
         """
+        # Convert duration from HH:MM:SS to integer seconds
+        duration = value.duration
+        if duration:
+            seconds = parse_chapter_time_to_seconds(duration)
+            duration = seconds if seconds is not None else None
+        
         return {
             "id": value.id,
             "uuid": value.uuid,
@@ -89,7 +161,7 @@ class MediaChooserBlock(AbstractMediaChooserBlock):
             "chapters": value.api_chapters(),
             "width": value.width,
             "height": value.height,
-            "duration": value.duration,
+            "duration": duration,
             "subtitles_file": value.subtitles_file_url,
             "subtitles_file_full_url": value.subtitles_file_full_url,
             "chapters_file": value.chapters_file_url,
