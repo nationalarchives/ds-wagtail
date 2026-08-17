@@ -92,16 +92,16 @@ def image_generator(
             fmt = spec.split("format-")[1].split("|", 1)[0]
             output_key = fmt
 
-        # file_size = None
-        # if hasattr(rendition, "file") and rendition.file:
-        #     file_size = _extract_file_size(rendition.file)
+        file_size = None
+        if hasattr(rendition, "file") and rendition.file:
+            file_size = _extract_file_size(rendition.file)
 
         output[output_key] = {
             "url": rendition.url,
             "full_url": rendition.full_url,
             "width": rendition.width,
             "height": rendition.height,
-            # "file_size": file_size,  # TODO: Enable once test cases are updated
+            "file_size": file_size,
         }
 
     return output
@@ -217,8 +217,8 @@ class DetailedImageSerializer(ImageSerializer):
                     "alternative_format": (
                         {
                             "heading": value.get_alternative_format_heading_display(),
-                            "url": value.alternative_format.url,
-                            "full_url": value.alternative_format.full_url,
+                            "url": value.alternative_format.url,  # TODO: Just the file path (no domain)
+                            # "full_url": value.alternative_format.full_url,  # TODO: Distinct from url
                             "file_type": _extract_file_type(value.alternative_format),
                             "file_size": _extract_file_size(value.alternative_format),
                         }
