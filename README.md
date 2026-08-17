@@ -19,9 +19,12 @@ To [pull example data from AWS](./docs/development/fetching-data.md) from the de
 ```sh
 # Log into AWS
 aws sso login
+
 # Pull data and media
 ./dev/pull
 ```
+
+If you need to inspect the files in S3, open the [S3 Ninja UI](http://localhost:8002/ui).
 
 ## Project documentation
 
