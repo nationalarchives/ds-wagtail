@@ -28,7 +28,11 @@ DATABASES = {
     }
 }
 
-STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
+STORAGES = {
+    "default": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    }
+}
 
 ROSETTA_API_URL = "http://rosetta.test/data"
 
