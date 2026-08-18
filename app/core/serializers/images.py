@@ -92,9 +92,7 @@ def image_generator(
             fmt = spec.split("format-")[1].split("|", 1)[0]
             output_key = fmt
 
-        file_size = None
-        if hasattr(rendition, "file") and rendition.file:
-            file_size = _extract_file_size(rendition.file)
+        file_size = _extract_file_size(rendition.file)
 
         output[output_key] = {
             "url": rendition.url,
@@ -194,6 +192,7 @@ class DetailedImageSerializer(ImageSerializer):
 
     def to_representation(self, value):
         representation = super().to_representation(value)
+        print("ALT FORMAT DIR", dir(value.alternative_format))
         if representation:
             representation.update(
                 {
@@ -217,8 +216,7 @@ class DetailedImageSerializer(ImageSerializer):
                     "alternative_format": (
                         {
                             "heading": value.get_alternative_format_heading_display(),
-                            "url": value.alternative_format.url,  # TODO: Just the file path (no domain)
-                            # "full_url": value.alternative_format.full_url,  # TODO: Distinct from url
+                            "full_url": value.alternative_format.url,  # TODO: Distinct from url
                             "file_type": _extract_file_type(value.alternative_format),
                             "file_size": _extract_file_size(value.alternative_format),
                         }
