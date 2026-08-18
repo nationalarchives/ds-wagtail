@@ -255,7 +255,7 @@ STORAGES = {
             "endpoint_url": os.getenv("AWS_S3_ENDPOINT_URL", ""),
             "custom_domain": AWS_S3_CUSTOM_DOMAIN,
             "file_overwrite": False,
-            "url_protocol": f"{os.getenv('AWS_S3_URL_PROTOCOL', 'https')}:",
+            "url_protocol": f"{os.getenv('AWS_S3_URL_PROTOCOL', 'https').rstrip(':')}:",
         },
     },
     "staticfiles": {

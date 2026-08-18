@@ -79,5 +79,5 @@ In addition to the [base Docker image variables](https://github.com/nationalarch
 | `AWS_S3_SECRET_ACCESS_KEY`           | The AWS Secret Access Key                                                 | _none_                                                  |
 | `AWS_S3_ENDPOINT_URL`                | A custom S3 endpoint                                                      | _none_                                                  |
 | `AWS_S3_REGION_NAME`                 | The AWS region for the S3 bucket                                          | `eu-west-2`                                             |
-| `AWS_S3_URL_PROTOCOL`                | The protocol to use when generating links to media files                  | `https:`                                                |
+| `AWS_S3_URL_PROTOCOL`                | The protocol to use when generating links to media files                  | `https`                                                 |
 | `AWS_S3_CUSTOM_DOMAIN`               | The domain to use when generating links to media files                    | `{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com`            |
