@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://www.nationalarchives.gov.uk/wagtail/page-types/generic_pages.HubPage.schema.json",
+  "title": "Hub page",
+  "description": "A hub page in Wagtail",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "https://www.nationalarchives.gov.uk/wagtail/page.schema.json"
+    },
+    {
+      "$ref": "https://www.nationalarchives.gov.uk/wagtail/page-parts/hero.schema.json"
+    }
+  ],
+  "properties": {
+    "intro": {
+      "type": "string",
+      "description": "An introduction to the hub page"
+    },
+    "body": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "$ref": "https://www.nationalarchives.gov.uk/wagtail/page-parts/streamfield.schema.json",
+        "description": "The body content for the hub page"
+      }
+    }
+  },
+  "required": ["intro", "body"]
+}
