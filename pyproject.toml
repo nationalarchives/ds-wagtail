@@ -32,7 +32,7 @@ optional = true
 
 [tool.poetry.group.dev.dependencies]
 responses = "0.26.2"
-pytest-django = "4.13.0"
+pytest-django = "4.14.0"
 
 [build-system]
 requires = ["poetry-core"]
