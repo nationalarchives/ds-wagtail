@@ -147,6 +147,8 @@ AUTHENTICATION_BACKENDS = [
 
 MFA_REQUIRED = strtobool(os.getenv("MFA_REQUIRED", "True"))
 MFA_SUPPORTED_TYPES = ["totp", "recovery_codes"]
+MFA_ENCRYPTION_KEY = os.getenv("MFA_ENCRYPTION_KEY", "")
+MFA_ADAPTER = "app.users.adapters.EncryptedMFAAdapter"
 MFA_TOTP_ISSUER = f"National Archives Wagtail ({ENVIRONMENT_NAME.capitalize()})"
 WAGTAILIMAGES_IMAGE_FORM_BASE = "app.images.forms.CustomImageAdminForm"
 
