@@ -3,6 +3,7 @@ import logging
 from django.conf import settings
 from django.db.models import Q
 from django.http import Http404
+from django.urls import path
 from django.utils.crypto import constant_time_compare
 from rest_framework import status
 from rest_framework.response import Response
@@ -121,6 +122,25 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
         }
         return Response(data, status=status.HTTP_403_FORBIDDEN)
 
+    def random_view(self, request):
+        queryset = self.get_queryset().public()
+
+        # Exclude pages that the user doesn't have access to
+        restricted_pages = [
+            restriction.page
+            for restriction in PageViewRestriction.objects.all().select_related("page")
+        ]
+
+        # Exclude the restricted pages and their descendants from the queryset
+        for restricted_page in restricted_pages:
+            queryset = queryset.not_descendant_of(restricted_page, inclusive=True)
+
+        self.check_query_parameters(queryset)
+        queryset = self.filter_queryset(queryset)
+        instance = queryset.order_by("?").first()
+        serializer = DefaultPageSerializer(instance)
+        return Response(serializer.data)
+
     def get_base_queryset(self):
         """
         Copy of https://github.com/wagtail/wagtail/blob/f5552c40442b0ed6a0316ee899c7f28a0b1ed4e5/wagtail/api/v2/views.py#L491
@@ -234,3 +254,9 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
                 return page
 
         return super().find_object(queryset, request)
+
+    @classmethod
+    def get_urlpatterns(cls):
+        return super().get_urlpatterns() + [
+            path("random/", cls.as_view({"get": "random_view"}), name="random"),
+        ]
