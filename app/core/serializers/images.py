@@ -192,7 +192,6 @@ class DetailedImageSerializer(ImageSerializer):
 
     def to_representation(self, value):
         representation = super().to_representation(value)
-        print("ALT FORMAT DIR", dir(value.alternative_format))
         if representation:
             representation.update(
                 {
