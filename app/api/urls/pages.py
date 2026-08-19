@@ -3,6 +3,7 @@ import logging
 from django.conf import settings
 from django.db.models import Q
 from django.http import Http404
+from django.shortcuts import redirect
 from django.urls import path
 from django.utils.crypto import constant_time_compare
 from rest_framework import status
@@ -17,7 +18,7 @@ from wagtail.api.v2.filters import (
     SearchFilter,
     TranslationOfFilter,
 )
-from wagtail.api.v2.utils import BadRequestError
+from wagtail.api.v2.utils import BadRequestError, get_object_detail_url
 from wagtail.api.v2.views import PagesAPIViewSet
 from wagtail.contrib.redirects.models import Redirect
 from wagtail.models import Page, PageViewRestriction, Site
@@ -138,8 +139,11 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
         self.check_query_parameters(queryset)
         queryset = self.filter_queryset(queryset)
         instance = queryset.order_by("?").first()
-        serializer = DefaultPageSerializer(instance)
-        return Response(serializer.data)
+
+        url = get_object_detail_url(
+            self.request.wagtailapi_router, request, self.model, instance.pk
+        )
+        return redirect(url)
 
     def get_base_queryset(self):
         """
