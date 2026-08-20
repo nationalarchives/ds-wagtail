@@ -221,17 +221,16 @@ class SidebarMixin(models.Model):
 
     page_sidebar = models.CharField(
         choices=[
-            ("contents", "Contents"),
-            ("sections", "Sections"),
-            ("section_tabs", "Section tabs"),
+            ("none", "No sidebar"),
+            ("sections", "H2 headings"),
+            ("contents-two-levels", "H2-H3 headings"),
+            ("contents", "H2-H4 headings"),
             ("pages", "Pages"),
-            ("pages_tabs", "Pages tabs"),
         ],
         help_text=mark_safe(
             "Select the sidebar style for this page. For more information, see the <a href='https://nationalarchives.github.io/design-system/components/sidebar/'>sidebar documentation</a>."
         ),
-        null=True,
-        blank=True,
+        default="sections",
     )
 
     class Meta:
