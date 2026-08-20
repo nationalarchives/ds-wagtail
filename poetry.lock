@@ -53,18 +53,18 @@ lxml = ["lxml"]
 
 [[package]]
 name = "boto3"
-version = "1.43.69"
+version = "1.43.70"
 description = "The AWS SDK for Python"
 optional = false
 python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "boto3-1.43.69-py3-none-any.whl", hash = "sha256:4eb494d05b2bd08a7eee61b8ac4c34745c99e9bbce435c91f8d15d372dd8c2db"},
-    {file = "boto3-1.43.69.tar.gz", hash = "sha256:76297a0b415849c63575ae08a4f1661b2dc8ee0100f104b86f98aa69b47fa2c7"},
+    {file = "boto3-1.43.70-py3-none-any.whl", hash = "sha256:b9399cce51bec9552e61a6b85015c42dea68752e79c00a7005d84eaf7ee15fef"},
+    {file = "boto3-1.43.70.tar.gz", hash = "sha256:4f1e16b9eebbad3f312bb6fbf7685d40abdd52a691485cb9f09e7df60d912b41"},
 ]
 
 [package.dependencies]
-botocore = ">=1.43.69,<1.44.0"
+botocore = ">=1.43.70,<1.44.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.19.0,<0.20.0"
 
@@ -254,14 +254,14 @@ bcrypt = ["bcrypt (>=4.1.1)"]
 
 [[package]]
 name = "django-allauth"
-version = "65.19.0"
+version = "65.19.1"
 description = "Integrated set of Django applications addressing authentication, registration, account management as well as 3rd party (social) account authentication."
 optional = false
 python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "django_allauth-65.19.0-py3-none-any.whl", hash = "sha256:e37efea604d0bf40a6b16edd5b00e1560414e2c3ed07c2431b6e5bb058e2a771"},
-    {file = "django_allauth-65.19.0.tar.gz", hash = "sha256:9a615fd7f48f31985e1e3d886f8983e12d09e189f8d00d7a9750b3d300b7b366"},
+    {file = "django_allauth-65.19.1-py3-none-any.whl", hash = "sha256:5c507b53c45d2b7cbfcac7643d0123d5f0a7df7d43a882edcdbedb5f6b396421"},
+    {file = "django_allauth-65.19.1.tar.gz", hash = "sha256:999d01d5c422a82734cf5804df9f5a0d1d4ddd6acbb2f807db976ed7d49f9cb3"},
 ]
 
 [package.dependencies]
@@ -1312,14 +1312,14 @@ crt = ["botocore[crt] (>=1.37.4,<2.0a0)"]
 
 [[package]]
 name = "sentry-sdk"
-version = "2.67.1"
+version = "2.68.0"
 description = "Python client for Sentry (https://sentry.io)"
 optional = false
 python-versions = ">=3.6"
 groups = ["main"]
 files = [
-    {file = "sentry_sdk-2.67.1-py3-none-any.whl", hash = "sha256:a66bfbce1cd8a93c51c369d642ad85b46253ea7a6f7938141315b83e2823cda5"},
-    {file = "sentry_sdk-2.67.1.tar.gz", hash = "sha256:f263d8c9aa4137750640de8fb0ed5404df6bb564e20e4b59cb16a6eeba18d4ed"},
+    {file = "sentry_sdk-2.68.0-py3-none-any.whl", hash = "sha256:538e56c2d03679d42f7c0cb5f1af73a7a510b00abc7e296c13ac49b107b713a4"},
+    {file = "sentry_sdk-2.68.0.tar.gz", hash = "sha256:648c58e9887311a03470a41539e24bdbbf64a30ca4f5336f7e3dcc87276400b3"},
 ]
 
 [package.dependencies]
@@ -1682,4 +1682,4 @@ wand = ["Wand (>=0.6,<1.0)"]
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.14"
-content-hash = "9c44b487fe0f91a97ee8fed09e5fac4cd8ac72e110e576af2ce5433d534dd873"
+content-hash = "a3a50b833908edc25113e85393802fe125f8864a6b98daa3146630b7fa7cbc6d"
