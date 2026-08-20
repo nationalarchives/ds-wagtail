@@ -223,15 +223,13 @@ class SidebarMixin(models.Model):
         choices=[
             ("none", "No sidebar"),
             ("sections", "H2 headings"),
-            ("subheadings", "H2-H3 headings"),
+            ("contents-two-levels", "H2-H3 headings"),
             ("contents", "H2-H4 headings"),
             ("pages", "Pages"),
         ],
         help_text=mark_safe(
             "Select the sidebar style for this page. For more information, see the <a href='https://nationalarchives.github.io/design-system/components/sidebar/'>sidebar documentation</a>."
         ),
-        null=True,
-        blank=True,
         default="sections",
     )
 
