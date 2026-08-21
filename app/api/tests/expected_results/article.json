@@ -32,13 +32,13 @@
             "description": "",
             "jpeg": {
                 "url": "https://localhost/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
-                "file_size": "artic",
+                "file_size": 574,
                 "width": 100,
                 "height": 68
             },
             "webp": {
                 "url": "https://localhost/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-70.bgcolor-fff.webp",
-                "file_size": "artic",
+                "file_size": 102,
                 "width": 100,
                 "height": 68
             }
@@ -75,25 +75,25 @@
         "description": "",
         "jpeg": {
             "url": "https://localhost/media/images/exampl.2e16d0ba.fill-1800x720.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
-            "file_size": "artic",
+            "file_size": 552,
             "width": 100,
             "height": 40
         },
         "webp": {
             "url": "https://localhost/media/images/examp.2e16d0ba.fill-1800x720.format-webp.webpquality-70.bgcolor-fff.webp",
-            "file_size": "artic",
+            "file_size": 94,
             "width": 100,
             "height": 40
         },
         "small_jpeg": {
             "url": "https://localhost/media/images/exampl.2e16d0ba.fill-900x600.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
-            "file_size": "artic",
+            "file_size": 574,
             "width": 100,
             "height": 68
         },
         "small_webp": {
             "url": "https://localhost/media/images/examp.2e16d0ba.fill-900x600.format-webp.webpquality-70.bgcolor-fff.webp",
-            "file_size": "artic",
+            "file_size": 102,
             "width": 100,
             "height": 68
         },
@@ -163,13 +163,13 @@
                                 "description": "Some alt text",
                                 "jpeg": {
                                     "url": "https://localhost/media/images/example_0Tm3K5n.max-900x900.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
-                                    "file_size": "artic",
+                                    "file_size": 594,
                                     "width": 100,
                                     "height": 100
                                 },
                                 "webp": {
                                     "url": "https://localhost/media/images/example_0Tm3K5n.max-900x900.format-webp.webpquality-70.bgcolor-fff.webp",
-                                    "file_size": "artic",
+                                    "file_size": 110,
                                     "width": 100,
                                     "height": 100
                                 },
@@ -199,13 +199,13 @@
                                 "description": "Some alt text",
                                 "jpeg": {
                                     "url": "https://localhost/media/images/example.2e16d0ba.fill-960x540.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
-                                    "file_size": "artic",
+                                    "file_size": 563,
                                     "width": 100,
                                     "height": 58
                                 },
                                 "webp": {
                                     "url": "https://localhost/media/images/exampl.2e16d0ba.fill-960x540.format-webp.webpquality-70.bgcolor-fff.webp",
-                                    "file_size": "artic",
+                                    "file_size": 98,
                                     "width": 100,
                                     "height": 58
                                 },
@@ -261,13 +261,13 @@
                                         "description": "Some alt text",
                                         "jpeg": {
                                             "url": "https://localhost/media/images/image.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
-                                            "file_size": "artic",
+                                            "file_size": 574,
                                             "width": 100,
                                             "height": 68
                                         },
                                         "webp": {
                                             "url": "https://localhost/media/images/image.fill-600x400.format-webp.webpquality-70.bgcolor-fff.webp",
-                                            "file_size": "artic",
+                                            "file_size": 102,
                                             "width": 100,
                                             "height": 68
                                         },
@@ -310,13 +310,13 @@
                 "description": "",
                 "jpeg": {
                     "url": "https://localhost/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
-                    "file_size": "artic",
+                    "file_size": 574,
                     "width": 100,
                     "height": 68
                 },
                 "webp": {
                     "url": "https://localhost/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-70.bgcolor-fff.webp",
-                    "file_size": "artic",
+                    "file_size": 102,
                     "width": 100,
                     "height": 68
                 }
@@ -344,13 +344,13 @@
                 "description": "",
                 "jpeg": {
                     "url": "https://localhost/media/images/image.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
-                    "file_size": "artic",
+                    "file_size": 574,
                     "width": 100,
                     "height": 68
                 },
                 "webp": {
                     "url": "https://localhost/media/images/image.fill-600x400.format-webp.webpquality-70.bgcolor-fff.webp",
-                    "file_size": "artic",
+                    "file_size": 102,
                     "width": 100,
                     "height": 68
                 }
@@ -378,13 +378,13 @@
                 "description": "",
                 "jpeg": {
                     "url": "https://localhost/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
-                    "file_size": "artic",
+                    "file_size": 574,
                     "width": 100,
                     "height": 68
                 },
                 "webp": {
                     "url": "https://localhost/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-70.bgcolor-fff.webp",
-                    "file_size": "artic",
+                    "file_size": 102,
                     "width": 100,
                     "height": 68
                 }
@@ -411,13 +411,13 @@
                 "description": "",
                 "jpeg": {
                     "url": "https://localhost/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
-                    "file_size": "artic",
+                    "file_size": 574,
                     "width": 100,
                     "height": 68
                 },
                 "webp": {
                     "url": "https://localhost/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-70.bgcolor-fff.webp",
-                    "file_size": "artic",
+                    "file_size": 102,
                     "width": 100,
                     "height": 68
                 }
@@ -442,13 +442,13 @@
                 "description": "",
                 "jpeg": {
                     "url": "https://localhost/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
-                    "file_size": "artic",
+                    "file_size": 574,
                     "width": 100,
                     "height": 68
                 },
                 "webp": {
                     "url": "https://localhost/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-70.bgcolor-fff.webp",
-                    "file_size": "artic",
+                    "file_size": 102,
                     "width": 100,
                     "height": 68
                 }
