@@ -1,6 +1,7 @@
 from os.path import basename, splitext
 from urllib.parse import urlparse
 
+from django.conf import settings
 from rest_framework.serializers import Serializer
 
 
@@ -215,7 +216,8 @@ class DetailedImageSerializer(ImageSerializer):
                     "alternative_format": (
                         {
                             "heading": value.get_alternative_format_heading_display(),
-                            "full_url": value.alternative_format.url,  # TODO: Distinct from url
+                            "url": f"{settings.MEDIA_URL.rstrip('/')}/{str(value.alternative_format).lstrip('/')}",
+                            "full_url": value.alternative_format.url,
                             "file_type": _extract_file_type(value.alternative_format),
                             "file_size": _extract_file_size(value.alternative_format),
                         }
@@ -224,4 +226,5 @@ class DetailedImageSerializer(ImageSerializer):
                     ),
                 }
             )
+        print(representation)
         return representation
