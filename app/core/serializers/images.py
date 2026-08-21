@@ -226,5 +226,4 @@ class DetailedImageSerializer(ImageSerializer):
                     ),
                 }
             )
-        print(representation)
         return representation
