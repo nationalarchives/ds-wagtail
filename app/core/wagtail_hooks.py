@@ -4,7 +4,11 @@ from django.urls import path, reverse
 from wagtail import hooks
 from wagtail.admin.menu import MenuItem
 
-from .admin_views import invalidate_tree_explorer_cache, tree_explorer_view
+from .admin_views import (
+    invalidate_tree_explorer_cache,
+    recovery_codes_view,
+    tree_explorer_view,
+)
 from .models.partner_logos import partner_logo_chooserviewset, partner_logo_modelviewset
 
 
@@ -83,6 +87,11 @@ def register_tree_explorer_admin_urls():
             "tree-explorer/",
             tree_explorer_view,
             name="tree_explorer",
+        ),
+        path(
+            "account/recovery-codes/",
+            recovery_codes_view,
+            name="recovery_codes",
         ),
     ]
 

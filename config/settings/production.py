@@ -91,6 +91,7 @@ INSTALLED_APPS = [
     "wagtail_2fa",
     "django_otp",
     "django_otp.plugins.otp_totp",
+    "django_otp.plugins.otp_static",
 ]
 
 MIDDLEWARE = [
@@ -101,6 +102,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "wagtail_2fa.middleware.VerifyUserMiddleware",
+    "app.core.middleware.RecoveryCodesMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django.middleware.security.SecurityMiddleware",

@@ -68,6 +68,12 @@ You would run:
 ... manage.py  migrate [appname] 002
 ```
 
+### Two-Factor Authentication (2FA) management
+
+Administration commands for managing users' two-factor authentication devices and recovery codes are documented separately:
+
+- See [2FA management commands](2fa-management.md) for usage examples and safety notes.
+
 If you need to reverse ALL migrations for an app, use the 'zero' keyword, like so:
 
 ```sh
