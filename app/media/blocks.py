@@ -6,8 +6,8 @@ from wagtailmedia.blocks import AbstractMediaChooserBlock
 from app.core.blocks.image import APIImageChooserBlock
 from app.media.time_utils import (
     format_seconds_hhmmss,
-    parse_chapter_time_string_to_seconds,
     parse_chapter_time_to_seconds,
+    parse_hhmmss_string_to_seconds,
 )
 
 CHAPTER_TIME_VALIDATION_MESSAGE = (
@@ -36,7 +36,7 @@ class ChapterTimeBlock(blocks.CharBlock):
         if data in (None, ""):
             return data
 
-        if parse_chapter_time_string_to_seconds(data) is None:
+        if parse_hhmmss_string_to_seconds(data) is None:
             raise chapter_time_validation_error(data)
 
         return data
@@ -89,7 +89,7 @@ class MediaChooserBlock(AbstractMediaChooserBlock):
             "chapters": value.api_chapters(),
             "width": value.width,
             "height": value.height,
-            "duration": value.duration,
+            "duration": value.api_duration(),
             "subtitles_file": value.subtitles_file_url,
             "subtitles_file_full_url": value.subtitles_file_full_url,
             "chapters_file": value.chapters_file_url,
