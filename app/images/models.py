@@ -108,16 +108,16 @@ class CustomImage(ClusterableModel, AbstractImage):
         return self.get_usage().count()
 
     @property
-    def original_width(self):
-        return self.file.width
-
-    @property
-    def original_height(self):
-        return self.file.height
-
-    @property
-    def original_file_size(self):
-        return self.file.size
+    def source_image(self):
+        return (
+            {
+                "width": self.file.width,
+                "height": self.file.height,
+                "file_size": self.file.size,
+            }
+            if self.file
+            else None
+        )
 
     def clean(self):
         super().clean()
@@ -154,9 +154,7 @@ class CustomImage(ClusterableModel, AbstractImage):
         APIField("translation", serializer=RichTextSerializer()),
         APIField("alternative_format_heading"),
         APIField("alternative_format"),
-        APIField("original_width"),
-        APIField("original_height"),
-        APIField("original_file_size"),
+        APIField("source_image"),
     ]
 
     admin_form_fields = Image.admin_form_fields + (

@@ -120,17 +120,23 @@
       },
       "required": ["url", "full_url", "width", "height"]
     },
-    "original_width": {
-      "description": "The original width of the image in pixels",
-      "type": "integer"
-    },
-    "original_height": {
-      "description": "The original height of the image in pixels",
-      "type": "integer"
-    },
-    "original_file_size": {
-      "description": "The original file size of the image in bytes",
-      "type": "integer"
+    "source_image": {
+      "type": "object",
+      "properties": {
+        "width": {
+          "description": "The original width of the image in pixels",
+          "type": "integer"
+        },
+        "height": {
+          "description": "The original height of the image in pixels",
+          "type": "integer"
+        },
+        "file_size": {
+          "description": "The original file size of the image in bytes",
+          "type": "integer"
+        }
+      },
+      "required": ["width", "height", "file_size"]
     }
   },
   "required": ["id", "title", "tags", "uuid", "jpeg", "webp"]
