@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://www.nationalarchives.gov.uk/wagtail/page-parts/hero.schema.json",
+  "title": "Hero section",
+  "description": "A hero section in Wagtail",
+  "type": "object",
+  "properties": {
+    "hero_image_caption": {
+      "type": "string",
+      "description": "The caption for the hero image"
+    },
+    "hero_image": {
+      "anyOf": [
+        {
+          "$ref": "https://www.nationalarchives.gov.uk/wagtail/page-parts/image.schema.json"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The hero image for the hero section"
+    }
+  },
+  "required": ["hero_image_caption", "hero_image"]
+}

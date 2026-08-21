@@ -3,22 +3,28 @@
 ## Quickstart
 
 ```sh
-# Copy the example .env file
-cp .env.example .env
-
-# Set .env values for:
-#   - ROSETTA_API_URL
-
 # Build and start the containers
 docker compose up -d
 ```
-
-View the site on [localhost:8000](http://localhost:8000).
 
 Log in to the Wagtail Admin on [localhost:8000/admin](http://localhost:8000/admin) with the credentials:
 
 - Username: `admin`
 - Password: `admin`
+
+### Pull data from AWS
+
+To [pull example data from AWS](./docs/development/fetching-data.md) from the development environment, install and set up the [AWS CLI](https://aws.amazon.com/cli/) and then run:
+
+```sh
+# Log into AWS
+aws sso login
+
+# Pull data and media
+./dev/pull
+```
+
+If you need to inspect the files in S3, open the [S3 Ninja UI](http://localhost:8002/ui).
 
 ## Project documentation
 
@@ -52,7 +58,7 @@ In addition to the [base Docker image variables](https://github.com/nationalarch
 | `ENVIRONMENT_NAME`                   | Environment label used in UI/email text                                   | `production`                                            |
 | `FRONTEND_CACHE_AWS_DISTRIBUTION_ID` | CloudFront distribution id for Wagtail frontend cache invalidation        | `""`                                                    |
 | `LOG_LEVEL`                          | Root logger level                                                         | `warning`                                               |
-| `MEDIA_PAGE_URL`                     | Base URL used for live media page links                                   | `WAGTAILAPI_MEDIA_BASE_URL`                             |
+| `MEDIA_PAGE_URL`                     | Base URL used for live media page links                                   | `""`                                                    |
 | `NEW_LABEL_DISPLAY_FOR_DAYS`         | Number of days to show "new" labels                                       | `21`                                                    |
 | `RECORD_DETAILS_CACHE_TIMEOUT`       | Record details cache timeout (seconds)                                    | `2592000`                                               |
 | `REDIS_URL`                          | Redis connection URL to enable caching                                    | _none_                                                  |
@@ -65,7 +71,13 @@ In addition to the [base Docker image variables](https://github.com/nationalarch
 | `WAGTAILAPI_AUTHENTICATION`          | Enable authentication on Wagtail API                                      | `True`                                                  |
 | `WAGTAILAPI_BASE_URL`                | Public base URL for Wagtail API                                           | `WAGTAILADMIN_BASE_URL`                                 |
 | `WAGTAILAPI_LIMIT_MAX`               | Max results allowed in Wagtail API response via `?limit=` (0 = unlimited) | `0`                                                     |
-| `WAGTAILAPI_MEDIA_BASE_URL`          | Public base URL for media URLs                                            | `""`                                                    |
 | `WAGTAIL_2FA_REQUIRED`               | Require 2FA for Wagtail admin users                                       | `True`                                                  |
 | `WAGTAIL_AUTOSAVE_INTERVAL`          | Wagtail editor autosave interval in ms (`0` disables autosave)            | `0`                                                     |
 | `WAGTAIL_HEADLESS_PREVIEW_URL`       | Headless preview URL template                                             | `{SITE_ROOT_URL}/preview/`                              |
+| `AWS_STORAGE_BUCKET_NAME`            | The name of the bucket where the Wagtail media files are kept             | _none_                                                  |
+| `AWS_S3_ACCESS_KEY_ID`               | The AWS Access Key ID                                                     | _none_                                                  |
+| `AWS_S3_SECRET_ACCESS_KEY`           | The AWS Secret Access Key                                                 | _none_                                                  |
+| `AWS_S3_ENDPOINT_URL`                | A custom S3 endpoint                                                      | _none_                                                  |
+| `AWS_S3_REGION_NAME`                 | The AWS region for the S3 bucket                                          | `eu-west-2`                                             |
+| `AWS_S3_URL_PROTOCOL`                | The protocol to use when generating links to media files                  | `https`                                                 |
+| `AWS_S3_CUSTOM_DOMAIN`               | The domain to use when generating links to media files                    | `{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com`            |

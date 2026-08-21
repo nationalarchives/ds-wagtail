@@ -1,6 +1,3 @@
-import re
-
-from django.conf import settings
 from django.db import models
 from wagtail.documents.models import AbstractDocument, Document
 
@@ -21,22 +18,6 @@ class CustomDocument(AbstractDocument):
         null=True,
         help_text="A short summary of what the document contains to help users understand what they are downloading.",
     )
-
-    @property
-    def pretty_file_size(self):
-        suffixes = ["B", "kB", "MB", "GB"]
-        i = 0
-        pretty_file_size = self.file_size
-        while pretty_file_size >= 1000 and i < len(suffixes) - 1:
-            pretty_file_size /= 1000
-            i += 1
-        return re.sub(
-            r"\.0+$", "", f"{pretty_file_size:.{max(i - 1, 0)}f}{suffixes[i]}"
-        )
-
-    @property
-    def full_url(self):
-        return settings.WAGTAILADMIN_BASE_URL + self.url
 
     admin_form_fields = Document.admin_form_fields + (
         "extent",

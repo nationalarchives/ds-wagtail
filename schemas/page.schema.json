@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://www.nationalarchives.gov.uk/wagtail/page.schema.json",
   "title": "Page",
-  "description": "A page in Wagtail",
+  "description": "A generic page in Wagtail",
   "type": "object",
   "properties": {
     "id": {
@@ -223,7 +223,7 @@
       "description": "The title of the home page"
     },
     "short_title": {
-      "type": "string",
+      "type": ["string", "null"],
       "description": "A shorter version of the title for the home page"
     },
     "type_label": {

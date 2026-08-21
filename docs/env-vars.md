@@ -15,7 +15,7 @@ The settings modules use environment variables to control behaviour without chan
 - `DATABASE_*` for the database connection
 - `REDIS_URL` and `CACHE_DEFAULT_TIMEOUT` for caching
 - `SENTRY_DSN` and `SENTRY_SAMPLE_RATE` for error reporting
-- `WAGTAILADMIN_BASE_URL`, `WAGTAILAPI_BASE_URL`, and `WAGTAILAPI_MEDIA_BASE_URL` for generated URLs
+- `WAGTAILADMIN_BASE_URL` and `WAGTAILAPI_BASE_URL` for generated URLs
 - `EMAIL_*` for outbound mail
 - `DEBUG`, `LOG_LEVEL`, and `WAGTAIL_2FA_REQUIRED` for runtime behaviour
 

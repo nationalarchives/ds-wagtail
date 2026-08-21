@@ -3,6 +3,8 @@ import logging
 from django.conf import settings
 from django.db.models import Q
 from django.http import Http404
+from django.shortcuts import redirect
+from django.urls import path
 from django.utils.crypto import constant_time_compare
 from rest_framework import status
 from rest_framework.response import Response
@@ -16,7 +18,7 @@ from wagtail.api.v2.filters import (
     SearchFilter,
     TranslationOfFilter,
 )
-from wagtail.api.v2.utils import BadRequestError
+from wagtail.api.v2.utils import BadRequestError, get_object_detail_url
 from wagtail.api.v2.views import PagesAPIViewSet
 from wagtail.contrib.redirects.models import Redirect
 from wagtail.models import Page, PageViewRestriction, Site
@@ -120,6 +122,28 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
             "message": "Selected privacy mode is not compatible with this API.",
         }
         return Response(data, status=status.HTTP_403_FORBIDDEN)
+
+    def random_view(self, request):
+        queryset = self.get_queryset().public()
+
+        # Exclude pages that the user doesn't have access to
+        restricted_pages = [
+            restriction.page
+            for restriction in PageViewRestriction.objects.all().select_related("page")
+        ]
+
+        # Exclude the restricted pages and their descendants from the queryset
+        for restricted_page in restricted_pages:
+            queryset = queryset.not_descendant_of(restricted_page, inclusive=True)
+
+        self.check_query_parameters(queryset)
+        queryset = self.filter_queryset(queryset)
+        instance = queryset.order_by("?").first()
+
+        url = get_object_detail_url(
+            self.request.wagtailapi_router, request, self.model, instance.pk
+        )
+        return redirect(url)
 
     def get_base_queryset(self):
         """
@@ -234,3 +258,9 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
                 return page
 
         return super().find_object(queryset, request)
+
+    @classmethod
+    def get_urlpatterns(cls):
+        return super().get_urlpatterns() + [
+            path("random/", cls.as_view({"get": "random_view"}), name="random"),
+        ]
