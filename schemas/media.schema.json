@@ -78,10 +78,9 @@
       "type": "string",
       "format": "uri"
     },
-    "full_url": {
-      "description": "The full URL of the media item",
-      "type": "string",
-      "format": "uri"
+    "file_size": {
+      "description": "The file size of the media item in bytes",
+      "type": "integer"
     },
     "audio_described_file": {
       "description": "The audio described file for the media item",
@@ -138,7 +137,7 @@
     "collection",
     "uuid",
     "url",
-    "full_url",
+    "file_size",
     "audio_described_file",
     "thumbnail",
     "date",

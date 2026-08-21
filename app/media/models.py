@@ -122,6 +122,15 @@ class EtnaMedia(AbstractMedia):
         if self.chapters_file and hasattr(self.chapters_file, "url"):
             return self.chapters_file.url
 
+    @property
+    def file_size(self):
+        try:
+            if self.file and hasattr(self.file, "size"):
+                return self.file.size
+            return 0
+        except Exception:
+            return 0
+
     admin_form_fields = (
         "title",
         "date",
@@ -166,6 +175,7 @@ class EtnaMedia(AbstractMedia):
     api_fields = [
         APIField("type"),
         APIField("url"),
+        APIField("file_size"),
         APIField("mime"),
         APIField("chapters"),
         APIField("description", serializer=RichTextSerializer()),

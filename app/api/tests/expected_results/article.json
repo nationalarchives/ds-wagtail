@@ -235,6 +235,7 @@
                                 "chapters": [],
                                 "width": 1920,
                                 "height": 1080,
+                                "file_size": 0,
                                 "duration": 10.0,
                                 "subtitles_file": null,
                                 "chapters_file": null

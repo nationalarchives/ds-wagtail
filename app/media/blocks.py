@@ -77,6 +77,7 @@ class MediaChooserBlock(AbstractMediaChooserBlock):
             "id": value.id,
             "uuid": value.uuid,
             "file": value.url,
+            "file_size": value.file_size,
             "alternate_version_link": value.alternate_version_link,
             "alternate_version_type": value.get_alternate_version_type_display(),
             "type": value.type,
