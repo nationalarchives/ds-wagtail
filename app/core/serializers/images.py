@@ -1,7 +1,6 @@
 from os.path import basename, splitext
 from urllib.parse import urlparse
 
-from django.conf import settings
 from rest_framework.serializers import Serializer
 
 
@@ -97,7 +96,6 @@ def image_generator(
 
         output[output_key] = {
             "url": rendition.url,
-            "full_url": rendition.full_url,
             "width": rendition.width,
             "height": rendition.height,
             "file_size": file_size,
@@ -216,8 +214,7 @@ class DetailedImageSerializer(ImageSerializer):
                     "alternative_format": (
                         {
                             "heading": value.get_alternative_format_heading_display(),
-                            "url": f"{settings.MEDIA_URL.rstrip('/')}/{str(value.alternative_format).lstrip('/')}",
-                            "full_url": value.alternative_format.url,
+                            "url": value.alternative_format.url,
                             "file_type": _extract_file_type(value.alternative_format),
                             "file_size": _extract_file_size(value.alternative_format),
                         }

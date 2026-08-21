@@ -113,28 +113,14 @@ class EtnaMedia(AbstractMedia):
             validate(self.chapters_file)
 
     @property
-    def full_url(self):
-        return settings.WAGTAILADMIN_BASE_URL + self.url if self.url else None
-
-    @property
     def subtitles_file_url(self):
         if self.subtitles_file and hasattr(self.subtitles_file, "url"):
             return self.subtitles_file.url
 
     @property
-    def subtitles_file_full_url(self):
-        if self.subtitles_file and hasattr(self.subtitles_file, "url"):
-            return settings.WAGTAILADMIN_BASE_URL + self.subtitles_file.url
-
-    @property
     def chapters_file_url(self):
         if self.chapters_file and hasattr(self.chapters_file, "url"):
             return self.chapters_file.url
-
-    @property
-    def chapters_file_full_url(self):
-        if self.chapters_file and hasattr(self.chapters_file, "url"):
-            return settings.WAGTAILADMIN_BASE_URL + self.chapters_file.url
 
     admin_form_fields = (
         "title",

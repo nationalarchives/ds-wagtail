@@ -432,7 +432,7 @@ class APIResponseTest(WagtailPageTestCase):
                     )
                     # Normalize to relative URLs - strip any domain/scheme
                     # This handles both http://localhost/path and https://domain.com/path
-                    normalized_url = re.sub(r"^https?://[^/]+", "", normalized_url)
+                    # normalized_url = re.sub(r"^https?://[^/]+", "", normalized_url)
                     normalized[key] = normalized_url
                 else:
                     normalized[key] = self.normalize_json_data(value, is_expected)

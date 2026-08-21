@@ -28,16 +28,10 @@ DATABASES = {
     }
 }
 
-AWS_S3_CUSTOM_DOMAIN = "https://example.com"
-
-STORAGES = {
-    "default": {
-        "BACKEND": "django.core.files.storage.FileSystemStorage",
-    },
-    "staticfiles": {
-        "BACKEND": "django.core.files.storage.FileSystemStorage",
-    },
-}
+STORAGES = STORAGES.copy()
+STORAGES["default"]["OPTIONS"]["custom_domain"] = "localhost/media"
+STORAGES["default"]["OPTIONS"]["url_protocol"] = "https:"
+STORAGES["staticfiles"]["BACKEND"] = "django.core.files.storage.FileSystemStorage"
 
 ROSETTA_API_URL = "http://rosetta.test/data"
 

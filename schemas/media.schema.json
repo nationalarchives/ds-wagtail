@@ -123,16 +123,8 @@
       "description": "The subtitles file for the media item",
       "type": ["null", "string"]
     },
-    "subtitles_file_full_url": {
-      "description": "The full URL of the subtitles file",
-      "type": ["null", "string"]
-    },
     "chapters_file": {
       "description": "The chapters file for the media item",
-      "type": ["null", "string"]
-    },
-    "chapters_file_full_url": {
-      "description": "The full URL of the chapters file",
       "type": ["null", "string"]
     }
   },
@@ -152,8 +144,6 @@
     "date",
     "chapters",
     "subtitles_file",
-    "subtitles_file_full_url",
-    "chapters_file",
-    "chapters_file_full_url"
+    "chapters_file"
   ]
 }

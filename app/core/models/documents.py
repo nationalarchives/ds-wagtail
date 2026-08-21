@@ -1,6 +1,5 @@
 import re
 
-from django.conf import settings
 from django.db import models
 from wagtail.documents.models import AbstractDocument, Document
 
@@ -33,10 +32,6 @@ class CustomDocument(AbstractDocument):
         return re.sub(
             r"\.0+$", "", f"{pretty_file_size:.{max(i - 1, 0)}f}{suffixes[i]}"
         )
-
-    @property
-    def full_url(self):
-        return settings.WAGTAILADMIN_BASE_URL + self.url
 
     admin_form_fields = Document.admin_form_fields + (
         "extent",

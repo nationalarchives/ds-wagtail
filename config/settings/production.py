@@ -293,6 +293,8 @@ WAGTAILMEDIA = {
     ],
 }
 
+WAGTAILDOCS_SERVE_METHOD = os.getenv("WAGTAILDOCS_SERVE_METHOD", "redirect")
+
 NEW_LABEL_DISPLAY_FOR_DAYS = int(os.getenv("NEW_LABEL_DISPLAY_FOR_DAYS", 21))
 
 # Wagtail settings

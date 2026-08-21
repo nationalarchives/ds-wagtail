@@ -14,9 +14,7 @@ class CustomMediaItemSerializer(MediaItemSerializer):
         return representation | {
             "chapters": instance.api_chapters(),
             "subtitles_file": instance.subtitles_file_url,
-            "subtitles_file_full_url": instance.subtitles_file_full_url,
             "chapters_file": instance.chapters_file_url,
-            "chapters_file_full_url": instance.chapters_file_full_url,
         }
 
 
@@ -31,7 +29,6 @@ class CustomMediaAPIViewSet(MediaAPIViewSet):
         "uuid",
         "title",
         "url",
-        "full_url",
         "audio_described_file",
         "tags",
         "thumbnail",
@@ -39,10 +36,8 @@ class CustomMediaAPIViewSet(MediaAPIViewSet):
         "created_at",
         "duration",
         "subtitles_file",
-        "subtitles_file_full_url",
         "chapters",
         "chapters_file",
-        "chapters_file_full_url",
     ]
     meta_fields.remove("download_url")
     meta_fields.remove("detail_url")

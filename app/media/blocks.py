@@ -79,7 +79,6 @@ class MediaChooserBlock(AbstractMediaChooserBlock):
             "file": value.url,
             "alternate_version_link": value.alternate_version_link,
             "alternate_version_type": value.get_alternate_version_type_display(),
-            "full_url": value.full_url,
             "type": value.type,
             "mime": value.mime(),
             "title": value.title,
@@ -91,9 +90,7 @@ class MediaChooserBlock(AbstractMediaChooserBlock):
             "height": value.height,
             "duration": value.duration,
             "subtitles_file": value.subtitles_file_url,
-            "subtitles_file_full_url": value.subtitles_file_full_url,
             "chapters_file": value.chapters_file_url,
-            "chapters_file_full_url": value.chapters_file_full_url,
         }
 
 
