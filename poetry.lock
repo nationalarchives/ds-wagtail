@@ -1622,23 +1622,23 @@ testing = ["coverage[toml] (>=7.0,<8.0)", "django-cors-headers", "tox (>=4)"]
 
 [[package]]
 name = "wagtailmedia"
-version = "0.17.2"
+version = "0.18.1"
 description = "A Wagtail module for audio and video files."
 optional = false
-python-versions = ">=3.9"
+python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "wagtailmedia-0.17.2-py3-none-any.whl", hash = "sha256:abe10c6341fbc41ebc30d2955fff00abf6160bc473a5f9f1106d69111045c202"},
-    {file = "wagtailmedia-0.17.2.tar.gz", hash = "sha256:4457e267fc53d8db4c9eb9a48d27f4b47b0823a9f7d0820f2dd98f1ba5d58600"},
+    {file = "wagtailmedia-0.18.1-py3-none-any.whl", hash = "sha256:1a4bf4564f637c9c6546e8f08f6ec5760812fb767d1335319822d21f89cab5fc"},
+    {file = "wagtailmedia-0.18.1.tar.gz", hash = "sha256:65986deef9359749c25d0190ffeea4a71c6f9ac5195161110b076c026f735871"},
 ]
 
 [package.dependencies]
-Django = ">=4.2"
-Wagtail = ">=6.3"
+Django = ">=5.2"
+Wagtail = ">=7.0"
 
 [package.extras]
-linting = ["pre-commit (>=4.3.0)"]
-testing = ["coverage (>=7.10.0)", "tox (>=4.28.4)"]
+linting = ["pre-commit (>=4.6.0)"]
+testing = ["coverage (>=7.14.0)", "psycopg", "tox (>=4.54.0)"]
 
 [[package]]
 name = "whitenoise"
@@ -1682,4 +1682,4 @@ wand = ["Wand (>=0.6,<1.0)"]
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.14"
-content-hash = "7bd5d1e12dea96fc4e9eb85b70245f438fa90f4fe6198e3b41c7698cc411daf6"
+content-hash = "9b96cde431e1e26f823ba4158f99e555d4ecc02c1dba4020f8d9ec7973ffbe33"
