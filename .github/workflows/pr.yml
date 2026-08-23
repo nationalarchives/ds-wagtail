@@ -31,7 +31,7 @@ jobs:
       DATABASE_PORT: 5432
     services:
       postgres:
-        image: postgres:18.4
+        image: postgres:18.6
         env:
           POSTGRES_USER: ${{ env.DATABASE_USER }}
           POSTGRES_PASSWORD: ${{ env.DATABASE_PASSWORD }}
