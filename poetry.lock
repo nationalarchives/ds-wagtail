@@ -747,6 +747,18 @@ docs = ["myst-parser (>=4.0.1,<5)", "sphinx (>=8.2.3,<9)", "sphinx-rtd-theme (>=
 test = ["coverage (>=7.10.6,<8)", "dj-database-url (>=2.3.0,<3)", "django-modelcluster (>=6.4,<7)", "django-taggit (>=6.1.0,<7)", "django-tasks (>=0.6.1,<1)", "mysqlclient (>=2.2.0,<3)", "psycopg (>=3.2.6,<4)"]
 
 [[package]]
+name = "mutagen"
+version = "1.48.1"
+description = "read and write audio tags for many formats"
+optional = false
+python-versions = "<4,>=3.10"
+groups = ["main"]
+files = [
+    {file = "mutagen-1.48.1-py3-none-any.whl", hash = "sha256:4f077fe87d3fc7fba259aa63d8c026b18382ca6a42ef37c61e16f1b1b5b82fe7"},
+    {file = "mutagen-1.48.1.tar.gz", hash = "sha256:8f95637ab9f6f305cec6bd1294e197debe207998e3e068596563c74f86b0a173"},
+]
+
+[[package]]
 name = "openpyxl"
 version = "3.1.5"
 description = "A Python library to read/write Excel 2010 xlsx/xlsm files"
@@ -1682,4 +1694,4 @@ wand = ["Wand (>=0.6,<1.0)"]
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.14"
-content-hash = "9b96cde431e1e26f823ba4158f99e555d4ecc02c1dba4020f8d9ec7973ffbe33"
+content-hash = "0ae1d758997d725aeffd5754e4092197ea76203aab4e99412e2c9c4b3e011517"
