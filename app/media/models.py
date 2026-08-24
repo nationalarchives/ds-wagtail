@@ -116,22 +116,22 @@ class EtnaMedia(AbstractMedia):
 
     def save(self, *args, **kwargs):
         # If the file is newly uploaded and not yet committed, calculate its duration and store it in the duration field.
-        if self.file and not self.file._committed:
-            duration = self.get_file_duration()
+        if (file := self.file) and not file._committed:
+            duration = self.get_file_duration(file)
             if duration is not None:
                 self.duration = duration
         super().save(*args, **kwargs)
 
-    def get_file_duration(self):
+    def get_file_duration(self, file):
         """Read the duration (in seconds) from the uploaded file's metadata."""
-        self.file.seek(0)
+        file.seek(0)
 
         try:
-            audio = MutagenFile(BytesIO(self.file.read()))
+            audio = MutagenFile(BytesIO(file.read()))
         except Exception:
             return None
         finally:
-            self.file.seek(0)
+            file.seek(0)
 
         if audio is not None and audio.info is not None:
             return audio.info.length
