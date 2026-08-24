@@ -114,6 +114,14 @@ class EtnaMedia(AbstractMedia):
             validate = FileExtensionValidator(["vtt"])
             validate(self.chapters_file)
 
+    def save(self, *args, **kwargs):
+        # If the file is newly uploaded and not yet committed, calculate its duration and store it in the duration field.
+        if self.file and not self.file._committed:
+            duration = self.get_file_duration()
+            if duration is not None:
+                self.duration = duration
+        super().save(*args, **kwargs)
+
     def get_file_duration(self):
         """Read the duration (in seconds) from the uploaded file's metadata."""
         self.file.seek(0)
