@@ -180,7 +180,6 @@ class EtnaMedia(AbstractMedia):
         "chapters",
         "collection",
         "description",
-        "duration",
         "transcript",
         "subtitles_file",
         "chapters_file",
