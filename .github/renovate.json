@@ -18,6 +18,17 @@
       "groupName": null,
       "automerge": false,
       "addLabels": ["approval-needed"]
+    },
+    {
+      "description": "Don't auto-update docker-compose service image versions (e.g. postgres) - these are pinned deliberately for local dev",
+      "matchManagers": ["docker-compose"],
+      "enabled": false
+    },
+    {
+      "description": "Don't auto-update the postgres service container image used in GitHub Actions workflows - it's pinned to match the local dev/production version",
+      "matchManagers": ["github-actions"],
+      "matchPackageNames": ["postgres"],
+      "enabled": false
     }
   ]
 }
