@@ -1,9 +1,11 @@
 import mimetypes
 import uuid
+from io import BytesIO
 
 from django.conf import settings
 from django.core.validators import FileExtensionValidator
 from django.db import models
+from mutagen import File as MutagenFile
 from wagtail import blocks
 from wagtail.api import APIField
 from wagtail.fields import RichTextField, StreamField
@@ -112,6 +114,29 @@ class EtnaMedia(AbstractMedia):
             validate = FileExtensionValidator(["vtt"])
             validate(self.chapters_file)
 
+    def save(self, *args, **kwargs):
+        # If the file is newly uploaded and not yet committed, calculate its duration and store it in the duration field.
+        if (file := self.file) and not file._committed:
+            duration = self.get_file_duration(file)
+            if duration is not None:
+                self.duration = duration
+        super().save(*args, **kwargs)
+
+    def get_file_duration(self, file):
+        """Read the duration (in seconds) from the uploaded file's metadata."""
+        file.seek(0)
+
+        try:
+            audio = MutagenFile(BytesIO(file.read()))
+        except Exception:
+            return None
+        finally:
+            file.seek(0)
+
+        if audio is not None and audio.info is not None:
+            return audio.info.length
+        return None
+
     @property
     def full_url(self):
         url = self.url
@@ -155,7 +180,6 @@ class EtnaMedia(AbstractMedia):
         "chapters",
         "collection",
         "description",
-        "duration",
         "transcript",
         "subtitles_file",
         "chapters_file",
