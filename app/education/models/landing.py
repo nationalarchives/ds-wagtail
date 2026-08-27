@@ -28,10 +28,6 @@ class EducationPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
     """
 
     @cached_property
-    def type_label(self) -> str:
-        return "Education"
-
-    @cached_property
     def latest_teaching_resources(self) -> list:
         return list(
             TeachingResourcePage.objects.live().public().order_by("-published_date")[:3]
