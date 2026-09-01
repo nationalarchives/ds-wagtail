@@ -22,7 +22,7 @@
     {
       "matchManagers": ["poetry", "pip_requirements"],
       "matchPackageNames": ["tna-*"],
-      "minimumReleaseAge": 0
+      "minimumReleaseAge": "0 days"
     },
     {
       "description": "Don't auto-update docker-compose service image versions (e.g. postgres) - these are pinned deliberately for local dev",
