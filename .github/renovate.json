@@ -20,6 +20,11 @@
       "addLabels": ["approval-needed"]
     },
     {
+      "matchManagers": ["poetry", "pip_requirements"],
+      "matchPackageNames": ["tna-*"],
+      "minimumReleaseAge": 0
+    },
+    {
       "description": "Don't auto-update docker-compose service image versions (e.g. postgres) - these are pinned deliberately for local dev",
       "matchManagers": ["docker-compose"],
       "enabled": false
