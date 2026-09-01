@@ -30,7 +30,6 @@ services:
       - MEDIA_PAGE_URL=https://localhost
       - REDIS_URL=redis://redis:6379/0
       - ROSETTA_API_URL=${ROSETTA_API_URL}
-      - WAGTAIL_2FA_REQUIRED=False
       - EMAIL_HOST
       - EMAIL_HOST_USER
       - EMAIL_HOST_PASSWORD
