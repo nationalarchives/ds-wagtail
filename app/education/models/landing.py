@@ -2,6 +2,7 @@ from django.db import models
 from django.utils.functional import cached_property
 from modelcluster.fields import ParentalKey
 from wagtail.admin.panels import (
+    FieldPanel,
     InlinePanel,
     MultiFieldPanel,
     PageChooserPanel,
@@ -99,7 +100,7 @@ class EducationPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
         blank=True,
         on_delete=models.SET_NULL,
         related_name="+",
-        verbose_name="featured education page",
+        verbose_name="featured page",
         help_text="Page picker to highlight a featured education page (session, resource, or hub/general)",
     )
 
@@ -107,24 +108,21 @@ class EducationPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
         BasePageWithRequiredIntro.content_panels
         + RequiredHeroImageMixin.content_panels
         + [
+            FieldPanel("education_sessions_teaser_override"),
+            FieldPanel("teaching_resources_teaser_override"),
+            PageChooserPanel(
+                "featured_page",
+                [
+                    "education.EducationSessionPage",
+                    "education.TeachingResourcePage",
+                    "generic_pages.GeneralPage",
+                    "generic_pages.HubPage",
+                ],
+            ),
             InlinePanel(
                 "education_read_more_links",
                 heading="Read more",
                 help_text="Navigation to other sections within Education",
-            ),
-            MultiFieldPanel(
-                [
-                    PageChooserPanel(
-                        "featured_page",
-                        [
-                            "education.EducationSessionPage",
-                            "education.TeachingResourcePage",
-                            "generic_pages.GeneralPage",
-                            "generic_pages.HubPage",
-                        ],
-                    ),
-                ],
-                heading="Featured page",
             ),
         ]
     )
