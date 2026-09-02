@@ -18,7 +18,7 @@ class CIIMClient(SimpleJsonApiClient):
     Client for interacting with the CIIM API.
     """
 
-    def __init__(self, api_url: str | None = None, default_params: dict = None):
+    def __init__(self, api_url: str | None = None, default_params: dict | None = None):
         api_url = api_url or settings.ROSETTA_API_URL
         if not api_url:
             raise ImproperlyConfigured(
@@ -29,7 +29,7 @@ class CIIMClient(SimpleJsonApiClient):
         default_params.update({"filter": "@datatype.base:record"})
         super().__init__(api_url, default_params=default_params, default_headers={})
 
-    def get(self, path: str = "/", headers: dict = None) -> dict:
+    def get(self, path: str = "/", headers: dict | None = None) -> dict:
         try:
             return super().get(path=path, headers=headers)
         except Exception:
