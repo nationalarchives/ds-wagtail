@@ -75,9 +75,7 @@ class PublishedDateMixin(models.Model):
         expiry_date = timezone.now().date() - timedelta(
             days=settings.NEW_LABEL_DISPLAY_FOR_DAYS
         )
-        if self.published_date and self.published_date.date() > expiry_date:
-            return True
-        return False
+        return self.published_date and self.published_date.date() > expiry_date
 
     class Meta:
         abstract = True
