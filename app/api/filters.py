@@ -23,15 +23,15 @@ class PublishedDateFilter(BaseFilterBackend):
 
         if "year" in request.GET:
             year = self.get_year(request)
-            queryset = queryset.filter(**{"published_date__year": year})
+            queryset = queryset.filter(published_date__year=year)
 
             if "month" in request.GET:
                 month = self.get_month(request)
-                queryset = queryset.filter(**{"published_date__month": month})
+                queryset = queryset.filter(published_date__month=month)
 
                 if "day" in request.GET:
                     day = self.get_day(request, year, month)
-                    queryset = queryset.filter(**{"published_date__day": day})
+                    queryset = queryset.filter(published_date__day=day)
 
         return queryset
 
@@ -81,7 +81,7 @@ class AuthorFilter(BaseFilterBackend):
                     raise ValueError
             except ValueError:
                 raise BadRequestError("you must provide an author name")
-            queryset = queryset.filter(**{"author_tags__author__slug": author})
+            queryset = queryset.filter(author_tags__author__slug=author)
         return queryset
 
 
