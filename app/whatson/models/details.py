@@ -867,12 +867,12 @@ class DisplayPage(
         """
 
         if self.start_date and self.end_date and self.start_date > self.end_date:
-                raise ValidationError(
-                    {
-                        "start_date": "The start date must be before the end date.",
-                        "end_date": "The end date must be after the start date.",
-                    }
-                )
+            raise ValidationError(
+                {
+                    "start_date": "The start date must be before the end date.",
+                    "end_date": "The end date must be after the start date.",
+                }
+            )
 
 
 class ExhibitionPage(
@@ -1262,12 +1262,12 @@ class ExhibitionPage(
         """
 
         if self.start_date and self.end_date and self.start_date > self.end_date:
-                raise ValidationError(
-                    {
-                        "start_date": "The start date must be before the end date.",
-                        "end_date": "The end date must be after the start date.",
-                    }
-                )
+            raise ValidationError(
+                {
+                    "start_date": "The start date must be before the end date.",
+                    "end_date": "The end date must be after the start date.",
+                }
+            )
         if self.video and not self.video_title:
             raise ValidationError(
                 {

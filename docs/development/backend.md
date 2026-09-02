@@ -116,26 +116,26 @@ from django.db import migrations
 
 
 def forwards(apps, schema_editor):
-	ArticlePage = apps.get_model("articles", "ArticlePage")
+    ArticlePage = apps.get_model("articles", "ArticlePage")
 
-	for page in ArticlePage.objects.filter(slug=""):
-		page.slug = f"article-{page.pk}"
-		page.save(update_fields=["slug"])
+    for page in ArticlePage.objects.filter(slug=""):
+        page.slug = f"article-{page.pk}"
+        page.save(update_fields=["slug"])
 
 
 def backwards(apps, schema_editor):
-	ArticlePage = apps.get_model("articles", "ArticlePage")
-	ArticlePage.objects.filter(slug__startswith="article-").update(slug="")
+    ArticlePage = apps.get_model("articles", "ArticlePage")
+    ArticlePage.objects.filter(slug__startswith="article-").update(slug="")
 
 
 class Migration(migrations.Migration):
-	dependencies = [
-		("articles", "00xx_previous_migration"),
-	]
+    dependencies = [
+        ("articles", "00xx_previous_migration"),
+    ]
 
-	operations = [
-		migrations.RunPython(forwards, backwards),
-	]
+    operations = [
+        migrations.RunPython(forwards, backwards),
+    ]
 ```
 
 Key points:
@@ -151,16 +151,16 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-	dependencies = [
-		("api", "00xx_previous_migration"),
-	]
+    dependencies = [
+        ("api", "00xx_previous_migration"),
+    ]
 
-	operations = [
-		migrations.RunSQL(
-			sql="CREATE INDEX CONCURRENTLY IF NOT EXISTS api_model_field_idx ON api_model (field);",
-			reverse_sql="DROP INDEX IF EXISTS api_model_field_idx;",
-		),
-	]
+    operations = [
+        migrations.RunSQL(
+            sql="CREATE INDEX CONCURRENTLY IF NOT EXISTS api_model_field_idx ON api_model (field);",
+            reverse_sql="DROP INDEX IF EXISTS api_model_field_idx;",
+        ),
+    ]
 ```
 
 If SQL is not reversible, use:

@@ -54,7 +54,11 @@ def main():
 
     migration_alert = False
     for file in file_diff:
-        if "/migrations/" in file and file.endswith(".py") and check_migration_file(file):
+        if (
+            "/migrations/" in file
+            and file.endswith(".py")
+            and check_migration_file(file)
+        ):
             migration_alert = True
     if migration_alert:
         print("Please review the migrations before pushing, to ensure no loss of data.")

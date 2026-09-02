@@ -157,9 +157,7 @@ WAGTAIL_AUTOSAVE_INTERVAL = int(
     os.getenv("WAGTAIL_AUTOSAVE_INTERVAL", "0")
 )  # Disabled (0) by default
 
-DATA_UPLOAD_MAX_NUMBER_FIELDS = int(
-    os.getenv("DATA_UPLOAD_MAX_NUMBER_FIELDS", "10000")
-)
+DATA_UPLOAD_MAX_NUMBER_FIELDS = int(os.getenv("DATA_UPLOAD_MAX_NUMBER_FIELDS", "10000"))
 
 # django-allauth configuration
 ACCOUNT_LOGIN_METHODS = {"email"}
