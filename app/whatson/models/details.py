@@ -726,9 +726,8 @@ class DisplayPage(
         Overrides the type_label method from BasePage, to return the correct
         type label for the display page.
         """
-        if self.end_date:
-            if self.end_date < timezone.now().date():
-                return "Past display"
+        if self.end_date and self.end_date < timezone.now().date():
+            return "Past display"
         return "Display"
 
     @cached_property

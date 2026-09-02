@@ -103,7 +103,7 @@ class AliasFilter(BaseFilterBackend):
                         "id", flat=True
                     )
                 )
-                alias_ids = set(page["id"] for page in alias_pages)
+                alias_ids = {page["id"] for page in alias_pages}
                 alias_of_ids = alias_pages.values_list("alias_of_id", flat=True)
 
                 # Exclude any pages with matching alias_of_ids - aliases of the same original page

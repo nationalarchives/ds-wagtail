@@ -443,7 +443,7 @@ class APIResponseTest(WagtailPageTestCase):
 
     def compare_json(self, path: str, json_file: str):
         if api_data_str := self.get_api_data(path):
-            if api_data_str.startswith("Endpoint") or api_data_str.startswith("Unable"):
+            if api_data_str.startswith(("Endpoint", "Unable")):
                 self.fail(api_data_str)
             else:
                 file = os.path.join(FILE_PATH, f"{json_file}.json")
