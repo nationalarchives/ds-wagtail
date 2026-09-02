@@ -866,8 +866,7 @@ class DisplayPage(
         provided for the correct venue type.
         """
 
-        if self.start_date and self.end_date:
-            if self.start_date > self.end_date:
+        if self.start_date and self.end_date and self.start_date > self.end_date:
                 raise ValidationError(
                     {
                         "start_date": "The start date must be before the end date.",
@@ -1262,8 +1261,7 @@ class ExhibitionPage(
         provided for the correct venue type.
         """
 
-        if self.start_date and self.end_date:
-            if self.start_date > self.end_date:
+        if self.start_date and self.end_date and self.start_date > self.end_date:
                 raise ValidationError(
                     {
                         "start_date": "The start date must be before the end date.",

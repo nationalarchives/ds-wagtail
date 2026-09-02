@@ -36,7 +36,7 @@ class HomePage(BasePageWithRequiredIntro):
         verbose_name="Primary promo link",
     )
 
-    secondary_promos = secondary_promos = StreamField(
+    secondary_promos = StreamField(
         [
             ("featured_page", FeaturedPageBlock()),
             ("featured_external_link", FeaturedExternalLinkBlock()),

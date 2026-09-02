@@ -66,7 +66,7 @@ class PublishedDateFilter(BaseFilterBackend):
     def get_day(self, request, year, month):
         try:
             day = int(request.GET["day"])
-            datetime.datetime(year, month, day)
+            datetime.date(year, month, day)
         except ValueError:
             raise BadRequestError(f"{year}-{month}-{day} is not a valid date")
         return day
@@ -93,8 +93,9 @@ class AliasFilter(BaseFilterBackend):
     """
 
     def filter_queryset(self, request, queryset, view):
-        if "include_aliases" not in request.GET:
-            if not isinstance(queryset, PostgresSearchResults):
+        if "include_aliases" not in request.GET and not isinstance(
+            queryset, PostgresSearchResults
+        ):
                 alias_pages = queryset.filter(alias_of_id__isnull=False).values(
                     "id", "alias_of_id"
                 )
@@ -188,7 +189,7 @@ class DescendantOfPathFilter(BaseFilterBackend):
                         parent_page, _, _ = site.root_page.specific.route(
                             request, path_components
                         )
-                    except Exception:
+                    except Exception:  # noqa: BLE001
                         raise BadRequestError("ancestor page doesn't exist")
             except Page.DoesNotExist:
                 raise BadRequestError(

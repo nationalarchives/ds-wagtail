@@ -32,7 +32,7 @@ class CIIMClient(SimpleJsonApiClient):
     def get(self, path: str = "/", headers: dict | None = None) -> dict:
         try:
             return super().get(path=path, headers=headers)
-        except Exception:
+        except Exception:  # noqa: BLE001
             capture_message(
                 "CIIMClient.get: Failed to fetch data from CIIM API", level="error"
             )

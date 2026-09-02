@@ -11,6 +11,7 @@ def get_diff():
         ["git", "fetch", "origin"],
         stdout=subprocess.DEVNULL,
         stderr=subprocess.DEVNULL,
+        check=False,
     )
     output = [
         f"./{file_path}"
@@ -53,9 +54,8 @@ def main():
 
     migration_alert = False
     for file in file_diff:
-        if "/migrations/" in file and file.endswith(".py"):
-            if check_migration_file(file):
-                migration_alert = True
+        if "/migrations/" in file and file.endswith(".py") and check_migration_file(file):
+            migration_alert = True
     if migration_alert:
         print("Please review the migrations before pushing, to ensure no loss of data.")
         sys.exit(1)
