@@ -26,7 +26,7 @@ class MourningNotice(models.Model):
 
 
 class HomePage(BasePageWithRequiredIntro):
-    primary_promo = secondary_promos = StreamField(
+    primary_promo = StreamField(
         [
             ("featured_page", FeaturedPageBlock()),
             ("featured_external_link", FeaturedExternalLinkBlock()),
