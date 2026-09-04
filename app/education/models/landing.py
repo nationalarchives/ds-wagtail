@@ -4,7 +4,6 @@ from modelcluster.fields import ParentalKey
 from wagtail.admin.panels import (
     FieldPanel,
     InlinePanel,
-    MultiFieldPanel,
     PageChooserPanel,
 )
 from wagtail.api import APIField
@@ -18,26 +17,12 @@ from app.core.serializers import DefaultPageSerializer
 
 from ..serializers import LinkedPageSerializer
 from .listings import EducationSessionsListingPage, TeachingResourcesListingPage
-from .resources import TeachingResourcePage
-from .sessions import EducationSessionPage
 
 
 class EducationPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
     """
     A page for listing teaching resources and sessions.
     """
-
-    @cached_property
-    def latest_teaching_resources(self) -> list:
-        return list(
-            TeachingResourcePage.objects.live().public().order_by("-published_date")[:3]
-        )
-
-    @cached_property
-    def latest_education_sessions(self) -> list:
-        return list(
-            EducationSessionPage.objects.live().public().order_by("-start_date")[:3]
-        )
 
     @cached_property
     def teaching_resources_listing(self):
@@ -90,23 +75,6 @@ class EducationPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
         max_length=160,
     )
 
-    featured_teaching_resource = models.ForeignKey(
-        "education.TeachingResourcePage",
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="+",
-        verbose_name="featured teaching resource",
-        help_text="Option to add a highlighted teaching resource, particularly for history months etc",
-    )
-
-    featured_teaching_resource_teaser_override = models.CharField(
-        verbose_name="Featured teaching resource teaser text override",
-        help_text="Override text for the featured teaching resource",
-        blank=True,
-        max_length=160,
-    )
-
     # Education sessions section
     education_sessions_listing_page = models.ForeignKey(
         "education.EducationSessionsListingPage",
@@ -125,50 +93,30 @@ class EducationPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
         max_length=160,
     )
 
-    featured_education_session = models.ForeignKey(
-        "education.EducationSessionPage",
+    featured_page = models.ForeignKey(
+        "wagtailcore.Page",
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
         related_name="+",
-        verbose_name="featured education session",
-        help_text="Page picker to highlight a featured education session",
-    )
-
-    featured_education_session_teaser_override = models.CharField(
-        verbose_name="Featured education session teaser text override",
-        help_text="Override text for the featured education session",
-        blank=True,
-        max_length=160,
+        verbose_name="featured page",
+        help_text="Page picker to highlight a featured education page (session, resource, or hub/general)",
     )
 
     content_panels = (
         BasePageWithRequiredIntro.content_panels
         + RequiredHeroImageMixin.content_panels
         + [
-            MultiFieldPanel(
+            FieldPanel("education_sessions_teaser_override"),
+            FieldPanel("teaching_resources_teaser_override"),
+            PageChooserPanel(
+                "featured_page",
                 [
-                    FieldPanel("teaching_resources_teaser_override"),
-                    MultiFieldPanel(
-                        [
-                            PageChooserPanel("featured_teaching_resource"),
-                            FieldPanel("featured_teaching_resource_teaser_override"),
-                        ],
-                    ),
+                    "education.EducationSessionPage",
+                    "education.TeachingResourcePage",
+                    "generic_pages.GeneralPage",
+                    "generic_pages.HubPage",
                 ],
-                heading="Teaching resources",
-            ),
-            MultiFieldPanel(
-                [
-                    FieldPanel("education_sessions_teaser_override"),
-                    MultiFieldPanel(
-                        [
-                            PageChooserPanel("featured_education_session"),
-                            FieldPanel("featured_education_session_teaser_override"),
-                        ],
-                    ),
-                ],
-                heading="Education sessions",
             ),
             InlinePanel(
                 "education_read_more_links",
@@ -184,25 +132,12 @@ class EducationPage(RequiredHeroImageMixin, BasePageWithRequiredIntro):
         + [
             APIField("teaching_resources_listing", serializer=DefaultPageSerializer()),
             APIField("teaching_resources_teaser_override"),
-            APIField("featured_teaching_resource", serializer=DefaultPageSerializer()),
-            APIField("featured_teaching_resource_teaser_override"),
             APIField("education_sessions_listing", serializer=DefaultPageSerializer()),
             APIField("education_sessions_teaser_override"),
             APIField(
-                "featured_education_session",
+                "featured_page",
                 serializer=DefaultPageSerializer(
                     required_api_fields=["session_locations", "start_date", "end_date"]
-                ),
-            ),
-            APIField("featured_education_session_teaser_override"),
-            APIField(
-                "latest_teaching_resources", serializer=DefaultPageSerializer(many=True)
-            ),
-            APIField(
-                "latest_education_sessions",
-                serializer=DefaultPageSerializer(
-                    many=True,
-                    required_api_fields=["session_locations", "start_date", "end_date"],
                 ),
             ),
             APIField(
