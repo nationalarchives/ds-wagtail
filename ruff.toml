@@ -6,7 +6,8 @@ extend-exclude = [
 
 [lint]
 ignore = [
-    "B904"   # raise-without-from-inside-except
+    "B904",   # raise-without-from-inside-except
+    "RUF012", # mutable default value for class attribute
 ]
 
 [lint.per-file-ignores]

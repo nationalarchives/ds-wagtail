@@ -43,13 +43,11 @@ INSTALLED_APPS = [
     "app.blog",
     "app.people",
     "app.cookies",
-    "app.categories",
     "app.ciim",
     "app.collections",
     "app.core",
     "app.education",
     "app.foi",
-    "app.highlights",
     "app.home",
     "app.ukgwa",
     "app.images",
@@ -153,12 +151,13 @@ WAGTAIL_2FA_REQUIRED = strtobool(os.getenv("WAGTAIL_2FA_REQUIRED", "True"))
 WAGTAIL_2FA_OTP_TOTP_NAME = (
     f"National Archives Wagtail ({ENVIRONMENT_NAME.capitalize()})"
 )
+WAGTAILIMAGES_IMAGE_FORM_BASE = "app.images.forms.CustomImageAdminForm"
 
 WAGTAIL_AUTOSAVE_INTERVAL = int(
     os.getenv("WAGTAIL_AUTOSAVE_INTERVAL", "0")
 )  # Disabled (0) by default
 
-DATA_UPLOAD_MAX_NUMBER_FIELDS = int(os.getenv("DATA_UPLOAD_MAX_NUMBER_FIELDS", 10000))
+DATA_UPLOAD_MAX_NUMBER_FIELDS = int(os.getenv("DATA_UPLOAD_MAX_NUMBER_FIELDS", "10000"))
 
 # django-allauth configuration
 ACCOUNT_LOGIN_METHODS = {"email"}
@@ -271,7 +270,7 @@ WAGTAILMEDIA = {
     ],
 }
 
-NEW_LABEL_DISPLAY_FOR_DAYS = int(os.getenv("NEW_LABEL_DISPLAY_FOR_DAYS", 21))
+NEW_LABEL_DISPLAY_FOR_DAYS = int(os.getenv("NEW_LABEL_DISPLAY_FOR_DAYS", "21"))
 
 # Wagtail settings
 
@@ -336,7 +335,7 @@ WAGTAILADMIN_NOTIFICATION_INCLUDE_SUPERUSERS = False
 WAGTAILADMIN_USER_PASSWORD_RESET_FORM = "app.core.forms.auth.HtmlPasswordResetForm"
 DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "wagtail@nationalarchives.gov.uk")
 EMAIL_HOST = os.getenv("EMAIL_HOST", None)
-EMAIL_PORT = os.getenv("EMAIL_PORT", 587)
+EMAIL_PORT = os.getenv("EMAIL_PORT", "587")
 EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER", None)
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD", None)
 EMAIL_USE_TLS = strtobool(os.getenv("EMAIL_USE_TLS", "True"))

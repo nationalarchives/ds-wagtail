@@ -18,16 +18,22 @@ The image system is built on top of Wagtail's image infrastructure and extends i
 
 Extends Wagtail's `AbstractImage` with the following extra fields:
 
-| Field                   | Type            | Notes                                                                                |
-| ----------------------- | --------------- | ------------------------------------------------------------------------------------ |
-| `uuid`                  | `UUIDField`     | Auto-generated, unique, read-only. Used as the lookup key in the `/images` endpoint. |
-| `title`                 | `CharField`     | Descriptive name. Shown in highlights galleries.                                     |
-| `description`           | `CharField`     | Alt text for the image.                                                              |
-| `copyright`             | `RichTextField` | Credit for images not owned by TNA. Do not include the copyright symbol.             |
-| `transcription_heading` | `CharField`     | Choice of `"Transcript"` or `"Partial transcript"`.                                  |
-| `transcription`         | `RichTextField` | Optional text transcription of the image content.                                    |
-| `translation_heading`   | `CharField`     | Choice of `"Translation"` or `"Modern English"`.                                     |
-| `translation`           | `RichTextField` | Optional English translation of the transcription.                                   |
+| Field                        | Type            | Notes                                                                                           |
+| ---------------------------- | --------------- | ----------------------------------------------------------------------------------------------- |
+| `uuid`                       | `UUIDField`     | Auto-generated, unique, read-only. Used as the lookup key in the `/images` endpoint.            |
+| `title`                      | `CharField`     | Descriptive name. Shown in highlights galleries.                                                |
+| `description`                | `CharField`     | Alt text for the image.                                                                         |
+| `copyright`                  | `RichTextField` | Credit for images not owned by TNA. Do not include the copyright symbol.                        |
+| `transcription_heading`      | `CharField`     | Choice of `"Transcript"` or `"Partial transcript"`.                                             |
+| `transcription`              | `RichTextField` | Optional text transcription of the image content.                                               |
+| `translation_heading`        | `CharField`     | Choice of `"Translation"` or `"Modern English"`.                                                |
+| `translation`                | `RichTextField` | Optional English translation of the transcription.                                              |
+| `alternative_format_heading` | `CharField`     | Choice of heading for alternative format content. Current option is `"Transcript with tables"`. |
+| `alternative_format`         | `FileField`     | Optional uploaded spreadsheet-style file. Stored under `images/alternative_formats/`.           |
+
+`alternative_format` accepts only `.csv`, `.xlsx`, and `.xls` files via model validation.
+
+In the Wagtail admin image form, the file chooser is configured with an `accept` attribute (`.csv,.xlsx,.xls`) via `CustomImageAdminForm` (`app/images/forms.py`). This helps filter selectable files in the local file dialog, while model validation remains the enforcement layer.
 
 The companion model `CustomImageRendition` extends `AbstractRendition` and adds a `full_url` property.
 
@@ -101,7 +107,9 @@ Extra fields added to the response:
 ```python
 from app.core.serializers import DetailedImageSerializer
 
-APIField("hero_image", serializer=DetailedImageSerializer(rendition_size="fill-1800x720"))
+APIField(
+    "hero_image", serializer=DetailedImageSerializer(rendition_size="fill-1800x720")
+)
 ```
 
 ---
@@ -227,4 +235,4 @@ The endpoint uses `ViewSetImageSerializer`, which inherits from Wagtail's built-
 
 Access can be restricted to authenticated API token holders via the `WAGTAILAPI_AUTHENTICATION` setting.
 
-Extra fields exposed in the response: `uuid`, `title`, `copyright`, `tags`, `transcription_heading`, `transcription`, `translation_heading`, `translation`, `description`, plus the standard `jpeg` / `webp` rendition objects.
+Extra fields exposed in the response: `uuid`, `title`, `copyright`, `tags`, `transcription_heading`, `transcription`, `translation_heading`, `translation`, `alternative_format_heading`, `alternative_format`, `description`, plus the standard `jpeg` / `webp` rendition objects.

@@ -1,4 +1,39 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["github>nationalarchives/renovate-config"]
+  "extends": ["github>nationalarchives/renovate-config"],
+  "packageRules": [
+    {
+      "description": "Override shared config: minor updates aren't guaranteed non-breaking (e.g. Django/Wagtail), so split them out of the patch automerge group into their own manually-reviewed PRs",
+      "matchManagers": ["poetry", "pip_requirements"],
+      "matchUpdateTypes": ["minor"],
+      "groupName": "Dependencies (minor)",
+      "automerge": false,
+      "addLabels": ["approval-needed"]
+    },
+    {
+      "description": "Django/Wagtail ecosystem packages are tightly coupled, so give each its own PR on minor updates rather than grouping with each other or with unrelated packages",
+      "matchManagers": ["poetry", "pip_requirements"],
+      "matchPackageNames": ["/django/i", "/wagtail/i"],
+      "matchUpdateTypes": ["minor"],
+      "groupName": null,
+      "automerge": false,
+      "addLabels": ["approval-needed"]
+    },
+    {
+      "matchManagers": ["poetry", "pip_requirements"],
+      "matchPackageNames": ["tna-*"],
+      "minimumReleaseAge": "0 days"
+    },
+    {
+      "description": "Don't auto-update docker-compose service image versions (e.g. postgres) - these are pinned deliberately for local dev",
+      "matchManagers": ["docker-compose"],
+      "enabled": false
+    },
+    {
+      "description": "Don't auto-update the postgres service container image used in GitHub Actions workflows - it's pinned to match the local dev/production version",
+      "matchManagers": ["github-actions"],
+      "matchPackageNames": ["postgres"],
+      "enabled": false
+    }
+  ]
 }

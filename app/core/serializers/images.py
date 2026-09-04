@@ -1,4 +1,20 @@
+from os.path import basename, splitext
+from urllib.parse import urlparse
+
+from django.conf import settings
 from rest_framework.serializers import Serializer
+
+
+def _extract_file_type(file_or_url):
+    name = getattr(file_or_url, "name", None) or getattr(file_or_url, "url", "")
+    path = urlparse(name).path
+    extension = splitext(basename(path))[1].lstrip(".").lower()
+    return extension or None
+
+
+def _extract_file_size(file_obj):
+    size = getattr(file_obj, "size", None)
+    return None if size is None else int(size)
 
 
 def image_generator(
@@ -124,8 +140,8 @@ class ImageSerializer(Serializer):
         jpeg_quality: int = 60,
         webp_quality: int = 70,
         background_colour: str = "fff",
-        formats: list = None,
-        additional_rendition_specs: dict = None,
+        formats: list | None = None,
+        additional_rendition_specs: dict | None = None,
         *args,
         **kwargs,
     ):
@@ -194,6 +210,23 @@ class DetailedImageSerializer(ImageSerializer):
                         else None
                     ),
                     "copyright": value.copyright if value.copyright else None,
+                    "alternative_format": (
+                        {
+                            "heading": value.get_alternative_format_heading_display(),
+                            "url": value.alternative_format.url,
+                            "full_url": (
+                                settings.WAGTAILAPI_MEDIA_BASE_URL
+                                + value.alternative_format.url
+                                if hasattr(settings, "WAGTAILAPI_MEDIA_BASE_URL")
+                                and value.alternative_format.url.startswith("/")
+                                else value.alternative_format.url
+                            ),
+                            "file_type": _extract_file_type(value.alternative_format),
+                            "file_size": _extract_file_size(value.alternative_format),
+                        }
+                        if value.alternative_format
+                        else None
+                    ),
                 }
             )
         return representation

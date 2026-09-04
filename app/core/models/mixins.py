@@ -75,10 +75,7 @@ class PublishedDateMixin(models.Model):
         expiry_date = timezone.now().date() - timedelta(
             days=settings.NEW_LABEL_DISPLAY_FOR_DAYS
         )
-        if self.published_date:
-            if self.published_date.date() > expiry_date:
-                return True
-        return False
+        return self.published_date and self.published_date.date() > expiry_date
 
     class Meta:
         abstract = True
@@ -221,17 +218,16 @@ class SidebarMixin(models.Model):
 
     page_sidebar = models.CharField(
         choices=[
-            ("contents", "Contents"),
-            ("sections", "Sections"),
-            ("section_tabs", "Section tabs"),
+            ("none", "No sidebar"),
+            ("sections", "H2 headings"),
+            ("contents-two-levels", "H2-H3 headings"),
+            ("contents", "H2-H4 headings"),
             ("pages", "Pages"),
-            ("pages_tabs", "Pages tabs"),
         ],
         help_text=mark_safe(
             "Select the sidebar style for this page. For more information, see the <a href='https://nationalarchives.github.io/design-system/components/sidebar/'>sidebar documentation</a>."
         ),
-        null=True,
-        blank=True,
+        default="sections",
     )
 
     class Meta:

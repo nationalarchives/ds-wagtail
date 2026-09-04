@@ -77,7 +77,10 @@ def register_viewset():
 
 @hooks.register("insert_editor_js")
 def insert_editor_js():
-    return f'<script src="{static("core/js/full_url_preview.js")}"></script>'
+    return (
+        f'<script src="{static("core/js/full_url_preview.js")}"></script>'
+        f'<script src="{static("core/js/table_caption_required.js")}"></script>'
+    )
 
 
 @hooks.register("register_admin_urls")

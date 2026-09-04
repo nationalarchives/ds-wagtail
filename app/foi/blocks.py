@@ -47,7 +47,6 @@ class ResponseContentBlock(blocks.StreamBlock):
     table = ContentTableBlock()
     details = DetailsBlock()
     document = DocumentsBlock()
-    inset_text = InsetTextBlock()
 
 
 class ResponseSectionBlock(blocks.StructBlock):
@@ -76,7 +75,6 @@ class AnnexeContentBlock(blocks.StreamBlock):
     table = ContentTableBlock()
     details = DetailsBlock()
     document = DocumentsBlock()
-    inset_text = InsetTextBlock()
 
 
 class AnnexeSectionBlock(blocks.StructBlock):
