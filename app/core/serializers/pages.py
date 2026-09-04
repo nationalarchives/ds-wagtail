@@ -2,7 +2,7 @@ from rest_framework import serializers
 from rest_framework.fields import empty
 
 
-def get_api_fields(object, required_api_fields: list = None) -> list:
+def get_api_fields(object, required_api_fields: list | None = None) -> list:
     """
     Get the selected fields (required_api_fields) from the object's api_fields
     attribute, and return them as a list of APIField instances. APIFields are
@@ -45,7 +45,7 @@ def get_field_data(object, field) -> any:
     return None
 
 
-def get_api_data(object, required_api_fields: list = None) -> dict:
+def get_api_data(object, required_api_fields: list | None = None) -> dict:
     """
     This function takes a list of required_api_fields which are the fields
     to be passed to the `get_api_fields` function, and then uses the list

@@ -63,7 +63,6 @@ class MediaChooserBlock(AbstractMediaChooserBlock):
 
         https://github.com/wagtail/wagtail/blob/8413d00bdd03c447900019961d604186e17d2870/wagtail/core/blocks/base.py#L206
         """
-        pass
 
     def get_api_representation(self, value, context=None):
         """
