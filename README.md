@@ -66,6 +66,5 @@ In addition to the [base Docker image variables](https://github.com/nationalarch
 | `WAGTAILAPI_BASE_URL`                | Public base URL for Wagtail API                                           | `WAGTAILADMIN_BASE_URL`                                 |
 | `WAGTAILAPI_LIMIT_MAX`               | Max results allowed in Wagtail API response via `?limit=` (0 = unlimited) | `0`                                                     |
 | `WAGTAILAPI_MEDIA_BASE_URL`          | Public base URL for media URLs                                            | `""`                                                    |
-| `WAGTAIL_2FA_REQUIRED`               | Require 2FA for Wagtail admin users                                       | `True`                                                  |
 | `WAGTAIL_AUTOSAVE_INTERVAL`          | Wagtail editor autosave interval in ms (`0` disables autosave)            | `0`                                                     |
 | `WAGTAIL_HEADLESS_PREVIEW_URL`       | Headless preview URL template                                             | `{SITE_ROOT_URL}/preview/`                              |
