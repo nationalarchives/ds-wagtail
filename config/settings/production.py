@@ -85,6 +85,7 @@ INSTALLED_APPS = [
     "allauth.account",
     "birdbath",
     "wagtail.api.v2",
+    "wagtail.api.v3",
     "wagtail.contrib.frontend_cache",
     "rest_framework",
     "wagtail_headless_preview",
