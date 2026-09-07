@@ -140,8 +140,8 @@ class ImageSerializer(Serializer):
         jpeg_quality: int = 60,
         webp_quality: int = 70,
         background_colour: str = "fff",
-        formats: list = None,
-        additional_rendition_specs: dict = None,
+        formats: list | None = None,
+        additional_rendition_specs: dict | None = None,
         *args,
         **kwargs,
     ):

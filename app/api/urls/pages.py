@@ -217,11 +217,13 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
                 | Q(old_path=f"{path.strip('/')}/")
                 | Q(old_path=f"/{path.strip('/')}/")
             )
-            if redirects.exists():
-                if redirects.get().redirect_page:
-                    if new_path := redirects.get().redirect_page.url:
-                        logger.info(f"Redirect detected: {path} ---> {new_path}")
-                        path = new_path
+            if (
+                redirects.exists()
+                and redirects.get().redirect_page
+                and (new_path := redirects.get().redirect_page.url)
+            ):
+                logger.info(f"Redirect detected: {path} ---> {new_path}")
+                path = new_path
 
             path_components = [component for component in path.split("/") if component]
 

@@ -62,7 +62,7 @@ class Command(BaseCommand):
         for device in devices:
             try:
                 name = getattr(device, "name", "<unnamed>")
-            except Exception:
+            except Exception:  # noqa: BLE001
                 name = "<error>"
             self.stdout.write(f"  - {name} (ID: {getattr(device, 'id', 'n/a')})")
 
@@ -100,7 +100,7 @@ class Command(BaseCommand):
         for session in Session.objects.filter(expire_date__gte=timezone.now()):
             try:
                 data = session.get_decoded()
-            except Exception as e:
+            except Exception as e:  # noqa: BLE001
                 self.stdout.write(
                     self.style.WARNING(
                         f"⚠ Could not decode session {session.session_key}: {e}"

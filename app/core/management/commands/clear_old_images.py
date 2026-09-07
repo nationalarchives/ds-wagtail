@@ -44,7 +44,7 @@ class Command(BaseCommand):
                         self.stdout.write(f"Deleting: {image.title}")
                         image.delete()
                         deleted_count += 1
-                    except Exception as e:
+                    except Exception as e:  # noqa: BLE001
                         self.stdout.write(
                             self.style.ERROR(f"Failed to delete {image.title}: {e}")
                         )

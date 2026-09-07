@@ -107,7 +107,9 @@ Extra fields added to the response:
 ```python
 from app.core.serializers import DetailedImageSerializer
 
-APIField("hero_image", serializer=DetailedImageSerializer(rendition_size="fill-1800x720"))
+APIField(
+    "hero_image", serializer=DetailedImageSerializer(rendition_size="fill-1800x720")
+)
 ```
 
 ---
