@@ -11,30 +11,35 @@ services:
     ports:
       - 8000:8080
     environment:
-      - ENVIRONMENT_NAME=local
-      - DJANGO_SETTINGS_MODULE=config.settings.develop
-      - SECRET_KEY=abc123
       - ALLOWED_HOSTS=localhost,host.docker.internal,wagtail.localhost
       - DEBUG=True
       - DATABASE_HOST=db
       - DATABASE_NAME=postgres
       - DATABASE_USER=postgres
       - DATABASE_PASSWORD=postgres
-      - WAGTAILAPI_AUTHENTICATION
+      - DJANGO_SETTINGS_MODULE=config.settings.develop
       - DJANGO_SUPERUSER_PASSWORD=admin
       - DJANGO_SUPERUSER_USERNAME=admin
       - DJANGO_SUPERUSER_EMAIL=admin@tna.dev
-      - WAGTAILADMIN_BASE_URL=http://localhost:8000
-      - WAGTAILAPI_BASE_URL=http://host.docker.internal:8000
-      - WAGTAILAPI_MEDIA_BASE_URL=https://localhost
-      - MEDIA_PAGE_URL=https://localhost
-      - REDIS_URL=redis://redis:6379/0
-      - ROSETTA_API_URL=${ROSETTA_API_URL}
-      - WAGTAIL_2FA_REQUIRED=False
+      - ENVIRONMENT_NAME=local
       - EMAIL_HOST
       - EMAIL_HOST_USER
       - EMAIL_HOST_PASSWORD
+      - MEDIA_PAGE_URL=https://localhost
       - NEW_LABEL_DISPLAY_FOR_DAYS=21
+      - OIDC_PROVIDER_ID=entra
+      - OIDC_CLIENT_ID=5fad9d57-f774-4c0f-9276-a234e0e411b0
+      - OIDC_DISCOVERY_URL=https://login.microsoftonline.com/f99512c1-fd9f-4475-9896-9a0b3cdc50ec/v2.0/.well-known/openid-configuration
+      - OIDC_CLIENT_SECRET=${OIDC_CLIENT_SECRET}
+      - OIDC_SCOPES=openid profile email
+      - REDIS_URL=redis://redis:6379/0
+      - ROSETTA_API_URL=${ROSETTA_API_URL}
+      - SECRET_KEY=abc123
+      - WAGTAIL_2FA_REQUIRED=False
+      - WAGTAILAPI_AUTHENTICATION
+      - WAGTAILADMIN_BASE_URL=http://localhost:8000
+      - WAGTAILAPI_BASE_URL=http://host.docker.internal:8000
+      - WAGTAILAPI_MEDIA_BASE_URL=https://localhost
     volumes:
       - ./:/app
       - media:/media

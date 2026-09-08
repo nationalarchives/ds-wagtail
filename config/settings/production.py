@@ -83,6 +83,8 @@ INSTALLED_APPS = [
     "django.contrib.postgres",
     "allauth",
     "allauth.account",
+    "allauth.socialaccount",
+    "allauth.socialaccount.providers.openid_connect",
     "birdbath",
     "wagtail.api.v2",
     "wagtail.contrib.frontend_cache",
@@ -166,6 +168,34 @@ ACCOUNT_LOGOUT_ON_GET = False  # Bypass logout confirmation form
 ACCOUNT_SESSION_REMEMBER = False  # True|False disables "Remember me?" checkbox"
 
 WSGI_APPLICATION = "config.wsgi.application"
+
+# OpenID Connect (OIDC) configuration for django-allauth
+OIDC_PROVIDER_ID = os.getenv("OIDC_PROVIDER_ID", "entra")
+OIDC_CLIENT_ID = os.getenv("OIDC_CLIENT_ID", "")
+OIDC_CLIENT_SECRET = os.getenv("OIDC_CLIENT_SECRET", "")
+OIDC_DISCOVERY_URL = os.getenv(
+    "OIDC_DISCOVERY_URL",
+    "",
+)
+
+SOCIALACCOUNT_PROVIDERS = {
+    "openid_connect": {
+        "SCOPE": os.getenv("OIDC_SCOPES", "openid profile email").split(),
+        "AUTH_PARAMS": {"access_type": "offline"},
+        "VERIFIED_EMAIL": True,
+        "VERSION": "oidc",
+        "APP": {
+            "client_id": OIDC_CLIENT_ID,
+            "secret": OIDC_CLIENT_SECRET,
+            "key": "",
+        },
+        # Optional discovery URL
+        "DISCOVERY_URL": OIDC_DISCOVERY_URL,
+    }
+}
+
+SOCIALACCOUNT_QUERY_EMAIL = True  # fetch the user's email from IdP if it's available via ID token/userinfo endpoint
+SOCIALACCOUNT_ADAPTER = "app.core.adapters.OIDCAdapter"
 
 # Logging
 # https://docs.djangoproject.com/en/3.2/topics/logging/
