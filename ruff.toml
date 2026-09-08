@@ -15,3 +15,7 @@ ignore = [
     "F403",  # undefined-local-with-import-star
     "F405"   # undefined-local-with-import-star-usage
 ]
+"app/**/models/__init__.py" = [
+    "F403", # undefined-local-with-import-star
+    "F405", # undefined-local-with-import-star-usage
+]
