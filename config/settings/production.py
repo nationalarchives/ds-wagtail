@@ -170,12 +170,23 @@ ACCOUNT_SESSION_REMEMBER = False  # True|False disables "Remember me?" checkbox"
 WSGI_APPLICATION = "config.wsgi.application"
 
 # OpenID Connect (OIDC) configuration for django-allauth
+
+# Redirect URI registered: https://dev-wagtail.nationalarchives.gov.uk/accounts/oidc/entra/login/callback/
+# Scopes: openid profile email
+# Group claim: Groups assigned to the application, included in the ID token
+# Access restricted to nominated dev testers (g-M365-TNA-Wagtail-Development)
+
 OIDC_PROVIDER_ID = os.getenv("OIDC_PROVIDER_ID", "entra")
-OIDC_CLIENT_ID = os.getenv("OIDC_CLIENT_ID", "")
+# Non-secret: App/client ID assigned in Entra
+OIDC_CLIENT_ID = os.getenv(
+    "OIDC_CLIENT_ID",
+    "9f47d0b5-0fdc-43e2-9910-6eef19457ebf",
+)
 OIDC_CLIENT_SECRET = os.getenv("OIDC_CLIENT_SECRET", "")
+# Discovery URL (tenant-specific OpenID Configuration)
 OIDC_DISCOVERY_URL = os.getenv(
     "OIDC_DISCOVERY_URL",
-    "",
+    "https://login.microsoftonline.com/f99512c1-fd9f-4475-9896-9a0b3cdc50ec/v2.0/.well-known/openid-configuration",
 )
 
 SOCIALACCOUNT_PROVIDERS = {
@@ -188,8 +199,9 @@ SOCIALACCOUNT_PROVIDERS = {
             "client_id": OIDC_CLIENT_ID,
             "secret": OIDC_CLIENT_SECRET,
             "key": "",
+            "fetch_userinfo": True,
+            "server_url": "https://dev-wagtail.nationalarchives.gov.uk",
         },
-        # Optional discovery URL
         "DISCOVERY_URL": OIDC_DISCOVERY_URL,
     }
 }

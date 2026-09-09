@@ -28,10 +28,12 @@ services:
       - MEDIA_PAGE_URL=https://localhost
       - NEW_LABEL_DISPLAY_FOR_DAYS=21
       - OIDC_PROVIDER_ID=entra
-      - OIDC_CLIENT_ID=5fad9d57-f774-4c0f-9276-a234e0e411b0
+      - OIDC_CLIENT_ID=9f47d0b5-0fdc-43e2-9910-6eef19457ebf
       - OIDC_DISCOVERY_URL=https://login.microsoftonline.com/f99512c1-fd9f-4475-9896-9a0b3cdc50ec/v2.0/.well-known/openid-configuration
       - OIDC_CLIENT_SECRET=${OIDC_CLIENT_SECRET}
       - OIDC_SCOPES=openid profile email
+      - OIDC_REDIRECT_URI=https://dev-wagtail.nationalarchives.gov.uk/accounts/oidc/entra/login/callback/
+      - OIDC_GROUP_CLAIM=groups
       - REDIS_URL=redis://redis:6379/0
       - ROSETTA_API_URL=${ROSETTA_API_URL}
       - SECRET_KEY=abc123
