@@ -80,6 +80,19 @@ class DefaultPageSerializer(serializers.Serializer):
         return get_api_data(instance, required_api_fields=self.required_api_fields)
 
 
+class PageSitemapSerializer(serializers.Serializer):
+    def to_representation(self, instance):
+        try:
+            instance = instance.specific
+        except AttributeError:
+            pass
+
+        return {
+            "last_published_at": instance.last_published_at,
+            "full_url": instance.full_url,
+        }
+
+
 class SimplePageSerializer(serializers.Serializer):
     def to_representation(self, instance):
         try:
