@@ -3,6 +3,7 @@ import logging
 from django.conf import settings
 from django.db.models import Q
 from django.http import Http404
+from django.urls import path
 from django.utils.crypto import constant_time_compare
 from rest_framework import status
 from rest_framework.response import Response
@@ -22,7 +23,7 @@ from wagtail.contrib.redirects.models import Redirect
 from wagtail.models import Page, PageViewRestriction, Site
 
 from app.api.permissions import IsAPITokenAuthenticated
-from app.core.serializers.pages import DefaultPageSerializer
+from app.core.serializers.pages import DefaultPageSerializer, PageSitemapSerializer
 
 from ..filters import AliasFilter, DescendantOfPathFilter
 
@@ -72,6 +73,25 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
         queryset = self.filter_queryset(queryset)
         queryset = self.paginate_queryset(queryset)
         serializer = DefaultPageSerializer(queryset, many=True)
+        return self.get_paginated_response(serializer.data)
+
+    def sitemap_listing_view(self, request):
+        queryset = self.get_queryset().public()
+
+        # Exclude pages that the user doesn't have access to
+        restricted_pages = [
+            restriction.page
+            for restriction in PageViewRestriction.objects.all().select_related("page")
+        ]
+
+        # Exclude the restricted pages and their descendants from the queryset
+        for restricted_page in restricted_pages:
+            queryset = queryset.not_descendant_of(restricted_page, inclusive=True)
+
+        self.check_query_parameters(queryset)
+        queryset = queryset.order_by("id")
+        queryset = self.paginate_queryset(queryset)
+        serializer = PageSitemapSerializer(queryset, many=True)
         return self.get_paginated_response(serializer.data)
 
     def detail_view(self, request, pk):
@@ -236,3 +256,14 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
                 return page
 
         return super().find_object(queryset, request)
+
+    @classmethod
+    def get_urlpatterns(cls):
+        """
+        This returns a list of URL patterns for the endpoint
+        """
+        return super().get_urlpatterns() + [
+            path(
+                "sitemap/", cls.as_view({"get": "sitemap_listing_view"}), name="sitemap"
+            ),
+        ]
