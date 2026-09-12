@@ -1,8 +1,12 @@
+import wagtail.admin.rich_text.editors.draftail.features as draftail_features
 from django.conf import settings
 from django.templatetags.static import static
 from django.urls import path, reverse
 from wagtail import hooks
 from wagtail.admin.menu import MenuItem
+from wagtail.admin.rich_text.converters.html_to_contentstate import (
+    InlineStyleElementHandler,
+)
 
 from .admin_views import invalidate_tree_explorer_cache, tree_explorer_view
 from .models.partner_logos import partner_logo_chooserviewset, partner_logo_modelviewset
@@ -98,6 +102,66 @@ def register_tree_explorer_menu_item():
         icon_name="list-ul",
         order=150,
     )
+
+
+@hooks.register("register_rich_text_features")
+def register_small_feature(features):
+    """
+    Registering the `small` feature, which uses the `SMALL` Draft.js inline style type,
+    and is stored as HTML with a `<small>` tag.
+    """
+    feature_name = "small"
+    type_ = "SMALL"
+    tag = "small"
+
+    control = {
+        "type": type_,
+        "label": "ᵃ",
+        "description": "Small",
+    }
+
+    features.register_editor_plugin(
+        "draftail", feature_name, draftail_features.InlineStyleFeature(control)
+    )
+
+    db_conversion = {
+        "from_database_format": {tag: InlineStyleElementHandler(type_)},
+        "to_database_format": {"style_map": {type_: tag}},
+    }
+
+    features.register_converter_rule("contentstate", feature_name, db_conversion)
+
+    features.default_features.append("small")
+
+
+@hooks.register("register_rich_text_features")
+def register_keyboard_feature(features):
+    """
+    Registering the `keyboard` feature, which uses the `KEYBOARD` Draft.js inline style type,
+    and is stored as HTML with a `<kbd>` tag.
+    """
+    feature_name = "keyboard"
+    type_ = "KEYBOARD"
+    tag = "kbd"
+
+    control = {
+        "type": type_,
+        "label": "⌨️",
+        "description": "Keyboard input",
+    }
+
+    features.register_editor_plugin(
+        "draftail", feature_name, draftail_features.InlineStyleFeature(control)
+    )
+
+    db_conversion = {
+        "from_database_format": {tag: InlineStyleElementHandler(type_)},
+        "to_database_format": {"style_map": {type_: tag}},
+    }
+
+    features.register_converter_rule("contentstate", feature_name, db_conversion)
+
+    features.default_features.append("keyboard")
 
 
 hooks.register("after_create_page")(invalidate_tree_explorer_cache)
