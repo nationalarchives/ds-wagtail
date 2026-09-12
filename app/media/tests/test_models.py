@@ -7,12 +7,189 @@ from django.test import TestCase
 from app.media.blocks import (
     CHAPTER_TIME_VALIDATION_MESSAGE,
     ChapterTimeBlock,
+    MediaChooserBlock,
     normalise_chapter_time_for_display,
 )
+from app.media.fields import MediaDurationFormField
 from app.media.models import EtnaMedia, MediaChapterSectionBlock
 
 
 class TestMediaChapterSectionBlock(TestCase):
+    def test_duration_form_field_uses_hhmmss_input_guidance(self):
+        field = MediaDurationFormField(required=False)
+
+        self.assertEqual(
+            field.help_text,
+            "Enter duration as HH:MM:SS.",
+        )
+        self.assertEqual(
+            field.widget.attrs["placeholder"],
+            "00:00:00",
+        )
+        self.assertEqual(field.prepare_value(3723), "01:02:03")
+
+    def test_duration_form_field_rejects_non_hhmmss_input(self):
+        field = MediaDurationFormField(required=False)
+
+        with self.assertRaises(ValidationError) as invalid_duration:
+            field.clean("12:34")
+
+        self.assertIn(
+            "The accepted format is HH:MM:SS, minutes and seconds must be between 00 and 59.",
+            str(invalid_duration.exception),
+        )
+        self.assertIn("You wrote: '12:34'.", str(invalid_duration.exception))
+
+    def test_duration_form_field_converts_hhmmss_to_seconds(self):
+        field = MediaDurationFormField(required=False)
+
+        self.assertEqual(field.clean("01:02:03"), 3723)
+
+    def test_duration_hhmmss_is_stored_as_seconds(self):
+        media = EtnaMedia.objects.create(
+            title="Test media",
+            file="media/test.mp4",
+            type="video",
+            duration="01:02:03",
+            width=1920,
+            height=1080,
+            thumbnail="media/test.jpg",
+        )
+
+        media.refresh_from_db()
+        self.assertEqual(media.duration, 3723)
+
+    def test_api_duration_returns_seconds(self):
+        media = EtnaMedia(
+            title="Test media",
+            file="media/test.mp4",
+            type="video",
+            duration="01:02:03",
+            width=1920,
+            height=1080,
+            thumbnail="media/test.jpg",
+            description="",
+            transcript="",
+        )
+
+        self.assertEqual(media.api_duration(), 3723)
+
+    def test_media_block_api_representation_uses_duration_seconds(self):
+        media = EtnaMedia(
+            title="Test media",
+            file="media/test.mp4",
+            type="video",
+            duration="01:02:03",
+            width=1920,
+            height=1080,
+            thumbnail="media/test.jpg",
+            description="",
+            transcript="",
+        )
+
+        representation = MediaChooserBlock().get_api_representation(media)
+
+        self.assertEqual(representation["duration"], 3723)
+
+    def test_duration_mmss_is_rejected(self):
+        media = EtnaMedia(
+            title="Test media",
+            file="media/test.mp4",
+            type="video",
+            duration="12:34",
+            width=1920,
+            height=1080,
+            thumbnail="media/test.jpg",
+        )
+
+        with self.assertRaises(ValidationError) as invalid_duration:
+            media.full_clean()
+
+        self.assertIn(
+            "The accepted format is HH:MM:SS, minutes and seconds must be between 00 and 59.",
+            str(invalid_duration.exception),
+        )
+        self.assertIn("You wrote: '12:34'.", str(invalid_duration.exception))
+
+    def test_duration_out_of_range_hhmmss_is_rejected_with_specific_message(self):
+        media = EtnaMedia(
+            title="Test media",
+            file="media/test.mp4",
+            type="video",
+            duration="100:59:99",
+            width=1920,
+            height=1080,
+            thumbnail="media/test.jpg",
+        )
+
+        with self.assertRaises(ValidationError) as invalid_duration:
+            media.full_clean()
+
+        self.assertIn(
+            "The accepted format is HH:MM:SS, minutes and seconds must be between 00 and 59.",
+            str(invalid_duration.exception),
+        )
+        self.assertIn("You wrote: '100:59:99'.", str(invalid_duration.exception))
+
+    def test_duration_rejects_invalid_time_string(self):
+        media = EtnaMedia(
+            title="Test media",
+            file="media/test.mp4",
+            type="video",
+            duration="not-a-time",
+            width=1920,
+            height=1080,
+            thumbnail="media/test.jpg",
+        )
+
+        with self.assertRaises(ValidationError) as invalid_duration:
+            media.full_clean()
+
+        self.assertIn(
+            "The accepted format is HH:MM:SS, minutes and seconds must be between 00 and 59.",
+            str(invalid_duration.exception),
+        )
+        self.assertIn("You wrote: 'not-a-time'.", str(invalid_duration.exception))
+
+    def test_duration_float_is_rejected(self):
+        media = EtnaMedia(
+            title="Test media",
+            file="media/test.mp4",
+            type="video",
+            duration=12.34,
+            width=1920,
+            height=1080,
+            thumbnail="media/test.jpg",
+        )
+
+        with self.assertRaises(ValidationError) as invalid_duration:
+            media.full_clean()
+
+        self.assertIn(
+            "The accepted format is HH:MM:SS, minutes and seconds must be between 00 and 59.",
+            str(invalid_duration.exception),
+        )
+        self.assertIn("You wrote: 12.34.", str(invalid_duration.exception))
+
+    def test_duration_negative_integer_is_rejected(self):
+        media = EtnaMedia(
+            title="Test media",
+            file="media/test.mp4",
+            type="video",
+            duration=-1,
+            width=1920,
+            height=1080,
+            thumbnail="media/test.jpg",
+        )
+
+        with self.assertRaises(ValidationError) as invalid_duration:
+            media.full_clean()
+
+        self.assertIn(
+            "Duration must be greater than or equal to 0.",
+            str(invalid_duration.exception),
+        )
+
     def test_chapter_times_are_stored_as_seconds_but_rendered_as_hhmmss(self):
         media = EtnaMedia.objects.create(
             title="Test media",
