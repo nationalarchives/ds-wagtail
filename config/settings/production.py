@@ -85,12 +85,10 @@ INSTALLED_APPS = [
     "allauth.account",
     "birdbath",
     "wagtail.api.v2",
+    "wagtail.api.v3",
     "wagtail.contrib.frontend_cache",
     "rest_framework",
     "wagtail_headless_preview",
-    "wagtail_2fa",
-    "django_otp",
-    "django_otp.plugins.otp_totp",
 ]
 
 MIDDLEWARE = [
@@ -100,7 +98,6 @@ MIDDLEWARE = [
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
-    "wagtail_2fa.middleware.VerifyUserMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django.middleware.security.SecurityMiddleware",
@@ -147,10 +144,6 @@ AUTHENTICATION_BACKENDS = [
     "allauth.account.auth_backends.AuthenticationBackend",
 ]
 
-WAGTAIL_2FA_REQUIRED = strtobool(os.getenv("WAGTAIL_2FA_REQUIRED", "True"))
-WAGTAIL_2FA_OTP_TOTP_NAME = (
-    f"National Archives Wagtail ({ENVIRONMENT_NAME.capitalize()})"
-)
 WAGTAILIMAGES_IMAGE_FORM_BASE = "app.images.forms.CustomImageAdminForm"
 
 WAGTAIL_AUTOSAVE_INTERVAL = int(
