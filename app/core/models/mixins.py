@@ -290,6 +290,14 @@ class SocialMixin(models.Model):
         ),
     ]
 
+    @cached_property
+    def search_image_field(self):
+        return (
+            self.search_image or self.teaser_image
+            if hasattr(self, "teaser_image")
+            else None
+        )
+
     # API field building blocks for flexible composition
     _social_base_api_meta_fields = [
         APIField("seo_title"),
@@ -298,6 +306,7 @@ class SocialMixin(models.Model):
             "search_image",
             serializer=ImageSerializer(
                 "max-900x900",
+                source="search_image_field",
                 additional_rendition_specs={
                     "square": "fill-512x512",
                     "4x3": "fill-800x600",
