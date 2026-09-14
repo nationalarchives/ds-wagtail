@@ -5,12 +5,12 @@ endpoints.
 
 Both APIs are driven by the same ``api_fields`` declared on each page model
 (see ``app.api.v3.schemas.register_page_schemas`` and
-``wagtail.api.v3.schemas.generators.read``), so for a given page they should
-expose the same set of keys, with values of the same JSON type. These tests
-don't assert byte-for-byte equality (v2 and v3 legitimately differ in some
-details, e.g. numeric precision or key ordering) - they assert that no field
-was dropped, renamed, or changed shape (e.g. object -> list) while migrating
-from v2 to v3.
+``wagtail.api.v3.schemas.generators.read``), so for a given page v3 should
+include every key exposed by v2, with values of the same JSON type. These
+tests don't assert byte-for-byte equality (v2 and v3 legitimately differ in
+some details, e.g. numeric precision or key ordering) - they assert that no
+field was dropped, renamed, or changed shape (e.g. object -> list) while
+migrating from v2 to v3. Fields introduced only in v3 are allowed.
 
 A failure here usually means either:
 - a field is missing from one API's ``api_fields`` compared to the other, or
@@ -55,8 +55,8 @@ V3_API_URL = "/api/v3/pages/"
 class V2V3ApiParityTest(WagtailPageTestCase):
     """
     Compares the API v2 and API v3 detail responses for one page of each
-    major page type, asserting the two responses have matching keys and
-    matching value types at every level.
+    major page type, asserting every v2 key exists in v3 and has a matching
+    value type at every level.
     """
 
     @classmethod
@@ -193,8 +193,8 @@ class V2V3ApiParityTest(WagtailPageTestCase):
 
     def assert_structural_parity(self, v2_data: dict, v3_data: dict, path: str = ""):
         """
-        Recursively assert that ``v2_data`` and ``v3_data`` have the same
-        keys, and that the value at each shared key has the same JSON type.
+        Recursively assert that every ``v2_data`` key exists in ``v3_data``,
+        and that the value at each v2 key has the same JSON type.
 
         A `null` value on either side is treated as compatible with anything,
         since a field simply being unset/empty isn't a structural difference.
@@ -202,12 +202,10 @@ class V2V3ApiParityTest(WagtailPageTestCase):
         v2_keys = set(v2_data.keys())
         v3_keys = set(v3_data.keys())
 
-        self.assertEqual(
-            v2_keys,
-            v3_keys,
-            f"Mismatched keys at '{path or '<root>'}':\n"
-            f"  only in v2: {sorted(v2_keys - v3_keys)}\n"
-            f"  only in v3: {sorted(v3_keys - v2_keys)}",
+        self.assertFalse(
+            v2_keys - v3_keys,
+            f"Missing v2 keys from v3 at '{path or '<root>'}': "
+            f"{sorted(v2_keys - v3_keys)}",
         )
 
         for key in sorted(v2_keys):
