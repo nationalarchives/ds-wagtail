@@ -9,11 +9,11 @@ from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.decorators.cache import never_cache
 from wagtail import urls as wagtail_urls
 from wagtail.admin import urls as wagtailadmin_urls
+from wagtail.api.v3.urls import api
 from wagtail.documents import urls as wagtaildocs_urls
 from wagtail.utils.urlpatterns import decorate_urlpatterns
 
 from app.api.urls import api_router
-from wagtail.api.v3.urls import api
 
 
 def redirect_to_live_site(request):
