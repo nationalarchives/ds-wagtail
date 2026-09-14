@@ -270,29 +270,6 @@ class SocialMixin(models.Model):
         help_text="Image that will appear when this page is shared on social media. This will default to the teaser image if left blank.",
     )
 
-    twitter_og_title = models.CharField(
-        verbose_name="Twitter OpenGraph title",
-        max_length=255,
-        blank=True,
-        null=True,
-        help_text="If left blank, the OpenGraph title will be used.",
-    )
-    twitter_og_description = models.TextField(
-        verbose_name="Twitter OpenGraph description",
-        blank=True,
-        null=True,
-        help_text="If left blank, the OpenGraph description will be used.",
-    )
-    twitter_og_image = models.ForeignKey(
-        get_image_model_string(),
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="+",
-        verbose_name="Twitter OpenGraph image",
-        help_text="If left blank, the OpenGraph image will be used.",
-    )
-
     class Meta:
         abstract = True
 
@@ -311,15 +288,15 @@ class SocialMixin(models.Model):
             ],
             heading="Base OpenGraph data",
         ),
-        MultiFieldPanel(
-            [
-                FieldPanel("twitter_og_title"),
-                FieldPanel("twitter_og_description"),
-                FieldPanel("twitter_og_image"),
-            ],
-            heading="Twitter OpenGraph data",
-        ),
     ]
+
+    @cached_property
+    def search_image_field(self):
+        return (
+            self.search_image or self.teaser_image
+            if hasattr(self, "teaser_image")
+            else None
+        )
 
     # API field building blocks for flexible composition
     _social_base_api_meta_fields = [
@@ -327,13 +304,17 @@ class SocialMixin(models.Model):
         APIField("search_description"),
         APIField(
             "search_image",
-            serializer=ImageSerializer("fill-1200x630"),
-        ),
-        APIField("twitter_og_title"),
-        APIField("twitter_og_description"),
-        APIField(
-            "twitter_og_image",
-            serializer=ImageSerializer("fill-1200x630"),
+            serializer=ImageSerializer(
+                "max-900x900",
+                source="search_image_field",
+                additional_rendition_specs={
+                    "square": "fill-512x512",
+                    "4x3": "fill-800x600",
+                    "16x9": "fill-1200x675",
+                    "static_opengraph": "fill-1200x630",
+                    "dynamic_opengraph": "fill-510x540",
+                },
+            ),
         ),
     ]
 
