@@ -1,4 +1,14 @@
-def parse_chapter_time_string_to_seconds(raw_value):
+HHMMSS_PLACEHOLDER = "00:00:00"
+DURATION_VALIDATION_MESSAGE = (
+    "The accepted format is HH:MM:SS, minutes and seconds must be between 00 and 59."
+)
+
+
+def duration_validation_message(raw_value):
+    return f"{DURATION_VALIDATION_MESSAGE} You wrote: {raw_value!r}."
+
+
+def parse_hhmmss_string_to_seconds(raw_value):
     if not isinstance(raw_value, str):
         return None
 
@@ -15,6 +25,62 @@ def parse_chapter_time_string_to_seconds(raw_value):
     return hours * 3600 + minutes * 60 + seconds
 
 
+def parse_duration_input_to_seconds(raw_value):
+    if raw_value is None:
+        return None
+
+    if isinstance(raw_value, int):
+        return raw_value if raw_value >= 0 else None
+
+    if isinstance(raw_value, str):
+        value = raw_value.strip()
+        return parse_hhmmss_string_to_seconds(value)
+
+    return None
+
+
+def normalise_duration_for_api_seconds(raw_value):
+    if raw_value is None:
+        return None
+
+    if isinstance(raw_value, float):
+        return int(raw_value) if raw_value >= 0 else None
+
+    if isinstance(raw_value, str):
+        value = raw_value.strip()
+        if value.isdigit():
+            return int(value)
+
+    return parse_duration_input_to_seconds(raw_value)
+
+
+def parse_chapter_input_to_seconds(raw_value):
+    if isinstance(raw_value, str):
+        value = raw_value.strip()
+        if value.isdigit():
+            return int(value)
+
+    return parse_duration_input_to_seconds(raw_value)
+
+
+def format_seconds_hhmmss(total_seconds):
+    total_seconds = max(int(total_seconds or 0), 0)
+    hours, remainder = divmod(total_seconds, 3600)
+    minutes, seconds = divmod(remainder, 60)
+    return f"{hours:02d}:{minutes:02d}:{seconds:02d}"
+
+
+def normalise_hhmmss_for_display(value, parser):
+    if value in (None, ""):
+        return value
+
+    seconds = parser(value)
+    if seconds is None:
+        return value
+
+    return format_seconds_hhmmss(seconds)
+
+
 def parse_chapter_time_to_seconds(raw_value):
     if raw_value is None:
         return None
@@ -27,13 +93,6 @@ def parse_chapter_time_to_seconds(raw_value):
         if value.isdigit():
             return int(value)
 
-        return parse_chapter_time_string_to_seconds(value)
+        return parse_hhmmss_string_to_seconds(value)
 
     return None
-
-
-def format_seconds_hhmmss(total_seconds):
-    total_seconds = max(int(total_seconds or 0), 0)
-    hours, remainder = divmod(total_seconds, 3600)
-    minutes, seconds = divmod(remainder, 60)
-    return f"{hours:02d}:{minutes:02d}:{seconds:02d}"

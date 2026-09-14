@@ -58,6 +58,8 @@ class MediaAPITest(WagtailPageTestCase):
         self.assertTrue(
             all(isinstance(chapter["time"], int) for chapter in media_item["chapters"])
         )
+        self.assertEqual(media_item["duration"], 10)
+        self.assertIsInstance(media_item["duration"], int)
 
     def test_media_detail_returns_chapters_as_sorted_seconds(self):
         response = self.request_api(f"/api/v2/media/{self.media.uuid}/")
@@ -69,3 +71,5 @@ class MediaAPITest(WagtailPageTestCase):
         self.assertTrue(
             all(isinstance(chapter["time"], int) for chapter in payload["chapters"])
         )
+        self.assertEqual(payload["duration"], 10)
+        self.assertIsInstance(payload["duration"], int)
