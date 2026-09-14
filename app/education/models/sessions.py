@@ -287,6 +287,7 @@ class EducationSessionPage(
     description = StreamField(
         [("content_section", SessionDescriptionBlock())],
         verbose_name="description",
+        help_text="Headings may include 'Subjects covered in this workshop', 'What to expect in [type of session]', and 'Connections to the curriculum'",
         blank=True,
         null=True,
         min_num=1,

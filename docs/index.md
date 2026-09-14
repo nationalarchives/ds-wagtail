@@ -7,12 +7,6 @@
 To create all the relevant Docker containers, run:
 
 ```sh
-# Copy the example .env file
-cp .env.example .env
-
-# Set .env values for:
-#   - ROSETTA_API_URL
-
 # Build and start the containers defined in docker-compose.yml
 docker compose up -d
 ```

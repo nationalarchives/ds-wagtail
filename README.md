@@ -3,12 +3,6 @@
 ## Quickstart
 
 ```sh
-# Copy the example .env file
-cp .env.example .env
-
-# Set .env values for:
-#   - ROSETTA_API_URL
-
 # Build and start the containers
 docker compose up -d
 ```
