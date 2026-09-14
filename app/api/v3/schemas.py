@@ -98,18 +98,14 @@ class SitePageMetaSchema(PageMetaSchema):
         return value.isoformat() if value else None
 
     @staticmethod
-    def resolve_search_image(
-        obj: AbstractPage, context: dict
-    ) -> ImageSchema | None:
+    def resolve_search_image(obj: AbstractPage, context: dict) -> ImageSchema | None:
         return _serialize_image(
             _image_serializer_for(obj, "search_image", _search_image_serializer),
             getattr(obj, "search_image", None),
         )
 
     @staticmethod
-    def resolve_teaser_image(
-        obj: AbstractPage, context: dict
-    ) -> ImageSchema | None:
+    def resolve_teaser_image(obj: AbstractPage, context: dict) -> ImageSchema | None:
         return _serialize_image(
             _image_serializer_for(obj, "teaser_image", _teaser_image_serializer),
             getattr(obj, "teaser_image", None),
