@@ -305,11 +305,11 @@ class SocialMixin(models.Model):
         APIField(
             "search_image",
             serializer=ImageSerializer(
-                "max-900x900",
+                "max-1200x1200",
                 source="search_image_field",
                 additional_rendition_specs={
-                    "square": "fill-512x512",
-                    "4x3": "fill-800x600",
+                    "square": "fill-1200x1200",
+                    "4x3": "fill-1200x900",
                     "16x9": "fill-1200x675",
                     "static_opengraph": "fill-1200x630",
                     "dynamic_opengraph": "fill-510x540",
