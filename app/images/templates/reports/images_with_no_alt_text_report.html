@@ -1,22 +1,9 @@
 {% extends "wagtailadmin/reports/base_report.html" %}
 
 {% block results %}
-<table>
-    <thead>
-        <tr>
-            <th>Image</th>
-            <th>Title</th>
-            <th>Alt Text</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for image in queryset %}
-        <tr>
-            <td><img src="{{ image.file.url }}" alt="{{ image.description }}" style="max-width: 100px;"></td>
-            <td>{{ image.title }}</td>
-            <td>{{ image.description }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+    {% include "reports/_list_images_with_no_alt_text.html" %}
+{% endblock %}
+
+{% block no_results_message %}
+    <p>No images without alt text found.</p>
 {% endblock %}
