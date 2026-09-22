@@ -1,6 +1,7 @@
 from wagtail.admin.filters import WagtailFilterSet
 from wagtail.admin.ui.tables import Column, DateColumn, TitleColumn
 from wagtail.admin.views.reports import ReportView
+from wagtail.models import ReferenceIndex
 
 from .models import CustomImage
 
@@ -36,3 +37,13 @@ class ImagesWithNoAltTextReport(ReportView):
         Column("usage_count", label="Usage count"),
         DateColumn("created_at", label="Created at", sort_key="created_at"),
     ]
+
+    def get_queryset(self):
+        # select_related avoids a query per row for the collection column, and
+        # annotate avoids one for usage_count (both of which cause an N+1 query problem)
+        return (
+            super()
+            .get_queryset()
+            .select_related("collection")
+            .annotate(usage_count=ReferenceIndex.usage_count_subquery(CustomImage))
+        )
