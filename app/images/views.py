@@ -20,6 +20,7 @@ class ImagesWithNoAltTextReport(ReportView):
     Report showing all images that have no alt text (description is empty).
     """
 
+    model = CustomImage
     index_url_name = "images_with_no_alt_text_report"
     index_results_url_name = "images_with_no_alt_text_report_results"
     header_icon = "image"
@@ -35,15 +36,3 @@ class ImagesWithNoAltTextReport(ReportView):
         Column("usage_count", label="Usage count"),
         DateColumn("created_at", label="Created at", sort_key="created_at"),
     ]
-
-    def get_queryset(self):
-        queryset = CustomImage.objects.filter(description="")
-
-        ordering = self.request.GET.get("ordering")
-
-        if ordering in ["title", "-title", "created_at", "-created_at"]:
-            queryset = queryset.order_by(ordering)
-        else:
-            queryset = queryset.order_by("-created_at")
-
-        return queryset
