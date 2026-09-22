@@ -1,6 +1,3 @@
-import csv
-import io
-
 from django.contrib.auth import get_user_model
 from django.db import connection
 from django.test import TestCase
@@ -9,7 +6,6 @@ from django.urls import reverse
 from wagtail.models import Site
 from wagtail_factories import CollectionFactory, ImageFactory
 
-from app.articles.factories import ArticlePageFactory
 from app.images.models import CustomImage
 
 
