@@ -59,7 +59,7 @@ class Command(BaseCommand):
     def _log_processing_error(self, model, field, exc):
         self.stdout.write(
             self.style.WARNING(
-                f"Error processing {model.__name__}.{field.name}: {str(exc)}"
+                f"Error processing {model.__name__}.{field.name}: {exc!s}"
             )
         )
 

@@ -65,8 +65,8 @@ def iter_block_types(stream_data):
                 yield from walk(child_value)
             return
 
-        if hasattr(value, "items") and not isinstance(value, dict):
-            for _, child_value in value.items():
+        if hasattr(value, "values") and not isinstance(value, dict):
+            for child_value in value.values():
                 yield from walk(child_value)
             return
 

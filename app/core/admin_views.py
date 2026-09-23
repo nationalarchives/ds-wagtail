@@ -193,7 +193,7 @@ def block_usage_report_view(request):
     page_num = request.GET.get("page", 1)
     try:
         page_obj = paginator.page(page_num)
-    except Exception:
+    except Exception:  # noqa: BLE001
         page_obj = paginator.page(1)
 
     return render(
