@@ -44,6 +44,7 @@ class ImagesWithNoAltTextReport(ReportView):
         return (
             super()
             .get_queryset()
+            .filter(description="")
             .select_related("collection")
             .annotate(usage_count=ReferenceIndex.usage_count_subquery(CustomImage))
         )
