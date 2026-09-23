@@ -4,6 +4,8 @@ from django.urls import path, reverse
 from wagtail import hooks
 from wagtail.admin.menu import MenuItem
 
+from app.images.views import ImagesWithNoAltTextReport
+
 from .admin_views import (
     block_usage_report_view,
     invalidate_tree_explorer_cache,
@@ -109,7 +111,7 @@ def register_tree_explorer_menu_item():
     )
 
 
-@hooks.register("register_admin_menu_item")
+@hooks.register("register_reports_menu_item")
 def register_block_usage_report_menu_item():
     return MenuItem(
         "Block usage",
@@ -117,6 +119,32 @@ def register_block_usage_report_menu_item():
         icon_name="terminal",
         order=160,
     )
+
+
+@hooks.register("register_reports_menu_item")
+def register_images_with_no_alt_text_report_menu_item():
+    return MenuItem(
+        label=ImagesWithNoAltTextReport.page_title,
+        url=reverse("images_with_no_alt_text_report"),
+        icon_name=ImagesWithNoAltTextReport.header_icon,
+        order=200,
+    )
+
+
+@hooks.register("register_admin_urls")
+def register_images_with_no_alt_text_report_url():
+    return [
+        path(
+            "reports/images-with-no-alt-text/",
+            ImagesWithNoAltTextReport.as_view(),
+            name="images_with_no_alt_text_report",
+        ),
+        path(
+            "reports/images-with-no-alt-text/results/",
+            ImagesWithNoAltTextReport.as_view(results_only=True),
+            name="images_with_no_alt_text_report_results",
+        ),
+    ]
 
 
 hooks.register("after_create_page")(invalidate_tree_explorer_cache)

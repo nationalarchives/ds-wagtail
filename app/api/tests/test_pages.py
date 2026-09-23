@@ -6,7 +6,7 @@ from unittest.mock import patch
 
 from django.conf import settings
 from django.core.cache import cache
-from wagtail.models import Site
+from wagtail.models import PageViewRestriction, Site
 from wagtail.test.utils import WagtailPageTestCase
 from wagtail_factories import ImageFactory
 
@@ -471,6 +471,46 @@ class APIResponseTest(WagtailPageTestCase):
 
     def test_pages_route(self):
         self.compare_json("", "pages")
+
+    def test_sitemap_listing_view(self):
+        response = self.request_api("sitemap")
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+
+        # Sitemap items should only ever expose these two fields
+        for item in data["items"]:
+            self.assertEqual(set(item.keys()), {"last_published_at", "full_url"})
+
+        expected_full_urls = {
+            page.full_url for page in self.root_page.get_descendants(inclusive=True)
+        }
+        self.assertEqual(
+            {item["full_url"] for item in data["items"]}, expected_full_urls
+        )
+
+        matching_items = [
+            item for item in data["items"] if item["full_url"] == self.article.full_url
+        ]
+        self.assertEqual(len(matching_items), 1)
+        self.assertEqual(
+            matching_items[0]["last_published_at"],
+            self.article.last_published_at.isoformat().replace("+00:00", "Z"),
+        )
+
+    def test_sitemap_listing_view_excludes_restricted_pages(self):
+        restriction = PageViewRestriction.objects.create(
+            page=self.article_index,
+            restriction_type=PageViewRestriction.PASSWORD,
+            password="secret",
+        )
+        try:
+            response = self.request_api("sitemap")
+            full_urls = {item["full_url"] for item in response.json()["items"]}
+            # The restricted page and its descendants should be excluded
+            self.assertNotIn(self.article_index.full_url, full_urls)
+            self.assertNotIn(self.article.full_url, full_urls)
+        finally:
+            restriction.delete()
 
     def test_multiple_page_routes(self):
         cache.delete(f"record_instance_{self.record_article.record}")
