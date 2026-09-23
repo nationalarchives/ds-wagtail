@@ -13,7 +13,7 @@ class ViewSetImageSerializer(ImageSerializer):
     Serializer for images in the /images endpoint.
     """
 
-    rendition_size = "max-900x900"
+    rendition_size = "max-1200x1200"
     jpeg_quality = 60
     webp_quality = 70
     background_colour = "fff"
