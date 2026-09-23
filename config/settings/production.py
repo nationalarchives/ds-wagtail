@@ -238,6 +238,7 @@ MEDIA_URL = "media/"
 MEDIA_PAGE_URL = os.getenv("MEDIA_PAGE_URL", WAGTAILAPI_MEDIA_BASE_URL)
 
 WAGTAILMEDIA = {
+    "ENABLE_API_V3": True,
     "MEDIA_MODEL": "media.EtnaMedia",
     "AUDIO_EXTENSIONS": [
         # "aac",
