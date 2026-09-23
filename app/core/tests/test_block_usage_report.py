@@ -68,6 +68,8 @@ class BlockUsageReportTests(TestCase):
         self.assertContains(response, "3")
         self.assertContains(response, "Getting started")
         self.assertContains(response, "Gallery")
+        self.assertContains(response, "2 uses")
+        self.assertContains(response, "1 use")
         self.assertEqual(response.context["total_blocks"], 4)
 
     def test_block_usage_report_passes_filter_to_query(self):
