@@ -4,6 +4,7 @@ from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.core.validators import FileExtensionValidator
 from django.db import models
+from django.utils.functional import cached_property
 from modelcluster.models import ClusterableModel
 from wagtail.api import APIField
 from wagtail.fields import RichTextField
@@ -104,6 +105,7 @@ class CustomImage(ClusterableModel, AbstractImage):
         validators=[FileExtensionValidator(["csv", "xlsx", "xls"])],
     )
 
+    @cached_property
     def usage_count(self):
         return self.get_usage().count()
 
