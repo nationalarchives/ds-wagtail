@@ -129,7 +129,7 @@ class ImageSerializer(Serializer):
     }
 
     The source of the image can also be set in the serializer, e.g:
-    APIField("image_large", serializer=ImageSerializer(rendition_size="fill-900x900", source="image"))
+    APIField("image_large", serializer=ImageSerializer(rendition_size="fill-1200x1200", source="image"))
 
     This will come back as `image_large` in the API response.
     """
