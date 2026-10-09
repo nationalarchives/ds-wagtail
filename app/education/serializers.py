@@ -1,7 +1,13 @@
 from rest_framework import serializers
-from wagtail.api.v2.serializers import StreamField as StreamFieldSerializer
 
 from app.core.serializers import DefaultPageSerializer, RichTextSerializer
+
+
+class LazyStreamFieldSerializer(serializers.Field):
+    def to_representation(self, value):
+        from wagtail.api.v2.serializers import StreamField as StreamFieldSerializer
+
+        return StreamFieldSerializer().to_representation(value)
 
 
 class KeyStageSerializer(serializers.Serializer):
@@ -27,10 +33,10 @@ class ThemeSerializer(serializers.Serializer):
 
 class SourceSerializer(serializers.Serializer):
     title = serializers.CharField()
-    media = StreamFieldSerializer()
-    featured_link = StreamFieldSerializer()
+    media = LazyStreamFieldSerializer()
+    featured_link = LazyStreamFieldSerializer()
     description = RichTextSerializer()
-    question = StreamFieldSerializer()
+    question = LazyStreamFieldSerializer()
 
 
 class CurriculumConnectionSerializer(serializers.Serializer):
