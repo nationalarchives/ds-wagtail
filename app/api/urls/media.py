@@ -11,6 +11,7 @@ class CustomMediaItemSerializer(MediaItemSerializer):
     def to_representation(self, instance):
         representation = super().to_representation(instance)
         representation["uuid"] = instance.uuid
+        representation["duration"] = instance.api_duration()
         return representation | {
             "chapters": instance.api_chapters(),
             "subtitles_file": instance.subtitles_file_url,
@@ -44,6 +45,7 @@ class CustomMediaAPIViewSet(MediaAPIViewSet):
         "chapters_file",
         "chapters_file_full_url",
     ]
+
     meta_fields.remove("download_url")
     meta_fields.remove("detail_url")
 

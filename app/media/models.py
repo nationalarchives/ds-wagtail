@@ -14,7 +14,11 @@ from wagtailmedia.settings import wagtailmedia_settings
 from app.core.blocks.paragraph import APIRichTextBlock
 from app.core.serializers import RichTextSerializer
 from app.media.blocks import ChapterTimeBlock
-from app.media.time_utils import parse_chapter_time_to_seconds
+from app.media.fields import MediaDurationField
+from app.media.time_utils import (
+    normalise_duration_for_api_seconds,
+    parse_chapter_time_to_seconds,
+)
 
 
 class MediaChapterSectionBlock(blocks.StructBlock):
@@ -47,6 +51,7 @@ class EtnaMedia(AbstractMedia):
         unique=True,
         verbose_name="UUID",
     )
+    duration = MediaDurationField()
     audio_described_file = models.FileField(
         blank=True,
         null=True,
@@ -185,6 +190,9 @@ class EtnaMedia(AbstractMedia):
             chapter_payload
             for _, chapter_payload in sorted(chapter_pairs, key=lambda pair: pair[0])
         ]
+
+    def api_duration(self):
+        return normalise_duration_for_api_seconds(self.duration)
 
     api_fields = [
         APIField("type"),
