@@ -29,8 +29,8 @@ class DummyImage:
         self.alternative_format = alt_file
         self.alternative_format_data = {
             "heading": "test",
-            "url": "/url/here",
-            "full_url": "localhost:8000/url/here",
+            "url": alt_file.url,
+            "full_url": "https://example.com" + alt_file.url,
             "file_type": _extract_file_type(alt_file),
             "file_size": alt_file.size if alt_file else None,
         }
