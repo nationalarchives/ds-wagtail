@@ -3,7 +3,11 @@ from unittest.mock import patch
 from django.conf import settings
 from django.test import TestCase, override_settings
 
-from app.core.serializers.images import DetailedImageSerializer, ImageSerializer
+from app.core.serializers.images import (
+    DetailedImageSerializer,
+    ImageSerializer,
+    _extract_file_type,
+)
 
 
 class DummyFile:
@@ -27,9 +31,7 @@ class DummyImage:
             "heading": "test",
             "url": "/url/here",
             "full_url": "localhost:8000/url/here",
-            "file_type": alt_file.name.split(".")[-1]
-            if alt_file and "." in alt_file.name
-            else None,
+            "file_type": _extract_file_type(alt_file),
             "file_size": alt_file.size if alt_file else None,
         }
         self.transcription = transcription
