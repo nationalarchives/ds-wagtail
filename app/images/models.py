@@ -12,6 +12,7 @@ from wagtail.images.models import AbstractImage, AbstractRendition, Image
 from wagtail.search import index
 
 from app.core.serializers import RichTextSerializer
+from app.core.serializers.images import _extract_file_size, _extract_file_type
 
 
 class TranscriptionHeadingChoices(models.TextChoices):
@@ -106,6 +107,21 @@ class CustomImage(ClusterableModel, AbstractImage):
     )
 
     @cached_property
+    def alternative_format_data(self):
+        if item := self.alternative_format:
+            return {
+                "heading": self.get_alternative_format_heading_display(),
+                "url": item.url,
+                "full_url": (settings.WAGTAILAPI_MEDIA_BASE_URL + item.path)
+                if item
+                else None,
+                "file_type": _extract_file_type(item),
+                "file_size": _extract_file_size(item),
+            }
+
+        return None
+
+    @cached_property
     def usage_count(self):
         return self.get_usage().count()
 
@@ -142,8 +158,7 @@ class CustomImage(ClusterableModel, AbstractImage):
         APIField("transcription", serializer=RichTextSerializer()),
         APIField("translation_heading"),
         APIField("translation", serializer=RichTextSerializer()),
-        APIField("alternative_format_heading"),
-        APIField("alternative_format"),
+        APIField("alternative_format_data"),
     ]
 
     admin_form_fields = Image.admin_form_fields + (
