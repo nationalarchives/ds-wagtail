@@ -23,6 +23,7 @@ class DummyImage:
         alt_heading=None,
     ):
         self.alternative_format = alt_file
+        self.alternative_format_data = None
         self.transcription = transcription
         self.translation = translation
         self.copyright = copyright
