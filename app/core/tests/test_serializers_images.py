@@ -23,7 +23,15 @@ class DummyImage:
         alt_heading=None,
     ):
         self.alternative_format = alt_file
-        self.alternative_format_data = None
+        self.alternative_format_data = {
+            "heading": "test",
+            "url": "/url/here",
+            "full_url": "localhost:8000/url/here",
+            "file_type": alt_file.name.split(".")[-1]
+            if alt_file and "." in alt_file.name
+            else None,
+            "file_size": alt_file.size if alt_file else None,
+        }
         self.transcription = transcription
         self.translation = translation
         self.copyright = copyright
