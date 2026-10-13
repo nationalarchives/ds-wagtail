@@ -54,6 +54,7 @@ def base_repr():
 
 
 class TestDetailedImageSerializerAlternativeFormat(TestCase):
+    @override_settings(WAGTAILAPI_MEDIA_BASE_URL="https://example.com")
     def test_alternative_format_file_object_default_full_url(self):
         alt = DummyFile(
             "/media/images/alternative_formats/table.csv",
