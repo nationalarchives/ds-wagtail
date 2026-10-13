@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     "app.images",
     "app.media",
     "app.navigation",
+    "app.research",
     "app.users",
     "app.whatson",
     "wagtail.contrib.forms",
