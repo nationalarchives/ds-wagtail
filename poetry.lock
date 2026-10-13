@@ -53,18 +53,18 @@ lxml = ["lxml"]
 
 [[package]]
 name = "boto3"
-version = "1.43.95"
-description = "The AWS SDK for Python"
+version = "1.43.108"
+description = "The AWS SDK for Python (Boto3)"
 optional = false
 python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "boto3-1.43.95-py3-none-any.whl", hash = "sha256:c906921c4f9ab41e9587af6586f072c8f2be6979e8bde2ec26aa443bb1745019"},
-    {file = "boto3-1.43.95.tar.gz", hash = "sha256:9d71f299111e1f4e8c28f573a1b7c0555fe40d2147fe9bef852a02bd57cbde60"},
+    {file = "boto3-1.43.108-py3-none-any.whl", hash = "sha256:19e9da95ef0c494e27052049a42137550e66730509bb613e76eaa30ddf9a7170"},
+    {file = "boto3-1.43.108.tar.gz", hash = "sha256:03341f089158368acf83e921aca98b706095322ca52bc4c039a616940aa5ad41"},
 ]
 
 [package.dependencies]
-botocore = ">=1.43.95,<1.44.0"
+botocore = ">=1.43.108,<1.44.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.19.0,<0.20.0"
 
@@ -73,14 +73,14 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.43.95"
+version = "1.43.108"
 description = "Low-level, data-driven core of boto 3."
 optional = false
 python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "botocore-1.43.95-py3-none-any.whl", hash = "sha256:0fda26d16c7c7bf7082c421390a817b696f98a43d3da7c43dbbb093f76662876"},
-    {file = "botocore-1.43.95.tar.gz", hash = "sha256:779588da32bd48a7bb0c097da4bcb747260e86d2bfc507369dca56f1450e0722"},
+    {file = "botocore-1.43.108-py3-none-any.whl", hash = "sha256:ab9d16c6b4350aaa54ed28202dfa2998b2d735fdbf3247eb60af469d8d48a5b8"},
+    {file = "botocore-1.43.108.tar.gz", hash = "sha256:ee4f75cf3bdbb0da7912e089950e8112f692016539d939312c771499958e6cfd"},
 ]
 
 [package.dependencies]
@@ -333,14 +333,14 @@ bcrypt = ["bcrypt (>=4.1.1)"]
 
 [[package]]
 name = "django-allauth"
-version = "65.19.3"
+version = "65.19.7"
 description = "Integrated set of Django applications addressing authentication, registration, account management as well as 3rd party (social) account authentication."
 optional = false
 python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "django_allauth-65.19.3-py3-none-any.whl", hash = "sha256:5dc1936001bd33771d453032366af25fc16fcd35a93789f46206d5d2a7cc83e0"},
-    {file = "django_allauth-65.19.3.tar.gz", hash = "sha256:2267b66c3212645ef2f1b26bc46ca220abea6281cd78c7014a427a1f759137a3"},
+    {file = "django_allauth-65.19.7-py3-none-any.whl", hash = "sha256:8899377f38afabf10445c9ee2f808a730304ca8aecc540657d51a8b3928283d6"},
+    {file = "django_allauth-65.19.7.tar.gz", hash = "sha256:c7749551b659ca954e483f6f634cd0c262d65dd8144f5219b3a31cba0426e981"},
 ]
 
 [package.dependencies]
@@ -350,11 +350,11 @@ Django = ">=4.2.16"
 [package.extras]
 headless = ["pyjwt[crypto] (>=2.0,<3)"]
 headless-spec = ["PyYAML (>=6,<7)"]
-idp-oidc = ["oauthlib (>=3.3.0,<4)", "pyjwt[crypto] (>=2.0,<3)"]
+idp-oidc = ["oauthlib (>=4.0.0,<5)", "pyjwt[crypto] (>=2.0,<3)"]
 mfa = ["fido2 (>=1.1.2,<3)", "qrcode (>=7.0.0,<9)"]
 openid = ["python3-openid (>=3.0.8,<4)"]
 saml = ["python3-saml (>=1.15.0,<2.0.0)"]
-socialaccount = ["oauthlib (>=3.3.0,<4)", "pyjwt[crypto] (>=2.0,<3)", "requests (>=2.0.0,<3)"]
+socialaccount = ["oauthlib (>=4.0.0,<5)", "pyjwt[crypto] (>=2.0,<3)", "requests (>=2.0.0,<3)"]
 steam = ["python3-openid (>=3.0.8,<4)"]
 
 [[package]]
@@ -1778,4 +1778,4 @@ wand = ["Wand (>=0.6,<1.0)"]
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.14"
-content-hash = "852e488bae10400fd47abf16df5bd3cf22809671c399b2a3f643819c088e7015"
+content-hash = "a1ee73226dc1266ef03e73d18a0f5be01dd0aca5e4c1929c2f2a4de1af0814b4"
