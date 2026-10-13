@@ -129,7 +129,7 @@
                     "text": "<p>Translation</p>"
                 },
                 "copyright": "Copyrighted by someone",
-                "alternative_format": null
+                "alternative_format_data": null
             },
             "description": "<p>Test description</p>",
             "record": {
