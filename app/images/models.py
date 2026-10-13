@@ -106,6 +106,12 @@ class CustomImage(ClusterableModel, AbstractImage):
     )
 
     @cached_property
+    def alternative_format_location(self):
+        if self.alternative_format:
+            return settings.WAGTAILAPI_MEDIA_BASE_URL + self.alternative_format.path
+        return None
+
+    @cached_property
     def usage_count(self):
         return self.get_usage().count()
 
@@ -143,7 +149,7 @@ class CustomImage(ClusterableModel, AbstractImage):
         APIField("translation_heading"),
         APIField("translation", serializer=RichTextSerializer()),
         APIField("alternative_format_heading"),
-        APIField("alternative_format"),
+        APIField("alternative_format_location"),
     ]
 
     admin_form_fields = Image.admin_form_fields + (
