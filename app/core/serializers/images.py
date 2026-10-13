@@ -213,7 +213,7 @@ class DetailedImageSerializer(ImageSerializer):
                         {
                             "heading": value.get_alternative_format_heading_display(),
                             "url": value.alternative_format.url,
-                            "full_url": value.alternative_format_location,
+                            "full_url": value.alternative_format_location if value.alternative_format_location else None,
                             "file_type": _extract_file_type(value.alternative_format),
                             "file_size": _extract_file_size(value.alternative_format),
                         }
