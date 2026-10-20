@@ -391,12 +391,15 @@ if FRONTEND_CACHE_AWS_DISTRIBUTION_ID := os.getenv(
     )
 if FRONTEND_CACHE_AWS_DISTRIBUTION_ID_WEBARCHIVE := os.getenv(
     "FRONTEND_CACHE_AWS_DISTRIBUTION_ID_WEBARCHIVE", ""
+) and (
+    FRONTEND_CACHE_AWS_BEARER_TOKEN_WEBARCHIVE := os.getenv(
+        "FRONTEND_CACHE_AWS_BEARER_TOKEN_WEBARCHIVE", ""
+    )
 ):
     WAGTAILFRONTENDCACHE["webarchive"] = {
         "BACKEND": "wagtail.contrib.frontend_cache.backends.CloudfrontBackend",
-        "DISTRIBUTION_ID": os.getenv(
-            "FRONTEND_CACHE_AWS_DISTRIBUTION_ID_WEBARCHIVE", ""
-        ),
+        "DISTRIBUTION_ID": FRONTEND_CACHE_AWS_DISTRIBUTION_ID_WEBARCHIVE,
+        "BEARER_TOKEN": FRONTEND_CACHE_AWS_BEARER_TOKEN_WEBARCHIVE,
         "HOSTNAMES": ["webarchive.nationalarchives.gov.uk"],
     }
 

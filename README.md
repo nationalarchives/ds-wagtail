@@ -46,6 +46,7 @@ In addition to the [base Docker image variables](https://github.com/nationalarch
 | `ENVIRONMENT_NAME`                              | Environment label used in UI/email text                                   | `production`                                            |
 | `FRONTEND_CACHE_AWS_DISTRIBUTION_ID`            | CloudFront distribution id for Wagtail frontend cache invalidation        | `""`                                                    |
 | `FRONTEND_CACHE_AWS_DISTRIBUTION_ID_WEBARCHIVE` | CloudFront distribution id for Web Archive frontend cache invalidation    | `""`                                                    |
+| `FRONTEND_CACHE_AWS_BEARER_TOKEN_WEBARCHIVE`    | The bearer token for the Web Archive frontend cache invalidation          | `""`                                                    |
 | `LOG_LEVEL`                                     | Root logger level                                                         | `warning`                                               |
 | `MEDIA_PAGE_URL`                                | Base URL used for live media page links                                   | `WAGTAILAPI_MEDIA_BASE_URL`                             |
 | `NEW_LABEL_DISPLAY_FOR_DAYS`                    | Number of days to show "new" labels                                       | `21`                                                    |
