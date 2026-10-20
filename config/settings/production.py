@@ -371,12 +371,34 @@ RECORD_DETAILS_CACHE_TIMEOUT = int(
     os.getenv("RECORD_DETAILS_CACHE_TIMEOUT", "2592000")  # 30 days
 )
 
-WAGTAILFRONTENDCACHE = {
-    "cloudfront": {
+WAGTAILFRONTENDCACHE = {}
+if FRONTEND_CACHE_AWS_DISTRIBUTION_ID := os.getenv(
+    "FRONTEND_CACHE_AWS_DISTRIBUTION_ID", ""
+):
+    WAGTAILFRONTENDCACHE["main"] = (
+        {
+            "BACKEND": "wagtail.contrib.frontend_cache.backends.CloudfrontBackend",
+            "DISTRIBUTION_ID": FRONTEND_CACHE_AWS_DISTRIBUTION_ID,
+            "HOSTNAMES": [
+                "www.nationalarchives.gov.uk",
+                "staging-www.nationalarchives.gov.uk",
+                "dev-www.nationalarchives.gov.uk",
+                "wagtail.nationalarchives.gov.uk",
+                "staging-wagtail.nationalarchives.gov.uk",
+                "dev-wagtail.nationalarchives.gov.uk",
+            ],
+        },
+    )
+if FRONTEND_CACHE_AWS_DISTRIBUTION_ID_WEBARCHIVE := os.getenv(
+    "FRONTEND_CACHE_AWS_DISTRIBUTION_ID_WEBARCHIVE", ""
+):
+    WAGTAILFRONTENDCACHE["webarchive"] = {
         "BACKEND": "wagtail.contrib.frontend_cache.backends.CloudfrontBackend",
-        "DISTRIBUTION_ID": os.getenv("FRONTEND_CACHE_AWS_DISTRIBUTION_ID", ""),
-    },
-}
+        "DISTRIBUTION_ID": os.getenv(
+            "FRONTEND_CACHE_AWS_DISTRIBUTION_ID_WEBARCHIVE", ""
+        ),
+        "HOSTNAMES": ["webarchive.nationalarchives.gov.uk"],
+    }
 
 WAGTAILAPI_AUTHENTICATION = strtobool(os.getenv("WAGTAILAPI_AUTHENTICATION", "True"))
 WAGTAILAPI_LIMIT_MAX = int(os.getenv("WAGTAILAPI_LIMIT_MAX", "0")) or None
