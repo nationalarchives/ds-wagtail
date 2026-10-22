@@ -1,7 +1,7 @@
 import json
 import os
 import re
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from unittest.mock import patch
 
 from django.conf import settings
@@ -32,11 +32,11 @@ from app.people.models import AuthorTag, PersonRole, PersonRoleSelection
 
 API_URL = "/api/v2/pages/"
 
-DATE_1 = datetime(2000, 1, 1, tzinfo=timezone.utc)
+DATE_1 = datetime(2000, 1, 1, tzinfo=UTC)
 
-DATE_2 = datetime(2000, 1, 2, tzinfo=timezone.utc)
+DATE_2 = datetime(2000, 1, 2, tzinfo=UTC)
 
-DATE_3 = datetime(2000, 1, 3, tzinfo=timezone.utc)
+DATE_3 = datetime(2000, 1, 3, tzinfo=UTC)
 
 FILE_PATH = os.path.join(os.path.dirname(__file__), "expected_results")
 

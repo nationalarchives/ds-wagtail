@@ -13,7 +13,7 @@ django-redis = "7.0.0"
 django-taggit = "6.1.0"
 pillow-heif = "1.7.0"
 psycopg2-binary = "2.9.13"
-python = "^3.14"
+python = "^3.13"
 python-magic = "0.4.27"
 sentry-sdk = "2.68.1"
 wagtail = "7.4.3"
@@ -43,4 +43,4 @@ DJANGO_SETTINGS_MODULE = "config.settings.test"
 
 [solver]
 min-release-age = 7
-min-release-age-exclude = "tna-utilities,tna-frontend-jinja"
+min-release-age-exclude = "tna-frontend-jinja,tna-utilities,tna-ruff-config"
