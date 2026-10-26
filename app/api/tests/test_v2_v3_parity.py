@@ -17,7 +17,7 @@ A failure here usually means either:
 - a custom serializer/schema override needs updating to match the other API.
 """
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from wagtail.models import Site
 from wagtail.test.utils import WagtailPageTestCase
@@ -46,7 +46,7 @@ from app.home.factories import HomePageFactory
 from app.people.factories import PeopleIndexPageFactory, PersonPageFactory
 from app.whatson.factories import WhatsOnPageFactory
 
-DATE_1 = datetime(2000, 1, 1, tzinfo=timezone.utc)
+DATE_1 = datetime(2000, 1, 1, tzinfo=UTC)
 
 V2_API_URL = "/api/v2/pages/"
 V3_API_URL = "/api/v3/pages/"
