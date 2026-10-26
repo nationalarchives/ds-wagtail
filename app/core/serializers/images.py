@@ -1,7 +1,6 @@
 from os.path import basename, splitext
 from urllib.parse import urlparse
 
-from django.conf import settings
 from rest_framework.serializers import Serializer
 
 
@@ -210,23 +209,9 @@ class DetailedImageSerializer(ImageSerializer):
                         else None
                     ),
                     "copyright": value.copyright if value.copyright else None,
-                    "alternative_format": (
-                        {
-                            "heading": value.get_alternative_format_heading_display(),
-                            "url": value.alternative_format.url,
-                            "full_url": (
-                                settings.WAGTAILAPI_MEDIA_BASE_URL
-                                + value.alternative_format.url
-                                if hasattr(settings, "WAGTAILAPI_MEDIA_BASE_URL")
-                                and value.alternative_format.url.startswith("/")
-                                else value.alternative_format.url
-                            ),
-                            "file_type": _extract_file_type(value.alternative_format),
-                            "file_size": _extract_file_size(value.alternative_format),
-                        }
-                        if value.alternative_format
-                        else None
-                    ),
+                    "alternative_format_data": value.alternative_format_data
+                    if value.alternative_format
+                    else None,
                 }
             )
         return representation
