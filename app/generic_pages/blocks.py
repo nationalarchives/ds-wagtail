@@ -100,3 +100,31 @@ class HubPageStreamBlock(blocks.StreamBlock):
     contact = ContactBlock()
     paragraph = ParagraphBlock()
     partner_logos = PartnerLogoListBlock()
+
+
+class EasyReadSectionContentBlock(blocks.StreamBlock):
+    """
+    A section content block specifically for EasyReadPage.
+    """
+    explainer_box = InsetTextBlock()  # ‘Explainer box’ (like inset text but more visual)
+    image = ContentImageBlock()
+    media = MediaBlock()
+    paragraph = ParagraphBlock()
+    table = ContentTableBlock()
+    youtube_video = YouTubeBlock()
+
+
+class EasyReadContentSectionBlock(ContentSectionBlock):
+    """
+    A content section block specifically for EasyReadPage.
+    """
+    heading = blocks.CharBlock(max_length=100, label="Heading")
+    content = EasyReadSectionContentBlock(required=False)
+
+
+class EasyReadStreamBlock(blocks.StreamBlock):
+    """
+    A block for the EasyReadPage model.
+    """
+
+    content_section = EasyReadContentSectionBlock()
