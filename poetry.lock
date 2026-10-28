@@ -53,18 +53,18 @@ lxml = ["lxml"]
 
 [[package]]
 name = "boto3"
-version = "1.43.115"
+version = "1.43.116"
 description = "The AWS SDK for Python (Boto3)"
 optional = false
 python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "boto3-1.43.115-py3-none-any.whl", hash = "sha256:6667a0c21d48dc125dbba88444bc8a601ce881a99341a0e6169f9333898e620d"},
-    {file = "boto3-1.43.115.tar.gz", hash = "sha256:c0f35e5f9cdf0edb365195e306d5586d3970b224660a11a87a4ec361ec3d7168"},
+    {file = "boto3-1.43.116-py3-none-any.whl", hash = "sha256:9dca4dbd464b189041b27b5a02280bd5e02c3051bebf6bd03cd0e47aaf558030"},
+    {file = "boto3-1.43.116.tar.gz", hash = "sha256:89fa15e7d1788fb17cbd694b034beba57f43f30f58f4506913a5b62220f8ba01"},
 ]
 
 [package.dependencies]
-botocore = ">=1.43.115,<1.44.0"
+botocore = ">=1.43.116,<1.44.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.19.0,<0.20.0"
 
@@ -73,14 +73,14 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.43.115"
+version = "1.43.116"
 description = "Low-level, data-driven core of boto 3."
 optional = false
 python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "botocore-1.43.115-py3-none-any.whl", hash = "sha256:9ceda640c868bc15f5399129e8cfdef8cbb4b350e8a99547c9b5f477cfb9619a"},
-    {file = "botocore-1.43.115.tar.gz", hash = "sha256:aa4d9c4e7ef99988b7347e0cd276ba84e1eb1625510557b0e36cd57ecb19bbf2"},
+    {file = "botocore-1.43.116-py3-none-any.whl", hash = "sha256:92f1efe8434183f08f91a61478925f5f8d23082024556f269f916477040e26f4"},
+    {file = "botocore-1.43.116.tar.gz", hash = "sha256:00b1fbfc1c024b56633538385628a1bbc7ab15aca0b5b53e5fe188841d96c8ce"},
 ]
 
 [package.dependencies]
@@ -1660,14 +1660,14 @@ zstd = ["backports-zstd (>=1.0.0) ; python_version < \"3.14\""]
 
 [[package]]
 name = "wagtail"
-version = "7.4.3"
+version = "7.4.4"
 description = "A Django content management system."
 optional = false
 python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "wagtail-7.4.3-py3-none-any.whl", hash = "sha256:dafa7d25459724822362db816c37261cc37441dd1ff0e08f47386615d2644171"},
-    {file = "wagtail-7.4.3.tar.gz", hash = "sha256:e359e457ba7838b1c398f7169e34e203cefd75df9062eb8ecadb4be8f1c52912"},
+    {file = "wagtail-7.4.4-py3-none-any.whl", hash = "sha256:1f328154bd08afa39fcb5f1042a0c9181dcd0a6c80e27e72a0257de4c16e3541"},
+    {file = "wagtail-7.4.4.tar.gz", hash = "sha256:949bf7129d69e5b94d655651724b4fa90264fa21ae20426f89914814e030a2f7"},
 ]
 
 [package.dependencies]
@@ -1832,4 +1832,4 @@ wand = ["Wand (>=0.6,<1.0)"]
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.13"
-content-hash = "66ef411f7a67fc3c0866c6e998131bcd1c52afd37c0f1bb72072062695c19897"
+content-hash = "d86b40ff15f73759f0270d0427bab11cbc6da67fbf0a09dde7dcebc1ad74f885"
