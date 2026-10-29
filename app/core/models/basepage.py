@@ -166,7 +166,7 @@ class BasePage(AlertMixin, SocialMixin, CustomHeadlessPreviewMixin, Page):
         """
         return [
             {
-                "text": ("Home" if page.url == "/" else page.short_title or page.title),
+                "text": (page.short_title or page.title),
                 "href": page.url,
             }
             for page in self.get_ancestors().order_by("depth").specific(defer=True)
