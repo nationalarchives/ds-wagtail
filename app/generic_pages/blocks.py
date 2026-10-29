@@ -4,6 +4,8 @@ from wagtail import blocks
 from app.ciim.blocks import RecordLinksBlock
 from app.core.blocks import (
     AccordionsBlock,
+    APIImageChooserBlock,
+    APIRichTextBlock,
     ButtonBlock,
     CallToActionBlock,
     CodeBlock,
@@ -102,14 +104,32 @@ class HubPageStreamBlock(blocks.StreamBlock):
     partner_logos = PartnerLogoListBlock()
 
 
+class ExplainerBoxBlock(blocks.StructBlock):
+    heading = blocks.CharBlock(max_length=100, label="Heading")
+    text = blocks.RichTextBlock(features=["bold", "link"], label="Content")
+
+    class Meta:
+        label = "Explainer Box"
+        group = "Basic text"
+        icon = "help"
+
+
+class EasyReadSentenceBlock(blocks.StructBlock):
+    image = APIImageChooserBlock()
+    text = APIRichTextBlock(features=["bold", "link"], label="Content")
+
+    class Meta:
+        label = "Easy Read Sentence"
+        group = "Basic text"
+
+
 class EasyReadSectionContentBlock(blocks.StreamBlock):
     """
     A section content block specifically for EasyReadPage.
     """
-    explainer_box = InsetTextBlock()  # ‘Explainer box’ (like inset text but more visual)
-    image = ContentImageBlock()
+    explainer_box = ExplainerBoxBlock()
     media = MediaBlock()
-    paragraph = ParagraphBlock()
+    sentence = EasyReadSentenceBlock()
     table = ContentTableBlock()
     youtube_video = YouTubeBlock()
 
@@ -119,10 +139,10 @@ class EasyReadContentSectionBlock(ContentSectionBlock):
     A content section block specifically for EasyReadPage.
     """
     heading = blocks.CharBlock(max_length=100, label="Heading")
-    content = EasyReadSectionContentBlock(required=False)
+    content = EasyReadSectionContentBlock()
 
 
-class EasyReadStreamBlock(blocks.StreamBlock):
+class EasyReadStreamBlock(EasyReadSectionContentBlock):
     """
     A block for the EasyReadPage model.
     """
