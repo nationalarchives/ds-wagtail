@@ -128,8 +128,11 @@ class EasyReadSectionContentBlock(blocks.StreamBlock):
     A section content block specifically for EasyReadPage.
     """
     explainer_box = ExplainerBoxBlock()
+    # featured_external_link = FeaturedExternalLinkBlock()
+    # featured_page = FeaturedPageBlock() TODO: Bespoke component for CTA?
     media = MediaBlock()
     sentence = EasyReadSentenceBlock()
+    sub_heading = SubHeadingBlock()
     table = ContentTableBlock()
     youtube_video = YouTubeBlock()
 
@@ -148,3 +151,4 @@ class EasyReadStreamBlock(EasyReadSectionContentBlock):
     """
 
     content_section = EasyReadContentSectionBlock()
+    sub_heading = None
