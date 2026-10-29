@@ -55,10 +55,84 @@
                 "height": 100
             }
         },
-        "search_image": null,
-        "twitter_og_title": null,
-        "twitter_og_description": null,
-        "twitter_og_image": null,
+        "search_image": {
+            "16x9_jpeg": {
+                "full_url": "/media/images/image.fill-1200x675.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                "height": 58,
+                "url": "/media/images/image.fill-1200x675.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                "width": 100
+            },
+            "16x9_webp": {
+                "full_url": "/media/images/image.fill-1200x675.format-webp.webpquality-70.bgcolor-fff.webp",
+                "height": 58,
+                "url": "/media/images/image.fill-1200x675.format-webp.webpquality-70.bgcolor-fff.webp",
+                "width": 100
+            },
+            "4x3_jpeg": {
+                "full_url": "/media/images/image.fill-1200x900.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                "height": 76,
+                "url": "/media/images/image.fill-1200x900.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                "width": 100
+            },
+            "4x3_webp": {
+                "full_url": "/media/images/image.fill-1200x900.format-webp.webpquality-70.bgcolor-fff.webp",
+                "height": 76,
+                "url": "/media/images/image.fill-1200x900.format-webp.webpquality-70.bgcolor-fff.webp",
+                "width": 100
+            },
+            "description": "",
+            "dynamic_opengraph_jpeg": {
+                "full_url": "/media/images/image.fill-510x540.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                "height": 100,
+                "url": "/media/images/image.fill-510x540.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                "width": 96
+            },
+            "dynamic_opengraph_webp": {
+                "full_url": "/media/images/image.fill-510x540.format-webp.webpquality-70.bgcolor-fff.webp",
+                "height": 100,
+                "url": "/media/images/image.fill-510x540.format-webp.webpquality-70.bgcolor-fff.webp",
+                "width": 96
+            },
+            "id": "ID_PLACEHOLDER",
+            "jpeg": {
+                "full_url": "/media/images/image.max-1200x1200.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                "height": 100,
+                "url": "/media/images/image.max-1200x1200.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                "width": 100
+            },
+            "square_jpeg": {
+                "full_url": "/media/images/image.fill-1200x1200.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                "height": 100,
+                "url": "/media/images/image.fill-1200x1200.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                "width": 100
+            },
+            "square_webp": {
+                "full_url": "/media/images/image.fill-1200x1200.format-webp.webpquality-70.bgcolor-fff.webp",
+                "height": 100,
+                "url": "/media/images/image.fill-1200x1200.format-webp.webpquality-70.bgcolor-fff.webp",
+                "width": 100
+            },
+            "static_opengraph_jpeg": {
+                "full_url": "/media/images/image.fill-1200x630.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                "height": 54,
+                "url": "/media/images/image.fill-1200x630.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                "width": 100
+            },
+            "static_opengraph_webp": {
+                "full_url": "/media/images/image.fill-1200x630.format-webp.webpquality-70.bgcolor-fff.webp",
+                "height": 54,
+                "url": "/media/images/image.fill-1200x630.format-webp.webpquality-70.bgcolor-fff.webp",
+                "width": 100
+            },
+            "title": "An image",
+            "uuid": "UUID_PLACEHOLDER",
+            "webp": {
+                "full_url": "/media/images/image.max-1200x1200.format-webp.webpquality-70.bgcolor-fff.webp",
+                "height": 100,
+                "url": "/media/images/image.max-1200x1200.format-webp.webpquality-70.bgcolor-fff.webp",
+                "width": 100
+            }
+        },
         "breadcrumbs": [
             {
                 "text": "Home",

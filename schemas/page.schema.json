@@ -150,19 +150,51 @@
         },
         "search_image": {
           "description": "The search image for the page",
-          "$ref": "https://www.nationalarchives.gov.uk/wagtail/image-rendition.schema.json"
-        },
-        "twitter_og_title": {
-          "description": "The Twitter Open Graph title for the page",
-          "type": ["string", "null"]
-        },
-        "twitter_og_description": {
-          "description": "The Twitter Open Graph description for the page",
-          "type": ["string", "null"]
-        },
-        "twitter_og_image": {
-          "description": "The Twitter Open Graph image for the page",
-          "$ref": "https://www.nationalarchives.gov.uk/wagtail/image-rendition.schema.json"
+          "$ref": "https://www.nationalarchives.gov.uk/wagtail/image-rendition.schema.json",
+          "properties": {
+            "16x9_jpeg": {
+              "$ref": "https://www.nationalarchives.gov.uk/wagtail/image-rendition.schema.json#/anyOf/0/properties/jpeg"
+            },
+            "16x9_webp": {
+              "$ref": "https://www.nationalarchives.gov.uk/wagtail/image-rendition.schema.json#/anyOf/0/properties/webp"
+            },
+            "4x3_jpeg": {
+              "$ref": "https://www.nationalarchives.gov.uk/wagtail/image-rendition.schema.json#/anyOf/0/properties/jpeg"
+            },
+            "4x3_webp": {
+              "$ref": "https://www.nationalarchives.gov.uk/wagtail/image-rendition.schema.json#/anyOf/0/properties/webp"
+            },
+            "dynamic_opengraph_jpeg": {
+              "$ref": "https://www.nationalarchives.gov.uk/wagtail/image-rendition.schema.json#/anyOf/0/properties/jpeg"
+            },
+            "dynamic_opengraph_webp": {
+              "$ref": "https://www.nationalarchives.gov.uk/wagtail/image-rendition.schema.json#/anyOf/0/properties/webp"
+            },
+            "square_jpeg": {
+              "$ref": "https://www.nationalarchives.gov.uk/wagtail/image-rendition.schema.json#/anyOf/0/properties/jpeg"
+            },
+            "square_webp": {
+              "$ref": "https://www.nationalarchives.gov.uk/wagtail/image-rendition.schema.json#/anyOf/0/properties/webp"
+            },
+            "static_opengraph_jpeg": {
+              "$ref": "https://www.nationalarchives.gov.uk/wagtail/image-rendition.schema.json#/anyOf/0/properties/jpeg"
+            },
+            "static_opengraph_webp": {
+              "$ref": "https://www.nationalarchives.gov.uk/wagtail/image-rendition.schema.json#/anyOf/0/properties/webp"
+            }
+          },
+          "required": [
+            "16x9_jpeg",
+            "16x9_webp",
+            "4x3_jpeg",
+            "4x3_webp",
+            "dynamic_opengraph_jpeg",
+            "dynamic_opengraph_webp",
+            "square_jpeg",
+            "square_webp",
+            "static_opengraph_jpeg",
+            "static_opengraph_webp"
+          ]
         },
         "breadcrumbs": {
           "description": "The breadcrumbs for the page",
@@ -204,9 +236,6 @@
         "teaser_text",
         "teaser_image",
         "search_image",
-        "twitter_og_title",
-        "twitter_og_description",
-        "twitter_og_image",
         "breadcrumbs"
       ]
     },
