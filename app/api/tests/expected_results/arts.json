@@ -4,6 +4,7 @@
         "type": "collections.TopicExplorerPage",
         "detail_url": "WAGTAILAPI_BASE_URL/api/v2/pages/ARTS_ID/",
         "html_url": "http://localhost/arts/",
+        "language": "en",
         "slug": "arts",
         "show_in_menus": false,
         "seo_title": "",

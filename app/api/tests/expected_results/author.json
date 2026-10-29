@@ -4,6 +4,7 @@
         "type": "people.PersonPage",
         "detail_url": "WAGTAILAPI_BASE_URL/api/v2/pages/AUTHOR_ID/",
         "html_url": "http://localhost/people/author/",
+        "language": "en",
         "slug": "author",
         "show_in_menus": false,
         "seo_title": "",
