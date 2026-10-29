@@ -27,6 +27,10 @@
           "type": "string",
           "format": "uri"
         },
+        "language": {
+          "description": "The language of the page",
+          "type": "string"
+        },
         "slug": {
           "description": "The slug for the page",
           "type": "string"
@@ -221,6 +225,7 @@
         "type",
         "detail_url",
         "html_url",
+        "language",
         "slug",
         "show_in_menus",
         "seo_title",

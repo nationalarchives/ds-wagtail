@@ -4,6 +4,7 @@
         "type": "articles.ArticlePage",
         "detail_url": "WAGTAILAPI_BASE_URL/api/v2/pages/ARTICLE_ID/",
         "html_url": "http://localhost/article_index/article/",
+        "language": "en",
         "slug": "article",
         "show_in_menus": false,
         "seo_title": "",

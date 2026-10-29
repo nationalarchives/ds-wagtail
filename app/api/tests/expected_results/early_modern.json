@@ -4,6 +4,7 @@
         "type": "collections.TimePeriodExplorerPage",
         "detail_url": "WAGTAILAPI_BASE_URL/api/v2/pages/EARLY_MODERN_ID/",
         "html_url": "http://localhost/early_modern/",
+        "language": "en",
         "slug": "early_modern",
         "show_in_menus": false,
         "seo_title": "",

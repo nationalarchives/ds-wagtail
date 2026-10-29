@@ -4,6 +4,7 @@
         "type": "articles.FocusedArticlePage",
         "detail_url": "WAGTAILAPI_BASE_URL/api/v2/pages/FOCUSED_ID/",
         "html_url": "http://localhost/article_index/focused_article/",
+        "language": "en",
         "slug": "focused_article",
         "show_in_menus": false,
         "seo_title": "",
