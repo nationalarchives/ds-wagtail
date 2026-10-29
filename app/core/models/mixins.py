@@ -367,9 +367,10 @@ class TranslationMixin(models.Model):
     """
 
     language = models.CharField(
-        max_length=5,
+        max_length=2,
         choices=TranslationChoices.choices,
         default=TranslationChoices.ENGLISH,
+        help_text="The language the page is written in",
     )
 
     api_fields = [
