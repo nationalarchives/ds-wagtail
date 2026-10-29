@@ -36,6 +36,7 @@ __all__ = [
     "RequiredHeroImageMixin",
     "SidebarMixin",
     "SocialMixin",
+    "TranslationMixin",
 ]
 
 
@@ -349,3 +350,36 @@ class CustomHeadlessPreviewMixin(HeadlessPreviewMixin):
         """
         site = self.get_site() or Site.find_for_request(request)
         return get_client_root_url_from_site(site)
+
+
+class TranslationChoices(models.TextChoices):
+    """
+    This model is a list of our translation choices for page translations.
+    """
+
+    ENGLISH = "en", "English"
+    WELSH = "cy", "Welsh"
+
+
+class TranslationMixin(models.Model):
+    """
+    Adds a dropdown of supported language choices.
+    """
+
+    language = models.CharField(
+        max_length=2,
+        choices=TranslationChoices.choices,
+        default=TranslationChoices.ENGLISH,
+        help_text="The language the page is written in",
+    )
+
+    api_fields = [
+        APIField("language"),
+    ]
+
+    settings_panels = [
+        FieldPanel("language"),
+    ]
+
+    class Meta:
+        abstract = True

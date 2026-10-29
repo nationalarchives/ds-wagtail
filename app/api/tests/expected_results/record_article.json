@@ -4,6 +4,7 @@
         "type": "articles.RecordArticlePage",
         "detail_url": "WAGTAILAPI_BASE_URL/api/v2/pages/RECORD_ID/",
         "html_url": "http://localhost/article_index/record_article/",
+        "language": "en",
         "slug": "record_article",
         "show_in_menus": false,
         "seo_title": "",
