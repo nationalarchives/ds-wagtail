@@ -4,6 +4,7 @@
         "type": "collections.TimePeriodExplorerPage",
         "detail_url": "WAGTAILAPI_BASE_URL/api/v2/pages/POSTWAR_ID/",
         "html_url": "http://localhost/postwar/",
+        "language": "en",
         "slug": "postwar",
         "show_in_menus": false,
         "seo_title": "",

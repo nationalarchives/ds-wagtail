@@ -65,18 +65,18 @@ lxml = ["lxml"]
 
 [[package]]
 name = "boto3"
-version = "1.43.114"
+version = "1.43.117"
 description = "The AWS SDK for Python (Boto3)"
 optional = false
 python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "boto3-1.43.114-py3-none-any.whl", hash = "sha256:d9cac2eb921ce674970cef1c9ad750f85ee3a846aedcf188d18368fb9eb6da23"},
-    {file = "boto3-1.43.114.tar.gz", hash = "sha256:be704857751564a5cf69c5bbaadbfa01c22806409815c73563db42fbffe583a2"},
+    {file = "boto3-1.43.117-py3-none-any.whl", hash = "sha256:a5b6cd7e67653987fcf0e212187c16f7b58af2ae192e368f7212ddab7c05b25d"},
+    {file = "boto3-1.43.117.tar.gz", hash = "sha256:f3d314908d866b577ee6b74ed432c21e565c4c4dbd640ef3fd5e0da30fa13a98"},
 ]
 
 [package.dependencies]
-botocore = ">=1.43.114,<1.44.0"
+botocore = ">=1.43.117,<1.44.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.19.0,<0.20.0"
 
@@ -85,14 +85,14 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.43.114"
+version = "1.43.117"
 description = "Low-level, data-driven core of boto 3."
 optional = false
 python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "botocore-1.43.114-py3-none-any.whl", hash = "sha256:d1c441a22e93e158de5b1e026205f5d6d67a4545d10540c5090c62dccb3a9eca"},
-    {file = "botocore-1.43.114.tar.gz", hash = "sha256:f366fa4db518775632ad1eb128cd8203ca46396cecf37209d904f0bbc049ce90"},
+    {file = "botocore-1.43.117-py3-none-any.whl", hash = "sha256:5920ef9b3002e1361846549078549d9154a6e0004c22853c01ce7b279d05d495"},
+    {file = "botocore-1.43.117.tar.gz", hash = "sha256:71993702832cc37c2495048b9945f2929d306fccb3fb767e9964e437e637fa6c"},
 ]
 
 [package.dependencies]
@@ -563,14 +563,14 @@ django = ">=5.2"
 
 [[package]]
 name = "draftjs-exporter"
-version = "7.2.0"
+version = "7.3.1"
 description = "Library to convert rich text from Draft.js raw ContentState to HTML"
 optional = false
 python-versions = ">=3.11"
 groups = ["main"]
 files = [
-    {file = "draftjs_exporter-7.2.0-py3-none-any.whl", hash = "sha256:18adc0f8ae33d6dd0311354a7253ed5850237072920549acfa8cb0e64e4b328f"},
-    {file = "draftjs_exporter-7.2.0.tar.gz", hash = "sha256:b6033f5eeb7f81af918a91ca2ffe35fdd0bdab055e3374384d25193e4bbab147"},
+    {file = "draftjs_exporter-7.3.1-py3-none-any.whl", hash = "sha256:eddd07ee418c5f85c6a2900887fa1eb50de0c5f6533193497b1fe063803210e9"},
+    {file = "draftjs_exporter-7.3.1.tar.gz", hash = "sha256:557e2afb861f9447c8d503089ec140e45e1bbfb4acdce745e589291f117dac93"},
 ]
 
 [package.extras]
@@ -1605,14 +1605,14 @@ tests = ["coverage (>=6.0.0)", "flake8", "mypy", "pytest (>=7.0.0)", "pytest-asy
 
 [[package]]
 name = "s3transfer"
-version = "0.19.2"
+version = "0.19.3"
 description = "An Amazon S3 Transfer Manager"
 optional = false
 python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "s3transfer-0.19.2-py3-none-any.whl", hash = "sha256:d8168eccca828cbb2cd573675333f3bddd254313a9c42494b84c76b539e8ba25"},
-    {file = "s3transfer-0.19.2.tar.gz", hash = "sha256:ba0309fd86be3c27dbf78cdd813c13c5e1df16e5874b99d2535ebbdfb9892993"},
+    {file = "s3transfer-0.19.3-py3-none-any.whl", hash = "sha256:24eb7535804306355e31c952a90022bf5b2f9d760f9a11062c7493a217c08553"},
+    {file = "s3transfer-0.19.3.tar.gz", hash = "sha256:8326acc3d056d7f7b8a37110c7d2aea41f67e83f6ae79cd3b5fbcca34c726406"},
 ]
 
 [package.dependencies]
@@ -1699,14 +1699,14 @@ files = [
 
 [[package]]
 name = "soupsieve"
-version = "3.0.3"
+version = "3.0.4"
 description = "A modern CSS selector implementation for Beautiful Soup."
 optional = false
 python-versions = ">=3.11.5"
 groups = ["main"]
 files = [
-    {file = "soupsieve-3.0.3-py3-none-any.whl", hash = "sha256:fa30e3ba4809cb81ce1f3209f2fbe3e779fc445f0439bc147a0d7c4601743f21"},
-    {file = "soupsieve-3.0.3.tar.gz", hash = "sha256:7dcf6022eed0399eb9934a75e020148f7a2024c37b7dfcd3cf2c5505d69c364e"},
+    {file = "soupsieve-3.0.4-py3-none-any.whl", hash = "sha256:8412826614f9c632227067d0985aeb9f584bd15efc852955430e097a9fe7afbf"},
+    {file = "soupsieve-3.0.4.tar.gz", hash = "sha256:924fab84ae21604c19e175e1f39815eb6fa83ba23836e09e9de180925e5bc4c0"},
 ]
 
 [[package]]
@@ -2000,4 +2000,4 @@ wand = ["Wand (>=0.6,<1.0)"]
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.15"
-content-hash = "2b7fea248adc6d8a12883ca7f3fd1a25013fef2be0fd64c0308a33ab3bf2bdd2"
+content-hash = "de8f37f2d3a808e423d188aaab914c74ffdab23240e8a61af5e0d0db9121ea97"
