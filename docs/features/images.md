@@ -172,7 +172,7 @@ from app.core.serializers.images import image_generator
 
 image_data = image_generator(
     original_image=my_image,
-    rendition_size="max-900x900",
+    rendition_size="max-1200x1200",
     jpeg_quality=60,
     webp_quality=70,
     background_colour="fff",
@@ -226,12 +226,12 @@ Exposes the image library at `/api/v2/images/`. Images are looked up by `uuid` r
 
 The endpoint uses `ViewSetImageSerializer`, which inherits from Wagtail's built-in `ImageSerializer` and injects rendition data via `image_generator`. Default rendition settings:
 
-| Setting             | Value           |
-| ------------------- | --------------- |
-| `rendition_size`    | `"max-900x900"` |
-| `jpeg_quality`      | `60`            |
-| `webp_quality`      | `70`            |
-| `background_colour` | `"fff"`         |
+| Setting             | Value             |
+| ------------------- | ----------------- |
+| `rendition_size`    | `"max-1200x1200"` |
+| `jpeg_quality`      | `60`              |
+| `webp_quality`      | `70`              |
+| `background_colour` | `"fff"`           |
 
 Access can be restricted to authenticated API token holders via the `WAGTAILAPI_AUTHENTICATION` setting.
 
