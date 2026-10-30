@@ -1,11 +1,6 @@
-[tool.poetry]
-name = "ds-wagtail"
-version = "0.1.0"
-description = ""
-authors = ["James Biggs <james.biggs@nationalarchives.gov.uk>"]
-readme = "README.md"
-
 [tool.poetry.dependencies]
+python = "~3.15"
+boto3 = "1.43.118"
 django = "6.0.8"
 django-allauth = "65.19.7"
 django-birdbath = "2.0.1"
@@ -13,19 +8,19 @@ django-redis = "7.0.0"
 django-taggit = "6.1.0"
 pillow-heif = "1.7.0"
 psycopg2-binary = "2.9.13"
-python = "^3.13"
-python-magic = "0.4.27"
 sentry-sdk = "2.68.1"
+tna-frontend-jinja = "1.4.0"
+tna-utilities = "1.9.0"
 wagtail = "7.4.4"
 wagtail-factories = "4.5.0"
 wagtail-font-awesome-svg = "2.0.0"
 wagtailmedia = "0.18.1"
 wagtail-headless-preview = "0.9.0"
 whitenoise = "6.12.0"
-boto3 = "1.43.118"
 wagtail-2fa = "1.8.0"
-tna-frontend-jinja = "1.4.0"
-tna-utilities = "1.9.0"
+
+[tool.poetry]
+package-mode = false
 
 [tool.poetry.group.dev]
 optional = true
@@ -33,10 +28,6 @@ optional = true
 [tool.poetry.group.dev.dependencies]
 responses = "0.26.3"
 pytest-django = "4.14.0"
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
 
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "config.settings.test"
