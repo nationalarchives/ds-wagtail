@@ -269,7 +269,7 @@ class BasePage(
 class BasePageWithIntro(BasePage):
     """
     An abstract base model for more long-form content pages that
-    start with a required 'intro'.
+    start with an 'intro'.
     """
 
     intro = RichTextField(
