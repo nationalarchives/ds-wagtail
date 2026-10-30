@@ -1,7 +1,7 @@
 [tool.poetry.dependencies]
 python = "~3.15"
 boto3 = "1.43.118"
-django = "6.0.8"
+django = "6.1.2"
 django-allauth = "65.19.7"
 django-birdbath = "2.0.1"
 django-redis = "7.0.0"
