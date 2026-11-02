@@ -136,7 +136,6 @@ docker compose exec app poetry run pytest app/api/tests
 
 `CustomPagesAPIViewSet` extends `PagesAPIViewSet` with:
 
-- `meta.breadcrumbs` in page detail responses
 - additional `meta` fields: `privacy`, `last_published_at`, `url`, `depth`
 - support for `html_path` lookup, including redirect resolution
 - support for `descendant_of_path` filtering
