@@ -164,6 +164,21 @@ class BasePage(
             return privacy[0]
         return "public"
 
+    @cached_property
+    def breadcrumbs(self):
+        """
+        Returns a list of dictionaries representing the breadcrumbs for this page.
+        Each dictionary contains the 'text' and 'href' for a breadcrumb item.
+        """
+        return [
+            {
+                "text": (page.short_title or page.title),
+                "href": page.url,
+            }
+            for page in self.get_ancestors().order_by("depth").specific(defer=True)
+            if page.url
+        ]
+
     @property
     def mourning_notice(self):
         from app.home.models import MourningNotice
@@ -254,6 +269,7 @@ class BasePage(
         APIField("page_path"),
         APIField("url"),
         APIField("alias_of", serializer=AliasOfSerializer()),
+        APIField("breadcrumbs"),
     ]
 
     _teaser_api_meta_fields = [
