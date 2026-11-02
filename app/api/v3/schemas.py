@@ -28,9 +28,7 @@ _teaser_image_serializer = BasePage._teaser_image_api_field.serializer
 _search_image_serializer = _serializer_for(
     SocialMixin._social_base_api_meta_fields, "search_image"
 )
-_twitter_og_image_serializer = _serializer_for(
-    SocialMixin._social_base_api_meta_fields, "twitter_og_image"
-)
+
 
 
 class ImageRenditionSchema(Schema):
@@ -68,9 +66,6 @@ class SitePageMetaSchema(PageMetaSchema):
     last_published_at: str | None = None
     search_image: ImageSchema | None = None
     teaser_image: ImageSchema | None = None
-    twitter_og_description: str | None = None
-    twitter_og_image: ImageSchema | None = None
-    twitter_og_title: str | None = None
 
     @staticmethod
     def resolve_page_path(obj: AbstractPage, context: dict) -> str | None:
@@ -114,17 +109,6 @@ class SitePageMetaSchema(PageMetaSchema):
         return _serialize_image(
             _image_serializer_for(obj, "teaser_image", _teaser_image_serializer),
             getattr(obj, "teaser_image", None),
-        )
-
-    @staticmethod
-    def resolve_twitter_og_image(
-        obj: AbstractPage, context: dict
-    ) -> ImageSchema | None:
-        return _serialize_image(
-            _image_serializer_for(
-                obj, "twitter_og_image", _twitter_og_image_serializer
-            ),
-            getattr(obj, "twitter_og_image", None),
         )
 
 
