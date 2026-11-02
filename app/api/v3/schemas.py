@@ -30,7 +30,6 @@ _search_image_serializer = _serializer_for(
 )
 
 
-
 class ImageRenditionSchema(Schema):
     url: str
     full_url: str
