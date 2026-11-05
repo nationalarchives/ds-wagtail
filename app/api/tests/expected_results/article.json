@@ -307,6 +307,7 @@
                                 "title": "Test media",
                                 "date": null,
                                 "description": "<p>Description</p>",
+                                "copyright": "Copyrighted by someone",
                                 "transcript": "<p>Transcript</p>",
                                 "chapters": [],
                                 "width": 1920,
