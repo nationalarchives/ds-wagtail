@@ -97,6 +97,7 @@ class APIResponseTest(WagtailPageTestCase):
             thumbnail="media/test.jpg",
             description="<p>Description</p>",
             transcript="<p>Transcript</p>",
+            copyright="Copyrighted by someone",
         )
 
         self.arts = TopicPageFactory(
