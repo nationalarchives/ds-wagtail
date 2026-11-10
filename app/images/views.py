@@ -47,4 +47,5 @@ class ImagesWithNoAltTextReport(ReportView):
             .filter(description="")
             .select_related("collection")
             .annotate(usage_count=ReferenceIndex.usage_count_subquery(CustomImage))
+            .order_by("title", "pk")
         )
