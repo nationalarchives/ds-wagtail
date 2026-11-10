@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://www.nationalarchives.gov.uk/wagtail/page-parts/streamfield.schema.json",
+  "title": "Streamfield",
+  "description": "A streamfield in Wagtail",
+  "type": "object",
+  "anyOf": [
+    {
+      "$ref": "https://www.nationalarchives.gov.uk/wagtail/blocks/Paragraph.schema.json"
+    }
+  ]
+}

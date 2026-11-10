@@ -89,7 +89,7 @@ class PageSitemapSerializer(serializers.Serializer):
 
         return {
             "last_published_at": instance.last_published_at,
-            "full_url": instance.full_url,
+            "url": instance.url,
         }
 
 
@@ -105,7 +105,6 @@ class SimplePageSerializer(serializers.Serializer):
             "title": instance.title,
             "teaser_text": instance.teaser_text,
             "url": instance.url,
-            "full_url": instance.full_url,
         }
 
         if instance.alias_of:

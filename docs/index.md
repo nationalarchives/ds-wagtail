@@ -13,6 +13,20 @@ docker compose up -d
 
 To get data and media from the host platform, check out [fetching data](./development/fetching-data.md).
 
+## Run tests
+
+To run the test suite, use the following command:
+
+```sh
+docker compose exec app poetry run pytest --ds=config.settings.test
+```
+
+To refresh API response snapshots after an intentional API response change, use the following command:
+
+```sh
+docker compose exec -e UPDATE_API_EXPECTED_RESULTS=1 app poetry run pytest --ds=config.settings.test app/api/tests/test_pages.py
+```
+
 ## Updating this documentation
 
 The navigation for this documentation is configured in `mkdocs.yml`. You can add new markdown files there to get them to appear in the navigation.

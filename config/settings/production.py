@@ -10,7 +10,6 @@ BASE_DIR = os.path.dirname(PROJECT_DIR)
 
 ENVIRONMENT_NAME = os.getenv("ENVIRONMENT_NAME", "production")
 WAGTAILADMIN_BASE_URL = os.getenv("WAGTAILADMIN_BASE_URL", "")
-WAGTAILAPI_MEDIA_BASE_URL = os.getenv("WAGTAILAPI_MEDIA_BASE_URL", "")
 WAGTAILAPI_BASE_URL = os.getenv("WAGTAILAPI_BASE_URL", WAGTAILADMIN_BASE_URL)
 WAGTAIL_HEADLESS_PREVIEW = {
     "CLIENT_URLS": {
@@ -89,6 +88,7 @@ INSTALLED_APPS = [
     "wagtail.contrib.frontend_cache",
     "rest_framework",
     "wagtail_headless_preview",
+    "storages",
 ]
 
 MIDDLEWARE = [
@@ -231,11 +231,34 @@ USE_TZ = True
 
 STATIC_URL = "wagtail-static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+AWS_STORAGE_BUCKET_NAME = os.getenv("AWS_STORAGE_BUCKET_NAME", "")
+AWS_S3_CUSTOM_DOMAIN = os.getenv(
+    "AWS_S3_CUSTOM_DOMAIN", f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
+).rstrip("/")
+
+STORAGES = {
+    "default": {
+        "BACKEND": "storages.backends.s3.S3Storage",
+        "OPTIONS": {
+            "access_key": os.getenv("AWS_S3_ACCESS_KEY_ID", ""),
+            "secret_key": os.getenv("AWS_S3_SECRET_ACCESS_KEY", ""),
+            "bucket_name": AWS_STORAGE_BUCKET_NAME,
+            "region_name": os.getenv("AWS_S3_REGION_NAME", "eu-west-2"),
+            "endpoint_url": os.getenv("AWS_S3_ENDPOINT_URL", ""),
+            "custom_domain": AWS_S3_CUSTOM_DOMAIN,
+            "file_overwrite": False,
+            "url_protocol": f"{os.getenv('AWS_S3_URL_PROTOCOL', 'https').rstrip(':')}:",
+        },
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 
 MEDIA_ROOT = "/media"
 MEDIA_URL = "media/"
-MEDIA_PAGE_URL = os.getenv("MEDIA_PAGE_URL", WAGTAILAPI_MEDIA_BASE_URL)
+MEDIA_PAGE_URL = os.getenv("MEDIA_PAGE_URL", "")
 
 WAGTAILMEDIA = {
     "ENABLE_API_V3": True,
@@ -263,6 +286,8 @@ WAGTAILMEDIA = {
         # "webm",
     ],
 }
+
+WAGTAILDOCS_SERVE_METHOD = os.getenv("WAGTAILDOCS_SERVE_METHOD", "serve_view")
 
 NEW_LABEL_DISPLAY_FOR_DAYS = int(os.getenv("NEW_LABEL_DISPLAY_FOR_DAYS", "21"))
 
@@ -322,17 +347,23 @@ BIRDBATH_PROCESSORS = ["app.users.anonymisation.UserAnonymiser"]
 # -----------------------------------------------------------------------------
 # Email
 # -----------------------------------------------------------------------------
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+MAILERS = {
+    "default": {
+        "BACKEND": "django.core.mail.backends.smtp.EmailBackend",
+        "OPTIONS": {
+            "host": os.getenv("EMAIL_HOST", ""),
+            "port": int(os.getenv("EMAIL_PORT", "587")),
+            "username": os.getenv("EMAIL_HOST_USER", ""),
+            "password": os.getenv("EMAIL_HOST_PASSWORD", ""),
+            "use_tls": strtobool(os.getenv("EMAIL_USE_TLS", "True")),
+        },
+    }
+}
 # WAGTAIL_EMAIL_MANAGEMENT_ENABLED = False  # Disable the ability for users to change their email address
 WAGTAILADMIN_NOTIFICATION_USE_HTML = True
 WAGTAILADMIN_NOTIFICATION_INCLUDE_SUPERUSERS = False
 WAGTAILADMIN_USER_PASSWORD_RESET_FORM = "app.core.forms.auth.HtmlPasswordResetForm"
 DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "wagtail@nationalarchives.gov.uk")
-EMAIL_HOST = os.getenv("EMAIL_HOST", None)
-EMAIL_PORT = os.getenv("EMAIL_PORT", "587")
-EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER", None)
-EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD", None)
-EMAIL_USE_TLS = strtobool(os.getenv("EMAIL_USE_TLS", "True"))
 # EMAIL_USE_SSL = strtobool(os.getenv("EMAIL_USE_SSL", "False"))
 # EMAIL_SSL_KEYFILE = os.getenv("EMAIL_SSL_KEYFILE", None)
 # EMAIL_SSL_CERTFILE = os.getenv("EMAIL_SSL_CERTFILE", None)

@@ -8,6 +8,7 @@ django = "6.1.3"
 django-allauth = "65.21.1"
 django-birdbath = "2.0.1"
 django-redis = "7.0.0"
+django-storages = {extras = ["s3"], version = "1.14.6"}
 django-taggit = "6.1.0"
 pillow-heif = "1.8.1"
 psycopg2-binary = "2.9.13"
@@ -30,3 +31,6 @@ pytest-django = "4.14.0"
 
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "config.settings.test"
+filterwarnings = [
+    'ignore:os\.path\.commonprefix\(\) is deprecated\.:DeprecationWarning',
+]
