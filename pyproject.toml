@@ -31,3 +31,6 @@ pytest-django = "4.14.0"
 
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "config.settings.test"
+filterwarnings = [
+    'ignore:os\.path\.commonprefix\(\) is deprecated\.:DeprecationWarning',
+]
