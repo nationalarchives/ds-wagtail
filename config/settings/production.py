@@ -347,17 +347,23 @@ BIRDBATH_PROCESSORS = ["app.users.anonymisation.UserAnonymiser"]
 # -----------------------------------------------------------------------------
 # Email
 # -----------------------------------------------------------------------------
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+MAILERS = {
+    "default": {
+        "BACKEND": "django.core.mail.backends.smtp.EmailBackend",
+        "OPTIONS": {
+            "host": os.getenv("EMAIL_HOST", ""),
+            "port": int(os.getenv("EMAIL_PORT", "587")),
+            "username": os.getenv("EMAIL_HOST_USER", ""),
+            "password": os.getenv("EMAIL_HOST_PASSWORD", ""),
+            "use_tls": strtobool(os.getenv("EMAIL_USE_TLS", "True")),
+        },
+    }
+}
 # WAGTAIL_EMAIL_MANAGEMENT_ENABLED = False  # Disable the ability for users to change their email address
 WAGTAILADMIN_NOTIFICATION_USE_HTML = True
 WAGTAILADMIN_NOTIFICATION_INCLUDE_SUPERUSERS = False
 WAGTAILADMIN_USER_PASSWORD_RESET_FORM = "app.core.forms.auth.HtmlPasswordResetForm"
 DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "wagtail@nationalarchives.gov.uk")
-EMAIL_HOST = os.getenv("EMAIL_HOST", None)
-EMAIL_PORT = os.getenv("EMAIL_PORT", "587")
-EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER", None)
-EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD", None)
-EMAIL_USE_TLS = strtobool(os.getenv("EMAIL_USE_TLS", "True"))
 # EMAIL_USE_SSL = strtobool(os.getenv("EMAIL_USE_SSL", "False"))
 # EMAIL_SSL_KEYFILE = os.getenv("EMAIL_SSL_KEYFILE", None)
 # EMAIL_SSL_CERTFILE = os.getenv("EMAIL_SSL_CERTFILE", None)
