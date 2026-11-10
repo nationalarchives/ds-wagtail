@@ -1,3 +1,5 @@
+from unittest.mock import PropertyMock, patch
+
 from wagtail.test.utils import WagtailPageTestCase
 
 from app.api.models import APIToken
@@ -37,11 +39,16 @@ class MediaAPITest(WagtailPageTestCase):
         )
 
     def request_api(self, path):
-        return self.client.get(
-            path,
-            format="json",
-            HTTP_AUTHORIZATION=f"Token {self.api_token.key}",
-        )
+        with patch(
+            "app.media.models.EtnaMedia.file_size",
+            new_callable=PropertyMock,
+            return_value=0,
+        ):
+            return self.client.get(
+                path,
+                format="json",
+                HTTP_AUTHORIZATION=f"Token {self.api_token.key}",
+            )
 
     def test_media_listing_returns_chapters_as_sorted_seconds(self):
         response = self.request_api("/api/v2/media/")

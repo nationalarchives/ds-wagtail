@@ -32,9 +32,9 @@ _search_image_serializer = _serializer_for(
 
 class ImageRenditionSchema(Schema):
     url: str
-    full_url: str
     width: int
     height: int
+    file_size: int | None = None
 
 
 ImageSchema = dict[str, int | str | ImageRenditionSchema]

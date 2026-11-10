@@ -202,6 +202,7 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
         return queryset
 
     meta_fields = PagesAPIViewSet.meta_fields + [
+        "language",
         "privacy",
         "last_published_at",
         "url",

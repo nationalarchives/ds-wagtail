@@ -1,10 +1,9 @@
 {
-    "id": ARTS_ID,
+    "id": "ID_PLACEHOLDER",
     "meta": {
         "type": "collections.TopicExplorerPage",
         "detail_url": "WAGTAILAPI_BASE_URL/api/v2/pages/ARTS_ID/",
-        "html_url": "http://localhost/arts/",
-        "language": "en",
+        "html_url": "/arts/",
         "slug": "arts",
         "show_in_menus": false,
         "seo_title": "",
@@ -12,122 +11,123 @@
         "first_published_at": "2000-01-01T00:00:00Z",
         "alias_of": null,
         "parent": {
-            "id": 3,
+            "id": "ID_PLACEHOLDER",
             "meta": {
                 "type": "home.HomePage",
-                "detail_url": "WAGTAILAPI_BASE_URL/api/v2/pages/3/",
-                "html_url": "http://localhost/"
+                "detail_url": "WAGTAILAPI_BASE_URL/api/v2/pages/HOME_PAGE_ID/",
+                "html_url": "/"
             },
             "title": "Home"
         },
+        "language": "en",
         "privacy": "public",
         "last_published_at": "2000-01-01T00:00:00Z",
         "url": "/arts/",
         "depth": 3,
         "page_path": "/arts/",
-        "teaser_text": "Teaser text",
-        "teaser_image": {
-            "id": 2,
-            "uuid": "00000000-0000-0000-0000-000000000000",
-            "title": "An image",
-            "description": "",
-            "jpeg": {
-                "url": "https://localhost/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
-                "file_size": 574,
-                "width": 100,
-                "height": 68
-            },
-            "webp": {
-                "url": "https://localhost/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-70.bgcolor-fff.webp",
-                "file_size": 102,
-                "width": 100,
-                "height": 68
-            }
-        },
-        "search_image": {
-            "16x9_jpeg": {
-                "full_url": "/media/images/image.fill-1200x675.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
-                "height": 58,
-                "url": "/media/images/image.fill-1200x675.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
-                "width": 100
-            },
-            "16x9_webp": {
-                "full_url": "/media/images/image.fill-1200x675.format-webp.webpquality-70.bgcolor-fff.webp",
-                "height": 58,
-                "url": "/media/images/image.fill-1200x675.format-webp.webpquality-70.bgcolor-fff.webp",
-                "width": 100
-            },
-            "4x3_jpeg": {
-                "full_url": "/media/images/image.fill-1200x900.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
-                "height": 76,
-                "url": "/media/images/image.fill-1200x900.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
-                "width": 100
-            },
-            "4x3_webp": {
-                "full_url": "/media/images/image.fill-1200x900.format-webp.webpquality-70.bgcolor-fff.webp",
-                "height": 76,
-                "url": "/media/images/image.fill-1200x900.format-webp.webpquality-70.bgcolor-fff.webp",
-                "width": 100
-            },
-            "description": "",
-            "dynamic_opengraph_jpeg": {
-                "full_url": "/media/images/image.fill-510x540.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
-                "height": 100,
-                "url": "/media/images/image.fill-510x540.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
-                "width": 96
-            },
-            "dynamic_opengraph_webp": {
-                "full_url": "/media/images/image.fill-510x540.format-webp.webpquality-70.bgcolor-fff.webp",
-                "height": 100,
-                "url": "/media/images/image.fill-510x540.format-webp.webpquality-70.bgcolor-fff.webp",
-                "width": 96
-            },
-            "id": "ID_PLACEHOLDER",
-            "jpeg": {
-                "full_url": "/media/images/image.max-1200x1200.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
-                "height": 100,
-                "url": "/media/images/image.max-1200x1200.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
-                "width": 100
-            },
-            "square_jpeg": {
-                "full_url": "/media/images/image.fill-1200x1200.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
-                "height": 100,
-                "url": "/media/images/image.fill-1200x1200.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
-                "width": 100
-            },
-            "square_webp": {
-                "full_url": "/media/images/image.fill-1200x1200.format-webp.webpquality-70.bgcolor-fff.webp",
-                "height": 100,
-                "url": "/media/images/image.fill-1200x1200.format-webp.webpquality-70.bgcolor-fff.webp",
-                "width": 100
-            },
-            "static_opengraph_jpeg": {
-                "full_url": "/media/images/image.fill-1200x630.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
-                "height": 54,
-                "url": "/media/images/image.fill-1200x630.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
-                "width": 100
-            },
-            "static_opengraph_webp": {
-                "full_url": "/media/images/image.fill-1200x630.format-webp.webpquality-70.bgcolor-fff.webp",
-                "height": 54,
-                "url": "/media/images/image.fill-1200x630.format-webp.webpquality-70.bgcolor-fff.webp",
-                "width": 100
-            },
-            "title": "An image",
-            "uuid": "UUID_PLACEHOLDER",
-            "webp": {
-                "full_url": "/media/images/image.max-1200x1200.format-webp.webpquality-70.bgcolor-fff.webp",
-                "height": 100,
-                "url": "/media/images/image.max-1200x1200.format-webp.webpquality-70.bgcolor-fff.webp",
-                "width": 100
-            }
-        },
         "breadcrumbs": [
             {
                 "text": "Home",
                 "href": "/"
             }
-        ]
+        ],
+        "teaser_text": "Teaser text",
+        "teaser_image": {
+            "id": "ID_PLACEHOLDER",
+            "uuid": "UUID_PLACEHOLDER",
+            "title": "An image",
+            "description": "",
+            "jpeg": {
+                "url": "/media/images/image.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                "width": 100,
+                "height": 68,
+                "file_size": 574
+            },
+            "webp": {
+                "url": "/media/images/image.fill-600x400.format-webp.webpquality-70.bgcolor-fff.webp",
+                "width": 100,
+                "height": 68,
+                "file_size": 102
+            }
+        },
+        "search_image": {
+            "id": "ID_PLACEHOLDER",
+            "uuid": "UUID_PLACEHOLDER",
+            "title": "An image",
+            "description": "",
+            "jpeg": {
+                "url": "/media/images/image.max-1200x1200.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                "width": 100,
+                "height": 100,
+                "file_size": 594
+            },
+            "webp": {
+                "url": "/media/images/image.max-1200x1200.format-webp.webpquality-70.bgcolor-fff.webp",
+                "width": 100,
+                "height": 100,
+                "file_size": 110
+            },
+            "square_jpeg": {
+                "url": "/media/images/image.fill-1200x1200.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                "width": 100,
+                "height": 100,
+                "file_size": 594
+            },
+            "square_webp": {
+                "url": "/media/images/image.fill-1200x1200.format-webp.webpquality-70.bgcolor-fff.webp",
+                "width": 100,
+                "height": 100,
+                "file_size": 110
+            },
+            "4x3_jpeg": {
+                "url": "/media/images/image.fill-1200x900.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                "width": 100,
+                "height": 76,
+                "file_size": 574
+            },
+            "4x3_webp": {
+                "url": "/media/images/image.fill-1200x900.format-webp.webpquality-70.bgcolor-fff.webp",
+                "width": 100,
+                "height": 76,
+                "file_size": 102
+            },
+            "16x9_jpeg": {
+                "url": "/media/images/image.fill-1200x675.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                "width": 100,
+                "height": 58,
+                "file_size": 563
+            },
+            "16x9_webp": {
+                "url": "/media/images/image.fill-1200x675.format-webp.webpquality-70.bgcolor-fff.webp",
+                "width": 100,
+                "height": 58,
+                "file_size": 98
+            },
+            "static_opengraph_jpeg": {
+                "url": "/media/images/image.fill-1200x630.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                "width": 100,
+                "height": 54,
+                "file_size": 563
+            },
+            "static_opengraph_webp": {
+                "url": "/media/images/image.fill-1200x630.format-webp.webpquality-70.bgcolor-fff.webp",
+                "width": 100,
+                "height": 54,
+                "file_size": 98
+            },
+            "dynamic_opengraph_jpeg": {
+                "url": "/media/images/image.fill-510x540.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
+                "width": 96,
+                "height": 100,
+                "file_size": 584
+            },
+            "dynamic_opengraph_webp": {
+                "url": "/media/images/image.fill-510x540.format-webp.webpquality-70.bgcolor-fff.webp",
+                "width": 96,
+                "height": 100,
+                "file_size": 106
+            }
+        }
     },
     "title": "arts",
     "short_title": null,
@@ -140,33 +140,33 @@
     "intro": "<p>Intro text</p>",
     "hero_image_caption": "<p>Hero image caption</p>",
     "hero_image": {
-        "id": 3,
-        "uuid": "00000000-0000-0000-0000-000000000000",
+        "id": "ID_PLACEHOLDER",
+        "uuid": "UUID_PLACEHOLDER",
         "title": "An image",
         "description": "",
         "jpeg": {
-            "url": "https://localhost/media/images/exampl.2e16d0ba.fill-1800x720.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
-            "file_size": 552,
+            "url": "/media/images/image.fill-1800x720.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
             "width": 100,
-            "height": 40
+            "height": 40,
+            "file_size": 552
         },
         "webp": {
-            "url": "https://localhost/media/images/examp.2e16d0ba.fill-1800x720.format-webp.webpquality-70.bgcolor-fff.webp",
-            "file_size": 94,
+            "url": "/media/images/image.fill-1800x720.format-webp.webpquality-70.bgcolor-fff.webp",
             "width": 100,
-            "height": 40
+            "height": 40,
+            "file_size": 94
         },
         "small_jpeg": {
-            "url": "https://localhost/media/images/example.2e16d0ba.fill-900x600.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
-            "file_size": 574,
+            "url": "/media/images/image.fill-900x600.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
             "width": 100,
-            "height": 68
+            "height": 68,
+            "file_size": 574
         },
         "small_webp": {
-            "url": "https://localhost/media/images/exampl.2e16d0ba.fill-900x600.format-webp.webpquality-70.bgcolor-fff.webp",
-            "file_size": 102,
+            "url": "/media/images/image.fill-900x600.format-webp.webpquality-70.bgcolor-fff.webp",
             "width": 100,
-            "height": 68
+            "height": 68,
+            "file_size": 102
         },
         "transcript": null,
         "translation": null,
@@ -177,31 +177,31 @@
     "skos_id": "arts",
     "related_articles": [
         {
-            "id": RECORD_ID,
+            "id": "ID_PLACEHOLDER",
             "title": "record_article",
             "short_title": null,
             "page_path": "/article_index/record_article/",
             "url": "/article_index/record_article/",
-            "full_url": "http://localhost/article_index/record_article/",
+            "full_url": "/article_index/record_article/",
             "type": "articles.RecordArticlePage",
             "type_label": "Record revealed",
             "teaser_text": "Teaser text",
             "teaser_image": {
-                "id": 16,
-                "uuid": "00000000-0000-0000-0000-000000000000",
+                "id": "ID_PLACEHOLDER",
+                "uuid": "UUID_PLACEHOLDER",
                 "title": "An image",
                 "description": "",
                 "jpeg": {
-                    "url": "https://localhost/media/images/image.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
-                    "file_size": 574,
+                    "url": "/media/images/image.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
                     "width": 100,
-                    "height": 68
+                    "height": 68,
+                    "file_size": 574
                 },
                 "webp": {
-                    "url": "https://localhost/media/images/image.fill-600x400.format-webp.webpquality-70.bgcolor-fff.webp",
-                    "file_size": 102,
+                    "url": "/media/images/image.fill-600x400.format-webp.webpquality-70.bgcolor-fff.webp",
                     "width": 100,
-                    "height": 68
+                    "height": 68,
+                    "file_size": 102
                 }
             },
             "first_published_at": "2000-01-03T00:00:00Z",
@@ -209,31 +209,31 @@
             "is_newly_published": false
         },
         {
-            "id": FOCUSED_ID,
+            "id": "ID_PLACEHOLDER",
             "title": "focused_article",
             "short_title": null,
             "page_path": "/article_index/focused_article/",
             "url": "/article_index/focused_article/",
-            "full_url": "http://localhost/article_index/focused_article/",
+            "full_url": "/article_index/focused_article/",
             "type": "articles.FocusedArticlePage",
             "type_label": "Focus on",
             "teaser_text": "Teaser text",
             "teaser_image": {
-                "id": 14,
-                "uuid": "00000000-0000-0000-0000-000000000000",
+                "id": "ID_PLACEHOLDER",
+                "uuid": "UUID_PLACEHOLDER",
                 "title": "An image",
                 "description": "",
                 "jpeg": {
-                    "url": "https://localhost/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
-                    "file_size": 574,
+                    "url": "/media/images/image.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
                     "width": 100,
-                    "height": 68
+                    "height": 68,
+                    "file_size": 574
                 },
                 "webp": {
-                    "url": "https://localhost/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-70.bgcolor-fff.webp",
-                    "file_size": 102,
+                    "url": "/media/images/image.fill-600x400.format-webp.webpquality-70.bgcolor-fff.webp",
                     "width": 100,
-                    "height": 68
+                    "height": 68,
+                    "file_size": 102
                 }
             },
             "first_published_at": "2000-01-02T00:00:00Z",
@@ -241,31 +241,31 @@
             "is_newly_published": false
         },
         {
-            "id": ARTICLE_ID,
+            "id": "ID_PLACEHOLDER",
             "title": "article",
             "short_title": null,
             "page_path": "/article_index/article/",
             "url": "/article_index/article/",
-            "full_url": "http://localhost/article_index/article/",
+            "full_url": "/article_index/article/",
             "type": "articles.ArticlePage",
             "type_label": "The story of",
             "teaser_text": "Teaser text",
             "teaser_image": {
-                "id": 12,
-                "uuid": "00000000-0000-0000-0000-000000000000",
+                "id": "ID_PLACEHOLDER",
+                "uuid": "UUID_PLACEHOLDER",
                 "title": "An image",
                 "description": "",
                 "jpeg": {
-                    "url": "https://localhost/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
-                    "file_size": 574,
+                    "url": "/media/images/image.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
                     "width": 100,
-                    "height": 68
+                    "height": 68,
+                    "file_size": 574
                 },
                 "webp": {
-                    "url": "https://localhost/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-70.bgcolor-fff.webp",
-                    "file_size": 102,
+                    "url": "/media/images/image.fill-600x400.format-webp.webpquality-70.bgcolor-fff.webp",
                     "width": 100,
-                    "height": 68
+                    "height": 68,
+                    "file_size": 102
                 }
             },
             "first_published_at": "2000-01-01T00:00:00Z",
@@ -275,31 +275,31 @@
     ],
     "related_highlight_gallery_pages": [
         {
-            "id": HIGHLIGHT_GALLERY_ID,
+            "id": "ID_PLACEHOLDER",
             "title": "highlight_gallery",
             "short_title": null,
             "page_path": "/arts/highlight_gallery/",
             "url": "/arts/highlight_gallery/",
-            "full_url": "http://localhost/arts/highlight_gallery/",
+            "full_url": "/arts/highlight_gallery/",
             "type": "collections.HighlightGalleryPage",
             "type_label": "In pictures",
             "teaser_text": "Teaser text",
             "teaser_image": {
-                "id": 18,
-                "uuid": "00000000-0000-0000-0000-000000000000",
+                "id": "ID_PLACEHOLDER",
+                "uuid": "UUID_PLACEHOLDER",
                 "title": "An image",
                 "description": "",
                 "jpeg": {
-                    "url": "https://localhost/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
-                    "file_size": 574,
+                    "url": "/media/images/image.fill-600x400.format-jpeg.jpegquality-60.bgcolor-fff.jpg",
                     "width": 100,
-                    "height": 68
+                    "height": 68,
+                    "file_size": 574
                 },
                 "webp": {
-                    "url": "https://localhost/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-70.bgcolor-fff.webp",
-                    "file_size": 102,
+                    "url": "/media/images/image.fill-600x400.format-webp.webpquality-70.bgcolor-fff.webp",
                     "width": 100,
-                    "height": 68
+                    "height": 68,
+                    "file_size": 102
                 }
             },
             "first_published_at": "2000-01-03T00:00:00Z",

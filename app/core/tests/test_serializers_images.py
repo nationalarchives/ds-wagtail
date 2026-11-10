@@ -28,12 +28,13 @@ class DummyImage:
         translation=None,
         copyright=None,
         alt_heading=None,
+        full_url=None,
     ):
         self.alternative_format = alt_file
         self.alternative_format_data = {
             "heading": "test",
             "url": alt_file.url,
-            "full_url": "https://example.com" + alt_file.url,
+            "full_url": full_url or alt_file.url,
             "file_type": _extract_file_type(alt_file),
             "file_size": alt_file.size if alt_file else None,
         }
@@ -73,19 +74,13 @@ class TestDetailedImageSerializerAlternativeFormat(TestCase):
         self.assertIn("alternative_format_data", rep)
         self.assertIsInstance(rep["alternative_format_data"], dict)
         self.assertEqual(rep["alternative_format_data"]["url"], alt.url)
-        expected_full = (
-            settings.WAGTAILAPI_MEDIA_BASE_URL + alt.url
-            if hasattr(settings, "WAGTAILAPI_MEDIA_BASE_URL")
-            and alt.url.startswith("/")
-            else alt.url
-        )
-        self.assertEqual(rep["alternative_format_data"]["full_url"], expected_full)
+        self.assertEqual(rep["alternative_format_data"]["full_url"], alt.url)
         self.assertEqual(rep["alternative_format_data"]["file_type"], "csv")
         self.assertEqual(rep["alternative_format_data"]["file_size"], 2048)
 
     def test_alternative_format_file_object_with_full_url(self):
         alt = DummyFile("/path/table.xlsx", "path/table.xlsx")
-        img = DummyImage(alt)
+        img = DummyImage(alt, full_url="https://example.com" + alt.url)
         with patch.object(
             ImageSerializer, "to_representation", return_value=self.base_repr
         ):
