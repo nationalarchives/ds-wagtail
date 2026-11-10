@@ -17,6 +17,9 @@ ALLOWED_HOSTS = ["*"]
 INSTALLED_APPS = INSTALLED_APPS.copy()
 INSTALLED_APPS.remove("birdbath")
 
+MIDDLEWARE = MIDDLEWARE.copy()
+MIDDLEWARE.remove("whitenoise.middleware.WhiteNoiseMiddleware")
+
 SECURE_SSL_REDIRECT = False
 
 DATABASES = {
