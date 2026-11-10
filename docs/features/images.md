@@ -35,7 +35,7 @@ Extends Wagtail's `AbstractImage` with the following extra fields:
 
 In the Wagtail admin image form, the file chooser is configured with an `accept` attribute (`.csv,.xlsx,.xls`) via `CustomImageAdminForm` (`app/images/forms.py`). This helps filter selectable files in the local file dialog, while model validation remains the enforcement layer.
 
-The companion model `CustomImageRendition` extends `AbstractRendition` and adds a `full_url` property.
+The companion model `CustomImageRendition` extends `AbstractRendition`.
 
 ---
 

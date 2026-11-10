@@ -212,22 +212,9 @@ class BasePage(
     private_page_options = ["password"]
 
     @property
-    def full_url(self):
-        """
-        Returns the full URL to the page, including the hostname.
-        This is used in the API and for redirects.
-
-        Overrides the default `full_url` property to allow for alias pages.
-        """
-        if self.alias_of is None:
-            return self.get_full_url()
-        return self.alias_of.get_full_url()
-
-    @property
     def url(self):
         """
-        Returns the URL to the page, excluding the hostname.
-        This is used in the API and for redirects.
+        Returns the URL to the page.
 
         Overrides the default `url` property to allow for alias pages.
         """
@@ -247,7 +234,6 @@ class BasePage(
         APIField("short_title"),
         APIField("page_path"),
         APIField("url"),
-        APIField("full_url"),
         APIField("type"),
         APIField("type_label"),
         APIField("teaser_text"),

@@ -112,9 +112,6 @@ class CustomImage(ClusterableModel, AbstractImage):
             return {
                 "heading": self.get_alternative_format_heading_display(),
                 "url": item.url,
-                "full_url": (settings.WAGTAILAPI_MEDIA_BASE_URL + item.path)
-                if item
-                else None,
                 "file_type": _extract_file_type(item),
                 "file_size": _extract_file_size(item),
             }

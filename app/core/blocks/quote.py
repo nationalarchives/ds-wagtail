@@ -77,7 +77,7 @@ class QuoteBlock(blocks.StructBlock):
         citation_url = source_link.get("citation_external_link")
         if not citation_url:
             internal_link = source_link.get("citation_internal_link") or {}
-            citation_url = internal_link.get("full_url")
+            citation_url = internal_link.get("url")
 
         return {
             "quote": representation.get("quote"),

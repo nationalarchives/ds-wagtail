@@ -453,7 +453,6 @@ class APIResponseTest(WagtailPageTestCase):
                     normalized[key] = "ALERT_UID"
                 elif key in [
                     "url",
-                    "full_url",
                     "download_url",
                     "file",
                     "html_url",
@@ -525,17 +524,15 @@ class APIResponseTest(WagtailPageTestCase):
 
         # Sitemap items should only ever expose these two fields
         for item in data["items"]:
-            self.assertEqual(set(item.keys()), {"last_published_at", "full_url"})
+            self.assertEqual(set(item.keys()), {"last_published_at", "url"})
 
-        expected_full_urls = {
-            page.full_url for page in self.root_page.get_descendants(inclusive=True)
+        expected_urls = {
+            page.url for page in self.root_page.get_descendants(inclusive=True)
         }
-        self.assertEqual(
-            {item["full_url"] for item in data["items"]}, expected_full_urls
-        )
+        self.assertEqual({item["url"] for item in data["items"]}, expected_urls)
 
         matching_items = [
-            item for item in data["items"] if item["full_url"] == self.article.full_url
+            item for item in data["items"] if item["url"] == self.article.url
         ]
         self.assertEqual(len(matching_items), 1)
         self.assertEqual(
@@ -551,10 +548,10 @@ class APIResponseTest(WagtailPageTestCase):
         )
         try:
             response = self.request_api("sitemap")
-            full_urls = {item["full_url"] for item in response.json()["items"]}
+            urls = {item["url"] for item in response.json()["items"]}
             # The restricted page and its descendants should be excluded
-            self.assertNotIn(self.article_index.full_url, full_urls)
-            self.assertNotIn(self.article.full_url, full_urls)
+            self.assertNotIn(self.article_index.url, urls)
+            self.assertNotIn(self.article.url, urls)
         finally:
             restriction.delete()
 

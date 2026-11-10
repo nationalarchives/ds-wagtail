@@ -28,13 +28,12 @@ class DummyImage:
         translation=None,
         copyright=None,
         alt_heading=None,
-        full_url=None,
+        url=None,
     ):
         self.alternative_format = alt_file
         self.alternative_format_data = {
             "heading": "test",
-            "url": alt_file.url,
-            "full_url": full_url or alt_file.url,
+            "url": url or alt_file.url,
             "file_type": _extract_file_type(alt_file),
             "file_size": alt_file.size if alt_file else None,
         }
@@ -58,7 +57,7 @@ class TestDetailedImageSerializerAlternativeFormat(TestCase):
         self.base_media_url = settings.STORAGES["default"]["OPTIONS"]["custom_domain"]
         self.base_repr = {"id": 1, "uuid": "u", "title": "t", "description": "d"}
 
-    def test_alternative_format_file_object_default_full_url(self):
+    def test_alternative_format_file_object_default_url(self):
         alt = DummyFile(
             "/images/alternative_formats/table.csv",
             "table.csv",
@@ -74,13 +73,12 @@ class TestDetailedImageSerializerAlternativeFormat(TestCase):
         self.assertIn("alternative_format_data", rep)
         self.assertIsInstance(rep["alternative_format_data"], dict)
         self.assertEqual(rep["alternative_format_data"]["url"], alt.url)
-        self.assertEqual(rep["alternative_format_data"]["full_url"], alt.url)
         self.assertEqual(rep["alternative_format_data"]["file_type"], "csv")
         self.assertEqual(rep["alternative_format_data"]["file_size"], 2048)
 
-    def test_alternative_format_file_object_with_full_url(self):
+    def test_alternative_format_file_object_with_url(self):
         alt = DummyFile("/path/table.xlsx", "path/table.xlsx")
-        img = DummyImage(alt, full_url="https://example.com" + alt.url)
+        img = DummyImage(alt, url="https://example.com" + alt.url)
         with patch.object(
             ImageSerializer, "to_representation", return_value=self.base_repr
         ):
@@ -88,7 +86,7 @@ class TestDetailedImageSerializerAlternativeFormat(TestCase):
             rep = ser.to_representation(img)
 
         self.assertEqual(
-            rep["alternative_format_data"]["full_url"],
+            rep["alternative_format_data"]["url"],
             "https://example.com" + alt.url,
         )
         self.assertEqual(rep["alternative_format_data"]["file_type"], "xlsx")

@@ -120,7 +120,6 @@ class LinkItemSerializer(serializers.Serializer):
             "teaser_image": ImageSerializer().to_representation(instance.image),
             "teaser_text": instance.description,
             "url": instance.url,
-            "full_url": instance.url,
             "supertitle": instance.supertitle,
             "type_label": "External",
         }
