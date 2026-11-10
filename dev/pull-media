@@ -6,7 +6,6 @@ SCRIPTDIR=$(dirname $0)
 . $SCRIPTDIR/pre-pull
 
 MEDIA_DUMP="${DUMP_DIR}/media.zip"
-EXTRACTED_MEDIA="${DUMP_DIR}/extract"
 
 docker compose up s3 -d --wait
 
@@ -15,14 +14,10 @@ if [ ! -f $MEDIA_DUMP ]; then
     aws s3 cp s3://ds-$ENVIRONMENT-deployment-source/wagtail-content/$(aws s3 ls s3://ds-$ENVIRONMENT-deployment-source/wagtail-content/ | sort | tail -n 1 | awk '{print $4}') $MEDIA_DUMP
 fi
 
-if [ ! -d $EXTRACTED_MEDIA ]; then
-    echo "Unzipping media..."
-    unzip -o $MEDIA_DUMP -d $EXTRACTED_MEDIA
-fi
-
-echo "Copying media to local S3..."
 source $SCRIPTDIR/../.env
-AWS_ACCESS_KEY_ID=$AWS_S3_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY=$AWS_S3_SECRET_ACCESS_KEY aws --endpoint-url http://localhost:8002 s3 cp "$EXTRACTED_MEDIA/" s3://wagtail/ --recursive
+export AWS_ACCESS_KEY_ID="$AWS_S3_ACCESS_KEY_ID"
+export AWS_SECRET_ACCESS_KEY="$AWS_S3_SECRET_ACCESS_KEY"
+docker compose run --rm --no-deps media /scripts/sync-media
 
 echo "Removing downloaded media..."
-rm -fR $MEDIA_DUMP $EXTRACTED_MEDIA
+rm -f "$MEDIA_DUMP"

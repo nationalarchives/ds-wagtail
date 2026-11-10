@@ -29,3 +29,17 @@ Note:
 - To solely pull data run `./dev/pull-data`
 
 - To solely pull media run `./dev/pull-media`
+
+  Media is extracted into the case-sensitive Docker named volume
+  `extracted_media`, then synced to the local `wagtail` S3 bucket, preserving
+  directory prefixes. Host extraction under `dumps/extract/` is not used: on
+  case-insensitive filesystems, names differing only by case overwrite each other.
+
+  Failed requests are retried up to 10 attempts. If the command fails, rerun it:
+  matching-sized uploads are skipped, and extraction is reused when the archive
+  SHA-256 is unchanged. Changed archives are extracted afresh.
+
+  A dry-run sync verifies file presence and sizes (not content checksums), streaming
+  any pending uploads. Downloads and extracted files are removed only after
+  successful verification; failures retain them for retry. Any old host extraction
+  under `dumps/extract/` is left untouched.

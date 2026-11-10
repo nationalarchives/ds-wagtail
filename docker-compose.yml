@@ -70,6 +70,21 @@ services:
     #     'AWS_S3_ACCESS_KEY_ID=$(grep -Eo ''awsAccessKey = "(.*)"'' /home/sirius/app/application.conf | grep -Eo ''"(.*)"'' | tr -d ''"'') && AWS_S3_SECRET_ACCESS_KEY=$(grep -Eo ''awsSecretKey = "(.*)"'' /home/sirius/app/application.conf | grep -Eo ''"(.*)"'' | tr -d ''"'') && export AWS_S3_ACCESS_KEY_ID AWS_S3_SECRET_ACCESS_KEY && tmp_env=$(mktemp) && awk -v ak="$$AWS_S3_ACCESS_KEY_ID" -v sk="$$AWS_S3_SECRET_ACCESS_KEY" ''BEGIN{seen_ak=0; seen_sk=0} /^AWS_S3_ACCESS_KEY_ID=/{print "AWS_S3_ACCESS_KEY_ID=" ak; seen_ak=1; next} /^AWS_S3_SECRET_ACCESS_KEY=/{print "AWS_S3_SECRET_ACCESS_KEY=" sk; seen_sk=1; next} {print} END{if(!seen_ak) print "AWS_S3_ACCESS_KEY_ID=" ak; if(!seen_sk) print "AWS_S3_SECRET_ACCESS_KEY=" sk}'' /home/sirius/.env > "$$tmp_env" && cat "$$tmp_env" > /home/sirius/.env && rm -f "$$tmp_env" && exec /home/sirius/run.sh',
     #   ]
 
+  media:
+    image: public.ecr.aws/aws-cli/aws-cli:2.12.3
+    profiles:
+      - tools
+    entrypoint: /bin/bash
+    environment:
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
+      - AWS_RETRY_MODE=standard
+      - AWS_MAX_ATTEMPTS=10
+    volumes:
+      - ./dumps:/dumps:ro
+      - ./dev:/scripts:ro
+      - extracted_media:/media
+
   docs:
     image: squidfunk/mkdocs-material
     volumes:
@@ -87,3 +102,4 @@ services:
 volumes:
   pgdata:
   s3data:
+  extracted_media:

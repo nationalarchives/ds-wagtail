@@ -1,0 +1,27 @@
+#!/bin/bash
+
+set -eo pipefail
+
+ARCHIVE_HASH=$(sha256sum /dumps/media.zip | awk '{print $1}')
+if [ ! -f /media/archive.sha256 ] || [ "$ARCHIVE_HASH" != "$(cat /media/archive.sha256)" ]; then
+    echo "Extracting media on a case-sensitive Docker volume..."
+    rm -f /media/archive.sha256
+    rm -rf /media/extract
+    python -m zipfile -e /dumps/media.zip /media/extract
+    printf '%s\n' "$ARCHIVE_HASH" > /media/archive.sha256
+fi
+
+echo "Syncing media to local S3..."
+aws --endpoint-url http://s3:9000 s3 sync /media/extract/ s3://wagtail/ --size-only
+
+echo "Verifying media in local S3..."
+if ! aws --endpoint-url http://s3:9000 s3 sync /media/extract/ s3://wagtail/ --size-only --dryrun |
+    awk '{ print; pending = 1 } END { exit pending }' >&2; then
+    echo "Media verification failed; rerun ./dev/pull-media to retry." >&2
+    exit 1
+fi
+echo "All extracted media files are present in local S3 with matching sizes."
+
+echo "Removing extracted media..."
+rm -f /media/archive.sha256
+rm -rf /media/extract
