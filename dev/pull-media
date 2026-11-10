@@ -22,7 +22,7 @@ fi
 
 echo "Copying media to local S3..."
 source $SCRIPTDIR/../.env
-AWS_ACCESS_KEY_ID=$AWS_S3_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY=$AWS_S3_SECRET_ACCESS_KEY aws --endpoint-url http://localhost:8002 s3 cp $EXTRACTED_MEDIA/media s3://wagtail --recursive
+AWS_ACCESS_KEY_ID=$AWS_S3_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY=$AWS_S3_SECRET_ACCESS_KEY aws --endpoint-url http://localhost:8002 s3 cp "$EXTRACTED_MEDIA/" s3://wagtail/ --recursive
 
 echo "Removing downloaded media..."
 rm -fR $MEDIA_DUMP $EXTRACTED_MEDIA
