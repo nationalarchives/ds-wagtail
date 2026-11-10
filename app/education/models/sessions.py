@@ -1,4 +1,3 @@
-from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.functional import cached_property
@@ -11,7 +10,7 @@ from wagtail.admin.panels import (
     TabbedInterface,
 )
 from wagtail.api import APIField
-from wagtail.fields import RichTextField, StreamField
+from wagtail.fields import StreamField
 from wagtail.models import Orderable
 
 from app.core.blocks.image import (
@@ -22,7 +21,6 @@ from app.core.models import (
     PublishedDateMixin,
     RequiredHeroImageMixin,
 )
-from app.core.serializers import RichTextSerializer
 
 from ..blocks import SessionDescriptionBlock
 from ..serializers import (
@@ -287,17 +285,10 @@ class EducationSessionPage(
     description = StreamField(
         [("content_section", SessionDescriptionBlock())],
         verbose_name="description",
+        help_text="Headings may include 'Subjects covered in this workshop', 'What to expect in [type of session]', and 'Connections to the curriculum'",
         blank=True,
         null=True,
         min_num=1,
-    )
-
-    curriculum_connection_description = RichTextField(
-        features=settings.EXPANDED_RICH_TEXT_FEATURES,
-        verbose_name="curriculum connection description",
-        help_text="A description of how the session connects to the curriculum. This is optional but can help teachers understand the relevance of the session to their teaching.",
-        null=True,
-        blank=True,
     )
 
     highlights = StreamField(
@@ -336,7 +327,6 @@ class EducationSessionPage(
             MultiFieldPanel(
                 [
                     FieldPanel("description"),
-                    FieldPanel("curriculum_connection_description"),
                     FieldPanel("highlights"),
                 ]
             ),
@@ -395,9 +385,6 @@ class EducationSessionPage(
         ]
         + [
             APIField("description"),
-            APIField(
-                "curriculum_connection_description", serializer=RichTextSerializer()
-            ),
             APIField("highlights"),
             APIField(
                 "related_education_sessions", serializer=LinkedPageSerializer(many=True)

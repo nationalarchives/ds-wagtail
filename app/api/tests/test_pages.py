@@ -1,12 +1,12 @@
 import json
 import os
 import re
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from unittest.mock import patch
 
 from django.conf import settings
 from django.core.cache import cache
-from wagtail.models import Site
+from wagtail.models import PageViewRestriction, Site
 from wagtail.test.utils import WagtailPageTestCase
 from wagtail_factories import ImageFactory
 
@@ -32,11 +32,11 @@ from app.people.models import AuthorTag, PersonRole, PersonRoleSelection
 
 API_URL = "/api/v2/pages/"
 
-DATE_1 = datetime(2000, 1, 1, tzinfo=timezone.utc)
+DATE_1 = datetime(2000, 1, 1, tzinfo=UTC)
 
-DATE_2 = datetime(2000, 1, 2, tzinfo=timezone.utc)
+DATE_2 = datetime(2000, 1, 2, tzinfo=UTC)
 
-DATE_3 = datetime(2000, 1, 3, tzinfo=timezone.utc)
+DATE_3 = datetime(2000, 1, 3, tzinfo=UTC)
 
 FILE_PATH = os.path.join(os.path.dirname(__file__), "expected_results")
 
@@ -97,6 +97,7 @@ class APIResponseTest(WagtailPageTestCase):
             thumbnail="media/test.jpg",
             description="<p>Description</p>",
             transcript="<p>Transcript</p>",
+            copyright="Copyrighted by someone",
         )
 
         self.arts = TopicPageFactory(
@@ -443,11 +444,12 @@ class APIResponseTest(WagtailPageTestCase):
 
     def compare_json(self, path: str, json_file: str):
         if api_data_str := self.get_api_data(path):
-            if api_data_str.startswith("Endpoint") or api_data_str.startswith("Unable"):
+            if api_data_str.startswith(("Endpoint", "Unable")):
                 self.fail(api_data_str)
             else:
                 file = os.path.join(FILE_PATH, f"{json_file}.json")
-                expected_data_str = open(file).read()
+                with open(file) as expected_file:
+                    expected_data_str = expected_file.read()
 
                 # Replace placeholders with actual IDs in JSON
                 expected_data_str = self.replace_placeholders(expected_data_str)
@@ -470,6 +472,46 @@ class APIResponseTest(WagtailPageTestCase):
 
     def test_pages_route(self):
         self.compare_json("", "pages")
+
+    def test_sitemap_listing_view(self):
+        response = self.request_api("sitemap")
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+
+        # Sitemap items should only ever expose these two fields
+        for item in data["items"]:
+            self.assertEqual(set(item.keys()), {"last_published_at", "full_url"})
+
+        expected_full_urls = {
+            page.full_url for page in self.root_page.get_descendants(inclusive=True)
+        }
+        self.assertEqual(
+            {item["full_url"] for item in data["items"]}, expected_full_urls
+        )
+
+        matching_items = [
+            item for item in data["items"] if item["full_url"] == self.article.full_url
+        ]
+        self.assertEqual(len(matching_items), 1)
+        self.assertEqual(
+            matching_items[0]["last_published_at"],
+            self.article.last_published_at.isoformat().replace("+00:00", "Z"),
+        )
+
+    def test_sitemap_listing_view_excludes_restricted_pages(self):
+        restriction = PageViewRestriction.objects.create(
+            page=self.article_index,
+            restriction_type=PageViewRestriction.PASSWORD,
+            password="secret",
+        )
+        try:
+            response = self.request_api("sitemap")
+            full_urls = {item["full_url"] for item in response.json()["items"]}
+            # The restricted page and its descendants should be excluded
+            self.assertNotIn(self.article_index.full_url, full_urls)
+            self.assertNotIn(self.article.full_url, full_urls)
+        finally:
+            restriction.delete()
 
     def test_multiple_page_routes(self):
         cache.delete(f"record_instance_{self.record_article.record}")

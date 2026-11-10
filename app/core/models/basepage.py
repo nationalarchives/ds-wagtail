@@ -21,7 +21,7 @@ from app.core.serializers import (
     RichTextSerializer,
 )
 
-from .mixins import CustomHeadlessPreviewMixin, SocialMixin
+from .mixins import CustomHeadlessPreviewMixin, SocialMixin, TranslationMixin
 
 __all__ = [
     "BasePage",
@@ -35,7 +35,9 @@ __all__ = [
 options.DEFAULT_NAMES = options.DEFAULT_NAMES + ("verbose_name_public",)
 
 
-class BasePage(AlertMixin, SocialMixin, CustomHeadlessPreviewMixin, Page):
+class BasePage(
+    AlertMixin, SocialMixin, TranslationMixin, CustomHeadlessPreviewMixin, Page
+):
     """
     An abstract base model that is used for all Page models within
     the project. Any common fields, Wagtail overrides or custom
@@ -128,7 +130,11 @@ class BasePage(AlertMixin, SocialMixin, CustomHeadlessPreviewMixin, Page):
         _teaser_panel,
     ] + SocialMixin.promote_panels
 
-    settings_panels = Page.settings_panels + AlertMixin.settings_panels
+    settings_panels = (
+        Page.settings_panels
+        + AlertMixin.settings_panels
+        + TranslationMixin.settings_panels
+    )
 
     class Meta:
         abstract = True
@@ -157,6 +163,21 @@ class BasePage(AlertMixin, SocialMixin, CustomHeadlessPreviewMixin, Page):
         if privacy:
             return privacy[0]
         return "public"
+
+    @cached_property
+    def breadcrumbs(self):
+        """
+        Returns a list of dictionaries representing the breadcrumbs for this page.
+        Each dictionary contains the 'text' and 'href' for a breadcrumb item.
+        """
+        return [
+            {
+                "text": (page.short_title or page.title),
+                "href": page.url,
+            }
+            for page in self.get_ancestors().order_by("depth").specific(defer=True)
+            if page.url
+        ]
 
     @property
     def mourning_notice(self):
@@ -244,10 +265,11 @@ class BasePage(AlertMixin, SocialMixin, CustomHeadlessPreviewMixin, Page):
         ]
     )
 
-    _base_api_meta_fields = [
+    _base_api_meta_fields = TranslationMixin.api_fields + [
         APIField("page_path"),
         APIField("url"),
         APIField("alias_of", serializer=AliasOfSerializer()),
+        APIField("breadcrumbs"),
     ]
 
     _teaser_api_meta_fields = [

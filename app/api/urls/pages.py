@@ -24,7 +24,7 @@ from wagtail.contrib.redirects.models import Redirect
 from wagtail.models import Page, PageViewRestriction, Site
 
 from app.api.permissions import IsAPITokenAuthenticated
-from app.core.serializers.pages import DefaultPageSerializer
+from app.core.serializers.pages import DefaultPageSerializer, PageSitemapSerializer
 
 from ..filters import AliasFilter, DescendantOfPathFilter
 
@@ -76,29 +76,30 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
         serializer = DefaultPageSerializer(queryset, many=True)
         return self.get_paginated_response(serializer.data)
 
+    def sitemap_listing_view(self, request):
+        queryset = self.get_queryset().public()
+
+        # Exclude pages that the user doesn't have access to
+        restricted_pages = [
+            restriction.page
+            for restriction in PageViewRestriction.objects.all().select_related("page")
+        ]
+
+        # Exclude the restricted pages and their descendants from the queryset
+        for restricted_page in restricted_pages:
+            queryset = queryset.not_descendant_of(restricted_page, inclusive=True)
+
+        self.check_query_parameters(queryset)
+        queryset = queryset.order_by("id")
+        queryset = self.paginate_queryset(queryset)
+        serializer = PageSitemapSerializer(queryset, many=True)
+        return self.get_paginated_response(serializer.data)
+
     def detail_view(self, request, pk):
         instance = self.get_object()
         restrictions = instance.get_view_restrictions()
         serializer = self.get_serializer(instance)
         data = serializer.data
-        breadcrumbs = [
-            {
-                "text": ("Home" if page.url == "/" else page.short_title or page.title),
-                "href": page.url,
-            }
-            for page in instance.get_ancestors().order_by("depth").specific(defer=True)
-            if page.url
-        ]
-        if "meta" in data:
-            data["meta"].update(
-                {
-                    "breadcrumbs": breadcrumbs,
-                }
-            )
-        else:
-            data["meta"] = {
-                "breadcrumbs": breadcrumbs,
-            }
         if not restrictions:
             return Response(data)
         restricted_data = {
@@ -241,11 +242,13 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
                 | Q(old_path=f"{path.strip('/')}/")
                 | Q(old_path=f"/{path.strip('/')}/")
             )
-            if redirects.exists():
-                if redirects.get().redirect_page:
-                    if new_path := redirects.get().redirect_page.url:
-                        logger.info(f"Redirect detected: {path} ---> {new_path}")
-                        path = new_path
+            if (
+                redirects.exists()
+                and redirects.get().redirect_page
+                and (new_path := redirects.get().redirect_page.url)
+            ):
+                logger.info(f"Redirect detected: {path} ---> {new_path}")
+                path = new_path
 
             path_components = [component for component in path.split("/") if component]
 
@@ -261,6 +264,12 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
 
     @classmethod
     def get_urlpatterns(cls):
+        """
+        This returns a list of URL patterns for the endpoint
+        """
         return super().get_urlpatterns() + [
             path("random/", cls.as_view({"get": "random_view"}), name="random"),
+            path(
+                "sitemap/", cls.as_view({"get": "sitemap_listing_view"}), name="sitemap"
+            ),
         ]

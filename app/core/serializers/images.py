@@ -130,7 +130,7 @@ class ImageSerializer(Serializer):
     }
 
     The source of the image can also be set in the serializer, e.g:
-    APIField("image_large", serializer=ImageSerializer(rendition_size="fill-900x900", source="image"))
+    APIField("image_large", serializer=ImageSerializer(rendition_size="fill-1200x1200", source="image"))
 
     This will come back as `image_large` in the API response.
     """
@@ -141,8 +141,8 @@ class ImageSerializer(Serializer):
         jpeg_quality: int = 60,
         webp_quality: int = 70,
         background_colour: str = "fff",
-        formats: list = None,
-        additional_rendition_specs: dict = None,
+        formats: list | None = None,
+        additional_rendition_specs: dict | None = None,
         *args,
         **kwargs,
     ):
@@ -211,16 +211,9 @@ class DetailedImageSerializer(ImageSerializer):
                         else None
                     ),
                     "copyright": value.copyright if value.copyright else None,
-                    "alternative_format": (
-                        {
-                            "heading": value.get_alternative_format_heading_display(),
-                            "url": value.alternative_format.url,
-                            "file_type": _extract_file_type(value.alternative_format),
-                            "file_size": _extract_file_size(value.alternative_format),
-                        }
-                        if value.alternative_format
-                        else None
-                    ),
+                    "alternative_format_data": value.alternative_format_data
+                    if value.alternative_format
+                    else None,
                 }
             )
         return representation

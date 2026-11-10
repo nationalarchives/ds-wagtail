@@ -92,7 +92,7 @@ class TestArticlePageSimilarItems(TestCase):
         test_page = ArticlePage.objects.get(id=self.original_page.id)
         with self.assertNumQueries(3):
             self.assertEqual(
-                list(page.id for page in test_page.similar_items),
+                [page.id for page in test_page.similar_items],
                 [
                     self.three_matches_page.id,
                     self.two_matches_page.id,
@@ -207,7 +207,7 @@ class TestFocusedArticlePageSimilarItems(TestCase):
         test_page = FocusedArticlePage.objects.get(id=self.original_page.id)
         with self.assertNumQueries(3):
             self.assertEqual(
-                list(page.id for page in test_page.similar_items),
+                [page.id for page in test_page.similar_items],
                 [
                     self.three_matches_page.id,
                     self.two_matches_page.id,

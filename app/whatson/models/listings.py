@@ -31,10 +31,10 @@ from .details import (
 
 
 def get_specific_listings(
-    page_types: list[Page] = None,
+    page_types: list[Page] | None = None,
     filters: dict | Q = None,
     order_by: str = "start_date",
-    exclude: dict = None,
+    exclude: dict | None = None,
     reverse: bool = False,
 ) -> list:
     """

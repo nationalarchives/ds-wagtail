@@ -36,6 +36,7 @@ __all__ = [
     "RequiredHeroImageMixin",
     "SidebarMixin",
     "SocialMixin",
+    "TranslationMixin",
 ]
 
 
@@ -75,10 +76,7 @@ class PublishedDateMixin(models.Model):
         expiry_date = timezone.now().date() - timedelta(
             days=settings.NEW_LABEL_DISPLAY_FOR_DAYS
         )
-        if self.published_date:
-            if self.published_date.date() > expiry_date:
-                return True
-        return False
+        return self.published_date and self.published_date.date() > expiry_date
 
     class Meta:
         abstract = True
@@ -273,29 +271,6 @@ class SocialMixin(models.Model):
         help_text="Image that will appear when this page is shared on social media. This will default to the teaser image if left blank.",
     )
 
-    twitter_og_title = models.CharField(
-        verbose_name="Twitter OpenGraph title",
-        max_length=255,
-        blank=True,
-        null=True,
-        help_text="If left blank, the OpenGraph title will be used.",
-    )
-    twitter_og_description = models.TextField(
-        verbose_name="Twitter OpenGraph description",
-        blank=True,
-        null=True,
-        help_text="If left blank, the OpenGraph description will be used.",
-    )
-    twitter_og_image = models.ForeignKey(
-        get_image_model_string(),
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="+",
-        verbose_name="Twitter OpenGraph image",
-        help_text="If left blank, the OpenGraph image will be used.",
-    )
-
     class Meta:
         abstract = True
 
@@ -314,15 +289,15 @@ class SocialMixin(models.Model):
             ],
             heading="Base OpenGraph data",
         ),
-        MultiFieldPanel(
-            [
-                FieldPanel("twitter_og_title"),
-                FieldPanel("twitter_og_description"),
-                FieldPanel("twitter_og_image"),
-            ],
-            heading="Twitter OpenGraph data",
-        ),
     ]
+
+    @cached_property
+    def search_image_field(self):
+        return (
+            self.search_image or self.teaser_image
+            if hasattr(self, "teaser_image")
+            else None
+        )
 
     # API field building blocks for flexible composition
     _social_base_api_meta_fields = [
@@ -330,13 +305,17 @@ class SocialMixin(models.Model):
         APIField("search_description"),
         APIField(
             "search_image",
-            serializer=ImageSerializer("fill-1200x630"),
-        ),
-        APIField("twitter_og_title"),
-        APIField("twitter_og_description"),
-        APIField(
-            "twitter_og_image",
-            serializer=ImageSerializer("fill-1200x630"),
+            serializer=ImageSerializer(
+                "max-1200x1200",
+                source="search_image_field",
+                additional_rendition_specs={
+                    "square": "fill-1200x1200",
+                    "4x3": "fill-1200x900",
+                    "16x9": "fill-1200x675",
+                    "static_opengraph": "fill-1200x630",
+                    "dynamic_opengraph": "fill-510x540",
+                },
+            ),
         ),
     ]
 
@@ -352,3 +331,36 @@ class CustomHeadlessPreviewMixin(HeadlessPreviewMixin):
         """
         site = self.get_site() or Site.find_for_request(request)
         return get_client_root_url_from_site(site)
+
+
+class TranslationChoices(models.TextChoices):
+    """
+    This model is a list of our translation choices for page translations.
+    """
+
+    ENGLISH = "en", "English"
+    WELSH = "cy", "Welsh"
+
+
+class TranslationMixin(models.Model):
+    """
+    Adds a dropdown of supported language choices.
+    """
+
+    language = models.CharField(
+        max_length=2,
+        choices=TranslationChoices.choices,
+        default=TranslationChoices.ENGLISH,
+        help_text="The language the page is written in",
+    )
+
+    api_fields = [
+        APIField("language"),
+    ]
+
+    settings_panels = [
+        FieldPanel("language"),
+    ]
+
+    class Meta:
+        abstract = True

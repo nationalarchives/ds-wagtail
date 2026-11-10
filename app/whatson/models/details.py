@@ -726,9 +726,8 @@ class DisplayPage(
         Overrides the type_label method from BasePage, to return the correct
         type label for the display page.
         """
-        if self.end_date:
-            if self.end_date < timezone.now().date():
-                return "Past display"
+        if self.end_date and self.end_date < timezone.now().date():
+            return "Past display"
         return "Display"
 
     @cached_property
@@ -867,14 +866,13 @@ class DisplayPage(
         provided for the correct venue type.
         """
 
-        if self.start_date and self.end_date:
-            if self.start_date > self.end_date:
-                raise ValidationError(
-                    {
-                        "start_date": "The start date must be before the end date.",
-                        "end_date": "The end date must be after the start date.",
-                    }
-                )
+        if self.start_date and self.end_date and self.start_date > self.end_date:
+            raise ValidationError(
+                {
+                    "start_date": "The start date must be before the end date.",
+                    "end_date": "The end date must be after the start date.",
+                }
+            )
 
 
 class ExhibitionPage(
@@ -1263,14 +1261,13 @@ class ExhibitionPage(
         provided for the correct venue type.
         """
 
-        if self.start_date and self.end_date:
-            if self.start_date > self.end_date:
-                raise ValidationError(
-                    {
-                        "start_date": "The start date must be before the end date.",
-                        "end_date": "The end date must be after the start date.",
-                    }
-                )
+        if self.start_date and self.end_date and self.start_date > self.end_date:
+            raise ValidationError(
+                {
+                    "start_date": "The start date must be before the end date.",
+                    "end_date": "The end date must be after the start date.",
+                }
+            )
         if self.video and not self.video_title:
             raise ValidationError(
                 {

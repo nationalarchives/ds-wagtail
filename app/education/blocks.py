@@ -98,6 +98,7 @@ class SectionContentBlock(blocks.StreamBlock):
     contact = ContactBlock()
     featured_page = FeaturedPageBlock()
     featured_external_link = FeaturedExternalLinkBlock()
+    sub_heading = SubHeadingBlock()
     quote = QuoteBlock()
     inset_text = InsetTextBlock()
 

@@ -8,8 +8,8 @@ from .sessions import EducationSessionPage
 
 __all__ = [
     "EducationPage",
-    "TeachingResourcePage",
     "EducationSessionPage",
     "EducationSessionsListingPage",
+    "TeachingResourcePage",
     "TeachingResourcesListingPage",
 ]

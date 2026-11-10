@@ -31,8 +31,8 @@ from .video import MixedMediaBlock, YouTubeBlock
 
 __all__ = [
     "APIImageChooserBlock",
-    "APIRichTextBlock",
     "APIPageChooserBlock",
+    "APIRichTextBlock",
     "AccordionsBlock",
     "ButtonBlock",
     "CallToActionBlock",

@@ -3,7 +3,11 @@ from unittest.mock import patch
 from django.conf import settings
 from django.test import TestCase
 
-from app.core.serializers.images import DetailedImageSerializer, ImageSerializer
+from app.core.serializers.images import (
+    DetailedImageSerializer,
+    ImageSerializer,
+    _extract_file_type,
+)
 
 
 class DummyFile:
@@ -26,6 +30,13 @@ class DummyImage:
         alt_heading=None,
     ):
         self.alternative_format = alt_file
+        self.alternative_format_data = {
+            "heading": "test",
+            "url": alt_file.url,
+            "full_url": "https://example.com" + alt_file.url,
+            "file_type": _extract_file_type(alt_file),
+            "file_size": alt_file.size if alt_file else None,
+        }
         self.transcription = transcription
         self.translation = translation
         self.copyright = copyright
@@ -59,11 +70,18 @@ class TestDetailedImageSerializerAlternativeFormat(TestCase):
             ser = DetailedImageSerializer()
             rep = ser.to_representation(img)
 
-        self.assertIn("alternative_format", rep)
-        self.assertIsInstance(rep["alternative_format"], dict)
-        self.assertEqual(rep["alternative_format"]["url"], alt.url)
-        self.assertEqual(rep["alternative_format"]["file_type"], "csv")
-        self.assertEqual(rep["alternative_format"]["file_size"], 2048)
+        self.assertIn("alternative_format_data", rep)
+        self.assertIsInstance(rep["alternative_format_data"], dict)
+        self.assertEqual(rep["alternative_format_data"]["url"], alt.url)
+        expected_full = (
+            settings.WAGTAILAPI_MEDIA_BASE_URL + alt.url
+            if hasattr(settings, "WAGTAILAPI_MEDIA_BASE_URL")
+            and alt.url.startswith("/")
+            else alt.url
+        )
+        self.assertEqual(rep["alternative_format_data"]["full_url"], expected_full)
+        self.assertEqual(rep["alternative_format_data"]["file_type"], "csv")
+        self.assertEqual(rep["alternative_format_data"]["file_size"], 2048)
 
     def test_alternative_format_file_object_with_full_url(self):
         alt = DummyFile("/path/table.xlsx", "path/table.xlsx")
@@ -74,8 +92,11 @@ class TestDetailedImageSerializerAlternativeFormat(TestCase):
             ser = DetailedImageSerializer()
             rep = ser.to_representation(img)
 
-        self.assertEqual(rep["alternative_format"]["url"], alt.url)
-        self.assertEqual(rep["alternative_format"]["file_type"], "xlsx")
+        self.assertEqual(
+            rep["alternative_format_data"]["full_url"],
+            "https://example.com" + alt.url,
+        )
+        self.assertEqual(rep["alternative_format_data"]["file_type"], "xlsx")
 
     def test_file_with_multiple_dots(self):
         alt = DummyFile("/path/my.file.name.csv", "my.file.name.csv")
@@ -86,7 +107,7 @@ class TestDetailedImageSerializerAlternativeFormat(TestCase):
             ser = DetailedImageSerializer()
             rep = ser.to_representation(img)
 
-        self.assertEqual(rep["alternative_format"]["file_type"], "csv")
+        self.assertEqual(rep["alternative_format_data"]["file_type"], "csv")
 
     def test_url_with_query_string(self):
         alt = DummyFile("/path/table.csv?ver=1", "table.csv?ver=1")
@@ -97,7 +118,7 @@ class TestDetailedImageSerializerAlternativeFormat(TestCase):
             ser = DetailedImageSerializer()
             rep = ser.to_representation(img)
 
-        self.assertEqual(rep["alternative_format"]["file_type"], "csv")
+        self.assertEqual(rep["alternative_format_data"]["file_type"], "csv")
 
     def test_no_extension_returns_none(self):
         alt = DummyFile("/path/file", "file")
@@ -108,7 +129,7 @@ class TestDetailedImageSerializerAlternativeFormat(TestCase):
             ser = DetailedImageSerializer()
             rep = ser.to_representation(img)
 
-        self.assertIsNone(rep["alternative_format"]["file_type"])
+        self.assertIsNone(rep["alternative_format_data"]["file_type"])
 
     def test_uppercase_extension_normalized(self):
         alt = DummyFile("/path/table.CSV", "table.CSV")
@@ -119,7 +140,7 @@ class TestDetailedImageSerializerAlternativeFormat(TestCase):
             ser = DetailedImageSerializer()
             rep = ser.to_representation(img)
 
-        self.assertEqual(rep["alternative_format"]["file_type"], "csv")
+        self.assertEqual(rep["alternative_format_data"]["file_type"], "csv")
 
     def test_missing_size_returns_none(self):
         alt = DummyFile("/path/table.csv", "table.csv")
@@ -130,4 +151,4 @@ class TestDetailedImageSerializerAlternativeFormat(TestCase):
             ser = DetailedImageSerializer()
             rep = ser.to_representation(img)
 
-        self.assertIsNone(rep["alternative_format"]["file_size"])
+        self.assertIsNone(rep["alternative_format_data"]["file_size"])
