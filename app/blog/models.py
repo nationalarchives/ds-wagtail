@@ -306,12 +306,17 @@ class BlogPostPage(
     )
 
     @cached_property
+    def _top_level_blog(self):
+        ancestor = self.get_ancestors().type(BlogPage).first()
+        return ancestor.specific if ancestor else None
+
+    @cached_property
     def type_label(self) -> str:
         """
         Overrides the type_label method from BasePage, to return the correct
         type label for the blog post page.
         """
-        top_level = self.get_ancestors().type(BlogPage).first().specific
+        top_level = self._top_level_blog
         if not top_level:
             return "Blog post"
         if top_level.custom_type_label:
