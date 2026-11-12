@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
+from django.db.models import prefetch_related_objects
 from django.utils.functional import cached_property
 from modelcluster.fields import ParentalKey
 from rest_framework import serializers
@@ -50,6 +51,8 @@ class PeopleIndexPage(BasePage):
             .live()
             .public()
             .specific()
+            .select_related("teaser_image", "image", for_specific_subqueries=True)
+            .prefetch_related("roles__role", for_specific_subqueries=True)
         )
 
 
@@ -290,9 +293,11 @@ class PersonPage(BasePage):
         Returns a list of role tags for the person.
         This is used to display the roles on the person's card.
         """
+        roles = list(self.roles.all())
+        prefetch_related_objects(roles, "role")
         role_tags = [
             {"slug": role.role.slug, "name": role.role.name}
-            for role in self.roles.all()
+            for role in roles
             if role.role.display_on_card
         ]
         return sorted(role_tags, key=lambda tag: tag["name"])

@@ -10,7 +10,7 @@ from app.articles.models import ArticleIndexPage
 from app.collections.models import ExplorerIndexPage
 from app.core.models import BasePage
 from app.core.serializers import MourningSerializer
-from app.core.serializers.pages import DefaultPageSerializer
+from app.core.serializers.pages import DefaultPageSerializer, prefetch_page_relations
 from app.home.models import HomePage
 
 
@@ -44,7 +44,7 @@ class CatalogueAPIViewSet(GenericViewSet):
             .first()
         )
         explore_the_collection_top_pages = (
-            explorer_index.get_children().all().live().public().specific()
+            list(explorer_index.get_children().all().live().public().specific())
             if explorer_index
             else []
         )
@@ -56,14 +56,20 @@ class CatalogueAPIViewSet(GenericViewSet):
             .first()
         )
         explore_the_collection_latest_articles = (
-            article_index.get_children()
-            .all()
-            .live()
-            .public()
-            .order_by("-first_published_at")[:3]
-            .specific()
+            list(
+                article_index.get_children()
+                .all()
+                .live()
+                .public()
+                .order_by("-first_published_at")[:3]
+                .specific()
+            )
             if article_index
             else []
+        )
+
+        prefetch_page_relations(
+            explore_the_collection_top_pages + explore_the_collection_latest_articles
         )
 
         return Response(

@@ -4,6 +4,7 @@ from wagtail.models import Page
 
 from app.api.urls.pages import CustomPagesAPIViewSet
 from app.core.serializers import DefaultPageSerializer
+from app.core.serializers.pages import prefetch_page_relations
 
 
 class ArticleTagsAPIViewSet(CustomPagesAPIViewSet):
@@ -28,7 +29,8 @@ class ArticleTagsAPIViewSet(CustomPagesAPIViewSet):
             )
             if limit < 0:
                 limit = max(tagged_pages.count() + limit, 0)
-            tagged_pages = tagged_pages[: min(limit, 50)].specific()
+            tagged_pages = list(tagged_pages[: min(limit, 50)].specific())
+            prefetch_page_relations(tagged_pages)
             return Response(DefaultPageSerializer(tagged_pages, many=True).data)
         return Response({"error": "No tags parameter specified"}, status=400)
 

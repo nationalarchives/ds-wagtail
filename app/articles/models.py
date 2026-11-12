@@ -290,6 +290,7 @@ class ArticlePage(
             Page.objects.filter(id__in=related_tags)
             .order_by("-first_published_at")[:3]
             .specific()
+            .select_related("teaser_image", for_specific_subqueries=True)
         )
 
     @cached_property
@@ -446,6 +447,7 @@ class FocusedArticlePage(
             Page.objects.filter(id__in=related_tags)
             .order_by("-first_published_at")[:3]
             .specific()
+            .select_related("teaser_image", for_specific_subqueries=True)
         )
 
     @cached_property

@@ -1,7 +1,7 @@
 from wagtail.models import Page, PageViewRestriction
 
 from app.api.urls.pages import CustomPagesAPIViewSet
-from app.core.serializers.pages import DefaultPageSerializer
+from app.core.serializers.pages import DefaultPageSerializer, prefetch_page_relations
 from app.foi.models import FoiRequestPage
 
 
@@ -27,6 +27,7 @@ class FreedomOfInformationRequestsAPIViewSet(CustomPagesAPIViewSet):
             queryset = queryset.specific()
         queryset = self.filter_queryset(queryset)
         queryset = self.paginate_queryset(queryset)
+        prefetch_page_relations(queryset)
         serializer = DefaultPageSerializer(
             queryset, required_api_fields=["date", "reference"], many=True
         )

@@ -1,5 +1,20 @@
+from django.db.models import prefetch_related_objects
 from rest_framework import serializers
 from rest_framework.fields import empty
+
+
+def prefetch_page_relations(pages):
+    from app.people.models import PersonPage
+
+    prefetch_related_objects(
+        [page for page in pages if hasattr(type(page), "teaser_image")],
+        "teaser_image",
+    )
+    prefetch_related_objects(
+        [page for page in pages if isinstance(page, PersonPage)],
+        "image",
+        "roles__role",
+    )
 
 
 def get_api_fields(object, required_api_fields: list | None = None) -> list:
