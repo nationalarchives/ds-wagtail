@@ -28,7 +28,7 @@ class ArticleTagsAPIViewSet(CustomPagesAPIViewSet):
             )
             if limit < 0:
                 limit = max(tagged_pages.count() + limit, 0)
-            tagged_pages = tagged_pages[: min(limit, 50)]
+            tagged_pages = tagged_pages.specific()[: min(limit, 50)]
             return Response(DefaultPageSerializer(tagged_pages, many=True).data)
         return Response({"error": "No tags parameter specified"}, status=400)
 

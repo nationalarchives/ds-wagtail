@@ -1,10 +1,17 @@
 from datetime import UTC, datetime, timedelta
 from unittest.mock import patch
 
+from django.db import connection
 from django.test import TestCase
+from django.test.utils import CaptureQueriesContext
 from wagtail.models import Page, Site
 
-from app.articles.models import ArticleTag, FocusedArticlePage, TaggedArticle
+from app.articles.models import (
+    ArticlePage,
+    ArticleTag,
+    FocusedArticlePage,
+    TaggedArticle,
+)
 from app.core.serializers.pages import get_api_data
 
 
@@ -53,3 +60,47 @@ class ArticleTagsAPITest(TestCase):
                     self.page_ids[:expected_count],
                 )
                 self.assertEqual(serialize_page.call_count, expected_count)
+
+    def test_specific_pages_are_fetched_in_bulk(self):
+        with CaptureQueriesContext(connection) as queries:
+            response = self.client.get(
+                "/api/v2/article_tags/", {"tags": "example", "limit": 5}
+            )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual([item["id"] for item in response.json()], self.page_ids)
+        specific_queries = [
+            query["sql"]
+            for query in queries
+            if 'FROM "articles_focusedarticlepage"' in query["sql"]
+        ]
+        self.assertEqual(len(specific_queries), 1)
+        self.assertIn(" IN ", specific_queries[0])
+
+    def test_specific_pages_preserve_mixed_types_and_order(self):
+        root = Site.objects.get(is_default_site=True).root_page
+        article = root.add_child(
+            instance=ArticlePage(
+                title="Other article", intro="<p>Intro</p>", teaser_text="Teaser"
+            )
+        )
+        article.tagged_items = [
+            TaggedArticle(tag=ArticleTag.objects.get(slug="example"))
+        ]
+        article.save()
+        Page.objects.filter(pk=article.pk).update(
+            first_published_at=datetime(2021, 1, 1, tzinfo=UTC)
+        )
+
+        response = self.client.get(
+            "/api/v2/article_tags/", {"tags": "example", "limit": 6}
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            [item["id"] for item in response.json()], [article.pk, *self.page_ids]
+        )
+        self.assertEqual(
+            [item["type"] for item in response.json()],
+            ["articles.ArticlePage"] + ["articles.FocusedArticlePage"] * 5,
+        )
