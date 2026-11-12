@@ -44,7 +44,7 @@ class CatalogueAPIViewSet(GenericViewSet):
             .first()
         )
         explore_the_collection_top_pages = (
-            explorer_index.get_children().all().live().public()
+            explorer_index.get_children().all().live().public().specific()
             if explorer_index
             else []
         )
@@ -61,6 +61,7 @@ class CatalogueAPIViewSet(GenericViewSet):
             .live()
             .public()
             .order_by("-first_published_at")[:3]
+            .specific()
             if article_index
             else []
         )

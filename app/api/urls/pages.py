@@ -70,6 +70,9 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
             queryset = queryset.filter(author_tags__author=request.GET["author"])
 
         self.check_query_parameters(queryset)
+        if queryset.model is Page:
+            # Search wraps the queryset - specific pages are fetched when pagination evaluates it.
+            queryset = queryset.specific()
         queryset = self.filter_queryset(queryset)
         queryset = self.paginate_queryset(queryset)
         serializer = DefaultPageSerializer(queryset, many=True)
