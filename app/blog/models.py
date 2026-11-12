@@ -43,10 +43,15 @@ class BlogIndexPage(BasePageWithRequiredIntro):
     @cached_property
     def top_blogs(self):
         """
-        Returns top-level blogs with post counts.
-        Replicates the logic from blogs/top/ endpoint.
+        Returns top-level blogs.
         """
-        queryset = BlogPage.objects.all().live().public().order_by("title")
+        queryset = (
+            BlogPage.objects.all()
+            .live()
+            .public()
+            .select_related("teaser_image")
+            .order_by("title")
+        )
         restricted_pages = [
             restriction.page
             for restriction in PageViewRestriction.objects.all().select_related("page")
@@ -54,14 +59,9 @@ class BlogIndexPage(BasePageWithRequiredIntro):
         for restricted_page in restricted_pages:
             queryset = queryset.not_descendant_of(restricted_page, inclusive=True)
 
-        blog_post_counts = {}
         for blog in queryset:
             # Ignore all "sub-blogs" (BlogPages which are children of other BlogPages)
             queryset = queryset.not_descendant_of(blog, inclusive=False)
-            blog_posts = (
-                BlogPostPage.objects.all().live().public().descendant_of(blog).count()
-            )
-            blog_post_counts[blog.id] = blog_posts
 
         return queryset
 
@@ -168,21 +168,36 @@ class BlogPage(HeroImageMixin, BasePageWithRequiredIntro):
         """
         Returns child BlogPages of this page with post counts.
         """
-        queryset = BlogPage.objects.child_of(self).live().public().order_by("title")
+        queryset = (
+            BlogPage.objects.child_of(self)
+            .live()
+            .public()
+            .select_related("teaser_image")
+            .order_by("title")
+        )
         return queryset
 
     @cached_property
     def top_blogs(self):
         """
-        Returns "top-most" level blogs with post counts.
-        Replicates the logic from blogs/top/ endpoint.
+        Returns "top-most" level blogs.
         """
-        blog_index = BlogIndexPage.objects.all().live().public().first()
+        blog_index = (
+            BlogIndexPage.objects.all()
+            .live()
+            .public()
+            .select_related("teaser_image")
+            .first()
+        )
         if not blog_index:
             return None
 
         queryset = (
-            BlogPage.objects.child_of(blog_index).live().public().order_by("title")
+            BlogPage.objects.child_of(blog_index)
+            .live()
+            .public()
+            .select_related("teaser_image")
+            .order_by("title")
         )
         restricted_pages = [
             restriction.page
@@ -191,14 +206,9 @@ class BlogPage(HeroImageMixin, BasePageWithRequiredIntro):
         for restricted_page in restricted_pages:
             queryset = queryset.not_descendant_of(restricted_page, inclusive=True)
 
-        blog_post_counts = {}
         for blog in queryset:
             # Ignore all "sub-blogs" (BlogPages which are children of other BlogPages)
             queryset = queryset.not_descendant_of(blog, inclusive=False)
-            blog_posts = (
-                BlogPostPage.objects.all().live().public().descendant_of(blog).count()
-            )
-            blog_post_counts[blog.id] = blog_posts
 
         return [blog_index] + list(queryset)
 

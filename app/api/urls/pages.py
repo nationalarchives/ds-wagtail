@@ -23,7 +23,11 @@ from wagtail.contrib.redirects.models import Redirect
 from wagtail.models import Page, PageViewRestriction, Site
 
 from app.api.permissions import IsAPITokenAuthenticated
-from app.core.serializers.pages import DefaultPageSerializer, PageSitemapSerializer
+from app.core.serializers.pages import (
+    DefaultPageSerializer,
+    PageSitemapSerializer,
+    prefetch_page_relations,
+)
 
 from ..filters import AliasFilter, DescendantOfPathFilter
 
@@ -70,8 +74,12 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
             queryset = queryset.filter(author_tags__author=request.GET["author"])
 
         self.check_query_parameters(queryset)
+        if queryset.model is Page:
+            # Search wraps the queryset - specific pages are fetched when pagination evaluates it.
+            queryset = queryset.specific()
         queryset = self.filter_queryset(queryset)
         queryset = self.paginate_queryset(queryset)
+        prefetch_page_relations(queryset)
         serializer = DefaultPageSerializer(queryset, many=True)
         return self.get_paginated_response(serializer.data)
 
