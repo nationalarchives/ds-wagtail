@@ -4,6 +4,7 @@ from rest_framework.fields import empty
 
 
 def prefetch_page_relations(pages):
+    from app.blog.models import prefetch_top_level_blogs
     from app.people.models import PersonPage
 
     prefetch_related_objects(
@@ -15,6 +16,7 @@ def prefetch_page_relations(pages):
         "image",
         "roles__role",
     )
+    prefetch_top_level_blogs(pages)
 
 
 def get_api_fields(object, required_api_fields: list | None = None) -> list:

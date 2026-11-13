@@ -1,3 +1,4 @@
+from datetime import timedelta
 from unittest.mock import patch
 
 from django.db import connection
@@ -28,6 +29,85 @@ class NPlusOneTests(TestCase):
     def setUpTestData(cls):
         cls.root = Site.objects.get(is_default_site=True).root_page
         cls.token = APIToken.objects.create(name="n-plus-one-test")
+
+    def test_blog_post_listing_batches_ancestors(self):
+        index = self.root.add_child(
+            instance=BlogIndexPage(title="Index", intro="Intro", teaser_text="Teaser")
+        )
+        blog = index.add_child(
+            instance=BlogPage(
+                title="Main blog",
+                intro="Intro",
+                teaser_text="Teaser",
+                custom_type_label="Custom",
+            )
+        )
+        nested = blog.add_child(
+            instance=BlogPage(title="Nested", intro="Intro", teaser_text="Teaser")
+        )
+        other = index.add_child(
+            instance=BlogPage(title="Other", intro="Intro", teaser_text="Teaser")
+        )
+        posts = []
+        published_date = timezone.now()
+        for i, parent in enumerate([blog, nested, other, nested]):
+            post = parent.add_child(
+                instance=BlogPostPage(
+                    title=f"Post {i}",
+                    intro="Intro",
+                    teaser_text="Teaser",
+                    published_date=published_date + timedelta(days=i),
+                )
+            )
+            posts.append(post)
+
+        with CaptureQueriesContext(connection) as queries:
+            response = self.client.get(
+                "/api/v2/blog_posts/",
+                {
+                    "format": "json",
+                    "offset": 0,
+                    "limit": 3,
+                    "order": "-published_date",
+                    "descendant_of": index.pk,
+                    "include_aliases": "1",
+                },
+                HTTP_AUTHORIZATION=f"Token {self.token.key}",
+            )
+
+        self.assertEqual(response.status_code, 200)
+        items = response.json()["items"]
+        self.assertEqual(
+            [item["id"] for item in items], [p.pk for p in reversed(posts[1:])]
+        )
+        self.assertEqual(
+            [item["type_label"] for item in items], ["Custom", "Other", "Custom"]
+        )
+        blog_queries = [
+            query["sql"] for query in queries if 'FROM "blog_blogpage"' in query["sql"]
+        ]
+        ancestor_queries = [
+            query["sql"]
+            for query in queries
+            if 'FROM "wagtailcore_page"' in query["sql"]
+            and '"wagtailcore_page"."path" IN' in query["sql"]
+        ]
+        self.assertEqual(len(blog_queries), 1)
+        self.assertEqual(ancestor_queries, [])
+
+    def test_blog_post_without_blog_ancestor_keeps_default_type_label(self):
+        post = self.root.add_child(
+            instance=BlogPostPage(
+                title="Post",
+                intro="Intro",
+                teaser_text="Teaser",
+                published_date=timezone.now(),
+            )
+        )
+        page = BlogPostPage.objects.get(pk=post.pk)
+        prefetch_page_relations([page])
+        with self.assertNumQueries(0):
+            self.assertEqual(page.type_label, "Blog post")
 
     def test_blog_author_counts_are_batched_and_keep_scope(self):
         index = self.root.add_child(

@@ -286,6 +286,28 @@ class BlogPage(HeroImageMixin, BasePageWithRequiredIntro):
     )
 
 
+def prefetch_top_level_blogs(pages):
+    posts = [page for page in pages if isinstance(page, BlogPostPage)]
+    if not posts:
+        return
+
+    # Wagtail paths consist of fixed-width segments, one per ancestor.
+    ancestor_paths = {
+        post.path[:length]
+        for post in posts
+        for length in range(post.steplen, len(post.path), post.steplen)
+    }
+    blogs = {
+        blog.path: blog for blog in BlogPage.objects.filter(path__in=ancestor_paths)
+    }
+    for post in posts:
+        post._top_level_blog = None
+        for length in range(post.steplen, len(post.path), post.steplen):
+            if blog := blogs.get(post.path[:length]):
+                post._top_level_blog = blog
+                break
+
+
 class BlogPostPage(
     AuthorPageMixin,
     ExternalAuthorMixin,
