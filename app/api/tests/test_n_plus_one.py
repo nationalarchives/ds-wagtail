@@ -1,3 +1,4 @@
+from datetime import timedelta
 from unittest.mock import patch
 
 from django.db import connection
@@ -9,11 +10,13 @@ from wagtail.models import Page, PageViewRestriction, Site
 from app.api.filters import AliasFilter
 from app.api.models import APIToken
 from app.articles.models import ArticlePage, FocusedArticlePage
-from app.blog.models import BlogPage, BlogPostPage
+from app.blog.models import BlogIndexPage, BlogPage, BlogPostPage
+from app.blog.serializers import BlogPostAuthorsSerializer
 from app.core.blocks.lists import PeopleListingBlock
 from app.core.serializers.pages import DefaultPageSerializer, prefetch_page_relations
 from app.images.models import CustomImage
 from app.people.models import (
+    AuthorTag,
     PeopleIndexPage,
     PersonPage,
     PersonRole,
@@ -26,6 +29,252 @@ class NPlusOneTests(TestCase):
     def setUpTestData(cls):
         cls.root = Site.objects.get(is_default_site=True).root_page
         cls.token = APIToken.objects.create(name="n-plus-one-test")
+
+    def test_blog_post_listing_batches_ancestors(self):
+        index = self.root.add_child(
+            instance=BlogIndexPage(title="Index", intro="Intro", teaser_text="Teaser")
+        )
+        blog = index.add_child(
+            instance=BlogPage(
+                title="Main blog",
+                intro="Intro",
+                teaser_text="Teaser",
+                custom_type_label="Custom",
+            )
+        )
+        nested = blog.add_child(
+            instance=BlogPage(title="Nested", intro="Intro", teaser_text="Teaser")
+        )
+        other = index.add_child(
+            instance=BlogPage(title="Other", intro="Intro", teaser_text="Teaser")
+        )
+        posts = []
+        published_date = timezone.now()
+        for i, parent in enumerate([blog, nested, other, nested]):
+            post = parent.add_child(
+                instance=BlogPostPage(
+                    title=f"Post {i}",
+                    intro="Intro",
+                    teaser_text="Teaser",
+                    published_date=published_date + timedelta(days=i),
+                )
+            )
+            posts.append(post)
+
+        with CaptureQueriesContext(connection) as queries:
+            response = self.client.get(
+                "/api/v2/blog_posts/",
+                {
+                    "format": "json",
+                    "offset": 0,
+                    "limit": 3,
+                    "order": "-published_date",
+                    "descendant_of": index.pk,
+                    "include_aliases": "1",
+                },
+                HTTP_AUTHORIZATION=f"Token {self.token.key}",
+            )
+
+        self.assertEqual(response.status_code, 200)
+        items = response.json()["items"]
+        self.assertEqual(
+            [item["id"] for item in items], [p.pk for p in reversed(posts[1:])]
+        )
+        self.assertEqual(
+            [item["type_label"] for item in items], ["Custom", "Other", "Custom"]
+        )
+        blog_queries = [
+            query["sql"] for query in queries if 'FROM "blog_blogpage"' in query["sql"]
+        ]
+        ancestor_queries = [
+            query["sql"]
+            for query in queries
+            if 'FROM "wagtailcore_page"' in query["sql"]
+            and '"wagtailcore_page"."path" IN' in query["sql"]
+        ]
+        self.assertEqual(len(blog_queries), 1)
+        self.assertEqual(ancestor_queries, [])
+
+    def test_blog_post_without_blog_ancestor_keeps_default_type_label(self):
+        post = self.root.add_child(
+            instance=BlogPostPage(
+                title="Post",
+                intro="Intro",
+                teaser_text="Teaser",
+                published_date=timezone.now(),
+            )
+        )
+        page = BlogPostPage.objects.get(pk=post.pk)
+        prefetch_page_relations([page])
+        with self.assertNumQueries(0):
+            self.assertEqual(page.type_label, "Blog post")
+
+    def test_blog_author_counts_are_batched_and_keep_scope(self):
+        index = self.root.add_child(
+            instance=BlogIndexPage(
+                title="Blog index", intro="Intro", teaser_text="Teaser"
+            )
+        )
+        blog = index.add_child(
+            instance=BlogPage(title="Blog", intro="Intro", teaser_text="Teaser")
+        )
+        other_blog = index.add_child(
+            instance=BlogPage(title="Other", intro="Intro", teaser_text="Teaser")
+        )
+        authors = [
+            self.root.add_child(
+                instance=PersonPage(
+                    title=f"Author {i}",
+                    first_name=f"First {i}",
+                    last_name="Last",
+                    role="Author",
+                    summary="Summary",
+                    teaser_text="Teaser",
+                    live=i != 2,
+                )
+            )
+            for i in range(3)
+        ]
+        for parent, title, live, indexes in [
+            (blog, "One", True, [0, 0, 1, 2]),
+            (blog, "Two", True, [0]),
+            (other_blog, "Elsewhere", True, [1]),
+            (blog, "Draft", False, [1]),
+            (blog, "Private", True, [1]),
+        ]:
+            post = parent.add_child(
+                instance=BlogPostPage(
+                    title=title,
+                    intro="Intro",
+                    teaser_text="Teaser",
+                    published_date=timezone.now(),
+                    live=live,
+                )
+            )
+            for i in indexes:
+                AuthorTag.objects.create(page=post, author=authors[i])
+            if title == "Private":
+                PageViewRestriction.objects.create(
+                    page=post,
+                    restriction_type=PageViewRestriction.PASSWORD,
+                    password="test",
+                )
+        role = PersonRole.objects.create(
+            name="Researcher", slug="researcher", display_on_card=True
+        )
+        for author in authors[:2]:
+            PersonRoleSelection.objects.create(person=author, role=role)
+
+        with CaptureQueriesContext(connection) as queries:
+            counts = blog.blog_posts_authors
+            serialized = BlogPostAuthorsSerializer().to_representation(counts)
+        self.assertEqual(
+            [(item["author"].pk, item["posts"]) for item in counts],
+            [(authors[0].pk, 3), (authors[1].pk, 1)],
+        )
+        individual_queries = [
+            q["sql"] for q in queries if 'FROM "people_personpage"' in q["sql"]
+        ]
+        self.assertLessEqual(len(individual_queries), 1)
+        self.assertEqual(
+            serialized[0]["author"]["role_tags"],
+            [{"slug": "researcher", "name": "Researcher"}],
+        )
+        role_queries = [
+            q["sql"] for q in queries if 'FROM "people_personrole"' in q["sql"]
+        ]
+        self.assertEqual(len(role_queries), 1)
+
+        index_counts = index.blog_posts_authors
+        self.assertEqual(
+            {item["author"].pk: item["posts"] for item in index_counts},
+            {authors[0].pk: 3, authors[1].pk: 2},
+        )
+
+        with CaptureQueriesContext(connection) as queries:
+            response = self.client.get(
+                "/api/v2/blog_posts/authors/",
+                {"descendant_of": blog.pk, "include_aliases": "1"},
+                HTTP_AUTHORIZATION=f"Token {self.token.key}",
+            )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            [(item["author"]["id"], item["posts"]) for item in response.json()],
+            [(authors[0].pk, 3), (authors[1].pk, 1)],
+        )
+        individual_queries = [
+            q["sql"] for q in queries if 'FROM "people_personpage"' in q["sql"]
+        ]
+        self.assertLessEqual(len(individual_queries), 1)
+
+        filtered_response = self.client.get(
+            "/api/v2/blog_posts/authors/",
+            {
+                "descendant_of": blog.pk,
+                "include_aliases": "1",
+                "author": authors[0].slug,
+            },
+            HTTP_AUTHORIZATION=f"Token {self.token.key}",
+        )
+        self.assertEqual(filtered_response.status_code, 200)
+        self.assertEqual(
+            [
+                (item["author"]["id"], item["posts"])
+                for item in filtered_response.json()
+            ],
+            [(authors[0].pk, 5)],
+        )
+
+    def test_blog_author_properties_limit_before_loading_people(self):
+        index = self.root.add_child(
+            instance=BlogIndexPage(
+                title="Blog index", intro="Intro", teaser_text="Teaser"
+            )
+        )
+        blog = index.add_child(
+            instance=BlogPage(title="Blog", intro="Intro", teaser_text="Teaser")
+        )
+        post = blog.add_child(
+            instance=BlogPostPage(
+                title="Post",
+                intro="Intro",
+                teaser_text="Teaser",
+                published_date=timezone.now(),
+            )
+        )
+        for i in range(14):
+            author = self.root.add_child(
+                instance=PersonPage(
+                    title=f"Author {i}",
+                    first_name=f"First {i}",
+                    last_name="Last",
+                    role="Author",
+                    summary="Summary",
+                    teaser_text="Teaser",
+                )
+            )
+            AuthorTag.objects.create(page=post, author=author)
+
+        with CaptureQueriesContext(connection) as queries:
+            results = blog.blog_posts_authors
+        self.assertEqual(len(results), 12)
+        post_queries = [
+            q["sql"] for q in queries if 'FROM "blog_blogpostpage"' in q["sql"]
+        ]
+        self.assertEqual(len(post_queries), 2)
+        count_queries = [
+            q["sql"] for q in queries if "COUNT(" in q["sql"] and "GROUP BY" in q["sql"]
+        ]
+        self.assertEqual(len(count_queries), 1)
+        self.assertIn("LIMIT 12", count_queries[0])
+        self.assertEqual(len(index.blog_posts_authors), 12)
+        response = self.client.get(
+            "/api/v2/blog_posts/authors/",
+            {"descendant_of": blog.pk, "include_aliases": "1"},
+            HTTP_AUTHORIZATION=f"Token {self.token.key}",
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.json()), 14)
 
     def test_listing_loads_teaser_images_in_bulk(self):
         image = CustomImage.objects.create(

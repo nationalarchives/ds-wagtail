@@ -15,10 +15,46 @@ from app.core.models import (
     PublishedDateMixin,
 )
 from app.core.serializers.pages import DefaultPageSerializer
-from app.people.models import AuthorPageMixin, ExternalAuthorMixin
+from app.people.models import AuthorPageMixin, ExternalAuthorMixin, PersonPage
 
 from .blocks import BlogPostPageStreamBlock
 from .serializers import BlogPostAuthorsSerializer
+
+
+def get_blog_post_author_counts(queryset, limit=None):
+    author_ids = {
+        author_id
+        for author_id, live in queryset.order_by()
+        .values_list("author_tags__author", "author_tags__author__live")
+        .distinct()
+        if author_id is not None and live
+    }
+    if not author_ids:
+        return []
+
+    # A separate join preserves counts when the post queryset is filtered by author.
+    counts = (
+        queryset.filter(author_tags__author_id__in=author_ids)
+        .order_by()
+        .values("author_tags__author_id")
+        .annotate(posts=Count("pk"))
+        .order_by("-posts", "author_tags__author_id")
+    )
+    if limit is not None:
+        counts = counts[:limit]
+    counts = list(counts)
+    authors = (
+        PersonPage.objects.filter(
+            pk__in=[row["author_tags__author_id"] for row in counts]
+        )
+        .select_related("image", "teaser_image")
+        .prefetch_related("roles__role")
+        .in_bulk()
+    )
+    return [
+        {"author": authors[row["author_tags__author_id"]], "posts": row["posts"]}
+        for row in counts
+    ]
 
 
 class BlogIndexPage(BasePageWithRequiredIntro):
@@ -100,26 +136,7 @@ class BlogIndexPage(BasePageWithRequiredIntro):
         Limited to top 12 authors.
         """
         queryset = BlogPostPage.objects.all().live().public()
-        authors = set(
-            queryset.values_list("author_tags__author", "author_tags__author__live")
-        )
-        authors_count = []
-        for author in authors:
-            if author[0] is not None and author[1]:
-                author_item = (
-                    queryset.filter(author_tags__author=author)
-                    .first()
-                    .author_tags.filter(author=author)
-                    .first()
-                    .author
-                )
-                authors_count.append(
-                    {
-                        "author": author_item,
-                        "posts": queryset.filter(author_tags__author=author).count(),
-                    }
-                )
-        return sorted(authors_count, key=lambda x: x["posts"], reverse=True)[:12]
+        return get_blog_post_author_counts(queryset, limit=12)
 
     api_fields = BasePageWithRequiredIntro.api_fields + [
         APIField("blogs_feeds_page", serializer=DefaultPageSerializer()),
@@ -245,26 +262,7 @@ class BlogPage(HeroImageMixin, BasePageWithRequiredIntro):
         Limited to top 12 authors.
         """
         queryset = BlogPostPage.objects.descendant_of(self).live().public()
-        authors = set(
-            queryset.values_list("author_tags__author", "author_tags__author__live")
-        )
-        authors_count = []
-        for author in authors:
-            if author[0] is not None and author[1]:
-                author_item = (
-                    queryset.filter(author_tags__author=author)
-                    .first()
-                    .author_tags.filter(author=author)
-                    .first()
-                    .author
-                )
-                authors_count.append(
-                    {
-                        "author": author_item,
-                        "posts": queryset.filter(author_tags__author=author).count(),
-                    }
-                )
-        return sorted(authors_count, key=lambda x: x["posts"], reverse=True)[:12]
+        return get_blog_post_author_counts(queryset, limit=12)
 
     content_panels = (
         BasePageWithRequiredIntro.content_panels + HeroImageMixin.content_panels
@@ -288,6 +286,28 @@ class BlogPage(HeroImageMixin, BasePageWithRequiredIntro):
     )
 
 
+def prefetch_top_level_blogs(pages):
+    posts = [page for page in pages if isinstance(page, BlogPostPage)]
+    if not posts:
+        return
+
+    # Wagtail paths consist of fixed-width segments, one per ancestor.
+    ancestor_paths = {
+        post.path[:length]
+        for post in posts
+        for length in range(post.steplen, len(post.path), post.steplen)
+    }
+    blogs = {
+        blog.path: blog for blog in BlogPage.objects.filter(path__in=ancestor_paths)
+    }
+    for post in posts:
+        post._top_level_blog = None
+        for length in range(post.steplen, len(post.path), post.steplen):
+            if blog := blogs.get(post.path[:length]):
+                post._top_level_blog = blog
+                break
+
+
 class BlogPostPage(
     AuthorPageMixin,
     ExternalAuthorMixin,
@@ -308,12 +328,17 @@ class BlogPostPage(
     )
 
     @cached_property
+    def _top_level_blog(self):
+        ancestor = self.get_ancestors().type(BlogPage).first()
+        return ancestor.specific if ancestor else None
+
+    @cached_property
     def type_label(self) -> str:
         """
         Overrides the type_label method from BasePage, to return the correct
         type label for the blog post page.
         """
-        top_level = self.get_ancestors().type(BlogPage).first().specific
+        top_level = self._top_level_blog
         if not top_level:
             return "Blog post"
         if top_level.custom_type_label:
