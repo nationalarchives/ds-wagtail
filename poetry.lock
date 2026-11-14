@@ -1840,14 +1840,14 @@ zstd = ["backports-zstd (>=1.0.0) ; python_version < \"3.14\""]
 
 [[package]]
 name = "wagtail"
-version = "8.0.1"
+version = "8.1"
 description = "A Django content management system."
 optional = false
-python-versions = ">=3.10"
+python-versions = ">=3.11"
 groups = ["main"]
 files = [
-    {file = "wagtail-8.0.1-py3-none-any.whl", hash = "sha256:1e6ad5c7891a54efce1400e168298b5a2cc343b642cee89c31bf5ec30c98b26c"},
-    {file = "wagtail-8.0.1.tar.gz", hash = "sha256:819865a10bce86b16288cfaefa4195b90ffb5e7ac494fb18659e7be099ef386f"},
+    {file = "wagtail-8.1-py3-none-any.whl", hash = "sha256:dd7c988377ec6b8fcbd9ea8b5e36d34d800706bb70f927711ff4575619752d42"},
+    {file = "wagtail-8.1.tar.gz", hash = "sha256:5c1abb0e11efc31454db0b5312d6786b5d8fdfbef5c815b7d8bacb2ad6bd486c"},
 ]
 
 [package.dependencies]
@@ -1862,7 +1862,7 @@ django-taggit = ">=5.0,<7"
 django-tasks = ">=0.9,<0.13"
 django-treebeard = ">=4.8,<6.0"
 djangorestframework = ">=3.18.0,<4.0"
-draftjs_exporter = ">=7.1.0,<8.0"
+draftjs_exporter = ">=7.3.0,<8.0"
 laces = ">=0.1,<0.2"
 modelsearch = ">=1.3.2,<1.4"
 openpyxl = ">=3.0.10,<4.0"
@@ -1874,8 +1874,8 @@ telepath = ">=0.3.1,<1"
 Willow = {version = ">=1.11.0,<2", extras = ["heif"]}
 
 [package.extras]
-docs = ["Sphinx (>=7.3)", "myst_parser (>=4.0.0,<6)", "pyenchant (>=3.3.0,<4)", "sphinx-autobuild (>=0.6.0)", "sphinx-wagtail-theme (>=6.5.0,<7)", "sphinx_llm (>=0.2.1)", "sphinxcontrib-httpdomain (>=1.5.0)", "sphinxcontrib-openapi (>=0.9.0)", "sphinxcontrib-spelling (>=8,<9)"]
-testing = ["Jinja2 (>=3.0,<3.2)", "azure-identity (>=1,<2)", "azure-mgmt-cdn (>=12,<15)", "azure-mgmt-frontdoor (>=1,<3)", "azure-mgmt-subscription (>=2,<4)", "boto3 (>=1.28,<2)", "coverage (>=3.7.0)", "curlylint (==0.13.1)", "django-pattern-library (>=0.7)", "django-stubs (==6.0.7)", "djhtml (==3.0.11)", "doc8 (==2.0.0)", "factory-boy (>=3.2)", "freezegun (>=0.3.8)", "polib (>=1.1,<2.0)", "responses (>=0.25,<1)", "ruff (==0.16.1)", "semgrep (==1.172.0)", "tblib (>=3.0,<4.0)", "ty (==0.0.66)"]
+docs = ["Sphinx (>=8.2)", "myst_parser (>=4.0.0,<6)", "pyenchant (>=3.3.0,<4)", "sphinx-autobuild (>=0.6.0)", "sphinx-wagtail-theme (>=6.5.0,<7)", "sphinx_llm (>=0.2.1)", "sphinxcontrib-httpdomain (>=1.5.0)", "sphinxcontrib-openapi (>=0.9.0)", "sphinxcontrib-spelling (>=8,<9)"]
+testing = ["Jinja2 (>=3.0,<3.2)", "azure-identity (>=1,<2)", "azure-mgmt-cdn (>=12,<15)", "azure-mgmt-frontdoor (>=1,<3)", "azure-mgmt-subscription (>=2,<4)", "boto3 (>=1.28,<2)", "coverage (>=3.7.0)", "curlylint (==0.13.1)", "django-pattern-library (>=0.7)", "django-stubs (==6.1.0)", "djhtml (==3.0.11)", "doc8 (==2.0.0)", "factory-boy (>=3.2)", "freezegun (>=0.3.8)", "polib (>=1.1,<2.0)", "responses (>=0.25,<1)", "ruff (==0.16.5)", "semgrep (==1.175.0)", "tblib (>=3.0,<4.0)", "ty (==0.0.75)"]
 
 [[package]]
 name = "wagtail-factories"
@@ -1992,4 +1992,4 @@ wand = ["Wand (>=0.6,<1.0)"]
 [metadata]
 lock-version = "2.1"
 python-versions = "~3.15"
-content-hash = "1f8d1a887afb9aaebb4e0838b7cb38580891f9cbdadbe0ebb9e0b6c806bcafb1"
+content-hash = "75c701ecfaa25bfdf0e2b65fc605c2cba3c6a1e2c1c333d4069085679dae7ca3"
