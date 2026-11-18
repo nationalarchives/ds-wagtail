@@ -13,15 +13,15 @@ Create alerts from the **Alerts** or **Themed Alerts** snippet area:
 
 Both kinds of alert share these fields:
 
-| Field | Purpose |
-| --- | --- |
-| Name | Internal label to help editors identify the snippet. |
-| Title | Short banner heading. |
-| Message | Rich-text banner content. |
-| Publish | Enables the alert. Alerts are unpublished by default, so they can be prepared ahead of time. |
-| Show on current and all child pages | Makes the alert cascade through the page tree. |
-| Active from | Optional scheduled start time. |
-| Active to | Optional expiry time - the alert is no longer active at this time. |
+| Field                               | Purpose                                                                                      |
+| ----------------------------------- | -------------------------------------------------------------------------------------------- |
+| Name                                | Internal label to help editors identify the snippet.                                         |
+| Title                               | Short banner heading.                                                                        |
+| Message                             | Rich-text banner content.                                                                    |
+| Publish                             | Enables the alert. Alerts are unpublished by default, so they can be prepared ahead of time. |
+| Show on current and all child pages | Makes the alert cascade through the page tree.                                               |
+| Active from                         | Optional scheduled start time.                                                               |
+| Active to                           | Optional expiry time - the alert is no longer active at this time.                           |
 
 Attach a snippet to a page using the alert field in that page's **Settings**
 panel. A cascading alert set on the Home page is used as the site's global
