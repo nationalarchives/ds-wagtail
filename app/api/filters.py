@@ -1,6 +1,6 @@
 import datetime
 
-from django.db.models import Q
+from django.db.models import Case, IntegerField, Min, Q, Value, When
 from django.utils.timezone import localdate
 from rest_framework.filters import BaseFilterBackend
 from wagtail.api.v2.utils import BadRequestError
@@ -402,3 +402,32 @@ class CurrentOrFutureSessionFilter(BaseFilterBackend):
         )
 
         return queryset.filter(id__in=matching_ids).distinct()
+
+
+class RecordFilter(BaseFilterBackend):
+    def filter_queryset(self, request, queryset, view):
+        record_values = get_multivalue_tags_from_name(request, "record") or []
+        if len(record_values) > 1:
+            raise BadRequestError("record must be a single IAID")
+
+        record = record_values[0] if record_values else None
+        ancestors = get_multivalue_tags_from_name(request, "ancestor") or []
+        prioritized_records = list(
+            dict.fromkeys(([record] if record is not None else []) + ancestors)
+        )
+        if not prioritized_records:
+            return queryset
+
+        priority = Case(
+            *[
+                When(related_records__record=record, then=Value(index))
+                for index, record in enumerate(prioritized_records)
+            ],
+            output_field=IntegerField(),
+        )
+
+        return (
+            queryset.filter(related_records__record__in=prioritized_records)
+            .annotate(record_priority=Min(priority))
+            .order_by("record_priority", "id")
+        )

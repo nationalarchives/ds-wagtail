@@ -2,6 +2,7 @@ from wagtail.api.v2.router import WagtailAPIRouter
 
 from app.api.urls.blog_posts import BlogPostsAPIViewSet
 from app.api.urls.blogs import BlogsAPIViewSet
+from app.api.urls.research_guides import ResearchGuidesAPIViewSet
 from app.api.urls.catalogue import CatalogueAPIViewSet
 from app.api.urls.education import (
     EducationResourcesAPIViewSet,
@@ -32,3 +33,4 @@ api_router.register_endpoint("redirects", RedirectsAPIViewSet)
 api_router.register_endpoint("foi", FreedomOfInformationRequestsAPIViewSet)
 api_router.register_endpoint("catalogue", CatalogueAPIViewSet)
 api_router.register_endpoint("globals", GlobalsAPIViewSet)
+api_router.register_endpoint("research_guides", ResearchGuidesAPIViewSet)
