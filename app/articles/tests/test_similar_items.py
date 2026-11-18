@@ -90,7 +90,7 @@ class TestArticlePageSimilarItems(TestCase):
         # Items should be in 'most recent' order
         # No draft items should be included
         test_page = ArticlePage.objects.get(id=self.original_page.id)
-        with self.assertNumQueries(3):
+        with self.assertNumQueries(4):
             self.assertEqual(
                 [page.id for page in test_page.similar_items],
                 [
@@ -98,6 +98,9 @@ class TestArticlePageSimilarItems(TestCase):
                     self.two_matches_page.id,
                     self.single_match_page.id,
                 ],
+            )
+            self.assertTrue(
+                all(isinstance(page, ArticlePage) for page in test_page.similar_items)
             )
 
     def test_all_queries_prevented_when_article_tag_names_is_blank(self):
@@ -205,7 +208,7 @@ class TestFocusedArticlePageSimilarItems(TestCase):
         # Items should be in 'most recent' order
         # No draft items should be included
         test_page = FocusedArticlePage.objects.get(id=self.original_page.id)
-        with self.assertNumQueries(3):
+        with self.assertNumQueries(4):
             self.assertEqual(
                 [page.id for page in test_page.similar_items],
                 [
@@ -213,6 +216,12 @@ class TestFocusedArticlePageSimilarItems(TestCase):
                     self.two_matches_page.id,
                     self.single_match_page.id,
                 ],
+            )
+            self.assertTrue(
+                all(
+                    isinstance(page, FocusedArticlePage)
+                    for page in test_page.similar_items
+                )
             )
 
     def test_all_queries_prevented_when_article_tag_names_is_blank(self):

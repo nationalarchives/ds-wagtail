@@ -84,6 +84,7 @@ class MediaChooserBlock(AbstractMediaChooserBlock):
             "title": value.title,
             "date": value.date,
             "description": expand_db_html(value.description),
+            "copyright": expand_db_html(value.copyright),
             "transcript": expand_db_html(value.transcript),
             "chapters": value.api_chapters(),
             "width": value.width,

@@ -4,7 +4,6 @@ from rest_framework import serializers
 from wagtail import blocks
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel, TitleFieldPanel
 from wagtail.api import APIField
-from wagtail.api.v2.serializers import StreamField as StreamFieldSerializer
 from wagtail.fields import StreamField
 from wagtail.snippets.models import register_snippet
 
@@ -212,6 +211,8 @@ class LocationSerializer(serializers.Serializer):
 
     def to_representation(self, instance):
         if instance:
+            from wagtail.api.v2.serializers import StreamField as StreamFieldSerializer
+
             representation = {
                 "space_name": instance.space_name,
                 "at_tna": instance.at_tna,

@@ -57,6 +57,13 @@ class EtnaMedia(AbstractMedia):
     description = RichTextField(
         blank=True, null=True, features=settings.INLINE_RICH_TEXT_FEATURES
     )
+    copyright = RichTextField(
+        verbose_name="copyright",
+        blank=True,
+        max_length=200,
+        help_text="Credit for media not owned by TNA. Do not include the copyright symbol.",
+        features=settings.INLINE_RICH_TEXT_FEATURES,
+    )
     transcript = RichTextField(
         blank=True, null=True, features=settings.INLINE_RICH_TEXT_FEATURES
     )
@@ -154,6 +161,7 @@ class EtnaMedia(AbstractMedia):
         "alternate_version_type",
         "chapters",
         "collection",
+        "copyright",
         "description",
         "duration",
         "transcript",
@@ -191,6 +199,7 @@ class EtnaMedia(AbstractMedia):
         APIField("url"),
         APIField("mime"),
         APIField("chapters"),
+        APIField("copyright", serializer=RichTextSerializer()),
         APIField("description", serializer=RichTextSerializer()),
         APIField("transcript", serializer=RichTextSerializer()),
         APIField("subtitles_file"),

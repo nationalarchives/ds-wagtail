@@ -23,7 +23,11 @@ from wagtail.contrib.redirects.models import Redirect
 from wagtail.models import Page, PageViewRestriction, Site
 
 from app.api.permissions import IsAPITokenAuthenticated
-from app.core.serializers.pages import DefaultPageSerializer, PageSitemapSerializer
+from app.core.serializers.pages import (
+    DefaultPageSerializer,
+    PageSitemapSerializer,
+    prefetch_page_relations,
+)
 
 from ..filters import AliasFilter, DescendantOfPathFilter
 
@@ -70,8 +74,12 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
             queryset = queryset.filter(author_tags__author=request.GET["author"])
 
         self.check_query_parameters(queryset)
+        if queryset.model is Page:
+            # Search wraps the queryset - specific pages are fetched when pagination evaluates it.
+            queryset = queryset.specific()
         queryset = self.filter_queryset(queryset)
         queryset = self.paginate_queryset(queryset)
+        prefetch_page_relations(queryset)
         serializer = DefaultPageSerializer(queryset, many=True)
         return self.get_paginated_response(serializer.data)
 
@@ -99,24 +107,6 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
         restrictions = instance.get_view_restrictions()
         serializer = self.get_serializer(instance)
         data = serializer.data
-        breadcrumbs = [
-            {
-                "text": ("Home" if page.url == "/" else page.short_title or page.title),
-                "href": page.url,
-            }
-            for page in instance.get_ancestors().order_by("depth").specific(defer=True)
-            if page.url
-        ]
-        if "meta" in data:
-            data["meta"].update(
-                {
-                    "breadcrumbs": breadcrumbs,
-                }
-            )
-        else:
-            data["meta"] = {
-                "breadcrumbs": breadcrumbs,
-            }
         if not restrictions:
             return Response(data)
         restricted_data = {

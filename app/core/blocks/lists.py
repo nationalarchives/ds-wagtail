@@ -121,8 +121,12 @@ class PeopleListingBlock(blocks.StructBlock):
         if not role:
             return {}
 
-        people = role.person_roles.all().order_by(
-            "-weighting", "person__last_name", "person__first_name"
+        people = (
+            role.person_roles.select_related(
+                "person", "person__teaser_image", "person__image"
+            )
+            .prefetch_related("person__roles__role")
+            .order_by("-weighting", "person__last_name", "person__first_name")
         )
 
         if not people:

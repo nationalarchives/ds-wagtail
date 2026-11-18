@@ -5,7 +5,7 @@ from rest_framework.response import Response
 
 from app.api.filters import AuthorFilter, PublishedDateFilter
 from app.api.urls.pages import CustomPagesAPIViewSet
-from app.blog.models import BlogPostPage
+from app.blog.models import BlogPostPage, get_blog_post_author_counts
 from app.core.serializers.pages import DefaultPageSerializer
 
 
@@ -56,27 +56,16 @@ class BlogPostsAPIViewSet(CustomPagesAPIViewSet):
         queryset = self.get_queryset().public()
         self.check_query_parameters(queryset)
         queryset = self.filter_queryset(queryset)
-        authors = set(
-            queryset.values_list("author_tags__author", "author_tags__author__live")
-        )
         serializer = DefaultPageSerializer()
-        authors_count = []
-        for author in authors:
-            if author[0] is not None and author[1]:
-                author_item = (
-                    queryset.filter(author_tags__author=author)
-                    .first()
-                    .author_tags.filter(author=author)
-                    .first()
-                    .author
-                )
-                authors_count.append(
-                    {
-                        "author": serializer.to_representation(author_item),
-                        "posts": queryset.filter(author_tags__author=author).count(),
-                    }
-                )
-        return Response(sorted(authors_count, key=lambda x: x["posts"], reverse=True))
+        return Response(
+            [
+                {
+                    "author": serializer.to_representation(item["author"]),
+                    "posts": item["posts"],
+                }
+                for item in get_blog_post_author_counts(queryset)
+            ]
+        )
 
     @classmethod
     def get_urlpatterns(cls):
