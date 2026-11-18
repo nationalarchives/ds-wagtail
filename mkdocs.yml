@@ -14,6 +14,7 @@ nav:
       - Version control: development/version-control.md
   - Features:
       - Images: features/images.md
+      - Notifications: features/notifications.md
       - Record data: features/record-data.md
       - Wagtail API: features/wagtail-api.md
   - Infrastructure:
