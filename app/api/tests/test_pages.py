@@ -2,7 +2,7 @@ import json
 import os
 import re
 from datetime import UTC, datetime
-from unittest.mock import patch
+from unittest.mock import PropertyMock, patch
 
 from django.conf import settings
 from django.core.cache import cache
@@ -364,21 +364,19 @@ class APIResponseTest(WagtailPageTestCase):
 
     def request_api(self, path: str = ""):
         self.maxDiff = None
-        return self.client.get(
-            f"{API_URL}{path}" + ("/" if path else ""),
-            format="json",
-            HTTP_AUTHORIZATION=f"Token {self.api_token.key}",
-        )
+        with patch(
+            "app.media.models.EtnaMedia.file_size",
+            new_callable=PropertyMock,
+            return_value=0,
+        ):
+            return self.client.get(
+                f"{API_URL}{path}" + ("/" if path else ""),
+                format="json",
+                HTTP_AUTHORIZATION=f"Token {self.api_token.key}",
+            )
 
-    def get_api_data(self, path: str = "") -> str:
-        if api_response := self.request_api(path):
-            if api_response.status_code == 200:
-                return api_response.content.decode("utf-8")
-            return f"Endpoint not OK (Error: {api_response.status_code})"
-        return f"Unable to request endpoint {API_URL}{path}"
-
-    def replace_placeholders(self, data: str):
-        placeholder_ids = {
+    def snapshot_placeholders(self):
+        return {
             "HOME_PAGE_ID": str(self.root_page.id),
             "ARTICLE_INDEX_ID": str(self.article_index.id),
             "ARTICLE_ID": str(self.article.id),
@@ -394,10 +392,50 @@ class APIResponseTest(WagtailPageTestCase):
             "WAGTAILAPI_BASE_URL": str(settings.WAGTAILAPI_BASE_URL),
         }
 
-        for placeholder, id in placeholder_ids.items():
-            data = data.replace(placeholder, id)
+    def get_api_data(self, path: str = "") -> str:
+        if api_response := self.request_api(path):
+            if api_response.status_code == 200:
+                return api_response.content.decode("utf-8")
+            return f"Endpoint not OK (Error: {api_response.status_code})"
+        return f"Unable to request endpoint {API_URL}{path}"
+
+    def replace_placeholders(self, data: str):
+        for placeholder, value in self.snapshot_placeholders().items():
+            data = data.replace(placeholder, value)
 
         return data
+
+    def update_expected_result(self, file: str, data: dict):
+        placeholders = self.snapshot_placeholders()
+
+        def restore_detail_urls(value):
+            if isinstance(value, dict):
+                return {
+                    key: restore_detail_urls(item)
+                    if key != "detail_url"
+                    else restore_detail_url(item)
+                    for key, item in value.items()
+                }
+            if isinstance(value, list):
+                return [restore_detail_urls(item) for item in value]
+            return value
+
+        def restore_detail_url(value):
+            if not isinstance(value, str):
+                return value
+            value = f"WAGTAILAPI_BASE_URL{value}"
+            for placeholder, page_id in placeholders.items():
+                if placeholder.endswith("_ID"):
+                    value = value.replace(f"/{page_id}/", f"/{placeholder}/")
+            return value
+
+        expected_data = restore_detail_urls(data)
+        expected_json = json.dumps(expected_data, indent=4).replace(
+            '"uid": "ALERT_UID"', '"uid": ALERT_UID'
+        )
+        with open(file, "w") as expected_file:
+            expected_file.write(f"{expected_json}\n")
+        print(f"Updated API expected result: {os.path.basename(file)}")
 
     def normalize_json_data(self, data, is_expected=False):
         """Recursively normalize dynamic values in JSON data for comparison."""
@@ -411,9 +449,10 @@ class APIResponseTest(WagtailPageTestCase):
                     normalized[key] = "ID_PLACEHOLDER"
                 elif key == "uuid" and isinstance(value, str):
                     normalized[key] = "UUID_PLACEHOLDER"
+                elif key == "uid" and isinstance(value, int):
+                    normalized[key] = "ALERT_UID"
                 elif key in [
                     "url",
-                    "full_url",
                     "download_url",
                     "file",
                     "html_url",
@@ -467,6 +506,11 @@ class APIResponseTest(WagtailPageTestCase):
                 )
                 api_data = self.normalize_json_data(api_data, is_expected=False)
 
+                if os.getenv("UPDATE_API_EXPECTED_RESULTS") == "1":
+                    if expected_data != api_data:
+                        self.update_expected_result(file, api_data)
+                    return
+
                 # Compare as Python objects (better diffs)
                 self.assertEqual(expected_data, api_data)
 
@@ -480,17 +524,15 @@ class APIResponseTest(WagtailPageTestCase):
 
         # Sitemap items should only ever expose these two fields
         for item in data["items"]:
-            self.assertEqual(set(item.keys()), {"last_published_at", "full_url"})
+            self.assertEqual(set(item.keys()), {"last_published_at", "url"})
 
-        expected_full_urls = {
-            page.full_url for page in self.root_page.get_descendants(inclusive=True)
+        expected_urls = {
+            page.url for page in self.root_page.get_descendants(inclusive=True)
         }
-        self.assertEqual(
-            {item["full_url"] for item in data["items"]}, expected_full_urls
-        )
+        self.assertEqual({item["url"] for item in data["items"]}, expected_urls)
 
         matching_items = [
-            item for item in data["items"] if item["full_url"] == self.article.full_url
+            item for item in data["items"] if item["url"] == self.article.url
         ]
         self.assertEqual(len(matching_items), 1)
         self.assertEqual(
@@ -506,10 +548,10 @@ class APIResponseTest(WagtailPageTestCase):
         )
         try:
             response = self.request_api("sitemap")
-            full_urls = {item["full_url"] for item in response.json()["items"]}
+            urls = {item["url"] for item in response.json()["items"]}
             # The restricted page and its descendants should be excluded
-            self.assertNotIn(self.article_index.full_url, full_urls)
-            self.assertNotIn(self.article.full_url, full_urls)
+            self.assertNotIn(self.article_index.url, urls)
+            self.assertNotIn(self.article.url, urls)
         finally:
             restriction.delete()
 

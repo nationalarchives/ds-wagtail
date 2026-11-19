@@ -43,6 +43,10 @@
             "height": {
               "description": "The height of the JPEG image",
               "type": "integer"
+            },
+            "file_size": {
+              "description": "The file size of the JPEG image",
+              "type": "integer"
             }
           },
           "required": ["url", "full_url", "width", "height"]
@@ -66,9 +70,52 @@
             "height": {
               "description": "The height of the WebP image",
               "type": "integer"
+            },
+            "file_size": {
+              "description": "The file size of the WebP image",
+              "type": "integer"
             }
           },
           "required": ["url", "full_url", "width", "height"]
+        },
+        "transcript": {
+          "description": "A transcript of the image",
+          "type": "string"
+        },
+        "translation": {
+          "description": "The translation of the image transcript",
+          "type": "string"
+        },
+        "copyright": {
+          "description": "The copyright for the image",
+          "type": "string"
+        },
+        "alternative_format": {
+          "description": "An alternative format of the image",
+          "type": "object",
+          "properties": {
+            "heading": {
+              "description": "The type of alternative file",
+              "type": "string"
+            },
+            "url": {
+              "description": "The path to the alternative file",
+              "type": "string"
+            },
+            "full_url": {
+              "description": "The full URL of the alternative file",
+              "type": "string"
+            },
+            "file_type": {
+              "description": "The file type of the alternative file",
+              "type": "string"
+            },
+            "file_size": {
+              "description": "The file size of the alternative file",
+              "type": "integer"
+            }
+          },
+          "required": ["heading", "url", "full_url", "file_type", "file_size"]
         }
       },
       "required": ["id", "uuid", "title", "description", "jpeg", "webp"]

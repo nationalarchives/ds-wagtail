@@ -58,7 +58,7 @@ class ButtonBlock(blocks.StructBlock):
     def get_api_representation(self, value, context=None):
         representation = {
             "label": value["label"],
-            "href": value.get("external_link") or value["link"].full_url,
+            "href": value.get("external_link") or value["link"].url,
             "accent": value.get("accented") or False,
         }
 

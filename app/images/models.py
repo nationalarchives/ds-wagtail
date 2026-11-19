@@ -112,9 +112,6 @@ class CustomImage(ClusterableModel, AbstractImage):
             return {
                 "heading": self.get_alternative_format_heading_display(),
                 "url": item.url,
-                "full_url": (settings.WAGTAILAPI_MEDIA_BASE_URL + item.path)
-                if item
-                else None,
                 "file_type": _extract_file_type(item),
                 "file_size": _extract_file_size(item),
             }
@@ -124,6 +121,18 @@ class CustomImage(ClusterableModel, AbstractImage):
     @cached_property
     def usage_count(self):
         return self.get_usage().count()
+
+    @property
+    def source_image(self):
+        return (
+            {
+                "width": self.file.width,
+                "height": self.file.height,
+                "file_size": self.file.size,
+            }
+            if self.file
+            else None
+        )
 
     def clean(self):
         super().clean()
@@ -159,6 +168,7 @@ class CustomImage(ClusterableModel, AbstractImage):
         APIField("translation_heading"),
         APIField("translation", serializer=RichTextSerializer()),
         APIField("alternative_format_data"),
+        APIField("source_image"),
     ]
 
     admin_form_fields = Image.admin_form_fields + (
@@ -176,13 +186,6 @@ class CustomImageRendition(AbstractRendition):
     image = models.ForeignKey(
         CustomImage, on_delete=models.CASCADE, related_name="renditions"
     )
-
-    @property
-    def full_url(self):
-        url = self.url
-        if hasattr(settings, "WAGTAILAPI_MEDIA_BASE_URL") and url.startswith("/"):
-            return settings.WAGTAILAPI_MEDIA_BASE_URL + url
-        return super().full_url()
 
     class Meta:
         unique_together = (("image", "filter_spec", "focal_point_key"),)

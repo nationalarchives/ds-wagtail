@@ -1,0 +1,129 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://www.nationalarchives.gov.uk/wagtail/page-parts/image.schema.json",
+  "title": "Image",
+  "description": "An image in Wagtail",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "integer",
+      "description": "The ID of the image"
+    },
+    "uuid": {
+      "type": "string",
+      "description": "The UUID of the image"
+    },
+    "title": {
+      "type": "string",
+      "description": "The title of the image"
+    },
+    "description": {
+      "type": "string",
+      "description": "The description of the image"
+    },
+    "jpeg": {
+      "type": "object",
+      "description": "The JPEG rendition of the image",
+      "properties": {
+        "url": {
+          "type": "string",
+          "description": "The URL of the JPEG rendition"
+        },
+        "full_url": {
+          "type": "string",
+          "description": "The full URL of the JPEG rendition"
+        },
+        "width": {
+          "type": "integer",
+          "description": "The width of the JPEG rendition"
+        },
+        "height": {
+          "type": "integer",
+          "description": "The height of the JPEG rendition"
+        },
+        "file_size": {
+          "type": "integer",
+          "description": "The file size of the JPEG rendition in bytes"
+        }
+      }
+    },
+    "webp": {
+      "type": "object",
+      "description": "The WebP rendition of the image",
+      "properties": {
+        "url": {
+          "type": "string",
+          "description": "The URL of the WebP rendition"
+        },
+        "full_url": {
+          "type": "string",
+          "description": "The full URL of the WebP rendition"
+        },
+        "width": {
+          "type": "integer",
+          "description": "The width of the WebP rendition"
+        },
+        "height": {
+          "type": "integer",
+          "description": "The height of the WebP rendition"
+        },
+        "file_size": {
+          "type": "integer",
+          "description": "The file size of the WebP rendition in bytes"
+        }
+      },
+      "required": ["url", "full_url", "width", "height", "file_size"]
+    },
+    "transcript": {
+      "type": ["string", "null"],
+      "description": "The transcript of the image"
+    },
+    "translation": {
+      "type": ["string", "null"],
+      "description": "The translation of the image"
+    },
+    "copyright": {
+      "type": ["string", "null"],
+      "description": "The copyright information of the image"
+    },
+    "alternative_format": {
+      "type": ["object", "null"],
+      "description": "The alternative format of the image",
+      "properties": {
+        "heading": {
+          "type": "string",
+          "description": "The heading of the alternative format"
+        },
+        "url": {
+          "type": "string",
+          "description": "The URL of the alternative format"
+        },
+        "full_url": {
+          "type": "string",
+          "description": "The full URL of the alternative format"
+        },
+        "file_type": {
+          "type": "string",
+          "description": "The file type of the alternative format"
+        },
+        "file_size": {
+          "type": "integer",
+          "description": "The file size of the alternative format in bytes"
+        }
+      },
+      "required": ["heading", "url", "full_url", "file_type", "file_size"]
+    }
+  },
+  "required": [
+    "id",
+    "uuid",
+    "title",
+    "description",
+    "jpeg",
+    "webp",
+    "transcript",
+    "translation",
+    "copyright",
+    "alternative_format"
+  ]
+}

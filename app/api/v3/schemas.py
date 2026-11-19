@@ -32,9 +32,9 @@ _search_image_serializer = _serializer_for(
 
 class ImageRenditionSchema(Schema):
     url: str
-    full_url: str
     width: int
     height: int
+    file_size: int | None = None
 
 
 ImageSchema = dict[str, int | str | ImageRenditionSchema]
@@ -55,7 +55,6 @@ class SitePageMetaSchema(PageMetaSchema):
 
     page_path: str | None = None
     url: str | None = None
-    full_url: str | None = None
     language: str | None = None
     privacy: str | None = None
     teaser_text: str | None = None
@@ -73,10 +72,6 @@ class SitePageMetaSchema(PageMetaSchema):
     @staticmethod
     def resolve_url(obj: AbstractPage, context: dict) -> str | None:
         return getattr(obj, "url", None)
-
-    @staticmethod
-    def resolve_full_url(obj: AbstractPage, context: dict) -> str | None:
-        return getattr(obj, "full_url", None)
 
     @staticmethod
     def resolve_language(obj: AbstractPage, context: dict) -> str | None:
