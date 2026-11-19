@@ -35,6 +35,18 @@ class RelatedRecord(models.Model):
 	def __str__(self):
 		return str(self.record)
 
+from rest_framework import serializers
+from app.ciim.serializers import RecordSerializer
+
+class RelatedRecordSerializer(serializers.ModelSerializer):
+	record = RecordSerializer()
+	description = serializers.CharField()
+
+	class Meta:
+		model = RelatedRecord
+		fields = ["record", "description"]
+
+
 class ResearchGuide(BasePageWithIntro):
 	guided_search = StreamField(
 		[("guided_search", GuidedSearchBlock())],
@@ -51,4 +63,4 @@ class ResearchGuide(BasePageWithIntro):
 		InlinePanel("related_records", label="Related Records")
 	]
 
-	api_fields = BasePageWithIntro.api_fields + [APIField("guided_search"), APIField("body")]
+	api_fields = BasePageWithIntro.api_fields + [APIField("guided_search"), APIField("body"), APIField("related_records", serializer=RelatedRecordSerializer(many=True))]
