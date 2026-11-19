@@ -183,7 +183,6 @@ SENTRY_SAMPLE_RATE = float(os.getenv("SENTRY_SAMPLE_RATE", "0.1"))
 # Generated in the CI/CD process
 BUILD_VERSION = os.getenv("BUILD_VERSION", "")
 
-
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
@@ -232,21 +231,23 @@ USE_TZ = True
 STATIC_URL = "wagtail-static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
-AWS_STORAGE_BUCKET_NAME = os.getenv("AWS_STORAGE_BUCKET_NAME", "")
-AWS_S3_CUSTOM_DOMAIN = os.getenv(
-    "AWS_S3_CUSTOM_DOMAIN", f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
-).rstrip("/")
-
+AWS_STORAGE_BUCKET_NAME = os.getenv("AWS_STORAGE_BUCKET_NAME")
+if not AWS_STORAGE_BUCKET_NAME:
+    raise ImproperlyConfigured(
+        "AWS_STORAGE_BUCKET_NAME environment variable is not set"
+    )
 STORAGES = {
     "default": {
         "BACKEND": "storages.backends.s3.S3Storage",
         "OPTIONS": {
-            "access_key": os.getenv("AWS_S3_ACCESS_KEY_ID", ""),
-            "secret_key": os.getenv("AWS_S3_SECRET_ACCESS_KEY", ""),
+            "access_key": os.getenv("AWS_S3_ACCESS_KEY_ID", None),
+            "secret_key": os.getenv("AWS_S3_SECRET_ACCESS_KEY", None),
             "bucket_name": AWS_STORAGE_BUCKET_NAME,
             "region_name": os.getenv("AWS_S3_REGION_NAME", "eu-west-2"),
-            "endpoint_url": os.getenv("AWS_S3_ENDPOINT_URL", ""),
-            "custom_domain": AWS_S3_CUSTOM_DOMAIN,
+            "endpoint_url": os.getenv("AWS_S3_ENDPOINT_URL", None),
+            "custom_domain": os.getenv(
+                "AWS_S3_CUSTOM_DOMAIN", f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
+            ).rstrip("/"),
             "file_overwrite": False,
             "url_protocol": f"{os.getenv('AWS_S3_URL_PROTOCOL', 'https').rstrip(':')}:",
         },
