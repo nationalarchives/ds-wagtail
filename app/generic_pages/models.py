@@ -14,7 +14,7 @@ from app.core.serializers import (
     ImageSerializer,
 )
 
-from .blocks import GeneralPageStreamBlock, HubPageStreamBlock
+from .blocks import GeneralPageStreamBlock, HubPageStreamBlock, EasyReadStreamBlock
 
 
 class GeneralPage(SidebarMixin, HeroImageMixin, BasePageWithIntro):
@@ -153,3 +153,27 @@ class HubPage(HeroImageMixin, BasePageWithIntro):
             APIField("links", serializer=LinkItemSerializer(many=True)),
         ]
     )
+
+class EasyReadPage(HeroImageMixin, BasePageWithIntro):
+    body = StreamField(EasyReadStreamBlock, blank=True, null=True)
+
+    content_panels = (
+        BasePageWithIntro.content_panels
+        + HeroImageMixin.content_panels
+        + [
+            FieldPanel("body"),
+        ]
+    )
+
+    api_fields = (
+        BasePageWithIntro.api_fields
+        + HeroImageMixin.api_fields
+        + [
+            APIField("body"),
+        ]
+    )
+
+    class Meta:
+        verbose_name = "easy read page"
+        verbose_name_plural = "easy read pages"
+        verbose_name_public = "easy read"

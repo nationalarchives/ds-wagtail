@@ -4,6 +4,8 @@ from wagtail import blocks
 from app.ciim.blocks import RecordLinksBlock
 from app.core.blocks import (
     AccordionsBlock,
+    APIImageChooserBlock,
+    APIRichTextBlock,
     ButtonBlock,
     CallToActionBlock,
     CodeBlock,
@@ -100,3 +102,53 @@ class HubPageStreamBlock(blocks.StreamBlock):
     contact = ContactBlock()
     paragraph = ParagraphBlock()
     partner_logos = PartnerLogoListBlock()
+
+
+class ExplainerBoxBlock(blocks.StructBlock):
+    heading = blocks.CharBlock(max_length=100, label="Heading")
+    text = blocks.RichTextBlock(features=["bold", "link"], label="Content")
+
+    class Meta:
+        label = "Explainer Box"
+        group = "Basic text"
+        icon = "help"
+
+
+class EasyReadSentenceBlock(blocks.StructBlock):
+    image = APIImageChooserBlock()
+    text = APIRichTextBlock(features=["bold", "link"], label="Content")
+
+    class Meta:
+        label = "Easy Read Sentence"
+        group = "Basic text"
+
+
+class EasyReadSectionContentBlock(blocks.StreamBlock):
+    """
+    A section content block specifically for EasyReadPage.
+    """
+    explainer_box = ExplainerBoxBlock()
+    # featured_external_link = FeaturedExternalLinkBlock()
+    # featured_page = FeaturedPageBlock() TODO: Bespoke component for CTA?
+    media = MediaBlock()
+    sentence = EasyReadSentenceBlock()
+    sub_heading = SubHeadingBlock()
+    table = ContentTableBlock()
+    youtube_video = YouTubeBlock()
+
+
+class EasyReadContentSectionBlock(ContentSectionBlock):
+    """
+    A content section block specifically for EasyReadPage.
+    """
+    heading = blocks.CharBlock(max_length=100, label="Heading")
+    content = EasyReadSectionContentBlock()
+
+
+class EasyReadStreamBlock(EasyReadSectionContentBlock):
+    """
+    A block for the EasyReadPage model.
+    """
+
+    content_section = EasyReadContentSectionBlock()
+    sub_heading = None
