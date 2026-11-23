@@ -53,7 +53,7 @@ class CustomImage(ClusterableModel, AbstractImage):
     copyright = RichTextField(
         verbose_name="copyright",
         blank=True,
-        max_length=200,
+        max_length=300,
         help_text="Credit for images not owned by TNA. Do not include the copyright symbol.",
         features=settings.INLINE_RICH_TEXT_FEATURES,
     )
