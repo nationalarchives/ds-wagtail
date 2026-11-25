@@ -69,7 +69,6 @@ class CustomImage(ClusterableModel, AbstractImage):
         verbose_name="transcript",
         features=["bold", "italic", "ol", "ul"],
         blank=True,
-        max_length=4500,
         help_text="If the image contains text consider adding a transcript.",
     )
 
@@ -85,7 +84,6 @@ class CustomImage(ClusterableModel, AbstractImage):
         verbose_name="translation",
         features=["bold", "italic", "ol", "ul"],
         blank=True,
-        max_length=4500,
         help_text="An optional English / Modern English translation of the transcription.",
     )
 
