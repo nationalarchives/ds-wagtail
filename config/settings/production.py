@@ -309,16 +309,16 @@ WAGTAILSEARCH_BACKENDS = {
 
 WAGTAILDOCS_DOCUMENT_MODEL = "core.CustomDocument"
 WAGTAILDOCS_EXTENSIONS = [
-    "pdf",
-    "xls",
-    "xlsx",
+    "csv",
     "doc",
     "docx",
-    "xls",
-    "xlsx",
+    "pdf",
+    "ppt",
+    "pptx",
     "stl",
     "txt",
-    "csv",
+    "xls",
+    "xlsx",
 ]
 WAGTAILDOCS_INLINE_CONTENT_TYPES = []
 
