@@ -20,7 +20,6 @@ class DocumentBlock(blocks.StructBlock):
                 "title": file.title,
                 "description": file.description or None,
                 "file_size": file.file_size,
-                "pretty_file_size": file.pretty_file_size,
                 "type": file.file_extension,
                 "extent": file.extent,
                 "url": file.url,

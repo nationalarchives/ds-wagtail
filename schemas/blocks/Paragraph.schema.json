@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://www.nationalarchives.gov.uk/wagtail/blocks/Paragraph.schema.json",
+  "title": "Paragraph text block",
+  "description": "A paragraph text block in Wagtail",
+  "type": "object",
+  "properties": {
+    "type": {
+      "type": "string",
+      "description": "The type of the paragraph text block",
+      "enum": ["paragraph"]
+    },
+    "value": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string"
+        }
+      },
+      "required": ["text"]
+    },
+    "id": {
+      "type": "string",
+      "description": "The unique identifier for the paragraph text block"
+    }
+  },
+  "required": ["type", "value", "id"]
+}

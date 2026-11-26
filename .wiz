@@ -3,3 +3,7 @@ ignore:
     BUILTIN-125:
       /app/api/tests/expected_results/author.json:
         reason: FALSE_POSITIVE
+      /app/api/tests/expected_results/focused_article.json:
+        reason: FALSE_POSITIVE
+      /app/api/tests/expected_results/pages.json:
+        reason: FALSE_POSITIVE

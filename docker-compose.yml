@@ -7,6 +7,7 @@ services:
         IMAGE_TAG: preview
     depends_on:
       - db
+      - s3
       - redis
     ports:
       - 8000:8080
@@ -26,7 +27,6 @@ services:
       - DJANGO_SUPERUSER_EMAIL=admin@tna.dev
       - WAGTAILADMIN_BASE_URL=http://localhost:8000
       - WAGTAILAPI_BASE_URL=http://host.docker.internal:8000
-      - WAGTAILAPI_MEDIA_BASE_URL=https://localhost
       - MEDIA_PAGE_URL=https://localhost
       - REDIS_URL=redis://redis:6379/0
       - ROSETTA_API_URL=https://rosetta-dev.k-int.com/rosetta/data
@@ -34,9 +34,14 @@ services:
       - EMAIL_HOST_USER
       - EMAIL_HOST_PASSWORD
       - NEW_LABEL_DISPLAY_FOR_DAYS=21
+      - AWS_STORAGE_BUCKET_NAME=wagtail
+      - AWS_S3_ENDPOINT_URL=http://s3:9000
+      # S3 Ninja credentials from https://github.com/scireum/s3ninja/blob/0629ec5dfbf2b40408cf7ee8a0d4779894ce49d9/src/main/resources/application.conf#L38-L42
+      - AWS_S3_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE
+      - AWS_S3_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+      - AWS_S3_CUSTOM_DOMAIN=localhost/media
     volumes:
       - ./:/app
-      - media:/media
     healthcheck:
       start_period: 10s
       start_interval: 2s
@@ -50,6 +55,35 @@ services:
 
   redis:
     image: redis:latest
+
+  s3:
+    image: scireum/s3-ninja
+    ports:
+      - 8002:9000
+    volumes:
+      - s3data:/home/sirius/data
+      # - ./.env:/home/sirius/.env
+    # entrypoint:
+    #   [
+    #     "sh",
+    #     "-c",
+    #     'AWS_S3_ACCESS_KEY_ID=$(grep -Eo ''awsAccessKey = "(.*)"'' /home/sirius/app/application.conf | grep -Eo ''"(.*)"'' | tr -d ''"'') && AWS_S3_SECRET_ACCESS_KEY=$(grep -Eo ''awsSecretKey = "(.*)"'' /home/sirius/app/application.conf | grep -Eo ''"(.*)"'' | tr -d ''"'') && export AWS_S3_ACCESS_KEY_ID AWS_S3_SECRET_ACCESS_KEY && tmp_env=$(mktemp) && awk -v ak="$$AWS_S3_ACCESS_KEY_ID" -v sk="$$AWS_S3_SECRET_ACCESS_KEY" ''BEGIN{seen_ak=0; seen_sk=0} /^AWS_S3_ACCESS_KEY_ID=/{print "AWS_S3_ACCESS_KEY_ID=" ak; seen_ak=1; next} /^AWS_S3_SECRET_ACCESS_KEY=/{print "AWS_S3_SECRET_ACCESS_KEY=" sk; seen_sk=1; next} {print} END{if(!seen_ak) print "AWS_S3_ACCESS_KEY_ID=" ak; if(!seen_sk) print "AWS_S3_SECRET_ACCESS_KEY=" sk}'' /home/sirius/.env > "$$tmp_env" && cat "$$tmp_env" > /home/sirius/.env && rm -f "$$tmp_env" && exec /home/sirius/run.sh',
+    #   ]
+
+  media:
+    image: public.ecr.aws/aws-cli/aws-cli:2.12.3
+    profiles:
+      - tools
+    entrypoint: /bin/bash
+    environment:
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
+      - AWS_RETRY_MODE=standard
+      - AWS_MAX_ATTEMPTS=10
+    volumes:
+      - ./dumps:/dumps:ro
+      - ./dev:/scripts:ro
+      - extracted_media:/media
 
   docs:
     image: squidfunk/mkdocs-material
@@ -66,5 +100,6 @@ services:
       - 65493:80
 
 volumes:
-  media:
   pgdata:
+  s3data:
+  extracted_media:

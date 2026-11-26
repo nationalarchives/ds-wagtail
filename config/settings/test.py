@@ -10,13 +10,15 @@ DEBUG = True
 SECRET_KEY = "abc123"
 
 WAGTAILADMIN_BASE_URL = "http://localhost"
-WAGTAILAPI_MEDIA_BASE_URL = "http://localhost"
 
 ALLOWED_HOSTS = ["*"]
 
 # Disable birdbath completely when testing
 INSTALLED_APPS = INSTALLED_APPS.copy()
 INSTALLED_APPS.remove("birdbath")
+
+MIDDLEWARE = MIDDLEWARE.copy()
+MIDDLEWARE.remove("whitenoise.middleware.WhiteNoiseMiddleware")
 
 SECURE_SSL_REDIRECT = False
 
@@ -27,7 +29,10 @@ DATABASES = {
     }
 }
 
-STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
+STORAGES = STORAGES.copy()
+STORAGES["default"]["OPTIONS"]["custom_domain"] = "localhost/media"
+STORAGES["default"]["OPTIONS"]["url_protocol"] = "https:"
+STORAGES["staticfiles"]["BACKEND"] = "django.core.files.storage.FileSystemStorage"
 
 ROSETTA_API_URL = "http://rosetta.test/data"
 

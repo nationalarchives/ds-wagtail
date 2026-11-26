@@ -58,6 +58,14 @@
       "description": "The description of the image",
       "type": "string"
     },
+    "alternative_format_heading": {
+      "description": "The type of alternative image available",
+      "type": "string"
+    },
+    "alternative_format": {
+      "description": "The file path to an alternative version of the image",
+      "type": "string"
+    },
     "jpeg": {
       "description": "The JPEG version of the image",
       "type": "object",
@@ -76,6 +84,10 @@
         },
         "height": {
           "description": "The height of the JPEG image",
+          "type": "integer"
+        },
+        "file_size": {
+          "description": "The file size of the JPEG image",
           "type": "integer"
         }
       },
@@ -100,9 +112,31 @@
         "height": {
           "description": "The height of the WebP image",
           "type": "integer"
+        },
+        "file_size": {
+          "description": "The file size of the WebP image",
+          "type": "integer"
         }
       },
       "required": ["url", "full_url", "width", "height"]
+    },
+    "source_image": {
+      "type": "object",
+      "properties": {
+        "width": {
+          "description": "The original width of the image in pixels",
+          "type": "integer"
+        },
+        "height": {
+          "description": "The original height of the image in pixels",
+          "type": "integer"
+        },
+        "file_size": {
+          "description": "The original file size of the image in bytes",
+          "type": "integer"
+        }
+      },
+      "required": ["width", "height", "file_size"]
     }
   },
   "required": ["id", "title", "tags", "uuid", "jpeg", "webp"]
