@@ -243,7 +243,7 @@ STORAGES = {
             "access_key": os.getenv("AWS_S3_ACCESS_KEY_ID", None),
             "secret_key": os.getenv("AWS_S3_SECRET_ACCESS_KEY", None),
             "bucket_name": AWS_STORAGE_BUCKET_NAME,
-            "region_name": os.getenv("AWS_S3_REGION_NAME", "eu-west-2"),
+            "region_name": os.getenv("AWS_S3_REGION_NAME") or "eu-west-2",
             "endpoint_url": os.getenv("AWS_S3_ENDPOINT_URL", None),
             "custom_domain": os.getenv(
                 "AWS_S3_CUSTOM_DOMAIN", f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
