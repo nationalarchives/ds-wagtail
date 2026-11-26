@@ -240,8 +240,6 @@ STORAGES = {
     "default": {
         "BACKEND": "storages.backends.s3.S3Storage",
         "OPTIONS": {
-            "access_key": os.getenv("AWS_S3_ACCESS_KEY_ID") or None,
-            "secret_key": os.getenv("AWS_S3_SECRET_ACCESS_KEY") or None,
             "bucket_name": AWS_STORAGE_BUCKET_NAME,
             "region_name": os.getenv("AWS_S3_REGION_NAME") or "eu-west-2",
             "endpoint_url": os.getenv("AWS_S3_ENDPOINT_URL") or None,
