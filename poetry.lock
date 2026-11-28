@@ -65,18 +65,18 @@ lxml = ["lxml"]
 
 [[package]]
 name = "boto3"
-version = "1.43.127"
+version = "1.44.9"
 description = "The AWS SDK for Python (Boto3)"
 optional = false
 python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "boto3-1.43.127-py3-none-any.whl", hash = "sha256:47f87f89b10e62f5191bd98674beb0dd52ed368c19fcdfef2ef38ead31126f49"},
-    {file = "boto3-1.43.127.tar.gz", hash = "sha256:b5417e81d439b35ccf3a1eb51fa06cf9c97167c9a6beaa1929175ee9840d505a"},
+    {file = "boto3-1.44.9-py3-none-any.whl", hash = "sha256:aff889e8ca6f6006f0b5658b712941471d21e4675d6d48421974a20a5a17a918"},
+    {file = "boto3-1.44.9.tar.gz", hash = "sha256:da4199076833547445a7181e38e833f476808142df95084b2b46c8b2a107aa66"},
 ]
 
 [package.dependencies]
-botocore = ">=1.43.127,<1.44.0"
+botocore = ">=1.44.9,<1.45.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.19.0,<0.20.0"
 
@@ -85,14 +85,14 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.43.127"
+version = "1.44.9"
 description = "Low-level, data-driven core of boto 3."
 optional = false
 python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "botocore-1.43.127-py3-none-any.whl", hash = "sha256:aa0e3188679a2164a2098a14ea9b59520520cb573aaee9999d852480691e134a"},
-    {file = "botocore-1.43.127.tar.gz", hash = "sha256:93bae360fb3a6f1b8e36593faa8bbbfa05b19866f7a37e9606a98f13394156f8"},
+    {file = "botocore-1.44.9-py3-none-any.whl", hash = "sha256:6966752d38514a8e457ea062ea171b2b320c55bad23c8ae4f74f88296e00890d"},
+    {file = "botocore-1.44.9.tar.gz", hash = "sha256:1f783e0b31f0053f41f4239b7a7e2e73957f25cdc6b2f45d113f1b575a4db10b"},
 ]
 
 [package.dependencies]
@@ -1615,14 +1615,14 @@ crt = ["botocore[crt] (>=1.37.4,<2.0a0)"]
 
 [[package]]
 name = "sentry-sdk"
-version = "2.73.0"
+version = "2.75.0"
 description = "Python client for Sentry (https://sentry.io)"
 optional = false
 python-versions = ">=3.6"
 groups = ["main"]
 files = [
-    {file = "sentry_sdk-2.73.0-py3-none-any.whl", hash = "sha256:0bcfa6928ea5adbb89591858b514d27adac27c7a3cccc31b20ed10e0b09eda9e"},
-    {file = "sentry_sdk-2.73.0.tar.gz", hash = "sha256:4a2ab97b16e4693c325ab361c7bbbb346dbc7d0bc0150922d795a25bac8d5280"},
+    {file = "sentry_sdk-2.75.0-py3-none-any.whl", hash = "sha256:9a10e97de2cbd42ad7e4a6e02a0d5af19de9811eb02445077d41ba14c08e170c"},
+    {file = "sentry_sdk-2.75.0.tar.gz", hash = "sha256:c38ac2d4b2435c11da821e173bb9d9088c98f41ae92f559ce0e424170a8e1a29"},
 ]
 
 [package.dependencies]
@@ -1746,14 +1746,14 @@ docs = ["mkdocs (>=1.1,<1.2)", "mkdocs-material (>=6.2,<6.3)"]
 
 [[package]]
 name = "tna-frontend-jinja"
-version = "1.6.1"
+version = "1.7.0"
 description = "TNA Frontend Jinja templates"
 optional = false
 python-versions = ">=3.11"
 groups = ["main"]
 files = [
-    {file = "tna_frontend_jinja-1.6.1-py3-none-any.whl", hash = "sha256:fefc75754781d741993de6aebe3b1d87d52572df24bbb31e164e35a9356df2ea"},
-    {file = "tna_frontend_jinja-1.6.1.tar.gz", hash = "sha256:de8c6e136276472717ee19c407af9d9d5c7a9a7e2b3800200bf021aa89de589b"},
+    {file = "tna_frontend_jinja-1.7.0-py3-none-any.whl", hash = "sha256:0a8f5c6671eccd608055c310e584f98287986842c13faa97689e5a95d8f7ae91"},
+    {file = "tna_frontend_jinja-1.7.0.tar.gz", hash = "sha256:77690ca1a52f198e519d5481ab259ef2e4429e830661eea94e48f1a092d2e6a2"},
 ]
 
 [package.dependencies]
@@ -1764,14 +1764,14 @@ wtforms = ["flask-wtf[email]"]
 
 [[package]]
 name = "tna-utilities"
-version = "1.9.0"
+version = "1.10.0"
 description = "A library of common National Archives Python functions"
 optional = false
-python-versions = ">=3.10"
+python-versions = ">=3.11"
 groups = ["main"]
 files = [
-    {file = "tna_utilities-1.9.0-py3-none-any.whl", hash = "sha256:11c998c177e176aa064eacaedffaaba1491b7bbfc2da1597c4b31b2148ea2014"},
-    {file = "tna_utilities-1.9.0.tar.gz", hash = "sha256:4283180a935491839a3fff34e578a88e9790f44579984e1d163183579e0b23dc"},
+    {file = "tna_utilities-1.10.0-py3-none-any.whl", hash = "sha256:4ba9d988e754ad04a05a5eb55fbd5b7bf5cbc5e5b1daed1146794e5009c360ee"},
+    {file = "tna_utilities-1.10.0.tar.gz", hash = "sha256:032a6c89c391e8a2a040870d6cd21e2096548e611dc0d80e12d9b22c99c686b5"},
 ]
 
 [package.dependencies]
@@ -1992,4 +1992,4 @@ wand = ["Wand (>=0.6,<1.0)"]
 [metadata]
 lock-version = "2.1"
 python-versions = "~3.15"
-content-hash = "8a6452569533186ea899dbb282f68e487e88678940a3cda2340aa0a0929bca03"
+content-hash = "c120b1e573533cf60fed8119f49890e22c3367707ad4eee0b11ec31316998f7a"
